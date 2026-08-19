@@ -23,6 +23,8 @@ export interface RendererBindings {
   Img: ComponentType<ImgProps>;
   Video: ComponentType<VideoProps>;
   hold: (label: string) => () => void;
+  /** Maps a project-relative path (`assets/bg.png`) to a URL the renderer serves. */
+  asset: (path: string) => string;
 }
 
 export const domBindings: RendererBindings = {
@@ -30,7 +32,16 @@ export const domBindings: RendererBindings = {
   Img: (props) => <img {...props} />,
   Video: (props) => <video {...props} />,
   hold: () => () => {},
+  asset: (path) => path,
 };
+
+const isUrl = (src: string) => /^(?:[a-z]+:|\/\/|\/)/i.test(src);
+
+/** Resolves a project-relative path through the renderer; URLs and data URIs pass through. */
+export function useAssetUrl(src: string): string {
+  const { asset } = useRenderer();
+  return isUrl(src) ? src : asset(src);
+}
 
 const RendererContext = createContext<RendererBindings>(domBindings);
 
@@ -48,12 +59,12 @@ export const useRenderer = (): RendererBindings => useContext(RendererContext);
 
 export function Img(props: ImgProps) {
   const { Img: Bound } = useRenderer();
-  return <Bound {...props} />;
+  return <Bound {...props} src={useAssetUrl(props.src)} />;
 }
 
 export function Video(props: VideoProps) {
   const { Video: Bound } = useRenderer();
-  return <Bound {...props} />;
+  return <Bound {...props} src={useAssetUrl(props.src)} />;
 }
 
 /** Holds the frame until `load` resolves. The hold starts synchronously on first render. */
@@ -79,19 +90,20 @@ export function useHoldUntil(label: string, load: () => Promise<unknown>): boole
   return ready;
 }
 
-/** Preloads an image (or any URL) and holds the frame until it has loaded. */
+/** Resolves and preloads an image (or any URL) and holds the frame until it has loaded. */
 export function useAsset(src: string): { src: string; ready: boolean } {
+  const url = useAssetUrl(src);
   const ready = useHoldUntil(
-    `asset:${src}`,
+    `asset:${url}`,
     () =>
       new Promise<void>((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve();
-        img.onerror = () => reject(new Error(`Failed to load ${src}`));
-        img.src = src;
+        img.onerror = () => reject(new Error(`Failed to load ${url}`));
+        img.src = url;
       }),
   );
-  return { src, ready };
+  return { src: url, ready };
 }
 
 /** Holds the frame until every @font-face in the document has loaded. */

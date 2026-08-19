@@ -21,6 +21,7 @@ export {
   Video,
   domBindings,
   useAsset,
+  useAssetUrl,
   useFontsReady,
   useHoldUntil,
   useRenderer,

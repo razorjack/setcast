@@ -5,7 +5,7 @@ import type { ModRoute } from './modulation.ts';
  * Everything a renderer needs, fully resolved and JSON-serializable. Paths are relative to the
  * project directory, which the renderer serves as its public root.
  */
-export interface ResolvedProject {
+export type ResolvedProject = {
   title: string;
   audio: string;
   background: string | null;
@@ -20,4 +20,4 @@ export interface ResolvedProject {
   /** Theme defaults followed by the project's own routes. */
   modulation: ModRoute[];
   visualizer: { name: string } & Record<string, unknown>;
-}
+};

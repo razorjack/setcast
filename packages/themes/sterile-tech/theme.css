@@ -1,0 +1,168 @@
+/* sterile-tech: dark, cold, clinical. One warm rust accent. */
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-weight: 500;
+  src: url(./fonts/BarlowCondensed-500.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-weight: 600;
+  src: url(./fonts/BarlowCondensed-600.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-weight: 700;
+  src: url(./fonts/BarlowCondensed-700.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 100 800;
+  src: url(./fonts/JetBrainsMono.woff2) format('woff2');
+}
+
+.theme-sterile-tech {
+  --fg: #e6ecf0;
+  --fg-dim: #8a98a6;
+  --accent: #ff6a2b;
+  --accent-2: #7fd4e6;
+  --steel: #2a343d;
+  --panel-bg: rgb(12 16 21 / 0.52);
+  --panel-border: rgb(255 255 255 / 0.1);
+  --blur: 28px;
+  --radius: 4px;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --spectrum-height: 19cqh;
+  background: #06080b;
+}
+
+/* background: desaturated, darkened, vignette breathes with loudness */
+.theme-sterile-tech .sc-bg-img {
+  filter: saturate(0.7) brightness(0.9) contrast(1.05);
+}
+.theme-sterile-tech .sc-bg-vignette {
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 35%, rgb(4 6 8 / 0.75) 100%),
+    linear-gradient(to top, rgb(4 6 8 / 0.85) 0%, transparent 45%);
+  opacity: var(--mod-vignette, 0.75);
+}
+
+/* header */
+.theme-sterile-tech .sc-header {
+  font-family: var(--font-mono);
+  font-size: 1.05cqw;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-sterile-tech .sc-set-title::before {
+  content: '';
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: 0.9em;
+  background: var(--accent);
+  transform: translateY(-0.05em);
+}
+.theme-sterile-tech .sc-clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.theme-sterile-tech .sc-clock-total {
+  color: var(--fg-dim);
+}
+
+/* spectrum: cold steel rods with a faint glow, fading into the floor */
+.theme-sterile-tech .sc-spectrum {
+  mix-blend-mode: screen;
+  opacity: 0.75;
+  mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
+}
+.theme-sterile-tech .sc-spectrum rect {
+  fill: var(--accent-2);
+}
+
+/* now playing: frosted glass, hairline, enters with a spring (--enter from JS) */
+.theme-sterile-tech .sc-panel {
+  padding: 1.7cqw 2.2cqw 1.9cqw 2.1cqw;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 30px 60px rgb(0 0 0 / 0.45),
+    0 0 calc(var(--mod-panel-glow, 0) * 70px) color-mix(in srgb, var(--accent) 35%, transparent);
+  opacity: clamp(0, var(--enter, 1), 1);
+  transform: translateY(calc((1 - var(--enter, 1)) * 3cqh));
+}
+.theme-sterile-tech .sc-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.2cqw;
+  bottom: 1.2cqw;
+  width: 3px;
+  background: var(--accent);
+}
+.theme-sterile-tech .sc-panel[data-deck='B']::before {
+  background: var(--accent-2);
+}
+.theme-sterile-tech .sc-panel-head {
+  gap: 1.1cqw;
+  margin-bottom: 0.9cqw;
+  font-family: var(--font-mono);
+  font-size: 0.95cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-sterile-tech .sc-deck {
+  display: inline-grid;
+  place-items: center;
+  width: 2.1cqw;
+  height: 2.1cqw;
+  font-weight: 600;
+  font-size: 1.1cqw;
+  letter-spacing: 0;
+  color: #0a0d10;
+  background: var(--accent);
+}
+.theme-sterile-tech .sc-panel[data-deck='B'] .sc-deck {
+  background: var(--accent-2);
+}
+.theme-sterile-tech .sc-index {
+  margin-left: auto;
+  padding-left: 2cqw;
+  font-variant-numeric: tabular-nums;
+}
+.theme-sterile-tech .sc-index-sep {
+  margin: 0 0.35em;
+  color: var(--steel);
+}
+.theme-sterile-tech .sc-artist {
+  font-weight: 500;
+  font-size: 2cqw;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-sterile-tech .sc-title {
+  font-weight: 700;
+  font-size: 4.2cqw;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.theme-sterile-tech .sc-label {
+  margin-top: 1cqw;
+  font-family: var(--font-mono);
+  font-size: 0.95cqw;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}

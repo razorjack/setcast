@@ -75,7 +75,7 @@ export interface LogBinsOptions {
  */
 export function logBins(
   spectrum: Spectrum,
-  { count = BIN_COUNT, lo = 30, hi = 16000, tilt = 0.5, gain = 4 }: LogBinsOptions = {},
+  { count = BIN_COUNT, lo = 30, hi = 16000, tilt = 0.7, gain = 14 }: LogBinsOptions = {},
 ): number[] {
   const ratio = hi / lo;
   const bins = new Array<number>(count);
@@ -88,14 +88,18 @@ export function logBins(
   return bins;
 }
 
-/** Everything but `rms` and `onset`, which need the waveform and a second point in time. */
+/**
+ * Everything but `rms` and `onset`, which need the waveform and a second point in time.
+ * Gains are calibrated against FFT magnitudes normalized by the full-scale int16 maximum
+ * (what Remotion's `visualizeAudio` returns): a drum & bass drop lands around 0.8 bass.
+ */
 export function spectrumFeatures(
   spectrum: Spectrum,
 ): Pick<AudioFeatures, 'bass' | 'mids' | 'highs' | 'bins'> {
   return {
-    bass: soft(bandEnergy(spectrum, ...BANDS.bass), 3),
-    mids: soft(bandEnergy(spectrum, ...BANDS.mids), 8),
-    highs: soft(bandEnergy(spectrum, ...BANDS.highs), 16),
+    bass: soft(bandEnergy(spectrum, ...BANDS.bass), 14),
+    mids: soft(bandEnergy(spectrum, ...BANDS.mids), 60),
+    highs: soft(bandEnergy(spectrum, ...BANDS.highs), 160),
     bins: logBins(spectrum),
   };
 }

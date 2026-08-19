@@ -214,6 +214,9 @@ catalogs:
     '@remotion/cli':
       specifier: 4.0.513
       version: 4.0.513
+    '@remotion/media':
+      specifier: 4.0.513
+      version: 4.0.513
     '@remotion/media-utils':
       specifier: 4.0.513
       version: 4.0.513
@@ -229,6 +232,9 @@ catalogs:
     '@types/react-dom':
       specifier: ^19.2.4
       version: 19.2.4
+    mediabunny:
+      specifier: 1.50.8
+      version: 1.50.8
     picocolors:
       specifier: ^1.1.1
       version: 1.1.1
@@ -297,6 +303,9 @@ importers:
       picocolors:
         specifier: 'catalog:'
         version: 1.1.1
+      yaml:
+        specifier: 'catalog:'
+        version: 2.9.0
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -344,6 +353,9 @@ importers:
       '@setcast/core':
         specifier: workspace:*
         version: link:../core
+      mediabunny:
+        specifier: 'catalog:'
+        version: 1.50.8
     devDependencies:
       '@remotion/bundler':
         specifier: 'catalog:'
@@ -351,6 +363,9 @@ importers:
       '@remotion/cli':
         specifier: 'catalog:'
         version: 4.0.513(lightningcss@1.33.0)(postcss@8.5.26)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)(typescript@7.0.2)
+      '@remotion/media':
+        specifier: 'catalog:'
+        version: 4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@remotion/media-utils':
         specifier: 'catalog:'
         version: 4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -1068,6 +1083,12 @@ packages:
 
   '@remotion/media-utils@4.0.513':
     resolution: {integrity: sha512-4retja3Q9IHicW48wbjKB+lXjB1yiNtXZ3H/Pa+1Nd0DNK1IvMGYSxDms3LR4ZByucIsdXrBTJIcIoldqL7KVg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@remotion/media@4.0.513':
+    resolution: {integrity: sha512-htjbW1F7lA7/sPhg4aT4uiACIt5BMiitynwhkhm0ESE3TX8dLhquj6lFyUg9N0FtJtp/pFcmhwqwjYtAr3FmOQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -3248,6 +3269,14 @@ snapshots:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       remotion: 4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+
+  '@remotion/media@4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+    dependencies:
+      mediabunny: 1.50.8
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
+      remotion: 4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      zod: 4.4.3
 
   '@remotion/player@4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:

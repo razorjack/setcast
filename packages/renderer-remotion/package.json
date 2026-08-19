@@ -23,11 +23,13 @@
     "build": "vp pack"
   },
   "dependencies": {
-    "@setcast/core": "workspace:*"
+    "@setcast/core": "workspace:*",
+    "mediabunny": "catalog:"
   },
   "devDependencies": {
     "@remotion/bundler": "catalog:",
     "@remotion/cli": "catalog:",
+    "@remotion/media": "catalog:",
     "@remotion/media-utils": "catalog:",
     "@remotion/renderer": "catalog:",
     "@types/node": "catalog:",
@@ -43,6 +45,7 @@
   "peerDependencies": {
     "@remotion/bundler": "4.0.513",
     "@remotion/cli": "4.0.513",
+    "@remotion/media": "4.0.513",
     "@remotion/media-utils": "4.0.513",
     "@remotion/renderer": "4.0.513",
     "react": ">=19",

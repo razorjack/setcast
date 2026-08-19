@@ -61,7 +61,9 @@ export {
   type InterpolateOptions,
   type SpringConfig,
 } from './motion.ts';
+export { ConfigError, SetcastError, zodIssues, type Issue } from './errors.ts';
 export type { ResolvedProject } from './project.ts';
+export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export { formatChapterTime, formatTime, parseTime } from './time.ts';
 export { Timeline, since, until, type EventState } from './timeline.ts';

@@ -1,0 +1,65 @@
+/* Structure only. Themes own appearance. Sizes use container units so any output size scales. */
+
+.sc-stage {
+  position: relative;
+  overflow: hidden;
+  container-type: size;
+  background: #000;
+  color: var(--fg, #fff);
+  font-family: var(--font-display, system-ui, sans-serif);
+  --margin: 3.4cqw;
+}
+
+.sc-stage *,
+.sc-stage *::before,
+.sc-stage *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.sc-bg,
+.sc-bg-img,
+.sc-bg-vignette {
+  position: absolute;
+  inset: 0;
+}
+
+.sc-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(var(--bg-x, 0), var(--bg-y, 0)) scale(var(--bg-zoom, 1));
+  transform-origin: center;
+}
+
+.sc-spectrum {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--spectrum-height, 26cqh);
+  display: block;
+}
+
+.sc-header {
+  position: absolute;
+  top: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.sc-panel {
+  position: absolute;
+  left: var(--margin);
+  bottom: var(--margin);
+  max-width: 60cqw;
+}
+
+.sc-panel-head {
+  display: flex;
+  align-items: center;
+}

@@ -4,19 +4,22 @@
   "description": "Setcast core: event timeline, schemas, RenderFrame contract, hooks, modulation, plugin registry.",
   "license": "MIT",
   "files": [
-    "dist"
+    "dist",
+    "css"
   ],
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
     "./react": "./src/react/index.ts",
+    "./node": "./src/node/index.ts",
     "./package.json": "./package.json"
   },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.js",
       "./react": "./dist/react/index.js",
+      "./node": "./dist/node/index.js",
       "./package.json": "./package.json"
     },
     "access": "public"

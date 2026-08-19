@@ -8,7 +8,8 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "templates"
   ],
   "type": "module",
   "scripts": {
@@ -19,7 +20,8 @@
     "@setcast/core": "workspace:*",
     "@setcast/renderer-remotion": "workspace:*",
     "@setcast/themes": "workspace:*",
-    "picocolors": "catalog:"
+    "picocolors": "catalog:",
+    "yaml": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",

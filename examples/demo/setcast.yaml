@@ -1,0 +1,51 @@
+# Setcast demo project. Audio is generated: run `vp run demo-assets` from the repo root.
+title: Setcast Demo Session
+audio: assets/demo-set.wav
+background: assets/bg.svg
+theme: sterile-tech
+renderer: remotion
+
+output:
+  width: 1920
+  height: 1080
+  fps: 30
+  file: out/demo.mp4
+
+tracks:
+  - time: 0:00
+    artist: Null Vector
+    title: Sterile Room
+    label: Setcast Recordings
+  - time: 1:17
+    artist: Oxide Array
+    title: Rust Protocol
+    label: Setcast Recordings
+  - time: 1:50
+    artist: ID
+    title: ID
+
+events:
+  - type: buildup
+    time: 0:22
+  - type: drop
+    time: 0:33.1
+  - type: breakdown
+    time: 1:17.2
+  - type: buildup
+    time: 1:39.3
+  - type: drop
+    time: 1:50.3
+
+# Theme routes stay active; a route with the same target overrides the theme's.
+modulation:
+  - source: bass
+    target: bg-zoom
+    range: [1, 1.06]
+    curve: pow2
+    smooth: 0.08
+    when: drop
+
+visualizer:
+  name: spectrum
+  bars: 48
+  gain: 1.1

@@ -8,7 +8,7 @@ export const SpectrumConfigSchema = z.object({
   gain: z.number().min(0.1).max(4).default(1),
   /** Minimum bar height as a fraction of the full height, so silence still shows a baseline. */
   floor: z.number().min(0).max(0.5).default(0.02),
-  gap: z.number().min(0).max(0.9).default(0.35),
+  gap: z.number().min(0).max(0.9).default(0.5),
 });
 export type SpectrumConfig = z.infer<typeof SpectrumConfigSchema>;
 

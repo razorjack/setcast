@@ -15,6 +15,8 @@ catalog:
   '@remotion/renderer': 4.0.513
   '@remotion/media-utils': 4.0.513
   '@remotion/cli': 4.0.513
+  '@remotion/media': 4.0.513
+  mediabunny: 1.50.8
   zod: ^4.4.3
   yaml: ^2.9.0
   '@clack/prompts': ^1.7.0
