@@ -4,14 +4,19 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type ComponentType,
-  type ImgHTMLAttributes,
   type ReactNode,
-  type VideoHTMLAttributes,
 } from 'react';
 
-export type ImgProps = ImgHTMLAttributes<HTMLImageElement> & { src: string };
-export type VideoProps = VideoHTMLAttributes<HTMLVideoElement> & { src: string };
+/** Deliberately small: only what every renderer can honor. Appearance belongs in CSS. */
+export interface MediaProps {
+  src: string;
+  className?: string;
+  style?: CSSProperties;
+}
+export type ImgProps = MediaProps;
+export type VideoProps = MediaProps;
 
 /**
  * What a renderer adapter plugs in. `hold` marks the current frame as not ready until the returned

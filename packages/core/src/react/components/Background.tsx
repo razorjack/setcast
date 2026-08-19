@@ -14,7 +14,7 @@ export function Background() {
   const src = composition.project.background;
   return (
     <div className="sc-bg" style={{ '--bg-zoom': zoom, '--bg-x': `${x}%`, '--bg-y': `${y}%` }}>
-      {src && <Img className="sc-bg-img" src={src} alt="" />}
+      {src && <Img className="sc-bg-img" src={src} />}
       <div className="sc-bg-vignette" />
     </div>
   );

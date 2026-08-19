@@ -3,7 +3,8 @@ import { continueRender, delayRender, Img, OffthreadVideo, staticFile } from 're
 
 export const remotionBindings: RendererBindings = {
   name: 'remotion',
-  Img: (props) => <Img {...props} />,
+  // Pass props explicitly: Remotion Studio's visual mode rejects unknown <img> attributes.
+  Img: ({ src, className, style }) => <Img src={src} className={className} style={style} />,
   Video: ({ src, className, style }) => (
     <OffthreadVideo src={src} className={className} style={style} />
   ),

@@ -48,6 +48,7 @@ export const fmtSeconds = (s: number) => {
 export class ProgressLine {
   #start = Date.now();
   #last = '';
+  #tick = -1;
   #label: string;
   readonly #width = 24;
 
@@ -57,6 +58,8 @@ export class ProgressLine {
   }
 
   update(progress: number, detail = ''): void {
+    if (!process.stdout.isTTY && progress < 1 && Math.floor(progress * 10) === this.#tick) return;
+    this.#tick = Math.floor(progress * 10);
     const filled = Math.round(progress * this.#width);
     const bar = accent('▰'.repeat(filled)) + dim('▱'.repeat(this.#width - filled));
     const pct = `${String(Math.round(progress * 100)).padStart(3)}%`;
@@ -67,12 +70,14 @@ export class ProgressLine {
         : '';
     const line = `${dim('│')}  ${bold(this.#label.padEnd(8))} ${bar} ${pct}  ${dim(detail)}${dim(eta)}`;
     if (line !== this.#last) {
-      process.stdout.write(`\r\x1b[2K${line}`);
+      process.stdout.write(process.stdout.isTTY ? `\r\x1b[2K${line}` : `${line}\n`);
       this.#last = line;
     }
   }
 
   done(message: string): void {
-    process.stdout.write(`\r\x1b[2K${pc.green('◇')}  ${message}\n`);
+    process.stdout.write(
+      `${process.stdout.isTTY ? '\r\x1b[2K' : ''}${pc.green('◇')}  ${message}\n`,
+    );
   }
 }

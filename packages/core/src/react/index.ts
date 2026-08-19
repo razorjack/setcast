@@ -26,6 +26,7 @@ export {
   useHoldUntil,
   useRenderer,
   type ImgProps,
+  type MediaProps,
   type RendererBindings,
   type VideoProps,
 } from './renderer.tsx';
