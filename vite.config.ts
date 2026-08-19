@@ -4,6 +4,7 @@ export default defineConfig({
   fmt: {
     singleQuote: true,
     printWidth: 100,
+    ignorePatterns: ['**/*.md'],
   },
   lint: {
     ignorePatterns: ['dist/**', 'examples/*/out/**'],
