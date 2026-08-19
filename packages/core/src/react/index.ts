@@ -3,6 +3,7 @@ import './css.ts';
 export { Background } from './components/Background.tsx';
 export { Header } from './components/Header.tsx';
 export { NowPlaying } from './components/NowPlaying.tsx';
+export { Radial, RadialConfigSchema, type RadialConfig } from './components/Radial.tsx';
 export { Spectrum, SpectrumConfigSchema, type SpectrumConfig } from './components/Spectrum.tsx';
 export {
   FrameProvider,

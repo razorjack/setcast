@@ -17,9 +17,9 @@
   },
   "publishConfig": {
     "exports": {
-      ".": "./dist/index.js",
-      "./react": "./dist/react/index.js",
-      "./node": "./dist/node/index.js",
+      ".": "./dist/index.mjs",
+      "./react": "./dist/react/index.mjs",
+      "./node": "./dist/node/index.mjs",
       "./package.json": "./package.json"
     },
     "access": "public"

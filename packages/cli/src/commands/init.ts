@@ -7,7 +7,7 @@ import { CONFIG_FILE } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { stringify } from 'yaml';
 import { synthesizeDemo } from '../demo/synth.ts';
-import { bold, cancel, dim, intro, isCancel, log, outro, prompts, steel } from '../ui.ts';
+import { bold, cancel, dim, intro, log, outro, prompts, steel } from '../ui.ts';
 
 const TEMPLATES = fileURLToPath(new URL('../../templates/', import.meta.url));
 
@@ -32,7 +32,7 @@ export async function run(argv: string[]): Promise<void> {
   }
 
   const answers = values.yes
-    ? { title: titleFrom(dir), audio: values.demo ? 'demo' : '', fps: 30 }
+    ? { title: titleFrom(dir), audio: values.demo ? 'demo' : '', fps: 30, theme: 'sterile-tech' }
     : await ask(dir, values.demo ?? false);
 
   await mkdir(join(dir, 'assets'), { recursive: true });
@@ -69,7 +69,7 @@ export async function run(argv: string[]): Promise<void> {
       title: answers.title,
       audio: audio || 'CHANGE-ME.wav',
       background: 'assets/bg.svg',
-      theme: 'sterile-tech',
+      theme: answers.theme,
       renderer: 'remotion',
       output: { width: 1920, height: 1080, fps: answers.fps, file: 'out/set.mp4' },
       tracks,
@@ -148,12 +148,12 @@ async function ask(dir: string, demoDefault: boolean) {
       },
     },
   );
-  if (isCancel(group)) process.exit(0);
   return {
     title: String(group.title),
     audio:
       group.audio === 'demo' ? 'demo' : typeof group.audioFile === 'string' ? group.audioFile : '',
     fps: Number(group.fps),
+    theme: String(group.theme),
   };
 }
 

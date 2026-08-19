@@ -42,6 +42,16 @@
   display: block;
 }
 
+.sc-radial {
+  position: absolute;
+  right: var(--margin);
+  top: 50%;
+  width: var(--radial-size, 62cqh);
+  height: var(--radial-size, 62cqh);
+  transform: translateY(-50%);
+  fill: none;
+}
+
 .sc-header {
   position: absolute;
   top: var(--margin);

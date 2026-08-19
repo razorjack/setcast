@@ -56,9 +56,27 @@ cd examples/demo && vp run preview                          # Remotion Studio
 
 `vp <name>` runs a built-in; `vp run <name>` runs a package script or `vite.config.ts` task.
 Inner loop for an agent: `vp check && vp test`. Before declaring render work done: `vp run smoke`.
+`vp run ready` is what CI runs (`.github/workflows/ci.yml`), minus asset generation.
 
-Do NOT use a global `vite-plus` from `npm i -g` – its bundled Vitest is a second instance and
-every test fails with "Vitest failed to find the current suite". Use the official `vp` binary.
+Gotchas:
+
+- Do NOT use a global `vite-plus` from `npm i -g`: its bundled Vitest is a second instance and
+  every test fails with "Vitest failed to find the current suite". Use the official `vp` binary.
+- Chrome Headless Shell (~100 MB) and the webpack cache live under
+  `packages/renderer-remotion/node_modules/.remotion` and `.cache/webpack` (`render()` chdirs to
+  the adapter package so every project shares them). Delete those to force a fresh download/bundle.
+- Remotion Studio's visual mode rejects unknown `<img>` attributes on `<Img>` (it throws
+  `No "src" prop was passed to <Img>`). The adapter passes `src`, `className`, `style` explicitly;
+  keep `MediaProps` that small.
+- To debug the scene in Studio headlessly: start `vp run preview --port 3111` in examples/demo, then
+  drive `openBrowser('chrome')` from `@remotion/renderer` at `http://localhost:3111/setcast` and log
+  `onBrowserLog`. (A script doing exactly that lived in the scratchpad of the bootstrap session.)
+- `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a
+  positional `dir` argument).
+- Audio feature gains (`spectrumFeatures`, `logBins`) are calibrated against the demo synth. Real
+  masters are louder in the highs; the `gain` knobs on visualizers and `range` on routes are the
+  user-facing correction. Re-calibrate with a script like the bootstrap session's `calib.ts`
+  (read the WAV, call Remotion's `getVisualization`, print band energies).
 
 ## Renderer independence (in force, verbatim)
 
@@ -154,17 +172,17 @@ names, `names`). Instances: `importers` (`@setcast/core`), `visualizers` (`@setc
 Each plugin kind is a small interface plus a Zod schema for its config. Extension points (roadmap
 list; implemented today: visualizer, theme, tracklist importer):
 
-- visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial)
+- visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓)
 - themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
   path is also a valid theme)
-- tracklist importers: plain "MM:SS Artist - Title" ✓, Rekordbox/Serato/Traktor history, `.cue`,
-  `ID - ID` dubs ✓
+- tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), Rekordbox/Serato/Traktor
+  history, `.cue`
 - analysis: beat/onset/BPM, automatic drop detection → draft events (`setcast analyze` is a stub)
 - background engines: static ✓, per-track slideshow, looping video, generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical, auto-cut 30–60 s promo clips centered
   on `drop` events
 - branding: logo, socials ticker, episode numbering, intro/outro
-- side outputs: YouTube chapters + description from the timeline
+- side outputs: YouTube chapters + description from the timeline (`setcast chapters` ✓)
 - live adapters: Pro DJ Link (prolink-connect), Denon StagelinQ, VirtualDJ OS2L, Serato session
   tail, MIDI/OSC; event-delay offset; convention: a cue named "DROP" becomes a `drop` event
 - the live loop: `setcast live` records `event-log.jsonl` → `setcast render` regenerates the VOD
@@ -240,6 +258,15 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   inline strings.
 - Package `exports` → `src/*.ts`, `publishConfig.exports` → `dist/*.js`. Workspace development runs
   TypeScript sources directly on Node 26.
+- `Img`/`Video` wrapper props are exactly `{ src, className, style }` (`MediaProps`). Anything
+  else (alt, loading, …) is either meaningless for video frames or breaks Remotion Studio.
+- `render()` temporarily `process.chdir()`s into the adapter package so Remotion's browser and
+  bundle caches are shared across projects instead of each project dir getting a `.remotion/`.
+- Audio duration comes from `mediabunny` (`Input` + `UrlSource`, `getDurationFromMetadata()` with
+  `computeDuration()` fallback) inside `calculateMetadata`; Remotion's `getAudioDurationInSeconds`
+  is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.
+- `setcast init --demo` and `vp run demo-assets` share one synth (`packages/cli/src/demo/synth.ts`);
+  init writes a 40 s version (`synthesizeDemo(0.25)`), the repo task the full 2:34.
 
 ## Not yet decided
 
@@ -248,6 +275,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `requestAnimationFrame` (likely yes) and how event-delay offset is configured.
 - Per-track backgrounds: config shape (`tracks[].background`?) and crossfade semantics.
 - Plugin loading for npm plugins (generated bundle entry vs. config-time import map).
+- Publishing layout. `vp pack` builds `dist/*.mjs` + `.d.mts` and `publishConfig.exports` points
+  there, but two things are unresolved: the CLI `bin` imports `src/main.ts` (fine in the workspace,
+  Node refuses to type-strip inside `node_modules`, so a published bin must import `dist`), and the
+  Remotion bundle entry (`entry/index.tsx`) imports `src/Root.tsx`, which a published package would
+  not ship. Decide when publishing becomes real; nothing in the dev loop depends on it.
 
 ## Code values (binding)
 

@@ -83,6 +83,21 @@
   fill: var(--accent-2);
 }
 
+/* radial: thin steel ticks on a hairline ring */
+.theme-sterile-tech .sc-radial {
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+.theme-sterile-tech .sc-radial line {
+  stroke: var(--accent-2);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.theme-sterile-tech .sc-radial circle {
+  stroke: color-mix(in srgb, var(--accent-2) 35%, transparent);
+  stroke-width: 1.5;
+}
+
 /* now playing: frosted glass, hairline, enters with a spring (--enter from JS) */
 .theme-sterile-tech .sc-panel {
   padding: 1.7cqw 2.2cqw 1.9cqw 2.1cqw;
