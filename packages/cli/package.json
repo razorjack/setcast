@@ -1,0 +1,30 @@
+{
+  "name": "@setcast/cli",
+  "version": "0.1.0",
+  "description": "Setcast command line: init, import, analyze, preview, render, live.",
+  "license": "MIT",
+  "bin": {
+    "setcast": "./bin/setcast.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@clack/prompts": "catalog:",
+    "@setcast/core": "workspace:*",
+    "@setcast/renderer-remotion": "workspace:*",
+    "@setcast/themes": "workspace:*",
+    "picocolors": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

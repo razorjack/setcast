@@ -1,0 +1,11 @@
+node_modules
+dist
+*.log
+.DS_Store
+.vite-plus
+.vp-cache
+.claude/worktrees/
+
+# render artifacts
+examples/demo/out
+**/out/*.mp4

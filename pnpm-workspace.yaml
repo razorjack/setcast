@@ -1,0 +1,36 @@
+packages:
+  - packages/*
+  - examples/*
+
+catalogMode: prefer
+
+catalog:
+  '@types/node': ^26.2.0
+  '@types/react': ^19.2.18
+  '@types/react-dom': ^19.2.4
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  remotion: 4.0.513
+  '@remotion/bundler': 4.0.513
+  '@remotion/renderer': 4.0.513
+  '@remotion/media-utils': 4.0.513
+  '@remotion/cli': 4.0.513
+  zod: ^4.4.3
+  yaml: ^2.9.0
+  '@clack/prompts': ^1.7.0
+  picocolors: ^1.1.1
+  typescript: ^7.0.2
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.9
+  vite-plus: 0.2.9
+overrides:
+  vite: 'catalog:'
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: '*'
+allowBuilds:
+  esbuild: set this to true or false
+
+ignoredBuiltDependencies:
+  - esbuild

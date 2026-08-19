@@ -1,0 +1,34 @@
+{
+  "name": "@setcast/themes",
+  "version": "0.1.0",
+  "description": "Built-in Setcast themes. Themes are CSS custom properties plus a default modulation patch.",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "sterile-tech"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.js",
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@setcast/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@setcast/renderer-remotion",
+  "version": "0.1.0",
+  "description": "Setcast renderer adapter for Remotion. The only Setcast package that imports Remotion.",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "entry"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.js",
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@setcast/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@remotion/bundler": "catalog:",
+    "@remotion/cli": "catalog:",
+    "@remotion/media-utils": "catalog:",
+    "@remotion/renderer": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "remotion": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@remotion/bundler": "4.0.513",
+    "@remotion/cli": "4.0.513",
+    "@remotion/media-utils": "4.0.513",
+    "@remotion/renderer": "4.0.513",
+    "react": ">=19",
+    "react-dom": ">=19",
+    "remotion": "4.0.513"
+  }
+}
