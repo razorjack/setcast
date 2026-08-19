@@ -267,6 +267,9 @@ importers:
 
   .:
     devDependencies:
+      '@setcast/cli':
+        specifier: workspace:*
+        version: link:packages/cli
       '@types/node':
         specifier: 'catalog:'
         version: 26.2.0

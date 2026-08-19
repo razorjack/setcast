@@ -23,11 +23,12 @@ That renders `examples/demo/out/demo.mp4` (2:34, 1080p30, h264 + aac). Use
 `vp run render --range 0:30-0:45` for a quick slice, or `vp run preview` to open the set in
 Remotion Studio. The first render downloads Chrome Headless Shell (~100 MB) once.
 
-To start your own project:
+To start your own project (inside this repo the binary is `vp exec setcast`; once published,
+`npm i -g @setcast/cli` gives you `setcast`):
 
 ```sh
-setcast init my-set --demo   # or without --demo, then set audio: in setcast.yaml
-cd my-set && setcast render
+vp exec setcast init my-set --demo   # or without --demo, then set audio: in setcast.yaml
+cd my-set && vp exec setcast render
 ```
 
 ## A project is a directory
