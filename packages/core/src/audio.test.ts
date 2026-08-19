@@ -25,11 +25,12 @@ describe('spectrum features', () => {
     expect(low.bins.findIndex((v) => v > 0)).toBeLessThan(high.bins.findIndex((v) => v > 0));
   });
 
-  test('logBins flatten a 1/f spectrum into a roughly even picture', () => {
+  test('logBins flatten a tilted spectrum into a roughly even picture', () => {
+    const tilt = 0.7;
     const magnitudes = Array.from({ length: bins }, (_, i) =>
-      i === 0 ? 0 : 0.02 / Math.sqrt((i * hz) / 100),
+      i === 0 ? 0 : 0.02 / ((i * hz) / 100) ** tilt,
     );
-    const out = logBins({ magnitudes, sampleRate });
+    const out = logBins({ magnitudes, sampleRate }, { tilt });
     expect(out).toHaveLength(64);
     for (const v of out) expect(v).toBeGreaterThan(0);
     for (const v of out) expect(v).toBeLessThanOrEqual(1);

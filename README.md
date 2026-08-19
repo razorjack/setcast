@@ -1,0 +1,87 @@
+# Setcast
+
+Event-driven visuals for DJ sets. Setcast turns a recorded set (audio + tracklist + background
+art) into a broadcast-quality MP4 for YouTube: a themeable, CSS-styled UI with a frosted-glass
+now-playing panel, deck indicators, and an audio-reactive spectrum. Default look: dark, sterile
+sci-fi with one rust accent, made for neurofunk, techstep, and jungle.
+
+Everything is a timestamped event on one timeline (`track_start`, `drop`, `breakdown`, …). Visual
+behavior subscribes to events; audio features drive CSS custom properties through a modulation
+matrix. The same components are designed to run live as an OBS overlay later ("stream once,
+publish twice"); v1 is the offline render.
+
+## Quickstart
+
+Prerequisites: [Vite+](https://vite.plus) (`curl -fsSL https://vite.plus | bash`) and Node 26.
+
+```sh
+vp install && vp run demo-assets
+cd examples/demo && vp run render
+```
+
+That renders `examples/demo/out/demo.mp4` (2:34, 1080p30, h264 + aac). Use
+`vp run render --range 0:30-0:45` for a quick slice, or `vp run preview` to open the set in
+Remotion Studio. The first render downloads Chrome Headless Shell (~100 MB) once.
+
+To start your own project:
+
+```sh
+setcast init my-set --demo   # or without --demo, then set audio: in setcast.yaml
+cd my-set && setcast render
+```
+
+## A project is a directory
+
+```
+my-set/
+  setcast.yaml      # everything below
+  assets/mix.wav    # your audio (wav, mp3, m4a, flac)
+  assets/bg.svg     # background art (png/jpg/svg)
+```
+
+```yaml
+title: Sterile Session 01
+audio: assets/mix.wav
+background: assets/bg.svg
+theme: sterile-tech          # built-in name, or a path to your own .css
+output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4 }
+
+tracks:                      # becomes track_start events; decks alternate A/B if omitted
+  - { time: 0:00, artist: Noisia, title: Stigma, label: Vision }
+  - { time: 4:12, artist: ID, title: ID, deck: B }
+
+events:                      # drop, double_drop, breakdown, buildup, rewind, switch, chapter
+  - { type: drop, time: 1:04 }
+  - { type: breakdown, time: 3:30 }
+
+modulation:                  # audio → CSS custom properties (--mod-<target>)
+  - { source: bass, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.08, when: drop }
+
+visualizer: { name: spectrum, bars: 48, gain: 1 }
+css: overrides.css           # optional, appended after the theme
+```
+
+Commands: `setcast init`, `import <tracklist.txt> [--write]`, `preview`, `render [--range A-B]`,
+`chapters` (YouTube description with timestamps), and the roadmap stubs `analyze` and `live`.
+
+## Customize without JavaScript
+
+Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variables
+(`--accent`, `--panel-bg`, `--blur`, `--font-display`, …) or restyle any `.sc-*` class, and point
+`theme:` at your file. Modulation routes expose audio as `--mod-<target>` variables, so
+`box-shadow: 0 0 calc(var(--mod-panel-glow) * 60px) var(--accent)` reacts to the music with no
+code. Plugins (visualizers, importers, themes as npm packages) are the escape hatch for the rest.
+
+## Renderer
+
+Setcast v1 renders with [Remotion](https://www.remotion.dev), isolated in one adapter package.
+Nothing else in the project imports Remotion (the linter and a dependency-graph check enforce
+it), so the renderer can be replaced; a Playwright + FFmpeg renderer is planned. Remotion has its
+own [license terms](https://www.remotion.dev/license); check whether they apply to you.
+
+## Develop
+
+See [AGENTS.md](AGENTS.md) for the architecture, contracts, decisions, and workflow.
+`vp check`, `vp test`, `vp run smoke` are the loop.
+
+MIT © Jacek Galanciak

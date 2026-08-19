@@ -1,0 +1,27 @@
+name: ci
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+      - name: Install Vite+
+        run: |
+          curl -fsSL https://vite.plus | VP_NODE_MANAGER=no bash
+          echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
+      - run: vp install --frozen-lockfile
+      - run: vp check
+      - run: vp test
+      - run: vp run ban-check
+      - name: Smoke render (3 s of the demo, validates h264 + aac + motion)
+        run: |
+          sudo apt-get install -y -qq ffmpeg > /dev/null
+          vp run demo-assets
+          vp run smoke
