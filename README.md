@@ -1,9 +1,17 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/setcast-logo-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/setcast-logo-light.png">
+    <img src="docs/assets/setcast-logo-light.png" alt="Setcast logo: a ray striking a vinyl record and reflecting as a spectrum" width="420">
+  </picture>
+</p>
+
 # Setcast
 
-Event-driven visuals for DJ sets. Setcast turns a recorded set (audio + tracklist + background
-art) into a broadcast-quality MP4 for YouTube: a themeable, CSS-styled UI with a frosted-glass
-now-playing panel, deck indicators, and an audio-reactive spectrum. Default look: dark, sterile
-sci-fi with one rust accent, made for neurofunk, techstep, and jungle.
+Turn recorded DJ sets into polished, audio-reactive videos ready for YouTube. Give Setcast an
+audio file, tracklist, and background art; it renders a broadcast-quality MP4 with a themeable
+now-playing panel, deck indicators, and spectrum visuals. The default look is dark, sterile sci-fi
+with one rust accent, made for neurofunk, techstep, and jungle.
 
 Everything is a timestamped event on one timeline (`track_start`, `drop`, `breakdown`, …). Visual
 behavior subscribes to events; audio features drive CSS custom properties through a modulation

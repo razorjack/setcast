@@ -267,6 +267,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.
 - `setcast init --demo` and `vp run demo-assets` share one synth (`packages/cli/src/demo/synth.ts`);
   init writes a 40 s version (`synthesizeDemo(0.25)`), the repo task the full 2:34.
+- The README logo uses separate light and dark PNGs under `docs/assets`, selected with a
+  `prefers-color-scheme` `<picture>`. Keep both variants the same dimensions so switching themes
+  does not change the README layout.
 
 ## Not yet decided
 
