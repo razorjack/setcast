@@ -121,15 +121,23 @@ async function requireFile(root: string, rel: string, what: string): Promise<str
   return path;
 }
 
+/** Decks alternate in play order, and an explicit deck moves the rotation on from there. */
 function mergeEvents(config: ProjectConfig): SetEvent[] {
   const decks = config.deckOrder;
-  const tracks = config.tracks.map((t, i): SetEvent => ({
-    type: 'track_start',
-    time: t.time,
-    title: t.title,
-    artist: t.artist,
-    ...(t.label !== undefined && { label: t.label }),
-    deck: t.deck ?? decks[i % decks.length]!,
-  }));
+  let next = 0;
+  const tracks = config.tracks
+    .toSorted((a, b) => a.time - b.time)
+    .map((t): SetEvent => {
+      const deck = t.deck ?? decks[next % decks.length]!;
+      next = decks.indexOf(deck) + 1;
+      return {
+        type: 'track_start',
+        time: t.time,
+        title: t.title,
+        artist: t.artist,
+        ...(t.label !== undefined && { label: t.label }),
+        deck,
+      };
+    });
   return sortEvents([...tracks, ...config.events]);
 }

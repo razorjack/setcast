@@ -71,6 +71,27 @@ modulation:
     expect(project.fps).toBe(30);
   });
 
+  test('decks alternate in play order, and an explicit deck moves the rotation on', async () => {
+    const { project } = await load(
+      `
+audio: assets/mix.wav
+theme: test
+tracks:
+  - { time: 3:00, title: Third }
+  - { time: 0:00, title: First }
+  - { time: 1:30, title: Second, deck: A }
+  - { time: 4:30, title: Fourth }
+`,
+      'decks',
+    );
+    expect(project.events.map((e) => (e.type === 'track_start' ? [e.title, e.deck] : []))).toEqual([
+      ['First', 'A'],
+      ['Second', 'A'],
+      ['Third', 'B'],
+      ['Fourth', 'A'],
+    ]);
+  });
+
   test('missing setcast.yaml points at init', async () => {
     await expect(loadProject(join(dir, 'nope'))).rejects.toMatchObject({
       message: expect.stringContaining('No setcast.yaml'),
