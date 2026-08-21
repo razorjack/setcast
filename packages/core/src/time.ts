@@ -8,7 +8,10 @@ export function parseTime(input: string | number): number | null {
   const m = TIMECODE.exec(s);
   if (!m) return null;
   const [, h = '0', min = '0', sec = '0'] = m;
-  return Number(h) * 3600 + Number(min) * 60 + Number(sec);
+  const minutes = Number(min);
+  const seconds = Number(sec);
+  if (seconds >= 60 || (m[1] !== undefined && minutes >= 60)) return null;
+  return Number(h) * 3600 + minutes * 60 + seconds;
 }
 
 /** Formats seconds as "MM:SS" (or "H:MM:SS" past an hour). */

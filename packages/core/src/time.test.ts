@@ -15,6 +15,9 @@ describe('parseTime', () => {
     expect(parseTime('1:2:3:4')).toBeNull();
     expect(parseTime(-1)).toBeNull();
     expect(parseTime('')).toBeNull();
+    expect(parseTime('1:99')).toBeNull();
+    expect(parseTime('1:60:00')).toBeNull();
+    expect(parseTime('1:02:99')).toBeNull();
   });
 });
 
