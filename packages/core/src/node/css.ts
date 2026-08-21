@@ -19,9 +19,9 @@ const URL_RE = /url\(\s*(['"]?)([^'")]+)\1\s*\)/g;
 export async function loadCss(file: string): Promise<string> {
   const css = await readFile(file, 'utf8');
   const dir = dirname(file);
-  const refs = [...css.matchAll(URL_RE)]
+  const refs = [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(URL_RE)]
     .map((m) => m[2]!)
-    .filter((u) => !/^(data:|https?:|\/)/.test(u));
+    .filter((u) => !/^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i.test(u));
   const data = new Map<string, string>();
   for (const ref of new Set(refs)) {
     const path = resolve(dir, ref);
