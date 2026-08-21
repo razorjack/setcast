@@ -1,11 +1,4 @@
-import {
-  rms,
-  SILENCE,
-  soft,
-  spectrumFeatures,
-  type AudioAnalyzer,
-  type AudioFeatures,
-} from '@setcast/core';
+import { rms, soft, spectrumFeatures, type AudioAnalyzer, type AudioFeatures } from '@setcast/core';
 import { visualizeAudio, type MediaUtilsAudioData } from '@remotion/media-utils';
 
 const SAMPLES = 1024;
@@ -45,14 +38,9 @@ export function windowedAnalyzer(
     const key = Math.round(time * 1000);
     const hit = cache.get(key);
     if (hit) return hit;
-    let magnitudes: number[];
-    try {
-      const now = spectrumAt(time);
-      const prev = spectrumAt(time - 1 / fps);
-      magnitudes = now.map((v, i) => 0.6 * v + 0.4 * prev[i]!);
-    } catch {
-      return SILENCE;
-    }
+    const now = spectrumAt(time);
+    const prev = spectrumAt(time - 1 / fps);
+    const magnitudes = now.map((v, i) => 0.6 * v + 0.4 * prev[i]!);
     const level = loudness(time);
     const features: AudioFeatures = {
       ...spectrumFeatures({ magnitudes, sampleRate }),
