@@ -19,6 +19,19 @@ export const spinner = p.spinner;
 export const isCancel = p.isCancel;
 export const prompts = p;
 
+export async function clearSpinnerOnError<T>(
+  spin: { clear(): void },
+  task: () => Promise<T>,
+  active: () => boolean = () => true,
+): Promise<T> {
+  try {
+    return await task();
+  } catch (error) {
+    if (active()) spin.clear();
+    throw error;
+  }
+}
+
 export function printError(error: unknown): void {
   if (error instanceof ConfigError) {
     p.log.error(pc.red(error.message));

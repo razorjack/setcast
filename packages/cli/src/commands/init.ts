@@ -7,7 +7,17 @@ import { CONFIG_FILE } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { stringify } from 'yaml';
 import { synthesizeDemo } from '../demo/synth.ts';
-import { bold, cancel, dim, intro, log, outro, prompts, steel } from '../ui.ts';
+import {
+  bold,
+  cancel,
+  clearSpinnerOnError,
+  dim,
+  intro,
+  log,
+  outro,
+  prompts,
+  steel,
+} from '../ui.ts';
 
 const TEMPLATES = fileURLToPath(new URL('../../templates/', import.meta.url));
 
@@ -44,7 +54,7 @@ export async function run(argv: string[]): Promise<void> {
   if (audio === 'demo') {
     const s = prompts.spinner();
     s.start('Synthesizing a demo track (174 BPM)');
-    try {
+    await clearSpinnerOnError(s, async () => {
       const demo = synthesizeDemo(0.25);
       audio = 'assets/demo-set.wav';
       await writeFile(join(dir, audio), demo.wav);
@@ -62,10 +72,7 @@ export async function run(argv: string[]): Promise<void> {
         { type: 'drop', time: at(5) },
       ];
       s.stop(`Demo track written (${Math.round(demo.durationSeconds)} s)`);
-    } catch (error) {
-      s.clear();
-      throw error;
-    }
+    });
   }
 
   const yaml = [
