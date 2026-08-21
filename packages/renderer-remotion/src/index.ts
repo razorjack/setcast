@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
 import { ensureBrowser, renderMedia, selectComposition } from '@remotion/renderer';
 import type { ResolvedProject } from '@setcast/core';
+import { resolveFrameRange } from './range.ts';
 
 export const ENTRY = fileURLToPath(new URL('../entry/index.tsx', import.meta.url));
 const PACKAGE_ROOT = dirname(dirname(ENTRY));
@@ -74,7 +75,7 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
     inputProps: project,
   });
   const { fps, durationInFrames } = composition;
-  const frameRange = opts.range ? clampRange(opts.range, fps, durationInFrames) : null;
+  const frameRange = opts.range ? resolveFrameRange(opts.range, fps, durationInFrames) : null;
   const totalFrames = frameRange ? frameRange[1] - frameRange[0] + 1 : durationInFrames;
 
   await renderMedia({
@@ -102,12 +103,6 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
   });
 
   return { file: opts.out, frames: totalFrames, durationSeconds: totalFrames / fps };
-}
-
-function clampRange([start, end]: [number, number], fps: number, total: number): [number, number] {
-  const first = Math.max(0, Math.min(total - 1, Math.round(start * fps)));
-  const last = Math.max(first, Math.min(total - 1, Math.round(end * fps) - 1));
-  return [first, last];
 }
 
 export interface PreviewOptions {
