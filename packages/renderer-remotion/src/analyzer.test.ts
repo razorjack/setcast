@@ -35,6 +35,14 @@ describe('windowedAnalyzer', () => {
     }
   });
 
+  test('a lookback past the window edge reads the edge, not the wrong moment', () => {
+    const offset = 10;
+    const analyzer = windowedAnalyzer(audioData(48000), offset, 30);
+    // 2 s before the window starts: without clamping this returns the window's opening samples.
+    expect(analyzer.featuresAt(offset - 2)).toBe(analyzer.featuresAt(offset));
+    expect(analyzer.featuresAt(offset + 100)).toBe(analyzer.featuresAt(offset + 1));
+  });
+
   test('propagates invalid analysis windows', () => {
     const analyzer = windowedAnalyzer(audioData(1024), 0, 30);
     expect(() => analyzer.featuresAt(0)).toThrow(/not big enough/);

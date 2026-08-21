@@ -14,6 +14,16 @@ export function windowedAnalyzer(
   const { sampleRate } = audioData;
   const cache = new Map<number, AudioFeatures>();
 
+  // visualizeAudio reads SAMPLES either side of the instant and clamps a short read to the start
+  // of the window instead of failing, so a lookback past the edge silently returns the wrong
+  // moment's audio. Keep every request far enough inside the loaded window to be real.
+  const inWindow = (time: number): number => {
+    const pad = SAMPLES / sampleRate;
+    const lo = dataOffsetInSeconds + pad;
+    const hi = dataOffsetInSeconds + (wave?.length ?? 0) / sampleRate - pad;
+    return hi > lo ? Math.min(Math.max(time, lo), hi) : time;
+  };
+
   const loudness = (time: number) => {
     if (!wave) return 0;
     const center = Math.floor((time - dataOffsetInSeconds) * sampleRate);
@@ -34,18 +44,19 @@ export function windowedAnalyzer(
       dataOffsetInSeconds,
     });
 
-  const featuresAt = (time: number): AudioFeatures => {
+  const featuresAt = (requested: number): AudioFeatures => {
+    const time = inWindow(requested);
     const key = Math.round(time * 1000);
     const hit = cache.get(key);
     if (hit) return hit;
     const now = spectrumAt(time);
-    const prev = spectrumAt(time - 1 / fps);
+    const prev = spectrumAt(inWindow(time - 1 / fps));
     const magnitudes = now.map((v, i) => 0.6 * v + 0.4 * prev[i]!);
     const level = loudness(time);
     const features: AudioFeatures = {
       ...spectrumFeatures({ magnitudes, sampleRate }),
       rms: level,
-      onset: soft(Math.max(0, level - loudness(time - ONSET_LOOKBACK)) * 4),
+      onset: soft(Math.max(0, level - loudness(inWindow(time - ONSET_LOOKBACK))) * 4),
     };
     cache.set(key, features);
     return features;
