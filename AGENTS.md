@@ -260,8 +260,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   TypeScript sources directly on Node 26.
 - `Img`/`Video` wrapper props are exactly `{ src, className, style }` (`MediaProps`). Anything
   else (alt, loading, …) is either meaningless for video frames or breaks Remotion Studio.
-- `render()` temporarily `process.chdir()`s into the adapter package so Remotion's browser and
-  bundle caches are shared across projects instead of each project dir getting a `.remotion/`.
+- `render()` serializes calls and temporarily `process.chdir()`s into the adapter package so
+  Remotion's browser and bundle caches are shared across projects instead of each project dir
+  getting a `.remotion/`. Serialization prevents concurrent calls from restoring the process-wide
+  working directory in the wrong order.
 - Audio duration comes from `mediabunny` (`Input` + `UrlSource`, `getDurationFromMetadata()` with
   `computeDuration()` fallback) inside `calculateMetadata`; Remotion's `getAudioDurationInSeconds`
   is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.
