@@ -15,7 +15,7 @@ export const TimeSchema = z.union([z.number(), z.string()]).transform((v, ctx) =
 
 export const DeckSchema = z
   .string()
-  .regex(/^[A-Z]$/, 'Deck must be a single capital letter: A, B, C or D.');
+  .regex(/^[A-D]$/, 'Deck must be a single capital letter: A, B, C or D.');
 
 export const TrackSchema = z.object({
   title: z.string().min(1, 'Track title cannot be empty. Use "ID" for unknown tracks.'),
