@@ -72,27 +72,51 @@ export function Video(props: VideoProps) {
   return <Bound {...props} src={useAssetUrl(props.src)} />;
 }
 
-/** Holds the frame until `load` resolves. The hold starts synchronously on first render. */
+/** Holds the frame until `load` resolves and reports load failures through React. */
 export function useHoldUntil(label: string, load: () => Promise<unknown>): boolean {
   const { hold } = useRenderer();
-  const [release] = useState(() => hold(label));
-  const [ready, setReady] = useState(false);
+  const [state, setState] = useState<{ label: string; ready: boolean; error: Error | null }>({
+    label,
+    ready: false,
+    error: null,
+  });
   const loadRef = useRef(load);
   loadRef.current = load;
   useEffect(() => {
     let live = true;
-    void loadRef
-      .current()
-      .catch(() => {})
-      .then(() => {
-        if (live) setReady(true);
+    let released = false;
+    const release = hold(label);
+    const done = () => {
+      if (!released) {
+        released = true;
         release();
-      });
+      }
+    };
+    setState({ label, ready: false, error: null });
+    void Promise.resolve()
+      .then(() => loadRef.current())
+      .then(
+        () => {
+          done();
+          if (live) setState({ label, ready: true, error: null });
+        },
+        (error: unknown) => {
+          done();
+          if (live)
+            setState({
+              label,
+              ready: false,
+              error: error instanceof Error ? error : new Error(String(error)),
+            });
+        },
+      );
     return () => {
       live = false;
+      done();
     };
-  }, [label, release]);
-  return ready;
+  }, [hold, label]);
+  if (state.label === label && state.error) throw state.error;
+  return state.label === label && state.ready;
 }
 
 /** Resolves and preloads an image (or any URL) and holds the frame until it has loaded. */
