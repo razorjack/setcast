@@ -8,6 +8,7 @@ import {
   type ComponentType,
   type ReactNode,
 } from 'react';
+import { holdUntil } from './hold.ts';
 
 /** Deliberately small: only what every renderer can honor. Appearance belongs in CSS. */
 export interface MediaProps {
@@ -83,37 +84,13 @@ export function useHoldUntil(label: string, load: () => Promise<unknown>): boole
   const loadRef = useRef(load);
   loadRef.current = load;
   useEffect(() => {
-    let live = true;
-    let released = false;
     const release = hold(label);
-    const done = () => {
-      if (!released) {
-        released = true;
-        release();
-      }
-    };
     setState({ label, ready: false, error: null });
-    void Promise.resolve()
-      .then(() => loadRef.current())
-      .then(
-        () => {
-          done();
-          if (live) setState({ label, ready: true, error: null });
-        },
-        (error: unknown) => {
-          done();
-          if (live)
-            setState({
-              label,
-              ready: false,
-              error: error instanceof Error ? error : new Error(String(error)),
-            });
-        },
-      );
-    return () => {
-      live = false;
-      done();
-    };
+    return holdUntil(
+      () => loadRef.current(),
+      release,
+      (result) => setState({ label, ...result }),
+    );
   }, [hold, label]);
   if (state.label === label && state.error) throw state.error;
   return state.label === label && state.ready;
