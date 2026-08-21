@@ -29,6 +29,8 @@ export interface RenderOptions {
   /** Seconds; inclusive start, exclusive end. */
   range?: [number, number];
   concurrency?: number;
+  crf?: number;
+  jpegQuality?: number;
   onProgress?: (p: RenderProgress) => void;
 }
 
@@ -81,6 +83,8 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
     serveUrl,
     codec: 'h264',
     audioCodec: 'aac',
+    crf: opts.crf ?? null,
+    jpegQuality: opts.jpegQuality ?? 95,
     outputLocation: opts.out,
     inputProps: project,
     frameRange,

@@ -24,6 +24,10 @@ export const OutputSchema = z.object({
     .union([z.literal(24), z.literal(25), z.literal(30), z.literal(50), z.literal(60)])
     .default(30),
   file: z.string().default('out/set.mp4'),
+  /** x264 constant rate factor: lower is better and bigger. 1-51. */
+  crf: z.number().int().min(1).max(51).default(18),
+  /** Quality of the intermediate frames the encoder reads. Dark gradients band below ~90. */
+  jpegQuality: z.number().int().min(1).max(100).default(95),
 });
 
 export const ProjectConfigSchema = z

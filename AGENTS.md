@@ -267,6 +267,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Audio duration comes from `mediabunny` (`Input` + `UrlSource`, `getDurationFromMetadata()` with
   `computeDuration()` fallback) inside `calculateMetadata`; Remotion's `getAudioDurationInSeconds`
   is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.
+- Renders pass `jpegQuality: 95` (Remotion defaults to 80) and `output.crf` (default 18). The
+  intermediate frames the encoder reads are JPEGs, and the default look is a dark scene full of
+  smooth gradients, blur and a vignette, which bands badly below ~90. Both are `output:` keys.
 - `setcast init --demo` and `vp run demo-assets` share one synth (`packages/cli/src/demo/synth.ts`);
   init writes a 40 s version (`synthesizeDemo(0.25)`), the repo task the full 2:34.
 - The README logo uses separate light and dark PNGs under `docs/assets`, selected with a

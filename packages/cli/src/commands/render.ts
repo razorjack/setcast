@@ -64,6 +64,8 @@ export async function run(argv: string[]): Promise<void> {
         out,
         ...(range && { range }),
         ...(values.concurrency && { concurrency: Number(values.concurrency) }),
+        crf: config.output.crf,
+        jpegQuality: config.output.jpegQuality,
         onProgress: ({ stage, progress, renderedFrames = 0, totalFrames = 0 }) => {
           if (stage === 'browser')
             prep.message(
