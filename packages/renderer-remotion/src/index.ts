@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -111,19 +111,26 @@ export interface PreviewOptions {
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
 export async function preview(project: ResolvedProject, opts: PreviewOptions): Promise<void> {
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));
-  const propsFile = join(dir, 'props.json');
-  await writeFile(propsFile, JSON.stringify(project));
-  const cli = fileURLToPath(import.meta.resolve('@remotion/cli/package.json'));
-  const bin = join(dirname(cli), 'remotion-cli.js');
-  const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', opts.projectDir];
-  if (opts.port) args.push('--port', String(opts.port));
-  await new Promise<void>((resolve, reject) => {
-    const child = spawn(process.execPath, [bin, ...args], { cwd: PACKAGE_ROOT, stdio: 'inherit' });
-    child.on('exit', (code) =>
-      code === 0 || code === null
-        ? resolve()
-        : reject(new Error(`Remotion Studio exited with code ${code}`)),
-    );
-    child.on('error', reject);
-  });
+  try {
+    const propsFile = join(dir, 'props.json');
+    await writeFile(propsFile, JSON.stringify(project));
+    const cli = fileURLToPath(import.meta.resolve('@remotion/cli/package.json'));
+    const bin = join(dirname(cli), 'remotion-cli.js');
+    const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', opts.projectDir];
+    if (opts.port) args.push('--port', String(opts.port));
+    await new Promise<void>((resolve, reject) => {
+      const child = spawn(process.execPath, [bin, ...args], {
+        cwd: PACKAGE_ROOT,
+        stdio: 'inherit',
+      });
+      child.on('exit', (code, signal) => {
+        if (code === 0) resolve();
+        else if (signal) reject(new Error(`Remotion Studio terminated by ${signal}`));
+        else reject(new Error(`Remotion Studio exited with code ${code}`));
+      });
+      child.on('error', reject);
+    });
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 }
