@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { DeckSchema, EventSchema, TimeSchema, TrackSchema } from './events.ts';
 import { ModRouteSchema } from './modulation.ts';
+import { VisualizerConfigSchema } from './visualizers.ts';
 
 const relativePath = (what: string) =>
   z
@@ -24,8 +25,6 @@ export const OutputSchema = z.object({
     .default(30),
   file: z.string().default('out/set.mp4'),
 });
-
-export const VisualizerConfigSchema = z.object({ name: z.string().default('spectrum') }).loose();
 
 export const ProjectConfigSchema = z
   .object({

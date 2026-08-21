@@ -32,4 +32,9 @@ export {
   type VideoProps,
 } from './renderer.tsx';
 export { Stage } from './Stage.tsx';
-export { defineVisualizer, visualizers, type Visualizer } from './visualizers.ts';
+export {
+  defineVisualizer,
+  resolveVisualizer,
+  visualizers,
+  type Visualizer,
+} from './visualizers.ts';

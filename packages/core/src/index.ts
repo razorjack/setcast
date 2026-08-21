@@ -18,7 +18,6 @@ export {
   OutputSchema,
   ProjectConfigSchema,
   TrackEntrySchema,
-  VisualizerConfigSchema,
   type ProjectConfig,
   type ProjectConfigInput,
   type TrackEntry,
@@ -68,3 +67,11 @@ export { Registry } from './registry.ts';
 export { formatChapterTime, formatTime, parseTime } from './time.ts';
 export { Timeline, since, until, type EventState } from './timeline.ts';
 export { chapters, youtubeDescription } from './chapters.ts';
+export {
+  RadialConfigSchema,
+  SpectrumConfigSchema,
+  VisualizerConfigSchema,
+  resolveVisualizerConfig,
+  type RadialConfig,
+  type SpectrumConfig,
+} from './visualizers.ts';
