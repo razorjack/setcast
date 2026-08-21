@@ -13,20 +13,25 @@ const MIME: Record<string, string> = {
   '.webp': 'image/webp',
 };
 
-const URL_RE = /url\(\s*(['"]?)([^'")]+)\1\s*\)/g;
+const URL_RE = /url\(\s*(?:(['"])(.*?)\1|([^)]*?))\s*\)/gi;
+const urlValue = (quoted?: string, bare?: string): string => (quoted ?? bare ?? '').trim();
 
 /** Reads a stylesheet and inlines relative `url()` references as data URIs, so the CSS is self-contained. */
 export async function loadCss(file: string): Promise<string> {
   const css = await readFile(file, 'utf8');
   const dir = dirname(file);
   const refs = [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(URL_RE)]
-    .map((m) => m[2]!)
+    .map((match) => urlValue(match[2], match[3]))
     .filter((u) => !/^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i.test(u));
   const data = new Map<string, string>();
   for (const ref of new Set(refs)) {
-    const path = resolve(dir, ref);
+    const fileRef = ref.replace(/[?#].*$/, '');
+    const path = resolve(dir, fileRef);
     const mime = MIME[extname(path).toLowerCase()] ?? 'application/octet-stream';
     data.set(ref, `data:${mime};base64,${(await readFile(path)).toString('base64')}`);
   }
-  return css.replace(URL_RE, (m, _q, u: string) => (data.has(u) ? `url("${data.get(u)}")` : m));
+  return css.replace(URL_RE, (match, _quote, quoted: string, bare: string) => {
+    const ref = urlValue(quoted, bare);
+    return data.has(ref) ? `url("${data.get(ref)}")` : match;
+  });
 }
