@@ -44,23 +44,28 @@ export async function run(argv: string[]): Promise<void> {
   if (audio === 'demo') {
     const s = prompts.spinner();
     s.start('Synthesizing a demo track (174 BPM)');
-    const demo = synthesizeDemo(0.25);
-    audio = 'assets/demo-set.wav';
-    await writeFile(join(dir, audio), demo.wav);
-    const at = (i: number) => formatTime(demo.sections[i]!.startSeconds);
-    tracks = [
-      { time: '0:00', artist: 'Null Vector', title: 'Sterile Room', label: 'Setcast Recordings' },
-      { time: at(3), artist: 'Oxide Array', title: 'Rust Protocol', label: 'Setcast Recordings' },
-      { time: at(5), artist: 'ID', title: 'ID' },
-    ];
-    events = [
-      { type: 'buildup', time: at(1) },
-      { type: 'drop', time: at(2) },
-      { type: 'breakdown', time: at(3) },
-      { type: 'buildup', time: at(4) },
-      { type: 'drop', time: at(5) },
-    ];
-    s.stop(`Demo track written (${Math.round(demo.durationSeconds)} s)`);
+    try {
+      const demo = synthesizeDemo(0.25);
+      audio = 'assets/demo-set.wav';
+      await writeFile(join(dir, audio), demo.wav);
+      const at = (i: number) => formatTime(demo.sections[i]!.startSeconds);
+      tracks = [
+        { time: '0:00', artist: 'Null Vector', title: 'Sterile Room', label: 'Setcast Recordings' },
+        { time: at(3), artist: 'Oxide Array', title: 'Rust Protocol', label: 'Setcast Recordings' },
+        { time: at(5), artist: 'ID', title: 'ID' },
+      ];
+      events = [
+        { type: 'buildup', time: at(1) },
+        { type: 'drop', time: at(2) },
+        { type: 'breakdown', time: at(3) },
+        { type: 'buildup', time: at(4) },
+        { type: 'drop', time: at(5) },
+      ];
+      s.stop(`Demo track written (${Math.round(demo.durationSeconds)} s)`);
+    } catch (error) {
+      s.clear();
+      throw error;
+    }
   }
 
   const yaml = [

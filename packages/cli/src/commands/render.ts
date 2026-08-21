@@ -40,6 +40,7 @@ export async function run(argv: string[]): Promise<void> {
 
   const prep = spinner();
   prep.start('Preparing browser');
+  let preparing = true;
   let frames: ProgressLine | undefined;
   let encode: ProgressLine | undefined;
   const started = Date.now();
@@ -60,6 +61,7 @@ export async function run(argv: string[]): Promise<void> {
       if (stage === 'frames') {
         if (!frames) {
           prep.stop('Composition bundled');
+          preparing = false;
           frames = new ProgressLine('frames');
         }
         frames.update(progress, `${renderedFrames}/${totalFrames}`);
@@ -73,6 +75,9 @@ export async function run(argv: string[]): Promise<void> {
         encode.update(progress, 'h264 + aac');
       }
     },
+  }).catch((error: unknown) => {
+    if (preparing) prep.clear();
+    throw error;
   });
   encode?.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
   outro(
