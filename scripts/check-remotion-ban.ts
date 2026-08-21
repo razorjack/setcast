@@ -16,23 +16,24 @@ type Pkg = {
 };
 const read = (dir: string): Pkg => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
 
-function walk(dir: string, seen = new Set<string>(), path: string[] = []): string[] {
+function walk(dir: string, seen = new Set<string>(), trail: string[] = []): string[] {
+  const key = realpathSync(dir);
+  if (seen.has(key)) return [];
+  seen.add(key);
   const pkg = read(dir);
   const offenders: string[] = [];
   for (const dep of Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies })) {
     if (isRemotion(dep)) {
-      offenders.push([...path, pkg.name, dep].join(' → '));
+      offenders.push([...trail, pkg.name, dep].join(' → '));
       continue;
     }
-    if (seen.has(dep)) continue;
-    seen.add(dep);
     const depDir = locate(dir, dep);
     if (!depDir) {
       if (dep.startsWith('@setcast/'))
         fail(`cannot locate ${dep} (required by ${pkg.name}); run vp install first`);
       continue;
     }
-    offenders.push(...walk(depDir, seen, [...path, pkg.name]));
+    offenders.push(...walk(depDir, seen, [...trail, pkg.name]));
   }
   return offenders;
 }
