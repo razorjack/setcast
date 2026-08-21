@@ -1,5 +1,5 @@
 import { access, readFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig } from '../config.ts';
@@ -33,12 +33,12 @@ export async function loadProject(
 
   await requireFile(root, config.audio, 'audio');
   if (config.background) await requireFile(root, config.background, 'background');
-  if (config.css) await requireFile(root, config.css, 'css');
+  const userCss = config.css ? await requireFile(root, config.css, 'css') : null;
 
   const css = [
     await readFile(BASE_CSS, 'utf8'),
     await loadCss(theme.cssFile),
-    config.css ? await loadCss(join(root, config.css)) : '',
+    userCss ? await loadCss(userCss) : '',
   ].join('\n');
 
   const project: ResolvedProject = {
@@ -90,8 +90,7 @@ async function resolveTheme(
   themes: Record<string, Theme>,
 ): Promise<Theme> {
   if (name.endsWith('.css')) {
-    const cssFile = resolve(root, name);
-    await requireFile(root, name, 'theme');
+    const cssFile = await requireFile(root, name, 'theme');
     return { name: name.replace(/.*\//, '').replace(/\.css$/, ''), cssFile, modulation: [] };
   }
   const theme = themes[name];
@@ -102,15 +101,24 @@ async function resolveTheme(
   );
 }
 
-async function requireFile(root: string, rel: string, what: string): Promise<void> {
+async function requireFile(root: string, rel: string, what: string): Promise<string> {
+  const path = resolve(root, rel);
+  const fromRoot = relative(root, path);
+  if (fromRoot === '..' || fromRoot.startsWith(`..${sep}`) || isAbsolute(fromRoot)) {
+    throw new SetcastError(
+      `${what} path leaves the project directory: ${rel}`,
+      `Use a path inside ${root}.`,
+    );
+  }
   try {
-    await access(join(root, rel));
+    await access(path);
   } catch {
     throw new SetcastError(
       `${what} file not found: ${rel}`,
-      `Expected it at ${join(root, rel)}. Paths in ${CONFIG_FILE} are relative to the project directory and must stay inside it.`,
+      `Expected it at ${path}. Paths in ${CONFIG_FILE} are relative to the project directory and must stay inside it.`,
     );
   }
+  return path;
 }
 
 function mergeEvents(config: ProjectConfig): SetEvent[] {

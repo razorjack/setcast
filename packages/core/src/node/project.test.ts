@@ -120,4 +120,13 @@ tracks:
       ConfigError,
     );
   });
+
+  test('asset paths cannot leave the project directory', async () => {
+    await expect(
+      load('audio: assets/../../outside.wav\ntheme: test\n', 'traversal'),
+    ).rejects.toBeInstanceOf(ConfigError);
+    await expect(
+      load('audio: assets/mix.wav\ntheme: css/../../outside.css\n', 'theme-traversal'),
+    ).rejects.toThrow(/leaves the project directory/);
+  });
 });

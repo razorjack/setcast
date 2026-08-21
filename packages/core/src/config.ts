@@ -6,9 +6,12 @@ const relativePath = (what: string) =>
   z
     .string()
     .min(1, `${what} path cannot be empty.`)
-    .refine((p) => !p.startsWith('/') && !p.startsWith('..') && !/^[A-Za-z]:[\\/]/.test(p), {
-      message: `${what} must be a path inside the project directory (e.g. "assets/mix.wav"), not an absolute path or "..".`,
-    });
+    .refine(
+      (p) => !p.startsWith('/') && !/^[A-Za-z]:[\\/]/.test(p) && !p.split(/[\\/]/).includes('..'),
+      {
+        message: `${what} must be a path inside the project directory (e.g. "assets/mix.wav"), not an absolute path or "..".`,
+      },
+    );
 
 export const TrackEntrySchema = TrackSchema.extend({ time: TimeSchema });
 export type TrackEntry = z.infer<typeof TrackEntrySchema>;
