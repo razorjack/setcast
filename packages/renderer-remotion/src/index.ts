@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
 import { ensureBrowser, renderMedia, selectComposition } from '@remotion/renderer';
 import type { ResolvedProject } from '@setcast/core';
+import { serializeInDirectory } from './cwd.ts';
 import { resolveFrameRange } from './range.ts';
 
 export const ENTRY = fileURLToPath(new URL('../entry/index.tsx', import.meta.url));
@@ -37,28 +38,14 @@ export interface RenderResult {
   durationSeconds: number;
 }
 
-let renderQueue = Promise.resolve();
+const renderInPackage = serializeInDirectory(PACKAGE_ROOT);
 
-export async function render(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
-  const previous = renderQueue;
-  let release = () => {};
-  renderQueue = new Promise<void>((resolve) => {
-    release = resolve;
-  });
-  await previous;
-
+export function render(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
   // Remotion keeps its browser download and webpack cache under the nearest package.json of
   // process.cwd(). Run from this package so every project shares one cache instead of each
   // project directory growing a 100 MB .remotion folder. Renders are serialized because cwd is
   // process-global.
-  const cwd = process.cwd();
-  process.chdir(PACKAGE_ROOT);
-  try {
-    return await renderIn(project, opts);
-  } finally {
-    process.chdir(cwd);
-    release();
-  }
+  return renderInPackage(() => renderIn(project, opts));
 }
 
 async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
