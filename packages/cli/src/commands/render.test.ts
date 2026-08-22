@@ -1,5 +1,11 @@
 import { expect, test } from 'vite-plus/test';
-import { parseRange } from './render.ts';
+import { parseRange, rangeName } from './render.ts';
+
+test('rangeName stamps a slice without colons', () => {
+  expect(rangeName('out/set.mp4', [30, 45])).toBe('out/set.0m30s-0m45s.mp4');
+  expect(rangeName('out/set.mp4', [3600, 3723])).toBe('out/set.1h00m00s-1h02m03s.mp4');
+  expect(rangeName('out/set', [30, 45])).toBe('out/set.0m30s-0m45s');
+});
 
 test('parseRange accepts timecodes and seconds, rejects nonsense', () => {
   expect(parseRange('1:00-1:30')).toEqual([60, 90]);
