@@ -1,5 +1,12 @@
 import { describe, expect, test, vi } from 'vite-plus/test';
-import { clearSpinnerOnError } from './ui.ts';
+import { clearSpinnerOnError, fmtSeconds } from './ui.ts';
+
+test('fmtSeconds carries rounded seconds into the minute', () => {
+  expect(fmtSeconds(45.2)).toBe('45s');
+  expect(fmtSeconds(59.6)).toBe('1m 00s');
+  expect(fmtSeconds(119.7)).toBe('2m 00s');
+  expect(fmtSeconds(125)).toBe('2m 05s');
+});
 
 describe('clearSpinnerOnError', () => {
   test('leaves successful spinners alone', async () => {

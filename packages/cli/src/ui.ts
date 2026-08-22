@@ -52,8 +52,9 @@ export function printError(error: unknown): void {
 }
 
 export const fmtSeconds = (s: number) => {
-  const m = Math.floor(s / 60);
-  const sec = Math.round(s % 60);
+  const total = Math.round(s);
+  const m = Math.floor(total / 60);
+  const sec = total % 60;
   return m > 0 ? `${m}m ${String(sec).padStart(2, '0')}s` : `${sec}s`;
 };
 
