@@ -52,7 +52,13 @@ export async function run(argv: string[]): Promise<void> {
     return;
   }
   const path = join(resolve(dir), CONFIG_FILE);
-  const doc = parseDocument(await readFile(path, 'utf8'));
+  const current = await readFile(path, 'utf8').catch(() => {
+    throw new SetcastError(
+      `No ${CONFIG_FILE} found in ${resolve(dir)}`,
+      'Run `setcast init` there first, or drop --write to print the tracks instead.',
+    );
+  });
+  const doc = parseDocument(current);
   doc.set('tracks', tracks.map(toYaml));
   await writeFile(path, doc.toString());
   outro(`Wrote ${tracks.length} tracks to ${steel(path)}`);
