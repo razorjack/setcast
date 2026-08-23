@@ -91,7 +91,7 @@ async function resolveTheme(
 ): Promise<Theme> {
   if (name.endsWith('.css')) {
     const cssFile = await requireFile(root, name, 'theme');
-    return { name: name.replace(/.*\//, '').replace(/\.css$/, ''), cssFile, modulation: [] };
+    return { name: name.replace(/.*[\\/]/, '').replace(/\.css$/, ''), cssFile, modulation: [] };
   }
   const theme = themes[name];
   if (theme) return theme;
