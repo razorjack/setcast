@@ -1,4 +1,5 @@
 import { parseArgs } from 'node:util';
+import { SetcastError } from '@setcast/core';
 import { preview } from '@setcast/renderer-remotion';
 import { load } from '../project.ts';
 import { dim, intro, log } from '../ui.ts';
@@ -14,7 +15,16 @@ export async function run(argv: string[]): Promise<void> {
     options: { port: { type: 'string' } },
   });
   intro('preview');
+  const port = values.port === undefined ? undefined : parsePort(values.port);
   const { dir, project } = await load(positionals[0]);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
-  await preview(project, { projectDir: dir, ...(values.port && { port: Number(values.port) }) });
+  await preview(project, { projectDir: dir, ...(port !== undefined && { port }) });
+}
+
+function parsePort(value: string): number {
+  const port = Number(value);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new SetcastError(`Invalid --port "${value}"`, 'Use a whole number between 1 and 65535.');
+  }
+  return port;
 }
