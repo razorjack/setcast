@@ -64,8 +64,16 @@ export async function run(argv: string[]): Promise<void> {
   outro(`Wrote ${tracks.length} tracks to ${steel(path)}`);
 }
 
+/** `3:45.5`. `formatTime` alone floors the fraction away, and tracklists do carry one. */
+const timecode = (seconds: number) => {
+  const rounded = Math.round(seconds * 1000) / 1000;
+  const whole = Math.floor(rounded);
+  const frac = (rounded - whole).toFixed(3).replace(/^0/, '').replace(/0+$/, '');
+  return formatTime(whole) + (frac === '.' ? '' : frac);
+};
+
 const toYaml = (t: TrackEntry) => ({
-  time: formatTime(t.time),
+  time: timecode(t.time),
   artist: t.artist,
   title: t.title,
   ...(t.label && { label: t.label }),
