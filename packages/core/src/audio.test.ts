@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { bandEnergy, logBins, rms, soft, spectrumFeatures } from './audio.ts';
+import { bandEnergy, logBins, rms, sampleBins, soft, spectrumFeatures } from './audio.ts';
 
 const sampleRate = 48000;
 const bins = 1024;
@@ -44,4 +44,12 @@ test('soft and rms', () => {
   expect(soft(100)).toBeCloseTo(1);
   expect(rms([])).toBe(0);
   expect(rms([0.5, -0.5])).toBeCloseTo(soft(0.5, 3));
+});
+
+test('sampleBins keeps the ends and interpolates between them', () => {
+  const curve = [0, 1, 2, 3];
+  expect(sampleBins(curve, 4)).toEqual(curve);
+  expect(sampleBins(curve, 7)).toEqual([0, 0.5, 1, 1.5, 2, 2.5, 3]);
+  expect(sampleBins(curve, 2)).toEqual([0, 3]);
+  expect(sampleBins(curve, 1)).toEqual([0]);
 });

@@ -6,6 +6,7 @@ export {
   bandEnergy,
   logBins,
   rms,
+  sampleBins,
   silentAnalyzer,
   soft,
   spectrumFeatures,

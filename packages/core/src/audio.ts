@@ -111,3 +111,19 @@ export function rms(samples: ArrayLike<number>, gain = 3): number {
   for (let i = 0; i < samples.length; i++) sum += samples[i]! * samples[i]!;
   return soft(Math.sqrt(sum / samples.length), gain);
 }
+
+/**
+ * Linear resample of `bins` to `count` points, first and last bin included. Visualizers draw a
+ * fixed number of bars from a fixed number of bins; this is the one way they agree on.
+ */
+export function sampleBins(bins: readonly number[], count: number): number[] {
+  if (bins.length === count) return [...bins];
+  const last = bins.length - 1;
+  return Array.from({ length: count }, (_, i) => {
+    const pos = count > 1 ? (i / (count - 1)) * last : 0;
+    const a = Math.floor(pos);
+    const b = Math.min(last, a + 1);
+    const t = pos - a;
+    return bins[a]! * (1 - t) + bins[b]! * t;
+  });
+}

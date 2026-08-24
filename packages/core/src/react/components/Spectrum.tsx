@@ -1,3 +1,4 @@
+import { sampleBins } from '../../audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 
@@ -10,7 +11,7 @@ const H = 100;
 export function Spectrum({ config }: { config: SpectrumConfig }) {
   const { audio } = useFrame();
   const { bars, gain, floor, gap } = config;
-  const values = resample(audio.bins, bars);
+  const values = sampleBins(audio.bins, bars);
   const slot = W / (bars * 2);
   const w = slot * (1 - gap);
   const rects = [];
@@ -27,15 +28,4 @@ export function Spectrum({ config }: { config: SpectrumConfig }) {
       {rects}
     </svg>
   );
-}
-
-function resample(bins: readonly number[], count: number): number[] {
-  if (bins.length === count) return [...bins];
-  return Array.from({ length: count }, (_, i) => {
-    const pos = (i / count) * bins.length;
-    const a = Math.floor(pos);
-    const b = Math.min(bins.length - 1, a + 1);
-    const t = pos - a;
-    return bins[a]! * (1 - t) + bins[b]! * t;
-  });
 }
