@@ -39,7 +39,7 @@ so there is no build step in development. `vp pack` builds `dist/` for publishin
 
 ## Workflow
 
-Prerequisites: the official `vp` binary (`curl -fsSL https://vite.plus | bash`), Node 26.7.0
+Prerequisites: the standalone `vp` binary (see Gotchas below), Node 26.7.0
 (`.node-version`; `mise` and `vp env` both honor it), ffmpeg optional (smoke frame check).
 
 ```
@@ -60,8 +60,17 @@ Inner loop for an agent: `vp check && vp test`. Before declaring render work don
 
 Gotchas:
 
-- Do NOT use a global `vite-plus` from `npm i -g`: its bundled Vitest is a second instance and
-  every test fails with "Vitest failed to find the current suite". Use the official `vp` binary.
+- `vp` must be the **standalone binary**, not the `vite-plus` npm package installed globally. Get
+  it from `curl -fsSL https://vite.plus | bash`, or from mise with
+  `mise use -g github:voidzero-dev/vite-plus` (the same release artifact; mise's own registry entry
+  for `vp` points at `npm:vite-plus`, which is the wrong one). The standalone binary delegates to
+  the project's local `vite-plus`; a globally installed npm copy runs its own Vitest instead. Test
+  files import `describe`/`test` from `vite-plus/test`, which always resolves through the project's
+  `node_modules`, so the two copies split Vitest's runner state and all 19 test files fail at the
+  first `describe` with `TypeError: Cannot read properties of undefined (reading 'config')`.
+  `vp check` still passes, which makes it look like a code problem rather than a toolchain one.
+  No repo change fixes this (a `vitest` override in `pnpm-workspace.yaml` does not help).
+  `./node_modules/.bin/vp` always works and is the quickest way to confirm the diagnosis.
 - Chrome Headless Shell (~100 MB) and the webpack cache live under
   `packages/renderer-remotion/node_modules/.remotion` and `.cache/webpack` (`render()` chdirs to
   the adapter package so every project shares them). Delete those to force a fresh download/bundle.
