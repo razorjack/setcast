@@ -49,7 +49,7 @@ vp test                    # vitest, all packages, from the root
 vp run demo-assets         # synthesize examples/demo audio (gitignored, deterministic)
 vp run smoke               # renders 3 s of the demo and validates the MP4 (audio + motion)
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
-vp run ready               # check + test + smoke (what CI runs)
+vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
 cd examples/demo && vp run preview                          # Remotion Studio
 ```
