@@ -28,7 +28,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: translate(var(--bg-x, 0), var(--bg-y, 0)) scale(var(--bg-zoom, 1));
+  transform: translate(var(--bg-x, 0), var(--bg-y, 0))
+    scale(calc(var(--bg-drift, 1) * var(--mod-bg-zoom, 1)));
   transform-origin: center;
 }
 

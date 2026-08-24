@@ -112,7 +112,7 @@ CompositionState, modulation }`. Components consume it via Setcast hooks: `useFr
    today, to a frame-ready handshake in a future renderer.
 4. **Time-sensitive state is explicit, CSS owns appearance.** Never rely on the browser being
    "3.2 s into a CSS animation". Motion values resolve from `RenderFrame` in code and flow to CSS via
-   custom properties (`style={{ '--bg-zoom': zoom }}`). CSS keeps full power over layout, appearance,
+   custom properties (`style={{ '--bg-drift': drift }}`). CSS keeps full power over layout, appearance,
    and transitions of appearance. That is a product value, not an implementation detail.
 5. **Remotion is a dependency of the adapter only** (peer dependency there), so `@setcast/core` and
    every plugin are pure-MIT artifacts with no source-available code in their tree. Renderer
