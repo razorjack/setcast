@@ -19,5 +19,6 @@ export type ResolvedProject = {
   events: SetEvent[];
   /** Theme defaults followed by the project's own routes. */
   modulation: ModRoute[];
+  /** The `visualizer:` block after its own schema filled in the defaults. */
   visualizer: { name: string } & Record<string, unknown>;
 };

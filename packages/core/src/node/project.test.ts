@@ -69,6 +69,13 @@ modulation:
     expect(project.css).not.toContain('./fonts/x.woff2');
     expect(project.modulation.map((r) => r.target)).toEqual(['bg-zoom', 'vignette']);
     expect(project.fps).toBe(30);
+    expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
+  });
+
+  test('an unknown visualizer is reported while loading', async () => {
+    await expect(
+      load('audio: assets/mix.wav\ntheme: test\nvisualizer: { name: plasma }\n', 'bad-viz'),
+    ).rejects.toBeInstanceOf(ConfigError);
   });
 
   test('decks alternate in play order, and an explicit deck moves the rotation on', async () => {

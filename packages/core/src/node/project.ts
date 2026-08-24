@@ -7,6 +7,7 @@ import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { sortEvents, type SetEvent } from '../events.ts';
 import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
+import { resolveVisualizerConfig } from '../visualizers.ts';
 import { loadCss } from './css.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
@@ -52,7 +53,7 @@ export async function loadProject(
     fps: config.output.fps,
     events: mergeEvents(config),
     modulation: [...theme.modulation, ...config.modulation],
-    visualizer: config.visualizer,
+    visualizer: resolveVisualizerConfig(config.visualizer),
   };
   return { dir: root, config, project };
 }
