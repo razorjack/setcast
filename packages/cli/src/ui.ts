@@ -1,5 +1,5 @@
 import * as p from '@clack/prompts';
-import { ConfigError, SetcastError } from '@setcast/core';
+import { ConfigError, hms, SetcastError } from '@setcast/core';
 import pc from 'picocolors';
 
 const rgb = (r: number, g: number, b: number) => (s: string) =>
@@ -51,11 +51,12 @@ export function printError(error: unknown): void {
   if (e?.stack) p.log.message(dim(e.stack.split('\n').slice(1, 6).join('\n')));
 }
 
-export const fmtSeconds = (s: number) => {
-  const total = Math.round(s);
-  const m = Math.floor(total / 60);
-  const sec = total % 60;
-  return m > 0 ? `${m}m ${String(sec).padStart(2, '0')}s` : `${sec}s`;
+/** Human durations: `45s`, `2m 05s`, `1h 01m 40s`. */
+export const fmtSeconds = (seconds: number) => {
+  const { h, m, s } = hms(Math.round(seconds));
+  const ss = String(s).padStart(2, '0');
+  if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m ${ss}s`;
+  return m > 0 ? `${m}m ${ss}s` : `${s}s`;
 };
 
 /** A single in-place progress line: `▰▰▰▱▱ 62%  frames 812/1320  eta 14s`. */

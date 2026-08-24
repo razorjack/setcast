@@ -1,7 +1,7 @@
 import { mkdir } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { formatTime, parseTime, SetcastError } from '@setcast/core';
+import { formatTime, hms, parseTime, SetcastError } from '@setcast/core';
 import { render } from '@setcast/renderer-remotion';
 import { load } from '../project.ts';
 import {
@@ -119,9 +119,7 @@ export const rangeName = (file: string, [a, b]: [number, number]) =>
 
 /** `0m30s`, `1h02m03s`. Filename-safe, so no colons. */
 const stamp = (seconds: number) => {
-  const t = Math.floor(seconds);
-  const h = Math.floor(t / 3600);
-  const m = Math.floor((t % 3600) / 60);
-  const s = String(t % 60).padStart(2, '0');
-  return h > 0 ? `${h}h${String(m).padStart(2, '0')}m${s}s` : `${m}m${s}s`;
+  const { h, m, s } = hms(seconds);
+  const ss = String(s).padStart(2, '0');
+  return h > 0 ? `${h}h${String(m).padStart(2, '0')}m${ss}s` : `${m}m${ss}s`;
 };

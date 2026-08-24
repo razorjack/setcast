@@ -6,6 +6,7 @@ test('fmtSeconds carries rounded seconds into the minute', () => {
   expect(fmtSeconds(59.6)).toBe('1m 00s');
   expect(fmtSeconds(119.7)).toBe('2m 00s');
   expect(fmtSeconds(125)).toBe('2m 05s');
+  expect(fmtSeconds(3700)).toBe('1h 01m 40s');
 });
 
 describe('clearSpinnerOnError', () => {

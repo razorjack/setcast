@@ -14,22 +14,22 @@ export function parseTime(input: string | number): number | null {
   return Number(h) * 3600 + minutes * 60 + seconds;
 }
 
+/** Splits seconds into whole hours, minutes and seconds. Negatives clamp to zero. */
+export function hms(seconds: number): { h: number; m: number; s: number } {
+  const total = Math.max(0, Math.floor(seconds));
+  return { h: Math.floor(total / 3600), m: Math.floor((total % 3600) / 60), s: total % 60 };
+}
+
+const pad = (n: number) => String(n).padStart(2, '0');
+
 /** Formats seconds as "MM:SS" (or "H:MM:SS" past an hour). */
 export function formatTime(seconds: number): string {
-  const total = Math.max(0, Math.floor(seconds));
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  const mm = h > 0 ? String(m).padStart(2, '0') : String(m);
-  return `${h > 0 ? `${h}:` : ''}${mm}:${String(s).padStart(2, '0')}`;
+  const { h, m, s } = hms(seconds);
+  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
 }
 
 /** Formats seconds as "HH:MM:SS" or "MM:SS" the way YouTube chapter lists expect. */
 export function formatChapterTime(seconds: number): string {
-  const total = Math.max(0, Math.floor(seconds));
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  const pad = (n: number) => String(n).padStart(2, '0');
+  const { h, m, s } = hms(seconds);
   return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
 }
