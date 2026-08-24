@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ConfigError, zodIssues } from './errors.ts';
+import { Registry } from './registry.ts';
 
 export const SpectrumConfigSchema = z.object({
   name: z.literal('spectrum').default('spectrum'),
@@ -29,22 +30,32 @@ export type RadialConfig = z.infer<typeof RadialConfigSchema>;
 
 export const VisualizerConfigSchema = z.object({ name: z.string().default('spectrum') }).loose();
 
-const schemas: Record<string, z.ZodType> = {
-  spectrum: SpectrumConfigSchema,
-  radial: RadialConfigSchema,
-};
+/**
+ * A visualizer as the isomorphic entry knows it: a name and the schema of its `visualizer:` block.
+ * `@setcast/core/react` adds the component to the same registry, so the CLI can validate a project
+ * without loading React and the renderer still has one list of visualizers.
+ */
+export interface VisualizerSpec {
+  name: string;
+  schema: z.ZodType;
+}
 
+export const visualizers = new Registry<VisualizerSpec>('visualizer');
+
+visualizers.add({ name: 'spectrum', schema: SpectrumConfigSchema });
+visualizers.add({ name: 'radial', schema: RadialConfigSchema });
+
+/** Applies the named visualizer's own schema, filling in its defaults. */
 export function resolveVisualizerConfig(config: { name: string } & Record<string, unknown>) {
-  const schema = schemas[config.name];
-  if (!schema) {
+  if (!visualizers.has(config.name)) {
     throw new ConfigError('setcast.yaml', [
       {
         path: 'visualizer.name',
-        message: `Unknown visualizer "${config.name}". Available: ${Object.keys(schemas).join(', ')}.`,
+        message: `Unknown visualizer "${config.name}". Available: ${visualizers.names().join(', ')}.`,
       },
     ]);
   }
-  const parsed = schema.safeParse(config);
+  const parsed = visualizers.get(config.name).schema.safeParse(config);
   if (!parsed.success) {
     throw new ConfigError(
       'setcast.yaml',

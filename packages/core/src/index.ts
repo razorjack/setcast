@@ -72,6 +72,8 @@ export {
   SpectrumConfigSchema,
   VisualizerConfigSchema,
   resolveVisualizerConfig,
+  visualizers,
   type RadialConfig,
   type SpectrumConfig,
+  type VisualizerSpec,
 } from './visualizers.ts';

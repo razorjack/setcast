@@ -1,26 +1,33 @@
 import type { ComponentType } from 'react';
 import type { z } from 'zod';
-import { Registry } from '../registry.ts';
-import { resolveVisualizerConfig } from '../visualizers.ts';
+import { SetcastError } from '../errors.ts';
+import { resolveVisualizerConfig, visualizers, type VisualizerSpec } from '../visualizers.ts';
 import { Radial, RadialConfigSchema } from './components/Radial.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
 
-export interface Visualizer<C = unknown> {
-  name: string;
+export { visualizers };
+
+/** A spec plus the component that draws it. Registering one replaces any schema-only entry. */
+export interface Visualizer<C = unknown> extends VisualizerSpec {
   schema: z.ZodType<C>;
   component: ComponentType<{ config: C }>;
 }
 
-export const visualizers = new Registry<Visualizer>('visualizer');
-
 export function defineVisualizer<C>(v: Visualizer<C>): Visualizer<C> {
-  visualizers.add(v as Visualizer);
+  visualizers.add(v);
   return v;
 }
 
 export function resolveVisualizer(config: { name: string } & Record<string, unknown>) {
   const resolved = resolveVisualizerConfig(config);
-  return { Component: visualizers.get(resolved.name).component, config: resolved };
+  const { component } = visualizers.get(resolved.name) as Visualizer;
+  if (!component) {
+    throw new SetcastError(
+      `Visualizer "${resolved.name}" has no component`,
+      'It was registered with a schema only. Register it with `defineVisualizer` from @setcast/core/react.',
+    );
+  }
+  return { Component: component, config: resolved };
 }
 
 defineVisualizer({ name: 'spectrum', schema: SpectrumConfigSchema, component: Spectrum });
