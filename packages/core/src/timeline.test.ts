@@ -17,6 +17,7 @@ describe('Timeline.at', () => {
     expect(tl.events.map((e) => e.time)).toEqual([0, 0, 60, 75, 90]);
     expect(tl.at(-1).track).toBeNull();
     expect(tl.at(-1).trackIndex).toBe(-1);
+    expect(tl.at(-1).trackCount).toBe(2);
     expect(tl.at(0).track).toEqual({ title: 'Alpha', artist: 'A', deck: 'A' });
     expect(tl.at(89.9).trackIndex).toBe(0);
     expect(tl.at(90).track?.title).toBe('Beta');

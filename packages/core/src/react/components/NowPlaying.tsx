@@ -8,7 +8,6 @@ export function NowPlaying() {
   const track = events.track;
   if (!track) return null;
   const enter = spring(since(events, 'track_start', t), { stiffness: 110, damping: 15 });
-  const total = events.all.filter((e) => e.type === 'track_start').length;
   const pad = (n: number) => String(n).padStart(2, '0');
   return (
     <section className="sc-panel" style={{ '--enter': enter }} data-deck={track.deck ?? ''}>
@@ -18,7 +17,7 @@ export function NowPlaying() {
         <span className="sc-index">
           {pad(events.trackIndex + 1)}
           <span className="sc-index-sep">/</span>
-          {pad(total)}
+          {pad(events.trackCount)}
         </span>
       </header>
       <p className="sc-artist">{track.artist}</p>

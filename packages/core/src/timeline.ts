@@ -16,6 +16,8 @@ export interface EventState {
   track: Track | null;
   /** Index of the active track among `track_start` events; -1 before the first. */
   trackIndex: number;
+  /** How many `track_start` events the set has, for "03 / 12" style counters. */
+  trackCount: number;
   /** Latest event of each type at or before now. */
   last: Partial<{ [T in EventType]: EventOf<T> }>;
   /** First event of each type after now. */
@@ -56,7 +58,16 @@ export class Timeline {
 
     const start = last.track_start;
     const track = start ? trackOf(start) : null;
-    return { all: this.events, track, trackIndex, last, next, section, sectionStart };
+    return {
+      all: this.events,
+      track,
+      trackIndex,
+      trackCount: this.tracks.length,
+      last,
+      next,
+      section,
+      sectionStart,
+    };
   }
 }
 
