@@ -24,6 +24,15 @@ describe('stageVars', () => {
     });
   });
 
+  test('breakdowns and buildups are timed too', () => {
+    expect(vars(25)).toMatchObject({
+      '--since-buildup': '5',
+      '--until-buildup': '60',
+      '--since-breakdown': '60',
+      '--until-rewind': '25',
+    });
+  });
+
   test('a double drop is a drop', () => {
     expect(vars(61)).toMatchObject({
       '--since-drop': '1',

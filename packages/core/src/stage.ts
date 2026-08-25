@@ -1,3 +1,4 @@
+import type { EventType } from './events.ts';
 import { clamp } from './motion.ts';
 import { lastEvent, since, until, type EventState } from './timeline.ts';
 
@@ -13,26 +14,34 @@ export const stageData = (state: EventState) => ({
   'data-deck': state.deck ?? undefined,
 });
 
+/** Event types that get `--since-<name>` and `--until-<name>`. Double drops count as drops. */
+const TIMED: [EventType, string][] = [
+  ['track_start', 'track'],
+  ['drop', 'drop'],
+  ['breakdown', 'breakdown'],
+  ['buildup', 'buildup'],
+  ['rewind', 'rewind'],
+];
+
 /**
  * Stage-root custom properties: the event timeline as numbers CSS can do arithmetic with.
  * `--since-*` and `--until-*` are seconds capped at `SECONDS_CAP`; `--drop-intensity` and
- * `--set-progress` are 0..1. Double drops count as drops.
+ * `--set-progress` are 0..1.
  */
 export function stageVars(
   state: EventState,
   time: number,
   duration: number,
 ): Record<string, string> {
-  return {
-    '--since-track': secs(since(state, 'track_start', time)),
-    '--until-track': secs(until(state, 'track_start', time)),
-    '--since-drop': secs(since(state, 'drop', time)),
-    '--until-drop': secs(until(state, 'drop', time)),
-    '--drop-intensity': num(lastEvent(state, 'drop')?.intensity ?? 0),
-    '--since-rewind': secs(since(state, 'rewind', time)),
-    '--section-time': secs(state.section ? time - state.sectionStart : Infinity),
-    '--set-progress': num(duration > 0 ? clamp(time / duration, 0, 1) : 0),
-  };
+  const vars: Record<string, string> = {};
+  for (const [type, name] of TIMED) {
+    vars[`--since-${name}`] = secs(since(state, type, time));
+    vars[`--until-${name}`] = secs(until(state, type, time));
+  }
+  vars['--drop-intensity'] = num(lastEvent(state, 'drop')?.intensity ?? 0);
+  vars['--section-time'] = secs(state.section ? time - state.sectionStart : Infinity);
+  vars['--set-progress'] = num(duration > 0 ? clamp(time / duration, 0, 1) : 0);
+  return vars;
 }
 
 const num = (v: number) => String(Math.round(v * 1000) / 1000);

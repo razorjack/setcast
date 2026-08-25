@@ -257,9 +257,9 @@ The stage root also carries the event timeline, so a theme can react to the set 
 
 - `data-section` – `drop | double_drop | breakdown | buildup`, absent before the first one.
 - `data-deck` – the deck in front (`EventState.deck`).
-- `--since-track`, `--until-track`, `--since-drop`, `--until-drop`, `--since-rewind`,
-  `--section-time` – seconds, capped at `SECONDS_CAP` (60) because CSS has no Infinity. The drop
-  variables count `double_drop` too.
+- `--since-<name>` and `--until-<name>` for `track`, `drop`, `breakdown`, `buildup` and `rewind`,
+  plus `--section-time` – seconds, capped at `SECONDS_CAP` (60) because CSS has no Infinity. The
+  drop variables count `double_drop` too. `--until-breakdown` is the "bass is about to leave" cue.
 - `--drop-intensity` – 0..1, the `intensity` of the drop `--since-drop` refers to.
 - `--set-progress` – 0..1, how far the set has run.
 

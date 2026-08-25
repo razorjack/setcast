@@ -86,7 +86,8 @@ Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variab
 `theme:` at your file. Modulation routes expose audio as `--mod-<target>` variables, so
 `box-shadow: 0 0 calc(var(--mod-panel-glow) * 60px) var(--accent)` reacts to the music with no
 code. The stage root also carries the timeline itself – `data-section`, `data-deck`, `--set-progress`,
-and seconds in `--since-drop`, `--until-drop`, `--since-rewind`, `--section-time` – so
+and seconds in `--since-drop`, `--until-drop`, `--until-breakdown`, `--since-rewind`,
+`--section-time` and friends – so
 `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a flash on every drop and
 `width: calc(var(--set-progress) * 100%)` is a progress bar. Plugins (visualizers, importers,
 themes as npm packages) are the escape hatch for the rest.
