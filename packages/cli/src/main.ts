@@ -8,8 +8,7 @@ type Command = { help: string; run: (argv: string[]) => Promise<void> };
 const commands: Record<string, () => Promise<Command>> = {
   init: () => import('./commands/init.ts'),
   import: () => import('./commands/import.ts'),
-  analyze: () =>
-    import('./commands/stubs.ts').then((m) => ({ help: m.analyzeHelp, run: m.analyze })),
+  analyze: () => import('./commands/analyze.ts'),
   preview: () => import('./commands/preview.ts'),
   render: () => import('./commands/render.ts'),
   chapters: () => import('./commands/chapters.ts'),
@@ -22,7 +21,7 @@ ${bold('Usage')}  setcast <command> [options]
 
   ${steel('init')}      scaffold a project (interactive; --demo ships a working demo)
   ${steel('import')}    turn a tracklist file into tracks: for setcast.yaml
-  ${steel('analyze')}   (planned) detect beats and drops → draft events
+  ${steel('analyze')}   read the audio and draft drop / breakdown events
   ${steel('preview')}   open the project in Remotion Studio
   ${steel('render')}    render the MP4 (--range MM:SS-MM:SS for a slice)
   ${steel('chapters')}  print YouTube chapters + description

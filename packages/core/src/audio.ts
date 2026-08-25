@@ -35,6 +35,12 @@ export const SILENCE: AudioFeatures = Object.freeze({
 
 export const silentAnalyzer: AudioAnalyzer = { featuresAt: () => SILENCE };
 
+/** Decoded mono audio: one float per sample, nominally -1..1. */
+export interface Pcm {
+  samples: Float32Array;
+  sampleRate: number;
+}
+
 /** A linear magnitude spectrum: `magnitudes[i]` covers frequency `i * sampleRate / 2 / length`. */
 export interface Spectrum {
   magnitudes: ArrayLike<number>;

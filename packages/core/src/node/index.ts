@@ -1,3 +1,4 @@
+export { ANALYSIS_RATE, decodeMono } from './audio.ts';
 export { loadCss } from './css.ts';
 export {
   CONFIG_FILE,

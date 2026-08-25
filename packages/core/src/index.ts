@@ -13,8 +13,18 @@ export {
   type AudioAnalyzer,
   type AudioFeatures,
   type FeatureSource,
+  type Pcm,
   type Spectrum,
 } from './audio.ts';
+export {
+  BPM_RANGE,
+  HOP_SECONDS,
+  detectSections,
+  envelope,
+  estimateBpm,
+  type Envelope,
+  type SectionOptions,
+} from './analysis.ts';
 export {
   OutputSchema,
   ProjectConfigSchema,
@@ -71,7 +81,7 @@ export type { ResolvedProject } from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export { SECONDS_CAP, stageData, stageVars } from './stage.ts';
-export { formatChapterTime, formatTime, hms, parseTime } from './time.ts';
+export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
 export { Timeline, since, until, type EventState } from './timeline.ts';
 export { chapters, youtubeDescription } from './chapters.ts';
 export {

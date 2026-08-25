@@ -63,15 +63,17 @@ events:                      # drop, double_drop, breakdown, buildup, rewind, sw
   - { type: drop, time: 1:04 }
   - { type: breakdown, time: 3:30 }
 
-modulation:                  # audio → CSS custom properties (--mod-<target>)
+modulation:                  # audio and timeline → CSS custom properties (--mod-<target>)
   - { source: bass, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.08, when: drop }
+  - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
 
 visualizer: { name: spectrum, bars: 48, gain: 1 }
 css: overrides.css           # optional, appended after the theme
 ```
 
-Commands: `setcast init`, `import <tracklist.txt> [--write]`, `preview`, `render [--range A-B]`,
-`chapters` (YouTube description with timestamps), and the roadmap stubs `analyze` and `live`.
+Commands: `setcast init`, `import <tracklist.txt> [--write]`, `analyze [--write]` (reads the audio
+and drafts drop / breakdown events plus the tempo), `preview`, `render [--range A-B]`, `chapters`
+(YouTube description with timestamps), and the roadmap stub `live`.
 
 ## Customize without JavaScript
 
@@ -79,7 +81,10 @@ Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variab
 (`--accent`, `--panel-bg`, `--blur`, `--font-display`, …) or restyle any `.sc-*` class, and point
 `theme:` at your file. Modulation routes expose audio as `--mod-<target>` variables, so
 `box-shadow: 0 0 calc(var(--mod-panel-glow) * 60px) var(--accent)` reacts to the music with no
-code. Plugins (visualizers, importers, themes as npm packages) are the escape hatch for the rest.
+code. The stage root also carries the timeline itself – `data-section`, `data-deck`, and seconds
+in `--since-drop`, `--until-drop`, `--since-rewind`, `--section-time` – so
+`clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a flash on every drop. Plugins (visualizers,
+importers, themes as npm packages) are the escape hatch for the rest.
 
 ## Renderer
 

@@ -33,3 +33,14 @@ export function formatChapterTime(seconds: number): string {
   const { h, m, s } = hms(seconds);
   return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
 }
+
+/**
+ * Formats seconds the way `setcast.yaml` writes a time: `3:45.5`. `formatTime` alone floors the
+ * fraction away, and both tracklists and detected events carry one.
+ */
+export function formatTimecode(seconds: number): string {
+  const rounded = Math.round(seconds * 1000) / 1000;
+  const whole = Math.floor(rounded);
+  const frac = (rounded - whole).toFixed(3).replace(/^0/, '').replace(/0+$/, '');
+  return formatTime(whole) + (frac === '.' ? '' : frac);
+}

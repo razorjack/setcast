@@ -1,7 +1,13 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { formatTime, importers, SetcastError, type TrackEntry } from '@setcast/core';
+import {
+  formatTime,
+  formatTimecode,
+  importers,
+  SetcastError,
+  type TrackEntry,
+} from '@setcast/core';
 import { CONFIG_FILE } from '@setcast/core/node';
 import { parseDocument, stringify } from 'yaml';
 import { bold, dim, intro, log, outro, steel } from '../ui.ts';
@@ -60,20 +66,13 @@ export async function run(argv: string[]): Promise<void> {
   });
   const doc = parseDocument(current);
   doc.set('tracks', tracks.map(toYaml));
-  await writeFile(path, doc.toString());
+  // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
+  await writeFile(path, doc.toString({ flowCollectionPadding: false }));
   outro(`Wrote ${tracks.length} tracks to ${steel(path)}`);
 }
 
-/** `3:45.5`. `formatTime` alone floors the fraction away, and tracklists do carry one. */
-const timecode = (seconds: number) => {
-  const rounded = Math.round(seconds * 1000) / 1000;
-  const whole = Math.floor(rounded);
-  const frac = (rounded - whole).toFixed(3).replace(/^0/, '').replace(/0+$/, '');
-  return formatTime(whole) + (frac === '.' ? '' : frac);
-};
-
 const toYaml = (t: TrackEntry) => ({
-  time: timecode(t.time),
+  time: formatTimecode(t.time),
   artist: t.artist,
   title: t.title,
   ...(t.label && { label: t.label }),

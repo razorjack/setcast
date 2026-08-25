@@ -16,8 +16,8 @@ anything; update it when you make a non-obvious choice (Decisions) or discover a
 
 ```
 packages/core               @setcast/core – event timeline, schemas, RenderFrame contract,
-                            hooks, interpolate/spring, media wrappers, modulation, registry,
-                            importers, project loading (node entry), built-in components
+                            hooks, interpolate/spring, media wrappers, modulation, analysis,
+                            registry, importers, project loading (node entry), built-in components
 packages/renderer-remotion  @setcast/renderer-remotion – the ONLY package that imports Remotion
 packages/cli                @setcast/cli – the `setcast` binary; thin; owns terminal UX
 packages/themes             @setcast/themes – built-in themes (sterile-tech)
@@ -31,7 +31,8 @@ Entry points of `@setcast/core`:
   config schema, importers, registry. No `node:*` imports, no React.
 - `@setcast/core/react` – React: `RenderFrame` context + hooks, `Img`/`Video`/`useAsset`,
   built-in components (`Stage`, `Background`, `NowPlaying`, `Spectrum`), visualizer registry.
-- `@setcast/core/node` – Node only: `loadProject(dir)`, theme/CSS resolution, error formatting.
+- `@setcast/core/node` – Node only: `loadProject(dir)`, theme/CSS resolution, audio decoding,
+  error formatting.
 
 Packages point `exports` at `src/*.ts`; Node 26 runs TypeScript sources directly (type stripping),
 so there is no build step in development. `vp pack` builds `dist/` for publishing
@@ -177,6 +178,22 @@ streamed PCM → fft.js → precomputed sidecar per frame (JSON first, binary la
 Web Audio `AnalyserNode` feeding the same interface. FFmpeg policy: **subprocess only, never
 linked**; keeps MIT Setcast cleanly separate from (L)GPL FFmpeg builds.
 
+### Offline analysis
+
+`packages/core/src/analysis.ts` (isomorphic, pure) reads decoded mono audio into an `Envelope`:
+one bass and one high value per ~11.6 ms hop, scaled so the loudest stretch of the set is 1. Two
+cascaded one-pole filters at 150 Hz do the band split, so there is no FFT and no dependency.
+`detectSections()` reads the bass envelope as loud and quiet stretches with hysteresis and returns
+a `drop` where the bass comes in and a `breakdown` where it drops out; `estimateBpm()`
+autocorrelates the onset flux over several windows and takes the median, preferring the fastest
+lag that still correlates so a 174 BPM roller does not read as 87. `setcast analyze` prints those
+as a draft `events:` block, or merges them into `setcast.yaml` with `--write`.
+
+`decodeMono()` in `@setcast/core/node` produces the PCM: ffmpeg subprocess when it is on PATH
+(every format, streamed), and a built-in 16-bit PCM WAV reader otherwise, so a freshly scaffolded
+project analyzes without any install. This is the first half of the AudioFeatures sidecar on the
+roadmap.
+
 ### Media wrappers and readiness
 
 `packages/core/src/react/renderer.tsx`. `RendererBindings = { name, Img, Video, hold }`.
@@ -196,7 +213,8 @@ list; implemented today: visualizer, theme, tracklist importer):
   path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), Rekordbox/Serato/Traktor
   history, `.cue`
-- analysis: beat/onset/BPM, automatic drop detection → draft events (`setcast analyze` is a stub)
+- analysis: BPM and drop / breakdown detection → draft events (`setcast analyze` ✓); onset and
+  beat-grid quantization of the drafted times are not built
 - background engines: static ✓, per-track slideshow, looping video, generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical, auto-cut 30–60 s promo clips centered
   on `drop` events
@@ -285,6 +303,13 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   string.
 - `RenderFrame.modulation` is a top-level field (not part of the original six) because it is
   resolved per frame from audio + events and is the bridge to CSS.
+- `setcast analyze` drafts `drop` and `breakdown` only. Both are direct readings of bass energy;
+  a buildup is musical intent that the same signal cannot distinguish from the breakdown it sits
+  in, so inventing one would be noise the user has to delete.
+- `analyze --write` appends the events it drafted and skips any within 2 s of one already in
+  `setcast.yaml`, so it is idempotent and never rewrites what the user wrote. Both it and
+  `import --write` stringify with `flowCollectionPadding: false`, so editing one block does not
+  reformat `[1, 1.06]` elsewhere in the file.
 - Demo audio is synthesized by `scripts/make-demo-assets.ts` in pure Node (deterministic, no
   ffmpeg), written as WAV, and gitignored; the background is a committed SVG. Fixtures in tests are
   inline strings.
