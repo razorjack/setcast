@@ -164,7 +164,7 @@ async function stillIn(project: ResolvedProject, opts: StillOptions): Promise<St
     frame,
     inputProps: project,
     imageFormat,
-    jpegQuality: opts.jpegQuality ?? 95,
+    ...(imageFormat === 'jpeg' && { jpegQuality: opts.jpegQuality ?? 95 }),
   });
 
   return { file: opts.out, timeSeconds: frame / fps };
