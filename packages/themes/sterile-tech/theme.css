@@ -35,17 +35,23 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --spectrum-height: 19cqh;
   background: #06080b;
+
+  /* the event timeline, as appearance: seconds from the stage root, shaped into 0..1 */
+  --drop-flash: calc(clamp(0, 1 - var(--since-drop, 60) / 0.7, 1) * var(--drop-intensity, 1));
+  --rewind-flash: clamp(0, 1 - var(--since-rewind, 60) / 0.6, 1);
+  --tension: clamp(0, 1 - var(--until-drop, 60) / 10, 1);
 }
 
-/* background: desaturated, darkened, vignette breathes with loudness */
+/* background: desaturated, darkened, snapping bright for a moment on a rewind */
 .theme-sterile-tech .sc-bg-img {
-  filter: saturate(0.7) brightness(0.9) contrast(1.05);
+  filter: saturate(calc(0.7 + var(--rewind-flash) * 1.1))
+    brightness(calc(0.9 + var(--rewind-flash) * 0.45)) contrast(1.05);
 }
 .theme-sterile-tech .sc-bg-vignette {
   background:
     radial-gradient(120% 90% at 50% 40%, transparent 35%, rgb(4 6 8 / 0.75) 100%),
     linear-gradient(to top, rgb(4 6 8 / 0.85) 0%, transparent 45%);
-  opacity: var(--mod-vignette, 0.75);
+  opacity: calc(var(--mod-vignette, 0.75) - var(--drop-flash) * 0.22);
 }
 
 /* header */
@@ -65,6 +71,10 @@
   background: var(--accent);
   transform: translateY(-0.05em);
 }
+/* the marker follows the deck in front, so a `switch` event is visible */
+.theme-sterile-tech[data-deck='B'] .sc-set-title::before {
+  background: var(--accent-2);
+}
 .theme-sterile-tech .sc-clock {
   font-variant-numeric: tabular-nums;
   color: var(--fg);
@@ -73,7 +83,7 @@
   color: var(--fg-dim);
 }
 
-/* spectrum: cold steel rods with a faint glow, fading into the floor */
+/* spectrum: cold steel rods with a faint glow, fading into the floor and out of a breakdown */
 .theme-sterile-tech .sc-spectrum {
   mix-blend-mode: screen;
   opacity: 0.75;
@@ -81,6 +91,9 @@
 }
 .theme-sterile-tech .sc-spectrum rect {
   fill: var(--accent-2);
+}
+.theme-sterile-tech[data-section='breakdown'] .sc-spectrum {
+  opacity: calc(0.75 - 0.4 * clamp(0, var(--section-time, 60) / 1.5, 1));
 }
 
 /* radial: thin steel ticks on a hairline ring */
@@ -109,9 +122,14 @@
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.08),
     0 30px 60px rgb(0 0 0 / 0.45),
-    0 0 calc(var(--mod-panel-glow, 0) * 70px) color-mix(in srgb, var(--accent) 35%, transparent);
+    0 0 calc((var(--mod-panel-glow, 0) + var(--tension)) * 70px)
+      color-mix(in srgb, var(--accent) 35%, transparent);
   opacity: clamp(0, var(--enter, 1), 1);
   transform: translateY(calc((1 - var(--enter, 1)) * 3cqh));
+  --bar: var(--accent);
+}
+.theme-sterile-tech .sc-panel[data-deck='B'] {
+  --bar: var(--accent-2);
 }
 .theme-sterile-tech .sc-panel::before {
   content: '';
@@ -120,10 +138,9 @@
   top: 1.2cqw;
   bottom: 1.2cqw;
   width: 3px;
-  background: var(--accent);
-}
-.theme-sterile-tech .sc-panel[data-deck='B']::before {
-  background: var(--accent-2);
+  background: var(--bar);
+  filter: brightness(calc(1 + var(--drop-flash) * 2.4));
+  box-shadow: 0 0 calc(var(--drop-flash) * 1.4cqw) var(--bar);
 }
 .theme-sterile-tech .sc-panel-head {
   gap: 1.1cqw;
@@ -143,10 +160,7 @@
   font-size: 1.1cqw;
   letter-spacing: 0;
   color: #0a0d10;
-  background: var(--accent);
-}
-.theme-sterile-tech .sc-panel[data-deck='B'] .sc-deck {
-  background: var(--accent-2);
+  background: var(--bar);
 }
 .theme-sterile-tech .sc-index {
   margin-left: auto;

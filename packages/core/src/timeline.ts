@@ -25,6 +25,8 @@ export interface EventState {
   /** Current section, from the latest drop / double_drop / breakdown / buildup. */
   section: SectionType | null;
   sectionStart: number;
+  /** Deck in front: the one named by the most recent event that names a deck. */
+  deck: string | null;
 }
 
 export class Timeline {
@@ -42,11 +44,13 @@ export class Timeline {
     let trackIndex = -1;
     let section: SectionType | null = null;
     let sectionStart = 0;
+    let deck: string | null = null;
 
     for (const e of this.events) {
       if (e.time <= time) {
         (last as Record<string, SetEvent>)[e.type] = e;
         if (e.type === 'track_start') trackIndex++;
+        if ('deck' in e && e.deck) deck = e.deck;
         if (isSection(e.type)) {
           section = e.type;
           sectionStart = e.time;
@@ -67,6 +71,7 @@ export class Timeline {
       next,
       section,
       sectionStart,
+      deck,
     };
   }
 }

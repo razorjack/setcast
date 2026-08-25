@@ -43,4 +43,12 @@ describe('Timeline.at', () => {
   test('no section before the first section event', () => {
     expect(tl.at(30).section).toBeNull();
   });
+
+  test('the deck in front comes from the latest event that names one', () => {
+    expect(tl.at(-1).deck).toBeNull();
+    expect(tl.at(0).deck).toBe('A');
+    expect(tl.at(90).deck).toBe('B');
+    const switched = new Timeline([...events, { type: 'switch', time: 30, deck: 'D' }]);
+    expect(switched.at(40).deck).toBe('D');
+  });
 });

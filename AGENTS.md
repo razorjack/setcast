@@ -129,10 +129,15 @@ A set is a sorted list of typed, timestamped events (`packages/core/src/events.t
 `1:23.5`, `1:02:03`, or plain seconds (`TimeSchema`). The schema is the most stable public
 contract: add types, never rename or remove.
 
-`Timeline.at(time)` returns `EventState`: `all`, `track`, `trackIndex`, `last[type]`, `next[type]`,
-`section` (latest of drop/double_drop/breakdown/buildup) and `sectionStart`. Helpers `since()`,
-`until()`. Every visual behavior derives from this (trigger: `since(state,'drop',t)` small; sustain:
-`section === 'drop'`; ramp: `until(state,'drop',t)`).
+`Timeline.at(time)` returns `EventState`: `all`, `track`, `trackIndex`, `trackCount`, `last[type]`,
+`next[type]`, `section` (latest of drop/double_drop/breakdown/buildup), `sectionStart` and `deck`
+(the deck named by the most recent event that names one, so `switch` moves it mid-track). Helpers
+`since()`, `until()`. Every visual behavior derives from this (trigger: `since(state,'drop',t)`
+small; sustain: `section === 'drop'`; ramp: `until(state,'drop',t)`).
+
+`packages/core/src/stage.ts` turns that state into the stage root's `data-*` attributes and
+`--since-*` custom properties (see CSS contract). It is isomorphic and pure, so a non-React
+renderer sets the same attributes.
 
 In `setcast.yaml`, `tracks:` is sugar: each entry becomes a `track_start` event; `events:` holds
 everything else. Both land on one timeline. Tracks without `deck` alternate A/B.
@@ -218,6 +223,19 @@ The stage root has class `setcast` plus `--mod-*` variables. Stable class names:
 themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`, `--accent-2`,
 `--fg`, `--fg-dim`, `--blur`, `--radius`, `--font-display`, `--font-mono`. Users can add
 `css: ./overrides.css` in `setcast.yaml`; it is appended last.
+
+The stage root also carries the event timeline, so a theme can react to the set without any JS:
+
+- `data-section` – `drop | double_drop | breakdown | buildup`, absent before the first one.
+- `data-deck` – the deck in front (`EventState.deck`).
+- `--since-track`, `--until-track`, `--since-drop`, `--until-drop`, `--since-rewind`,
+  `--section-time` – seconds, capped at `SECONDS_CAP` (60) because CSS has no Infinity. The drop
+  variables count `double_drop` too.
+- `--drop-intensity` – 0..1, the `intensity` of the drop `--since-drop` refers to.
+
+Shape them in CSS: `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a 0.7 s flash. Never use CSS
+transitions or animations for these – the browser's wall clock is not the timeline (see
+Renderer independence 4).
 
 ## Roadmap (beyond v1)
 

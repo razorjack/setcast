@@ -29,10 +29,13 @@ events:
     time: 0:22
   - type: drop
     time: 0:33.1
+    intensity: 0.85
   - type: breakdown
     time: 1:17.2
   - type: buildup
     time: 1:39.3
+  - type: rewind
+    time: 1:48
   - type: drop
     time: 1:50.3
 
