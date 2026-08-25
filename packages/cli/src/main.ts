@@ -11,6 +11,7 @@ const commands: Record<string, () => Promise<Command>> = {
   analyze: () => import('./commands/analyze.ts'),
   preview: () => import('./commands/preview.ts'),
   render: () => import('./commands/render.ts'),
+  clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
   chapters: () => import('./commands/chapters.ts'),
   live: () => import('./commands/stubs.ts').then((m) => ({ help: m.liveHelp, run: m.live })),
@@ -25,6 +26,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('analyze')}   read the audio and draft drop / breakdown events
   ${steel('preview')}   open the project in Remotion Studio
   ${steel('render')}    render the MP4 (--range for a slice, --bundle adds thumbnail + description)
+  ${steel('clip')}      cut a promo clip around a drop (--all for every drop)
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      (planned) live overlay mode

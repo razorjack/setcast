@@ -220,8 +220,8 @@ list; implemented today: visualizer, theme, tracklist importer):
   beat-grid quantization of the drafted times are not built
 - background engines: static image ✓, looping video ✓, per-track slideshow, generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical ✓ (`@container (aspect-ratio < 1)` in the
-  theme; the stage root is a size container), auto-cut 30–60 s promo clips centered
-  on `drop` events
+  theme; the stage root is a size container), promo clips cut around `drop` events
+  (`setcast clip` ✓)
 - branding: logo, socials ticker, episode numbering, intro/outro
 - side outputs: YouTube chapters + description from the timeline (`setcast chapters` ✓),
   thumbnail stills (`setcast still` ✓)
@@ -368,6 +368,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   name, `.jpg` and `.txt`) with the defaults of `setcast still` and `setcast chapters`. It is a
   flag, not the default, so a plain render still produces exactly one file, and it refuses
   `--range` because a slice has no upload to bundle for.
+- `setcast clip` puts the drop a third of the way into the clip, not in the middle: a promo cut
+  needs the payoff early, and a third leaves enough buildup to read as one. Length defaults to
+  45 s; the adapter clips the end to the set, so a clip near the end just comes out shorter.
 - `setcast still` grabs the first `drop` by default (a quarter into the set when there is none) and
   picks png/jpeg/webp from the `--out` extension, defaulting to `output.file` with `.jpg`. It
   renders the frame exactly as the video shows it, so a set whose panel has already left gets a
