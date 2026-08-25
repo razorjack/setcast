@@ -10,12 +10,19 @@ export interface Chapter {
   text: string;
 }
 
-/** One chapter per track and per explicit `chapter` event; the first starts at 00:00 as YouTube requires. */
+/**
+ * One chapter per track and per explicit `chapter` event; a chapter at a track's time names that
+ * track instead of doubling it. The first starts at 00:00 as YouTube requires.
+ */
 export function chapterList(events: readonly SetEvent[]): Chapter[] {
   const list: Chapter[] = [];
   for (const e of events.toSorted((a, b) => a.time - b.time)) {
     if (e.type === 'track_start') list.push({ time: e.time, text: `${e.artist} - ${e.title}` });
-    else if (e.type === 'chapter') list.push({ time: e.time, text: e.title });
+    else if (e.type === 'chapter') {
+      const same = list.at(-1)?.time === e.time;
+      if (same) list.pop();
+      list.push({ time: e.time, text: e.title });
+    }
   }
   if (list[0]) list[0].time = 0;
   return list;

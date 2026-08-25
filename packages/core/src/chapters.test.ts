@@ -9,8 +9,9 @@ test('chapters list tracks and chapter events, forcing the first to 00:00', () =
       { type: 'chapter', time: 3600, title: 'Second hour' },
       { type: 'drop', time: 60, intensity: 1 },
       { type: 'track_start', time: 225, title: 'ID', artist: 'ID' },
+      { type: 'chapter', time: 225, title: 'Guest mix' },
     ]),
-  ).toEqual(['00:00 Noisia - Stigma', '03:45 ID - ID', '01:00:00 Second hour']);
+  ).toEqual(['00:00 Noisia - Stigma', '03:45 Guest mix', '01:00:00 Second hour']);
 });
 
 test('chapterProblems reports what would turn YouTube chapters off', () => {
