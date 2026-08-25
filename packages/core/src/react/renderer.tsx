@@ -17,7 +17,12 @@ export interface MediaProps {
   style?: CSSProperties;
 }
 export type ImgProps = MediaProps;
-export type VideoProps = MediaProps;
+export type VideoProps = MediaProps & {
+  /** Repeat for as long as the video is on screen. */
+  loop?: boolean;
+  /** Silence the video's own audio. In a render the set audio is the only sound. */
+  muted?: boolean;
+};
 
 /**
  * What a renderer adapter plugs in. `hold` marks the current frame as not ready until the returned

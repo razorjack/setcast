@@ -197,7 +197,7 @@ roadmap.
 ### Media wrappers and readiness
 
 `packages/core/src/react/renderer.tsx`. `RendererBindings = { name, Img, Video, hold }`.
-`Img`/`Video` are the adapter's components; `useAsset(src)` preloads and holds the frame until
+`Img`/`Video` are the adapter's components; `Video` also takes `loop` and `muted`; `useAsset(src)` preloads and holds the frame until
 loaded; `useFontsReady()` holds until `document.fonts.ready`. The default bindings (no adapter)
 are plain `<img>`/`<video>` with a no-op `hold`, used in tests.
 
@@ -215,7 +215,7 @@ list; implemented today: visualizer, theme, tracklist importer):
   history, `.cue`
 - analysis: BPM and drop / breakdown detection → draft events (`setcast analyze` ✓); onset and
   beat-grid quantization of the drafted times are not built
-- background engines: static ✓, per-track slideshow, looping video, generative
+- background engines: static image ✓, looping video ✓, per-track slideshow, generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical, auto-cut 30–60 s promo clips centered
   on `drop` events
 - branding: logo, socials ticker, episode numbering, intro/outro
@@ -326,8 +326,15 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   inline strings.
 - Package `exports` → `src/*.ts`, `publishConfig.exports` → `dist/*.js`. Workspace development runs
   TypeScript sources directly on Node 26.
-- `Img`/`Video` wrapper props are exactly `{ src, className, style }` (`MediaProps`). Anything
-  else (alt, loading, …) is either meaningless for video frames or breaks Remotion Studio.
+- `Img`/`Video` wrapper props are exactly `{ src, className, style }` (`MediaProps`), plus `loop`
+  and `muted` on `Video`. Anything else (alt, loading, …) is either meaningless for video frames or
+  breaks Remotion Studio.
+- `background:` renders as a looping video when the path ends in `.mp4/.mov/.webm/.mkv/.m4v`, and
+  as an image otherwise. The adapter binds `Video` to Remotion's `OffthreadVideo` wrapped in
+  `<Loop>` (its length read once through mediabunny, `src/duration.ts`), not to `@remotion/media`'s
+  `Video`: OffthreadVideo draws the frame into an `<img>`, so `object-fit`, `filter` and `transform`
+  from `.sc-bg-img` apply exactly as they do to a still. `@remotion/media`'s `Video` loops on its
+  own but sets `object-fit` inline, which overrides the theme.
 - `render()` serializes calls and temporarily `process.chdir()`s into the adapter package so
   Remotion's browser and bundle caches are shared across projects instead of each project dir
   getting a `.remotion/`. Serialization prevents concurrent calls from restoring the process-wide

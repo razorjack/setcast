@@ -45,7 +45,7 @@ cd my-set && vp exec setcast render
 my-set/
   setcast.yaml      # everything below
   assets/mix.wav    # your audio (wav, mp3, m4a, flac)
-  assets/bg.svg     # background art (png/jpg/svg)
+  assets/bg.svg     # background art (png/jpg/svg, or mp4/mov/webm for a looping video)
 ```
 
 ```yaml

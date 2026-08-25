@@ -1,9 +1,12 @@
 import { useFrame } from '../frame.tsx';
-import { Img } from '../renderer.tsx';
+import { Img, Video } from '../renderer.tsx';
+
+const VIDEO = /\.(mp4|mov|webm|mkv|m4v)$/i;
 
 /**
- * Full-bleed background with a slow drift. CSS receives `--bg-drift`, `--bg-x` and `--bg-y` and
- * owns the transform, which multiplies the drift by `--mod-bg-zoom` like any other modulation.
+ * Full-bleed background with a slow drift, from an image or a looping video. CSS receives
+ * `--bg-drift`, `--bg-x` and `--bg-y` and owns the transform, which multiplies the drift by
+ * `--mod-bg-zoom` like any other modulation.
  */
 export function Background() {
   const { timeSeconds: t, composition } = useFrame();
@@ -13,7 +16,12 @@ export function Background() {
   const src = composition.project.background;
   return (
     <div className="sc-bg" style={{ '--bg-drift': drift, '--bg-x': `${x}%`, '--bg-y': `${y}%` }}>
-      {src && <Img className="sc-bg-img" src={src} />}
+      {src &&
+        (VIDEO.test(src) ? (
+          <Video className="sc-bg-img" src={src} loop muted />
+        ) : (
+          <Img className="sc-bg-img" src={src} />
+        ))}
       <div className="sc-bg-vignette" />
     </div>
   );

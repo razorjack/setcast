@@ -1,7 +1,7 @@
 import type { ResolvedProject } from '@setcast/core';
-import { ALL_FORMATS, Input, UrlSource } from 'mediabunny';
 import { Composition, staticFile, type CalculateMetadataFunction } from 'remotion';
 import { COMPOSITION_ID, SetcastComposition } from './composition.tsx';
+import { mediaDuration } from './duration.ts';
 
 /** Placeholder until the CLI passes a real project as input props. */
 const placeholder: ResolvedProject = {
@@ -20,7 +20,7 @@ const placeholder: ResolvedProject = {
 };
 
 const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = async ({ props }) => {
-  const durationSeconds = props.audio ? await audioDuration(staticFile(props.audio)) : 10;
+  const durationSeconds = props.audio ? await mediaDuration(staticFile(props.audio)) : 10;
   return {
     durationInFrames: Math.max(1, Math.ceil(durationSeconds * props.fps)),
     fps: props.fps,
@@ -28,15 +28,6 @@ const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = async ({ p
     height: props.height,
   };
 };
-
-async function audioDuration(url: string): Promise<number> {
-  const input = new Input({ formats: ALL_FORMATS, source: new UrlSource(url) });
-  try {
-    return (await input.getDurationFromMetadata()) ?? (await input.computeDuration());
-  } finally {
-    input.dispose();
-  }
-}
 
 export function Root() {
   return (
