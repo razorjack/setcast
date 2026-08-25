@@ -54,6 +54,7 @@ audio: assets/mix.wav
 background: assets/bg.svg
 theme: sterile-tech          # built-in name, or a path to your own .css
 bpm: 174                     # gives CSS --beat and --bar; `setcast analyze --write` fills it in
+beatOffset: 0.12             # seconds to the first beat; analyze fills it in with bpm
 output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4, crf: 18, jpegQuality: 95 }
 deckOrder: [A, B]            # decks tracks rotate through when they name none
 
@@ -76,7 +77,7 @@ css: overrides.css           # optional, appended after the theme
 ```
 
 Commands: `setcast init`, `import <tracklist.txt|.cue> [--write]`, `analyze [--write]` (reads the audio
-and drafts drop / breakdown events plus the tempo), `preview`, `render [--range A-B] [--bundle]` (the MP4; `--bundle` also writes the thumbnail and description next to it),
+and drafts drop / breakdown events on the beat grid, plus the tempo), `preview`, `render [--range A-B] [--bundle]` (the MP4; `--bundle` also writes the thumbnail and description next to it),
 `clip [--at 1:04] [--all]` (a 45 s promo cut around a drop), `still [--at 1:04]` (one frame as an image, for the thumbnail), `chapters` (YouTube description
 with timestamps, warning about anything that would stop YouTube showing them), and the roadmap
 stub `live`.

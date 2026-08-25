@@ -190,8 +190,12 @@ cascaded one-pole filters at 150 Hz do the band split, so there is no FFT and no
 `detectSections()` reads the bass envelope as loud and quiet stretches with hysteresis and returns
 a `drop` where the bass comes in and a `breakdown` where it drops out; `estimateBpm()`
 autocorrelates the onset flux over several windows and takes the median, preferring the fastest
-lag that still correlates so a 174 BPM roller does not read as 87. `setcast analyze` prints those
-as a draft `events:` block plus `bpm:`, or merges them into `setcast.yaml` with `--write`.
+lag that still correlates so a 174 BPM roller does not read as 87. `nearestBeat()` folds the onset
+flux around a moment by the beat period and reads the grid off where the hits pile up; it is local
+(±8 s) so a tempo a tenth of a BPM off cannot drift the grid over an hour. `snapToBeats()` moves
+drafted events onto it and `beatOffset()` places the first beat. `setcast analyze` prints those as
+a draft `events:` block plus `bpm:` and `beatOffset:`, or merges them into `setcast.yaml` with
+`--write`.
 
 `decodeMono()` in `@setcast/core/node` produces the PCM: ffmpeg subprocess when it is on PATH
 (every format, streamed), and a built-in PCM WAV reader (16/24/32-bit, float) otherwise, so a freshly scaffolded
@@ -217,8 +221,8 @@ list; implemented today: visualizer, theme, tracklist importer):
   path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
-- analysis: BPM and drop / breakdown detection → draft events (`setcast analyze` ✓); onset and
-  beat-grid quantization of the drafted times are not built
+- analysis: BPM and drop / breakdown detection → draft events, snapped to the beat grid
+  (`setcast analyze` ✓); downbeat detection is not built
 - background engines: static image ✓, looping video ✓, per-track slideshow, generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical ✓ (`@container (aspect-ratio < 1)` in the
   theme; the stage root is a size container), promo clips cut around `drop` events
@@ -325,8 +329,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - `RenderFrame.modulation` is a top-level field (not part of the original six) because it is
   resolved per frame from audio + events and is the bridge to CSS.
 - `bpm:` and `beatOffset:` are plain top-level keys, not a `tempo:` block, because `bpm: 174` is
-  what a DJ types. `analyze --write` sets `bpm` only when the project has none and never touches
-  `beatOffset`: the estimator has no beat tracking, so the downbeat stays the user's to place.
+  what a DJ types. `analyze --write` sets `bpm` and `beatOffset` together, only when the project
+  has no `bpm`. The offset is the first beat, not the downbeat: the flux fold finds beats, not
+  bars, so `--bar` may be a beat or three off until the user moves `beatOffset` by a beat.
 - `setcast analyze` drafts `drop` and `breakdown` only. Both are direct readings of bass energy;
   a buildup is musical intent that the same signal cannot distinguish from the breakdown it sits
   in, so inventing one would be noise the user has to delete.

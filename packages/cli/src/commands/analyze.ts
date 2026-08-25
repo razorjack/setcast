@@ -2,12 +2,14 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import {
+  beatOffset,
   detectSections,
   envelope,
   estimateBpm,
   formatTime,
   formatTimecode,
   SetcastError,
+  snapToBeats,
   type SetEvent,
 } from '@setcast/core';
 import { CONFIG_FILE, decodeMono } from '@setcast/core/node';
@@ -29,8 +31,10 @@ import {
 export const help = `setcast analyze [dir] [--sensitivity 0.5] [--write]
 
 Reads the project audio and drafts drop and breakdown events from its bass energy, plus the tempo.
+Drafted events snap to the beat grid when the project has a bpm or one was found.
   --sensitivity  0..1; higher splits the set into more sections (default 0.5)
-  --write        add the drafted events and the tempo to ${CONFIG_FILE}, keeping what is there
+  --write        add the drafted events, the tempo and its beatOffset to ${CONFIG_FILE}, keeping
+                 what is there
 
 Buildups follow musical intent rather than energy, so those stay yours to place.`;
 
@@ -56,13 +60,17 @@ export async function run(argv: string[]): Promise<void> {
   const { dir: root, config, project } = await load(dir);
   const spin = spinner();
   spin.start(`Reading ${project.audio}`);
-  const { events, bpm, seconds } = await clearSpinnerOnError(spin, async () => {
+  const { events, bpm, offset, seconds } = await clearSpinnerOnError(spin, async () => {
     const pcm = await decodeMono(join(root, project.audio));
     spin.message('Analyzing');
     const shape = envelope(pcm);
+    const bpm = estimateBpm(shape);
+    const grid = config.bpm ?? bpm;
+    const drafted = detectSections(shape, { sensitivity });
     return {
-      events: detectSections(shape, { sensitivity }),
-      bpm: estimateBpm(shape),
+      events: grid ? snapToBeats(drafted, shape, grid) : drafted,
+      bpm,
+      offset: bpm ? beatOffset(shape, bpm) : null,
       seconds: pcm.samples.length / pcm.sampleRate,
     };
   });
@@ -88,7 +96,10 @@ export async function run(argv: string[]): Promise<void> {
   );
   const tempo = bpm && config.bpm === undefined ? Math.round(bpm * 10) / 10 : null;
   if (!values.write) {
-    const draft = { ...(tempo && { bpm: tempo }), events: events.map(toYaml) };
+    const draft = {
+      ...(tempo && { bpm: tempo, beatOffset: offset }),
+      events: events.map(toYaml),
+    };
     process.stdout.write(`\n${stringify(draft)}`);
     outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
     return;
@@ -99,7 +110,10 @@ export async function run(argv: string[]): Promise<void> {
   }
   const path = join(root, CONFIG_FILE);
   const doc = parseDocument(await readFile(path, 'utf8'));
-  if (tempo) doc.set('bpm', tempo);
+  if (tempo) {
+    doc.set('bpm', tempo);
+    doc.set('beatOffset', offset);
+  }
   const existing = doc.get('events');
   if (isSeq(existing)) {
     existing.flow = false;
@@ -107,7 +121,10 @@ export async function run(argv: string[]): Promise<void> {
   } else if (fresh.length) doc.set('events', fresh.map(toYaml));
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
-  const added = [fresh.length ? `${fresh.length} events` : '', tempo ? `bpm: ${tempo}` : ''];
+  const added = [
+    fresh.length ? `${fresh.length} events` : '',
+    tempo ? `bpm: ${tempo} with beatOffset` : '',
+  ];
   outro(`Added ${added.filter(Boolean).join(' and ')} to ${steel(path)}`);
 }
 

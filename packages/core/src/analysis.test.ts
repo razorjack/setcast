@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vite-plus/test';
 import type { Pcm } from './audio.ts';
-import { detectSections, envelope, estimateBpm } from './analysis.ts';
+import { beatOffset, detectSections, envelope, estimateBpm, nearestBeat } from './analysis.ts';
 
 const RATE = 16000;
 
@@ -47,11 +47,19 @@ describe('detectSections', () => {
 
 describe('estimateBpm', () => {
   /** A kick every beat over a steady bass note: what autocorrelation is meant to find. */
-  const beats = (bpm: number) =>
+  const beats = (bpm: number, offset = 0) =>
     audio(40, (t) => {
-      const into = (t * bpm) / 60 - Math.floor((t * bpm) / 60);
-      return tone(t, 55, 0.3) + (into < 0.04 ? tone(t, 3000) : 0);
+      const beat = ((t - offset) * bpm) / 60;
+      const into = beat - Math.floor(beat);
+      return tone(t, 55, 0.3) + (into < 0.04 && t >= offset ? tone(t, 3000) : 0);
     });
+
+  test('nearestBeat snaps to the grid and beatOffset finds its first beat', () => {
+    const env = envelope(beats(150, 0.1));
+    expect(nearestBeat(env, 150, 10.25)).toBeCloseTo(10.1, 1);
+    expect(nearestBeat(env, 150, 10.4)).toBeCloseTo(10.5, 1);
+    expect(beatOffset(env, 150)).toBeCloseTo(0.1, 1);
+  });
 
   test('finds the tempo', () => {
     expect(estimateBpm(envelope(beats(150)))!).toBeCloseTo(150, 0);

@@ -89,6 +89,37 @@ export function detectSections(
   });
 }
 
+/**
+ * The beat nearest to `time`, read off the onset flux in the `span` seconds around it: folded by
+ * the beat period, the phase where the hits pile up is the grid. Local on purpose, so a tempo a
+ * tenth of a BPM off does not drift the grid across an hour-long set.
+ */
+export function nearestBeat(env: Envelope, bpm: number, time: number, span = 8): number {
+  const period = 60 / bpm;
+  const flux = onsetFlux(env);
+  const bins = 24;
+  const energy = new Float64Array(bins);
+  const from = Math.max(0, Math.round((time - span) / env.hop));
+  const to = Math.min(flux.length, Math.round((time + span) / env.hop));
+  for (let i = from; i < to; i++) {
+    const bin = Math.floor(wrap((i * env.hop - time) / period) * bins) % bins;
+    energy[bin] = energy[bin]! + flux[i]!;
+  }
+  const best = energy.indexOf(Math.max(...energy));
+  const ahead = ((best + 0.5) / bins) * period;
+  return time + (ahead > period / 2 ? ahead - period : ahead);
+}
+
+/** Every drafted event moved onto its nearest beat. */
+export const snapToBeats = (events: SetEvent[], env: Envelope, bpm: number): SetEvent[] =>
+  events.map((e) => ({ ...e, time: round(nearestBeat(env, bpm, e.time)) }));
+
+/** Seconds into the audio of the first beat: where CSS `--beat` should start from. */
+export const beatOffset = (env: Envelope, bpm: number): number =>
+  round(wrap(nearestBeat(env, bpm, 0) / (60 / bpm)) * (60 / bpm));
+
+const wrap = (v: number) => ((v % 1) + 1) % 1;
+
 interface Run {
   start: number;
   end: number;

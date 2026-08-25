@@ -20,9 +20,12 @@ export {
 export {
   BPM_RANGE,
   HOP_SECONDS,
+  beatOffset,
   detectSections,
   envelope,
   estimateBpm,
+  nearestBeat,
+  snapToBeats,
   type Envelope,
   type SectionOptions,
 } from './analysis.ts';
