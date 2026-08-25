@@ -146,19 +146,11 @@ async function requireFile(root: string, rel: string, what: string): Promise<str
 function mergeEvents(config: ProjectConfig): SetEvent[] {
   const decks = config.deckOrder;
   let next = 0;
-  const tracks = config.tracks
-    .toSorted((a, b) => a.time - b.time)
-    .map((t): SetEvent => {
-      const deck = t.deck ?? decks[next % decks.length]!;
-      next = decks.indexOf(deck) + 1;
-      return {
-        type: 'track_start',
-        time: t.time,
-        title: t.title,
-        artist: t.artist,
-        ...(t.label !== undefined && { label: t.label }),
-        deck,
-      };
-    });
-  return sortEvents([...tracks, ...config.events]);
+  const tracks = config.tracks.map((t): SetEvent => ({ type: 'track_start', ...t }));
+  return sortEvents([...tracks, ...config.events]).map((e) => {
+    if (e.type !== 'track_start') return e;
+    const deck = e.deck ?? decks[next % decks.length]!;
+    next = decks.indexOf(deck) + 1;
+    return { ...e, deck };
+  });
 }

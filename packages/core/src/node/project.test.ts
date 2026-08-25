@@ -88,6 +88,8 @@ tracks:
   - { time: 0:00, title: First }
   - { time: 1:30, title: Second, deck: A }
   - { time: 4:30, title: Fourth }
+events:
+  - { type: track_start, time: 6:00, title: Fifth }
 `,
       'decks',
     );
@@ -96,6 +98,7 @@ tracks:
       ['Second', 'A'],
       ['Third', 'B'],
       ['Fourth', 'A'],
+      ['Fifth', 'B'],
     ]);
   });
 
