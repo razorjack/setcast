@@ -1,4 +1,5 @@
 import type { EventOf } from './events.ts';
+import { clamp } from './motion.ts';
 import { since, until, type EventState } from './timeline.ts';
 
 /**
@@ -15,10 +16,14 @@ export const stageData = (state: EventState) => ({
 
 /**
  * Stage-root custom properties: the event timeline as numbers CSS can do arithmetic with.
- * `--since-*` and `--until-*` are seconds capped at `SECONDS_CAP`; `--drop-intensity` is 0..1.
- * Double drops count as drops.
+ * `--since-*` and `--until-*` are seconds capped at `SECONDS_CAP`; `--drop-intensity` and
+ * `--set-progress` are 0..1. Double drops count as drops.
  */
-export function stageVars(state: EventState, time: number): Record<string, string> {
+export function stageVars(
+  state: EventState,
+  time: number,
+  duration: number,
+): Record<string, string> {
   const drop = lastDrop(state);
   const coming = nextDrop(state);
   return {
@@ -29,6 +34,7 @@ export function stageVars(state: EventState, time: number): Record<string, strin
     '--drop-intensity': num(drop?.intensity ?? 0),
     '--since-rewind': secs(since(state, 'rewind', time)),
     '--section-time': secs(state.section ? time - state.sectionStart : Infinity),
+    '--set-progress': num(duration > 0 ? clamp(time / duration, 0, 1) : 0),
   };
 }
 

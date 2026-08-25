@@ -4,11 +4,12 @@ import { stageData, stageVars } from '../stage.ts';
 import { Background } from './components/Background.tsx';
 import { Header } from './components/Header.tsx';
 import { NowPlaying } from './components/NowPlaying.tsx';
+import { UpNext } from './components/UpNext.tsx';
 import { useFrame } from './frame.tsx';
 import { useFontsReady } from './renderer.tsx';
 import { resolveVisualizer } from './visualizers.ts';
 
-/** The whole scene: theme CSS, background, visualizer, header, now-playing panel. */
+/** The whole scene: theme CSS, background, visualizer, header, now-playing panel, up next. */
 export function Stage() {
   const { composition, events, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
@@ -21,7 +22,7 @@ export function Stage() {
       style={{
         width,
         height,
-        ...stageVars(events, timeSeconds),
+        ...stageVars(events, timeSeconds, composition.durationSeconds),
         ...modulationVars(modulation),
       }}
     >
@@ -30,6 +31,7 @@ export function Stage() {
       <viz.Component config={viz.config} />
       <Header />
       <NowPlaying />
+      <UpNext />
     </div>
   );
 }

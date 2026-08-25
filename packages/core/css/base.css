@@ -74,3 +74,14 @@
   display: flex;
   align-items: center;
 }
+
+.sc-next {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--next-bottom, var(--margin));
+  max-width: 34cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  text-align: right;
+}

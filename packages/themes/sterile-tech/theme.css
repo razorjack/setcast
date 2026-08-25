@@ -34,6 +34,7 @@
   --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --spectrum-height: 19cqh;
+  --next-bottom: calc(var(--margin) + 16cqh);
   background: #06080b;
 
   /* the event timeline, as appearance: seconds from the stage root, shaped into 0..1 */
@@ -194,4 +195,42 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+/* up next: fades in over the last seconds of a track, gone the moment the next one starts */
+.theme-sterile-tech .sc-next {
+  gap: 0.3cqw;
+  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+}
+.theme-sterile-tech .sc-next-label {
+  font-family: var(--font-mono);
+  font-size: 0.85cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.theme-sterile-tech .sc-next-artist {
+  font-size: 1.3cqw;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-sterile-tech .sc-next-title {
+  font-weight: 600;
+  font-size: 1.9cqw;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* how far the set has run, as a hairline along the top edge */
+.theme-sterile-tech::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  height: 0.2cqh;
+  width: calc(var(--set-progress, 0) * 100%);
+  background: var(--accent);
+  opacity: 0.5;
 }

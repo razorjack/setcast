@@ -241,9 +241,9 @@ onProgress })` and `preview(project, { projectDir })`. Entry file for the bundle
 ### CSS contract
 
 The stage root has class `setcast` plus `--mod-*` variables. Stable class names: `sc-stage`,
-`sc-bg`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-spectrum`, `sc-header`,
-`sc-clock`. `packages/core/css/base.css` is structural only (positions, sizes as variables);
-themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`, `--accent-2`,
+`sc-bg`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
+`sc-header`, `sc-clock`. `packages/core/css/base.css` is structural only (positions, sizes as
+variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`, `--accent-2`,
 `--fg`, `--fg-dim`, `--blur`, `--radius`, `--font-display`, `--font-mono`. Users can add
 `css: ./overrides.css` in `setcast.yaml`; it is appended last.
 
@@ -255,6 +255,7 @@ The stage root also carries the event timeline, so a theme can react to the set 
   `--section-time` – seconds, capped at `SECONDS_CAP` (60) because CSS has no Infinity. The drop
   variables count `double_drop` too.
 - `--drop-intensity` – 0..1, the `intensity` of the drop `--since-drop` refers to.
+- `--set-progress` – 0..1, how far the set has run.
 
 Shape them in CSS: `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a 0.7 s flash. Never use CSS
 transitions or animations for these – the browser's wall clock is not the timeline (see
@@ -263,6 +264,11 @@ Renderer independence 4).
 `.sc-panel` carries `--show`, 0..1: the now-playing panel springs in on a track change, holds for
 `panel.dwell` seconds and leaves over `panel.fade` (`panel:` in `setcast.yaml`; `dwell: 0` keeps it
 up for the whole set). The theme decides what presence looks like – sterile-tech fades and slides.
+
+`.sc-next` holds the track after this one (`sc-next-label`, `sc-next-artist`, `sc-next-title`) and
+stays mounted for the whole of the current track; the theme decides when it appears, from
+`--until-track`. sterile-tech fades it in over the last 8 seconds and lifts it clear of the
+spectrum with `--next-bottom`.
 
 ## Roadmap (beyond v1)
 

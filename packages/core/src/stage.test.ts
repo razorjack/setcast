@@ -12,10 +12,11 @@ const events: SetEvent[] = [
   { type: 'double_drop', time: 60, intensity: 1 },
 ];
 const tl = new Timeline(events);
+const vars = (time: number, duration = 120) => stageVars(tl.at(time), time, duration);
 
 describe('stageVars', () => {
   test('reports seconds around the nearest drop', () => {
-    expect(stageVars(tl.at(35), 35)).toMatchObject({
+    expect(vars(35)).toMatchObject({
       '--since-drop': '5',
       '--until-drop': '25',
       '--drop-intensity': '0.8',
@@ -24,21 +25,27 @@ describe('stageVars', () => {
   });
 
   test('a double drop is a drop', () => {
-    expect(stageVars(tl.at(61), 61)).toMatchObject({
+    expect(vars(61)).toMatchObject({
       '--since-drop': '1',
       '--drop-intensity': '1',
     });
   });
 
   test('caps what has not happened', () => {
-    const s = tl.at(10);
-    expect(stageVars(s, 10)).toMatchObject({
+    expect(vars(10)).toMatchObject({
       '--since-drop': '60',
       '--since-rewind': '60',
       '--section-time': '60',
       '--drop-intensity': '0',
       '--until-drop': '20',
     });
+  });
+
+  test('set progress runs 0..1 over the whole set', () => {
+    expect(vars(0)['--set-progress']).toBe('0');
+    expect(vars(30)['--set-progress']).toBe('0.25');
+    expect(vars(200)['--set-progress']).toBe('1');
+    expect(vars(30, 0)['--set-progress']).toBe('0');
   });
 });
 
