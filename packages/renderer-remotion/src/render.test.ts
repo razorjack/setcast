@@ -30,6 +30,8 @@ const project: ResolvedProject = {
   modulation: [],
   visualizer: { name: 'spectrum' },
   panel: { dwell: 14, fade: 1.2 },
+  bpm: null,
+  beatOffset: 0,
 };
 
 const run = () => render(project, { projectDir: '.', out: 'out.mp4' });

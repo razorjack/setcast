@@ -17,6 +17,8 @@ const placeholder: ResolvedProject = {
   modulation: [],
   visualizer: { name: 'spectrum' },
   panel: { dwell: 14, fade: 1.2 },
+  bpm: null,
+  beatOffset: 0,
 };
 
 const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = async ({ props }) => {

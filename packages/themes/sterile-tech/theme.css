@@ -46,6 +46,8 @@
   --drop-flash: calc(clamp(0, 1 - var(--since-drop, 60) / 0.7, 1) * var(--drop-intensity, 1));
   --rewind-flash: clamp(0, 1 - var(--since-rewind, 60) / 0.6, 1);
   --tension: clamp(0, 1 - var(--until-drop, 60) / 10, 1);
+  /* 1 on the beat, 0 just before the next; stays 0 when the project states no bpm */
+  --beat-pulse: calc(1 - var(--beat, 1));
 }
 
 /* one signal color per deck: the stage root follows the deck in front, the panel its own track */
@@ -93,7 +95,7 @@
   height: 0.6em;
   margin-right: 0.9em;
   background: var(--deck);
-  transform: translateY(-0.05em);
+  transform: translateY(-0.05em) scale(calc(1 + 0.45 * var(--beat-pulse)));
 }
 .theme-sterile-tech .sc-clock {
   font-variant-numeric: tabular-nums;

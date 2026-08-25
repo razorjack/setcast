@@ -190,7 +190,7 @@ cascaded one-pole filters at 150 Hz do the band split, so there is no FFT and no
 a `drop` where the bass comes in and a `breakdown` where it drops out; `estimateBpm()`
 autocorrelates the onset flux over several windows and takes the median, preferring the fastest
 lag that still correlates so a 174 BPM roller does not read as 87. `setcast analyze` prints those
-as a draft `events:` block, or merges them into `setcast.yaml` with `--write`.
+as a draft `events:` block plus `bpm:`, or merges them into `setcast.yaml` with `--write`.
 
 `decodeMono()` in `@setcast/core/node` produces the PCM: ffmpeg subprocess when it is on PATH
 (every format, streamed), and a built-in PCM WAV reader (16/24/32-bit, float) otherwise, so a freshly scaffolded
@@ -263,6 +263,9 @@ The stage root also carries the event timeline, so a theme can react to the set 
   drop variables count `double_drop` too. `--until-breakdown` is the "bass is about to leave" cue.
 - `--drop-intensity` – 0..1, the `intensity` of the drop `--since-drop` refers to.
 - `--set-progress` – 0..1, how far the set has run.
+- `--beat`, `--bar` – 0..1 phase within the beat and the four-beat bar, from `bpm:` and
+  `beatOffset:` (`beatVars` in `stage.ts`). Absent when the project states no tempo, so themes
+  write `var(--beat, 1)`.
 
 Shape them in CSS: `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a 0.7 s flash. Never use CSS
 transitions or animations for these – the browser's wall clock is not the timeline (see
@@ -320,6 +323,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   string.
 - `RenderFrame.modulation` is a top-level field (not part of the original six) because it is
   resolved per frame from audio + events and is the bridge to CSS.
+- `bpm:` and `beatOffset:` are plain top-level keys, not a `tempo:` block, because `bpm: 174` is
+  what a DJ types. `analyze --write` sets `bpm` only when the project has none and never touches
+  `beatOffset`: the estimator has no beat tracking, so the downbeat stays the user's to place.
 - `setcast analyze` drafts `drop` and `breakdown` only. Both are direct readings of bass energy;
   a buildup is musical intent that the same signal cannot distinguish from the breakdown it sits
   in, so inventing one would be noise the user has to delete.

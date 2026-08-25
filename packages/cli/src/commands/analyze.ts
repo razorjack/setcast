@@ -30,7 +30,7 @@ export const help = `setcast analyze [dir] [--sensitivity 0.5] [--write]
 
 Reads the project audio and drafts drop and breakdown events from its bass energy, plus the tempo.
   --sensitivity  0..1; higher splits the set into more sections (default 0.5)
-  --write        add the drafted events to ${CONFIG_FILE}, keeping the ones already there
+  --write        add the drafted events and the tempo to ${CONFIG_FILE}, keeping what is there
 
 Buildups follow musical intent rather than energy, so those stay yours to place.`;
 
@@ -70,7 +70,7 @@ export async function run(argv: string[]): Promise<void> {
     `${fmtSeconds(seconds)} of audio${bpm ? `, ${bold(`${Math.round(bpm)} BPM`)}` : ', no steady tempo'}`,
   );
 
-  if (events.length === 0) {
+  if (events.length === 0 && !bpm) {
     outro('Nothing stood out. Raise --sensitivity, or write the events by hand.');
     return;
   }
@@ -86,25 +86,29 @@ export async function run(argv: string[]): Promise<void> {
         (had) => had.type === e.type && Math.abs(had.time - e.time) < SAME_EVENT_SECONDS,
       ),
   );
+  const tempo = bpm && config.bpm === undefined ? Math.round(bpm * 10) / 10 : null;
   if (!values.write) {
-    process.stdout.write(`\n${stringify({ events: events.map(toYaml) })}`);
+    const draft = { ...(tempo && { bpm: tempo }), events: events.map(toYaml) };
+    process.stdout.write(`\n${stringify(draft)}`);
     outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
     return;
   }
-  if (fresh.length === 0) {
+  if (fresh.length === 0 && !tempo) {
     outro(`${CONFIG_FILE} already has all of these.`);
     return;
   }
   const path = join(root, CONFIG_FILE);
   const doc = parseDocument(await readFile(path, 'utf8'));
+  if (tempo) doc.set('bpm', tempo);
   const existing = doc.get('events');
   if (isSeq(existing)) {
     existing.flow = false;
     for (const e of fresh) existing.add(doc.createNode(toYaml(e)));
-  } else doc.set('events', fresh.map(toYaml));
+  } else if (fresh.length) doc.set('events', fresh.map(toYaml));
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
-  outro(`Added ${fresh.length} events to ${steel(path)}`);
+  const added = [fresh.length ? `${fresh.length} events` : '', tempo ? `bpm: ${tempo}` : ''];
+  outro(`Added ${added.filter(Boolean).join(' and ')} to ${steel(path)}`);
 }
 
 const toYaml = (e: SetEvent) => ({

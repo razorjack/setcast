@@ -53,6 +53,7 @@ title: Sterile Session 01
 audio: assets/mix.wav
 background: assets/bg.svg
 theme: sterile-tech          # built-in name, or a path to your own .css
+bpm: 174                     # gives CSS --beat and --bar; `setcast analyze --write` fills it in
 output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4, crf: 18, jpegQuality: 95 }
 deckOrder: [A, B]            # decks tracks rotate through when they name none
 
@@ -88,8 +89,9 @@ Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variab
 code. The stage root also carries the timeline itself – `data-section`, `data-deck`, `--set-progress`,
 and seconds in `--since-drop`, `--until-drop`, `--until-breakdown`, `--since-rewind`,
 `--section-time` and friends – so
-`clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a flash on every drop and
-`width: calc(var(--set-progress) * 100%)` is a progress bar. Vertical output is
+`clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a flash on every drop,
+`width: calc(var(--set-progress) * 100%)` is a progress bar, and with `bpm:` set, `--beat` and
+`--bar` run 0..1 on the grid so `scale(calc(1 + 0.4 * (1 - var(--beat))))` pulses in time. Vertical output is
 `output: { width: 1080, height: 1920 }`; the stage is a CSS size container, so a theme adapts
 with `@container (aspect-ratio < 1) { ... }` (sterile-tech does). Plugins (visualizers, importers,
 themes as npm packages) are the escape hatch for the rest.

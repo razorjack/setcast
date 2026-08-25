@@ -44,5 +44,17 @@ export function stageVars(
   return vars;
 }
 
+/**
+ * Where in the beat and in the (four-beat) bar `time` falls, 0..1, as `--beat` and `--bar`, so a
+ * theme can pulse on the grid without JS. Nothing when the project states no tempo.
+ */
+export function beatVars(time: number, bpm: number | null, offset = 0): Record<string, string> {
+  if (!bpm) return {};
+  const beats = ((time - offset) * bpm) / 60;
+  return { '--beat': num(phase(beats)), '--bar': num(phase(beats / 4)) };
+}
+
+const phase = (v: number) => ((v % 1) + 1) % 1;
+
 const num = (v: number) => String(Math.round(v * 1000) / 1000);
 const secs = (v: number) => num(Math.min(v, SECONDS_CAP));

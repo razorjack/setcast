@@ -47,6 +47,10 @@ export const ProjectConfigSchema = z
     modulation: z.array(ModRouteSchema).default([]),
     visualizer: VisualizerConfigSchema.prefault({}),
     panel: PanelSchema.prefault({}),
+    /** Tempo of the set; gives CSS `--beat` and `--bar`. `setcast analyze --write` fills it in. */
+    bpm: z.number().positive().max(400).optional(),
+    /** Seconds into the audio of a downbeat, so `--bar` lines up with the music. */
+    beatOffset: TimeSchema.default(0),
     deckOrder: z.array(DeckSchema).min(1).default(['A', 'B']),
   })
   .strict();

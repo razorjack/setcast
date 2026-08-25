@@ -56,6 +56,8 @@ export async function loadProject(
     modulation: [...themeRoutes(theme), ...config.modulation],
     visualizer: resolveVisualizerConfig(config.visualizer),
     panel: config.panel,
+    bpm: config.bpm ?? null,
+    beatOffset: config.beatOffset,
   };
   return { dir: root, config, project };
 }

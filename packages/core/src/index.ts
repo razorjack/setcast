@@ -83,7 +83,7 @@ export { ConfigError, SetcastError, zodIssues, type Issue } from './errors.ts';
 export type { ResolvedProject } from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
-export { SECONDS_CAP, stageData, stageVars } from './stage.ts';
+export { SECONDS_CAP, beatVars, stageData, stageVars } from './stage.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
 export { Timeline, lastEvent, nextEvent, since, until, type EventState } from './timeline.ts';
 export {

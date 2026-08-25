@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vite-plus/test';
 import type { SetEvent } from './events.ts';
-import { stageData, stageVars } from './stage.ts';
+import { beatVars, stageData, stageVars } from './stage.ts';
 import { Timeline } from './timeline.ts';
 
 const events: SetEvent[] = [
@@ -55,6 +55,16 @@ describe('stageVars', () => {
     expect(vars(30)['--set-progress']).toBe('0.25');
     expect(vars(200)['--set-progress']).toBe('1');
     expect(vars(30, 0)['--set-progress']).toBe('0');
+  });
+});
+
+describe('beatVars', () => {
+  test('phases the beat and the bar from the offset', () => {
+    expect(beatVars(1, 120, 0)).toEqual({ '--beat': '0', '--bar': '0.5' });
+    expect(beatVars(1.25, 120, 0)['--beat']).toBe('0.5');
+    expect(beatVars(0.1, 120, 0.1)).toEqual({ '--beat': '0', '--bar': '0' });
+    expect(beatVars(0, 120, 0.25)['--beat']).toBe('0.5');
+    expect(beatVars(5, null)).toEqual({});
   });
 });
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { modulationVars } from '../modulation.ts';
-import { stageData, stageVars } from '../stage.ts';
+import { beatVars, stageData, stageVars } from '../stage.ts';
 import { Background } from './components/Background.tsx';
 import { Header } from './components/Header.tsx';
 import { NowPlaying } from './components/NowPlaying.tsx';
@@ -23,6 +23,7 @@ export function Stage() {
         width,
         height,
         ...stageVars(events, timeSeconds, composition.durationSeconds),
+        ...beatVars(timeSeconds, project.bpm, project.beatOffset),
         ...modulationVars(modulation),
       }}
     >

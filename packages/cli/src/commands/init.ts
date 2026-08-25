@@ -49,6 +49,7 @@ export async function run(argv: string[]): Promise<void> {
   await writeFile(join(dir, 'assets/bg.svg'), await readFile(join(TEMPLATES, 'bg.svg')));
 
   let audio = answers.audio;
+  let bpm: number | undefined;
   let tracks: object[] = [{ time: '0:00', artist: 'ID', title: 'ID' }];
   let events: object[] = [];
   if (audio === 'demo') {
@@ -57,6 +58,7 @@ export async function run(argv: string[]): Promise<void> {
     await clearSpinnerOnError(s, async () => {
       const demo = synthesizeDemo(0.25);
       audio = 'assets/demo-set.wav';
+      bpm = 174;
       await writeFile(join(dir, audio), demo.wav);
       const at = (i: number) => formatTime(demo.sections[i]!.startSeconds);
       tracks = [
@@ -84,6 +86,7 @@ export async function run(argv: string[]): Promise<void> {
       theme: answers.theme,
       renderer: 'remotion',
       output: { width: 1920, height: 1080, fps: answers.fps, file: 'out/set.mp4' },
+      ...(bpm && { bpm }),
       tracks,
       events,
       modulation: [],

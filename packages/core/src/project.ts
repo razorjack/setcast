@@ -23,4 +23,8 @@ export type ResolvedProject = {
   visualizer: { name: string } & Record<string, unknown>;
   /** How long the now-playing panel stays up after a track change, and how long it takes to leave. */
   panel: { dwell: number; fade: number };
+  /** Tempo, or null when the project does not state one. */
+  bpm: number | null;
+  /** Seconds into the audio of a downbeat. */
+  beatOffset: number;
 };
