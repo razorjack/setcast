@@ -37,6 +37,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('render');
   const { dir, project, config } = await load(positionals[0]);
   const range = values.range ? parseRange(values.range) : undefined;
+  const concurrency = values.concurrency ? parseConcurrency(values.concurrency) : undefined;
   const out = resolve(
     dir,
     values.out ?? (range ? rangeName(config.output.file, range) : config.output.file),
@@ -63,7 +64,7 @@ export async function run(argv: string[]): Promise<void> {
         projectDir: dir,
         out,
         ...(range && { range }),
-        ...(values.concurrency && { concurrency: Number(values.concurrency) }),
+        ...(concurrency && { concurrency }),
         crf: config.output.crf,
         jpegQuality: config.output.jpegQuality,
         onProgress: ({ stage, progress, renderedFrames = 0, totalFrames = 0 }) => {
@@ -112,6 +113,17 @@ export function parseRange(text: string): [number, number] {
     );
   }
   return [start, end];
+}
+
+function parseConcurrency(text: string): number {
+  const n = Number(text);
+  if (!Number.isInteger(n) || n < 1) {
+    throw new SetcastError(
+      `Invalid --concurrency "${text}"`,
+      'Use a whole number of parallel browser tabs, e.g. --concurrency 4.',
+    );
+  }
+  return n;
 }
 
 export const rangeName = (file: string, [a, b]: [number, number]) =>
