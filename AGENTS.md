@@ -108,7 +108,9 @@ CompositionState, modulation }`. Components consume it via Setcast hooks: `useFr
    Remotion's). The Remotion adapter translates `useCurrentFrame()` into a `RenderFrame` at the
    composition root; a future renderer feeds the identical `RenderFrame` from its own loop.
 3. **Media goes through Setcast wrappers.** Plugins use `Img`, `Video`, and `useAsset()` from
-   `@setcast/core/react` ("this frame isn't ready until the asset is"). The adapter binds them via
+   `@setcast/core/react` ("this frame isn't ready until the asset is"). `Img` holds the frame
+   itself, through `useAsset`, so the guarantee holds under any binding instead of depending on
+   Remotion's `<Img>`. The adapter binds them via
    `RendererBindings` (`hold(label) => release`) mapped to Remotion's `delayRender`/`continueRender`
    today, to a frame-ready handshake in a future renderer.
 4. **Time-sensitive state is explicit, CSS owns appearance.** Never rely on the browser being

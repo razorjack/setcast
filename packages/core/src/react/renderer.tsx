@@ -68,9 +68,11 @@ export function RendererProvider({
 
 export const useRenderer = (): RendererBindings => useContext(RendererContext);
 
+/** An image that holds the frame until it has loaded, whichever renderer is bound. */
 export function Img(props: ImgProps) {
   const { Img: Bound } = useRenderer();
-  return <Bound {...props} src={useAssetUrl(props.src)} />;
+  const { src } = useAsset(props.src);
+  return <Bound {...props} src={src} />;
 }
 
 export function Video(props: VideoProps) {
