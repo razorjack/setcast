@@ -17,7 +17,7 @@ export function NowPlaying() {
     dwell > 0 ? interpolate(age, [dwell, dwell + fade], [1, 0], { easing: ease.inOut }) : 1;
   const pad = (n: number) => String(n).padStart(2, '0');
   return (
-    <section className="sc-panel" style={{ '--show': enter * leave }} data-deck={track.deck ?? ''}>
+    <section className="sc-panel" style={{ '--show': enter * leave }} data-deck={track.deck}>
       <header className="sc-panel-head">
         {track.deck && <span className="sc-deck">{track.deck}</span>}
         <span className="sc-eyebrow">Now playing</span>
