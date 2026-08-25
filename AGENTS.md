@@ -219,7 +219,8 @@ list; implemented today: visualizer, theme, tracklist importer):
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical, auto-cut 30–60 s promo clips centered
   on `drop` events
 - branding: logo, socials ticker, episode numbering, intro/outro
-- side outputs: YouTube chapters + description from the timeline (`setcast chapters` ✓)
+- side outputs: YouTube chapters + description from the timeline (`setcast chapters` ✓),
+  thumbnail stills (`setcast still` ✓)
 - live adapters: Pro DJ Link (prolink-connect), Denon StagelinQ, VirtualDJ OS2L, Serato session
   tail, MIDI/OSC; event-delay offset; convention: a cue named "DROP" becomes a `drop` event
 - the live loop: `setcast live` records `event-log.jsonl` → `setcast render` regenerates the VOD
@@ -235,8 +236,9 @@ The renderer adapter receives `ResolvedProject` as input props and nothing else.
 by `setcast.yaml` must live inside the project directory (the adapter serves it as the public dir).
 
 Renderer adapter API (`@setcast/renderer-remotion`): `render(project, { projectDir, out, range?,
-onProgress })` and `preview(project, { projectDir })`. Entry file for the bundle:
-`packages/renderer-remotion/entry/index.tsx` (shipped as source; Remotion's bundler compiles it).
+onProgress })`, `still(project, { projectDir, out, at? })` and `preview(project, { projectDir })`.
+Entry file for the bundle: `packages/renderer-remotion/entry/index.tsx` (shipped as source;
+Remotion's bundler compiles it).
 
 ### CSS contract
 
@@ -348,6 +350,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
   never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
   in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.
+- `setcast still` grabs the first `drop` by default (a quarter into the set when there is none) and
+  picks png/jpeg/webp from the `--out` extension, defaulting to `output.file` with `.jpg`. It
+  renders the frame exactly as the video shows it, so a set whose panel has already left gets a
+  thumbnail without one; `--at` is the answer, not a special case in the renderer.
 - `setcast init --demo` and `vp run demo-assets` share one synth (`packages/cli/src/demo/synth.ts`);
   init writes a 40 s version (`synthesizeDemo(0.25)`), the repo task the full 2:34.
 - The README logo uses separate light and dark PNGs under `docs/assets`, selected with a

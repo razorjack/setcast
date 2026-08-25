@@ -1,7 +1,7 @@
 {
   "name": "@setcast/cli",
   "version": "0.1.0",
-  "description": "Setcast command line: init, import, analyze, preview, render, live.",
+  "description": "Setcast command line: init, import, analyze, preview, render, still, live.",
   "license": "MIT",
   "bin": {
     "setcast": "./bin/setcast.js"

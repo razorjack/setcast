@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
-import { ensureBrowser, renderMedia, selectComposition } from '@remotion/renderer';
-import type { ResolvedProject } from '@setcast/core';
+import { ensureBrowser, renderMedia, renderStill, selectComposition } from '@remotion/renderer';
+import { SetcastError, type ResolvedProject } from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
 import { resolveFrameRange } from './range.ts';
 
@@ -50,9 +50,12 @@ export function render(project: ResolvedProject, opts: RenderOptions): Promise<R
   return renderInPackage(() => renderIn(project, opts));
 }
 
-async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
-  const report = opts.onProgress ?? (() => {});
-
+/** Browser, bundle and composition: everything both a render and a still need first. */
+async function prepare(
+  project: ResolvedProject,
+  projectDir: string,
+  report: (p: RenderProgress) => void,
+) {
   report({ stage: 'browser', progress: 0 });
   await ensureBrowser({
     onBrowserDownload: () => ({
@@ -65,7 +68,7 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
   const serveUrl = await bundle({
     entryPoint: ENTRY,
     rootDir: PACKAGE_ROOT,
-    publicDir: opts.projectDir,
+    publicDir: projectDir,
     onProgress: (percent) => report({ stage: 'bundle', progress: percent / 100 }),
   });
 
@@ -74,6 +77,12 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
     id: COMPOSITION_ID,
     inputProps: project,
   });
+  return { serveUrl, composition };
+}
+
+async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
+  const report = opts.onProgress ?? (() => {});
+  const { serveUrl, composition } = await prepare(project, opts.projectDir, report);
   const { fps, durationInFrames } = composition;
   const frameRange = opts.range ? resolveFrameRange(opts.range, fps, durationInFrames) : null;
   const totalFrames = frameRange ? frameRange[1] - frameRange[0] + 1 : durationInFrames;
@@ -105,6 +114,60 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
   });
 
   return { file: opts.out, frames: totalFrames, durationSeconds: totalFrames / fps };
+}
+
+export interface StillOptions {
+  projectDir: string;
+  out: string;
+  /** Seconds into the set. Defaults to a quarter of the way in. */
+  at?: number;
+  jpegQuality?: number;
+  onProgress?: (p: RenderProgress) => void;
+}
+
+export interface StillResult {
+  file: string;
+  /** The moment actually grabbed, after rounding to a frame and clamping to the set. */
+  timeSeconds: number;
+}
+
+const STILL_FORMATS: Record<string, 'png' | 'jpeg' | 'webp'> = {
+  png: 'png',
+  jpg: 'jpeg',
+  jpeg: 'jpeg',
+  webp: 'webp',
+};
+
+/** Renders a single frame as an image, for a thumbnail. */
+export function still(project: ResolvedProject, opts: StillOptions): Promise<StillResult> {
+  return renderInPackage(() => stillIn(project, opts));
+}
+
+async function stillIn(project: ResolvedProject, opts: StillOptions): Promise<StillResult> {
+  const imageFormat = STILL_FORMATS[opts.out.split('.').pop()?.toLowerCase() ?? ''];
+  if (!imageFormat) {
+    throw new SetcastError(
+      `Cannot write a still to ${opts.out}`,
+      `Use a .png, .jpg or .webp file name for --out. Setcast picks the format from the extension.`,
+    );
+  }
+  const report = opts.onProgress ?? (() => {});
+  const { serveUrl, composition } = await prepare(project, opts.projectDir, report);
+  const { fps, durationInFrames } = composition;
+  const wanted = opts.at ?? durationInFrames / fps / 4;
+  const frame = Math.min(durationInFrames - 1, Math.max(0, Math.round(wanted * fps)));
+
+  await renderStill({
+    composition,
+    serveUrl,
+    output: opts.out,
+    frame,
+    inputProps: project,
+    imageFormat,
+    jpegQuality: opts.jpegQuality ?? 95,
+  });
+
+  return { file: opts.out, timeSeconds: frame / fps };
 }
 
 export interface PreviewOptions {
