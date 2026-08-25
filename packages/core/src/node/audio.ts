@@ -9,15 +9,15 @@ export const ANALYSIS_RATE = 22050;
 
 /**
  * Decodes `file` to mono samples at `rate`. ffmpeg does the work when it is on PATH, which covers
- * every format and streams rather than holding the encoded file in memory; without it, 16-bit PCM
- * WAV is still read directly, so a freshly scaffolded project works out of the box.
+ * every format and streams rather than holding the encoded file in memory; without it, PCM WAV
+ * is still read directly, so a freshly scaffolded project works out of the box.
  */
 export async function decodeMono(file: string, rate = ANALYSIS_RATE): Promise<Pcm> {
-  const samples = (await ffmpegPcm(file, rate)) ?? (await wavPcm(file, rate));
+  const samples = (await ffmpegPcm(file, rate)) ?? (await readWav(file, rate));
   if (!samples) {
     throw new SetcastError(
       `Cannot decode ${basename(file)}`,
-      'Install ffmpeg so Setcast can read this format (brew install ffmpeg). Without ffmpeg only 16-bit PCM WAV works.',
+      'Install ffmpeg so Setcast can read this format (brew install ffmpeg). Without ffmpeg only PCM WAV (16/24/32-bit or float) works.',
     );
   }
   return { samples, sampleRate: rate };
@@ -78,12 +78,17 @@ class Samples {
   }
 }
 
-/** Null when `file` is not a 16-bit PCM RIFF/WAVE. */
-async function wavPcm(file: string, rate: number): Promise<Float32Array | null> {
+const PCM = 1;
+const FLOAT = 3;
+const EXTENSIBLE = 0xfffe;
+
+/** Null when `file` is not a RIFF/WAVE holding integer or float PCM. */
+export async function readWav(file: string, rate: number): Promise<Float32Array | null> {
   const buffer = await readFile(file);
   const tag = (at: number) => buffer.toString('latin1', at, at + 4);
   if (buffer.length < 44 || tag(0) !== 'RIFF' || tag(8) !== 'WAVE') return null;
 
+  let format = 0;
   let channels = 0;
   let sampleRate = 0;
   let bits = 0;
@@ -92,26 +97,39 @@ async function wavPcm(file: string, rate: number): Promise<Float32Array | null> 
     const size = buffer.readUInt32LE(at + 4);
     const body = buffer.subarray(at + 8, Math.min(buffer.length, at + 8 + size));
     if (tag(at) === 'fmt ' && body.length >= 16) {
-      if (body.readUInt16LE(0) !== 1) return null;
+      format = body.readUInt16LE(0);
       channels = body.readUInt16LE(2);
       sampleRate = body.readUInt32LE(4);
       bits = body.readUInt16LE(14);
+      // Extensible headers carry the real format as the first two bytes of a GUID.
+      if (format === EXTENSIBLE && body.length >= 26) format = body.readUInt16LE(24);
     } else if (tag(at) === 'data') data = body;
     at += 8 + size + (size % 2);
   }
-  if (!data || bits !== 16 || !channels || !sampleRate) return null;
-  return resample(toMono(data, channels), sampleRate, rate);
+  const read = data && channels && sampleRate ? sampleReader(format, bits) : null;
+  if (!read) return null;
+  return resample(toMono(data!, channels, bits / 8, read), sampleRate, rate);
 }
 
-function toMono(data: Buffer, channels: number): Float32Array {
-  const end = data.byteOffset + (data.length & ~1);
-  const pcm = new Int16Array(data.buffer.slice(data.byteOffset, end));
-  const frames = Math.floor(pcm.length / channels);
+type SampleReader = (data: Buffer, at: number) => number;
+
+/** How to read one sample as -1..1, or null for a format this reader does not know. */
+function sampleReader(format: number, bits: number): SampleReader | null {
+  if (format === FLOAT && bits === 32) return (d, at) => d.readFloatLE(at);
+  if (format !== PCM) return null;
+  if (bits === 16) return (d, at) => d.readInt16LE(at) / 0x8000;
+  if (bits === 24) return (d, at) => d.readIntLE(at, 3) / 0x800000;
+  if (bits === 32) return (d, at) => d.readInt32LE(at) / 0x80000000;
+  return null;
+}
+
+function toMono(data: Buffer, channels: number, bytes: number, read: SampleReader): Float32Array {
+  const frames = Math.floor(data.length / (bytes * channels));
   const mono = new Float32Array(frames);
   for (let i = 0; i < frames; i++) {
     let sum = 0;
-    for (let c = 0; c < channels; c++) sum += pcm[i * channels + c]!;
-    mono[i] = sum / channels / 32768;
+    for (let c = 0; c < channels; c++) sum += read(data, (i * channels + c) * bytes);
+    mono[i] = sum / channels;
   }
   return mono;
 }
