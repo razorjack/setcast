@@ -214,8 +214,8 @@ list; implemented today: visualizer, theme, tracklist importer):
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓)
 - themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
   path is also a valid theme)
-- tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), Rekordbox/Serato/Traktor
-  history, `.cue`
+- tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
+  Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft events (`setcast analyze` ✓); onset and
   beat-grid quantization of the drafted times are not built
 - background engines: static image ✓, looping video ✓, per-track slideshow, generative

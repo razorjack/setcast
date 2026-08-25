@@ -73,7 +73,7 @@ panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwel
 css: overrides.css           # optional, appended after the theme
 ```
 
-Commands: `setcast init`, `import <tracklist.txt> [--write]`, `analyze [--write]` (reads the audio
+Commands: `setcast init`, `import <tracklist.txt|.cue> [--write]`, `analyze [--write]` (reads the audio
 and drafts drop / breakdown events plus the tempo), `preview`, `render [--range A-B]`,
 `still [--at 1:04]` (one frame as an image, for the thumbnail), `chapters` (YouTube description
 with timestamps, warning about anything that would stop YouTube showing them), and the roadmap

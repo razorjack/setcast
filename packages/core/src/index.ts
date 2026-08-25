@@ -50,6 +50,7 @@ export {
   type Track,
 } from './events.ts';
 export { importers } from './importers/index.ts';
+export { cueImporter } from './importers/cue.ts';
 export { plainImporter, type Importer } from './importers/plain.ts';
 export {
   CURVES,
