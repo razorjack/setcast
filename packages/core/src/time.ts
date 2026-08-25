@@ -39,8 +39,6 @@ export function formatChapterTime(seconds: number): string {
  * fraction away, and both tracklists and detected events carry one.
  */
 export function formatTimecode(seconds: number): string {
-  const rounded = Math.round(seconds * 1000) / 1000;
-  const whole = Math.floor(rounded);
-  const frac = (rounded - whole).toFixed(3).replace(/^0/, '').replace(/0+$/, '');
-  return formatTime(whole) + (frac === '.' ? '' : frac);
+  const [whole, frac] = seconds.toFixed(3).split('.') as [string, string];
+  return formatTime(Number(whole)) + `.${frac}`.replace(/\.?0+$/, '');
 }
