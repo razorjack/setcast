@@ -76,7 +76,7 @@ export async function run(argv: string[]): Promise<void> {
   }
 
   const yaml = [
-    `# Setcast project. Paths are relative to this directory. Docs: https://github.com/setcast/setcast`,
+    `# Setcast project. Paths are relative to this directory. Docs: https://github.com/razorjack/setcast`,
     stringify({
       title: answers.title,
       audio: audio || 'CHANGE-ME.wav',
