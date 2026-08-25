@@ -25,18 +25,4 @@ describe('clearSpinnerOnError', () => {
     ).rejects.toThrow('render failed');
     expect(spin.clear).toHaveBeenCalledOnce();
   });
-
-  test('does not clear a spinner that has already stopped', async () => {
-    const spin = { clear: vi.fn() };
-    await expect(
-      clearSpinnerOnError(
-        spin,
-        async () => {
-          throw new Error('encode failed');
-        },
-        () => false,
-      ),
-    ).rejects.toThrow('encode failed');
-    expect(spin.clear).not.toHaveBeenCalled();
-  });
 });

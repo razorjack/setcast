@@ -4,7 +4,7 @@ import { parseArgs } from 'node:util';
 import { formatTime, parseTime, SetcastError, type SetEvent } from '@setcast/core';
 import { still } from '@setcast/renderer-remotion';
 import { load } from '../project.ts';
-import { bold, clearSpinnerOnError, intro, outro, spinner, steel } from '../ui.ts';
+import { bold, intro, outro, RenderUi, steel } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg]
 
@@ -24,25 +24,17 @@ export async function run(argv: string[]): Promise<void> {
   const out = resolve(dir, values.out ?? config.output.file.replace(/(\.[^.]+)?$/, '.jpg'));
   await mkdir(dirname(out), { recursive: true });
 
-  const spin = spinner();
-  spin.start('Preparing browser');
-  const result = await clearSpinnerOnError(spin, () =>
+  const ui = new RenderUi();
+  const result = await ui.run(() =>
     still(project, {
       projectDir: dir,
       out,
       ...(at !== null && { at }),
       jpegQuality: config.output.jpegQuality,
-      onProgress: ({ stage, progress }) => {
-        const pct = Math.round(progress * 100);
-        if (stage === 'browser')
-          spin.message(
-            progress < 1 ? `Downloading Chrome Headless Shell ${pct}%` : 'Browser ready',
-          );
-        if (stage === 'bundle') spin.message(`Bundling composition ${pct}%`);
-      },
+      onProgress: ui.onProgress,
     }),
   );
-  spin.stop(`Grabbed ${bold(formatTime(result.timeSeconds))} of the set`);
+  ui.done(`Grabbed ${bold(formatTime(result.timeSeconds))} of the set`);
   outro(`${bold('Done')}  →  ${steel(relative(process.cwd(), result.file) || result.file)}`);
 }
 

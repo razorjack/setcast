@@ -1,5 +1,6 @@
 import * as p from '@clack/prompts';
 import { ConfigError, hms, SetcastError } from '@setcast/core';
+import type { RenderProgress } from '@setcast/renderer-remotion';
 import pc from 'picocolors';
 
 const rgb = (r: number, g: number, b: number) => (s: string) =>
@@ -22,12 +23,11 @@ export const prompts = p;
 export async function clearSpinnerOnError<T>(
   spin: { clear(): void },
   task: () => Promise<T>,
-  active: () => boolean = () => true,
 ): Promise<T> {
   try {
     return await task();
   } catch (error) {
-    if (active()) spin.clear();
+    spin.clear();
     throw error;
   }
 }
@@ -97,5 +97,62 @@ export class ProgressLine {
     process.stdout.write(
       `${process.stdout.isTTY ? '\r\x1b[2K' : ''}${pc.green('◇')}  ${message}\n`,
     );
+  }
+}
+
+/**
+ * Terminal output for a render or a still: a spinner while the browser and bundle come up, then
+ * one progress line per stage. Feed it `onProgress`; finish with `done`.
+ */
+export class RenderUi {
+  readonly #spin = spinner();
+  #frames: ProgressLine | undefined;
+  #encode: ProgressLine | undefined;
+
+  constructor() {
+    this.#spin.start('Preparing browser');
+  }
+
+  readonly onProgress = ({
+    stage,
+    progress,
+    renderedFrames = 0,
+    totalFrames = 0,
+  }: RenderProgress): void => {
+    const pct = Math.round(progress * 100);
+    if (stage === 'browser') {
+      this.#spin.message(
+        progress < 1 ? `Downloading Chrome Headless Shell ${pct}%` : 'Browser ready',
+      );
+    }
+    if (stage === 'bundle') this.#spin.message(`Bundling composition ${pct}%`);
+    if (stage === 'frames') {
+      if (!this.#frames) {
+        this.#spin.stop('Composition bundled');
+        this.#frames = new ProgressLine('frames');
+      }
+      this.#frames.update(progress, `${renderedFrames}/${totalFrames}`);
+    }
+    if (stage === 'encode') {
+      this.#frames?.update(1, `${totalFrames}/${totalFrames}`);
+      if (!this.#encode) {
+        this.#frames?.done(`Rendered ${totalFrames} frames`);
+        this.#encode = new ProgressLine('encode');
+      }
+      this.#encode.update(progress, 'h264 + aac');
+    }
+  };
+
+  /** Runs `task`; a failure while the spinner is up clears it so the error prints cleanly. */
+  run<T>(task: () => Promise<T>): Promise<T> {
+    const clear = () => {
+      if (!this.#frames) this.#spin.clear();
+    };
+    return clearSpinnerOnError({ clear }, task);
+  }
+
+  done(message: string): void {
+    if (this.#encode) this.#encode.done(message);
+    else this.#spin.stop(message);
   }
 }

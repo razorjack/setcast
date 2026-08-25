@@ -4,18 +4,7 @@ import { parseArgs } from 'node:util';
 import { formatTime, hms, parseTime, SetcastError } from '@setcast/core';
 import { render } from '@setcast/renderer-remotion';
 import { load } from '../project.ts';
-import {
-  bold,
-  clearSpinnerOnError,
-  dim,
-  fmtSeconds,
-  intro,
-  log,
-  outro,
-  ProgressLine,
-  spinner,
-  steel,
-} from '../ui.ts';
+import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, steel } from '../ui.ts';
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N]
 
@@ -50,53 +39,20 @@ export async function run(argv: string[]): Promise<void> {
   );
   if (range) log.info(`Range ${formatTime(range[0])} → ${formatTime(range[1])}`);
 
-  const prep = spinner();
-  prep.start('Preparing browser');
-  let preparing = true;
-  let frames: ProgressLine | undefined;
-  let encode: ProgressLine | undefined;
+  const ui = new RenderUi();
   const started = Date.now();
-
-  const result = await clearSpinnerOnError(
-    prep,
-    () =>
-      render(project, {
-        projectDir: dir,
-        out,
-        ...(range && { range }),
-        ...(concurrency && { concurrency }),
-        crf: config.output.crf,
-        jpegQuality: config.output.jpegQuality,
-        onProgress: ({ stage, progress, renderedFrames = 0, totalFrames = 0 }) => {
-          if (stage === 'browser')
-            prep.message(
-              progress < 1
-                ? `Downloading Chrome Headless Shell ${Math.round(progress * 100)}%`
-                : 'Browser ready',
-            );
-          if (stage === 'bundle')
-            prep.message(`Bundling composition ${Math.round(progress * 100)}%`);
-          if (stage === 'frames') {
-            if (!frames) {
-              prep.stop('Composition bundled');
-              preparing = false;
-              frames = new ProgressLine('frames');
-            }
-            frames.update(progress, `${renderedFrames}/${totalFrames}`);
-          }
-          if (stage === 'encode') {
-            frames?.update(1, `${totalFrames}/${totalFrames}`);
-            if (!encode) {
-              frames?.done(`Rendered ${totalFrames} frames`);
-              encode = new ProgressLine('encode');
-            }
-            encode.update(progress, 'h264 + aac');
-          }
-        },
-      }),
-    () => preparing,
+  const result = await ui.run(() =>
+    render(project, {
+      projectDir: dir,
+      out,
+      ...(range && { range }),
+      ...(concurrency && { concurrency }),
+      crf: config.output.crf,
+      jpegQuality: config.output.jpegQuality,
+      onProgress: ui.onProgress,
+    }),
   );
-  encode?.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
+  ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
   outro(
     `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${steel(relative(process.cwd(), result.file) || result.file)}`,
   );
