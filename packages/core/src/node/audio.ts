@@ -28,9 +28,9 @@ function ffmpegPcm(file: string, rate: number): Promise<Float32Array | null> {
   const args = ['-v', 'error', '-i', file, '-f', 'f32le', '-ac', '1', '-ar', String(rate), '-'];
   return new Promise((resolve, reject) => {
     const ffmpeg = spawn('ffmpeg', args);
-    const chunks: Buffer[] = [];
+    const samples = new Samples();
     let stderr = '';
-    ffmpeg.stdout.on('data', (chunk: Buffer) => chunks.push(chunk));
+    ffmpeg.stdout.on('data', (chunk: Buffer) => samples.push(chunk));
     ffmpeg.stderr.on('data', (chunk: Buffer) => (stderr += chunk));
     ffmpeg.on('error', (error: NodeJS.ErrnoException) =>
       error.code === 'ENOENT' ? resolve(null) : reject(error),
@@ -44,11 +44,38 @@ function ffmpegPcm(file: string, rate: number): Promise<Float32Array | null> {
           ),
         );
       }
-      const buffer = Buffer.concat(chunks);
-      const end = buffer.byteOffset + (buffer.byteLength & ~3);
-      resolve(new Float32Array(buffer.buffer.slice(buffer.byteOffset, end)));
+      resolve(samples.done());
     });
   });
+}
+
+/**
+ * Collects streamed f32le bytes into one growing Float32Array. A two-hour set is 600 MB of
+ * samples, so the bytes go straight into their final buffer instead of a list of chunks that
+ * is concatenated afterwards.
+ */
+class Samples {
+  #floats = new Float32Array(1 << 20);
+  #length = 0;
+  #carry = Buffer.alloc(0);
+
+  push(chunk: Buffer): void {
+    const bytes = this.#carry.length ? Buffer.concat([this.#carry, chunk]) : chunk;
+    const whole = bytes.length & ~3;
+    this.#carry = Buffer.from(bytes.subarray(whole));
+    const count = whole / 4;
+    while (this.#length + count > this.#floats.length) {
+      const bigger = new Float32Array(this.#floats.length * 2);
+      bigger.set(this.#floats);
+      this.#floats = bigger;
+    }
+    new Uint8Array(this.#floats.buffer).set(bytes.subarray(0, whole), this.#length * 4);
+    this.#length += count;
+  }
+
+  done(): Float32Array {
+    return this.#floats.subarray(0, this.#length);
+  }
 }
 
 /** Null when `file` is not a 16-bit PCM RIFF/WAVE. */
