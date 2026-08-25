@@ -219,7 +219,8 @@ list; implemented today: visualizer, theme, tracklist importer):
 - analysis: BPM and drop / breakdown detection → draft events (`setcast analyze` ✓); onset and
   beat-grid quantization of the drafted times are not built
 - background engines: static image ✓, looping video ✓, per-track slideshow, generative
-- layout profiles / output targets: 16:9 ✓, 9:16 vertical, auto-cut 30–60 s promo clips centered
+- layout profiles / output targets: 16:9 ✓, 9:16 vertical ✓ (`@container (aspect-ratio < 1)` in the
+  theme; the stage root is a size container), auto-cut 30–60 s promo clips centered
   on `drop` events
 - branding: logo, socials ticker, episode numbering, intro/outro
 - side outputs: YouTube chapters + description from the timeline (`setcast chapters` ✓),

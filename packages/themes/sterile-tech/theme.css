@@ -249,3 +249,49 @@
   background: var(--accent);
   opacity: 0.5;
 }
+
+/* portrait (9:16): the stage is a size container, so the layout follows its aspect ratio */
+@container (aspect-ratio < 1) {
+  .theme-sterile-tech .sc-panel {
+    max-width: 88cqw;
+    padding: 3cqw 3.8cqw 3.4cqw 3.6cqw;
+  }
+  .theme-sterile-tech .sc-panel-head {
+    font-size: 1.8cqw;
+    gap: 2cqw;
+    margin-bottom: 1.6cqw;
+  }
+  .theme-sterile-tech .sc-deck {
+    width: 3.8cqw;
+    height: 3.8cqw;
+    font-size: 2cqw;
+  }
+  .theme-sterile-tech .sc-artist {
+    font-size: 3.6cqw;
+  }
+  .theme-sterile-tech .sc-title {
+    font-size: 7.6cqw;
+  }
+  .theme-sterile-tech .sc-label {
+    font-size: 1.8cqw;
+  }
+  .theme-sterile-tech .sc-header {
+    font-size: 2cqw;
+  }
+  .theme-sterile-tech .sc-next {
+    max-width: 80cqw;
+    bottom: calc(var(--margin) + 10cqh);
+  }
+  .theme-sterile-tech .sc-next-label {
+    font-size: 1.6cqw;
+  }
+  .theme-sterile-tech .sc-next-artist {
+    font-size: 2.4cqw;
+  }
+  .theme-sterile-tech .sc-next-title {
+    font-size: 3.4cqw;
+  }
+  .theme-sterile-tech .sc-spectrum {
+    height: 12cqh;
+  }
+}

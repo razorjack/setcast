@@ -89,7 +89,9 @@ code. The stage root also carries the timeline itself – `data-section`, `data-
 and seconds in `--since-drop`, `--until-drop`, `--until-breakdown`, `--since-rewind`,
 `--section-time` and friends – so
 `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a flash on every drop and
-`width: calc(var(--set-progress) * 100%)` is a progress bar. Plugins (visualizers, importers,
+`width: calc(var(--set-progress) * 100%)` is a progress bar. Vertical output is
+`output: { width: 1080, height: 1920 }`; the stage is a CSS size container, so a theme adapts
+with `@container (aspect-ratio < 1) { ... }` (sterile-tech does). Plugins (visualizers, importers,
 themes as npm packages) are the escape hatch for the rest.
 
 ## Renderer
