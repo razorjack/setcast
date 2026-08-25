@@ -98,8 +98,10 @@ export async function run(argv: string[]): Promise<void> {
   const path = join(root, CONFIG_FILE);
   const doc = parseDocument(await readFile(path, 'utf8'));
   const existing = doc.get('events');
-  if (isSeq(existing)) for (const e of fresh) existing.add(doc.createNode(toYaml(e)));
-  else doc.set('events', fresh.map(toYaml));
+  if (isSeq(existing)) {
+    existing.flow = false;
+    for (const e of fresh) existing.add(doc.createNode(toYaml(e)));
+  } else doc.set('events', fresh.map(toYaml));
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
   outro(`Added ${fresh.length} events to ${steel(path)}`);
