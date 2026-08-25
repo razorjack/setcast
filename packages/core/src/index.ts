@@ -84,7 +84,15 @@ export { Registry } from './registry.ts';
 export { SECONDS_CAP, stageData, stageVars } from './stage.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
 export { Timeline, since, until, type EventState } from './timeline.ts';
-export { chapters, youtubeDescription } from './chapters.ts';
+export {
+  MIN_CHAPTERS,
+  MIN_CHAPTER_SECONDS,
+  chapterList,
+  chapterProblems,
+  chapters,
+  youtubeDescription,
+  type Chapter,
+} from './chapters.ts';
 export {
   RadialConfigSchema,
   SpectrumConfigSchema,

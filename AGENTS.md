@@ -350,6 +350,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
   never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
   in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.
+- `setcast chapters` writes the description to stdout and anything that would stop YouTube from
+  showing the chapters to stderr, so piping the description into a file stays clean. It checks the
+  two rules the tracklist alone decides (at least 3 chapters, each at least 10 s) and not the last
+  chapter's length, which only the set's duration settles.
 - `setcast still` grabs the first `drop` by default (a quarter into the set when there is none) and
   picks png/jpeg/webp from the `--out` extension, defaulting to `output.file` with `.jpg`. It
   renders the frame exactly as the video shows it, so a set whose panel has already left gets a

@@ -32,6 +32,9 @@ export async function clearSpinnerOnError<T>(
   }
 }
 
+/** A warning that must not end up in a piped stdout. */
+export const warn = (message: string) => process.stderr.write(`${pc.yellow('!')} ${message}\n`);
+
 export function printError(error: unknown): void {
   if (error instanceof ConfigError) {
     p.log.error(pc.red(error.message));
