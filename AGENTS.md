@@ -364,6 +364,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   showing the chapters to stderr, so piping the description into a file stays clean. It checks the
   two rules the tracklist alone decides (at least 3 chapters, each at least 10 s) and not the last
   chapter's length, which only the set's duration settles.
+- `setcast render --bundle` writes the thumbnail and the description next to the MP4 (same base
+  name, `.jpg` and `.txt`) with the defaults of `setcast still` and `setcast chapters`. It is a
+  flag, not the default, so a plain render still produces exactly one file, and it refuses
+  `--range` because a slice has no upload to bundle for.
 - `setcast still` grabs the first `drop` by default (a quarter into the set when there is none) and
   picks png/jpeg/webp from the `--out` extension, defaulting to `output.file` with `.jpg`. It
   renders the frame exactly as the video shows it, so a set whose panel has already left gets a

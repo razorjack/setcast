@@ -50,5 +50,5 @@ function parseAt(text: string): number {
 }
 
 /** The drop a set is best known by, or null to let the renderer pick a quarter of the way in. */
-const firstDrop = (events: readonly SetEvent[]): number | null =>
+export const firstDrop = (events: readonly SetEvent[]): number | null =>
   events.find((e) => e.type === 'drop' || e.type === 'double_drop')?.time ?? null;

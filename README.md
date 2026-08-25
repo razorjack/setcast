@@ -75,7 +75,7 @@ css: overrides.css           # optional, appended after the theme
 ```
 
 Commands: `setcast init`, `import <tracklist.txt|.cue> [--write]`, `analyze [--write]` (reads the audio
-and drafts drop / breakdown events plus the tempo), `preview`, `render [--range A-B]`,
+and drafts drop / breakdown events plus the tempo), `preview`, `render [--range A-B] [--bundle]` (the MP4; `--bundle` also writes the thumbnail and description next to it),
 `still [--at 1:04]` (one frame as an image, for the thumbnail), `chapters` (YouTube description
 with timestamps, warning about anything that would stop YouTube showing them), and the roadmap
 stub `live`.

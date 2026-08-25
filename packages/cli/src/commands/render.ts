@@ -1,17 +1,27 @@
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { formatTime, hms, parseTime, SetcastError } from '@setcast/core';
-import { render } from '@setcast/renderer-remotion';
+import {
+  chapterProblems,
+  formatTime,
+  hms,
+  parseTime,
+  SetcastError,
+  youtubeDescription,
+  type ResolvedProject,
+} from '@setcast/core';
+import { render, still } from '@setcast/renderer-remotion';
 import { load } from '../project.ts';
-import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, steel } from '../ui.ts';
+import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, steel, warn } from '../ui.ts';
+import { firstDrop } from './still.ts';
 
-export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N]
+export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N] [--bundle]
 
 Renders the project in <dir> (default: current directory) to an MP4.
   --range        render only a slice, e.g. --range 1:00-1:30 (handy for tuning)
   --out          output file; defaults to output.file in setcast.yaml
-  --concurrency  parallel browser tabs (default: Remotion's choice)`;
+  --concurrency  parallel browser tabs (default: Remotion's choice)
+  --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
 export async function run(argv: string[]): Promise<void> {
   const { values, positionals } = parseArgs({
@@ -21,11 +31,18 @@ export async function run(argv: string[]): Promise<void> {
       range: { type: 'string' },
       out: { type: 'string' },
       concurrency: { type: 'string' },
+      bundle: { type: 'boolean' },
     },
   });
   intro('render');
   const { dir, project, config } = await load(positionals[0]);
   const range = values.range ? parseRange(values.range) : undefined;
+  if (values.bundle && range) {
+    throw new SetcastError(
+      '--bundle renders the whole set',
+      'Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.',
+    );
+  }
   const concurrency = values.concurrency ? parseConcurrency(values.concurrency) : undefined;
   const out = resolve(
     dir,
@@ -53,9 +70,39 @@ export async function run(argv: string[]): Promise<void> {
     }),
   );
   ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
+  const files = [result.file];
+  if (values.bundle) files.push(...(await bundle(project, dir, out, config.output.jpegQuality)));
   outro(
-    `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${steel(relative(process.cwd(), result.file) || result.file)}`,
+    `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${files.map(shown).join(', ')}`,
   );
+}
+
+const shown = (file: string) => steel(relative(process.cwd(), file) || file);
+
+/** The thumbnail and the description, so one command leaves everything the upload form asks for. */
+async function bundle(
+  project: ResolvedProject,
+  dir: string,
+  video: string,
+  jpegQuality: number,
+): Promise<string[]> {
+  const base = video.replace(/(\.[^.]+)?$/, '');
+  const at = firstDrop(project.events);
+  const ui = new RenderUi();
+  const thumb = await ui.run(() =>
+    still(project, {
+      projectDir: dir,
+      out: `${base}.jpg`,
+      ...(at !== null && { at }),
+      jpegQuality,
+      onProgress: ui.onProgress,
+    }),
+  );
+  ui.done(`Thumbnail from ${bold(formatTime(thumb.timeSeconds))}`);
+  const text = `${base}.txt`;
+  await writeFile(text, youtubeDescription(project.title, project.events));
+  for (const problem of chapterProblems(project.events)) warn(problem);
+  return [thumb.file, text];
 }
 
 export function parseRange(text: string): [number, number] {

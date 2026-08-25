@@ -24,7 +24,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('import')}    turn a tracklist file into tracks: for setcast.yaml
   ${steel('analyze')}   read the audio and draft drop / breakdown events
   ${steel('preview')}   open the project in Remotion Studio
-  ${steel('render')}    render the MP4 (--range MM:SS-MM:SS for a slice)
+  ${steel('render')}    render the MP4 (--range for a slice, --bundle adds thumbnail + description)
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      (planned) live overlay mode
