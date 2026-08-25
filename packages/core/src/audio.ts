@@ -118,6 +118,10 @@ export function rms(samples: ArrayLike<number>, gain = 3): number {
   return soft(Math.sqrt(sum / samples.length), gain);
 }
 
+/** A bin as a bar height: scaled by `gain`, never under `floor` so silence keeps a baseline, capped at 1. */
+export const level = (bin: number, gain: number, floor: number): number =>
+  Math.max(floor, Math.min(1, bin * gain));
+
 /**
  * Linear resample of `bins` to `count` points, first and last bin included. Visualizers draw a
  * fixed number of bars from a fixed number of bins; this is the one way they agree on.

@@ -4,6 +4,7 @@ export {
   FEATURE_SOURCES,
   SILENCE,
   bandEnergy,
+  level,
   logBins,
   rms,
   sampleBins,

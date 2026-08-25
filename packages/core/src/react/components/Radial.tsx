@@ -1,4 +1,4 @@
-import { sampleBins } from '../../audio.ts';
+import { level, sampleBins } from '../../audio.ts';
 import { RadialConfigSchema, type RadialConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 
@@ -16,8 +16,7 @@ export function Radial({ config }: { config: RadialConfig }) {
   const values = sampleBins(audio.bins, bars);
   const lines = [];
   for (let i = 0; i < bars; i++) {
-    const v = Math.max(floor, Math.min(1, values[i]! * gain));
-    const len = v * max;
+    const len = level(values[i]!, gain, floor) * max;
     for (const side of [1, -1]) {
       const a = Math.PI / 2 + side * (i + 0.5) * step;
       const cos = Math.cos(a);

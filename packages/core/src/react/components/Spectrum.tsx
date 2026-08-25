@@ -1,4 +1,4 @@
-import { sampleBins } from '../../audio.ts';
+import { level, sampleBins } from '../../audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 
@@ -16,7 +16,7 @@ export function Spectrum({ config }: { config: SpectrumConfig }) {
   const w = slot * (1 - gap);
   const rects = [];
   for (let i = 0; i < bars; i++) {
-    const h = H * Math.max(floor, Math.min(1, values[i]! * gain));
+    const h = H * level(values[i]!, gain, floor);
     const y = H - h;
     rects.push(
       <rect key={`r${i}`} x={W / 2 + i * slot + (slot - w) / 2} y={y} width={w} height={h} />,
