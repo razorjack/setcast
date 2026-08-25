@@ -23,4 +23,10 @@ describe('resolveVisualizer', () => {
     expect(resolveVisualizerConfig({ name: 'plasma' })).toEqual({ name: 'plasma', rings: 3 });
     expect(resolveVisualizer({ name: 'plasma' }).config).toEqual({ name: 'plasma', rings: 3 });
   });
+
+  test('a second visualizer with a taken name is refused', () => {
+    expect(() =>
+      defineVisualizer({ name: 'spectrum', schema: z.object({}), component: () => null }),
+    ).toThrow(/already registered/);
+  });
 });

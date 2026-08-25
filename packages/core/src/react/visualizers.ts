@@ -7,14 +7,16 @@ import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
 
 export { visualizers };
 
-/** A spec plus the component that draws it. Registering one replaces any schema-only entry. */
+/** A spec plus the component that draws it. Registering one completes a schema-only entry. */
 export interface Visualizer<C = unknown> extends VisualizerSpec {
   schema: z.ZodType<C>;
   component: ComponentType<{ config: C }>;
 }
 
 export function defineVisualizer<C>(v: Visualizer<C>): Visualizer<C> {
-  visualizers.add(v);
+  const known = visualizers.has(v.name) ? (visualizers.get(v.name) as Visualizer) : null;
+  if (known && !known.component) visualizers.replace(v);
+  else visualizers.add(v);
   return v;
 }
 
