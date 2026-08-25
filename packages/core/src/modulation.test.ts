@@ -35,10 +35,18 @@ describe('evaluateModulation', () => {
     expect(evaluateModulation([r], at(11, analyzer))['bg-zoom']).toBe(2);
   });
 
-  test('later routes override earlier ones with the same target', () => {
-    const ctx = at(1, constant(1));
+  test('later routes override earlier ones with the same target, which are not evaluated', () => {
+    let calls = 0;
+    const counting: AudioAnalyzer = {
+      featuresAt: () => {
+        calls++;
+        return { ...SILENCE, bass: 1 };
+      },
+    };
+    const ctx = at(1, counting);
     const out = evaluateModulation([route({ range: [0, 5] }), route({ range: [0, 9] })], ctx);
     expect(out).toEqual({ 'bg-zoom': 9 });
+    expect(calls).toBe(1);
   });
 
   test('smoothing averages the trailing window', () => {

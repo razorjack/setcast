@@ -62,15 +62,16 @@ export interface ModContext {
 
 /**
  * Resolves every route to a number. Later routes override earlier ones with the same target,
- * which is how a project's routes replace a theme's defaults.
+ * which is how a project's routes replace a theme's defaults; an overridden route is not evaluated.
  */
 export function evaluateModulation(
   routes: readonly ModRoute[],
   ctx: ModContext,
 ): Record<string, number> {
-  const out: Record<string, number> = {};
-  for (const route of routes) out[route.target] = evaluateRoute(route, ctx);
-  return out;
+  const live = new Map(routes.map((route) => [route.target, route]));
+  return Object.fromEntries(
+    [...live.values()].map((route) => [route.target, evaluateRoute(route, ctx)]),
+  );
 }
 
 export function evaluateRoute(route: ModRoute, ctx: ModContext): number {
