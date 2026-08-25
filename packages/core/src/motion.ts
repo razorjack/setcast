@@ -35,17 +35,14 @@ export function interpolate(
       `interpolate: inputRange and outputRange need the same length (>= 2), got ${inputRange.length} and ${outputRange.length}.`,
     );
   }
-  const first = inputRange[0]!;
-  const last = inputRange[inputRange.length - 1]!;
-  if (extrapolate === 'clamp') input = clamp(input, first, last);
-
   let i = 0;
   while (i < inputRange.length - 2 && input > inputRange[i + 1]!) i++;
   const in0 = inputRange[i]!;
   const in1 = inputRange[i + 1]!;
   const out0 = outputRange[i]!;
   const out1 = outputRange[i + 1]!;
-  if (in1 === in0) return out1;
+  if (in1 === in0) return input < in0 ? out0 : out1;
+  if (extrapolate === 'clamp') input = clamp(input, in0, in1);
   const t = (input - in0) / (in1 - in0);
   return lerp(out0, out1, t >= 0 && t <= 1 ? easing(t) : t);
 }

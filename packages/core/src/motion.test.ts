@@ -15,6 +15,12 @@ describe('interpolate', () => {
     expect(interpolate(10, [0, 10], [0, 1], { easing: ease.out })).toBe(1);
   });
 
+  test('a zero-width segment is a step', () => {
+    expect(interpolate(5, [14, 14], [1, 0])).toBe(1);
+    expect(interpolate(14, [14, 14], [1, 0])).toBe(0);
+    expect(interpolate(20, [14, 14], [1, 0])).toBe(0);
+  });
+
   test('rejects mismatched ranges', () => {
     expect(() => interpolate(0, [0], [0])).toThrow(RangeError);
   });
