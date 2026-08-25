@@ -72,6 +72,15 @@ modulation:
     expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
   });
 
+  test('a track background must exist too', async () => {
+    await expect(
+      load(
+        'audio: assets/mix.wav\ntheme: test\ntracks: [{ time: 0, title: X, background: assets/x.png }]\n',
+        'track-bg',
+      ),
+    ).rejects.toThrow(/track "X" background file not found/);
+  });
+
   test('an unknown visualizer is reported while loading', async () => {
     await expect(
       load('audio: assets/mix.wav\ntheme: test\nvisualizer: { name: plasma }\n', 'bad-viz'),

@@ -33,6 +33,11 @@
   transform-origin: center;
 }
 
+/* a track's own background fades up over the previous one; themes set --bg-fade in seconds */
+.sc-bg-in {
+  opacity: clamp(0, calc(var(--since-track, 60) / var(--bg-fade, 1.5)), 1);
+}
+
 .sc-spectrum {
   position: absolute;
   left: 0;

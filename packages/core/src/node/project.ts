@@ -35,6 +35,12 @@ export async function loadProject(
 
   await requireFile(root, config.audio, 'audio');
   if (config.background) await requireFile(root, config.background, 'background');
+  const events = mergeEvents(config);
+  for (const e of events) {
+    if (e.type === 'track_start' && e.background) {
+      await requireFile(root, e.background, `track "${e.title}" background`);
+    }
+  }
   const userCss = config.css ? await requireFile(root, config.css, 'css') : null;
 
   const css = [
@@ -52,7 +58,7 @@ export async function loadProject(
     width: config.output.width,
     height: config.output.height,
     fps: config.output.fps,
-    events: mergeEvents(config),
+    events,
     modulation: [...themeRoutes(theme), ...config.modulation],
     visualizer: resolveVisualizerConfig(config.visualizer),
     panel: config.panel,

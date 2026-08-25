@@ -79,12 +79,8 @@ export class Timeline {
 const isSection = (type: EventType): type is SectionType =>
   (SECTION_TYPES as readonly string[]).includes(type);
 
-const trackOf = ({ title, artist, label, deck }: EventOf<'track_start'>): Track => ({
-  title,
-  artist,
-  ...(label !== undefined && { label }),
-  ...(deck !== undefined && { deck }),
-});
+const trackOf = ({ type: _type, time: _time, id: _id, ...track }: EventOf<'track_start'>): Track =>
+  track;
 
 /** `drop` covers double drops too: wherever something reacts to a drop, a double drop is one. */
 type Of<T extends EventType> = EventOf<T extends 'drop' ? 'drop' | 'double_drop' : T>;

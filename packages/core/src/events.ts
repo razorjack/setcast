@@ -22,6 +22,8 @@ export const TrackSchema = z.object({
   artist: z.string().default('ID'),
   label: z.string().optional(),
   deck: DeckSchema.optional(),
+  /** This track's own background image or video, replacing `background:` while it plays. */
+  background: z.string().optional(),
 });
 export type Track = z.infer<typeof TrackSchema>;
 

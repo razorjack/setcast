@@ -223,7 +223,8 @@ list; implemented today: visualizer, theme, tracklist importer):
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft events, snapped to the beat grid
   (`setcast analyze` ✓); downbeat detection is not built
-- background engines: static image ✓, looping video ✓, per-track slideshow, generative
+- background engines: static image ✓, looping video ✓, per-track backgrounds ✓
+  (`tracks[].background`, crossfaded by CSS from `--since-track`), generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical ✓ (`@container (aspect-ratio < 1)` in the
   theme; the stage root is a size container), promo clips cut around `drop` events
   (`setcast clip` ✓)
@@ -353,6 +354,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `Video`: OffthreadVideo draws the frame into an `<img>`, so `object-fit`, `filter` and `transform`
   from `.sc-bg-img` apply exactly as they do to a still. `@remotion/media`'s `Video` loops on its
   own but sets `object-fit` inline, which overrides the theme.
+- Per-track backgrounds are `tracks[].background` (also on a `track_start` event), the same
+  image-or-video rule as `background:`. `Background` mounts the previous track's art as
+  `.sc-bg-out` under the new one as `.sc-bg-in`, and base CSS fades `.sc-bg-in` up over
+  `--bg-fade` seconds (1.5) of `--since-track`, so the crossfade is CSS a theme can reshape and
+  the frame stays deterministic. The outgoing layer stays mounted for the whole track, which is
+  one extra image; a video underneath keeps decoding, which is the price of a video slideshow.
 - `render()` serializes calls and temporarily `process.chdir()`s into the adapter package so
   Remotion's browser and bundle caches are shared across projects instead of each project dir
   getting a `.remotion/`. Serialization prevents concurrent calls from restoring the process-wide
@@ -392,7 +399,6 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Sidecar format for precomputed AudioFeatures (JSON first; binary layout later).
 - Whether live mode renders via the same `Stage` in a browser source with a `RenderFrame` driven by
   `requestAnimationFrame` (likely yes) and how event-delay offset is configured.
-- Per-track backgrounds: config shape (`tracks[].background`?) and crossfade semantics.
 - Plugin loading for npm plugins (generated bundle entry vs. config-time import map).
 - Publishing layout. `vp pack` builds `dist/*.mjs` + `.d.mts` and `publishConfig.exports` points
   there, but two things are unresolved: the CLI `bin` imports `src/main.ts` (fine in the workspace,

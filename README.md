@@ -60,7 +60,7 @@ deckOrder: [A, B]            # decks tracks rotate through when they name none
 
 tracks:                      # becomes track_start events; decks alternate A/B if omitted
   - { time: 0:00, artist: Noisia, title: Stigma, label: Vision }
-  - { time: 4:12, artist: ID, title: ID, deck: B }
+  - { time: 4:12, artist: ID, title: ID, deck: B, background: assets/id.jpg }  # its own art
 
 events:                      # drop, double_drop, breakdown, buildup, rewind, switch, chapter
   - { type: drop, time: 1:04 }
