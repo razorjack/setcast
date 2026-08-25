@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { FEATURE_SOURCES, type AudioAnalyzer, type FeatureSource } from './audio.ts';
 import { EVENT_TYPES, SECTION_TYPES, type EventType } from './events.ts';
 import { clamp } from './motion.ts';
+import { beatPhase } from './stage.ts';
 import { since, until, type EventState } from './timeline.ts';
 
 export const CURVES = {
@@ -24,8 +25,15 @@ export const TIMELINE_SOURCES: TimelineSource[] = EVENT_TYPES.flatMap((type): Ti
   `until:${type}`,
 ]);
 
-export type ModSource = FeatureSource | TimelineSource;
-const SOURCES = [...FEATURE_SOURCES, ...TIMELINE_SOURCES] as [ModSource, ...ModSource[]];
+/** Tempo sources: 1 on the beat (or the bar's downbeat), falling to 0 just before the next. 0 without `bpm:`. */
+export const BEAT_SOURCES = ['beat', 'bar'] as const;
+export type BeatSource = (typeof BEAT_SOURCES)[number];
+
+export type ModSource = FeatureSource | TimelineSource | BeatSource;
+const SOURCES = [...FEATURE_SOURCES, ...TIMELINE_SOURCES, ...BEAT_SOURCES] as [
+  ModSource,
+  ...ModSource[],
+];
 
 export const ModRouteSchema = z.object({
   source: z.enum(SOURCES),
@@ -58,6 +66,8 @@ export interface ModContext {
   fps: number;
   events: EventState;
   analyzer: AudioAnalyzer;
+  bpm?: number | null;
+  beatOffset?: number;
 }
 
 /**
@@ -82,8 +92,13 @@ export function evaluateRoute(route: ModRoute, ctx: ModContext): number {
 }
 
 const isTimeline = (source: ModSource): source is TimelineSource => source.includes(':');
+const isBeat = (source: ModSource): source is BeatSource =>
+  (BEAT_SOURCES as readonly string[]).includes(source);
 
 function sourceValue(route: ModRoute, ctx: ModContext): number {
+  if (isBeat(route.source)) {
+    return ctx.bpm ? 1 - beatPhase(ctx.time, ctx.bpm, ctx.beatOffset)[route.source] : 0;
+  }
   if (!isTimeline(route.source)) return smoothed(route.source, route.smooth, ctx);
   const [direction, type] = route.source.split(':') as ['since' | 'until', EventType];
   const seconds = (direction === 'since' ? since : until)(ctx.events, type, ctx.time);

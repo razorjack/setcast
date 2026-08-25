@@ -65,6 +65,8 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
       fps,
       events,
       analyzer,
+      bpm: project.bpm,
+      beatOffset: project.beatOffset,
     }),
   };
   return (

@@ -68,6 +68,7 @@ events:                      # drop, double_drop, breakdown, buildup, rewind, sw
 modulation:                  # audio and timeline → CSS custom properties (--mod-<target>)
   - { source: bass, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.08, when: drop }
   - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
+  - { source: beat, target: kick, curve: pow3, when: drop }   # 1 on every beat, needs bpm:
 
 visualizer: { name: spectrum, bars: 48, gain: 1 }   # or { name: radial, radius: 0.3, spin: 2 }
 panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up

@@ -20,6 +20,15 @@ const at = (time: number, analyzer: AudioAnalyzer = constant(0)) => ({
 });
 
 describe('evaluateModulation', () => {
+  test('beat and bar sources follow the tempo and rest at 0 without one', () => {
+    const r = route({ source: 'beat', range: [0, 1] });
+    const bar = route({ source: 'bar', range: [0, 1] });
+    const ctx = { ...at(0.75), bpm: 120, beatOffset: 0 };
+    expect(evaluateModulation([r], ctx)['bg-zoom']).toBeCloseTo(0.5);
+    expect(evaluateModulation([bar], ctx)['bg-zoom']).toBeCloseTo(0.625);
+    expect(evaluateModulation([r], at(0.75))['bg-zoom']).toBe(0);
+  });
+
   test('maps source through range and curve', () => {
     const ctx = at(1, constant(0.5));
     expect(evaluateModulation([route({ range: [1, 2] })], ctx)).toEqual({ 'bg-zoom': 1.5 });

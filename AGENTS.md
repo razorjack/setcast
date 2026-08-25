@@ -149,8 +149,9 @@ everything else. Both land on one timeline. Tracks without `deck` alternate A/B.
 ### Modulation matrix
 
 `packages/core/src/modulation.ts`. Routes: `{ source, target, range, curve, smooth, window, when }`.
-Sources are all 0..1 and come in two kinds: audio (`bass | mids | highs | rms | onset`) and
-timeline (`since:<event>` / `until:<event>` for every event type). Target names are kebab-case and
+Sources are all 0..1 and come in three kinds: audio (`bass | mids | highs | rms | onset`),
+timeline (`since:<event>` / `until:<event>` for every event type) and tempo (`beat | bar`: 1 on
+the beat or the bar's downbeat, falling to 0 before the next; 0 when the project has no `bpm:`). Target names are kebab-case and
 become CSS custom properties `--mod-<target>` on the stage root, so themes consume any modulation
 without JS. `range: [a, b]` maps source 0..1 to a..b; `curve`: `linear | sqrt | pow2 | pow3 |
 smooth`; `smooth` seconds of trailing recency-weighted average, audio sources only

@@ -50,8 +50,14 @@ export function stageVars(
  */
 export function beatVars(time: number, bpm: number | null, offset = 0): Record<string, string> {
   if (!bpm) return {};
+  const { beat, bar } = beatPhase(time, bpm, offset);
+  return { '--beat': num(beat), '--bar': num(bar) };
+}
+
+/** 0..1 through the current beat and the current four-beat bar. */
+export function beatPhase(time: number, bpm: number, offset = 0): { beat: number; bar: number } {
   const beats = ((time - offset) * bpm) / 60;
-  return { '--beat': num(phase(beats)), '--bar': num(phase(beats / 4)) };
+  return { beat: phase(beats), bar: phase(beats / 4) };
 }
 
 const phase = (v: number) => ((v % 1) + 1) % 1;
