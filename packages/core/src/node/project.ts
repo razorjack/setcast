@@ -94,7 +94,7 @@ async function resolveTheme(
 ): Promise<Theme> {
   if (name.endsWith('.css')) {
     const cssFile = await requireFile(root, name, 'theme');
-    return { name: name.replace(/.*[\\/]/, '').replace(/\.css$/, ''), cssFile, modulation: [] };
+    return { name: themeName(name), cssFile, modulation: [] };
   }
   const theme = themes[name];
   if (theme) return theme;
@@ -103,6 +103,13 @@ async function resolveTheme(
     `Built-in themes: ${Object.keys(themes).join(', ') || '(none)'}. A path to a .css file (e.g. "./my-theme.css") is also a valid theme.`,
   );
 }
+
+/** The file's base name, made safe for the `theme-<name>` class on the stage root. */
+const themeName = (file: string) =>
+  file
+    .replace(/.*[\\/]/, '')
+    .replace(/\.css$/, '')
+    .replace(/[^\w-]+/g, '-');
 
 /** A theme is a plugin: its default patch goes through the same schema as the project's routes. */
 function themeRoutes({ name, modulation }: Theme): ModRoute[] {
