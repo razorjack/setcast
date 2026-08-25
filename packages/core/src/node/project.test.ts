@@ -146,16 +146,13 @@ tracks:
     ).rejects.toBeInstanceOf(SetcastError);
   });
 
-  test('absolute asset paths are rejected up front', async () => {
-    await expect(load('audio: /tmp/mix.wav\ntheme: test\n', 'abs')).rejects.toBeInstanceOf(
-      ConfigError,
-    );
-  });
-
   test('asset paths cannot leave the project directory', async () => {
+    await expect(load('audio: /tmp/mix.wav\ntheme: test\n', 'abs')).rejects.toThrow(
+      /leaves the project directory/,
+    );
     await expect(
       load('audio: assets/../../outside.wav\ntheme: test\n', 'traversal'),
-    ).rejects.toBeInstanceOf(ConfigError);
+    ).rejects.toThrow(/leaves the project directory/);
     await expect(
       load('audio: assets/mix.wav\ntheme: css/../../outside.css\n', 'theme-traversal'),
     ).rejects.toThrow(/leaves the project directory/);

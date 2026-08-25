@@ -128,7 +128,7 @@ async function requireFile(root: string, rel: string, what: string): Promise<str
   if (fromRoot === '..' || fromRoot.startsWith(`..${sep}`) || isAbsolute(fromRoot)) {
     throw new SetcastError(
       `${what} path leaves the project directory: ${rel}`,
-      `Use a path inside ${root}.`,
+      `Use a path inside ${root} (e.g. "assets/mix.wav"), not an absolute path or "..".`,
     );
   }
   try {

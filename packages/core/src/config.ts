@@ -3,16 +3,8 @@ import { DeckSchema, EventSchema, TimeSchema, TrackSchema } from './events.ts';
 import { ModRouteSchema } from './modulation.ts';
 import { VisualizerConfigSchema } from './visualizers.ts';
 
-const relativePath = (what: string) =>
-  z
-    .string()
-    .min(1, `${what} path cannot be empty.`)
-    .refine(
-      (p) => !p.startsWith('/') && !/^[A-Za-z]:[\\/]/.test(p) && !p.split(/[\\/]/).includes('..'),
-      {
-        message: `${what} must be a path inside the project directory (e.g. "assets/mix.wav"), not an absolute path or "..".`,
-      },
-    );
+/** A path relative to the project directory; `loadProject` checks that it stays inside it. */
+const relativePath = (what: string) => z.string().min(1, `${what} path cannot be empty.`);
 
 export const TrackEntrySchema = TrackSchema.extend({ time: TimeSchema });
 export type TrackEntry = z.infer<typeof TrackEntrySchema>;
