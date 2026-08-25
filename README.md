@@ -53,7 +53,8 @@ title: Sterile Session 01
 audio: assets/mix.wav
 background: assets/bg.svg
 theme: sterile-tech          # built-in name, or a path to your own .css
-output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4 }
+output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4, crf: 18, jpegQuality: 95 }
+deckOrder: [A, B]            # decks tracks rotate through when they name none
 
 tracks:                      # becomes track_start events; decks alternate A/B if omitted
   - { time: 0:00, artist: Noisia, title: Stigma, label: Vision }
@@ -67,7 +68,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: bass, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.08, when: drop }
   - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
 
-visualizer: { name: spectrum, bars: 48, gain: 1 }
+visualizer: { name: spectrum, bars: 48, gain: 1 }   # or { name: radial, radius: 0.3, spin: 2 }
 panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up
 css: overrides.css           # optional, appended after the theme
 ```
