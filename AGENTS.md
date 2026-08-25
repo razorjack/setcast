@@ -193,7 +193,7 @@ lag that still correlates so a 174 BPM roller does not read as 87. `setcast anal
 as a draft `events:` block, or merges them into `setcast.yaml` with `--write`.
 
 `decodeMono()` in `@setcast/core/node` produces the PCM: ffmpeg subprocess when it is on PATH
-(every format, streamed), and a built-in 16-bit PCM WAV reader otherwise, so a freshly scaffolded
+(every format, streamed), and a built-in PCM WAV reader (16/24/32-bit, float) otherwise, so a freshly scaffolded
 project analyzes without any install. This is the first half of the AudioFeatures sidecar on the
 roadmap.
 
