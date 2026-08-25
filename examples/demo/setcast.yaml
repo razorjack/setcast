@@ -47,6 +47,11 @@ modulation:
     curve: pow2
     smooth: 0.08
     when: drop
+  # A timeline source: the panel glows for two seconds after every track change.
+  - source: since:track_start
+    target: panel-glow
+    window: 2
+    curve: pow2
 
 visualizer:
   name: spectrum

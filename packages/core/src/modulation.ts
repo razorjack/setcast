@@ -1,7 +1,8 @@
 import { z } from 'zod';
-import { FEATURE_SOURCES, type AudioAnalyzer } from './audio.ts';
-import { SECTION_TYPES, type SectionType } from './events.ts';
+import { FEATURE_SOURCES, type AudioAnalyzer, type FeatureSource } from './audio.ts';
+import { EVENT_TYPES, SECTION_TYPES, type EventType } from './events.ts';
 import { clamp } from './motion.ts';
+import { since, until, type EventState } from './timeline.ts';
 
 export const CURVES = {
   linear: (v: number) => v,
@@ -12,8 +13,22 @@ export const CURVES = {
 } as const;
 export type Curve = keyof typeof CURVES;
 
+/**
+ * Event-driven sources. `since:drop` is 1 at the drop and falls to 0 over `window` seconds.
+ * `until:drop` is the anticipation: it climbs to 1 as the drop approaches and releases to 0 once
+ * the drop lands, where `since:drop` takes over.
+ */
+export type TimelineSource = `since:${EventType}` | `until:${EventType}`;
+export const TIMELINE_SOURCES: TimelineSource[] = EVENT_TYPES.flatMap((type): TimelineSource[] => [
+  `since:${type}`,
+  `until:${type}`,
+]);
+
+export type ModSource = FeatureSource | TimelineSource;
+const SOURCES = [...FEATURE_SOURCES, ...TIMELINE_SOURCES] as [ModSource, ...ModSource[]];
+
 export const ModRouteSchema = z.object({
-  source: z.enum(FEATURE_SOURCES),
+  source: z.enum(SOURCES),
   /** Exposed to CSS as `--mod-<target>`. */
   target: z
     .string()
@@ -24,17 +39,24 @@ export const ModRouteSchema = z.object({
   /** Output when the source is 0 and when it is 1. */
   range: z.tuple([z.number(), z.number()]).default([0, 1]),
   curve: z.enum(Object.keys(CURVES) as [Curve, ...Curve[]]).default('linear'),
-  /** Smoothing window in seconds; 0 is instantaneous. */
+  /** Smoothing window in seconds; 0 is instantaneous. Audio sources only. */
   smooth: z.number().min(0).max(2).default(0),
+  /** Seconds a `since:` / `until:` source ramps over. Audio sources ignore it. */
+  window: z.number().positive().max(60).default(1),
   /** Only active during this section; rests at range[0] otherwise. */
   when: z.enum(SECTION_TYPES).optional(),
 });
 export type ModRoute = z.infer<typeof ModRouteSchema>;
+/** A route as written: everything but `source` and `target` has a default. */
+export type ModRouteInput = z.input<typeof ModRouteSchema>;
+
+/** A modulation patch: the list a theme ships and the list `modulation:` adds to it. */
+export const ModPatchSchema = z.array(ModRouteSchema);
 
 export interface ModContext {
   time: number;
   fps: number;
-  section: SectionType | null;
+  events: EventState;
   analyzer: AudioAnalyzer;
 }
 
@@ -53,21 +75,34 @@ export function evaluateModulation(
 
 export function evaluateRoute(route: ModRoute, ctx: ModContext): number {
   const [from, to] = route.range;
-  if (route.when && ctx.section !== route.when) return from;
-  const v = clamp(smoothedSource(route, ctx), 0, 1);
+  if (route.when && ctx.events.section !== route.when) return from;
+  const v = clamp(sourceValue(route, ctx), 0, 1);
   return from + (to - from) * CURVES[route.curve](v);
 }
 
+const isTimeline = (source: ModSource): source is TimelineSource => source.includes(':');
+
+function sourceValue(route: ModRoute, ctx: ModContext): number {
+  if (!isTimeline(route.source)) return smoothed(route.source, route.smooth, ctx);
+  const [direction, type] = route.source.split(':') as ['since' | 'until', EventType];
+  const seconds = (direction === 'since' ? since : until)(ctx.events, type, ctx.time);
+  return 1 - seconds / route.window;
+}
+
 /** Frame-independent smoothing: a recency-weighted average over the trailing window. */
-function smoothedSource(route: ModRoute, { time, fps, analyzer }: ModContext): number {
-  if (route.smooth <= 0) return analyzer.featuresAt(time)[route.source];
-  const samples = Math.min(8, Math.max(2, Math.ceil(route.smooth * fps)));
+function smoothed(
+  source: FeatureSource,
+  seconds: number,
+  { time, fps, analyzer }: ModContext,
+): number {
+  if (seconds <= 0) return analyzer.featuresAt(time)[source];
+  const samples = Math.min(8, Math.max(2, Math.ceil(seconds * fps)));
   let sum = 0;
   let weights = 0;
   for (let i = 0; i < samples; i++) {
-    const t = time - (route.smooth * i) / (samples - 1);
+    const t = time - (seconds * i) / (samples - 1);
     const w = samples - i;
-    sum += w * analyzer.featuresAt(Math.max(0, t))[route.source];
+    sum += w * analyzer.featuresAt(Math.max(0, t))[source];
     weights += w;
   }
   return sum / weights;

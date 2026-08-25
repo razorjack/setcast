@@ -5,6 +5,7 @@ import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig } from '../config.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { sortEvents, type SetEvent } from '../events.ts';
+import { ModPatchSchema, type ModRoute } from '../modulation.ts';
 import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
 import { resolveVisualizerConfig } from '../visualizers.ts';
@@ -52,7 +53,7 @@ export async function loadProject(
     height: config.output.height,
     fps: config.output.fps,
     events: mergeEvents(config),
-    modulation: [...theme.modulation, ...config.modulation],
+    modulation: [...themeRoutes(theme), ...config.modulation],
     visualizer: resolveVisualizerConfig(config.visualizer),
   };
   return { dir: root, config, project };
@@ -99,6 +100,17 @@ async function resolveTheme(
   throw new SetcastError(
     `Unknown theme "${name}"`,
     `Built-in themes: ${Object.keys(themes).join(', ') || '(none)'}. A path to a .css file (e.g. "./my-theme.css") is also a valid theme.`,
+  );
+}
+
+/** A theme is a plugin: its default patch goes through the same schema as the project's routes. */
+function themeRoutes({ name, modulation }: Theme): ModRoute[] {
+  const parsed = ModPatchSchema.safeParse(modulation);
+  if (parsed.success) return parsed.data;
+  const issue = zodIssues(parsed.error)[0]!;
+  throw new SetcastError(
+    `Theme "${name}" has an invalid modulation route: ${issue.path} ${issue.message}`,
+    "A theme's default patch uses the same route schema as modulation: in setcast.yaml.",
   );
 }
 

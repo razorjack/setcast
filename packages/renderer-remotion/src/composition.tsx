@@ -63,7 +63,7 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
     modulation: evaluateModulation(project.modulation, {
       time: timeSeconds,
       fps,
-      section: events.section,
+      events,
       analyzer,
     }),
   };

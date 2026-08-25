@@ -41,13 +41,18 @@ export { importers } from './importers/index.ts';
 export { plainImporter, type Importer } from './importers/plain.ts';
 export {
   CURVES,
+  ModPatchSchema,
   ModRouteSchema,
+  TIMELINE_SOURCES,
   evaluateModulation,
   evaluateRoute,
   modulationVars,
   type Curve,
   type ModContext,
   type ModRoute,
+  type ModRouteInput,
+  type ModSource,
+  type TimelineSource,
 } from './modulation.ts';
 export {
   clamp,

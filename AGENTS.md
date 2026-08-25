@@ -144,14 +144,19 @@ everything else. Both land on one timeline. Tracks without `deck` alternate A/B.
 
 ### Modulation matrix
 
-`packages/core/src/modulation.ts`. Routes: `{ source, target, range, curve, smooth, when }`.
-Sources: `bass | mids | highs | rms | onset` (all 0..1). Target names are kebab-case and become CSS
-custom properties `--mod-<target>` on the stage root, so themes consume any modulation without JS.
-`range: [a, b]` maps source 0..1 to a..b; `curve`: `linear | sqrt | pow2 | pow3 | smooth`;
-`smooth` seconds of trailing recency-weighted average (frame-independent: it re-samples the audio
-analyzer at earlier times, no state across frames); `when: drop` gates a route to a section (rests
-at `range[0]` otherwise). Later routes override earlier ones with the same target; a theme ships a
-default patch, the project's `modulation:` list is appended after it.
+`packages/core/src/modulation.ts`. Routes: `{ source, target, range, curve, smooth, window, when }`.
+Sources are all 0..1 and come in two kinds: audio (`bass | mids | highs | rms | onset`) and
+timeline (`since:<event>` / `until:<event>` for every event type). Target names are kebab-case and
+become CSS custom properties `--mod-<target>` on the stage root, so themes consume any modulation
+without JS. `range: [a, b]` maps source 0..1 to a..b; `curve`: `linear | sqrt | pow2 | pow3 |
+smooth`; `smooth` seconds of trailing recency-weighted average, audio sources only
+(frame-independent: it re-samples the audio analyzer at earlier times, no state across frames);
+`window` seconds over which a timeline source ramps, so `since:drop` with `window: 4` is 1 at the
+drop and 0 four seconds later, and `until:drop` climbs to 1 as the drop approaches and releases
+when it lands; `when: drop` gates a route to a section (rests at `range[0]` otherwise). Later
+routes override earlier ones with the same target; a theme ships a default patch (`ModRouteInput`,
+so defaults may be omitted; `loadProject` runs it through `ModPatchSchema`), the project's
+`modulation:` list is appended after it.
 
 ### RenderFrame and hooks
 
