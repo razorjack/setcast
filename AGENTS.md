@@ -243,9 +243,10 @@ onProgress })` and `preview(project, { projectDir })`. Entry file for the bundle
 The stage root has class `setcast` plus `--mod-*` variables. Stable class names: `sc-stage`,
 `sc-bg`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
 `sc-header`, `sc-clock`. `packages/core/css/base.css` is structural only (positions, sizes as
-variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`, `--accent-2`,
-`--fg`, `--fg-dim`, `--blur`, `--radius`, `--font-display`, `--font-mono`. Users can add
-`css: ./overrides.css` in `setcast.yaml`; it is appended last.
+variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
+`--accent-2`, `--deck-a` … `--deck-d` (one signal color per deck, resolved to `--deck` by the
+`data-deck` attribute), `--fg`, `--fg-dim`, `--blur`, `--radius`, `--font-display`,
+`--font-mono`. Users can add `css: ./overrides.css` in `setcast.yaml`; it is appended last.
 
 The stage root also carries the event timeline, so a theme can react to the set without any JS:
 

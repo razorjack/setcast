@@ -23,6 +23,7 @@ tracks:
   - time: 1:50
     artist: ID
     title: ID
+    deck: C
 
 events:
   - type: buildup

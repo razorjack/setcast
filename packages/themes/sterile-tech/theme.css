@@ -26,6 +26,11 @@
   --fg-dim: #8a98a6;
   --accent: #ff6a2b;
   --accent-2: #7fd4e6;
+  --deck-a: var(--accent);
+  --deck-b: var(--accent-2);
+  --deck-c: #9fd98a;
+  --deck-d: #b18ee6;
+  --deck: var(--deck-a);
   --steel: #2a343d;
   --panel-bg: rgb(12 16 21 / 0.52);
   --panel-border: rgb(255 255 255 / 0.1);
@@ -41,6 +46,24 @@
   --drop-flash: calc(clamp(0, 1 - var(--since-drop, 60) / 0.7, 1) * var(--drop-intensity, 1));
   --rewind-flash: clamp(0, 1 - var(--since-rewind, 60) / 0.6, 1);
   --tension: clamp(0, 1 - var(--until-drop, 60) / 10, 1);
+}
+
+/* one signal color per deck: the stage root follows the deck in front, the panel its own track */
+.theme-sterile-tech[data-deck='A'],
+.theme-sterile-tech [data-deck='A'] {
+  --deck: var(--deck-a);
+}
+.theme-sterile-tech[data-deck='B'],
+.theme-sterile-tech [data-deck='B'] {
+  --deck: var(--deck-b);
+}
+.theme-sterile-tech[data-deck='C'],
+.theme-sterile-tech [data-deck='C'] {
+  --deck: var(--deck-c);
+}
+.theme-sterile-tech[data-deck='D'],
+.theme-sterile-tech [data-deck='D'] {
+  --deck: var(--deck-d);
 }
 
 /* background: desaturated, darkened, snapping bright for a moment on a rewind */
@@ -69,12 +92,8 @@
   width: 0.6em;
   height: 0.6em;
   margin-right: 0.9em;
-  background: var(--accent);
+  background: var(--deck);
   transform: translateY(-0.05em);
-}
-/* the marker follows the deck in front, so a `switch` event is visible */
-.theme-sterile-tech[data-deck='B'] .sc-set-title::before {
-  background: var(--accent-2);
 }
 .theme-sterile-tech .sc-clock {
   font-variant-numeric: tabular-nums;
@@ -127,10 +146,6 @@
       color-mix(in srgb, var(--accent) 35%, transparent);
   opacity: clamp(0, var(--show, 1), 1);
   transform: translateY(calc((1 - var(--show, 1)) * 3cqh));
-  --bar: var(--accent);
-}
-.theme-sterile-tech .sc-panel[data-deck='B'] {
-  --bar: var(--accent-2);
 }
 .theme-sterile-tech .sc-panel::before {
   content: '';
@@ -139,9 +154,9 @@
   top: 1.2cqw;
   bottom: 1.2cqw;
   width: 3px;
-  background: var(--bar);
+  background: var(--deck);
   filter: brightness(calc(1 + var(--drop-flash) * 2.4));
-  box-shadow: 0 0 calc(var(--drop-flash) * 1.4cqw) var(--bar);
+  box-shadow: 0 0 calc(var(--drop-flash) * 1.4cqw) var(--deck);
 }
 .theme-sterile-tech .sc-panel-head {
   gap: 1.1cqw;
@@ -161,7 +176,7 @@
   font-size: 1.1cqw;
   letter-spacing: 0;
   color: #0a0d10;
-  background: var(--bar);
+  background: var(--deck);
 }
 .theme-sterile-tech .sc-index {
   margin-left: auto;
