@@ -86,14 +86,33 @@ const trackOf = ({ title, artist, label, deck }: EventOf<'track_start'>): Track 
   ...(deck !== undefined && { deck }),
 });
 
+/** `drop` covers double drops too: wherever something reacts to a drop, a double drop is one. */
+type Of<T extends EventType> = EventOf<T extends 'drop' ? 'drop' | 'double_drop' : T>;
+
+/** Latest event of `type` at or before now. */
+export function lastEvent<T extends EventType>(state: EventState, type: T): Of<T> | undefined {
+  const { last } = state;
+  if (type !== 'drop') return last[type] as Of<T> | undefined;
+  const { drop, double_drop: double } = last;
+  return (!double || (drop && drop.time >= double.time) ? drop : double) as Of<T> | undefined;
+}
+
+/** First event of `type` after now. */
+export function nextEvent<T extends EventType>(state: EventState, type: T): Of<T> | undefined {
+  const { next } = state;
+  if (type !== 'drop') return next[type] as Of<T> | undefined;
+  const { drop, double_drop: double } = next;
+  return (!double || (drop && drop.time <= double.time) ? drop : double) as Of<T> | undefined;
+}
+
 /** Seconds since the latest event of `type`, or Infinity when none has happened yet. */
 export const since = (state: EventState, type: EventType, time: number): number => {
-  const e = state.last[type];
+  const e = lastEvent(state, type);
   return e ? time - e.time : Infinity;
 };
 
 /** Seconds until the next event of `type`, or Infinity when none is coming. */
 export const until = (state: EventState, type: EventType, time: number): number => {
-  const e = state.next[type];
+  const e = nextEvent(state, type);
   return e ? e.time - time : Infinity;
 };

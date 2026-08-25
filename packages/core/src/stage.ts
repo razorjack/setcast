@@ -1,6 +1,5 @@
-import type { EventOf } from './events.ts';
 import { clamp } from './motion.ts';
-import { since, until, type EventState } from './timeline.ts';
+import { lastEvent, since, until, type EventState } from './timeline.ts';
 
 /**
  * Seconds handed to CSS are capped here. A custom property cannot hold Infinity, and every effect
@@ -24,31 +23,17 @@ export function stageVars(
   time: number,
   duration: number,
 ): Record<string, string> {
-  const drop = lastDrop(state);
-  const coming = nextDrop(state);
   return {
     '--since-track': secs(since(state, 'track_start', time)),
     '--until-track': secs(until(state, 'track_start', time)),
-    '--since-drop': secs(drop ? time - drop.time : Infinity),
-    '--until-drop': secs(coming ? coming.time - time : Infinity),
-    '--drop-intensity': num(drop?.intensity ?? 0),
+    '--since-drop': secs(since(state, 'drop', time)),
+    '--until-drop': secs(until(state, 'drop', time)),
+    '--drop-intensity': num(lastEvent(state, 'drop')?.intensity ?? 0),
     '--since-rewind': secs(since(state, 'rewind', time)),
     '--section-time': secs(state.section ? time - state.sectionStart : Infinity),
     '--set-progress': num(duration > 0 ? clamp(time / duration, 0, 1) : 0),
   };
 }
-
-type Drop = EventOf<'drop'> | EventOf<'double_drop'>;
-
-const lastDrop = (state: EventState): Drop | undefined => {
-  const { drop, double_drop: double } = state.last;
-  return !double || (drop && drop.time >= double.time) ? drop : double;
-};
-
-const nextDrop = (state: EventState): Drop | undefined => {
-  const { drop, double_drop: double } = state.next;
-  return !double || (drop && drop.time <= double.time) ? drop : double;
-};
 
 const num = (v: number) => String(Math.round(v * 1000) / 1000);
 const secs = (v: number) => num(Math.min(v, SECONDS_CAP));

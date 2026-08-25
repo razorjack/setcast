@@ -135,7 +135,8 @@ contract: add types, never rename or remove.
 `Timeline.at(time)` returns `EventState`: `all`, `track`, `trackIndex`, `trackCount`, `last[type]`,
 `next[type]`, `section` (latest of drop/double_drop/breakdown/buildup), `sectionStart` and `deck`
 (the deck named by the most recent event that names one, so `switch` moves it mid-track). Helpers
-`since()`, `until()`. Every visual behavior derives from this (trigger: `since(state,'drop',t)`
+`since()`, `until()`, `lastEvent()`, `nextEvent()`; for all of them `drop` also means
+`double_drop`. Every visual behavior derives from this (trigger: `since(state,'drop',t)`
 small; sustain: `section === 'drop'`; ramp: `until(state,'drop',t)`).
 
 `packages/core/src/stage.ts` turns that state into the stage root's `data-*` attributes and

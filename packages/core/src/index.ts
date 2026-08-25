@@ -83,7 +83,7 @@ export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export { SECONDS_CAP, stageData, stageVars } from './stage.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
-export { Timeline, since, until, type EventState } from './timeline.ts';
+export { Timeline, lastEvent, nextEvent, since, until, type EventState } from './timeline.ts';
 export {
   MIN_CHAPTERS,
   MIN_CHAPTER_SECONDS,

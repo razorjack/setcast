@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vite-plus/test';
 import type { SetEvent } from './events.ts';
-import { since, Timeline, until } from './timeline.ts';
+import { lastEvent, since, Timeline, until } from './timeline.ts';
 
 const events: SetEvent[] = [
   { type: 'drop', time: 60, intensity: 1 },
@@ -50,5 +50,12 @@ describe('Timeline.at', () => {
     expect(tl.at(90).deck).toBe('B');
     const switched = new Timeline([...events, { type: 'switch', time: 30, deck: 'D' }]);
     expect(switched.at(40).deck).toBe('D');
+  });
+
+  test('a double drop is a drop for since and until', () => {
+    const tl2 = new Timeline([...events, { type: 'double_drop', time: 80, intensity: 0.5 }]);
+    expect(since(tl2.at(85), 'drop', 85)).toBe(5);
+    expect(until(tl2.at(70), 'drop', 70)).toBe(10);
+    expect(lastEvent(tl2.at(85), 'drop')?.intensity).toBe(0.5);
   });
 });
