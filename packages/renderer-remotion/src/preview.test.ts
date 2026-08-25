@@ -26,6 +26,7 @@ const project: ResolvedProject = {
   events: [],
   modulation: [],
   visualizer: { name: 'spectrum' },
+  panel: { dwell: 14, fade: 1.2 },
 };
 
 const exitWith = (code: number | null, signal: NodeJS.Signals | null = null) => {

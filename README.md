@@ -68,6 +68,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
 
 visualizer: { name: spectrum, bars: 48, gain: 1 }
+panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up
 css: overrides.css           # optional, appended after the theme
 ```
 

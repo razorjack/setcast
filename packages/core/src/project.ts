@@ -21,4 +21,6 @@ export type ResolvedProject = {
   modulation: ModRoute[];
   /** The `visualizer:` block after its own schema filled in the defaults. */
   visualizer: { name: string } & Record<string, unknown>;
+  /** How long the now-playing panel stays up after a track change, and how long it takes to leave. */
+  panel: { dwell: number; fade: number };
 };

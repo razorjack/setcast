@@ -111,7 +111,7 @@
   stroke-width: 1.5;
 }
 
-/* now playing: frosted glass, hairline, enters with a spring (--enter from JS) */
+/* now playing: frosted glass, hairline; --show is presence (spring in, dwell, leave) */
 .theme-sterile-tech .sc-panel {
   padding: 1.7cqw 2.2cqw 1.9cqw 2.1cqw;
   background: var(--panel-bg);
@@ -124,8 +124,8 @@
     0 30px 60px rgb(0 0 0 / 0.45),
     0 0 calc((var(--mod-panel-glow, 0) + var(--tension)) * 70px)
       color-mix(in srgb, var(--accent) 35%, transparent);
-  opacity: clamp(0, var(--enter, 1), 1);
-  transform: translateY(calc((1 - var(--enter, 1)) * 3cqh));
+  opacity: clamp(0, var(--show, 1), 1);
+  transform: translateY(calc((1 - var(--show, 1)) * 3cqh));
   --bar: var(--accent);
 }
 .theme-sterile-tech .sc-panel[data-deck='B'] {

@@ -30,6 +30,13 @@ export const OutputSchema = z.object({
   jpegQuality: z.number().int().min(1).max(100).default(95),
 });
 
+export const PanelSchema = z.object({
+  /** Seconds the now-playing panel stays up after a track change. 0 keeps it up for the whole set. */
+  dwell: z.number().min(0).max(3600).default(14),
+  /** Seconds it takes to leave once `dwell` is up. */
+  fade: z.number().min(0).max(60).default(1.2),
+});
+
 export const ProjectConfigSchema = z
   .object({
     title: z.string().default(''),
@@ -47,6 +54,7 @@ export const ProjectConfigSchema = z
     events: z.array(EventSchema).default([]),
     modulation: z.array(ModRouteSchema).default([]),
     visualizer: VisualizerConfigSchema.prefault({}),
+    panel: PanelSchema.prefault({}),
     deckOrder: z.array(DeckSchema).min(1).default(['A', 'B']),
   })
   .strict();

@@ -55,6 +55,7 @@ export async function loadProject(
     events: mergeEvents(config),
     modulation: [...themeRoutes(theme), ...config.modulation],
     visualizer: resolveVisualizerConfig(config.visualizer),
+    panel: config.panel,
   };
   return { dir: root, config, project };
 }

@@ -260,6 +260,10 @@ Shape them in CSS: `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a 0.7 s flash. 
 transitions or animations for these – the browser's wall clock is not the timeline (see
 Renderer independence 4).
 
+`.sc-panel` carries `--show`, 0..1: the now-playing panel springs in on a track change, holds for
+`panel.dwell` seconds and leaves over `panel.fade` (`panel:` in `setcast.yaml`; `dwell: 0` keeps it
+up for the whole set). The theme decides what presence looks like – sterile-tech fades and slides.
+
 ## Roadmap (beyond v1)
 
 - FOSS renderer `@setcast/renderer-browser`: Playwright + pinned Chromium renders frames from the
@@ -327,6 +331,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Renders pass `jpegQuality: 95` (Remotion defaults to 80) and `output.crf` (default 18). The
   intermediate frames the encoder reads are JPEGs, and the default look is a dark scene full of
   smooth gradients, blur and a vignette, which bands badly below ~90. Both are `output:` keys.
+- The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
+  never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
+  in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.
 - `setcast init --demo` and `vp run demo-assets` share one synth (`packages/cli/src/demo/synth.ts`);
   init writes a 40 s version (`synthesizeDemo(0.25)`), the repo task the full 2:34.
 - The README logo uses separate light and dark PNGs under `docs/assets`, selected with a

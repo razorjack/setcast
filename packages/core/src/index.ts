@@ -27,6 +27,7 @@ export {
 } from './analysis.ts';
 export {
   OutputSchema,
+  PanelSchema,
   ProjectConfigSchema,
   TrackEntrySchema,
   type ProjectConfig,
