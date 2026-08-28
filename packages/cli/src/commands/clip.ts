@@ -1,10 +1,11 @@
 import { mkdir } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { formatTime, parseTime, SetcastError, type SetEvent } from '@setcast/core';
+import { formatTime, SetcastError, type SetEvent } from '@setcast/core';
 import { render } from '@setcast/renderer-remotion';
+import { parseAt, parseNumber } from '../args.ts';
 import { load } from '../project.ts';
-import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, steel } from '../ui.ts';
+import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 
 const DEFAULT_SECONDS = 45;
@@ -38,7 +39,13 @@ export async function run(argv: string[]): Promise<void> {
   }
   intro('clip');
   const { dir, project, config } = await load(positionals[0]);
-  const seconds = values.seconds ? parseSeconds(values.seconds) : DEFAULT_SECONDS;
+  const seconds = values.seconds
+    ? parseNumber('seconds', values.seconds, {
+        min: MIN_SECONDS,
+        max: MAX_SECONDS,
+        hint: `Use a clip length from ${MIN_SECONDS} to ${MAX_SECONDS} seconds, e.g. --seconds 30.`,
+      })
+    : DEFAULT_SECONDS;
   const drops = project.events.filter(isDrop);
   const centres = values.at ? [parseAt(values.at)] : values.all ? drops.map((e) => e.time) : [];
   if (!values.at && !values.all) {
@@ -77,7 +84,7 @@ export async function run(argv: string[]): Promise<void> {
       }),
     );
     ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
-    files.push(steel(relative(process.cwd(), result.file) || result.file));
+    files.push(shown(result.file));
   }
   outro(`${bold('Done')}  →  ${files.join(', ')}`);
 }
@@ -86,28 +93,6 @@ export async function run(argv: string[]): Promise<void> {
 export function clipRange(at: number, seconds: number): [number, number] {
   const start = Math.max(0, at - seconds / 3);
   return [start, start + seconds];
-}
-
-function parseSeconds(text: string): number {
-  const n = Number(text);
-  if (!(n >= MIN_SECONDS && n <= MAX_SECONDS)) {
-    throw new SetcastError(
-      `Invalid --seconds "${text}"`,
-      `Use a clip length from ${MIN_SECONDS} to ${MAX_SECONDS} seconds, e.g. --seconds 30.`,
-    );
-  }
-  return n;
-}
-
-function parseAt(text: string): number {
-  const at = parseTime(text);
-  if (at === null || at < 0) {
-    throw new SetcastError(
-      `Invalid --at "${text}"`,
-      'Use a timecode or seconds, e.g. --at 1:04 or --at 64.',
-    );
-  }
-  return at;
 }
 
 const isDrop = (e: SetEvent) => e.type === 'drop' || e.type === 'double_drop';

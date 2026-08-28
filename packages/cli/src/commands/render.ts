@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, extname, relative, resolve } from 'node:path';
+import { dirname, extname, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import {
   chapterProblems,
@@ -11,9 +11,10 @@ import {
   type ResolvedProject,
 } from '@setcast/core';
 import { render, still } from '@setcast/renderer-remotion';
+import { parseNumber } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
-import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, steel, warn } from '../ui.ts';
+import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, shown, steel, warn } from '../ui.ts';
 import { firstDrop } from './still.ts';
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N] [--bundle]
@@ -44,7 +45,13 @@ export async function run(argv: string[]): Promise<void> {
       'Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.',
     );
   }
-  const concurrency = values.concurrency ? parseConcurrency(values.concurrency) : undefined;
+  const concurrency = values.concurrency
+    ? parseNumber('concurrency', values.concurrency, {
+        min: 1,
+        integer: true,
+        hint: 'Use a whole number of parallel browser tabs, e.g. --concurrency 4.',
+      })
+    : undefined;
   const out = values.out
     ? resolve(values.out)
     : resolve(dir, range ? rangeName(config.output.file, range) : config.output.file);
@@ -76,8 +83,6 @@ export async function run(argv: string[]): Promise<void> {
     `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${files.map(shown).join(', ')}`,
   );
 }
-
-const shown = (file: string) => steel(relative(process.cwd(), file) || file);
 
 /** The thumbnail and the description, so one command leaves everything the upload form asks for. */
 async function bundle(
@@ -116,17 +121,6 @@ export function parseRange(text: string): [number, number] {
     );
   }
   return [start, end];
-}
-
-function parseConcurrency(text: string): number {
-  const n = Number(text);
-  if (!Number.isInteger(n) || n < 1) {
-    throw new SetcastError(
-      `Invalid --concurrency "${text}"`,
-      'Use a whole number of parallel browser tabs, e.g. --concurrency 4.',
-    );
-  }
-  return n;
 }
 
 export const rangeName = (file: string, [a, b]: [number, number]) =>

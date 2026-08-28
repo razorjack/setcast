@@ -1,11 +1,12 @@
 import { mkdir } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { formatTime, parseTime, SetcastError, type SetEvent } from '@setcast/core';
+import { formatTime, type SetEvent } from '@setcast/core';
 import { still } from '@setcast/renderer-remotion';
+import { parseAt } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
-import { bold, intro, outro, RenderUi, steel } from '../ui.ts';
+import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg]
 
@@ -36,18 +37,7 @@ export async function run(argv: string[]): Promise<void> {
     }),
   );
   ui.done(`Grabbed ${bold(formatTime(result.timeSeconds))} of the set`);
-  outro(`${bold('Done')}  →  ${steel(relative(process.cwd(), result.file) || result.file)}`);
-}
-
-function parseAt(text: string): number {
-  const at = parseTime(text);
-  if (at === null || at < 0) {
-    throw new SetcastError(
-      `Invalid --at "${text}"`,
-      'Use a timecode or seconds, e.g. --at 1:04 or --at 64.',
-    );
-  }
-  return at;
+  outro(`${bold('Done')}  →  ${shown(result.file)}`);
 }
 
 /** The drop a set is best known by, or null to let the renderer pick a quarter of the way in. */

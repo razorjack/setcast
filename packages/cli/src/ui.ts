@@ -1,3 +1,4 @@
+import { relative } from 'node:path';
 import * as p from '@clack/prompts';
 import { ConfigError, hms, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/renderer-remotion';
@@ -31,6 +32,9 @@ export async function clearSpinnerOnError<T>(
     throw error;
   }
 }
+
+/** A file as the outro names it: relative to the working directory when it is inside. */
+export const shown = (file: string) => steel(relative(process.cwd(), file) || file);
 
 /** A warning that must not end up in a piped stdout. */
 export const warn = (message: string) => process.stderr.write(`${pc.yellow('!')} ${message}\n`);
