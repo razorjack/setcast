@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, extname, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import {
   chapterProblems,
@@ -11,6 +11,7 @@ import {
   type ResolvedProject,
 } from '@setcast/core';
 import { render, still } from '@setcast/renderer-remotion';
+import { stem } from '../paths.ts';
 import { load } from '../project.ts';
 import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, steel, warn } from '../ui.ts';
 import { firstDrop } from './still.ts';
@@ -85,7 +86,7 @@ async function bundle(
   video: string,
   jpegQuality: number,
 ): Promise<string[]> {
-  const base = video.replace(/(\.[^.]+)?$/, '');
+  const base = stem(video);
   const at = firstDrop(project.events);
   const ui = new RenderUi();
   const thumb = await ui.run(() =>
@@ -129,7 +130,7 @@ function parseConcurrency(text: string): number {
 }
 
 export const rangeName = (file: string, [a, b]: [number, number]) =>
-  file.replace(/(\.[^.]+)?$/, (ext) => `.${stamp(a)}-${stamp(b)}${ext}`);
+  `${stem(file)}.${stamp(a)}-${stamp(b)}${extname(file)}`;
 
 /** `0m30s`, `1h02m03s`. Filename-safe, so no colons. */
 const stamp = (seconds: number) => {

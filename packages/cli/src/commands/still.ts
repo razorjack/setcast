@@ -3,6 +3,7 @@ import { dirname, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { formatTime, parseTime, SetcastError, type SetEvent } from '@setcast/core';
 import { still } from '@setcast/renderer-remotion';
+import { stem } from '../paths.ts';
 import { load } from '../project.ts';
 import { bold, intro, outro, RenderUi, steel } from '../ui.ts';
 
@@ -21,9 +22,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('still');
   const { dir, project, config } = await load(positionals[0]);
   const at = values.at ? parseAt(values.at) : firstDrop(project.events);
-  const out = values.out
-    ? resolve(values.out)
-    : resolve(dir, config.output.file.replace(/(\.[^.]+)?$/, '.jpg'));
+  const out = values.out ? resolve(values.out) : resolve(dir, `${stem(config.output.file)}.jpg`);
   await mkdir(dirname(out), { recursive: true });
 
   const ui = new RenderUi();
