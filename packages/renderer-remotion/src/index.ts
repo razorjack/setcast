@@ -16,6 +16,7 @@ const COMPOSITION_ID = 'setcast';
 export type RenderStage = 'browser' | 'bundle' | 'frames' | 'encode';
 
 export interface RenderProgress {
+  /** `browser` is reported only while Chrome Headless Shell is being downloaded. */
   stage: RenderStage;
   /** 0..1 within the stage. */
   progress: number;
@@ -56,12 +57,14 @@ async function prepare(
   projectDir: string,
   report: (p: RenderProgress) => void,
 ) {
-  report({ stage: 'browser', progress: 0 });
   await ensureBrowser({
-    onBrowserDownload: () => ({
-      version: null,
-      onProgress: ({ percent }) => report({ stage: 'browser', progress: percent }),
-    }),
+    onBrowserDownload: () => {
+      report({ stage: 'browser', progress: 0 });
+      return {
+        version: null,
+        onProgress: ({ percent }) => report({ stage: 'browser', progress: percent }),
+      };
+    },
   });
   report({ stage: 'browser', progress: 1 });
 
