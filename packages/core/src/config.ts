@@ -9,7 +9,7 @@ const relativePath = (what: string) => z.string().min(1, `${what} path cannot be
 export const TrackEntrySchema = TrackSchema.extend({ time: TimeSchema });
 export type TrackEntry = z.infer<typeof TrackEntrySchema>;
 
-export const OutputSchema = z.object({
+export const OutputSchema = z.strictObject({
   width: z.number().int().min(16).default(1920),
   height: z.number().int().min(16).default(1080),
   fps: z
@@ -22,7 +22,7 @@ export const OutputSchema = z.object({
   jpegQuality: z.number().int().min(1).max(100).default(95),
 });
 
-export const PanelSchema = z.object({
+export const PanelSchema = z.strictObject({
   /** Seconds the now-playing panel stays up after a track change. 0 keeps it up for the whole set. */
   dwell: z.number().min(0).max(3600).default(14),
   /** Seconds it takes to leave once `dwell` is up. */

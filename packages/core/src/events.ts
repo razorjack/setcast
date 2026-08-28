@@ -17,7 +17,7 @@ export const DeckSchema = z
   .string()
   .regex(/^[A-D]$/, 'Deck must be a single capital letter: A, B, C or D.');
 
-export const TrackSchema = z.object({
+export const TrackSchema = z.strictObject({
   title: z.string().min(1, 'Track title cannot be empty. Use "ID" for unknown tracks.'),
   artist: z.string().default('ID'),
   label: z.string().optional(),
@@ -28,7 +28,7 @@ export const TrackSchema = z.object({
 export type Track = z.infer<typeof TrackSchema>;
 
 const event = <T extends string, S extends z.ZodRawShape>(type: T, shape: S) =>
-  z.object({ type: z.literal(type), time: TimeSchema, id: z.string().optional(), ...shape });
+  z.strictObject({ type: z.literal(type), time: TimeSchema, id: z.string().optional(), ...shape });
 
 const intensity = z.number().min(0).max(1).default(1);
 

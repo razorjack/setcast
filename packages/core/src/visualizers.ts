@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ConfigError, zodIssues } from './errors.ts';
 import { Registry } from './registry.ts';
 
-export const SpectrumConfigSchema = z.object({
+export const SpectrumConfigSchema = z.strictObject({
   name: z.literal('spectrum').default('spectrum'),
   /** Bars per side; the picture is mirrored around the center (bass in the middle). */
   bars: z.number().int().min(8).max(64).default(48),
@@ -13,7 +13,7 @@ export const SpectrumConfigSchema = z.object({
 });
 export type SpectrumConfig = z.infer<typeof SpectrumConfigSchema>;
 
-export const RadialConfigSchema = z.object({
+export const RadialConfigSchema = z.strictObject({
   name: z.literal('radial').default('radial'),
   /** Bars per half; mirrored left/right with bass at the bottom. */
   bars: z.number().int().min(8).max(64).default(40),

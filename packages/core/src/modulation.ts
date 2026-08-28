@@ -35,7 +35,7 @@ const SOURCES = [...FEATURE_SOURCES, ...TIMELINE_SOURCES, ...BEAT_SOURCES] as [
   ...ModSource[],
 ];
 
-export const ModRouteSchema = z.object({
+export const ModRouteSchema = z.strictObject({
   source: z.enum(SOURCES),
   /** Exposed to CSS as `--mod-<target>`. */
   target: z
