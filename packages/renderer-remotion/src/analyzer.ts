@@ -3,6 +3,9 @@ import { visualizeAudio, type MediaUtilsAudioData } from '@remotion/media-utils'
 
 const SAMPLES = 1024;
 const ONSET_LOOKBACK = 0.06;
+/** Fixed seconds, not a frame, so features are the same at 30 and 60 fps. */
+const SMOOTH_LOOKBACK = 1 / 30;
+const RMS_WINDOW = 1 / 30;
 
 /** Turns Remotion's windowed audio data into Setcast's `AudioAnalyzer`. */
 export function windowedAnalyzer(
@@ -27,7 +30,7 @@ export function windowedAnalyzer(
   const loudness = (time: number) => {
     if (!wave) return 0;
     const center = Math.floor((time - dataOffsetInSeconds) * sampleRate);
-    const half = Math.floor(sampleRate / fps / 2);
+    const half = Math.floor((sampleRate * RMS_WINDOW) / 2);
     const from = Math.max(0, center - half);
     const to = Math.min(wave.length, center + half);
     return to > from ? rms(wave.subarray(from, to)) : 0;
@@ -50,7 +53,7 @@ export function windowedAnalyzer(
     const hit = cache.get(key);
     if (hit) return hit;
     const now = spectrumAt(time);
-    const prev = spectrumAt(inWindow(time - 1 / fps));
+    const prev = spectrumAt(inWindow(time - SMOOTH_LOOKBACK));
     const magnitudes = now.map((v, i) => 0.6 * v + 0.4 * prev[i]!);
     const level = loudness(time);
     const features: AudioFeatures = {
