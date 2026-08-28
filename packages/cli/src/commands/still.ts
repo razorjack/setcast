@@ -21,7 +21,9 @@ export async function run(argv: string[]): Promise<void> {
   intro('still');
   const { dir, project, config } = await load(positionals[0]);
   const at = values.at ? parseAt(values.at) : firstDrop(project.events);
-  const out = resolve(dir, values.out ?? config.output.file.replace(/(\.[^.]+)?$/, '.jpg'));
+  const out = values.out
+    ? resolve(values.out)
+    : resolve(dir, config.output.file.replace(/(\.[^.]+)?$/, '.jpg'));
   await mkdir(dirname(out), { recursive: true });
 
   const ui = new RenderUi();

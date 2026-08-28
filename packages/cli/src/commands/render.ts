@@ -44,10 +44,9 @@ export async function run(argv: string[]): Promise<void> {
     );
   }
   const concurrency = values.concurrency ? parseConcurrency(values.concurrency) : undefined;
-  const out = resolve(
-    dir,
-    values.out ?? (range ? rangeName(config.output.file, range) : config.output.file),
-  );
+  const out = values.out
+    ? resolve(values.out)
+    : resolve(dir, range ? rangeName(config.output.file, range) : config.output.file);
   await mkdir(dirname(out), { recursive: true });
 
   const tracks = project.events.filter((e) => e.type === 'track_start').length;

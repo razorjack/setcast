@@ -58,7 +58,9 @@ export async function run(argv: string[]): Promise<void> {
   const files: string[] = [];
   for (const at of centres) {
     const range = clipRange(at, seconds);
-    const out = resolve(dir, values.out ?? rangeName(config.output.file, range));
+    const out = values.out
+      ? resolve(values.out)
+      : resolve(dir, rangeName(config.output.file, range));
     await mkdir(dirname(out), { recursive: true });
     log.info(
       `${bold(formatTime(at))} drop  ${dim('·')}  ${formatTime(range[0])} → ${formatTime(range[1])}`,
