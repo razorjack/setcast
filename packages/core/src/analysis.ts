@@ -13,6 +13,8 @@ export interface Envelope {
   bass: number[];
   /** Everything above the bass, same scale. */
   high: number[];
+  /** How much louder each hop is than the one before it, across both bands. */
+  flux: number[];
 }
 
 /**
@@ -41,7 +43,9 @@ export function envelope({ samples, sampleRate }: Pcm, hopSeconds = HOP_SECONDS)
     bass[k] = Math.sqrt(lowSum / hop);
     high[k] = Math.sqrt(highSum / hop);
   }
-  return { hop: hop / sampleRate, bass: normalize(bass), high: normalize(high) };
+  const bassN = normalize(bass);
+  const highN = normalize(high);
+  return { hop: hop / sampleRate, bass: bassN, high: highN, flux: onsetFlux(bassN, highN) };
 }
 
 /** Tempi outside this are either a different art form or an octave error. */
@@ -52,7 +56,7 @@ export const BPM_RANGE: readonly [number, number] = [85, 185];
  * so one odd passage cannot move it. Null when nothing periodic stands out.
  */
 export function estimateBpm(env: Envelope, [min, max]: readonly [number, number] = BPM_RANGE) {
-  const flux = onsetFlux(env);
+  const { flux } = env;
   const lagMin = Math.max(2, Math.round(60 / max / env.hop));
   const lagMax = Math.round(60 / min / env.hop);
   const span = Math.min(flux.length, Math.round(20 / env.hop));
@@ -96,7 +100,7 @@ export function detectSections(
  */
 export function nearestBeat(env: Envelope, bpm: number, time: number, span = 8): number {
   const period = 60 / bpm;
-  const flux = onsetFlux(env);
+  const { flux } = env;
   const bins = 24;
   const energy = new Float64Array(bins);
   const from = Math.max(0, Math.round((time - span) / env.hop));
@@ -152,8 +156,7 @@ function fold(runs: Run[], minLength: number): Run[] {
   return out;
 }
 
-/** How much louder each hop is than the one before it, across both bands. */
-function onsetFlux({ bass, high }: Envelope): number[] {
+function onsetFlux(bass: number[], high: number[]): number[] {
   return bass.map((_, i) =>
     i === 0 ? 0 : Math.max(0, bass[i]! - bass[i - 1]!) + Math.max(0, high[i]! - high[i - 1]!),
   );
