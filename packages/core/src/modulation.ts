@@ -66,8 +66,9 @@ export interface ModContext {
   fps: number;
   events: EventState;
   analyzer: AudioAnalyzer;
-  bpm?: number | null;
-  beatOffset?: number;
+  /** Tempo, or null when the project states none; beat sources are 0 then. */
+  bpm: number | null;
+  beatOffset: number;
 }
 
 /**

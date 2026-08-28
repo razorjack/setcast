@@ -18,6 +18,8 @@ const at = (time: number, analyzer: AudioAnalyzer = constant(0)) => ({
   fps: 30,
   events: timeline.at(time),
   analyzer,
+  bpm: null,
+  beatOffset: 0,
 });
 
 describe('evaluateModulation', () => {
