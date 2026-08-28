@@ -11,6 +11,7 @@ const route = (over: object) =>
 const timeline = new Timeline([
   { type: 'drop', time: 10, intensity: 1 },
   { type: 'drop', time: 20, intensity: 1 },
+  { type: 'double_drop', time: 50, intensity: 1 },
 ] satisfies SetEvent[]);
 const at = (time: number, analyzer: AudioAnalyzer = constant(0)) => ({
   time,
@@ -42,6 +43,7 @@ describe('evaluateModulation', () => {
     const analyzer = constant(1);
     expect(evaluateModulation([r], at(5, analyzer))['bg-zoom']).toBe(1);
     expect(evaluateModulation([r], at(11, analyzer))['bg-zoom']).toBe(2);
+    expect(evaluateModulation([r], at(51, analyzer))['bg-zoom']).toBe(2);
   });
 
   test('later routes override earlier ones with the same target, which are not evaluated', () => {

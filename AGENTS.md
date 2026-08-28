@@ -158,7 +158,8 @@ smooth`; `smooth` seconds of trailing recency-weighted average, audio sources on
 (frame-independent: it re-samples the audio analyzer at earlier times, no state across frames);
 `window` seconds over which a timeline source ramps, so `since:drop` with `window: 4` is 1 at the
 drop and 0 four seconds later, and `until:drop` climbs to 1 as the drop approaches and releases
-when it lands; `when: drop` gates a route to a section (rests at `range[0]` otherwise). Later
+when it lands; `when: drop` gates a route to a section (rests at `range[0]` otherwise; `drop`
+covers `double_drop`). Later
 routes override earlier ones with the same target; a theme ships a default patch (`ModRouteInput`,
 so defaults may be omitted; `loadProject` runs it through `ModPatchSchema`), the project's
 `modulation:` list is appended after it.

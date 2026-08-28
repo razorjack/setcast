@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { FEATURE_SOURCES, type AudioAnalyzer, type FeatureSource } from './audio.ts';
-import { EVENT_TYPES, SECTION_TYPES, type EventType } from './events.ts';
+import { EVENT_TYPES, SECTION_TYPES, type EventType, type SectionType } from './events.ts';
 import { clamp } from './motion.ts';
 import { beatPhase } from './stage.ts';
 import { since, until, type EventState } from './timeline.ts';
@@ -86,10 +86,14 @@ export function evaluateModulation(
 
 export function evaluateRoute(route: ModRoute, ctx: ModContext): number {
   const [from, to] = route.range;
-  if (route.when && ctx.events.section !== route.when) return from;
+  if (route.when && !inSection(ctx.events.section, route.when)) return from;
   const v = clamp(sourceValue(route, ctx), 0, 1);
   return from + (to - from) * CURVES[route.curve](v);
 }
+
+/** `when: drop` covers double drops, as `since:drop` and `--since-drop` do. */
+const inSection = (section: SectionType | null, when: SectionType) =>
+  section === when || (when === 'drop' && section === 'double_drop');
 
 const isTimeline = (source: ModSource): source is TimelineSource => source.includes(':');
 const isBeat = (source: ModSource): source is BeatSource =>
