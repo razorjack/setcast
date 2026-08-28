@@ -78,14 +78,15 @@ export async function run(argv: string[]): Promise<void> {
   );
   ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
   const files = [result.file];
-  if (values.bundle) files.push(...(await bundle(project, dir, out, config.output.jpegQuality)));
+  if (values.bundle)
+    files.push(...(await sideOutputs(project, dir, out, config.output.jpegQuality)));
   outro(
     `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${files.map(shown).join(', ')}`,
   );
 }
 
 /** The thumbnail and the description, so one command leaves everything the upload form asks for. */
-async function bundle(
+async function sideOutputs(
   project: ResolvedProject,
   dir: string,
   video: string,
