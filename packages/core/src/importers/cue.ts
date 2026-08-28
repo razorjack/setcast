@@ -35,9 +35,10 @@ export const cueImporter: Importer = {
       }
       const m = FIELD.exec(line);
       if (!m || !current) continue;
-      const [, key, value] = m as unknown as [string, string, string];
-      if (key.toUpperCase() === 'TITLE') current.title = unquote(value);
-      else if (key.toUpperCase() === 'PERFORMER') current.artist = unquote(value);
+      const key = m[1]!.toUpperCase();
+      const value = m[2]!;
+      if (key === 'TITLE') current.title = unquote(value);
+      else if (key === 'PERFORMER') current.artist = unquote(value);
       else {
         const t = INDEX.exec(value);
         if (t) current.time = Number(t[1]) * 60 + Number(t[2]) + Number(t[3]) / 75;
