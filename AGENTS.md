@@ -129,8 +129,10 @@ CompositionState, modulation }`. Components consume it via Setcast hooks: `useFr
 A set is a sorted list of typed, timestamped events (`packages/core/src/events.ts`). Types:
 `track_start` (title, artist, label?, deck?), `drop` (intensity), `double_drop`, `breakdown`,
 `buildup`, `rewind`, `switch` (deck), `chapter` (title). `time` is seconds; YAML accepts `1:23`,
-`1:23.5`, `1:02:03`, or plain seconds (`TimeSchema`). The schema is the most stable public
-contract: add types, never rename or remove.
+`1:23.5`, `1:02:03`, or plain seconds (`TimeSchema`). Every event may carry an optional `id`;
+nothing reads it today, it is reserved for live mode, where the event log needs to correct or
+delete an event it already emitted. The schema is the most stable public contract: add types,
+never rename or remove.
 
 `Timeline.at(time)` returns `EventState`: `all`, `track`, `trackIndex`, `trackCount`, `last[type]`,
 `next[type]`, `section` (latest of drop/double_drop/breakdown/buildup), `sectionStart` and `deck`

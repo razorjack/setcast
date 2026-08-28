@@ -27,6 +27,7 @@ export const TrackSchema = z.strictObject({
 });
 export type Track = z.infer<typeof TrackSchema>;
 
+/** `id` is unread today; live mode will use it to correct or delete an event already logged. */
 const event = <T extends string, S extends z.ZodRawShape>(type: T, shape: S) =>
   z.strictObject({ type: z.literal(type), time: TimeSchema, id: z.string().optional(), ...shape });
 
