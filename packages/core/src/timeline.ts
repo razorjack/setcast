@@ -35,7 +35,7 @@ export class Timeline {
 
   constructor(events: readonly SetEvent[]) {
     this.events = sortEvents(events);
-    this.tracks = this.events.filter((e) => e.type === 'track_start');
+    this.tracks = this.events.filter((event) => event.type === 'track_start');
   }
 
   at(time: number): EventState {
@@ -46,25 +46,24 @@ export class Timeline {
     let sectionStart = 0;
     let deck: string | null = null;
 
-    for (const e of this.events) {
-      if (e.time <= time) {
-        (last as Record<string, SetEvent>)[e.type] = e;
-        if (e.type === 'track_start') trackIndex++;
-        if ('deck' in e && e.deck) deck = e.deck;
-        if (isSection(e.type)) {
-          section = e.type;
-          sectionStart = e.time;
-        }
-      } else if (!(e.type in next)) {
-        (next as Record<string, SetEvent>)[e.type] = e;
+    for (const event of this.events) {
+      if (event.time > time) {
+        if (!(event.type in next)) (next as Record<string, SetEvent>)[event.type] = event;
+        continue;
+      }
+      (last as Record<string, SetEvent>)[event.type] = event;
+      if (event.type === 'track_start') trackIndex++;
+      if ('deck' in event && event.deck) deck = event.deck;
+      if (isSection(event.type)) {
+        section = event.type;
+        sectionStart = event.time;
       }
     }
 
-    const start = last.track_start;
-    const track = start ? trackOf(start) : null;
+    const trackStart = last.track_start;
     return {
       all: this.events,
-      track,
+      track: trackStart ? trackOf(trackStart) : null,
       trackIndex,
       trackCount: this.tracks.length,
       last,
@@ -87,28 +86,36 @@ type Of<T extends EventType> = EventOf<T extends 'drop' ? 'drop' | 'double_drop'
 
 /** Latest event of `type` at or before now. */
 export function lastEvent<T extends EventType>(state: EventState, type: T): Of<T> | undefined {
-  const { last } = state;
-  if (type !== 'drop') return last[type] as Of<T> | undefined;
-  const { drop, double_drop: double } = last;
-  return (!double || (drop && drop.time >= double.time) ? drop : double) as Of<T> | undefined;
+  if (type !== 'drop') return state.last[type] as Of<T> | undefined;
+  return laterOf(state.last.drop, state.last.double_drop) as Of<T> | undefined;
 }
 
 /** First event of `type` after now. */
 export function nextEvent<T extends EventType>(state: EventState, type: T): Of<T> | undefined {
-  const { next } = state;
-  if (type !== 'drop') return next[type] as Of<T> | undefined;
-  const { drop, double_drop: double } = next;
-  return (!double || (drop && drop.time <= double.time) ? drop : double) as Of<T> | undefined;
+  if (type !== 'drop') return state.next[type] as Of<T> | undefined;
+  return earlierOf(state.next.drop, state.next.double_drop) as Of<T> | undefined;
+}
+
+function laterOf(first?: SetEvent, second?: SetEvent): SetEvent | undefined {
+  if (!first) return second;
+  if (!second) return first;
+  return first.time >= second.time ? first : second;
+}
+
+function earlierOf(first?: SetEvent, second?: SetEvent): SetEvent | undefined {
+  if (!first) return second;
+  if (!second) return first;
+  return first.time <= second.time ? first : second;
 }
 
 /** Seconds since the latest event of `type`, or Infinity when none has happened yet. */
 export const since = (state: EventState, type: EventType, time: number): number => {
-  const e = lastEvent(state, type);
-  return e ? time - e.time : Infinity;
+  const event = lastEvent(state, type);
+  return event ? time - event.time : Infinity;
 };
 
 /** Seconds until the next event of `type`, or Infinity when none is coming. */
 export const until = (state: EventState, type: EventType, time: number): number => {
-  const e = nextEvent(state, type);
-  return e ? e.time - time : Infinity;
+  const event = nextEvent(state, type);
+  return event ? event.time - time : Infinity;
 };

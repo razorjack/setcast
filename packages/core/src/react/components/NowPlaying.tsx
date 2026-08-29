@@ -7,17 +7,16 @@ import { useFrame } from '../frame.tsx';
  * on a track change, holds for `panel.dwell` seconds and leaves over `panel.fade`.
  */
 export function NowPlaying() {
-  const { composition, events, timeSeconds: t } = useFrame();
-  const track = events.track;
+  const { composition, events, timeSeconds } = useFrame();
+  const { track } = events;
   if (!track) return null;
+
   const { dwell, fade } = composition.project.panel;
-  const age = since(events, 'track_start', t);
-  const enter = spring(age, { stiffness: 110, damping: 15 });
-  const leave =
-    dwell > 0 ? interpolate(age, [dwell, dwell + fade], [1, 0], { easing: ease.inOut }) : 1;
-  const pad = (n: number) => String(n).padStart(2, '0');
+  const age = since(events, 'track_start', timeSeconds);
+  const show = spring(age, { stiffness: 110, damping: 15 }) * stay(age, dwell, fade);
+
   return (
-    <section className="sc-panel" style={{ '--show': enter * leave }} data-deck={track.deck}>
+    <section className="sc-panel" style={{ '--show': show }} data-deck={track.deck}>
       <header className="sc-panel-head">
         {track.deck && <span className="sc-deck">{track.deck}</span>}
         <span className="sc-eyebrow">Now playing</span>
@@ -33,3 +32,11 @@ export function NowPlaying() {
     </section>
   );
 }
+
+/** 1 while the panel dwells, easing to 0 over `fade`. `dwell: 0` keeps it up for the whole set. */
+const stay = (age: number, dwell: number, fade: number): number => {
+  if (dwell <= 0) return 1;
+  return interpolate(age, [dwell, dwell + fade], [1, 0], { easing: ease.inOut });
+};
+
+const pad = (count: number) => String(count).padStart(2, '0');

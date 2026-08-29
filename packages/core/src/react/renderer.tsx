@@ -80,16 +80,19 @@ export function Video(props: VideoProps) {
   return <Bound {...props} src={useAssetUrl(props.src)} />;
 }
 
+interface HoldState {
+  label: string;
+  ready: boolean;
+  error: Error | null;
+}
+
 /** Holds the frame until `load` resolves and reports load failures through React. */
 export function useHoldUntil(label: string, load: () => Promise<unknown>): boolean {
   const { hold } = useRenderer();
-  const [state, setState] = useState<{ label: string; ready: boolean; error: Error | null }>({
-    label,
-    ready: false,
-    error: null,
-  });
+  const [state, setState] = useState<HoldState>({ label, ready: false, error: null });
   const loadRef = useRef(load);
   loadRef.current = load;
+
   useEffect(() => {
     const release = hold(label);
     setState({ label, ready: false, error: null });
@@ -99,24 +102,27 @@ export function useHoldUntil(label: string, load: () => Promise<unknown>): boole
       (result) => setState({ label, ...result }),
     );
   }, [hold, label]);
-  if (state.label === label && state.error) throw state.error;
-  return state.label === label && state.ready;
+
+  // State left over from a previous label describes a resource this render no longer waits for.
+  if (state.label !== label) return false;
+  if (state.error) throw state.error;
+  return state.ready;
 }
 
 /** Resolves and preloads an image (or any URL) and holds the frame until it has loaded. */
 export function useAsset(src: string): { src: string; ready: boolean } {
   const url = useAssetUrl(src);
-  const ready = useHoldUntil(
-    `asset:${url}`,
-    () =>
-      new Promise<void>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve();
-        img.onerror = () => reject(new Error(`Failed to load ${url}`));
-        img.src = url;
-      }),
-  );
+  const ready = useHoldUntil(`asset:${url}`, () => preloadImage(url));
   return { src: url, ready };
+}
+
+function preloadImage(url: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => reject(new Error(`Failed to load ${url}`));
+    image.src = url;
+  });
 }
 
 /** Holds the frame until every @font-face in the document has loaded. */

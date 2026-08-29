@@ -1,5 +1,10 @@
 export type HoldResult = { ready: true; error: null } | { ready: false; error: Error };
 
+/**
+ * Holds a frame until `load` settles: `release` runs exactly once, whether the load succeeded,
+ * failed, or the caller cancelled first. Returns the cancel function; after it, `complete` is
+ * never called, so a load for a resource nobody waits for any more cannot report a stale result.
+ */
 export function holdUntil(
   load: () => Promise<unknown>,
   release: () => void,
@@ -7,7 +12,7 @@ export function holdUntil(
 ): () => void {
   let live = true;
   let released = false;
-  const done = () => {
+  const releaseOnce = () => {
     if (released) return;
     released = true;
     release();
@@ -17,21 +22,21 @@ export function holdUntil(
     .then(load)
     .then(
       () => {
-        done();
+        releaseOnce();
         if (live) complete({ ready: true, error: null });
       },
       (error: unknown) => {
-        done();
-        if (live)
-          complete({
-            ready: false,
-            error: error instanceof Error ? error : new Error(String(error)),
-          });
+        releaseOnce();
+        if (!live) return;
+        complete({ ready: false, error: asError(error) });
       },
     );
 
   return () => {
     live = false;
-    done();
+    releaseOnce();
   };
 }
+
+const asError = (thrown: unknown): Error =>
+  thrown instanceof Error ? thrown : new Error(String(thrown));

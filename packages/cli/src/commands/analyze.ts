@@ -10,17 +10,18 @@ import {
   formatTimecode,
   SetcastError,
   snapToBeats,
+  type Pcm,
   type SetEvent,
 } from '@setcast/core';
 import { CONFIG_FILE, decodeMono, type LoadedProject } from '@setcast/core/node';
-import { isSeq, parseDocument, stringify } from 'yaml';
+import { isSeq, parseDocument, stringify, type Document } from 'yaml';
 import { load } from '../project.ts';
 import {
   accent,
   bold,
   clearSpinnerOnError,
   dim,
-  fmtSeconds,
+  formatDuration,
   intro,
   log,
   outro,
@@ -111,45 +112,67 @@ async function analyzeProject(loaded: LoadedProject, sensitivity: number): Promi
   const analysis = await clearSpinnerOnError(spin, async () => {
     const pcm = await decodeMono(join(loaded.dir, loaded.project.audio));
     spin.message('Analyzing');
-    const shape = envelope(pcm);
-    const bpm = estimateBpm(shape);
-    const grid = loaded.config.bpm ?? bpm;
-    const drafted = detectSections(shape, { sensitivity });
-    return {
-      events: grid ? snapToBeats(drafted, shape, grid) : drafted,
-      bpm,
-      offset: bpm ? beatOffset(shape, bpm) : null,
-      seconds: pcm.samples.length / pcm.sampleRate,
-    };
+    return draftFrom(pcm, loaded.config.bpm, sensitivity);
   });
 
-  spin.stop(
-    `${fmtSeconds(analysis.seconds)} of audio${analysis.bpm ? `, ${bold(`${Math.round(analysis.bpm)} BPM`)}` : ', no steady tempo'}`,
-  );
+  spin.stop(audioSummary(analysis));
   return analysis;
 }
 
-function showAnalysis(analysis: AnalysisDraft): void {
-  for (const event of analysis.events) {
-    const kind = event.type === 'drop' ? accent(event.type.padEnd(9)) : steel(event.type.padEnd(9));
-    const detail = event.type === 'drop' ? dim(`intensity ${event.intensity.toFixed(2)}`) : '';
-    log.message(`${dim(formatTime(event.time).padStart(7))}  ${kind} ${detail}`.trimEnd());
-  }
+/** Sections and tempo read off the audio. Drafted events land on whichever beat grid the set has. */
+function draftFrom(pcm: Pcm, statedBpm: number | undefined, sensitivity: number): AnalysisDraft {
+  const energy = envelope(pcm);
+  const bpm = estimateBpm(energy);
+  const grid = statedBpm ?? bpm;
+  const drafted = detectSections(energy, { sensitivity });
+
+  return {
+    events: grid ? snapToBeats(drafted, energy, grid) : drafted,
+    bpm,
+    offset: bpm ? beatOffset(energy, bpm) : null,
+    seconds: pcm.samples.length / pcm.sampleRate,
+  };
 }
+
+const audioSummary = ({ seconds, bpm }: AnalysisDraft) => {
+  const tempo = bpm ? `, ${bold(`${Math.round(bpm)} BPM`)}` : ', no steady tempo';
+  return `${formatDuration(seconds)} of audio${tempo}`;
+};
+
+function showAnalysis(analysis: AnalysisDraft): void {
+  // Padded names line the intensities up; trimmed because an uncoloured terminal shows the padding.
+  for (const event of analysis.events) log.message(eventLine(event).trimEnd());
+}
+
+const eventLine = (event: SetEvent): string => {
+  const time = dim(formatTime(event.time).padStart(7));
+  const name = event.type.padEnd(9);
+  if (event.type !== 'drop') return `${time}  ${steel(name)}`;
+  return `${time}  ${accent(name)} ${dim(`intensity ${event.intensity.toFixed(2)}`)}`;
+};
 
 function changesFor(loaded: LoadedProject, analysis: AnalysisDraft): AnalysisChanges {
-  const events = analysis.events.filter(
-    (event) =>
-      !loaded.config.events.some(
-        (existing) =>
-          existing.type === event.type && Math.abs(existing.time - event.time) < SAME_EVENT_SECONDS,
-      ),
-  );
-  const tempo =
-    analysis.bpm && loaded.config.bpm === undefined ? Math.round(analysis.bpm * 10) / 10 : null;
-  return { events, tempo, offset: analysis.offset };
+  const stated = loaded.config.events;
+  const isNew = (drafted: SetEvent) =>
+    !stated.some(
+      (event) =>
+        event.type === drafted.type && Math.abs(event.time - drafted.time) < SAME_EVENT_SECONDS,
+    );
+
+  return {
+    events: analysis.events.filter(isNew),
+    tempo: newTempo(loaded.config.bpm, analysis.bpm),
+    offset: analysis.offset,
+  };
 }
 
+/** A project that already states a tempo keeps it; analysis only fills in an empty `bpm:`. */
+const newTempo = (stated: number | undefined, detected: number | null): number | null => {
+  if (stated !== undefined || !detected) return null;
+  return Math.round(detected * 10) / 10;
+};
+
+/** The dry run prints every drafted event, not just the ones `setcast.yaml` is missing. */
 function printDraft(events: SetEvent[], changes: AnalysisChanges): void {
   const draft: Record<string, unknown> = {};
   if (changes.tempo) {
@@ -165,30 +188,34 @@ function printDraft(events: SetEvent[], changes: AnalysisChanges): void {
 async function updateProject(root: string, changes: AnalysisChanges): Promise<string> {
   const path = join(root, CONFIG_FILE);
   const doc = parseDocument(await readFile(path, 'utf8'));
+
   if (changes.tempo) {
     doc.set('bpm', changes.tempo);
     doc.set('beatOffset', changes.offset);
   }
-
-  const existing = doc.get('events');
-  if (isSeq(existing)) {
-    existing.flow = false;
-    for (const event of changes.events) existing.add(doc.createNode(toYaml(event)));
-  } else if (changes.events.length) {
-    doc.set('events', changes.events.map(toYaml));
-  }
+  appendEvents(doc, changes.events);
 
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
   return path;
 }
 
+/** Adds to the `events:` the user already wrote, so nothing of theirs is rewritten. */
+function appendEvents(doc: Document, events: SetEvent[]): void {
+  const existing = doc.get('events');
+  if (isSeq(existing)) {
+    existing.flow = false;
+    for (const event of events) existing.add(doc.createNode(toYaml(event)));
+    return;
+  }
+  if (events.length) doc.set('events', events.map(toYaml));
+}
+
 function showWrittenChanges(path: string, changes: AnalysisChanges): void {
-  const added = [
-    changes.events.length ? `${changes.events.length} events` : '',
-    changes.tempo ? `bpm: ${changes.tempo} with beatOffset` : '',
-  ];
-  outro(`Added ${added.filter(Boolean).join(' and ')} to ${steel(path)}`);
+  const added: string[] = [];
+  if (changes.events.length) added.push(`${changes.events.length} events`);
+  if (changes.tempo) added.push(`bpm: ${changes.tempo} with beatOffset`);
+  outro(`Added ${added.join(' and ')} to ${steel(path)}`);
 }
 
 function toYaml(event: SetEvent): Record<string, string | number> {

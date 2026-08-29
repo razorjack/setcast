@@ -10,15 +10,17 @@ import {
 } from 'remotion';
 import { mediaDuration } from './duration.ts';
 
-const lengths = new Map<string, number>();
+/** A video's length never changes mid-render, so one read per source is enough. */
+const durations = new Map<string, number>();
 
 /** Length of `src` in frames, or null while it is unknown. Holds the frame until it is read. */
 function useLoopFrames(src: string | null, fps: number): number | null {
   const ready = useHoldUntil(`duration:${src ?? ''}`, async () => {
-    if (src && !lengths.has(src)) lengths.set(src, await mediaDuration(src));
+    if (src && !durations.has(src)) durations.set(src, await mediaDuration(src));
   });
   if (!src || !ready) return null;
-  const seconds = lengths.get(src);
+
+  const seconds = durations.get(src);
   return seconds ? Math.max(1, Math.round(seconds * fps)) : null;
 }
 

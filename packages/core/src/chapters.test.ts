@@ -29,6 +29,6 @@ test('chapterProblems reports what would turn YouTube chapters off', () => {
     expect.stringContaining('runs 6s'),
   ] satisfies unknown[]);
 
-  const spaced = short.map((e, i) => ({ ...e, time: i * 150 }));
+  const spaced = short.map((track, index) => ({ ...track, time: index * 150 }));
   expect(chapterProblems(spaced)).toEqual([]);
 });

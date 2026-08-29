@@ -1,3 +1,5 @@
+import { lerp } from './motion.ts';
+
 /** Per-frame audio descriptors, all normalized to 0..1. */
 export interface AudioFeatures {
   /** Sub and low bass energy (~20-150 Hz). */
@@ -53,18 +55,22 @@ export const BANDS = {
   highs: [2000, 16000],
 } as const;
 
-/** Mean magnitude between `lo` and `hi` Hz. */
-export function bandEnergy({ magnitudes, sampleRate }: Spectrum, lo: number, hi: number): number {
-  const hz = sampleRate / 2 / magnitudes.length;
-  const from = Math.max(0, Math.floor(lo / hz));
-  const to = Math.min(magnitudes.length, Math.max(from + 1, Math.ceil(hi / hz)));
+/** Mean magnitude between `fromHz` and `toHz`. */
+export function bandEnergy(
+  { magnitudes, sampleRate }: Spectrum,
+  fromHz: number,
+  toHz: number,
+): number {
+  const hzPerBin = sampleRate / 2 / magnitudes.length;
+  const startBin = Math.max(0, Math.floor(fromHz / hzPerBin));
+  const endBin = Math.min(magnitudes.length, Math.max(startBin + 1, Math.ceil(toHz / hzPerBin)));
   let sum = 0;
-  for (let i = from; i < to; i++) sum += magnitudes[i]!;
-  return sum / (to - from);
+  for (let bin = startBin; bin < endBin; bin++) sum += magnitudes[bin]!;
+  return sum / (endBin - startBin);
 }
 
 /** Soft limiter: 0 → 0, grows roughly linearly, approaches 1 asymptotically. */
-export const soft = (v: number, gain = 1): number => 1 - Math.exp(-gain * Math.max(0, v));
+export const soft = (level: number, gain = 1): number => 1 - Math.exp(-gain * Math.max(0, level));
 
 export interface LogBinsOptions {
   count?: number;
@@ -85,11 +91,11 @@ export function logBins(
 ): number[] {
   const ratio = hi / lo;
   const bins = new Array<number>(count);
-  for (let i = 0; i < count; i++) {
-    const f0 = lo * ratio ** (i / count);
-    const f1 = lo * ratio ** ((i + 1) / count);
-    const fc = Math.sqrt(f0 * f1);
-    bins[i] = soft(bandEnergy(spectrum, f0, f1) * (fc / 100) ** tilt, gain);
+  for (let bin = 0; bin < count; bin++) {
+    const startHz = lo * ratio ** (bin / count);
+    const endHz = lo * ratio ** ((bin + 1) / count);
+    const centreHz = Math.sqrt(startHz * endHz);
+    bins[bin] = soft(bandEnergy(spectrum, startHz, endHz) * (centreHz / 100) ** tilt, gain);
   }
   return bins;
 }
@@ -114,7 +120,10 @@ export function spectrumFeatures(
 export function rms(samples: ArrayLike<number>, gain = 3): number {
   if (samples.length === 0) return 0;
   let sum = 0;
-  for (let i = 0; i < samples.length; i++) sum += samples[i]! * samples[i]!;
+  for (let i = 0; i < samples.length; i++) {
+    const sample = samples[i]!;
+    sum += sample * sample;
+  }
   return soft(Math.sqrt(sum / samples.length), gain);
 }
 
@@ -128,12 +137,11 @@ export const level = (bin: number, gain: number, floor: number): number =>
  */
 export function sampleBins(bins: readonly number[], count: number): number[] {
   if (bins.length === count) return [...bins];
-  const last = bins.length - 1;
-  return Array.from({ length: count }, (_, i) => {
-    const pos = count > 1 ? (i / (count - 1)) * last : 0;
-    const a = Math.floor(pos);
-    const b = Math.min(last, a + 1);
-    const t = pos - a;
-    return bins[a]! * (1 - t) + bins[b]! * t;
+  const lastBin = bins.length - 1;
+  return Array.from({ length: count }, (_, index) => {
+    const position = count > 1 ? (index / (count - 1)) * lastBin : 0;
+    const before = Math.floor(position);
+    const after = Math.min(lastBin, before + 1);
+    return lerp(bins[before]!, bins[after]!, position - before);
   });
 }

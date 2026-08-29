@@ -28,31 +28,38 @@ export function windowedAnalyzer(
     wave: audioData.channelWaveforms[0],
     sampleRate: audioData.sampleRate,
   };
+  // Every modulation route asks for the same instants, so one millisecond is a fine cache key.
   const cache = new Map<number, AudioFeatures>();
 
-  const featuresAt = (requested: number): AudioFeatures => {
-    const time = withinWindow(audioWindow, requested);
-    const key = Math.round(time * 1000);
-    const cached = cache.get(key);
-    if (cached) return cached;
+  return {
+    featuresAt(requested: number): AudioFeatures {
+      const time = withinWindow(audioWindow, requested);
+      const key = Math.round(time * 1000);
 
-    const current = spectrumAt(audioWindow, time);
-    const previousTime = withinWindow(audioWindow, time - SMOOTH_LOOKBACK);
-    const previous = spectrumAt(audioWindow, previousTime);
-    const magnitudes = current.map((magnitude, index) => 0.6 * magnitude + 0.4 * previous[index]!);
-    const level = loudnessAt(audioWindow, time);
-    const onsetTime = withinWindow(audioWindow, time - ONSET_LOOKBACK);
-    const features: AudioFeatures = {
-      ...spectrumFeatures({ magnitudes, sampleRate: audioWindow.sampleRate }),
-      rms: level,
-      onset: soft(Math.max(0, level - loudnessAt(audioWindow, onsetTime)) * 4),
-    };
+      const cached = cache.get(key);
+      if (cached) return cached;
 
-    cache.set(key, features);
-    return features;
+      const features = measure(audioWindow, time);
+      cache.set(key, features);
+      return features;
+    },
   };
+}
 
-  return { featuresAt };
+/** The spectrum smoothed against the frame before it, plus loudness now and a moment ago. */
+function measure(audioWindow: AudioWindow, time: number): AudioFeatures {
+  const current = spectrumAt(audioWindow, time);
+  const previous = spectrumAt(audioWindow, withinWindow(audioWindow, time - SMOOTH_LOOKBACK));
+  const magnitudes = current.map((magnitude, index) => 0.6 * magnitude + 0.4 * previous[index]!);
+
+  const loudness = loudnessAt(audioWindow, time);
+  const before = loudnessAt(audioWindow, withinWindow(audioWindow, time - ONSET_LOOKBACK));
+
+  return {
+    ...spectrumFeatures({ magnitudes, sampleRate: audioWindow.sampleRate }),
+    rms: loudness,
+    onset: soft(Math.max(0, loudness - before) * 4),
+  };
 }
 
 /**

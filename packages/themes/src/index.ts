@@ -1,11 +1,11 @@
 import { fileURLToPath } from 'node:url';
 import type { Theme } from '@setcast/core';
 
-const file = (rel: string) => fileURLToPath(new URL(`../${rel}`, import.meta.url));
+const packaged = (path: string) => fileURLToPath(new URL(`../${path}`, import.meta.url));
 
 export const sterileTech: Theme = {
   name: 'sterile-tech',
-  cssFile: file('sterile-tech/theme.css'),
+  cssFile: packaged('sterile-tech/theme.css'),
   modulation: [
     {
       source: 'bass',

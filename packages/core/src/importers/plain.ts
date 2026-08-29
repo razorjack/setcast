@@ -9,13 +9,8 @@ export interface Importer {
 }
 
 const LINE = /^\s*(?:\d+[.)]\s+)?\[?(\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?)\]?\s*[-–—:]?\s*(.+?)\s*$/;
-
-/** Splits "Artist - Title" (also "–", "—") into parts; the whole line is the title if there is no separator. */
-function splitArtistTitle(rest: string): { artist: string; title: string } {
-  const m = /^(.+?)\s+[-–—]\s+(.+)$/.exec(rest);
-  if (!m) return { artist: 'ID', title: rest };
-  return { artist: m[1]!.trim(), title: m[2]!.trim() };
-}
+const LABEL = /^(.*?)\s*\[([^\]]+)\]\s*$/;
+const ARTIST_TITLE = /^(.+?)\s+[-–—]\s+(.+)$/;
 
 /**
  * Plain text tracklists, one track per line:
@@ -26,24 +21,39 @@ function splitArtistTitle(rest: string): { artist: string; title: string } {
  */
 export const plainImporter: Importer = {
   name: 'plain',
-  test: (text) => text.split('\n').some((l) => LINE.test(l)),
+  test: (text) => text.split('\n').some((line) => LINE.test(line)),
   parse(text) {
     const tracks: TrackEntry[] = [];
     for (const line of text.split('\n')) {
-      const m = LINE.exec(line);
-      if (!m) continue;
-      const time = parseTime(m[1]!);
-      if (time === null) continue;
-      let rest = m[2]!;
-      let label: string | undefined;
-      const lm = /^(.*?)\s*\[([^\]]+)\]\s*$/.exec(rest);
-      if (lm) {
-        rest = lm[1]!;
-        label = lm[2]!;
-      }
-      const { artist, title } = splitArtistTitle(rest);
-      tracks.push({ time, artist, title, ...(label !== undefined && { label }) });
+      const track = parseLine(line);
+      if (track) tracks.push(track);
     }
     return tracks;
   },
 };
+
+function parseLine(line: string): TrackEntry | null {
+  const match = LINE.exec(line);
+  if (!match) return null;
+  const time = parseTime(match[1]!);
+  if (time === null) return null;
+
+  const { rest, label } = splitLabel(match[2]!);
+  const { artist, title } = splitArtistTitle(rest);
+  if (label === undefined) return { time, artist, title };
+  return { time, artist, title, label };
+}
+
+/** A trailing `[Neosignal]` names the release, not the track. */
+function splitLabel(rest: string): { rest: string; label: string | undefined } {
+  const match = LABEL.exec(rest);
+  if (!match) return { rest, label: undefined };
+  return { rest: match[1]!, label: match[2]! };
+}
+
+/** Splits "Artist - Title" (also "–", "—") into parts; the whole line is the title if there is no separator. */
+function splitArtistTitle(rest: string): { artist: string; title: string } {
+  const match = ARTIST_TITLE.exec(rest);
+  if (!match) return { artist: 'ID', title: rest };
+  return { artist: match[1]!.trim(), title: match[2]!.trim() };
+}

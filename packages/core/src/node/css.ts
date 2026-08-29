@@ -14,24 +14,41 @@ const MIME: Record<string, string> = {
 };
 
 const URL_RE = /url\(\s*(?:(['"])(.*?)\1|([^)]*?))\s*\)/gi;
+const COMMENT = /\/\*[\s\S]*?\*\//g;
+/** A scheme, a protocol-relative or absolute path, or a fragment: nothing on disk to inline. */
+const ELSEWHERE = /^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i;
+
 const urlValue = (quoted?: string, bare?: string): string => (quoted ?? bare ?? '').trim();
 
 /** Reads a stylesheet and inlines relative `url()` references as data URIs, so the CSS is self-contained. */
 export async function loadCss(file: string): Promise<string> {
   const css = await readFile(file, 'utf8');
   const dir = dirname(file);
-  const refs = [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(URL_RE)]
-    .map((match) => urlValue(match[2], match[3]))
-    .filter((u) => !/^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i.test(u));
-  const data = new Map<string, string>();
-  for (const ref of new Set(refs)) {
-    const fileRef = ref.replace(/[?#].*$/, '');
-    const path = resolve(dir, fileRef);
-    const mime = MIME[extname(path).toLowerCase()] ?? 'application/octet-stream';
-    data.set(ref, `data:${mime};base64,${(await readFile(path)).toString('base64')}`);
+
+  const inlined = new Map<string, string>();
+  for (const reference of localReferences(css)) {
+    inlined.set(reference, await dataUri(resolve(dir, stripQuery(reference))));
   }
+
   return css.replace(URL_RE, (match, _quote, quoted: string, bare: string) => {
-    const ref = urlValue(quoted, bare);
-    return data.has(ref) ? `url("${data.get(ref)}")` : match;
+    const uri = inlined.get(urlValue(quoted, bare));
+    return uri ? `url("${uri}")` : match;
   });
 }
+
+/** Each distinct `url()` that names a file next to the stylesheet. Commented-out ones don't count. */
+function localReferences(css: string): Set<string> {
+  const references = [...css.replace(COMMENT, '').matchAll(URL_RE)].map((match) =>
+    urlValue(match[2], match[3]),
+  );
+  return new Set(references.filter((reference) => !ELSEWHERE.test(reference)));
+}
+
+async function dataUri(path: string): Promise<string> {
+  const mime = MIME[extname(path).toLowerCase()] ?? 'application/octet-stream';
+  const bytes = await readFile(path);
+  return `data:${mime};base64,${bytes.toString('base64')}`;
+}
+
+/** `fonts/x.woff2?v=2#hash` points at `fonts/x.woff2`; the rest is cache busting. */
+const stripQuery = (reference: string) => reference.replace(/[?#].*$/, '');

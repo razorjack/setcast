@@ -3,15 +3,21 @@ const TIMECODE = /^(?:(\d+):)?(\d{1,2}):(\d{2}(?:\.\d+)?)$/;
 /** Parses "MM:SS", "MM:SS.ms", "H:MM:SS", or plain seconds into seconds. Returns null when unparseable. */
 export function parseTime(input: string | number): number | null {
   if (typeof input === 'number') return Number.isFinite(input) && input >= 0 ? input : null;
-  const s = input.trim();
-  if (/^\d+(\.\d+)?$/.test(s)) return Number(s);
-  const m = TIMECODE.exec(s);
-  if (!m) return null;
-  const [, h = '0', min = '0', sec = '0'] = m;
-  const minutes = Number(min);
-  const seconds = Number(sec);
-  if (seconds >= 60 || (m[1] !== undefined && minutes >= 60)) return null;
-  return Number(h) * 3600 + minutes * 60 + seconds;
+
+  const text = input.trim();
+  if (/^\d+(\.\d+)?$/.test(text)) return Number(text);
+
+  const match = TIMECODE.exec(text);
+  if (!match) return null;
+
+  const [, hoursText, minutesText = '0', secondsText = '0'] = match;
+  const hours = Number(hoursText ?? '0');
+  const minutes = Number(minutesText);
+  const seconds = Number(secondsText);
+  if (seconds >= 60) return null;
+  if (hoursText !== undefined && minutes >= 60) return null;
+
+  return hours * 3600 + minutes * 60 + seconds;
 }
 
 /** Splits seconds into whole hours, minutes and seconds. Negatives clamp to zero. */
@@ -20,7 +26,7 @@ export function hms(seconds: number): { h: number; m: number; s: number } {
   return { h: Math.floor(total / 3600), m: Math.floor((total % 3600) / 60), s: total % 60 };
 }
 
-const pad = (n: number) => String(n).padStart(2, '0');
+const pad = (part: number) => String(part).padStart(2, '0');
 
 /** Formats seconds as "MM:SS" (or "H:MM:SS" past an hour). */
 export function formatTime(seconds: number): string {
@@ -39,6 +45,9 @@ export function formatChapterTime(seconds: number): string {
  * fraction away, and both tracklists and detected events carry one.
  */
 export function formatTimecode(seconds: number): string {
-  const [whole, frac] = seconds.toFixed(3).split('.') as [string, string];
-  return formatTime(Number(whole)) + `.${frac}`.replace(/\.?0+$/, '');
+  const [whole, fraction] = seconds.toFixed(3).split('.') as [string, string];
+  return formatTime(Number(whole)) + trimmedFraction(fraction);
 }
+
+/** `500` becomes `.5`, `000` becomes nothing: no trailing zeros in a hand-edited config. */
+const trimmedFraction = (fraction: string) => `.${fraction}`.replace(/\.?0+$/, '');

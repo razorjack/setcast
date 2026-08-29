@@ -1,9 +1,9 @@
 export type Easing = (t: number) => number;
 
-export const clamp = (v: number, min: number, max: number): number =>
-  Math.min(max, Math.max(min, v));
+export const clamp = (value: number, min: number, max: number): number =>
+  Math.min(max, Math.max(min, value));
 
-export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
+export const lerp = (from: number, to: number, t: number): number => from + (to - from) * t;
 
 export const ease = {
   linear: ((t) => t) as Easing,
@@ -35,16 +35,18 @@ export function interpolate(
       `interpolate: inputRange and outputRange need the same length (>= 2), got ${inputRange.length} and ${outputRange.length}.`,
     );
   }
-  let i = 0;
-  while (i < inputRange.length - 2 && input > inputRange[i + 1]!) i++;
-  const in0 = inputRange[i]!;
-  const in1 = inputRange[i + 1]!;
-  const out0 = outputRange[i]!;
-  const out1 = outputRange[i + 1]!;
-  if (in1 === in0) return input < in0 ? out0 : out1;
-  if (extrapolate === 'clamp') input = clamp(input, in0, in1);
-  const t = (input - in0) / (in1 - in0);
-  return lerp(out0, out1, t >= 0 && t <= 1 ? easing(t) : t);
+  let segment = 0;
+  while (segment < inputRange.length - 2 && input > inputRange[segment + 1]!) segment++;
+  const inFrom = inputRange[segment]!;
+  const inTo = inputRange[segment + 1]!;
+  const outFrom = outputRange[segment]!;
+  const outTo = outputRange[segment + 1]!;
+  if (inTo === inFrom) return input < inFrom ? outFrom : outTo;
+
+  const at = extrapolate === 'clamp' ? clamp(input, inFrom, inTo) : input;
+  const t = (at - inFrom) / (inTo - inFrom);
+  // Easing is defined on the segment, so an extrapolated t passes through untouched.
+  return lerp(outFrom, outTo, t >= 0 && t <= 1 ? easing(t) : t);
 }
 
 export interface SpringConfig {
@@ -59,21 +61,27 @@ export interface SpringConfig {
  */
 export function spring(t: number, { stiffness = 120, damping = 14, mass = 1 }: SpringConfig = {}) {
   if (t <= 0) return 0;
-  const w0 = Math.sqrt(stiffness / mass);
-  const zeta = damping / (2 * Math.sqrt(stiffness * mass));
-  let x: number;
+  const naturalFrequency = Math.sqrt(stiffness / mass);
+  const dampingRatio = damping / (2 * Math.sqrt(stiffness * mass));
+  return 1 - displacement(t, naturalFrequency, dampingRatio);
+}
+
+/**
+ * How far the mass still is from equilibrium at `t`, for natural frequency `w0` and damping ratio
+ * `zeta`: the three standard closed forms of a damped oscillator, under, critically and over.
+ */
+function displacement(t: number, w0: number, zeta: number): number {
   if (zeta < 1) {
-    const wd = w0 * Math.sqrt(1 - zeta * zeta);
-    x = Math.exp(-zeta * w0 * t) * (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t));
-  } else if (zeta === 1) {
-    x = Math.exp(-w0 * t) * (1 + w0 * t);
-  } else {
-    const s = w0 * Math.sqrt(zeta * zeta - 1);
-    const r1 = -zeta * w0 + s;
-    const r2 = -zeta * w0 - s;
-    x = (r1 * Math.exp(r2 * t) - r2 * Math.exp(r1 * t)) / (r1 - r2);
+    const damped = w0 * Math.sqrt(1 - zeta * zeta);
+    const shape = Math.cos(damped * t) + ((zeta * w0) / damped) * Math.sin(damped * t);
+    return Math.exp(-zeta * w0 * t) * shape;
   }
-  return 1 - x;
+  if (zeta === 1) return Math.exp(-w0 * t) * (1 + w0 * t);
+
+  const spread = w0 * Math.sqrt(zeta * zeta - 1);
+  const slow = -zeta * w0 + spread;
+  const fast = -zeta * w0 - spread;
+  return (slow * Math.exp(fast * t) - fast * Math.exp(slow * t)) / (slow - fast);
 }
 
 /** 1 at `t = 0`, decaying to ~0 over `seconds`; 0 before `t = 0`. Good for hit/drop impacts. */
@@ -82,6 +90,6 @@ export const impulse = (t: number, seconds: number): number =>
 
 /** Smoothstep from 0 at `t = 0` to 1 at `t = seconds`. */
 export const rampUp = (t: number, seconds: number): number => {
-  const x = clamp(seconds <= 0 ? 1 : t / seconds, 0, 1);
-  return x * x * (3 - 2 * x);
+  const progress = clamp(seconds <= 0 ? 1 : t / seconds, 0, 1);
+  return progress * progress * (3 - 2 * progress);
 };

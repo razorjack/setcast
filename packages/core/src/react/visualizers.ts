@@ -13,11 +13,16 @@ export interface Visualizer<C = unknown> extends VisualizerSpec {
   component: ComponentType<{ config: C }>;
 }
 
-export function defineVisualizer<C>(v: Visualizer<C>): Visualizer<C> {
-  const known = visualizers.has(v.name) ? (visualizers.get(v.name) as Visualizer) : null;
-  if (known && !known.component) visualizers.replace(v);
-  else visualizers.add(v);
-  return v;
+export function defineVisualizer<C>(visualizer: Visualizer<C>): Visualizer<C> {
+  if (completesSchemaOnlyEntry(visualizer.name)) visualizers.replace(visualizer);
+  else visualizers.add(visualizer);
+  return visualizer;
+}
+
+/** `@setcast/core` registers a name with its schema alone; this entry fills in the component. */
+function completesSchemaOnlyEntry(name: string): boolean {
+  if (!visualizers.has(name)) return false;
+  return !(visualizers.get(name) as Visualizer).component;
 }
 
 export function resolveVisualizer(config: { name: string } & Record<string, unknown>) {

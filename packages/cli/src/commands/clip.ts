@@ -6,7 +6,7 @@ import type { LoadedProject } from '@setcast/core/node';
 import { render } from '@setcast/renderer-remotion';
 import { parseAt, parseNumber } from '../args.ts';
 import { load } from '../project.ts';
-import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, shown } from '../ui.ts';
+import { bold, dim, formatDuration, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 
 const DEFAULT_SECONDS = 45;
@@ -102,13 +102,11 @@ async function renderClip(
   options: ClipOptions,
 ): Promise<string> {
   const range = clipRange(center, options.seconds);
-  const out = options.out
-    ? resolve(options.out)
-    : resolve(loaded.dir, rangeName(loaded.config.output.file, range));
+  const out = clipPath(loaded, range, options.out);
   await mkdir(dirname(out), { recursive: true });
-  log.info(
-    `${bold(formatTime(center))} drop  ${dim('·')}  ${formatTime(range[0])} → ${formatTime(range[1])}`,
-  );
+
+  const span = `${formatTime(range[0])} → ${formatTime(range[1])}`;
+  log.info(`${bold(formatTime(center))} drop  ${dim('·')}  ${span}`);
 
   const ui = new RenderUi();
   const result = await ui.run(() =>
@@ -121,9 +119,12 @@ async function renderClip(
       onProgress: ui.onProgress,
     }),
   );
-  ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
+  ui.done(`Encoded ${formatDuration(result.durationSeconds)} of video`);
   return shown(result.file);
 }
+
+const clipPath = (loaded: LoadedProject, range: [number, number], out: string | undefined) =>
+  out ? resolve(out) : resolve(loaded.dir, rangeName(loaded.config.output.file, range));
 
 /** The clip's range: the drop a third of the way in, and never before the set starts. */
 export function clipRange(at: number, seconds: number): [number, number] {

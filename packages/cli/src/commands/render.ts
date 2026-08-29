@@ -14,7 +14,18 @@ import { render, still, type RenderOptions, type StillOptions } from '@setcast/r
 import { parseNumber } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
-import { bold, dim, fmtSeconds, intro, log, outro, RenderUi, shown, steel, warn } from '../ui.ts';
+import {
+  bold,
+  dim,
+  formatDuration,
+  intro,
+  log,
+  outro,
+  RenderUi,
+  shown,
+  steel,
+  warn,
+} from '../ui.ts';
 import { firstDrop } from './still.ts';
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N] [--bundle]
@@ -33,14 +44,6 @@ interface RenderCommandOptions {
   bundle: boolean;
 }
 
-interface RenderInputs {
-  projectDir: string;
-  out: string;
-  crf: number;
-  jpegQuality: number;
-  ui: RenderUi;
-}
-
 export async function run(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
@@ -52,29 +55,26 @@ export async function run(argv: string[]): Promise<void> {
   await mkdir(dirname(out), { recursive: true });
   showProject(project, options.range);
 
-  const ui = new RenderUi();
   const started = Date.now();
-  const result = await ui.run(() =>
-    render(
-      project,
-      renderOptions(options, {
-        projectDir: dir,
-        out,
-        crf: config.output.crf,
-        jpegQuality: config.output.jpegQuality,
-        ui,
-      }),
-    ),
-  );
-  ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
+  const ui = new RenderUi();
+  const job = renderOptions(options, {
+    projectDir: dir,
+    out,
+    crf: config.output.crf,
+    jpegQuality: config.output.jpegQuality,
+    onProgress: ui.onProgress,
+  });
+
+  const result = await ui.run(() => render(project, job));
+  ui.done(`Encoded ${formatDuration(result.durationSeconds)} of video`);
 
   const files = [result.file];
   if (options.bundle) {
     files.push(...(await sideOutputs(project, dir, out, config.output.jpegQuality)));
   }
-  outro(
-    `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${files.map(shown).join(', ')}`,
-  );
+
+  const elapsed = formatDuration((Date.now() - started) / 1000);
+  outro(`${bold('Done')} in ${elapsed}  →  ${files.map(shown).join(', ')}`);
 }
 
 function parseOptions(argv: string[]): RenderCommandOptions {
@@ -123,20 +123,19 @@ function outputPath(options: RenderCommandOptions, dir: string, configuredFile: 
 
 function showProject(project: ResolvedProject, range: [number, number] | undefined): void {
   const tracks = project.events.filter((event) => event.type === 'track_start').length;
-  log.info(
-    `${bold(project.title || 'Untitled set')}  ${dim('·')}  ${tracks} tracks, ${project.events.length - tracks} events  ${dim('·')}  ${project.width}×${project.height} @ ${project.fps} fps  ${dim('·')}  theme ${steel(project.theme)}`,
-  );
+  const summary = [
+    bold(project.title || 'Untitled set'),
+    `${tracks} tracks, ${project.events.length - tracks} events`,
+    `${project.width}×${project.height} @ ${project.fps} fps`,
+    `theme ${steel(project.theme)}`,
+  ];
+  log.info(summary.join(`  ${dim('·')}  `));
   if (range) log.info(`Range ${formatTime(range[0])} → ${formatTime(range[1])}`);
 }
 
-function renderOptions(command: RenderCommandOptions, inputs: RenderInputs): RenderOptions {
-  const options: RenderOptions = {
-    projectDir: inputs.projectDir,
-    out: inputs.out,
-    crf: inputs.crf,
-    jpegQuality: inputs.jpegQuality,
-    onProgress: inputs.ui.onProgress,
-  };
+/** The command's flags layered over what the project's `output:` block already settled. */
+function renderOptions(command: RenderCommandOptions, base: RenderOptions): RenderOptions {
+  const options = { ...base };
   if (command.range) options.range = command.range;
   if (command.concurrency) options.concurrency = command.concurrency;
   return options;
@@ -150,43 +149,63 @@ async function sideOutputs(
   jpegQuality: number,
 ): Promise<string[]> {
   const base = stem(video);
-  const at = firstDrop(project.events);
+  const thumbnail = await renderThumbnail(project, dir, `${base}.jpg`, jpegQuality);
+  const description = await writeDescription(project, `${base}.txt`);
+  return [thumbnail, description];
+}
+
+async function renderThumbnail(
+  project: ResolvedProject,
+  dir: string,
+  out: string,
+  jpegQuality: number,
+): Promise<string> {
   const ui = new RenderUi();
   const options: StillOptions = {
     projectDir: dir,
-    out: `${base}.jpg`,
+    out,
+    at: firstDrop(project.events),
     jpegQuality,
     onProgress: ui.onProgress,
   };
-  if (at !== null) options.at = at;
 
-  const thumb = await ui.run(() => still(project, options));
-  ui.done(`Thumbnail from ${bold(formatTime(thumb.timeSeconds))}`);
-  const text = `${base}.txt`;
-  await writeFile(text, youtubeDescription(project.title, project.events));
+  const thumbnail = await ui.run(() => still(project, options));
+  ui.done(`Thumbnail from ${bold(formatTime(thumbnail.timeSeconds))}`);
+  return thumbnail.file;
+}
+
+async function writeDescription(project: ResolvedProject, out: string): Promise<string> {
+  await writeFile(out, youtubeDescription(project.title, project.events));
   for (const problem of chapterProblems(project.events)) warn(problem);
-  return [thumb.file, text];
+  return out;
 }
 
 export function parseRange(text: string): [number, number] {
-  const m = /^([^-]+)-([^-]+)$/.exec(text.trim());
-  const start = m && parseTime(m[1]!.trim());
-  const end = m && parseTime(m[2]!.trim());
-  if (start === null || end === null || !m || end <= start) {
-    throw new SetcastError(
-      `Invalid --range "${text}"`,
-      'Use START-END with timecodes or seconds, e.g. --range 1:00-1:30 or --range 60-90. END must be after START.',
-    );
-  }
+  const range = splitRange(text.trim());
+  if (range) return range;
+  throw new SetcastError(
+    `Invalid --range "${text}"`,
+    'Use START-END with timecodes or seconds, e.g. --range 1:00-1:30 or --range 60-90. END must be after START.',
+  );
+}
+
+function splitRange(text: string): [number, number] | null {
+  const match = /^([^-]+)-([^-]+)$/.exec(text);
+  if (!match) return null;
+  const start = parseTime(match[1]!.trim());
+  const end = parseTime(match[2]!.trim());
+  if (start === null || end === null || end <= start) return null;
   return [start, end];
 }
 
-export const rangeName = (file: string, [a, b]: [number, number]) =>
-  `${stem(file)}.${stamp(a)}-${stamp(b)}${extname(file)}`;
+export const rangeName = (file: string, [start, end]: [number, number]) =>
+  `${stem(file)}.${stamp(start)}-${stamp(end)}${extname(file)}`;
 
 /** `0m30s`, `1h02m03s`. Filename-safe, so no colons. */
 const stamp = (seconds: number) => {
   const { h, m, s } = hms(seconds);
-  const ss = String(s).padStart(2, '0');
-  return h > 0 ? `${h}h${String(m).padStart(2, '0')}m${ss}s` : `${m}m${ss}s`;
+  if (h > 0) return `${h}h${pad(m)}m${pad(s)}s`;
+  return `${m}m${pad(s)}s`;
 };
+
+const pad = (part: number) => String(part).padStart(2, '0');

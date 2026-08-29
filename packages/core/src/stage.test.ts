@@ -11,8 +11,8 @@ const events: SetEvent[] = [
   { type: 'rewind', time: 50 },
   { type: 'double_drop', time: 60, intensity: 1 },
 ];
-const tl = new Timeline(events);
-const vars = (time: number, duration = 120) => stageVars(tl.at(time), time, duration);
+const timeline = new Timeline(events);
+const vars = (time: number, duration = 120) => stageVars(timeline.at(time), time, duration);
 
 describe('stageVars', () => {
   test('reports seconds around the nearest drop', () => {
@@ -70,8 +70,11 @@ describe('beatVars', () => {
 
 describe('stageData', () => {
   test('carries the section and the deck in front', () => {
-    expect(stageData(tl.at(35))).toEqual({ 'data-section': 'drop', 'data-deck': 'A' });
-    expect(stageData(tl.at(45))).toEqual({ 'data-section': 'drop', 'data-deck': 'B' });
-    expect(stageData(tl.at(-1))).toEqual({ 'data-section': undefined, 'data-deck': undefined });
+    expect(stageData(timeline.at(35))).toEqual({ 'data-section': 'drop', 'data-deck': 'A' });
+    expect(stageData(timeline.at(45))).toEqual({ 'data-section': 'drop', 'data-deck': 'B' });
+    expect(stageData(timeline.at(-1))).toEqual({
+      'data-section': undefined,
+      'data-deck': undefined,
+    });
   });
 });

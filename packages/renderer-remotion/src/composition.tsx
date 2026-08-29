@@ -53,6 +53,15 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
   const timeline = useMemo(() => new Timeline(project.events), [project.events]);
   const timeSeconds = frame / fps;
   const events = timeline.at(timeSeconds);
+  const modulation = evaluateModulation(project.modulation, {
+    time: timeSeconds,
+    fps,
+    events,
+    analyzer,
+    bpm: project.bpm,
+    beatOffset: project.beatOffset,
+  });
+
   const renderFrame: RenderFrame = {
     frame,
     fps,
@@ -60,15 +69,9 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
     audio: analyzer.featuresAt(timeSeconds),
     events,
     composition: { width, height, durationSeconds: durationInFrames / fps, project },
-    modulation: evaluateModulation(project.modulation, {
-      time: timeSeconds,
-      fps,
-      events,
-      analyzer,
-      bpm: project.bpm,
-      beatOffset: project.beatOffset,
-    }),
+    modulation,
   };
+
   return (
     <RendererProvider bindings={remotionBindings}>
       <FrameProvider frame={renderFrame}>

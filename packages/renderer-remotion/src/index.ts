@@ -24,6 +24,8 @@ export interface RenderProgress {
   totalFrames?: number;
 }
 
+type Report = (progress: RenderProgress) => void;
+
 export interface RenderOptions {
   projectDir: string;
   out: string;
@@ -32,7 +34,7 @@ export interface RenderOptions {
   concurrency?: number;
   crf?: number;
   jpegQuality?: number;
-  onProgress?: (p: RenderProgress) => void;
+  onProgress?: Report;
 }
 
 export interface RenderResult {
@@ -43,20 +45,16 @@ export interface RenderResult {
 
 const renderInPackage = serializeInDirectory(PACKAGE_ROOT);
 
-export function render(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
+export function render(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   // Remotion keeps its browser download and webpack cache under the nearest package.json of
   // process.cwd(). Run from this package so every project shares one cache instead of each
   // project directory growing a 100 MB .remotion folder. Renders are serialized because cwd is
   // process-global.
-  return renderInPackage(() => renderIn(project, opts));
+  return renderInPackage(() => renderIn(project, options));
 }
 
 /** Browser, bundle and composition: everything both a render and a still need first. */
-async function prepare(
-  project: ResolvedProject,
-  projectDir: string,
-  report: (p: RenderProgress) => void,
-) {
+async function prepare(project: ResolvedProject, projectDir: string, report: Report) {
   await ensureBrowser({
     onBrowserDownload: () => {
       report({ stage: 'browser', progress: 0 });
@@ -83,11 +81,12 @@ async function prepare(
   return { serveUrl, composition };
 }
 
-async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<RenderResult> {
-  const report = opts.onProgress ?? (() => {});
-  const { serveUrl, composition } = await prepare(project, opts.projectDir, report);
+async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+  const report = options.onProgress ?? (() => {});
+  const { serveUrl, composition } = await prepare(project, options.projectDir, report);
+
   const { fps, durationInFrames } = composition;
-  const frameRange = opts.range ? resolveFrameRange(opts.range, fps, durationInFrames) : null;
+  const frameRange = options.range ? resolveFrameRange(options.range, fps, durationInFrames) : null;
   const totalFrames = frameRange ? frameRange[1] - frameRange[0] + 1 : durationInFrames;
 
   await renderMedia({
@@ -95,28 +94,26 @@ async function renderIn(project: ResolvedProject, opts: RenderOptions): Promise<
     serveUrl,
     codec: 'h264',
     audioCodec: 'aac',
-    crf: opts.crf ?? null,
-    jpegQuality: opts.jpegQuality ?? 95,
-    outputLocation: opts.out,
+    crf: options.crf ?? null,
+    jpegQuality: options.jpegQuality ?? 95,
+    outputLocation: options.out,
     inputProps: project,
     frameRange,
-    concurrency: opts.concurrency ?? null,
+    concurrency: options.concurrency ?? null,
+    // Remotion counts rendered and encoded frames on one callback; Setcast shows them as stages.
     onProgress: ({ renderedFrames, encodedFrames, stitchStage }) => {
       if (renderedFrames < totalFrames) {
-        report({
-          stage: 'frames',
-          progress: renderedFrames / totalFrames,
-          renderedFrames,
-          totalFrames,
-        });
-      } else {
-        const done = stitchStage === 'muxing' ? totalFrames : encodedFrames;
-        report({ stage: 'encode', progress: done / totalFrames, renderedFrames, totalFrames });
+        const progress = renderedFrames / totalFrames;
+        report({ stage: 'frames', progress, renderedFrames, totalFrames });
+        return;
       }
+      // Muxing runs after the last frame is encoded, and reports no count of its own.
+      const encoded = stitchStage === 'muxing' ? totalFrames : encodedFrames;
+      report({ stage: 'encode', progress: encoded / totalFrames, renderedFrames, totalFrames });
     },
   });
 
-  return { file: opts.out, frames: totalFrames, durationSeconds: totalFrames / fps };
+  return { file: options.out, frames: totalFrames, durationSeconds: totalFrames / fps };
 }
 
 export interface StillOptions {
@@ -125,7 +122,7 @@ export interface StillOptions {
   /** Seconds into the set. Defaults to a quarter of the way in. */
   at?: number;
   jpegQuality?: number;
-  onProgress?: (p: RenderProgress) => void;
+  onProgress?: Report;
 }
 
 export interface StillResult {
@@ -142,35 +139,40 @@ const STILL_FORMATS: Record<string, 'png' | 'jpeg' | 'webp'> = {
 };
 
 /** Renders a single frame as an image, for a thumbnail. */
-export function still(project: ResolvedProject, opts: StillOptions): Promise<StillResult> {
-  return renderInPackage(() => stillIn(project, opts));
+export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
+  return renderInPackage(() => stillIn(project, options));
 }
 
-async function stillIn(project: ResolvedProject, opts: StillOptions): Promise<StillResult> {
-  const imageFormat = STILL_FORMATS[opts.out.split('.').pop()?.toLowerCase() ?? ''];
-  if (!imageFormat) {
-    throw new SetcastError(
-      `Cannot write a still to ${opts.out}`,
-      `Use a .png, .jpg or .webp file name for --out. Setcast picks the format from the extension.`,
-    );
-  }
-  const report = opts.onProgress ?? (() => {});
-  const { serveUrl, composition } = await prepare(project, opts.projectDir, report);
+async function stillIn(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
+  const imageFormat = stillFormat(options.out);
+  const report = options.onProgress ?? (() => {});
+  const { serveUrl, composition } = await prepare(project, options.projectDir, report);
+
   const { fps, durationInFrames } = composition;
-  const wanted = opts.at ?? durationInFrames / fps / 4;
-  const frame = Math.min(durationInFrames - 1, Math.max(0, Math.round(wanted * fps)));
+  const at = options.at ?? durationInFrames / fps / 4;
+  const frame = Math.min(durationInFrames - 1, Math.max(0, Math.round(at * fps)));
 
   await renderStill({
     composition,
     serveUrl,
-    output: opts.out,
+    output: options.out,
     frame,
     inputProps: project,
     imageFormat,
-    ...(imageFormat === 'jpeg' && { jpegQuality: opts.jpegQuality ?? 95 }),
+    // Remotion rejects a quality for a lossless format, so png and webp must pass none.
+    jpegQuality: imageFormat === 'jpeg' ? (options.jpegQuality ?? 95) : undefined,
   });
 
-  return { file: opts.out, timeSeconds: frame / fps };
+  return { file: options.out, timeSeconds: frame / fps };
+}
+
+function stillFormat(out: string): 'png' | 'jpeg' | 'webp' {
+  const format = STILL_FORMATS[out.split('.').pop()?.toLowerCase() ?? ''];
+  if (format) return format;
+  throw new SetcastError(
+    `Cannot write a still to ${out}`,
+    `Use a .png, .jpg or .webp file name for --out. Setcast picks the format from the extension.`,
+  );
 }
 
 export interface PreviewOptions {
@@ -179,28 +181,38 @@ export interface PreviewOptions {
 }
 
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
-export async function preview(project: ResolvedProject, opts: PreviewOptions): Promise<void> {
+export async function preview(project: ResolvedProject, options: PreviewOptions): Promise<void> {
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));
   try {
     const propsFile = join(dir, 'props.json');
     await writeFile(propsFile, JSON.stringify(project));
-    const cli = fileURLToPath(import.meta.resolve('@remotion/cli/package.json'));
-    const bin = join(dirname(cli), 'remotion-cli.js');
-    const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', opts.projectDir];
-    if (opts.port) args.push('--port', String(opts.port));
-    await new Promise<void>((resolve, reject) => {
-      const child = spawn(process.execPath, [bin, ...args], {
-        cwd: PACKAGE_ROOT,
-        stdio: 'inherit',
-      });
-      child.on('exit', (code, signal) => {
-        if (code === 0) resolve();
-        else if (signal) reject(new Error(`Remotion Studio terminated by ${signal}`));
-        else reject(new Error(`Remotion Studio exited with code ${code}`));
-      });
-      child.on('error', reject);
-    });
+    await runStudio(studioArgs(propsFile, options));
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
+}
+
+function studioArgs(propsFile: string, options: PreviewOptions): string[] {
+  const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', options.projectDir];
+  if (options.port) args.push('--port', String(options.port));
+  return args;
+}
+
+/** Studio has no programmatic API, so it runs as its own process until the user stops it. */
+function runStudio(args: string[]): Promise<void> {
+  const cliPackage = fileURLToPath(import.meta.resolve('@remotion/cli/package.json'));
+  const bin = join(dirname(cliPackage), 'remotion-cli.js');
+
+  return new Promise((resolve, reject) => {
+    const studio = spawn(process.execPath, [bin, ...args], {
+      cwd: PACKAGE_ROOT,
+      stdio: 'inherit',
+    });
+    studio.on('exit', (code, signal) => {
+      if (code === 0) resolve();
+      else if (signal) reject(new Error(`Remotion Studio terminated by ${signal}`));
+      else reject(new Error(`Remotion Studio exited with code ${code}`));
+    });
+    studio.on('error', reject);
+  });
 }

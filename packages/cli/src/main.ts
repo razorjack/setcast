@@ -14,7 +14,8 @@ const commands: Record<string, () => Promise<Command>> = {
   clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
   chapters: () => import('./commands/chapters.ts'),
-  live: () => import('./commands/stubs.ts').then((m) => ({ help: m.liveHelp, run: m.live })),
+  live: () =>
+    import('./commands/stubs.ts').then((stubs) => ({ help: stubs.liveHelp, run: stubs.live })),
 };
 
 const usage = `${bold(accent('setcast'))} ${dim(`v${version}`)}  event-driven visuals for DJ sets

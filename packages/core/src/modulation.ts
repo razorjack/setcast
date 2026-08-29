@@ -5,12 +5,13 @@ import { clamp } from './motion.ts';
 import { beatPhase } from './stage.ts';
 import { since, until, type EventState } from './timeline.ts';
 
+/** Shapes a 0..1 source into a 0..1 amount before `range` maps it onto the target. */
 export const CURVES = {
-  linear: (v: number) => v,
-  sqrt: (v: number) => Math.sqrt(v),
-  pow2: (v: number) => v * v,
-  pow3: (v: number) => v * v * v,
-  smooth: (v: number) => v * v * (3 - 2 * v),
+  linear: (amount: number) => amount,
+  sqrt: (amount: number) => Math.sqrt(amount),
+  pow2: (amount: number) => amount * amount,
+  pow3: (amount: number) => amount * amount * amount,
+  smooth: (amount: number) => amount * amount * (3 - 2 * amount),
 } as const;
 export type Curve = keyof typeof CURVES;
 
@@ -77,19 +78,19 @@ export interface ModContext {
  */
 export function evaluateModulation(
   routes: readonly ModRoute[],
-  ctx: ModContext,
+  context: ModContext,
 ): Record<string, number> {
-  const live = new Map(routes.map((route) => [route.target, route]));
+  const byTarget = new Map(routes.map((route) => [route.target, route]));
   return Object.fromEntries(
-    [...live.values()].map((route) => [route.target, evaluateRoute(route, ctx)]),
+    [...byTarget.values()].map((route) => [route.target, evaluateRoute(route, context)]),
   );
 }
 
-export function evaluateRoute(route: ModRoute, ctx: ModContext): number {
+export function evaluateRoute(route: ModRoute, context: ModContext): number {
   const [from, to] = route.range;
-  if (route.when && !inSection(ctx.events.section, route.when)) return from;
-  const v = clamp(sourceValue(route, ctx), 0, 1);
-  return from + (to - from) * CURVES[route.curve](v);
+  if (route.when && !inSection(context.events.section, route.when)) return from;
+  const amount = clamp(sourceValue(route, context), 0, 1);
+  return from + (to - from) * CURVES[route.curve](amount);
 }
 
 /** `when: drop` covers double drops, as `since:drop` and `--since-drop` do. */
@@ -100,13 +101,19 @@ const isTimeline = (source: ModSource): source is TimelineSource => source.inclu
 const isBeat = (source: ModSource): source is BeatSource =>
   (BEAT_SOURCES as readonly string[]).includes(source);
 
-function sourceValue(route: ModRoute, ctx: ModContext): number {
-  if (isBeat(route.source)) {
-    return ctx.bpm ? 1 - beatPhase(ctx.time, ctx.bpm, ctx.beatOffset)[route.source] : 0;
+function sourceValue(route: ModRoute, context: ModContext): number {
+  const { source } = route;
+  if (isBeat(source)) {
+    if (!context.bpm) return 0;
+    return 1 - beatPhase(context.time, context.bpm, context.beatOffset)[source];
   }
-  if (!isTimeline(route.source)) return smoothed(route.source, route.smooth, ctx);
-  const [direction, type] = route.source.split(':') as ['since' | 'until', EventType];
-  const seconds = (direction === 'since' ? since : until)(ctx.events, type, ctx.time);
+  if (!isTimeline(source)) return smoothed(source, route.smooth, context);
+
+  const [direction, type] = source.split(':') as ['since' | 'until', EventType];
+  const seconds =
+    direction === 'since'
+      ? since(context.events, type, context.time)
+      : until(context.events, type, context.time);
   return 1 - seconds / route.window;
 }
 
@@ -117,20 +124,23 @@ function smoothed(
   { time, fps, analyzer }: ModContext,
 ): number {
   if (seconds <= 0) return analyzer.featuresAt(time)[source];
-  const samples = Math.min(8, Math.max(2, Math.ceil(seconds * fps)));
-  let sum = 0;
-  let weights = 0;
-  for (let i = 0; i < samples; i++) {
-    const t = time - (seconds * i) / (samples - 1);
-    const w = samples - i;
-    sum += w * analyzer.featuresAt(Math.max(0, t))[source];
-    weights += w;
+
+  const sampleCount = Math.min(8, Math.max(2, Math.ceil(seconds * fps)));
+  let weightedSum = 0;
+  let totalWeight = 0;
+  for (let i = 0; i < sampleCount; i++) {
+    const sampleTime = time - (seconds * i) / (sampleCount - 1);
+    const weight = sampleCount - i;
+    weightedSum += weight * analyzer.featuresAt(Math.max(0, sampleTime))[source];
+    totalWeight += weight;
   }
-  return sum / weights;
+  return weightedSum / totalWeight;
 }
 
 /** CSS custom properties for a modulation result: `{ '--mod-bg-zoom': '1.04' }`. */
 export const modulationVars = (values: Record<string, number>): Record<string, string> =>
-  Object.fromEntries(Object.entries(values).map(([k, v]) => [`--mod-${k}`, String(round(v))]));
+  Object.fromEntries(
+    Object.entries(values).map(([target, value]) => [`--mod-${target}`, String(round(value))]),
+  );
 
-const round = (v: number) => Math.round(v * 10000) / 10000;
+const round = (value: number) => Math.round(value * 10000) / 10000;

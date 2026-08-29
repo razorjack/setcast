@@ -10,8 +10,15 @@ const BASSLINE = [0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 5, 5, 3, 0];
 const KICK_STEPS = new Set([0, 10]);
 const SNARE_STEPS = new Set([4, 12]);
 
+const WAV_HEADER_BYTES = 44;
+/** 16-bit stereo. */
+const WAV_BYTES_PER_FRAME = 4;
+
 type Section = 'intro' | 'buildup' | 'drop' | 'breakdown';
-const FULL: [Section, number][] = [
+/** How many bars each section runs for, in play order. */
+type SectionRun = [name: Section, bars: number];
+
+const FULL_ARRANGEMENT: SectionRun[] = [
   ['intro', 16],
   ['buildup', 8],
   ['drop', 32],
@@ -34,7 +41,7 @@ export interface DemoAudio {
 
 /** `scale` shortens every section (0.25 = a 40 s sketch); 1 is the full 2:34. */
 export function synthesizeDemo(scale = 1): DemoAudio {
-  const arrangement = FULL.map(([name, bars]): [Section, number] => [
+  const arrangement = FULL_ARRANGEMENT.map(([name, bars]): SectionRun => [
     name,
     Math.max(2, Math.round(bars * scale)),
   ]);
@@ -67,7 +74,7 @@ interface SynthFrame {
   hasDrums: boolean;
 }
 
-function renderMono(sampleCount: number, arrangement: [Section, number][]): Float32Array {
+function renderMono(sampleCount: number, arrangement: SectionRun[]): Float32Array {
   const output = new Float32Array(sampleCount);
   const state: SynthState = {
     random: deterministicNoise(),
@@ -81,7 +88,7 @@ function renderMono(sampleCount: number, arrangement: [Section, number][]): Floa
     output[sampleIndex] = Math.tanh(sampleAt(frame, state) * 1.1);
   }
 
-  normalize(output);
+  normalizeInPlace(output);
   return output;
 }
 
@@ -95,7 +102,7 @@ function deterministicNoise(): () => number {
   };
 }
 
-function synthFrame(sampleIndex: number, arrangement: [Section, number][]): SynthFrame {
+function synthFrame(sampleIndex: number, arrangement: SectionRun[]): SynthFrame {
   const time = sampleIndex / RATE;
   const bar = Math.floor(time / BAR);
   const stepPosition = (time % BAR) / STEP;
@@ -115,7 +122,7 @@ function synthFrame(sampleIndex: number, arrangement: [Section, number][]): Synt
   };
 }
 
-function sectionAt(arrangement: [Section, number][], bar: number): [Section, number] {
+function sectionAt(arrangement: SectionRun[], bar: number): [Section, number] {
   let start = 0;
   for (const [name, length] of arrangement) {
     if (bar < start + length) return [name, (bar - start) / length];
@@ -125,48 +132,64 @@ function sectionAt(arrangement: [Section, number][], bar: number): [Section, num
 }
 
 function sampleAt(frame: SynthFrame, state: SynthState): number {
-  let sample = drumsAt(frame, state);
-  sample += bassAt(frame, state);
-  sample += padAt(frame, state);
-  sample += riserAt(frame, state);
-  return sample;
+  return drumsAt(frame, state) + bassAt(frame, state) + padAt(frame, state) + riserAt(frame, state);
 }
 
+// One voice per function, summed in a fixed order. The noise source is stateful, so that order
+// is part of the output: changing it changes the audio.
 function drumsAt(frame: SynthFrame, state: SynthState): number {
-  let sample = 0;
-  if (frame.hasDrums && KICK_STEPS.has(frame.step) && canKick(frame)) {
-    const frequency = 48 + 140 * Math.exp(-frame.timeInStep / 0.035);
-    sample +=
-      Math.sin(2 * Math.PI * frequency * frame.timeInStep) * envelope(frame.timeInStep, 0.18) * 0.9;
-    sample += state.random() * envelope(frame.timeInStep, 0.004) * 0.4;
-  }
-  if (frame.hasDrums && SNARE_STEPS.has(frame.step) && frame.section !== 'breakdown') {
-    sample += state.random() * envelope(frame.timeInStep, 0.09) * 0.5;
-    sample +=
-      Math.sin(2 * Math.PI * 190 * frame.timeInStep) * envelope(frame.timeInStep, 0.05) * 0.4;
-  }
-  if (frame.section === 'buildup' && frame.sectionProgress > 0.75 && frame.step % 2 === 0) {
-    sample += state.random() * envelope(frame.timeInStep, 0.05) * 0.45;
-  }
-  if ((frame.hasDrums || frame.section === 'intro') && frame.step % 2 === 0) {
-    const noise = state.random();
-    const highPass = noise - state.previousNoise;
-    state.previousNoise = noise;
-    const decay = frame.step % 4 === 0 ? 0.03 : 0.015;
-    sample += highPass * envelope(frame.timeInStep, decay) * (frame.inDrop ? 0.35 : 0.2);
-  }
-  return sample;
+  return kickAt(frame, state) + snareAt(frame, state) + tickAt(frame, state) + hatAt(frame, state);
 }
 
-function canKick(frame: SynthFrame): boolean {
-  return frame.section !== 'breakdown' || frame.step === 0;
+/** Pitch sweeping down into a sub, plus a click of noise for the beater. */
+function kickAt(frame: SynthFrame, state: SynthState): number {
+  if (!frame.hasDrums || !KICK_STEPS.has(frame.step)) return 0;
+  // A breakdown keeps only the downbeat kick.
+  if (frame.section === 'breakdown' && frame.step !== 0) return 0;
+
+  const frequency = 48 + 140 * decay(frame.timeInStep, 0.035);
+  const body =
+    Math.sin(2 * Math.PI * frequency * frame.timeInStep) * decay(frame.timeInStep, 0.18) * 0.9;
+  const click = state.random() * decay(frame.timeInStep, 0.004) * 0.4;
+  return body + click;
+}
+
+/** Noise for the snares, a short 190 Hz tone for the drum under them. */
+function snareAt(frame: SynthFrame, state: SynthState): number {
+  if (!frame.hasDrums || !SNARE_STEPS.has(frame.step)) return 0;
+  if (frame.section === 'breakdown') return 0;
+
+  const noise = state.random() * decay(frame.timeInStep, 0.09) * 0.5;
+  const tone = Math.sin(2 * Math.PI * 190 * frame.timeInStep) * decay(frame.timeInStep, 0.05) * 0.4;
+  return noise + tone;
+}
+
+/** Eighth-note noise hits through the last quarter of a buildup, tightening the tension. */
+function tickAt(frame: SynthFrame, state: SynthState): number {
+  if (frame.section !== 'buildup' || frame.sectionProgress <= 0.75) return 0;
+  if (frame.step % 2 !== 0) return 0;
+
+  return state.random() * decay(frame.timeInStep, 0.05) * 0.45;
+}
+
+/** Hats: noise differentiated against the previous sample, which is a one-pole high pass. */
+function hatAt(frame: SynthFrame, state: SynthState): number {
+  if (!frame.hasDrums && frame.section !== 'intro') return 0;
+  if (frame.step % 2 !== 0) return 0;
+
+  const noise = state.random();
+  const highPass = noise - state.previousNoise;
+  state.previousNoise = noise;
+
+  const openness = frame.step % 4 === 0 ? 0.03 : 0.015;
+  return highPass * decay(frame.timeInStep, openness) * (frame.inDrop ? 0.35 : 0.2);
 }
 
 function bassAt(frame: SynthFrame, state: SynthState): number {
   if (!frame.inDrop) return 0;
 
   const note = noteHz(BASSLINE[frame.step]!);
-  const gate = envelope(frame.timeInStep, 0.5) * 0.6 + 0.4;
+  const gate = decay(frame.timeInStep, 0.5) * 0.6 + 0.4;
   const sub = Math.sin(2 * Math.PI * note * frame.time) * 0.55 * gate;
   const reese =
     (saw(note * 2 * frame.time) +
@@ -197,8 +220,7 @@ function padAt(frame: SynthFrame, state: SynthState): number {
 
   let sample = state.filteredPad * 0.35;
   if (frame.section === 'breakdown' && frame.step === 0) {
-    sample +=
-      Math.sin(2 * Math.PI * noteHz(0) * frame.time) * envelope(frame.timeInStep, 0.6) * 0.5;
+    sample += Math.sin(2 * Math.PI * noteHz(0) * frame.time) * decay(frame.timeInStep, 0.6) * 0.5;
   }
   return sample;
 }
@@ -211,9 +233,11 @@ function riserAt(frame: SynthFrame, state: SynthState): number {
   return riser * 0.08 * progress + state.random() * 0.12 * progress * progress;
 }
 
-function normalize(output: Float32Array): void {
+/** Scales the whole take so its loudest sample sits just under full scale. */
+function normalizeInPlace(output: Float32Array): void {
   let peak = 0;
   for (const sample of output) peak = Math.max(peak, Math.abs(sample));
+
   const gain = 0.89 / peak;
   for (let sampleIndex = 0; sampleIndex < output.length; sampleIndex++) {
     output[sampleIndex]! *= gain;
@@ -222,28 +246,34 @@ function normalize(output: Float32Array): void {
 
 const noteHz = (semitones: number) => E1_HZ * 2 ** (semitones / 12);
 const saw = (phase: number) => 2 * (phase - Math.floor(phase + 0.5));
-const envelope = (time: number, decay: number) => (time < 0 ? 0 : Math.exp(-time / decay));
 
+/** Exponential fall from 1, reaching 1/e after `seconds`. Silent before the hit. */
+const decay = (time: number, seconds: number) => (time < 0 ? 0 : Math.exp(-time / seconds));
+
+/** The mono take written as 16-bit stereo PCM, the one WAV shape every decoder reads. */
 function toWav(mono: Float32Array): Buffer {
-  const header = 44;
-  const wav = Buffer.alloc(header + mono.length * 4);
+  const dataBytes = mono.length * WAV_BYTES_PER_FRAME;
+  const wav = Buffer.alloc(WAV_HEADER_BYTES + dataBytes);
+
   wav.write('RIFF', 0);
-  wav.writeUInt32LE(36 + mono.length * 4, 4);
+  wav.writeUInt32LE(36 + dataBytes, 4);
   wav.write('WAVE', 8);
   wav.write('fmt ', 12);
-  wav.writeUInt32LE(16, 16);
-  wav.writeUInt16LE(1, 20);
-  wav.writeUInt16LE(2, 22);
+  wav.writeUInt32LE(16, 16); // fmt chunk length
+  wav.writeUInt16LE(1, 20); // PCM
+  wav.writeUInt16LE(2, 22); // channels
   wav.writeUInt32LE(RATE, 24);
-  wav.writeUInt32LE(RATE * 4, 28);
-  wav.writeUInt16LE(4, 32);
-  wav.writeUInt16LE(16, 34);
+  wav.writeUInt32LE(RATE * WAV_BYTES_PER_FRAME, 28); // bytes per second
+  wav.writeUInt16LE(WAV_BYTES_PER_FRAME, 32); // block align
+  wav.writeUInt16LE(16, 34); // bits per sample
   wav.write('data', 36);
-  wav.writeUInt32LE(mono.length * 4, 40);
+  wav.writeUInt32LE(dataBytes, 40);
+
   for (let sampleIndex = 0; sampleIndex < mono.length; sampleIndex++) {
     const sample = Math.round(mono[sampleIndex]! * 32767);
-    wav.writeInt16LE(sample, header + sampleIndex * 4);
-    wav.writeInt16LE(sample, header + sampleIndex * 4 + 2);
+    const at = WAV_HEADER_BYTES + sampleIndex * WAV_BYTES_PER_FRAME;
+    wav.writeInt16LE(sample, at);
+    wav.writeInt16LE(sample, at + 2);
   }
   return wav;
 }

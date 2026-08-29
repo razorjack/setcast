@@ -5,7 +5,7 @@ const TRACK = /^\s*TRACK\s+\d+/im;
 const FIELD = /^\s*(TITLE|PERFORMER|INDEX)\s+(.*?)\s*$/i;
 const INDEX = /^01\s+(\d+):(\d{2}):(\d{2})$/;
 
-const unquote = (v: string) => v.replace(/^"(.*)"$/, '$1');
+const unquote = (value: string) => value.replace(/^"(.*)"$/, '$1');
 
 /**
  * Cue sheets, as mix CDs, Mixcloud and most recorders write them:
@@ -22,29 +22,42 @@ export const cueImporter: Importer = {
   parse(text) {
     const tracks: TrackEntry[] = [];
     let current: Partial<TrackEntry> | null = null;
-    const finish = () => {
-      if (current?.time !== undefined && current.title) {
-        tracks.push({ time: current.time, artist: current.artist ?? 'ID', title: current.title });
-      }
+
+    const finishTrack = () => {
+      if (current?.time === undefined || !current.title) return;
+      tracks.push({ time: current.time, artist: current.artist ?? 'ID', title: current.title });
     };
+
     for (const line of text.split('\n')) {
       if (TRACK.test(line)) {
-        finish();
+        finishTrack();
         current = {};
         continue;
       }
-      const m = FIELD.exec(line);
-      if (!m || !current) continue;
-      const key = m[1]!.toUpperCase();
-      const value = m[2]!;
-      if (key === 'TITLE') current.title = unquote(value);
-      else if (key === 'PERFORMER') current.artist = unquote(value);
-      else {
-        const t = INDEX.exec(value);
-        if (t) current.time = Number(t[1]) * 60 + Number(t[2]) + Number(t[3]) / 75;
-      }
+      if (current) readField(current, line);
     }
-    finish();
+    finishTrack();
+
     return tracks.toSorted((a, b) => a.time - b.time);
   },
 };
+
+function readField(track: Partial<TrackEntry>, line: string): void {
+  const match = FIELD.exec(line);
+  if (!match) return;
+
+  const field = match[1]!.toUpperCase();
+  if (field === 'TITLE') track.title = unquote(match[2]!);
+  if (field === 'PERFORMER') track.artist = unquote(match[2]!);
+  if (field === 'INDEX') {
+    const time = indexTime(match[2]!);
+    if (time !== null) track.time = time;
+  }
+}
+
+/** `01 MM:SS:FF` in 1/75 s frames. Null for `INDEX 00`, the pre-gap, which is not the start. */
+function indexTime(value: string): number | null {
+  const match = INDEX.exec(value);
+  if (!match) return null;
+  return Number(match[1]) * 60 + Number(match[2]) + Number(match[3]) / 75;
+}

@@ -16,12 +16,13 @@ export interface Chapter {
  */
 export function chapterList(events: readonly SetEvent[]): Chapter[] {
   const list: Chapter[] = [];
-  for (const e of events.toSorted((a, b) => a.time - b.time)) {
-    if (e.type === 'track_start') list.push({ time: e.time, text: `${e.artist} - ${e.title}` });
-    else if (e.type === 'chapter') {
-      const same = list.at(-1)?.time === e.time;
-      if (same) list.pop();
-      list.push({ time: e.time, text: e.title });
+  for (const event of events.toSorted((a, b) => a.time - b.time)) {
+    if (event.type === 'track_start') {
+      list.push({ time: event.time, text: `${event.artist} - ${event.title}` });
+    }
+    if (event.type === 'chapter') {
+      if (list.at(-1)?.time === event.time) list.pop();
+      list.push({ time: event.time, text: event.title });
     }
   }
   if (list[0]) list[0].time = 0;
@@ -29,7 +30,7 @@ export function chapterList(events: readonly SetEvent[]): Chapter[] {
 }
 
 export const chapters = (events: readonly SetEvent[]): string[] =>
-  chapterList(events).map((c) => `${formatChapterTime(c.time)} ${c.text}`);
+  chapterList(events).map((chapter) => `${formatChapterTime(chapter.time)} ${chapter.text}`);
 
 /**
  * What would stop YouTube from turning the timestamps into chapters. Empty means they work.
@@ -43,15 +44,14 @@ export function chapterProblems(events: readonly SetEvent[]): string[] {
       `Only ${list.length} chapter${list.length === 1 ? '' : 's'}. YouTube shows chapters from ${MIN_CHAPTERS} up, so add tracks or chapter events.`,
     );
   }
-  for (const [i, c] of list.entries()) {
-    const next = list[i + 1];
+  for (const [index, chapter] of list.entries()) {
+    const next = list[index + 1];
     if (!next) continue;
-    const seconds = Math.round((next.time - c.time) * 10) / 10;
-    if (seconds < MIN_CHAPTER_SECONDS) {
-      problems.push(
-        `"${c.text}" runs ${seconds}s, under YouTube's ${MIN_CHAPTER_SECONDS}s minimum, which turns off chapters for the whole video. Merge it into a neighbour or move ${formatChapterTime(next.time)}.`,
-      );
-    }
+    const seconds = Math.round((next.time - chapter.time) * 10) / 10;
+    if (seconds >= MIN_CHAPTER_SECONDS) continue;
+    problems.push(
+      `"${chapter.text}" runs ${seconds}s, under YouTube's ${MIN_CHAPTER_SECONDS}s minimum, which turns off chapters for the whole video. Merge it into a neighbour or move ${formatChapterTime(next.time)}.`,
+    );
   }
   return problems;
 }

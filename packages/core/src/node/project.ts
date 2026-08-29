@@ -32,29 +32,17 @@ export async function loadProject(
   const root = resolve(dir);
   const config = await readConfig(root);
   const theme = await resolveTheme(config.theme, root, themes);
-
-  await requireFile(root, config.audio, 'audio');
-  if (config.background) await requireFile(root, config.background, 'background');
   const events = mergeEvents(config);
-  for (const e of events) {
-    if (e.type === 'track_start' && e.background) {
-      await requireFile(root, e.background, `track "${e.title}" background`);
-    }
-  }
-  const userCss = config.css ? await requireFile(root, config.css, 'css') : null;
 
-  const css = [
-    await readFile(BASE_CSS, 'utf8'),
-    await loadCss(theme.cssFile),
-    userCss ? await loadCss(userCss) : '',
-  ].join('\n');
+  await requireAssets(root, config, events);
+  const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
 
   const project: ResolvedProject = {
     title: config.title,
     audio: config.audio,
     background: config.background ?? null,
     theme: theme.name,
-    css,
+    css: await composeCss(theme, userCssFile),
     width: config.output.width,
     height: config.output.height,
     fps: config.output.fps,
@@ -68,32 +56,64 @@ export async function loadProject(
   return { dir: root, config, project };
 }
 
+/** Every media path a project names has to exist and stay inside the project directory. */
+async function requireAssets(
+  root: string,
+  config: ProjectConfig,
+  events: readonly SetEvent[],
+): Promise<void> {
+  await requireFile(root, config.audio, 'audio');
+  if (config.background) await requireFile(root, config.background, 'background');
+  for (const event of events) {
+    if (event.type === 'track_start' && event.background) {
+      await requireFile(root, event.background, `track "${event.title}" background`);
+    }
+  }
+}
+
+/** Base CSS, then the theme with its fonts inlined, then the user's overrides, in that order. */
+async function composeCss(theme: Theme, userCssFile: string | null): Promise<string> {
+  const base = await readFile(BASE_CSS, 'utf8');
+  const themeCss = await loadCss(theme.cssFile);
+  const userCss = userCssFile ? await loadCss(userCssFile) : '';
+  return [base, themeCss, userCss].join('\n');
+}
+
 export async function readConfig(root: string): Promise<ProjectConfig> {
-  const file = join(root, CONFIG_FILE);
-  let text: string;
+  const text = await readConfigFile(join(root, CONFIG_FILE), root);
+  const raw = parseConfigYaml(text);
+
+  const parsed = ProjectConfigSchema.safeParse(raw ?? {});
+  if (!parsed.success) throw new ConfigError(CONFIG_FILE, zodIssues(parsed.error));
+  return parsed.data;
+}
+
+async function readConfigFile(file: string, root: string): Promise<string> {
   try {
-    text = await readFile(file, 'utf8');
+    return await readFile(file, 'utf8');
   } catch {
     throw new SetcastError(
       `No ${CONFIG_FILE} found in ${root}`,
       'Run `setcast init` here to scaffold a project, or cd into a project directory.',
     );
   }
-  let raw: unknown;
+}
+
+function parseConfigYaml(text: string): unknown {
   try {
-    raw = parseYaml(text);
-  } catch (e) {
-    const where =
-      e instanceof YAMLParseError && e.linePos?.[0] ? ` (line ${e.linePos[0].line})` : '';
+    return parseYaml(text);
+  } catch (error) {
     throw new SetcastError(
-      `${CONFIG_FILE} is not valid YAML${where}: ${(e as Error).message.split('\n')[0]}`,
+      `${CONFIG_FILE} is not valid YAML${yamlLine(error)}: ${firstLine(error)}`,
       'Check indentation and quoting; YAML keys need a space after the colon.',
     );
   }
-  const parsed = ProjectConfigSchema.safeParse(raw ?? {});
-  if (!parsed.success) throw new ConfigError(CONFIG_FILE, zodIssues(parsed.error));
-  return parsed.data;
 }
+
+const yamlLine = (error: unknown) =>
+  error instanceof YAMLParseError && error.linePos?.[0] ? ` (line ${error.linePos[0].line})` : '';
+
+const firstLine = (error: unknown) => (error as Error).message.split('\n')[0];
 
 async function resolveTheme(
   name: string,
@@ -130,35 +150,41 @@ function themeRoutes({ name, modulation }: Theme): ModRoute[] {
   );
 }
 
-async function requireFile(root: string, rel: string, what: string): Promise<string> {
-  const path = resolve(root, rel);
-  const fromRoot = relative(root, path);
-  if (fromRoot === '..' || fromRoot.startsWith(`..${sep}`) || isAbsolute(fromRoot)) {
+async function requireFile(root: string, path: string, purpose: string): Promise<string> {
+  const absolute = resolve(root, path);
+  if (escapesRoot(root, absolute)) {
     throw new SetcastError(
-      `${what} path leaves the project directory: ${rel}`,
+      `${purpose} path leaves the project directory: ${path}`,
       `Use a path inside ${root} (e.g. "assets/mix.wav"), not an absolute path or "..".`,
     );
   }
   try {
-    await access(path);
+    await access(absolute);
   } catch {
     throw new SetcastError(
-      `${what} file not found: ${rel}`,
-      `Expected it at ${path}. Paths in ${CONFIG_FILE} are relative to the project directory and must stay inside it.`,
+      `${purpose} file not found: ${path}`,
+      `Expected it at ${absolute}. Paths in ${CONFIG_FILE} are relative to the project directory and must stay inside it.`,
     );
   }
-  return path;
+  return absolute;
+}
+
+/** The renderer serves the project directory as its public root; nothing outside it is reachable. */
+function escapesRoot(root: string, absolute: string): boolean {
+  const fromRoot = relative(root, absolute);
+  return fromRoot === '..' || fromRoot.startsWith(`..${sep}`) || isAbsolute(fromRoot);
 }
 
 /** Decks alternate in play order, and an explicit deck moves the rotation on from there. */
 function mergeEvents(config: ProjectConfig): SetEvent[] {
   const decks = config.deckOrder;
-  let next = 0;
-  const tracks = config.tracks.map((t): SetEvent => ({ type: 'track_start', ...t }));
-  return sortEvents([...tracks, ...config.events]).map((e) => {
-    if (e.type !== 'track_start') return e;
-    const deck = e.deck ?? decks[next % decks.length]!;
-    next = decks.indexOf(deck) + 1;
-    return { ...e, deck };
+  let nextDeck = 0;
+  const trackEvents = config.tracks.map((track): SetEvent => ({ type: 'track_start', ...track }));
+
+  return sortEvents([...trackEvents, ...config.events]).map((event) => {
+    if (event.type !== 'track_start') return event;
+    const deck = event.deck ?? decks[nextDeck % decks.length]!;
+    nextDeck = decks.indexOf(deck) + 1;
+    return { ...event, deck };
   });
 }

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import { modulationVars } from '../modulation.ts';
 import { beatVars, stageData, stageVars } from '../stage.ts';
 import { Background } from './components/Background.tsx';
@@ -14,22 +14,21 @@ export function Stage() {
   const { composition, events, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
   useFontsReady();
-  const viz = useMemo(() => resolveVisualizer(project.visualizer), [project.visualizer]);
+  const visualizer = useMemo(() => resolveVisualizer(project.visualizer), [project.visualizer]);
+
+  const style: CSSProperties = {
+    width,
+    height,
+    ...stageVars(events, timeSeconds, composition.durationSeconds),
+    ...beatVars(timeSeconds, project.bpm, project.beatOffset),
+    ...modulationVars(modulation),
+  };
+
   return (
-    <div
-      className={`setcast sc-stage theme-${project.theme}`}
-      {...stageData(events)}
-      style={{
-        width,
-        height,
-        ...stageVars(events, timeSeconds, composition.durationSeconds),
-        ...beatVars(timeSeconds, project.bpm, project.beatOffset),
-        ...modulationVars(modulation),
-      }}
-    >
+    <div className={`setcast sc-stage theme-${project.theme}`} {...stageData(events)} style={style}>
       <style>{project.css}</style>
       <Background />
-      <viz.Component config={viz.config} />
+      <visualizer.Component config={visualizer.config} />
       <Header />
       <NowPlaying />
       <UpNext />

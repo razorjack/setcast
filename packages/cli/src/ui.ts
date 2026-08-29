@@ -4,8 +4,8 @@ import { ConfigError, hms, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/renderer-remotion';
 import pc from 'picocolors';
 
-const rgb = (r: number, g: number, b: number) => (s: string) =>
-  pc.isColorSupported ? `\x1b[38;2;${r};${g};${b}m${s}\x1b[39m` : s;
+const rgb = (r: number, g: number, b: number) => (text: string) =>
+  pc.isColorSupported ? `\x1b[38;2;${r};${g};${b}m${text}\x1b[39m` : text;
 export const accent = rgb(255, 106, 43);
 export const steel = rgb(127, 212, 230);
 export const dim = pc.dim;
@@ -53,18 +53,23 @@ export function printError(error: unknown): void {
     if (error.hint) p.log.message(dim(error.hint));
     return;
   }
-  const e = error as Error;
-  p.log.error(pc.red(e?.message ?? String(error)));
-  if (e?.stack) p.log.message(dim(e.stack.split('\n').slice(1, 6).join('\n')));
+  const unexpected = error as Error | undefined;
+  p.log.error(pc.red(unexpected?.message ?? String(error)));
+  if (unexpected?.stack) p.log.message(dim(topOfStack(unexpected.stack)));
 }
 
+/** Enough frames to place the failure, without burying the message under the whole stack. */
+const topOfStack = (stack: string) => stack.split('\n').slice(1, 6).join('\n');
+
 /** Human durations: `45s`, `2m 05s`, `1h 01m 40s`. */
-export const fmtSeconds = (seconds: number) => {
+export function formatDuration(seconds: number): string {
   const { h, m, s } = hms(Math.round(seconds));
-  const ss = String(s).padStart(2, '0');
-  if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m ${ss}s`;
-  return m > 0 ? `${m}m ${ss}s` : `${s}s`;
-};
+  if (h > 0) return `${h}h ${pad(m)}m ${pad(s)}s`;
+  if (m > 0) return `${m}m ${pad(s)}s`;
+  return `${s}s`;
+}
+
+const pad = (part: number) => String(part).padStart(2, '0');
 
 /** A single in-place progress line: `▰▰▰▱▱ 62%  frames 812/1320  eta 14s`. */
 export class ProgressLine {
@@ -80,21 +85,33 @@ export class ProgressLine {
   }
 
   update(progress: number, detail = ''): void {
-    if (!process.stdout.isTTY && progress < 1 && Math.floor(progress * 10) === this.#tick) return;
+    if (this.#tooSoon(progress)) return;
     this.#tick = Math.floor(progress * 10);
+
+    const percent = `${String(Math.round(progress * 100)).padStart(3)}%`;
+    const line = `${dim('│')}  ${bold(this.#label.padEnd(8))} ${this.#bar(progress)} ${percent}  ${dim(detail)}${dim(this.#eta(progress))}`;
+    if (line === this.#last) return;
+
+    process.stdout.write(process.stdout.isTTY ? `\r\x1b[2K${line}` : `${line}\n`);
+    this.#last = line;
+  }
+
+  /** Without a TTY there is no redraw in place, so a log gets one line per tenth instead. */
+  #tooSoon(progress: number): boolean {
+    if (process.stdout.isTTY || progress >= 1) return false;
+    return Math.floor(progress * 10) === this.#tick;
+  }
+
+  #bar(progress: number): string {
     const filled = Math.round(progress * this.#width);
-    const bar = accent('▰'.repeat(filled)) + dim('▱'.repeat(this.#width - filled));
-    const pct = `${String(Math.round(progress * 100)).padStart(3)}%`;
+    return accent('▰'.repeat(filled)) + dim('▱'.repeat(this.#width - filled));
+  }
+
+  /** Nothing until there is enough progress to extrapolate from, and nothing once it is done. */
+  #eta(progress: number): string {
+    if (progress <= 0.02 || progress >= 1) return '';
     const elapsed = (Date.now() - this.#start) / 1000;
-    const eta =
-      progress > 0.02 && progress < 1
-        ? `  eta ${fmtSeconds((elapsed / progress) * (1 - progress))}`
-        : '';
-    const line = `${dim('│')}  ${bold(this.#label.padEnd(8))} ${bar} ${pct}  ${dim(detail)}${dim(eta)}`;
-    if (line !== this.#last) {
-      process.stdout.write(process.stdout.isTTY ? `\r\x1b[2K${line}` : `${line}\n`);
-      this.#last = line;
-    }
+    return `  eta ${formatDuration((elapsed / progress) * (1 - progress))}`;
   }
 
   done(message: string): void {
@@ -123,29 +140,42 @@ export class RenderUi {
     renderedFrames = 0,
     totalFrames = 0,
   }: RenderProgress): void => {
-    const pct = Math.round(progress * 100);
+    const percent = Math.round(progress * 100);
     if (stage === 'browser') {
-      this.#spin.message(
-        progress < 1 ? `Downloading Chrome Headless Shell ${pct}%` : 'Browser ready',
-      );
+      const message =
+        progress < 1 ? `Downloading Chrome Headless Shell ${percent}%` : 'Browser ready';
+      this.#spin.message(message);
+      return;
     }
-    if (stage === 'bundle') this.#spin.message(`Bundling composition ${pct}%`);
+    if (stage === 'bundle') {
+      this.#spin.message(`Bundling composition ${percent}%`);
+      return;
+    }
     if (stage === 'frames') {
-      if (!this.#frames) {
-        this.#spin.stop('Composition bundled');
-        this.#frames = new ProgressLine('frames');
-      }
-      this.#frames.update(progress, `${renderedFrames}/${totalFrames}`);
+      this.#framesLine().update(progress, `${renderedFrames}/${totalFrames}`);
+      return;
     }
-    if (stage === 'encode') {
-      this.#frames?.update(1, `${totalFrames}/${totalFrames}`);
-      if (!this.#encode) {
-        this.#frames?.done(`Rendered ${totalFrames} frames`);
-        this.#encode = new ProgressLine('encode');
-      }
-      this.#encode.update(progress, 'h264 + aac');
-    }
+    this.#encodeLine(totalFrames).update(progress, 'h264 + aac');
   };
+
+  /** The first frame report is what tells us the bundle is done, so the spinner stops here. */
+  #framesLine(): ProgressLine {
+    if (!this.#frames) {
+      this.#spin.stop('Composition bundled');
+      this.#frames = new ProgressLine('frames');
+    }
+    return this.#frames;
+  }
+
+  /** Encoding starts once every frame is rendered, so the frames line is closed off first. */
+  #encodeLine(totalFrames: number): ProgressLine {
+    this.#frames?.update(1, `${totalFrames}/${totalFrames}`);
+    if (!this.#encode) {
+      this.#frames?.done(`Rendered ${totalFrames} frames`);
+      this.#encode = new ProgressLine('encode');
+    }
+    return this.#encode;
+  }
 
   /** Runs `task`; a failure while the spinner is up clears it so the error prints cleanly. */
   run<T>(task: () => Promise<T>): Promise<T> {

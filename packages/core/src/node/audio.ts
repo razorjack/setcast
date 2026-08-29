@@ -32,19 +32,21 @@ function ffmpegPcm(file: string, rate: number): Promise<Float32Array | null> {
     let stderr = '';
     ffmpeg.stdout.on('data', (chunk: Buffer) => samples.push(chunk));
     ffmpeg.stderr.on('data', (chunk: Buffer) => (stderr += chunk));
-    ffmpeg.on('error', (error: NodeJS.ErrnoException) =>
-      error.code === 'ENOENT' ? resolve(null) : reject(error),
-    );
+    ffmpeg.on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'ENOENT') resolve(null);
+      else reject(error);
+    });
     ffmpeg.on('close', (code) => {
-      if (code !== 0) {
-        return reject(
-          new SetcastError(
-            `ffmpeg could not read ${basename(file)}`,
-            stderr.trim().split('\n')[0] ?? 'It exited without a message.',
-          ),
-        );
+      if (code === 0) {
+        resolve(samples.done());
+        return;
       }
-      resolve(samples.done());
+      reject(
+        new SetcastError(
+          `ffmpeg could not read ${basename(file)}`,
+          stderr.trim().split('\n')[0] ?? 'It exited without a message.',
+        ),
+      );
     });
   });
 }
@@ -61,16 +63,22 @@ class Samples {
 
   push(chunk: Buffer): void {
     const bytes = this.#carry.length ? Buffer.concat([this.#carry, chunk]) : chunk;
-    const whole = bytes.length & ~3;
-    this.#carry = Buffer.from(bytes.subarray(whole));
-    const count = whole / 4;
-    while (this.#length + count > this.#floats.length) {
-      const bigger = new Float32Array(this.#floats.length * 2);
-      bigger.set(this.#floats);
-      this.#floats = bigger;
-    }
-    new Uint8Array(this.#floats.buffer).set(bytes.subarray(0, whole), this.#length * 4);
+    // A chunk boundary can split a float; the leftover bytes wait for the next one.
+    const wholeBytes = bytes.length & ~3;
+    this.#carry = Buffer.from(bytes.subarray(wholeBytes));
+
+    const count = wholeBytes / 4;
+    this.#reserve(this.#length + count);
+    new Uint8Array(this.#floats.buffer).set(bytes.subarray(0, wholeBytes), this.#length * 4);
     this.#length += count;
+  }
+
+  #reserve(floats: number): void {
+    while (floats > this.#floats.length) {
+      const grown = new Float32Array(this.#floats.length * 2);
+      grown.set(this.#floats);
+      this.#floats = grown;
+    }
   }
 
   done(): Float32Array {
@@ -188,21 +196,28 @@ type SampleReader = (data: Buffer, offset: number) => number;
 
 /** How to read one sample as -1..1, or null for a format this reader does not know. */
 function sampleReader(format: number, bits: number): SampleReader | null {
-  if (format === FLOAT && bits === 32) return (data, offset) => data.readFloatLE(offset);
+  if (format === FLOAT && bits === 32) return (bytes, offset) => bytes.readFloatLE(offset);
   if (format !== PCM) return null;
-  if (bits === 16) return (data, offset) => data.readInt16LE(offset) / 0x8000;
-  if (bits === 24) return (data, offset) => data.readIntLE(offset, 3) / 0x800000;
-  if (bits === 32) return (data, offset) => data.readInt32LE(offset) / 0x80000000;
+  if (bits === 16) return (bytes, offset) => bytes.readInt16LE(offset) / 0x8000;
+  if (bits === 24) return (bytes, offset) => bytes.readIntLE(offset, 3) / 0x800000;
+  if (bits === 32) return (bytes, offset) => bytes.readInt32LE(offset) / 0x80000000;
   return null;
 }
 
-function toMono(data: Buffer, channels: number, bytes: number, read: SampleReader): Float32Array {
-  const frames = Math.floor(data.length / (bytes * channels));
+function toMono(
+  chunk: Buffer,
+  channels: number,
+  bytesPerSample: number,
+  readSample: SampleReader,
+): Float32Array {
+  const frames = Math.floor(chunk.length / (bytesPerSample * channels));
   const mono = new Float32Array(frames);
-  for (let i = 0; i < frames; i++) {
+  for (let frame = 0; frame < frames; frame++) {
     let sum = 0;
-    for (let c = 0; c < channels; c++) sum += read(data, (i * channels + c) * bytes);
-    mono[i] = sum / channels;
+    for (let channel = 0; channel < channels; channel++) {
+      sum += readSample(chunk, (frame * channels + channel) * bytesPerSample);
+    }
+    mono[frame] = sum / channels;
   }
   return mono;
 }
@@ -215,22 +230,25 @@ class Resampler {
   #base = 0;
   #last = 0;
 
-  constructor(frames: number, from: number, to: number) {
-    this.#ratio = from / to;
+  constructor(frames: number, fromRate: number, toRate: number) {
+    this.#ratio = fromRate / toRate;
     this.#out = new Float32Array(Math.floor(frames / this.#ratio));
   }
 
   push(chunk: Float32Array): void {
-    const end = this.#base + chunk.length;
-    const sample = (i: number) => (i < this.#base ? this.#last : chunk[i - this.#base]!);
+    const chunkEnd = this.#base + chunk.length;
+    const inputAt = (index: number) =>
+      index < this.#base ? this.#last : chunk[index - this.#base]!;
+
     for (; this.#written < this.#out.length; this.#written++) {
-      const pos = this.#written * this.#ratio;
-      const at = Math.floor(pos);
-      if (at + 1 >= end) break;
-      const t = pos - at;
-      this.#out[this.#written] = sample(at) * (1 - t) + sample(at + 1) * t;
+      const position = this.#written * this.#ratio;
+      const index = Math.floor(position);
+      if (index + 1 >= chunkEnd) break;
+      const fraction = position - index;
+      this.#out[this.#written] = inputAt(index) * (1 - fraction) + inputAt(index + 1) * fraction;
     }
-    this.#base = end;
+
+    this.#base = chunkEnd;
     if (chunk.length) this.#last = chunk[chunk.length - 1]!;
   }
 

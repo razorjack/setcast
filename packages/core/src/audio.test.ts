@@ -12,9 +12,9 @@ const toneAt = (freq: number, level = 1) => {
 
 describe('spectrum features', () => {
   test('bandEnergy averages the right bins', () => {
-    const s = toneAt(60);
-    expect(bandEnergy(s, 20, 150)).toBeGreaterThan(0);
-    expect(bandEnergy(s, 150, 2000)).toBe(0);
+    const bassTone = toneAt(60);
+    expect(bandEnergy(bassTone, 20, 150)).toBeGreaterThan(0);
+    expect(bandEnergy(bassTone, 150, 2000)).toBe(0);
   });
 
   test('a bass tone lights bass, a hat lights highs', () => {
@@ -22,7 +22,8 @@ describe('spectrum features', () => {
     const high = spectrumFeatures(toneAt(8000, 0.3));
     expect(low.bass).toBeGreaterThan(low.highs);
     expect(high.highs).toBeGreaterThan(high.bass);
-    expect(low.bins.findIndex((v) => v > 0)).toBeLessThan(high.bins.findIndex((v) => v > 0));
+    const firstLit = (bins: readonly number[]) => bins.findIndex((bin) => bin > 0);
+    expect(firstLit(low.bins)).toBeLessThan(firstLit(high.bins));
   });
 
   test('logBins flatten a tilted spectrum into a roughly even picture', () => {
@@ -30,11 +31,15 @@ describe('spectrum features', () => {
     const magnitudes = Array.from({ length: bins }, (_, i) =>
       i === 0 ? 0 : 0.02 / ((i * hz) / 100) ** tilt,
     );
-    const out = logBins({ magnitudes, sampleRate }, { tilt });
-    expect(out).toHaveLength(64);
-    for (const v of out) expect(v).toBeGreaterThan(0);
-    for (const v of out) expect(v).toBeLessThanOrEqual(1);
-    const inner = out.slice(4, -4);
+    const flattened = logBins({ magnitudes, sampleRate }, { tilt });
+    expect(flattened).toHaveLength(64);
+    for (const bin of flattened) {
+      expect(bin).toBeGreaterThan(0);
+      expect(bin).toBeLessThanOrEqual(1);
+    }
+
+    // The edge bins run off the ends of the spectrum, so only the inner ones should be level.
+    const inner = flattened.slice(4, -4);
     expect(Math.max(...inner) / Math.min(...inner)).toBeLessThan(1.5);
   });
 });

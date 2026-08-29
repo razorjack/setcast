@@ -7,33 +7,57 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PLUGIN_FACING = ['packages/core', 'packages/themes'];
+
 const isRemotion = (name: string) => name === 'remotion' || name.startsWith('@remotion/');
 
-type Pkg = {
+interface PackageJson {
   name: string;
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
-};
-const read = (dir: string): Pkg => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+}
 
+const readPackage = (dir: string): PackageJson =>
+  JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+
+let failed = false;
+for (const packagePath of PLUGIN_FACING) {
+  const offenders = walk(join(root, packagePath));
+  if (offenders.length === 0) {
+    console.log(`✓ ${packagePath}: no Remotion in its dependency graph`);
+    continue;
+  }
+  failed = true;
+  console.error(`✖ ${packagePath} reaches Remotion:\n  ${offenders.join('\n  ')}`);
+}
+if (failed) {
+  console.error(
+    '\nOnly packages/renderer-remotion may depend on Remotion. See AGENTS.md → Renderer independence.',
+  );
+  process.exit(1);
+}
+
+/** Every path from `dir` down to a Remotion package, each written out as `a → b → remotion`. */
 function walk(dir: string, seen = new Set<string>(), trail: string[] = []): string[] {
   const key = realpathSync(dir);
   if (seen.has(key)) return [];
   seen.add(key);
-  const pkg = read(dir);
+
+  const pkg = readPackage(dir);
   const offenders: string[] = [];
-  for (const dep of Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies })) {
-    if (isRemotion(dep)) {
-      offenders.push([...trail, pkg.name, dep].join(' → '));
+  for (const dependency of Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies })) {
+    if (isRemotion(dependency)) {
+      offenders.push([...trail, pkg.name, dependency].join(' → '));
       continue;
     }
-    const depDir = locate(dir, dep);
-    if (!depDir) {
-      if (dep.startsWith('@setcast/'))
-        fail(`cannot locate ${dep} (required by ${pkg.name}); run vp install first`);
+    const dependencyDir = locate(dir, dependency);
+    if (dependencyDir) {
+      offenders.push(...walk(dependencyDir, seen, [...trail, pkg.name]));
       continue;
     }
-    offenders.push(...walk(depDir, seen, [...trail, pkg.name]));
+    // A missing third-party package is a partial install of something we don't ship anyway.
+    if (dependency.startsWith('@setcast/')) {
+      fail(`cannot locate ${dependency} (required by ${pkg.name}); run vp install first`);
+    }
   }
   return offenders;
 }
@@ -47,24 +71,7 @@ function locate(from: string, name: string): string | null {
   }
 }
 
-const fail = (msg: string): never => {
-  console.error(`✖ ${msg}`);
-  process.exit(1);
-};
-
-let failed = false;
-for (const rel of PLUGIN_FACING) {
-  const offenders = walk(join(root, rel));
-  if (offenders.length) {
-    failed = true;
-    console.error(`✖ ${rel} reaches Remotion:\n  ${offenders.join('\n  ')}`);
-  } else {
-    console.log(`✓ ${rel}: no Remotion in its dependency graph`);
-  }
-}
-if (failed) {
-  console.error(
-    '\nOnly packages/renderer-remotion may depend on Remotion. See AGENTS.md → Renderer independence.',
-  );
+function fail(problem: string): never {
+  console.error(`✖ ${problem}`);
   process.exit(1);
 }

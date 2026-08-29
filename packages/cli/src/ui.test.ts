@@ -1,12 +1,12 @@
 import { describe, expect, test, vi } from 'vite-plus/test';
-import { clearSpinnerOnError, fmtSeconds } from './ui.ts';
+import { clearSpinnerOnError, formatDuration } from './ui.ts';
 
-test('fmtSeconds carries rounded seconds into the minute', () => {
-  expect(fmtSeconds(45.2)).toBe('45s');
-  expect(fmtSeconds(59.6)).toBe('1m 00s');
-  expect(fmtSeconds(119.7)).toBe('2m 00s');
-  expect(fmtSeconds(125)).toBe('2m 05s');
-  expect(fmtSeconds(3700)).toBe('1h 01m 40s');
+test('formatDuration carries rounded seconds into the minute', () => {
+  expect(formatDuration(45.2)).toBe('45s');
+  expect(formatDuration(59.6)).toBe('1m 00s');
+  expect(formatDuration(119.7)).toBe('2m 00s');
+  expect(formatDuration(125)).toBe('2m 05s');
+  expect(formatDuration(3700)).toBe('1h 01m 40s');
 });
 
 describe('clearSpinnerOnError', () => {

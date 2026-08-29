@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ConfigError, zodIssues } from './errors.ts';
+import { ConfigError, zodIssues, type Issue } from './errors.ts';
 import { Registry } from './registry.ts';
 
 export const SpectrumConfigSchema = z.strictObject({
@@ -55,15 +55,17 @@ export function resolveVisualizerConfig(config: { name: string } & Record<string
       },
     ]);
   }
+
   const parsed = visualizers.get(config.name).schema.safeParse(config);
   if (!parsed.success) {
-    throw new ConfigError(
-      'setcast.yaml',
-      zodIssues(parsed.error).map((issue) => ({
-        ...issue,
-        path: issue.path ? `visualizer.${issue.path}` : 'visualizer',
-      })),
-    );
+    throw new ConfigError('setcast.yaml', underVisualizer(zodIssues(parsed.error)));
   }
   return parsed.data as { name: string } & Record<string, unknown>;
 }
+
+/** The schema sees the block alone; the user reads the path against the whole `setcast.yaml`. */
+const underVisualizer = (issues: Issue[]): Issue[] =>
+  issues.map(({ path, message }) => ({
+    path: path ? `visualizer.${path}` : 'visualizer',
+    message,
+  }));

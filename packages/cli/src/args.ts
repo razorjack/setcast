@@ -22,10 +22,9 @@ export interface NumberRange {
 
 /** A numeric flag value within `range`, or a `SetcastError` naming the flag. */
 export function parseNumber(flag: string, text: string, range: NumberRange): number {
-  const n = Number(text);
-  const whole = !range.integer || Number.isInteger(n);
-  if (!(whole && n >= range.min && n <= (range.max ?? Infinity))) {
-    throw new SetcastError(`Invalid --${flag} "${text}"`, range.hint);
-  }
-  return n;
+  const value = Number(text);
+  const whole = !range.integer || Number.isInteger(value);
+  const inRange = value >= range.min && value <= (range.max ?? Infinity);
+  if (!whole || !inRange) throw new SetcastError(`Invalid --${flag} "${text}"`, range.hint);
+  return value;
 }

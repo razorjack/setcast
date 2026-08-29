@@ -57,17 +57,19 @@ events:
 modulation:
   - { source: rms, target: vignette }
 `);
-    expect(project.events.map((e) => [e.type, e.time])).toEqual([
+    expect(project.events.map((event) => [event.type, event.time])).toEqual([
       ['track_start', 0],
       ['drop', 45],
       ['track_start', 90],
       ['track_start', 180],
     ]);
-    const decks = project.events.flatMap((e) => (e.type === 'track_start' ? [e.deck] : []));
+    const decks = project.events.flatMap((event) =>
+      event.type === 'track_start' ? [event.deck] : [],
+    );
     expect(decks).toEqual(['A', 'B', 'D']);
     expect(project.css).toContain('data:font/woff2;base64,');
     expect(project.css).not.toContain('./fonts/x.woff2');
-    expect(project.modulation.map((r) => r.target)).toEqual(['bg-zoom', 'vignette']);
+    expect(project.modulation.map((route) => route.target)).toEqual(['bg-zoom', 'vignette']);
     expect(project.fps).toBe(30);
     expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
   });
@@ -102,7 +104,10 @@ events:
 `,
       'decks',
     );
-    expect(project.events.map((e) => (e.type === 'track_start' ? [e.title, e.deck] : []))).toEqual([
+    const assigned = project.events.map((event) =>
+      event.type === 'track_start' ? [event.title, event.deck] : [],
+    );
+    expect(assigned).toEqual([
       ['First', 'A'],
       ['Second', 'A'],
       ['Third', 'B'],
@@ -134,16 +139,18 @@ tracks:
   - { time: 0:00, title: '' }
 `,
       'bad-schema',
-    ).catch((e: unknown) => e);
+    ).catch((thrown: unknown) => thrown);
     expect(err).toBeInstanceOf(ConfigError);
+
     const issues = (err as ConfigError).issues;
-    expect(issues.map((i) => i.path).toSorted()).toEqual([
+    expect(issues.map((issue) => issue.path).toSorted()).toEqual([
       'events[0].type',
       'events[1].time',
       'tracks[0].title',
     ]);
-    expect(issues.map((i) => i.message).join('\n')).toMatch(/Invalid time "soon"/);
-    expect(issues.map((i) => i.message).join('\n')).toMatch(/cannot be empty/);
+    const messages = issues.map((issue) => issue.message).join('\n');
+    expect(messages).toMatch(/Invalid time "soon"/);
+    expect(messages).toMatch(/cannot be empty/);
   });
 
   test('unknown theme lists built-ins; missing audio says where it looked', async () => {

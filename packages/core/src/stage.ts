@@ -15,7 +15,7 @@ export const stageData = (state: EventState) => ({
 });
 
 /** Event types that get `--since-<name>` and `--until-<name>`. Double drops count as drops. */
-const TIMED: [EventType, string][] = [
+const TIMED_EVENTS: [type: EventType, cssName: string][] = [
   ['track_start', 'track'],
   ['drop', 'drop'],
   ['breakdown', 'breakdown'],
@@ -34,13 +34,13 @@ export function stageVars(
   duration: number,
 ): Record<string, string> {
   const vars: Record<string, string> = {};
-  for (const [type, name] of TIMED) {
-    vars[`--since-${name}`] = secs(since(state, type, time));
-    vars[`--until-${name}`] = secs(until(state, type, time));
+  for (const [type, cssName] of TIMED_EVENTS) {
+    vars[`--since-${cssName}`] = cssSeconds(since(state, type, time));
+    vars[`--until-${cssName}`] = cssSeconds(until(state, type, time));
   }
-  vars['--drop-intensity'] = num(lastEvent(state, 'drop')?.intensity ?? 0);
-  vars['--section-time'] = secs(state.section ? time - state.sectionStart : Infinity);
-  vars['--set-progress'] = num(duration > 0 ? clamp(time / duration, 0, 1) : 0);
+  vars['--drop-intensity'] = cssNumber(lastEvent(state, 'drop')?.intensity ?? 0);
+  vars['--section-time'] = cssSeconds(state.section ? time - state.sectionStart : Infinity);
+  vars['--set-progress'] = cssNumber(duration > 0 ? clamp(time / duration, 0, 1) : 0);
   return vars;
 }
 
@@ -51,7 +51,7 @@ export function stageVars(
 export function beatVars(time: number, bpm: number | null, offset = 0): Record<string, string> {
   if (!bpm) return {};
   const { beat, bar } = beatPhase(time, bpm, offset);
-  return { '--beat': num(beat), '--bar': num(bar) };
+  return { '--beat': cssNumber(beat), '--bar': cssNumber(bar) };
 }
 
 /** 0..1 through the current beat and the current four-beat bar. */
@@ -60,7 +60,8 @@ export function beatPhase(time: number, bpm: number, offset = 0): { beat: number
   return { beat: phase(beats), bar: phase(beats / 4) };
 }
 
-const phase = (v: number) => ((v % 1) + 1) % 1;
+/** How far through the current turn `elapsed` sits, 0..1, for a negative count too. */
+const phase = (elapsed: number) => ((elapsed % 1) + 1) % 1;
 
-const num = (v: number) => String(Math.round(v * 1000) / 1000);
-const secs = (v: number) => num(Math.min(v, SECONDS_CAP));
+const cssNumber = (value: number) => String(Math.round(value * 1000) / 1000);
+const cssSeconds = (seconds: number) => cssNumber(Math.min(seconds, SECONDS_CAP));
