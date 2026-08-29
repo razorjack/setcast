@@ -24,6 +24,13 @@ export default defineConfig({
         },
       ],
       'no-console': ['error', { allow: ['warn', 'error'] }],
+      complexity: ['error', { max: 15 }],
+      'max-depth': ['error', { max: 3 }],
+      'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
+      'max-nested-callbacks': ['error', { max: 3 }],
+      'max-params': ['error', { max: 4 }],
+      'no-else-return': ['error', { allowElseIf: false }],
+      'no-nested-ternary': 'error',
       'typescript/no-explicit-any': 'error',
       'react/rules-of-hooks': 'error',
       'react/exhaustive-deps': 'error',
@@ -36,6 +43,13 @@ export default defineConfig({
       {
         files: ['packages/cli/**', 'scripts/**'],
         rules: { 'no-console': 'off' },
+      },
+      {
+        files: ['**/*.test.{ts,tsx}'],
+        rules: {
+          complexity: 'off',
+          'max-lines-per-function': 'off',
+        },
       },
     ],
   },

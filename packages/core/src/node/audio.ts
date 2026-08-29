@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { open } from 'node:fs/promises';
+import { open, type FileHandle } from 'node:fs/promises';
 import { basename } from 'node:path';
 import type { Pcm } from '../audio.ts';
 import { SetcastError } from '../errors.ts';
@@ -88,69 +88,111 @@ const CHUNK_FRAMES = 1 << 16;
  * in pieces and resampled on the way, so a two-hour WAV never sits in memory as a whole.
  */
 export async function readWav(file: string, rate: number): Promise<Float32Array | null> {
-  const fh = await open(file);
+  const fileHandle = await open(file);
   try {
-    const { size } = await fh.stat();
-    const at = async (offset: number, length: number) => {
-      const buffer = Buffer.alloc(Math.max(0, Math.min(length, size - offset)));
-      await fh.read(buffer, 0, buffer.length, offset);
-      return buffer;
-    };
-    const tag = (b: Buffer, i: number) => b.toString('latin1', i, i + 4);
-    const head = await at(0, 12);
-    if (head.length < 12 || tag(head, 0) !== 'RIFF' || tag(head, 8) !== 'WAVE') return null;
+    const { size } = await fileHandle.stat();
+    const readAt = readerFor(fileHandle, size);
+    const wav = await readWavInfo(readAt, size);
+    if (!wav) return null;
 
-    let format = 0;
-    let channels = 0;
-    let sampleRate = 0;
-    let bits = 0;
-    let data: { offset: number; length: number } | undefined;
-    for (let offset = 12; offset + 8 <= size;) {
-      const header = await at(offset, 8);
-      const id = tag(header, 0);
-      const length = header.readUInt32LE(4);
-      if (id === 'fmt ') {
-        const body = await at(offset + 8, Math.min(length, 40));
-        if (body.length >= 16) {
-          format = body.readUInt16LE(0);
-          channels = body.readUInt16LE(2);
-          sampleRate = body.readUInt32LE(4);
-          bits = body.readUInt16LE(14);
-          // Extensible headers carry the real format as the first two bytes of a GUID.
-          if (format === EXTENSIBLE && body.length >= 26) format = body.readUInt16LE(24);
-        }
-      } else if (id === 'data') {
-        data = { offset: offset + 8, length: Math.min(length, size - offset - 8) };
-      }
-      offset += 8 + length + (length % 2);
-    }
-    const read = data && channels && sampleRate ? sampleReader(format, bits) : null;
-    if (!read || !data) return null;
-
-    const bytes = bits / 8;
-    const frameBytes = bytes * channels;
-    const frames = Math.floor(data.length / frameBytes);
-    const out = new Resampler(frames, sampleRate, rate);
-    for (let frame = 0; frame < frames; frame += CHUNK_FRAMES) {
-      const count = Math.min(CHUNK_FRAMES, frames - frame);
-      const chunk = await at(data.offset + frame * frameBytes, count * frameBytes);
-      out.push(toMono(chunk, channels, bytes, read));
-    }
-    return out.done();
+    return decodeWavData(readAt, wav, rate);
   } finally {
-    await fh.close();
+    await fileHandle.close();
   }
 }
 
-type SampleReader = (data: Buffer, at: number) => number;
+type ReadAt = (offset: number, length: number) => Promise<Buffer>;
+
+interface WavInfo {
+  channels: number;
+  sampleRate: number;
+  bytesPerSample: number;
+  data: { offset: number; length: number };
+  readSample: SampleReader;
+}
+
+function readerFor(fileHandle: FileHandle, size: number): ReadAt {
+  return async (offset, length) => {
+    const buffer = Buffer.alloc(Math.max(0, Math.min(length, size - offset)));
+    await fileHandle.read(buffer, 0, buffer.length, offset);
+    return buffer;
+  };
+}
+
+async function readWavInfo(readAt: ReadAt, size: number): Promise<WavInfo | null> {
+  const header = await readAt(0, 12);
+  if (header.length < 12 || tag(header, 0) !== 'RIFF' || tag(header, 8) !== 'WAVE') return null;
+
+  let format = 0;
+  let channels = 0;
+  let sampleRate = 0;
+  let bits = 0;
+  let data: WavInfo['data'] | undefined;
+
+  for (let offset = 12; offset + 8 <= size;) {
+    const chunkHeader = await readAt(offset, 8);
+    const chunk = tag(chunkHeader, 0);
+    const length = chunkHeader.readUInt32LE(4);
+
+    if (chunk === 'fmt ') {
+      ({ format, channels, sampleRate, bits } = await readFormat(readAt, offset + 8, length));
+    }
+    if (chunk === 'data') {
+      data = { offset: offset + 8, length: Math.min(length, size - offset - 8) };
+    }
+
+    offset += 8 + length + (length % 2);
+  }
+
+  const readSample = data && channels && sampleRate ? sampleReader(format, bits) : null;
+  if (!readSample || !data) return null;
+
+  return { channels, sampleRate, bytesPerSample: bits / 8, data, readSample };
+}
+
+async function readFormat(readAt: ReadAt, offset: number, length: number) {
+  const body = await readAt(offset, Math.min(length, 40));
+  if (body.length < 16) return { format: 0, channels: 0, sampleRate: 0, bits: 0 };
+
+  let format = body.readUInt16LE(0);
+  const channels = body.readUInt16LE(2);
+  const sampleRate = body.readUInt32LE(4);
+  const bits = body.readUInt16LE(14);
+  // Extensible headers carry the real format as the first two bytes of a GUID.
+  if (format === EXTENSIBLE && body.length >= 26) format = body.readUInt16LE(24);
+
+  return { format, channels, sampleRate, bits };
+}
+
+async function decodeWavData(
+  readAt: ReadAt,
+  wav: WavInfo,
+  outputRate: number,
+): Promise<Float32Array> {
+  const frameBytes = wav.bytesPerSample * wav.channels;
+  const frames = Math.floor(wav.data.length / frameBytes);
+  const output = new Resampler(frames, wav.sampleRate, outputRate);
+
+  for (let frame = 0; frame < frames; frame += CHUNK_FRAMES) {
+    const count = Math.min(CHUNK_FRAMES, frames - frame);
+    const chunk = await readAt(wav.data.offset + frame * frameBytes, count * frameBytes);
+    output.push(toMono(chunk, wav.channels, wav.bytesPerSample, wav.readSample));
+  }
+
+  return output.done();
+}
+
+const tag = (buffer: Buffer, offset: number) => buffer.toString('latin1', offset, offset + 4);
+
+type SampleReader = (data: Buffer, offset: number) => number;
 
 /** How to read one sample as -1..1, or null for a format this reader does not know. */
 function sampleReader(format: number, bits: number): SampleReader | null {
-  if (format === FLOAT && bits === 32) return (d, at) => d.readFloatLE(at);
+  if (format === FLOAT && bits === 32) return (data, offset) => data.readFloatLE(offset);
   if (format !== PCM) return null;
-  if (bits === 16) return (d, at) => d.readInt16LE(at) / 0x8000;
-  if (bits === 24) return (d, at) => d.readIntLE(at, 3) / 0x800000;
-  if (bits === 32) return (d, at) => d.readInt32LE(at) / 0x80000000;
+  if (bits === 16) return (data, offset) => data.readInt16LE(offset) / 0x8000;
+  if (bits === 24) return (data, offset) => data.readIntLE(offset, 3) / 0x800000;
+  if (bits === 32) return (data, offset) => data.readInt32LE(offset) / 0x80000000;
   return null;
 }
 

@@ -10,7 +10,7 @@ import {
   youtubeDescription,
   type ResolvedProject,
 } from '@setcast/core';
-import { render, still } from '@setcast/renderer-remotion';
+import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
 import { parseNumber } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
@@ -25,7 +25,59 @@ Renders the project in <dir> (default: current directory) to an MP4.
   --concurrency  parallel browser tabs (default: Remotion's choice)
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
+interface RenderCommandOptions {
+  dir: string | undefined;
+  range: [number, number] | undefined;
+  out: string | undefined;
+  concurrency: number | undefined;
+  bundle: boolean;
+}
+
+interface RenderInputs {
+  projectDir: string;
+  out: string;
+  crf: number;
+  jpegQuality: number;
+  ui: RenderUi;
+}
+
 export async function run(argv: string[]): Promise<void> {
+  const options = parseOptions(argv);
+
+  intro('render');
+  const { dir, project, config } = await load(options.dir);
+  validateOptions(options);
+
+  const out = outputPath(options, dir, config.output.file);
+  await mkdir(dirname(out), { recursive: true });
+  showProject(project, options.range);
+
+  const ui = new RenderUi();
+  const started = Date.now();
+  const result = await ui.run(() =>
+    render(
+      project,
+      renderOptions(options, {
+        projectDir: dir,
+        out,
+        crf: config.output.crf,
+        jpegQuality: config.output.jpegQuality,
+        ui,
+      }),
+    ),
+  );
+  ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
+
+  const files = [result.file];
+  if (options.bundle) {
+    files.push(...(await sideOutputs(project, dir, out, config.output.jpegQuality)));
+  }
+  outro(
+    `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${files.map(shown).join(', ')}`,
+  );
+}
+
+function parseOptions(argv: string[]): RenderCommandOptions {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
@@ -36,15 +88,7 @@ export async function run(argv: string[]): Promise<void> {
       bundle: { type: 'boolean' },
     },
   });
-  intro('render');
-  const { dir, project, config } = await load(positionals[0]);
   const range = values.range ? parseRange(values.range) : undefined;
-  if (values.bundle && range) {
-    throw new SetcastError(
-      '--bundle renders the whole set',
-      'Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.',
-    );
-  }
   const concurrency = values.concurrency
     ? parseNumber('concurrency', values.concurrency, {
         min: 1,
@@ -52,37 +96,50 @@ export async function run(argv: string[]): Promise<void> {
         hint: 'Use a whole number of parallel browser tabs, e.g. --concurrency 4.',
       })
     : undefined;
-  const out = values.out
-    ? resolve(values.out)
-    : resolve(dir, range ? rangeName(config.output.file, range) : config.output.file);
-  await mkdir(dirname(out), { recursive: true });
+  return {
+    dir: positionals[0],
+    range,
+    out: values.out,
+    concurrency,
+    bundle: values.bundle ?? false,
+  };
+}
 
-  const tracks = project.events.filter((e) => e.type === 'track_start').length;
+function validateOptions(options: RenderCommandOptions): void {
+  if (options.bundle && options.range) {
+    throw new SetcastError(
+      '--bundle renders the whole set',
+      'Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.',
+    );
+  }
+}
+
+function outputPath(options: RenderCommandOptions, dir: string, configuredFile: string): string {
+  if (options.out) return resolve(options.out);
+
+  const file = options.range ? rangeName(configuredFile, options.range) : configuredFile;
+  return resolve(dir, file);
+}
+
+function showProject(project: ResolvedProject, range: [number, number] | undefined): void {
+  const tracks = project.events.filter((event) => event.type === 'track_start').length;
   log.info(
     `${bold(project.title || 'Untitled set')}  ${dim('·')}  ${tracks} tracks, ${project.events.length - tracks} events  ${dim('·')}  ${project.width}×${project.height} @ ${project.fps} fps  ${dim('·')}  theme ${steel(project.theme)}`,
   );
   if (range) log.info(`Range ${formatTime(range[0])} → ${formatTime(range[1])}`);
+}
 
-  const ui = new RenderUi();
-  const started = Date.now();
-  const result = await ui.run(() =>
-    render(project, {
-      projectDir: dir,
-      out,
-      ...(range && { range }),
-      ...(concurrency && { concurrency }),
-      crf: config.output.crf,
-      jpegQuality: config.output.jpegQuality,
-      onProgress: ui.onProgress,
-    }),
-  );
-  ui.done(`Encoded ${fmtSeconds(result.durationSeconds)} of video`);
-  const files = [result.file];
-  if (values.bundle)
-    files.push(...(await sideOutputs(project, dir, out, config.output.jpegQuality)));
-  outro(
-    `${bold('Done')} in ${fmtSeconds((Date.now() - started) / 1000)}  →  ${files.map(shown).join(', ')}`,
-  );
+function renderOptions(command: RenderCommandOptions, inputs: RenderInputs): RenderOptions {
+  const options: RenderOptions = {
+    projectDir: inputs.projectDir,
+    out: inputs.out,
+    crf: inputs.crf,
+    jpegQuality: inputs.jpegQuality,
+    onProgress: inputs.ui.onProgress,
+  };
+  if (command.range) options.range = command.range;
+  if (command.concurrency) options.concurrency = command.concurrency;
+  return options;
 }
 
 /** The thumbnail and the description, so one command leaves everything the upload form asks for. */
@@ -95,15 +152,15 @@ async function sideOutputs(
   const base = stem(video);
   const at = firstDrop(project.events);
   const ui = new RenderUi();
-  const thumb = await ui.run(() =>
-    still(project, {
-      projectDir: dir,
-      out: `${base}.jpg`,
-      ...(at !== null && { at }),
-      jpegQuality,
-      onProgress: ui.onProgress,
-    }),
-  );
+  const options: StillOptions = {
+    projectDir: dir,
+    out: `${base}.jpg`,
+    jpegQuality,
+    onProgress: ui.onProgress,
+  };
+  if (at !== null) options.at = at;
+
+  const thumb = await ui.run(() => still(project, options));
   ui.done(`Thumbnail from ${bold(formatTime(thumb.timeSeconds))}`);
   const text = `${base}.txt`;
   await writeFile(text, youtubeDescription(project.title, project.events));

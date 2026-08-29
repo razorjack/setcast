@@ -425,7 +425,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - **Beauty.** Good code looks inevitable. After writing a piece, step back: does it feel settled,
   balanced, obvious? If a line makes you squint, reshape it. Software should be beautiful too: the
   CLI must be delightful; tasteful color, clear progress, well-set output. Don't overdo it.
-- **Short names**, never ambiguous ones.
+- **Names carry meaning.** Prefer concise names, never merely short ones. One-letter names are only
+  for conventional indices or a mathematical formula whose complete scope is a few lines. Name
+  collection items after the domain value (`event`, `route`, `track`), not `e`, `r` or `x`. Outside
+  those tiny scopes, use the exact domain name even when it is longer: `durationSeconds`,
+  `projectDir`, `renderedFrames`. Do not use generic names such as `data`, `value`, `item`, `ctx` or
+  `result` when the value has a stable, more specific name.
 - **Comments are not a virtue.** If code needs an explaining comment, the code is probably wrong.
   Comments that remain document gotchas.
 - **Simple, composable elements.** Ask whether a new thing is a platform abstraction (event
@@ -439,3 +444,58 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   math, modulation curves, motion math); never add cases thoughtlessly; never test JSX appearance.
 - **Errors state what's wrong and what to do.** They are read by agents as often as humans.
 - No em dashes in prose; use `–`. No AI attribution in commits.
+
+### Function bodies (binding)
+
+- A function operates at one level of abstraction. A CLI command coordinates named steps; it does
+  not implement argument parsing, domain calculations, persistence and presentation inline.
+- An orchestration function reads as a short sequence of domain operations. Its control flow must
+  be understandable without opening the functions it calls.
+- Keep each statement simple. Prefer guard clauses, ordinary `if` statements and named intermediate
+  values. Avoid nested ternaries, conditional object spreads, nested callbacks and expressions that
+  combine branching, formatting and I/O.
+- Separate pure calculation from filesystem, process, terminal and network I/O. Parse and validate
+  at the boundary, then pass valid domain values through the rest of the program.
+- Keep callbacks to one expression or a few obvious lines. Extract a longer callback when the
+  extracted function names a real operation.
+- Extract code by responsibility, not by line count. Do not create `handleThing`, `processData`,
+  `step1` or trivial forwarding helpers to satisfy a metric. Keep a helper in the same file until
+  reuse or a real package boundary justifies moving it.
+- Use an options object when a function would otherwise take more than four arguments.
+- Production functions normally stay below 50 lines and cyclomatic complexity 15. A linear
+  numerical algorithm may exceed these limits when splitting it would obscure the algorithm. Keep
+  that exception local and document why the linear form is clearer.
+- Modern syntax is welcome only when it reduces cognitive load. An explicit statement is better
+  than a compact expression that a reader must decode.
+- Before finishing a change, read every changed function body from top to bottom. Simplify any line
+  that performs several conceptual operations or requires the reader to mentally expand it.
+
+### Canonical orchestration shape
+
+This is the target style for a command, job or other workflow function. Names will change with the
+domain; the shape should remain recognizable.
+
+```ts
+export async function run(argv: string[]): Promise<void> {
+  const options = parseOptions(argv);
+
+  intro('analyze');
+  const project = await load(options.dir);
+  const analysis = await analyzeProject(project, options.sensitivity);
+
+  showAnalysis(analysis);
+
+  if (options.write) {
+    await updateProject(project, analysis);
+    return;
+  }
+
+  printDraft(analysis);
+}
+```
+
+This function is good because it reads almost as prose. Each statement performs one operation. The
+names state intent. Blank lines separate input, execution, presentation and output. The exceptional
+write path returns early, leaving the default path flat. Library details and data manipulation live
+behind functions named for real domain operations. A reader understands the workflow without
+opening another file, while each called function can be understood and tested on its own.

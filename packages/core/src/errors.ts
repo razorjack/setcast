@@ -31,12 +31,14 @@ export class ConfigError extends SetcastError {
 
 /** Flattens Zod issues into `{ path: 'tracks[2].time', message }` pairs. */
 export function zodIssues(error: z.ZodError): Issue[] {
-  return error.issues.map((i) => ({
-    path: i.path.reduce<string>(
-      (acc, k) =>
-        typeof k === 'number' ? `${acc}[${k}]` : acc ? `${acc}.${String(k)}` : String(k),
-      '',
-    ),
-    message: i.message,
+  return error.issues.map((issue) => ({
+    path: issue.path.reduce(appendPath, ''),
+    message: issue.message,
   }));
+}
+
+function appendPath(path: string, segment: PropertyKey): string {
+  if (typeof segment === 'number') return `${path}[${segment}]`;
+  if (!path) return String(segment);
+  return `${path}.${String(segment)}`;
 }

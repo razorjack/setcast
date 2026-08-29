@@ -12,7 +12,7 @@ import {
   snapToBeats,
   type SetEvent,
 } from '@setcast/core';
-import { CONFIG_FILE, decodeMono } from '@setcast/core/node';
+import { CONFIG_FILE, decodeMono, type LoadedProject } from '@setcast/core/node';
 import { isSeq, parseDocument, stringify } from 'yaml';
 import { load } from '../project.ts';
 import {
@@ -41,7 +41,54 @@ Buildups follow musical intent rather than energy, so those stay yours to place.
 /** A drafted event this close to one already in the project is the same event. */
 const SAME_EVENT_SECONDS = 2;
 
+interface AnalyzeOptions {
+  dir: string;
+  sensitivity: number;
+  write: boolean;
+}
+
+interface AnalysisDraft {
+  events: SetEvent[];
+  bpm: number | null;
+  offset: number | null;
+  seconds: number;
+}
+
+interface AnalysisChanges {
+  events: SetEvent[];
+  tempo: number | null;
+  offset: number | null;
+}
+
 export async function run(argv: string[]): Promise<void> {
+  const options = parseOptions(argv);
+
+  intro('analyze');
+  const loaded = await load(options.dir);
+  const analysis = await analyzeProject(loaded, options.sensitivity);
+
+  showAnalysis(analysis);
+  if (analysis.events.length === 0 && !analysis.bpm) {
+    outro('Nothing stood out. Raise --sensitivity, or write the events by hand.');
+    return;
+  }
+
+  const changes = changesFor(loaded, analysis);
+  if (!options.write) {
+    printDraft(analysis.events, changes);
+    return;
+  }
+
+  if (changes.events.length === 0 && !changes.tempo) {
+    outro(`${CONFIG_FILE} already has all of these.`);
+    return;
+  }
+
+  const path = await updateProject(loaded.dir, changes);
+  showWrittenChanges(path, changes);
+}
+
+function parseOptions(argv: string[]): AnalyzeOptions {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
@@ -54,18 +101,19 @@ export async function run(argv: string[]): Promise<void> {
       'Higher splits the set into more sections. The default is 0.5.',
     );
   }
-  const [dir = '.'] = positionals;
+  return { dir: positionals[0] ?? '.', sensitivity, write: values.write ?? false };
+}
 
-  intro('analyze');
-  const { dir: root, config, project } = await load(dir);
+async function analyzeProject(loaded: LoadedProject, sensitivity: number): Promise<AnalysisDraft> {
   const spin = spinner();
-  spin.start(`Reading ${project.audio}`);
-  const { events, bpm, offset, seconds } = await clearSpinnerOnError(spin, async () => {
-    const pcm = await decodeMono(join(root, project.audio));
+  spin.start(`Reading ${loaded.project.audio}`);
+
+  const analysis = await clearSpinnerOnError(spin, async () => {
+    const pcm = await decodeMono(join(loaded.dir, loaded.project.audio));
     spin.message('Analyzing');
     const shape = envelope(pcm);
     const bpm = estimateBpm(shape);
-    const grid = config.bpm ?? bpm;
+    const grid = loaded.config.bpm ?? bpm;
     const drafted = detectSections(shape, { sensitivity });
     return {
       events: grid ? snapToBeats(drafted, shape, grid) : drafted,
@@ -74,62 +122,80 @@ export async function run(argv: string[]): Promise<void> {
       seconds: pcm.samples.length / pcm.sampleRate,
     };
   });
+
   spin.stop(
-    `${fmtSeconds(seconds)} of audio${bpm ? `, ${bold(`${Math.round(bpm)} BPM`)}` : ', no steady tempo'}`,
+    `${fmtSeconds(analysis.seconds)} of audio${analysis.bpm ? `, ${bold(`${Math.round(analysis.bpm)} BPM`)}` : ', no steady tempo'}`,
   );
+  return analysis;
+}
 
-  if (events.length === 0 && !bpm) {
-    outro('Nothing stood out. Raise --sensitivity, or write the events by hand.');
-    return;
+function showAnalysis(analysis: AnalysisDraft): void {
+  for (const event of analysis.events) {
+    const kind = event.type === 'drop' ? accent(event.type.padEnd(9)) : steel(event.type.padEnd(9));
+    const detail = event.type === 'drop' ? dim(`intensity ${event.intensity.toFixed(2)}`) : '';
+    log.message(`${dim(formatTime(event.time).padStart(7))}  ${kind} ${detail}`.trimEnd());
   }
-  for (const e of events) {
-    const kind = e.type === 'drop' ? accent(e.type.padEnd(9)) : steel(e.type.padEnd(9));
-    const detail = e.type === 'drop' ? dim(`intensity ${e.intensity.toFixed(2)}`) : '';
-    log.message(`${dim(formatTime(e.time).padStart(7))}  ${kind} ${detail}`.trimEnd());
-  }
+}
 
-  const fresh = events.filter(
-    (e) =>
-      !config.events.some(
-        (had) => had.type === e.type && Math.abs(had.time - e.time) < SAME_EVENT_SECONDS,
+function changesFor(loaded: LoadedProject, analysis: AnalysisDraft): AnalysisChanges {
+  const events = analysis.events.filter(
+    (event) =>
+      !loaded.config.events.some(
+        (existing) =>
+          existing.type === event.type && Math.abs(existing.time - event.time) < SAME_EVENT_SECONDS,
       ),
   );
-  const tempo = bpm && config.bpm === undefined ? Math.round(bpm * 10) / 10 : null;
-  if (!values.write) {
-    const draft = {
-      ...(tempo && { bpm: tempo, beatOffset: offset }),
-      events: events.map(toYaml),
-    };
-    process.stdout.write(`\n${stringify(draft)}`);
-    outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
-    return;
+  const tempo =
+    analysis.bpm && loaded.config.bpm === undefined ? Math.round(analysis.bpm * 10) / 10 : null;
+  return { events, tempo, offset: analysis.offset };
+}
+
+function printDraft(events: SetEvent[], changes: AnalysisChanges): void {
+  const draft: Record<string, unknown> = {};
+  if (changes.tempo) {
+    draft.bpm = changes.tempo;
+    draft.beatOffset = changes.offset;
   }
-  if (fresh.length === 0 && !tempo) {
-    outro(`${CONFIG_FILE} already has all of these.`);
-    return;
-  }
+  draft.events = events.map(toYaml);
+
+  process.stdout.write(`\n${stringify(draft)}`);
+  outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
+}
+
+async function updateProject(root: string, changes: AnalysisChanges): Promise<string> {
   const path = join(root, CONFIG_FILE);
   const doc = parseDocument(await readFile(path, 'utf8'));
-  if (tempo) {
-    doc.set('bpm', tempo);
-    doc.set('beatOffset', offset);
+  if (changes.tempo) {
+    doc.set('bpm', changes.tempo);
+    doc.set('beatOffset', changes.offset);
   }
+
   const existing = doc.get('events');
   if (isSeq(existing)) {
     existing.flow = false;
-    for (const e of fresh) existing.add(doc.createNode(toYaml(e)));
-  } else if (fresh.length) doc.set('events', fresh.map(toYaml));
+    for (const event of changes.events) existing.add(doc.createNode(toYaml(event)));
+  } else if (changes.events.length) {
+    doc.set('events', changes.events.map(toYaml));
+  }
+
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
+  return path;
+}
+
+function showWrittenChanges(path: string, changes: AnalysisChanges): void {
   const added = [
-    fresh.length ? `${fresh.length} events` : '',
-    tempo ? `bpm: ${tempo} with beatOffset` : '',
+    changes.events.length ? `${changes.events.length} events` : '',
+    changes.tempo ? `bpm: ${changes.tempo} with beatOffset` : '',
   ];
   outro(`Added ${added.filter(Boolean).join(' and ')} to ${steel(path)}`);
 }
 
-const toYaml = (e: SetEvent) => ({
-  type: e.type,
-  time: formatTimecode(e.time),
-  ...(e.type === 'drop' && { intensity: e.intensity }),
-});
+function toYaml(event: SetEvent): Record<string, string | number> {
+  const yamlEvent: Record<string, string | number> = {
+    type: event.type,
+    time: formatTimecode(event.time),
+  };
+  if (event.type === 'drop') yamlEvent.intensity = event.intensity;
+  return yamlEvent;
+}

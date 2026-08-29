@@ -62,7 +62,7 @@ export function estimateBpm(env: Envelope, [min, max]: readonly [number, number]
   const span = Math.min(flux.length, Math.round(20 / env.hop));
   if (span <= lagMax * 2) return null;
   const found = windowStarts(flux.length, span, 8)
-    .map((start) => windowBpm(flux, start, span, lagMin, lagMax, env.hop))
+    .map((start) => windowBpm({ flux, start, span, lagMin, lagMax, hop: env.hop }))
     .filter((bpm): bpm is number => bpm !== null);
   return found.length ? median(found) : null;
 }
@@ -162,14 +162,16 @@ function onsetFlux(bass: number[], high: number[]): number[] {
   );
 }
 
-function windowBpm(
-  flux: number[],
-  start: number,
-  span: number,
-  lagMin: number,
-  lagMax: number,
-  hop: number,
-): number | null {
+interface BpmWindow {
+  flux: number[];
+  start: number;
+  span: number;
+  lagMin: number;
+  lagMax: number;
+  hop: number;
+}
+
+function windowBpm({ flux, start, span, lagMin, lagMax, hop }: BpmWindow): number | null {
   const end = Math.min(flux.length, start + span);
   const avg = mean(flux, start, end);
   const corr = (lag: number) => {
