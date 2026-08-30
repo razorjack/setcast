@@ -1,10 +1,9 @@
 import { mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { parseArgs } from 'node:util';
 import { formatTime, SetcastError, type SetEvent } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import { render } from '@setcast/renderer-remotion';
-import { parseAt, parseNumber } from '../args.ts';
+import { parseAt, parseCommandArgs, parseNumber } from '../args.ts';
 import { load } from '../project.ts';
 import { bold, dim, formatDuration, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
@@ -48,16 +47,16 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): ClipOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: {
+  const { values, positionals } = parseCommandArgs(
+    argv,
+    {
       at: { type: 'string' },
       seconds: { type: 'string' },
       all: { type: 'boolean' },
       out: { type: 'string' },
     },
-  });
+    help,
+  );
   if (values.all && (values.at || values.out)) {
     throw new SetcastError(
       '--all cuts every drop into its own file',

@@ -1,9 +1,8 @@
 import { mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { parseArgs } from 'node:util';
 import { formatTime, type SetEvent } from '@setcast/core';
 import { still, type StillOptions } from '@setcast/renderer-remotion';
-import { parseAt } from '../args.ts';
+import { parseAt, parseCommandArgs } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
@@ -44,11 +43,11 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): StillCommandOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: { at: { type: 'string' }, out: { type: 'string' } },
-  });
+  const { values, positionals } = parseCommandArgs(
+    argv,
+    { at: { type: 'string' }, out: { type: 'string' } },
+    help,
+  );
   return {
     dir: positionals[0],
     at: values.at ? parseAt(values.at) : undefined,

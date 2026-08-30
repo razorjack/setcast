@@ -1,6 +1,5 @@
-import { parseArgs } from 'node:util';
 import { preview, type PreviewOptions } from '@setcast/renderer-remotion';
-import { parseNumber } from '../args.ts';
+import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load } from '../project.ts';
 import { dim, intro, log } from '../ui.ts';
 
@@ -26,11 +25,7 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): PreviewCommandOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: { port: { type: 'string' } },
-  });
+  const { values, positionals } = parseCommandArgs(argv, { port: { type: 'string' } }, help);
   if (values.port === undefined) return { dir: positionals[0], port: undefined };
 
   return {

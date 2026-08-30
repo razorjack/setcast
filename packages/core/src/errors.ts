@@ -3,8 +3,8 @@ import type { z } from 'zod';
 /** An error with a user-facing message and what to do about it. The CLI prints both. */
 export class SetcastError extends Error {
   readonly hint: string | undefined;
-  constructor(message: string, hint?: string) {
-    super(message);
+  constructor(message: string, hint?: string, options?: ErrorOptions) {
+    super(message, options);
     this.name = 'SetcastError';
     this.hint = hint;
   }

@@ -1,6 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
-import { parseArgs } from 'node:util';
 import {
   chapterProblems,
   formatTime,
@@ -11,7 +10,7 @@ import {
   type ResolvedProject,
 } from '@setcast/core';
 import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
-import { parseNumber } from '../args.ts';
+import { parseCommandArgs, parseNumber } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
 import {
@@ -78,16 +77,16 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): RenderCommandOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: {
+  const { values, positionals } = parseCommandArgs(
+    argv,
+    {
       range: { type: 'string' },
       out: { type: 'string' },
       concurrency: { type: 'string' },
       bundle: { type: 'boolean' },
     },
-  });
+    help,
+  );
   const range = values.range ? parseRange(values.range) : undefined;
   const concurrency = values.concurrency
     ? parseNumber('concurrency', values.concurrency, {

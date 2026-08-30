@@ -1,6 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { parseArgs } from 'node:util';
 import {
   formatTime,
   formatTimecode,
@@ -11,6 +10,7 @@ import {
 } from '@setcast/core';
 import { CONFIG_FILE } from '@setcast/core/node';
 import { parseDocument, stringify } from 'yaml';
+import { parseCommandArgs } from '../args.ts';
 import { bold, dim, intro, log, outro, steel } from '../ui.ts';
 
 export const help = `setcast import <tracklist.txt> [--format plain] [--write] [dir]
@@ -46,11 +46,11 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): ImportOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: { write: { type: 'boolean' }, format: { type: 'string' } },
-  });
+  const { values, positionals } = parseCommandArgs(
+    argv,
+    { write: { type: 'boolean' }, format: { type: 'string' } },
+    help,
+  );
   const [file, dir = '.'] = positionals;
   if (!file) throw new SetcastError('Missing tracklist file', help);
   return { file, dir, format: values.format, write: values.write ?? false };

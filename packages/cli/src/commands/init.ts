@@ -1,12 +1,12 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { basename, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseArgs } from 'node:util';
 import { formatTime, SetcastError } from '@setcast/core';
 import { CONFIG_FILE } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { stringify } from 'yaml';
 import { synthesizeDemo, type DemoAudio, type DemoSection } from '../demo/synth.ts';
+import { parseCommandArgs } from '../args.ts';
 import {
   bold,
   cancel,
@@ -63,11 +63,11 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): InitOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: { demo: { type: 'boolean' }, yes: { type: 'boolean' } },
-  });
+  const { values, positionals } = parseCommandArgs(
+    argv,
+    { demo: { type: 'boolean' }, yes: { type: 'boolean' } },
+    help,
+  );
   return {
     dir: resolve(positionals[0] ?? '.'),
     demo: values.demo ?? false,

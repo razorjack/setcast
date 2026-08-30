@@ -1,6 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { parseArgs } from 'node:util';
 import {
   beatOffset,
   detectSections,
@@ -16,6 +15,7 @@ import {
 import { CONFIG_FILE, decodeMono, type LoadedProject } from '@setcast/core/node';
 import { isSeq, parseDocument, stringify, type Document } from 'yaml';
 import { load } from '../project.ts';
+import { parseCommandArgs } from '../args.ts';
 import {
   accent,
   bold,
@@ -90,11 +90,11 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 function parseOptions(argv: string[]): AnalyzeOptions {
-  const { values, positionals } = parseArgs({
-    args: argv,
-    allowPositionals: true,
-    options: { write: { type: 'boolean' }, sensitivity: { type: 'string' } },
-  });
+  const { values, positionals } = parseCommandArgs(
+    argv,
+    { write: { type: 'boolean' }, sensitivity: { type: 'string' } },
+    help,
+  );
   const sensitivity = values.sensitivity === undefined ? 0.5 : Number(values.sensitivity);
   if (!(sensitivity >= 0 && sensitivity <= 1)) {
     throw new SetcastError(
