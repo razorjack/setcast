@@ -37,23 +37,47 @@ const SOURCES = [...FEATURE_SOURCES, ...TIMELINE_SOURCES, ...BEAT_SOURCES] as [
 ];
 
 export const ModRouteSchema = z.strictObject({
-  source: z.enum(SOURCES),
+  source: z.enum(SOURCES, {
+    error: (issue) =>
+      typeof issue.input === 'string'
+        ? `Unknown source "${issue.input}". Audio: bass, mids, highs, rms, onset. Timeline: since:<event> or until:<event>. Tempo: beat, bar.`
+        : 'source is required. Audio: bass, mids, highs, rms, onset. Timeline: since:<event> or until:<event>. Tempo: beat, bar.',
+  }),
   /** Exposed to CSS as `--mod-<target>`. */
   target: z
-    .string()
-    .regex(
-      /^[a-z][a-z0-9-]*$/,
-      'Target must be kebab-case (e.g. bg-zoom); it becomes --mod-<target> in CSS.',
-    ),
+    .string({ error: 'Target must be kebab-case (e.g. bg-zoom).' })
+    .regex(/^[a-z][a-z0-9-]*$/, {
+      error: 'Target must be kebab-case (e.g. bg-zoom); it becomes --mod-<target> in CSS.',
+    }),
   /** Output when the source is 0 and when it is 1. */
-  range: z.tuple([z.number(), z.number()]).default([0, 1]),
-  curve: z.enum(Object.keys(CURVES) as [Curve, ...Curve[]]).default('linear'),
+  range: z
+    .tuple(
+      [
+        z.number({ error: 'range must be two numbers, e.g. [1, 1.06].' }),
+        z.number({ error: 'range must be two numbers, e.g. [1, 1.06].' }),
+      ],
+      { error: 'range must be two numbers, e.g. [1, 1.06].' },
+    )
+    .default([0, 1]),
+  curve: z
+    .enum(Object.keys(CURVES) as [Curve, ...Curve[]], {
+      error: `curve must be ${Object.keys(CURVES).join(', ')}.`,
+    })
+    .default('linear'),
   /** Smoothing window in seconds; 0 is instantaneous. Audio sources only. */
-  smooth: z.number().min(0).max(2).default(0),
+  smooth: z
+    .number({ error: 'smooth must be from 0 to 2 seconds.' })
+    .min(0, { error: 'smooth must be from 0 to 2 seconds.' })
+    .max(2, { error: 'smooth must be from 0 to 2 seconds.' })
+    .default(0),
   /** Seconds a `since:` / `until:` source ramps over. Audio sources ignore it. */
-  window: z.number().positive().max(60).default(1),
+  window: z
+    .number({ error: 'window must be greater than 0 and no more than 60 seconds.' })
+    .positive({ error: 'window must be greater than 0 seconds.' })
+    .max(60, { error: 'window must be no more than 60 seconds.' })
+    .default(1),
   /** Only active during this section; rests at range[0] otherwise. */
-  when: z.enum(SECTION_TYPES).optional(),
+  when: z.enum(SECTION_TYPES, { error: `when must be ${SECTION_TYPES.join(', ')}.` }).optional(),
 });
 export type ModRoute = z.infer<typeof ModRouteSchema>;
 /** A route as written: everything but `source` and `target` has a default. */

@@ -153,6 +153,61 @@ tracks:
     expect(messages).toMatch(/cannot be empty/);
   });
 
+  test('schema problems explain common config mistakes', async () => {
+    const err = await load(
+      `
+audio: assets/mix.wav
+theme: test
+output: { fps: 29, widht: 1920 }
+events:
+  - { type: dropp, time: 0:45 }
+  - { type: drop, time: 1:00, intensity: 2 }
+modulation:
+  - { source: bas, target: bg-zoom }
+`,
+      'helpful-schema',
+    ).catch((thrown: unknown) => thrown);
+
+    expect(err).toBeInstanceOf(ConfigError);
+    expect((err as ConfigError).issues).toEqual(
+      expect.arrayContaining([
+        { path: 'output.fps', message: 'fps must be 24, 25, 30, 50 or 60.' },
+        {
+          path: 'output',
+          message: 'Unrecognized key: "widht". Did you mean "width"?',
+        },
+        {
+          path: 'events[0].type',
+          message: expect.stringContaining('Unknown event type "dropp". Types:'),
+        },
+        { path: 'events[1].intensity', message: 'intensity is 0..1.' },
+        {
+          path: 'modulation[0].source',
+          message:
+            'Unknown source "bas". Audio: bass, mids, highs, rms, onset. Timeline: since:<event> or until:<event>. Tempo: beat, bar.',
+        },
+      ]),
+    );
+  });
+
+  test('an empty config and a YAML list explain the required shape', async () => {
+    const empty = await load('', 'empty-config').catch((thrown: unknown) => thrown);
+    expect(empty).toBeInstanceOf(ConfigError);
+    expect((empty as ConfigError).issues).toContainEqual({
+      path: 'audio',
+      message: 'audio is required: the path to your mix file, e.g. assets/mix.wav.',
+    });
+
+    const list = await load('- audio: assets/mix.wav\n', 'list-config').catch(
+      (thrown: unknown) => thrown,
+    );
+    expect(list).toBeInstanceOf(ConfigError);
+    expect((list as ConfigError).issues).toContainEqual({
+      path: '',
+      message: 'setcast.yaml must be a YAML mapping of keys and values, not a list.',
+    });
+  });
+
   test('unknown theme lists built-ins; missing audio says where it looked', async () => {
     await expect(load('audio: assets/mix.wav\ntheme: neon\n', 'bad-theme')).rejects.toMatchObject({
       hint: expect.stringContaining('Built-in themes: test'),
