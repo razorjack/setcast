@@ -29,3 +29,15 @@ test('inlines file URLs without resolving comments, fragments, or schemes', asyn
   expect(css).toContain('url(blob:example)');
   expect(css).toContain('data:image/svg+xml,<svg viewBox=(0)></svg>');
 });
+
+test('names a missing file referenced by the stylesheet', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'setcast-css-'));
+  const file = join(dir, 't.css');
+  await writeFile(file, '@font-face { src: url(nope.woff2) }');
+
+  await expect(loadCss(file)).rejects.toMatchObject({
+    message: 't.css references nope.woff2, which does not exist',
+    hint: `url() paths are relative to the stylesheet. Expected it at ${join(dir, 'nope.woff2')}.`,
+    cause: expect.objectContaining({ code: 'ENOENT' }),
+  });
+});

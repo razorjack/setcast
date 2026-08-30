@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
-import { dirname, extname, resolve } from 'node:path';
+import { basename, dirname, extname, resolve } from 'node:path';
+import { SetcastError } from '../errors.ts';
 
 const MIME: Record<string, string> = {
   '.woff2': 'font/woff2',
@@ -27,7 +28,17 @@ export async function loadCss(file: string): Promise<string> {
 
   const inlined = new Map<string, string>();
   for (const reference of localReferences(css)) {
-    inlined.set(reference, await dataUri(resolve(dir, stripQuery(reference))));
+    const asset = resolve(dir, stripQuery(reference));
+    try {
+      inlined.set(reference, await dataUri(asset));
+    } catch (cause) {
+      if (!isEnoent(cause)) throw cause;
+      throw new SetcastError(
+        `${basename(file)} references ${reference}, which does not exist`,
+        `url() paths are relative to the stylesheet. Expected it at ${asset}.`,
+        { cause },
+      );
+    }
   }
 
   return css.replace(URL_RE, (match, _quote, quoted: string, bare: string) => {
@@ -52,3 +63,6 @@ async function dataUri(path: string): Promise<string> {
 
 /** `fonts/x.woff2?v=2#hash` points at `fonts/x.woff2`; the rest is cache busting. */
 const stripQuery = (reference: string) => reference.replace(/[?#].*$/, '');
+
+const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
+  error instanceof Error && 'code' in error && error.code === 'ENOENT';
