@@ -3,6 +3,7 @@ import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig } from '../config.ts';
+import { FEATURE_SOURCES } from '../audio.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { sortEvents, type SetEvent } from '../events.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
@@ -18,6 +19,7 @@ export interface LoadedProject {
   dir: string;
   config: ProjectConfig;
   project: ResolvedProject;
+  warnings: string[];
 }
 
 export interface LoadOptions {
@@ -33,6 +35,7 @@ export async function loadProject(
   const config = await readConfig(root);
   const theme = await resolveTheme(config.theme, root, themes);
   const events = mergeEvents(config);
+  const modulation = [...themeRoutes(theme), ...config.modulation];
 
   await requireAssets(root, config, events);
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
@@ -47,13 +50,85 @@ export async function loadProject(
     height: config.output.height,
     fps: config.output.fps,
     events,
-    modulation: [...themeRoutes(theme), ...config.modulation],
+    modulation,
     visualizer: resolveVisualizerConfig(config.visualizer),
     panel: config.panel,
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
   };
-  return { dir: root, config, project };
+  return { dir: root, config, project, warnings: projectWarnings(config, events, modulation) };
+}
+
+function projectWarnings(
+  config: ProjectConfig,
+  events: readonly SetEvent[],
+  routes: readonly ModRoute[],
+): string[] {
+  return [
+    ...modulationWarnings(config, events, routes),
+    ...trackWarnings(config, events),
+    ...(config.panel.dwell === 0 && config.panel.fade > 0
+      ? ['panel.fade has no effect when panel.dwell is 0.']
+      : []),
+  ];
+}
+
+function modulationWarnings(
+  config: ProjectConfig,
+  events: readonly SetEvent[],
+  routes: readonly ModRoute[],
+): string[] {
+  const effectiveRoutes = [...new Map(routes.map((route) => [route.target, route])).values()];
+  const hasDrop = events.some((event) => event.type === 'drop' || event.type === 'double_drop');
+  return effectiveRoutes.flatMap((route) => {
+    const warnings: string[] = [];
+    if ((route.source === 'beat' || route.source === 'bar') && !config.bpm) {
+      warnings.push(
+        `modulation route "${route.target}" uses ${route.source}, but the project has no bpm; its source stays at 0.`,
+      );
+    }
+    if (route.source.includes(':') && route.smooth > 0) {
+      warnings.push(
+        `modulation route "${route.target}" sets smooth, but smooth only applies to audio sources.`,
+      );
+    }
+    if ((FEATURE_SOURCES as readonly string[]).includes(route.source) && route.window !== 1) {
+      warnings.push(
+        `modulation route "${route.target}" sets window, but window only applies to timeline sources.`,
+      );
+    }
+    if (route.when === 'drop' && !hasDrop) {
+      warnings.push(
+        `modulation route "${route.target}" uses when: drop, but the set has no drop events; the route never fires.`,
+      );
+    }
+    return warnings;
+  });
+}
+
+function trackWarnings(config: ProjectConfig, events: readonly SetEvent[]): string[] {
+  const warnings: string[] = [];
+  for (let index = 1; index < config.tracks.length; index++) {
+    const track = config.tracks[index]!;
+    const previous = config.tracks[index - 1]!;
+    if (track.time < previous.time) {
+      warnings.push(
+        `track "${track.title}" at ${track.time} s appears after a later track in tracks:; Setcast sorts tracks by time.`,
+      );
+    }
+  }
+
+  const tracks = events.filter((event) => event.type === 'track_start');
+  for (let index = 1; index < tracks.length; index++) {
+    const track = tracks[index]!;
+    const previous = tracks[index - 1]!;
+    if (track.time === previous.time) {
+      warnings.push(
+        `tracks "${previous.title}" and "${track.title}" both start at ${track.time} s.`,
+      );
+    }
+  }
+  return warnings;
 }
 
 /** Every media path a project names has to exist and stay inside the project directory. */

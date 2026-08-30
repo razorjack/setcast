@@ -235,4 +235,31 @@ modulation:
       load('audio: assets/mix.wav\ntheme: css/../../outside.css\n', 'theme-traversal'),
     ).rejects.toThrow(/leaves the project directory/);
   });
+
+  test('warns about ignored settings and ambiguous track timing', async () => {
+    const { warnings } = await load(
+      `
+audio: assets/mix.wav
+theme: test
+panel: { dwell: 0, fade: 2 }
+tracks:
+  - { time: 1:00, title: Late }
+  - { time: 0:00, title: Early }
+  - { time: 0:00, title: Duplicate }
+modulation:
+  - { source: beat, target: beat-pulse }
+  - { source: since:drop, target: drop-fade, smooth: 0.2 }
+  - { source: bass, target: bass-pulse, window: 3 }
+`,
+      'warnings',
+    );
+
+    expect(warnings.join('\n')).toMatch(/uses beat, but the project has no bpm/);
+    expect(warnings.join('\n')).toMatch(/smooth only applies to audio sources/);
+    expect(warnings.join('\n')).toMatch(/window only applies to timeline sources/);
+    expect(warnings.join('\n')).toMatch(/uses when: drop, but the set has no drop events/);
+    expect(warnings.join('\n')).toMatch(/appears after a later track/);
+    expect(warnings.join('\n')).toMatch(/both start at 0 s/);
+    expect(warnings).toContain('panel.fade has no effect when panel.dwell is 0.');
+  });
 });

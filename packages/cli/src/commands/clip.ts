@@ -10,7 +10,7 @@ import {
   rangeWithinAudio,
   timeWithinAudio,
 } from '../args.ts';
-import { load } from '../project.ts';
+import { load, warnEventsAfterAudio } from '../project.ts';
 import { bold, dim, formatDuration, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 
@@ -40,6 +40,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('clip');
   const loaded = await load(options.dir);
   const duration = await probeAudio(loaded.project, loaded.dir);
+  warnEventsAfterAudio(loaded.project.events, duration);
   const centers = clipCenters(loaded.project.events, options).map((center) =>
     timeWithinAudio(center, duration, '--at'),
   );

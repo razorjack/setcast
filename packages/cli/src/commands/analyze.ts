@@ -14,7 +14,7 @@ import {
 } from '@setcast/core';
 import { CONFIG_FILE, decodeMono, type LoadedProject } from '@setcast/core/node';
 import { isSeq, parseDocument, stringify, type Document } from 'yaml';
-import { load } from '../project.ts';
+import { load, warnEventsAfterAudio } from '../project.ts';
 import { parseCommandArgs } from '../args.ts';
 import {
   accent,
@@ -67,6 +67,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('analyze');
   const loaded = await load(options.dir);
   const analysis = await analyzeProject(loaded, options.sensitivity);
+  warnEventsAfterAudio(loaded.project.events, analysis.seconds);
 
   showAnalysis(analysis);
   if (analysis.events.length === 0 && !analysis.bpm) {

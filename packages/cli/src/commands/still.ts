@@ -4,7 +4,7 @@ import { formatTime, type SetEvent } from '@setcast/core';
 import { probeAudio, still, type StillOptions } from '@setcast/renderer-remotion';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load } from '../project.ts';
+import { load, warnEventsAfterAudio } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg]
@@ -25,6 +25,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('still');
   const { dir, project, config } = await load(options.dir);
   const duration = await probeAudio(project, dir);
+  warnEventsAfterAudio(project.events, duration);
   const at = timeWithinAudio(
     options.at ?? firstDrop(project.events) ?? duration / 4,
     duration,

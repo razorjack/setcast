@@ -18,7 +18,7 @@ import {
 } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load } from '../project.ts';
+import { load, warnEventsAfterAudio } from '../project.ts';
 import {
   bold,
   dim,
@@ -56,6 +56,7 @@ export async function run(argv: string[]): Promise<void> {
   const { dir, project, config } = await load(options.dir);
   validateOptions(options);
   const duration = await probeAudio(project, dir);
+  warnEventsAfterAudio(project.events, duration);
   if (options.range) {
     options = { ...options, range: rangeWithinAudio(options.range, duration, 'Render range') };
   }

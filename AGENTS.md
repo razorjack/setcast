@@ -243,8 +243,10 @@ Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setc
 ### Project resolution and orchestration
 
 `setcast.yaml` (schema: `packages/core/src/config.ts`) → `loadProject(dir)` in
-`@setcast/core/node` → `ResolvedProject` (plain JSON: absolute-free paths relative to the project
-dir, merged modulation, theme CSS with fonts inlined as data URIs, base CSS, visualizer config).
+`@setcast/core/node` → `LoadedProject` with the `ResolvedProject` (plain JSON: absolute-free paths
+relative to the project dir, merged modulation, theme CSS with fonts inlined as data URIs, base CSS,
+visualizer config) and non-fatal configuration warnings. The CLI prints those warnings to stderr.
+Warnings that need the audio duration are added by each command after the Node audio probe.
 The renderer adapter receives `ResolvedProject` as input props and nothing else. Assets referenced
 by `setcast.yaml` must live inside the project directory (the adapter serves it as the public dir).
 
