@@ -442,7 +442,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   declarative path. Plugins are the escape hatch for the last 10%.
 - **Tests are a liability.** Write them where they earn their keep (schemas, parsers, timeline
   math, modulation curves, motion math); never add cases thoughtlessly; never test JSX appearance.
-- **Errors state what's wrong and what to do.** They are read by agents as often as humans.
+- **Errors state what's wrong and what to do.** They are read by agents as often as humans. The
+  full rule is the Errors section below.
 - No em dashes in prose; use `–`. No AI attribution in commits.
 
 ### Function bodies (binding)
@@ -469,6 +470,48 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   than a compact expression that a reader must decode.
 - Before finishing a change, read every changed function body from top to bottom. Simplify any line
   that performs several conceptual operations or requires the reader to mentally expand it.
+
+### Errors (binding)
+
+Every error is read by someone who has to act on it: a DJ at the terminal, or a developer or agent
+reading a stack trace. A generic message (`Invalid input`, `ENOENT`, `Cannot read properties of
+undefined`) costs that reader a debugging session the code could have saved. Predict invalid states
+and report them; do not let them fall through to whatever the platform or a dependency says.
+
+- **Predict invalid states at the boundary.** When a feature takes input (a `setcast.yaml` key, a
+  CLI flag, a file, a plugin config), enumerate the ways it can be wrong and decide what each one
+  reports before writing the happy path. Validate everything the program can know up front before
+  it does expensive work: a bad `--range`, a corrupt audio file or a missing font must fail before
+  the browser downloads and the composition bundles, not after.
+- **Every user-facing error has three parts**: what is wrong, the offending value with where it is
+  (`setcast.yaml` path such as `tracks[2].time`, file, line, flag), and what to do about it. When
+  the valid choices are a short list, list them (`Available importers: cue, plain`). Throw
+  `SetcastError(message, hint)` for these, or `ConfigError` for a list of `setcast.yaml` issues.
+  The CLI prints message and hint; nothing else needs to know about terminals.
+- **Schema messages are written, not defaulted.** Every constraint in a Zod schema that a user can
+  break carries its own `error:` text in the three-part form. A default Zod message reaching the
+  terminal is a bug.
+- **Programming errors name the contract that was broken.** A hook used outside its provider, a
+  registry lookup for an unregistered name, a plugin that returns the wrong shape: throw a plain
+  `Error` (or `RangeError` / `TypeError`) whose message names the function, the received value and
+  the rule it violated, and says how to satisfy it (`useFrame() called outside a <FrameProvider>`).
+  These are for developers and agents, so keep the stack; do not convert them to `SetcastError`.
+- **Translate third-party failures where the cause is known, pass through where it is not.** When
+  a dependency (Remotion, mediabunny, ffmpeg, `parseArgs`, `node:fs`) fails for a reason Setcast can
+  name, throw a `SetcastError` that says it in Setcast's terms and keep the original as `cause`.
+  Never swallow an error to replace it with a guess: catch narrowly (match `code === 'ENOENT'`, an
+  error class, a known message), and rethrow anything else untouched. A `catch` block that discards
+  the error it caught is a bug even when the replacement message reads well.
+- **Warn about predicted states that are not fatal.** A route on `beat` in a project without
+  `bpm:`, an event past the end of the audio, `--all` with a set that has no drops: when the run can
+  still produce something, say what will happen and why, on stderr, and continue. Silence is only
+  right when the state is unremarkable.
+- **Consistent policy for out-of-range times.** A flag or value that points outside the set is an
+  error, not a silent clamp, unless the documentation says the value is clipped (as `--range`'s end
+  is). One rule per concept, and the help text states it.
+- **Errors are part of the feature and get tested where cheap.** A parser, schema or validator
+  test asserts the message and the hint of its error paths, not only that something throws. Render
+  paths are not tested for their errors; their failures are translated at the adapter boundary.
 
 ### Canonical orchestration shape
 
