@@ -1,5 +1,5 @@
 import { parseArgs, type ParseArgsOptionsConfig } from 'node:util';
-import { parseTime, SetcastError } from '@setcast/core';
+import { formatTimecode, parseTime, SetcastError } from '@setcast/core';
 
 const PARSE_ERRORS = new Set([
   'ERR_PARSE_ARGS_UNKNOWN_OPTION',
@@ -65,4 +65,23 @@ export function parseNumber(flag: string, text: string, range: NumberRange): num
   const inRange = value >= range.min && value <= (range.max ?? Infinity);
   if (!whole || !inRange) throw new SetcastError(`Invalid --${flag} "${text}"`, range.hint);
   return value;
+}
+
+/** Rejects a moment outside the audio before renderer preparation starts. */
+export function timeWithinAudio(at: number, duration: number, label: string): number {
+  if (at < duration) return at;
+  throw new SetcastError(
+    `${label} ${formatTimecode(at)} is after the set ends at ${formatTimecode(duration)}`,
+    `Choose a time before ${formatTimecode(duration)}.`,
+  );
+}
+
+/** Rejects an empty range and clips its end to the audio duration. */
+export function rangeWithinAudio(
+  [start, end]: [number, number],
+  duration: number,
+  label: string,
+): [number, number] {
+  timeWithinAudio(start, duration, `${label} starts at`);
+  return [start, Math.min(end, duration)];
 }

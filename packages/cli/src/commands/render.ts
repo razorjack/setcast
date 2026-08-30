@@ -9,8 +9,14 @@ import {
   youtubeDescription,
   type ResolvedProject,
 } from '@setcast/core';
-import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
-import { parseCommandArgs, parseNumber } from '../args.ts';
+import {
+  probeAudio,
+  render,
+  still,
+  type RenderOptions,
+  type StillOptions,
+} from '@setcast/renderer-remotion';
+import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
 import {
@@ -30,7 +36,7 @@ import { firstDrop } from './still.ts';
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N] [--bundle]
 
 Renders the project in <dir> (default: current directory) to an MP4.
-  --range        render only a slice, e.g. --range 1:00-1:30 (handy for tuning)
+  --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
   --concurrency  parallel browser tabs (default: Remotion's choice)
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
@@ -44,11 +50,15 @@ interface RenderCommandOptions {
 }
 
 export async function run(argv: string[]): Promise<void> {
-  const options = parseOptions(argv);
+  let options = parseOptions(argv);
 
   intro('render');
   const { dir, project, config } = await load(options.dir);
   validateOptions(options);
+  const duration = await probeAudio(project, dir);
+  if (options.range) {
+    options = { ...options, range: rangeWithinAudio(options.range, duration, 'Render range') };
+  }
 
   const out = outputPath(options, dir, config.output.file);
   await mkdir(dirname(out), { recursive: true });

@@ -1,8 +1,8 @@
 import { mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { formatTime, type SetEvent } from '@setcast/core';
-import { still, type StillOptions } from '@setcast/renderer-remotion';
-import { parseAt, parseCommandArgs } from '../args.ts';
+import { probeAudio, still, type StillOptions } from '@setcast/renderer-remotion';
+import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
@@ -24,6 +24,12 @@ export async function run(argv: string[]): Promise<void> {
 
   intro('still');
   const { dir, project, config } = await load(options.dir);
+  const duration = await probeAudio(project, dir);
+  const at = timeWithinAudio(
+    options.at ?? firstDrop(project.events) ?? duration / 4,
+    duration,
+    '--at',
+  );
   const out = options.out ? resolve(options.out) : defaultOut(dir, config.output.file);
   await mkdir(dirname(out), { recursive: true });
 
@@ -31,7 +37,7 @@ export async function run(argv: string[]): Promise<void> {
   const grab: StillOptions = {
     projectDir: dir,
     out,
-    at: options.at ?? firstDrop(project.events),
+    at,
     jpegQuality: config.output.jpegQuality,
     onProgress: ui.onProgress,
   };

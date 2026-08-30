@@ -2,8 +2,14 @@ import { mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { formatTime, SetcastError, type SetEvent } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { render } from '@setcast/renderer-remotion';
-import { parseAt, parseCommandArgs, parseNumber } from '../args.ts';
+import { probeAudio, render } from '@setcast/renderer-remotion';
+import {
+  parseAt,
+  parseCommandArgs,
+  parseNumber,
+  rangeWithinAudio,
+  timeWithinAudio,
+} from '../args.ts';
 import { load } from '../project.ts';
 import { bold, dim, formatDuration, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
@@ -16,7 +22,7 @@ export const help = `setcast clip [dir] [--at MM:SS] [--seconds 45] [--all] [--o
 
 Cuts a promo clip around a drop, for socials. The drop lands a third of the way in.
   --at       the drop to cut around; defaults to the first drop
-  --seconds  clip length, ${MIN_SECONDS} to ${MAX_SECONDS} (default ${DEFAULT_SECONDS})
+  --seconds  clip length, ${MIN_SECONDS} to ${MAX_SECONDS}; clips at the set end (default ${DEFAULT_SECONDS})
   --all      one clip per drop
   --out      output file; defaults to output.file stamped with the clip's range`;
 
@@ -33,7 +39,10 @@ export async function run(argv: string[]): Promise<void> {
 
   intro('clip');
   const loaded = await load(options.dir);
-  const centers = clipCenters(loaded.project.events, options);
+  const duration = await probeAudio(loaded.project, loaded.dir);
+  const centers = clipCenters(loaded.project.events, options).map((center) =>
+    timeWithinAudio(center, duration, '--at'),
+  );
   if (centers.length === 0) {
     outro('No drops in the set, so nothing to cut.');
     return;
@@ -41,7 +50,7 @@ export async function run(argv: string[]): Promise<void> {
 
   const files: string[] = [];
   for (const center of centers) {
-    files.push(await renderClip(loaded, center, options));
+    files.push(await renderClip(loaded, center, duration, options));
   }
   outro(`${bold('Done')}  →  ${files.join(', ')}`);
 }
@@ -98,9 +107,10 @@ function clipCenters(events: SetEvent[], options: ClipOptions): number[] {
 async function renderClip(
   loaded: LoadedProject,
   center: number,
+  duration: number,
   options: ClipOptions,
 ): Promise<string> {
-  const range = clipRange(center, options.seconds);
+  const range = rangeWithinAudio(clipRange(center, options.seconds), duration, 'Clip range');
   const out = clipPath(loaded, range, options.out);
   await mkdir(dirname(out), { recursive: true });
 
