@@ -59,15 +59,26 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
 /** Browser, bundle and composition: everything both a render and a still need first. */
 async function prepare(project: ResolvedProject, projectDir: string, report: Report) {
   await probeAudio(project, projectDir);
-  await ensureBrowser({
-    onBrowserDownload: () => {
-      report({ stage: 'browser', progress: 0 });
-      return {
-        version: null,
-        onProgress: ({ percent }) => report({ stage: 'browser', progress: percent }),
-      };
-    },
-  });
+  let downloadingBrowser = false;
+  try {
+    await ensureBrowser({
+      onBrowserDownload: () => {
+        downloadingBrowser = true;
+        report({ stage: 'browser', progress: 0 });
+        return {
+          version: null,
+          onProgress: ({ percent }) => report({ stage: 'browser', progress: percent }),
+        };
+      },
+    });
+  } catch (cause) {
+    if (!downloadingBrowser) throw cause;
+    throw new SetcastError(
+      'Cannot download Chrome Headless Shell',
+      "Check your internet connection. Delete the renderer package's node_modules/.remotion directory to retry the download.",
+      { cause },
+    );
+  }
   report({ stage: 'browser', progress: 1 });
 
   const serveUrl = await bundle({
@@ -86,6 +97,7 @@ async function prepare(project: ResolvedProject, projectDir: string, report: Rep
 }
 
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+  validateVideoFile(options.out);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition } = await prepare(project, options.projectDir, report);
 
@@ -93,29 +105,33 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
   const frameRange = options.range ? resolveFrameRange(options.range, fps, durationInFrames) : null;
   const totalFrames = frameRange ? frameRange[1] - frameRange[0] + 1 : durationInFrames;
 
-  await renderMedia({
-    composition,
-    serveUrl,
-    codec: 'h264',
-    audioCodec: 'aac',
-    crf: options.crf ?? null,
-    jpegQuality: options.jpegQuality ?? 95,
-    outputLocation: options.out,
-    inputProps: project,
-    frameRange,
-    concurrency: options.concurrency ?? null,
-    // Remotion counts rendered and encoded frames on one callback; Setcast shows them as stages.
-    onProgress: ({ renderedFrames, encodedFrames, stitchStage }) => {
-      if (renderedFrames < totalFrames) {
-        const progress = renderedFrames / totalFrames;
-        report({ stage: 'frames', progress, renderedFrames, totalFrames });
-        return;
-      }
-      // Muxing runs after the last frame is encoded, and reports no count of its own.
-      const encoded = stitchStage === 'muxing' ? totalFrames : encodedFrames;
-      report({ stage: 'encode', progress: encoded / totalFrames, renderedFrames, totalFrames });
-    },
-  });
+  try {
+    await renderMedia({
+      composition,
+      serveUrl,
+      codec: 'h264',
+      audioCodec: 'aac',
+      crf: options.crf ?? null,
+      jpegQuality: options.jpegQuality ?? 95,
+      outputLocation: options.out,
+      inputProps: project,
+      frameRange,
+      concurrency: options.concurrency ?? null,
+      // Remotion counts rendered and encoded frames on one callback; Setcast shows them as stages.
+      onProgress: ({ renderedFrames, encodedFrames, stitchStage }) => {
+        if (renderedFrames < totalFrames) {
+          const progress = renderedFrames / totalFrames;
+          report({ stage: 'frames', progress, renderedFrames, totalFrames });
+          return;
+        }
+        // Muxing runs after the last frame is encoded, and reports no count of its own.
+        const encoded = stitchStage === 'muxing' ? totalFrames : encodedFrames;
+        report({ stage: 'encode', progress: encoded / totalFrames, renderedFrames, totalFrames });
+      },
+    });
+  } catch (cause) {
+    throw translateRenderError(cause);
+  }
 
   return { file: options.out, frames: totalFrames, durationSeconds: totalFrames / fps };
 }
@@ -156,16 +172,20 @@ async function stillIn(project: ResolvedProject, options: StillOptions): Promise
   const at = options.at ?? durationInFrames / fps / 4;
   const frame = Math.min(durationInFrames - 1, Math.max(0, Math.round(at * fps)));
 
-  await renderStill({
-    composition,
-    serveUrl,
-    output: options.out,
-    frame,
-    inputProps: project,
-    imageFormat,
-    // Remotion rejects a quality for a lossless format, so png and webp must pass none.
-    jpegQuality: imageFormat === 'jpeg' ? (options.jpegQuality ?? 95) : undefined,
-  });
+  try {
+    await renderStill({
+      composition,
+      serveUrl,
+      output: options.out,
+      frame,
+      inputProps: project,
+      imageFormat,
+      // Remotion rejects a quality for a lossless format, so png and webp must pass none.
+      jpegQuality: imageFormat === 'jpeg' ? (options.jpegQuality ?? 95) : undefined,
+    });
+  } catch (cause) {
+    throw translateRenderError(cause);
+  }
 
   return { file: options.out, timeSeconds: frame / fps };
 }
@@ -177,6 +197,39 @@ function stillFormat(out: string): 'png' | 'jpeg' | 'webp' {
     `Cannot write a still to ${out}`,
     `Use a .png, .jpg or .webp file name for --out. Setcast picks the format from the extension.`,
   );
+}
+
+function validateVideoFile(out: string): void {
+  if (/\.(?:mp4|mov|mkv)$/i.test(out)) return;
+  throw new SetcastError(
+    `Cannot write video to ${out}`,
+    'Use a .mp4, .mov or .mkv file name. Setcast renders H.264 video with AAC audio.',
+  );
+}
+
+function translateRenderError(thrown: unknown): Error {
+  const cause = thrown instanceof Error ? thrown : new Error(String(thrown));
+  const failedImage = cause.message.match(/Failed to load (?:image with src )?(.+)/i)?.[1];
+  if (failedImage) {
+    return new SetcastError(
+      `Cannot read ${failedImage} as an image`,
+      'Check the file opens as an image, or re-export it as PNG, JPEG, SVG or WebP.',
+      { cause },
+    );
+  }
+
+  const delay = cause.message.match(
+    /A delayRender\(\)(?: "([^"]+)")? was called but not cleared after/i,
+  );
+  if (delay) {
+    const waitingFor = delay[1] ? ` ${delay[1]}` : '';
+    return new SetcastError(
+      `Render timed out waiting for${waitingFor || ' an asset'}`,
+      'Check that the named asset exists and can be decoded. If the system is overloaded, retry with a lower --concurrency.',
+      { cause },
+    );
+  }
+  return cause;
 }
 
 export interface PreviewOptions {
@@ -214,9 +267,31 @@ function runStudio(args: string[]): Promise<void> {
     });
     studio.on('exit', (code, signal) => {
       if (code === 0) resolve();
-      else if (signal) reject(new Error(`Remotion Studio terminated by ${signal}`));
-      else reject(new Error(`Remotion Studio exited with code ${code}`));
+      else {
+        const cause = new Error(
+          signal
+            ? `Remotion Studio terminated by ${signal}`
+            : `Remotion Studio exited with code ${code}`,
+        );
+        reject(
+          new SetcastError(
+            signal
+              ? `Remotion Studio stopped after ${signal}`
+              : `Remotion Studio stopped with exit code ${code}`,
+            'Check the Studio output above for the underlying error.',
+            { cause },
+          ),
+        );
+      }
     });
-    studio.on('error', reject);
+    studio.on('error', (cause) =>
+      reject(
+        new SetcastError(
+          'Cannot start Remotion Studio',
+          'Check that the project dependencies are installed, then retry.',
+          { cause },
+        ),
+      ),
+    );
   });
 }

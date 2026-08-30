@@ -26,7 +26,12 @@ const outputShape = {
       error: 'fps must be 24, 25, 30, 50 or 60.',
     })
     .default(30),
-  file: z.string({ error: 'file must be an output path.' }).default('out/set.mp4'),
+  file: z
+    .string({ error: 'file must be an output path ending in .mp4, .mov or .mkv.' })
+    .regex(/\.(?:mp4|mov|mkv)$/i, {
+      error: 'file must end in .mp4, .mov or .mkv.',
+    })
+    .default('out/set.mp4'),
   /** x264 constant rate factor: lower is better and bigger. 1-51. */
   crf: z
     .number({ error: 'crf must be a whole number from 1 to 51.' })

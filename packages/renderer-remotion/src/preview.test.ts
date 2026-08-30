@@ -59,7 +59,7 @@ describe('preview process', () => {
   test('reports non-zero exits', async () => {
     exitWith(2);
     await expect(preview(project, { projectDir: '/project' })).rejects.toThrow(
-      'exited with code 2',
+      'stopped with exit code 2',
     );
     expect(fs.rm).toHaveBeenCalledOnce();
   });
@@ -67,7 +67,7 @@ describe('preview process', () => {
   test('reports terminating signals', async () => {
     exitWith(null, 'SIGTERM');
     await expect(preview(project, { projectDir: '/project' })).rejects.toThrow(
-      'terminated by SIGTERM',
+      'stopped after SIGTERM',
     );
     expect(fs.rm).toHaveBeenCalledOnce();
   });

@@ -197,6 +197,19 @@ modulation:
     );
   });
 
+  test('output files must use a supported video extension', async () => {
+    const err = await load(
+      'audio: assets/mix.wav\ntheme: test\noutput: { file: out/set.avi }\n',
+      'bad-output-file',
+    ).catch((thrown: unknown) => thrown);
+
+    expect(err).toBeInstanceOf(ConfigError);
+    expect((err as ConfigError).issues).toContainEqual({
+      path: 'output.file',
+      message: 'file must end in .mp4, .mov or .mkv.',
+    });
+  });
+
   test('an empty config and a YAML list explain the required shape', async () => {
     const empty = await load('', 'empty-config').catch((thrown: unknown) => thrown);
     expect(empty).toBeInstanceOf(ConfigError);

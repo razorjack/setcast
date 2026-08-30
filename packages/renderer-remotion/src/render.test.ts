@@ -63,6 +63,17 @@ describe('render orchestration failures', () => {
     expect(remotion.bundle).not.toHaveBeenCalled();
   });
 
+  test('translates a browser download failure', async () => {
+    remotion.ensureBrowser.mockImplementation(async ({ onBrowserDownload }) => {
+      onBrowserDownload();
+      throw new Error('network unavailable');
+    });
+    await expect(run()).rejects.toMatchObject({
+      message: 'Cannot download Chrome Headless Shell',
+      cause: expect.objectContaining({ message: 'network unavailable' }),
+    });
+  });
+
   test('stops when bundling fails', async () => {
     remotion.bundle.mockRejectedValue(new Error('bundle failed'));
     await expect(run()).rejects.toThrow('bundle failed');
@@ -78,5 +89,31 @@ describe('render orchestration failures', () => {
   test('propagates encoding failures', async () => {
     remotion.renderMedia.mockRejectedValue(new Error('encode failed'));
     await expect(run()).rejects.toThrow('encode failed');
+  });
+
+  test('translates image failures and delayRender timeouts', async () => {
+    remotion.renderMedia.mockRejectedValueOnce(new Error('Failed to load http://x/bg.png'));
+    await expect(run()).rejects.toMatchObject({
+      message: 'Cannot read http://x/bg.png as an image',
+      cause: expect.any(Error),
+    });
+
+    remotion.renderMedia.mockRejectedValueOnce(
+      new Error(
+        'A delayRender() "asset:http://x/bg.png" was called but not cleared after 28000ms.',
+      ),
+    );
+    await expect(run()).rejects.toMatchObject({
+      message: 'Render timed out waiting for asset:http://x/bg.png',
+      hint: expect.stringContaining('--concurrency'),
+      cause: expect.any(Error),
+    });
+  });
+
+  test('rejects an unsupported video extension before browser preparation', async () => {
+    await expect(render(project, { projectDir: '.', out: 'out.avi' })).rejects.toThrow(
+      'Cannot write video to out.avi',
+    );
+    expect(remotion.ensureBrowser).not.toHaveBeenCalled();
   });
 });
