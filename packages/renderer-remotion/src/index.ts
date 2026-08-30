@@ -76,7 +76,7 @@ async function prepare(project: ResolvedProject, projectDir: string, report: Rep
     throw new SetcastError(
       'Cannot download Chrome Headless Shell',
       "Check your internet connection. Delete the renderer package's node_modules/.remotion directory to retry the download.",
-      { cause },
+      { cause, exitCode: 1 },
     );
   }
   report({ stage: 'browser', progress: 1 });
@@ -226,7 +226,7 @@ function translateRenderError(thrown: unknown): Error {
     return new SetcastError(
       `Render timed out waiting for${waitingFor || ' an asset'}`,
       'Check that the named asset exists and can be decoded. If the system is overloaded, retry with a lower --concurrency.',
-      { cause },
+      { cause, exitCode: 1 },
     );
   }
   return cause;
@@ -279,7 +279,7 @@ function runStudio(args: string[]): Promise<void> {
               ? `Remotion Studio stopped after ${signal}`
               : `Remotion Studio stopped with exit code ${code}`,
             'Check the Studio output above for the underlying error.',
-            { cause },
+            { cause, exitCode: 1 },
           ),
         );
       }
@@ -289,7 +289,7 @@ function runStudio(args: string[]): Promise<void> {
         new SetcastError(
           'Cannot start Remotion Studio',
           'Check that the project dependencies are installed, then retry.',
-          { cause },
+          { cause, exitCode: 1 },
         ),
       ),
     );

@@ -1,12 +1,19 @@
 import type { z } from 'zod';
 
 /** An error with a user-facing message and what to do about it. The CLI prints both. */
+export interface SetcastErrorOptions extends ErrorOptions {
+  /** 2 for usage or project configuration, 1 for a runtime failure. */
+  exitCode?: 1 | 2;
+}
+
 export class SetcastError extends Error {
   readonly hint: string | undefined;
-  constructor(message: string, hint?: string, options?: ErrorOptions) {
+  readonly exitCode: 1 | 2;
+  constructor(message: string, hint?: string, options?: SetcastErrorOptions) {
     super(message, options);
     this.name = 'SetcastError';
     this.hint = hint;
+    this.exitCode = options?.exitCode ?? 2;
   }
 }
 

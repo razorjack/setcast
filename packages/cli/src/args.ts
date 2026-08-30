@@ -17,7 +17,7 @@ export function parseCommandArgs<Options extends ParseArgsOptionsConfig>(
     return parseArgs({ args: argv, allowPositionals: true, options });
   } catch (error) {
     if (!isParseError(error)) throw error;
-    throw new SetcastError(parseErrorMessage(error.message, help), help, { cause: error });
+    throw new SetcastError(parseErrorMessage(error.message, help), help);
   }
 }
 

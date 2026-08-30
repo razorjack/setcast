@@ -46,16 +46,44 @@ export function printError(error: unknown): void {
       p.log.message(`${accent(issue.path || '(root)')}  ${issue.message}`, { symbol: pc.red('│') });
     }
     p.log.message(dim(error.hint ?? ''));
+    printCause(error);
+    printDebugStacks(error);
     return;
   }
   if (error instanceof SetcastError) {
     p.log.error(pc.red(error.message));
     if (error.hint) p.log.message(dim(error.hint));
+    printCause(error);
+    printDebugStacks(error);
     return;
   }
   const unexpected = error as Error | undefined;
   p.log.error(pc.red(unexpected?.message ?? String(error)));
-  if (unexpected?.stack) p.log.message(dim(topOfStack(unexpected.stack)));
+  printCause(error);
+  if (process.env.SETCAST_DEBUG === '1') printDebugStacks(error);
+  else if (unexpected?.stack) p.log.message(dim(topOfStack(unexpected.stack)));
+}
+
+export const errorExitCode = (error: unknown): 1 | 2 =>
+  error instanceof SetcastError ? error.exitCode : 1;
+
+function printCause(error: unknown): void {
+  if (!(error instanceof Error) || error.cause === undefined) return;
+  p.log.message(dim(`caused by: ${causeMessage(error.cause)}`));
+}
+
+function causeMessage(cause: unknown): string {
+  if (cause instanceof Error) return cause.message;
+  if (typeof cause === 'string') return cause;
+  return JSON.stringify(cause) ?? 'Unknown cause';
+}
+
+function printDebugStacks(error: unknown): void {
+  if (process.env.SETCAST_DEBUG !== '1' || !(error instanceof Error)) return;
+  if (error.stack) p.log.message(dim(error.stack));
+  if (error.cause instanceof Error && error.cause.stack) {
+    p.log.message(dim(`cause stack:\n${error.cause.stack}`));
+  }
 }
 
 /** Enough frames to place the failure, without burying the message under the whole stack. */

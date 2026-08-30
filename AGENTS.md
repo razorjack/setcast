@@ -327,6 +327,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Zod 4.4.3 for every schema. `yaml` 2.9.0 for YAML (maintained, spec-complete, no deps).
 - CLI UX: `@clack/prompts` 1.7 + `picocolors` 1.1; argument parsing with `node:util` `parseArgs`.
   Nothing heavier without justification.
+- CLI failures use exit code 2 for command usage and project configuration, and 1 for runtime
+  failures. `SetcastError` defaults to 2; runtime translations set `exitCode: 1`. Set
+  `SETCAST_DEBUG=1` to print complete error and cause stacks.
 - Spectrum is SVG, not canvas: bars are `<rect>`s so themes style them in CSS (`fill`, `filter`),
   output is resolution independent, and it stays renderer neutral. 128 rects per frame is cheap.
 - Theme fonts are vendored OFL `.woff2` files inlined as data URIs into the theme CSS string at

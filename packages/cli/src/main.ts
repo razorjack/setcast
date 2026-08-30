@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module';
-import { accent, bold, dim, printError, steel } from './ui.ts';
+import { accent, bold, dim, errorExitCode, printError, steel } from './ui.ts';
 
 const { version } = createRequire(import.meta.url)('../package.json') as { version: string };
 
@@ -60,7 +60,7 @@ async function main(argv: string[]): Promise<number> {
     return 0;
   } catch (error) {
     printError(error);
-    return 1;
+    return errorExitCode(error);
   }
 }
 
