@@ -91,10 +91,12 @@ export async function readConfig(root: string): Promise<ProjectConfig> {
 async function readConfigFile(file: string, root: string): Promise<string> {
   try {
     return await readFile(file, 'utf8');
-  } catch {
+  } catch (cause) {
+    if (!isEnoent(cause)) throw cause;
     throw new SetcastError(
       `No ${CONFIG_FILE} found in ${root}`,
       'Run `setcast init` here to scaffold a project, or cd into a project directory.',
+      { cause },
     );
   }
 }
@@ -174,6 +176,9 @@ function escapesRoot(root: string, absolute: string): boolean {
   const fromRoot = relative(root, absolute);
   return fromRoot === '..' || fromRoot.startsWith(`..${sep}`) || isAbsolute(fromRoot);
 }
+
+const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
+  error instanceof Error && 'code' in error && error.code === 'ENOENT';
 
 /** Decks alternate in play order, and an explicit deck moves the rotation on from there. */
 function mergeEvents(config: ProjectConfig): SetEvent[] {

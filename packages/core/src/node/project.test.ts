@@ -123,6 +123,13 @@ events:
     });
   });
 
+  test('a config read error other than ENOENT keeps its filesystem diagnosis', async () => {
+    const root = join(dir, 'config-is-directory');
+    await mkdir(join(root, 'setcast.yaml'), { recursive: true });
+
+    await expect(loadProject(root)).rejects.toMatchObject({ code: 'EISDIR' });
+  });
+
   test('broken yaml reports the line', async () => {
     await expect(load('audio: [oops\n', 'bad-yaml')).rejects.toThrow(/not valid YAML/);
   });

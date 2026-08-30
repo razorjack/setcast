@@ -56,13 +56,15 @@ function parseOptions(argv: string[]): ImportOptions {
   return { file, dir, format: values.format, write: values.write ?? false };
 }
 
-async function readTracklist(file: string): Promise<string> {
+export async function readTracklist(file: string): Promise<string> {
   try {
     return await readFile(file, 'utf8');
-  } catch {
+  } catch (cause) {
+    if (!isEnoent(cause)) throw cause;
     throw new SetcastError(
       `Cannot read ${file}`,
       'Pass a path to a text file with one track per line.',
+      { cause },
     );
   }
 }
@@ -112,13 +114,18 @@ async function replaceTracks(dir: string, tracks: TrackEntry[]): Promise<string>
 async function readProjectConfig(path: string, dir: string): Promise<string> {
   try {
     return await readFile(path, 'utf8');
-  } catch {
+  } catch (cause) {
+    if (!isEnoent(cause)) throw cause;
     throw new SetcastError(
       `No ${CONFIG_FILE} found in ${resolve(dir)}`,
       'Run `setcast init` there first, or drop --write to print the tracks instead.',
+      { cause },
     );
   }
 }
+
+const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
+  error instanceof Error && 'code' in error && error.code === 'ENOENT';
 
 function toYaml(track: TrackEntry): Record<string, string> {
   const entry: Record<string, string> = {
