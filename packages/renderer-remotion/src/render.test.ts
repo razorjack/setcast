@@ -8,12 +8,15 @@ const remotion = vi.hoisted(() => ({
   selectComposition: vi.fn(),
 }));
 
+const audio = vi.hoisted(() => ({ probe: vi.fn() }));
+
 vi.mock('@remotion/bundler', () => ({ bundle: remotion.bundle }));
 vi.mock('@remotion/renderer', () => ({
   ensureBrowser: remotion.ensureBrowser,
   renderMedia: remotion.renderMedia,
   selectComposition: remotion.selectComposition,
 }));
+vi.mock('./probe.ts', () => ({ probeAudio: audio.probe }));
 
 const { render } = await import('./index.ts');
 
@@ -38,6 +41,7 @@ const run = () => render(project, { projectDir: '.', out: 'out.mp4' });
 
 describe('render orchestration failures', () => {
   beforeEach(() => {
+    audio.probe.mockReset().mockResolvedValue(10);
     remotion.bundle.mockReset().mockResolvedValue('http://localhost:3000');
     remotion.ensureBrowser.mockReset().mockResolvedValue({
       type: 'local-puppeteer-browser',
@@ -45,6 +49,12 @@ describe('render orchestration failures', () => {
     });
     remotion.selectComposition.mockReset().mockResolvedValue({ fps: 30, durationInFrames: 300 });
     remotion.renderMedia.mockReset().mockResolvedValue(undefined);
+  });
+
+  test('probes audio before preparing the browser', async () => {
+    audio.probe.mockRejectedValue(new Error('bad audio'));
+    await expect(run()).rejects.toThrow('bad audio');
+    expect(remotion.ensureBrowser).not.toHaveBeenCalled();
   });
 
   test('stops when browser preparation fails', async () => {

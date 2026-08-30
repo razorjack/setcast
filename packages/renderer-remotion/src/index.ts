@@ -7,7 +7,10 @@ import { bundle } from '@remotion/bundler';
 import { ensureBrowser, renderMedia, renderStill, selectComposition } from '@remotion/renderer';
 import { SetcastError, type ResolvedProject } from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
+import { probeAudio } from './probe.ts';
 import { resolveFrameRange } from './range.ts';
+
+export { probeAudio } from './probe.ts';
 
 export const ENTRY = fileURLToPath(new URL('../entry/index.tsx', import.meta.url));
 const PACKAGE_ROOT = dirname(dirname(ENTRY));
@@ -55,6 +58,7 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
 
 /** Browser, bundle and composition: everything both a render and a still need first. */
 async function prepare(project: ResolvedProject, projectDir: string, report: Report) {
+  await probeAudio(project, projectDir);
   await ensureBrowser({
     onBrowserDownload: () => {
       report({ stage: 'browser', progress: 0 });
