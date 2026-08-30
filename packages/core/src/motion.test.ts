@@ -40,6 +40,12 @@ describe('spring', () => {
       for (let i = 0; i < 90; i++) expect(spring(i / 30, { damping })).toBeLessThanOrEqual(1);
     }
   });
+
+  test('rejects non-positive stiffness and mass', () => {
+    expect(() => spring(1, { stiffness: 0 })).toThrow(RangeError);
+    expect(() => spring(1, { stiffness: -1 })).toThrow(/stiffness must be greater than 0/);
+    expect(() => spring(0, { mass: 0 })).toThrow(/mass must be greater than 0/);
+  });
 });
 
 test('impulse and rampUp envelopes', () => {

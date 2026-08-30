@@ -16,11 +16,18 @@ export class Registry<T extends { name: string }> {
         `Pick another name. Registered ${this.kind}s: ${this.names().join(', ')}.`,
       );
     }
-    return this.replace(item);
+    this.#items.set(item.name, item);
+    return item;
   }
 
   /** Swaps in a new item under a name that is already registered. */
   replace(item: T): T {
+    if (!this.#items.has(item.name)) {
+      throw new SetcastError(
+        `Cannot replace unknown ${this.kind} "${item.name}"`,
+        `Register it with add(). Registered ${this.kind}s: ${this.names().join(', ') || '(none)'}.`,
+      );
+    }
     this.#items.set(item.name, item);
     return item;
   }

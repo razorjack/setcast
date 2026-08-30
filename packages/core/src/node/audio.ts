@@ -13,14 +13,21 @@ export const ANALYSIS_RATE = 22050;
  * is still read directly, so a freshly scaffolded project works out of the box.
  */
 export async function decodeMono(file: string, rate = ANALYSIS_RATE): Promise<Pcm> {
-  const samples = (await ffmpegPcm(file, rate)) ?? (await readWav(file, rate));
-  if (!samples) {
+  const ffmpegSamples = await ffmpegPcm(file, rate);
+  if (ffmpegSamples) return { samples: ffmpegSamples, sampleRate: rate };
+
+  const wav = await inspectWav(file, rate);
+  if (wav.samples) return { samples: wav.samples, sampleRate: rate };
+  if (wav.unsupportedFormat) {
     throw new SetcastError(
-      `Cannot decode ${basename(file)}`,
-      'Install ffmpeg so Setcast can read this format (brew install ffmpeg). Without ffmpeg only PCM WAV (16/24/32-bit or float) works.',
+      `${basename(file)} is ${wav.unsupportedFormat}`,
+      'Without ffmpeg only 16/24/32-bit PCM or 32-bit float WAV works. Install ffmpeg, or re-export the file.',
     );
   }
-  return { samples, sampleRate: rate };
+  throw new SetcastError(
+    `Cannot decode ${basename(file)}`,
+    'Install ffmpeg so Setcast can read this format (brew install ffmpeg). Without ffmpeg only PCM WAV (16/24/32-bit or float) works.',
+  );
 }
 
 /** Null when ffmpeg is not installed. Anything else it reports is an error worth showing. */
@@ -96,14 +103,26 @@ const CHUNK_FRAMES = 1 << 16;
  * in pieces and resampled on the way, so a two-hour WAV never sits in memory as a whole.
  */
 export async function readWav(file: string, rate: number): Promise<Float32Array | null> {
+  return (await inspectWav(file, rate)).samples;
+}
+
+interface WavInspection {
+  samples: Float32Array | null;
+  unsupportedFormat?: string;
+}
+
+async function inspectWav(file: string, rate: number): Promise<WavInspection> {
   const fileHandle = await open(file);
   try {
     const { size } = await fileHandle.stat();
     const readAt = readerFor(fileHandle, size);
     const wav = await readWavInfo(readAt, size);
-    if (!wav) return null;
+    if (!wav) return { samples: null };
+    if ('unsupportedFormat' in wav) {
+      return { samples: null, unsupportedFormat: wav.unsupportedFormat };
+    }
 
-    return decodeWavData(readAt, wav, rate);
+    return { samples: await decodeWavData(readAt, wav, rate) };
   } finally {
     await fileHandle.close();
   }
@@ -119,6 +138,10 @@ interface WavInfo {
   readSample: SampleReader;
 }
 
+interface UnsupportedWav {
+  unsupportedFormat: string;
+}
+
 function readerFor(fileHandle: FileHandle, size: number): ReadAt {
   return async (offset, length) => {
     const buffer = Buffer.alloc(Math.max(0, Math.min(length, size - offset)));
@@ -127,7 +150,7 @@ function readerFor(fileHandle: FileHandle, size: number): ReadAt {
   };
 }
 
-async function readWavInfo(readAt: ReadAt, size: number): Promise<WavInfo | null> {
+async function readWavInfo(readAt: ReadAt, size: number): Promise<WavInfo | UnsupportedWav | null> {
   const header = await readAt(0, 12);
   if (header.length < 12 || tag(header, 0) !== 'RIFF' || tag(header, 8) !== 'WAVE') return null;
 
@@ -152,10 +175,21 @@ async function readWavInfo(readAt: ReadAt, size: number): Promise<WavInfo | null
     offset += 8 + length + (length % 2);
   }
 
-  const readSample = data && channels && sampleRate ? sampleReader(format, bits) : null;
-  if (!readSample || !data) return null;
+  if (!data || !channels || !sampleRate) return null;
+  const readSample = sampleReader(format, bits);
+  if (!readSample) return { unsupportedFormat: wavFormat(format, bits) };
 
   return { channels, sampleRate, bytesPerSample: bits / 8, data, readSample };
+}
+
+function wavFormat(format: number, bits: number): string {
+  if (format === PCM) return `${bits}-bit PCM`;
+  if (format === FLOAT) return `${bits}-bit float WAV`;
+  if (format === 2) return 'Microsoft ADPCM WAV';
+  if (format === 6) return 'µ-law WAV';
+  if (format === 7) return 'A-law WAV';
+  if (format === 17) return 'IMA ADPCM WAV';
+  return `unsupported WAV format ${format}`;
 }
 
 async function readFormat(readAt: ReadAt, offset: number, length: number) {

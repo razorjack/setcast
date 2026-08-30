@@ -60,6 +60,12 @@ export interface SpringConfig {
  * at rest one unit away from equilibrium. Deterministic and frame-independent by construction.
  */
 export function spring(t: number, { stiffness = 120, damping = 14, mass = 1 }: SpringConfig = {}) {
+  if (!Number.isFinite(stiffness) || stiffness <= 0) {
+    throw new RangeError(`spring: stiffness must be greater than 0, got ${stiffness}.`);
+  }
+  if (!Number.isFinite(mass) || mass <= 0) {
+    throw new RangeError(`spring: mass must be greater than 0, got ${mass}.`);
+  }
   if (t <= 0) return 0;
   const naturalFrequency = Math.sqrt(stiffness / mass);
   const dampingRatio = damping / (2 * Math.sqrt(stiffness * mass));
