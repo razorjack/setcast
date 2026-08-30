@@ -33,6 +33,7 @@ export async function run(argv: string[]): Promise<void> {
   const text = await readTracklist(options.file);
   const importer = selectImporter(text, options);
   const tracks = importer.parse(text);
+  requireTracks(tracks, options.file);
 
   showTracks(tracks, importer.name);
 
@@ -43,6 +44,14 @@ export async function run(argv: string[]): Promise<void> {
 
   const path = await replaceTracks(options.dir, tracks);
   outro(`Wrote ${tracks.length} tracks to ${steel(path)}`);
+}
+
+export function requireTracks(tracks: TrackEntry[], file: string): void {
+  if (tracks.length > 0) return;
+  throw new SetcastError(
+    `No tracks found in ${file}`,
+    'Lines should start with a timecode, e.g. "03:45 Artist - Title".',
+  );
 }
 
 function parseOptions(argv: string[]): ImportOptions {
