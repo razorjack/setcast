@@ -105,8 +105,11 @@ export const ProjectConfigSchema = z
       tracks: z.array(TrackEntrySchema, { error: 'tracks must be a YAML list.' }).default([]),
       events: z.array(EventSchema, { error: 'events must be a YAML list.' }).default([]),
       modulation: z.array(ModRouteSchema, { error: 'modulation must be a YAML list.' }).default([]),
-      /** One block or a list; `resolveVisualizerConfigs` checks each against its own schema. */
-      visualizer: z.unknown().default({}),
+      /**
+       * One block or a list; `resolveVisualizerConfigs` checks each against its own schema.
+       * Absent means the theme's default.
+       */
+      visualizer: z.unknown().optional(),
       panel: PanelSchema.prefault({}),
       /** Tempo of the set; gives CSS `--beat` and `--bar`. `setcast analyze --write` fills it in. */
       bpm: z

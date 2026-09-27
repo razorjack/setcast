@@ -109,6 +109,9 @@ export type OverviewConfig = z.infer<typeof OverviewConfigSchema>;
 /** A `visualizer:` entry after its own schema filled in the defaults. */
 export type VisualizerConfig = { name: string } & Record<string, unknown>;
 
+/** A `visualizer:` entry as written, where every key but `name` may be left to its default. */
+export type VisualizerInput = { name: string } & Record<string, unknown>;
+
 const VisualizerEntrySchema = z
   .object(
     {

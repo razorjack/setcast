@@ -127,5 +127,6 @@ export {
   type SpectrumConfig,
   type VectorscopeConfig,
   type VisualizerConfig,
+  type VisualizerInput,
   type VisualizerSpec,
 } from './visualizers.ts';

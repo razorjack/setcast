@@ -36,11 +36,11 @@ beforeAll(async () => {
   };
 });
 
-const load = async (yaml: string, sub = 'p') => {
+const load = async (yaml: string, sub = 'p', themes: Record<string, Theme> = { test: theme }) => {
   await write(`${sub}/assets/mix.wav`, 'RIFF');
   await write(`${sub}/assets/bg.png`, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
   await write(`${sub}/setcast.yaml`, yaml);
-  return loadProject(join(dir, sub), { themes: { test: theme } });
+  return loadProject(join(dir, sub), { themes });
 };
 
 describe('loadProject', () => {
@@ -186,6 +186,26 @@ tracks:
     ).rejects.toMatchObject({ issues: [{ path: 'visualizer[1].bars' }] });
     await expect(load(yaml('radial'))).rejects.toMatchObject({
       issues: [{ path: 'visualizer', message: expect.stringContaining('{ name: radial }') }],
+    });
+  });
+
+  test("a theme's visualizer is drawn unless the project names its own", async () => {
+    const drawn: Theme = { ...theme, name: 'drawn', visualizer: [{ name: 'radial', bars: 12 }] };
+    const themes = { drawn };
+    const { project } = await load('audio: assets/mix.wav\ntheme: drawn\n', 'theme-viz', themes);
+    expect(project.visualizers).toMatchObject([{ name: 'radial', bars: 12, spin: 2 }]);
+
+    const own = await load('audio: assets/mix.wav\ntheme: drawn\nvisualizer: []\n', 'own', themes);
+    expect(own.project.visualizers).toEqual([]);
+  });
+
+  test("an invalid theme visualizer names the theme, not the project's setcast.yaml", async () => {
+    const broken: Theme = { ...theme, name: 'broken', visualizer: { name: 'radial', bars: 2 } };
+    await expect(
+      load('audio: assets/mix.wav\ntheme: broken\n', 'broken-viz', { broken }),
+    ).rejects.toMatchObject({
+      message: expect.stringMatching(/^Theme "broken" has an invalid default visualizer: .*bars/),
+      hint: expect.stringContaining('same blocks as visualizer:'),
     });
   });
 

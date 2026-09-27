@@ -236,8 +236,8 @@ list; implemented today: visualizer, theme, tracklist importer):
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
   vectorscope ✓, spectrogram ✓, overview ✓); `visualizer:` takes one block
   or a list drawn in order
-- themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
-  path is also a valid theme)
+- themes: CSS variables + fonts + default modulation patch + default visualizers + layout
+  (sterile-tech ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft events, snapped to the beat grid
@@ -482,6 +482,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   stays singular so existing projects keep working; `ResolvedProject.visualizers` is always a list.
   `resolveVisualizerConfigs` checks each entry against its own visualizer's schema, so an error
   names `visualizer[1].bars`, not the list.
+- A theme may name the visualizers it is designed around (`Theme.visualizer`, written like the
+  `visualizer:` key). `loadProject` uses them only when `setcast.yaml` has no `visualizer:` key, so
+  a project's choice always wins and `visualizer: []` still draws nothing. `setcast init` leaves
+  the key out for that reason. An invalid theme default is reported under the theme's name,
+  because the user cannot fix it in `setcast.yaml`.
 - `style: bars | line` is shared by spectrum and radial so the same word means the same drawing.
   Spectrum `segments` cuts the bars with an SVG mask rather than drawing one rect per cell, which
   keeps a frame at 2 rects per bar. The mask's fills are inline styles, because theme rules such

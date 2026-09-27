@@ -9,7 +9,7 @@ import { sortEvents, type SetEvent } from '../events.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
 import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
-import { resolveVisualizerConfigs } from '../visualizers.ts';
+import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.ts';
 import { loadCss } from './css.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
@@ -54,7 +54,7 @@ export async function loadProject(
     fps: config.output.fps,
     events,
     modulation,
-    visualizers: resolveVisualizerConfigs(config.visualizer),
+    visualizers: resolveVisualizers(config.visualizer, theme),
     envelope: null,
     panel: config.panel,
     bpm: config.bpm ?? null,
@@ -240,6 +240,22 @@ function themeRoutes({ name, modulation }: Theme): ModRoute[] {
     `Theme "${name}" has an invalid modulation route: ${issue.path} ${issue.message}`,
     "A theme's default patch uses the same route schema as modulation: in setcast.yaml.",
   );
+}
+
+/** The project's `visualizer:` when it has one, otherwise the theme's default, otherwise a spectrum. */
+function resolveVisualizers(written: unknown, theme: Theme): VisualizerConfig[] {
+  if (written !== undefined) return resolveVisualizerConfigs(written);
+  try {
+    return resolveVisualizerConfigs(theme.visualizer ?? {});
+  } catch (error) {
+    if (!(error instanceof ConfigError)) throw error;
+    const issue = error.issues[0]!;
+    throw new SetcastError(
+      `Theme "${theme.name}" has an invalid default visualizer: ${issue.path} ${issue.message}`,
+      "A theme's default visualizer uses the same blocks as visualizer: in setcast.yaml.",
+      { cause: error },
+    );
+  }
 }
 
 async function requireFile(root: string, path: string, purpose: string): Promise<string> {

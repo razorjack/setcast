@@ -71,7 +71,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
   - { source: beat, target: kick, curve: pow3, when: drop }   # 1 on every beat, needs bpm:
 
-visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list; see Visualizers below
+visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list, or leave it to the theme; see Visualizers
 panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up
 css: overrides.css           # optional, appended after the theme
 ```
@@ -97,7 +97,8 @@ deck assignment, or track timing.
 ## Visualizers
 
 `visualizer:` takes one block or a list of them. A list draws every entry in order, so later
-entries sit on top; `[]` draws none. Every key except `name` is optional.
+entries sit on top; `[]` draws none. Every key except `name` is optional. Without the key, the
+project draws what its theme is designed around (a spectrum for a theme that names nothing).
 
 ```yaml
 visualizer:

@@ -149,6 +149,7 @@ async function writeProjectConfig(
     stringify(configFor(answers, project)),
     '# events: drop, double_drop, breakdown, buildup, rewind, switch (deck: B), chapter (title: …)',
     '# modulation routes: { source: bass|mids|highs|rms|onset, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.1, when: drop }',
+    '# visualizer: { name: spectrum, bars: 48 } or a list; without it the theme draws its own',
     '# import a tracklist:  setcast import tracklist.txt --write',
     '',
   ].join('\n');
@@ -169,7 +170,6 @@ function configFor(answers: InitAnswers, project: ProjectContent): Record<string
   config.tracks = project.tracks;
   config.events = project.events;
   config.modulation = [];
-  config.visualizer = { name: 'spectrum', bars: 48 };
   return config;
 }
 
