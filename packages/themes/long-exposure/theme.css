@@ -1,0 +1,396 @@
+/* long-exposure: a night shot. Light trails in sodium amber, lime-lit lowercase, everything else black. */
+
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../fonts/Unbounded-500-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../fonts/Unbounded-500-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 900;
+  src: url(../fonts/Unbounded-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 900;
+  src: url(../fonts/Unbounded-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-long-exposure {
+  --black: #030303;
+  --core: #fff3c4;
+  --amber: #ffb400;
+  --orange: #ff5a1f;
+  --red: #b3160b;
+  --lime: #7dff3a;
+  --fg: #f4f0e6;
+  --fg-dim: #8c877c;
+  --accent: var(--amber);
+  --accent-2: var(--lime);
+  --deck-a: var(--amber);
+  --deck-b: var(--lime);
+  --deck-c: var(--orange);
+  --deck-d: #c04bff;
+  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --hairline: max(1px, 0.05cqw);
+  --vectorscope-size: 78cqh;
+  --oscilloscope-height: 46cqh;
+
+  /* how bright the trails burn: the drop blows the exposure out, the run-up to it charges it */
+  --burn: calc(var(--mod-trail-glow, 1) * (1 + var(--drop-flash) * 0.8 + var(--tension) * 0.4));
+  /* 1 for the length of a rewind, when the scopes run mirrored */
+  --rewinding: clamp(0, (0.6 - var(--since-rewind, 60)) * 1000, 1);
+  background: var(--black);
+}
+
+/* a breakdown lets the trails cool from sodium to embers */
+.theme-long-exposure[data-section='breakdown'] {
+  --core: #ffb08a;
+  --amber: #ff5a1f;
+  --orange: #c42412;
+  --red: #5e0a05;
+}
+
+/* background: crushed to a night photograph, where only the highlights survive */
+.theme-long-exposure .sc-bg-img {
+  filter: saturate(1.5) contrast(1.7)
+    brightness(calc(0.42 + var(--mod-exposure, 0) + var(--drop-flash) * 0.5));
+}
+.theme-long-exposure .sc-bg-vignette {
+  background:
+    radial-gradient(120% 100% at 60% 45%, transparent 20%, rgb(0 0 0 / 0.9) 90%),
+    linear-gradient(to top, rgb(0 0 0 / 0.7), transparent 40%);
+}
+/* the moment of a drop, and every hard hit after it, flashes the whole frame warm */
+.theme-long-exposure::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: radial-gradient(90% 90% at 35% 70%, var(--core), var(--orange) 45%, transparent 80%);
+  mix-blend-mode: screen;
+  opacity: calc(var(--drop-flash) * 0.28 + var(--mod-flare, 0) * 0.08);
+}
+
+/* the scopes: light painted with a hand-held torch, hottest at the core */
+.theme-long-exposure .sc-vectorscope,
+.theme-long-exposure .sc-oscilloscope {
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 calc(0.18cqw * var(--burn)) var(--amber))
+    drop-shadow(0 0 calc(0.7cqw * var(--burn)) var(--orange))
+    drop-shadow(0 0 calc(1.8cqw * var(--burn)) color-mix(in srgb, var(--red) 80%, transparent));
+}
+.theme-long-exposure .sc-vectorscope-line,
+.theme-long-exposure .sc-oscilloscope-line {
+  stroke: var(--core);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.theme-long-exposure .sc-vectorscope-trail,
+.theme-long-exposure .sc-oscilloscope-trail {
+  stroke: color-mix(in oklab, var(--amber), var(--red) calc(var(--age) * 100%));
+  stroke-linejoin: round;
+  opacity: calc(1 - var(--age) * 0.8);
+}
+.theme-long-exposure .sc-vectorscope-grid,
+.theme-long-exposure .sc-oscilloscope-axis {
+  stroke: none;
+}
+/* the knot of light low on the right, where the streak comes down to meet it */
+.theme-long-exposure .sc-vectorscope {
+  top: 70cqh;
+  right: calc(var(--vectorscope-size) * -0.08);
+  rotate: -24deg;
+  scale: calc(1 - 2 * var(--rewinding)) 1;
+}
+.theme-long-exposure .sc-vectorscope-line {
+  stroke-width: 3.2;
+}
+.theme-long-exposure .sc-vectorscope-trail {
+  stroke-width: 2.4;
+}
+/* the streak across the frame, climbing to the right */
+.theme-long-exposure .sc-oscilloscope {
+  left: -12cqw;
+  width: 124cqw;
+  bottom: 30cqh;
+  rotate: -17deg;
+  scale: calc(1 - 2 * var(--rewinding)) 1;
+}
+.theme-long-exposure .sc-oscilloscope-line {
+  stroke-width: 0.16cqw;
+}
+.theme-long-exposure .sc-oscilloscope-trail {
+  stroke-width: 0.1cqw;
+}
+
+/* the other visualizers burn in the same sodium light */
+.theme-long-exposure .sc-spectrum,
+.theme-long-exposure .sc-radial,
+.theme-long-exposure .sc-meters,
+.theme-long-exposure .sc-spectrogram {
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 calc(0.6cqw * var(--burn)) var(--orange));
+}
+.theme-long-exposure .sc-spectrum rect,
+.theme-long-exposure .sc-radial line {
+  fill: var(--amber);
+  stroke: var(--amber);
+}
+.theme-long-exposure .sc-spectrum-line,
+.theme-long-exposure .sc-radial-line {
+  stroke: var(--core);
+  stroke-width: 0.14cqw;
+}
+.theme-long-exposure .sc-spectrum-area,
+.theme-long-exposure .sc-radial-area {
+  fill: color-mix(in srgb, var(--orange) 30%, transparent);
+}
+.theme-long-exposure .sc-radial circle {
+  stroke: color-mix(in srgb, var(--amber) 40%, transparent);
+}
+.theme-long-exposure .sc-spectrum-peaks rect,
+.theme-long-exposure .sc-meter-peak {
+  fill: var(--core);
+  background: var(--core);
+}
+.theme-long-exposure .sc-spectrogram {
+  color: var(--amber);
+}
+.theme-long-exposure .sc-meter-bar {
+  background: color-mix(in srgb, var(--amber) 10%, transparent);
+}
+.theme-long-exposure .sc-meter-level {
+  background: var(--amber);
+}
+.theme-long-exposure .sc-meter-label {
+  margin-top: 1cqh;
+  font-family: var(--font-display);
+  font-size: 0.8cqw;
+  color: var(--lime);
+}
+.theme-long-exposure .sc-overview-bass,
+.theme-long-exposure .sc-overview-high {
+  fill: color-mix(in srgb, var(--fg-dim) 25%, transparent);
+}
+.theme-long-exposure .sc-overview-played .sc-overview-bass,
+.theme-long-exposure .sc-overview-played .sc-overview-high {
+  fill: var(--amber);
+}
+.theme-long-exposure .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+  stroke: var(--lime);
+  stroke-width: 0.12cqw;
+}
+.theme-long-exposure .sc-overview-head {
+  stroke: var(--core);
+  stroke-width: 0.12cqw;
+}
+
+/* header: lowercase and wide, the set lit in lime, the clock in sodium */
+.theme-long-exposure .sc-header {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.05cqw;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: var(--lime);
+  text-shadow: 0 0 0.5em color-mix(in srgb, var(--lime) 60%, transparent);
+}
+.theme-long-exposure .sc-clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--amber);
+  text-shadow: 0 0 0.5em color-mix(in srgb, var(--amber) 60%, transparent);
+}
+.theme-long-exposure .sc-clock-total {
+  color: var(--fg-dim);
+  text-shadow: none;
+}
+
+/* now playing: no glass, the type floats on a pool of darkness */
+.theme-long-exposure .sc-panel {
+  isolation: isolate;
+  max-width: 64cqw;
+  opacity: clamp(0, var(--show, 1) * 1.4, 1);
+  transform: translateX(calc((1 - var(--show, 1)) * -6cqw));
+}
+.theme-long-exposure .sc-panel::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -7cqw -10cqw -5cqw -8cqw;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.8), transparent);
+}
+.theme-long-exposure .sc-panel-head {
+  gap: 1cqw;
+  margin-bottom: 1cqw;
+  font-family: var(--font-mono);
+  font-size: 0.85cqw;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--fg-dim);
+}
+/* the deck in a thin boxed square, like a label mark */
+.theme-long-exposure .sc-deck {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2cqw;
+  height: 2.2cqw;
+  border: 0.1cqw solid color-mix(in srgb, var(--fg) 45%, transparent);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.1cqw;
+  text-transform: lowercase;
+  color: var(--deck);
+  text-shadow: 0 0 0.4em var(--deck);
+}
+.theme-long-exposure .sc-index {
+  font-variant-numeric: tabular-nums;
+}
+.theme-long-exposure .sc-index-sep {
+  margin: 0 0.3em;
+}
+.theme-long-exposure .sc-artist {
+  padding-left: 0.4cqw;
+  font-weight: 500;
+  font-size: 1.9cqw;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  color: var(--lime);
+  -webkit-text-stroke: 0.1em var(--black);
+  paint-order: stroke fill;
+  transform: skewX(-10deg);
+}
+/* black letters lit from behind: a pale outline and a lime halo */
+.theme-long-exposure .sc-title {
+  font-weight: 900;
+  font-size: 5cqw;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  color: var(--black);
+  -webkit-text-stroke: 0.07em #effce2;
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 0.1em var(--lime),
+    0 0 0.3em color-mix(in srgb, var(--lime) calc(55% + var(--drop-flash) * 45%), transparent);
+  transform: skewX(-10deg);
+  text-wrap: balance;
+}
+.theme-long-exposure .sc-label {
+  margin-top: 1cqw;
+  padding-left: 0.4cqw;
+  font-family: var(--font-mono);
+  font-size: 0.9cqw;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--amber);
+}
+
+/* up next */
+.theme-long-exposure .sc-next {
+  gap: 0.3cqw;
+  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+}
+.theme-long-exposure .sc-next-label {
+  font-family: var(--font-mono);
+  font-size: 0.8cqw;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+}
+.theme-long-exposure .sc-next-artist {
+  font-weight: 500;
+  font-size: 1.2cqw;
+  text-transform: lowercase;
+  color: var(--lime);
+}
+.theme-long-exposure .sc-next-title {
+  font-weight: 900;
+  font-size: 2cqw;
+  text-transform: lowercase;
+  color: var(--black);
+  -webkit-text-stroke: 0.07em #effce2;
+  paint-order: stroke fill;
+  text-shadow: 0 0 0.25em var(--lime);
+}
+
+/* portrait: the streak turns steeper and the knot sits under the panel */
+@container (aspect-ratio < 1) {
+  .theme-long-exposure .sc-vectorscope {
+    --vectorscope-size: 70cqw;
+    top: 42cqh;
+    right: 4cqw;
+  }
+  .theme-long-exposure .sc-oscilloscope {
+    rotate: -35deg;
+    bottom: 48cqh;
+    left: -30cqw;
+    width: 160cqw;
+    height: 30cqh;
+  }
+  .theme-long-exposure .sc-header {
+    font-size: 2cqw;
+  }
+  .theme-long-exposure .sc-panel {
+    max-width: 88cqw;
+  }
+  .theme-long-exposure .sc-panel-head {
+    font-size: 1.7cqw;
+  }
+  .theme-long-exposure .sc-deck {
+    width: 4cqw;
+    height: 4cqw;
+    font-size: 2cqw;
+  }
+  .theme-long-exposure .sc-artist {
+    font-size: 3.6cqw;
+  }
+  .theme-long-exposure .sc-title {
+    font-size: 8.4cqw;
+  }
+  .theme-long-exposure .sc-label {
+    font-size: 1.7cqw;
+  }
+  .theme-long-exposure .sc-next-label {
+    font-size: 1.6cqw;
+  }
+  .theme-long-exposure .sc-next-artist {
+    font-size: 2.4cqw;
+  }
+  .theme-long-exposure .sc-next-title {
+    font-size: 3.6cqw;
+  }
+}

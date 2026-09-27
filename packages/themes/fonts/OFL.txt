@@ -4,9 +4,10 @@ full below.
 - Barlow Condensed: Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)
 - JetBrains Mono: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
 - Silkscreen: Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)
+- Unbounded: Copyright 2022 The Unbounded Project Authors (https://github.com/googlefonts/unbounded)
 
 The files are the Google Fonts latin and latin-ext subsets, with the latin-ext files further
-subset to U+0100-024F.
+subset to U+0100-024F. Unbounded is instanced to the weights in its file names.
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
