@@ -133,6 +133,29 @@ which keeps the vectorscope centered in the ring, or `--spectrum-height`, `--met
 `.sc-spectrogram` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
 The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell.
 
+## Themes
+
+`theme:` takes a built-in name or a path to your own `.css`. Each built-in theme brings its own
+visualizers and modulation, so switching the name is enough to see it as designed; try one without
+editing anything with `setcast still --theme <name>`.
+
+| theme           | look                                                                                    |
+| --------------- | --------------------------------------------------------------------------------------- |
+| `sterile-tech`  | the default: cold steel, frosted glass, one rust accent, a scan line on every drop       |
+| `escapement`    | white paper, a cyan band of the art, pixel capitals, a dial that ticks on the beat       |
+| `long-exposure` | a night shot: the scopes as sodium-amber light trails, lime-lit lowercase                |
+| `bristol`       | a flat grey field, a white contour, the set in stacked green stripes                     |
+| `patina`        | a worn bronze print in a dark frame, small tracked capitals, one vibrating string        |
+| `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |
+| `bunker`        | stencil on concrete, hazard tape on the beat, the room shaking on the drop               |
+| `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
+| `interference`  | a corrupted signal: channels split with the bass, the picture tearing on the drop        |
+| `pirate`        | a photocopied rave flyer: toner, a halftone screen, one fluoro spot color (`--fluoro`)   |
+| `afterhours`    | warm and late: amber and plum, an italic serif, the frame ducking with the kick          |
+
+`vp run theme-stills [dir] --at 1:51` renders the same moment in every theme and tiles them into
+`out/themes/contact-*.jpg`.
+
 ## Customize without JavaScript
 
 Themes are CSS. To adjust a built-in theme, set its variables (`--accent`, `--deck-a`,

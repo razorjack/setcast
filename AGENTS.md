@@ -20,7 +20,7 @@ packages/core               @setcast/core – event timeline, schemas, RenderFra
                             registry, importers, project loading (node entry), built-in components
 packages/renderer-remotion  @setcast/renderer-remotion – the ONLY package that imports Remotion
 packages/cli                @setcast/cli – the `setcast` binary; thin; owns terminal UX
-packages/themes             @setcast/themes – built-in themes (sterile-tech)
+packages/themes             @setcast/themes – built-in themes, their shared fonts/ and textures/
 examples/demo               runnable demo project (setcast.yaml, generated audio, background)
 scripts/                    repo tasks: smoke render, Remotion-ban check, demo asset generation
 ```
@@ -245,7 +245,7 @@ list; implemented today: visualizer, theme, tracklist importer):
   vectorscope ✓, spectrogram ✓, overview ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
-  (sterile-tech ✓; a bare `.css` path is also a valid theme)
+  (11 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft events, snapped to the beat grid
@@ -501,6 +501,14 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   stays singular so existing projects keep working; `ResolvedProject.visualizers` is always a list.
   `resolveVisualizerConfigs` checks each entry against its own visualizer's schema, so an error
   names `visualizer[1].bars`, not the list.
+- Built-in themes are one folder each (`theme.css` plus any SVG it draws with) and one
+  `src/<name>.ts` with the modulation patch and default visualizers. `escapement`,
+  `long-exposure`, `bristol`, `patina` and `quicksilver` nod to classic drum & bass sleeves
+  through composition, palette and type only: no artist, title, label or logo, and OFL
+  lookalike fonts rather than the sleeve fonts. Textures are SVG turbulence with
+  `color-interpolation-filters="sRGB"`; the linearRGB default renders them far lighter than
+  the matrix values suggest. Randomness in a theme (shake, tears, film flicker) comes from
+  `sin()` of `--set-progress` or `--since-*`, never from anything that differs between renders.
 - A theme may name the visualizers it is designed around (`Theme.visualizer`, written like the
   `visualizer:` key). `loadProject` uses them only when `setcast.yaml` has no `visualizer:` key, so
   a project's choice always wins and `visualizer: []` still draws nothing. `setcast init` leaves
