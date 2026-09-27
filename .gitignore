@@ -9,3 +9,6 @@ dist
 # render artifacts
 examples/demo/out
 **/out/*.mp4
+
+# Local demo projects, downloaded audio, and renders
+/demos/

@@ -401,6 +401,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - The README logo uses separate light and dark PNGs under `docs/assets`, selected with a
   `prefers-color-scheme` `<picture>`. Keep both variants the same dimensions so switching themes
   does not change the README layout.
+- Local real-mix demos live in gitignored `/demos/`, including original downloaded audio and
+  rendered videos. The Stakka & Skynet demo keeps source-clock timings in `demo.yaml` and
+  regenerates a clip-relative `setcast.yaml` with `regenerate.mjs`. Blend observations are
+  retained separately because the current now-playing panel displays one track at a time.
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
 - Configuration warnings distinguish explicitly written `panel.fade` from its schema default;
