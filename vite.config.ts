@@ -70,6 +70,10 @@ export default defineConfig({
         command: 'node scripts/make-demo-assets.ts',
         cache: false,
       },
+      'theme-stills': {
+        command: 'node scripts/theme-stills.ts',
+        cache: false,
+      },
     },
   },
 });

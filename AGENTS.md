@@ -50,6 +50,7 @@ vp test                    # vitest, all packages, from the root
 vp run demo-assets         # synthesize examples/demo audio (gitignored, deterministic)
 vp run smoke               # renders 3 s of the demo and validates the MP4 (audio + motion)
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
+vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
 vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
 cd examples/demo && vp run preview                          # Remotion Studio
@@ -57,6 +58,8 @@ cd examples/demo && vp run preview                          # Remotion Studio
 
 `vp <name>` runs a built-in; `vp run <name>` runs a package script or `vite.config.ts` task.
 Inner loop for an agent: `vp check && vp test`. Before declaring render work done: `vp run smoke`.
+For theme work, `vp run theme-stills --at 1:50.4 --theme <name>` renders a moment of examples/demo
+into `examples/demo/out/themes/` in about 4 s per still; read the images before committing.
 `vp run ready` is what CI runs (`.github/workflows/ci.yml`), minus asset generation.
 
 Gotchas:
