@@ -9,6 +9,7 @@ full below.
 - Fira Sans: Copyright (c) 2012-2015, The Mozilla Foundation and Telefonica S.A.
 - JetBrains Mono: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
 - Marcellus: Copyright (c) 2012, Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names "Marcellus"
+- Michroma: Copyright 2011 The Michroma Project Authors (https://github.com/googlefonts/Michroma-font)
 - Oxanium: Copyright 2019 The Oxanium Project Authors (https://github.com/sevmeyer/oxanium)
 - Silkscreen: Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)
 - Unbounded: Copyright 2022 The Unbounded Project Authors (https://github.com/googlefonts/unbounded)

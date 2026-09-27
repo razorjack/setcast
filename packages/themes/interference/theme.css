@@ -1,0 +1,363 @@
+/* interference: a corrupted signal. Channels split with the bass, the picture tears on the drop. */
+
+@font-face {
+  font-family: 'Michroma';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/Michroma-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Michroma';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/Michroma-400-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-interference {
+  --black: #050507;
+  --white: #f2f2f7;
+  --dim: #74748a;
+  --magenta: #ff2bd6;
+  --cyan: #00ffc8;
+  --fg: var(--white);
+  --fg-dim: var(--dim);
+  --accent: var(--magenta);
+  --accent-2: var(--cyan);
+  --deck-a: var(--magenta);
+  --deck-b: var(--cyan);
+  --deck-c: #fff04a;
+  --deck-d: #7a5cff;
+  --font-display: 'Michroma', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --hairline: max(1px, 0.06cqw);
+  --spectrogram-height: 34cqh;
+  --oscilloscope-height: 30cqh;
+  --oscilloscope-bottom: 36cqh;
+
+  /* how far the channels pull apart: a little always, with the bass, and hard on the drop */
+  --split-gain: 1;
+  --split: calc(
+    (0.1cqw + var(--mod-split, 0) * 0.45cqw + var(--drop-flash) * 1.2cqw) * var(--split-gain)
+  );
+  /* the tear: a short burst after each drop, and a flicker on the hardest hits */
+  --tear: max(clamp(0, 1 - var(--since-drop, 60) / 0.45, 1), var(--mod-tear, 0) * 0.35);
+  --noise-a: sin(var(--set-progress, 0) * 71713);
+  --noise-b: sin(var(--set-progress, 0) * 91331);
+  background: var(--black);
+}
+
+/* a breakdown: the signal clears, one channel, no color */
+.theme-interference[data-section='breakdown'] {
+  --split-gain: 0.15;
+  --magenta: #8a8a9c;
+  --cyan: #c9c9d6;
+}
+
+/* background: the art pushed into the two channel colors, under faint scanlines */
+.theme-interference .sc-bg-img {
+  filter: grayscale(1) contrast(1.5) brightness(calc(0.55 + var(--drop-flash) * 0.5));
+  translate: calc(var(--noise-a) * var(--tear) * 2cqw) 0;
+}
+.theme-interference .sc-bg-vignette {
+  background:
+    radial-gradient(110% 100% at 50% 45%, transparent 25%, rgb(5 5 7 / 0.9) 100%),
+    linear-gradient(115deg, var(--magenta), #1a0a30 45%, var(--cyan));
+  mix-blend-mode: multiply;
+}
+.theme-interference .sc-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.35) 0 0.18cqh,
+    transparent 0 0.45cqh
+  );
+  opacity: calc(0.5 + var(--mod-noise, 0) * 0.5);
+}
+
+/* a rewind rolls tracking bars up the frame, like a tape spooling back */
+.theme-interference::after {
+  --roll: clamp(0, var(--since-rewind, 60) / 0.7, 1);
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(
+        to bottom,
+        transparent,
+        rgb(255 255 255 / 0.5) 30%,
+        color-mix(in srgb, var(--magenta) 70%, transparent) 38%,
+        transparent 55%
+      )
+      0 calc((1 - var(--roll)) * 140cqh - 20cqh) / 100% 22cqh no-repeat,
+    linear-gradient(
+        to bottom,
+        transparent,
+        color-mix(in srgb, var(--cyan) 65%, transparent) 50%,
+        transparent
+      )
+      0 calc((1 - var(--roll)) * 180cqh - 40cqh) / 100% 9cqh no-repeat;
+  mix-blend-mode: screen;
+  opacity: calc(1 - var(--roll));
+}
+
+/* every visualizer carries the split: a magenta ghost left, a cyan ghost right */
+.theme-interference
+  :is(.sc-spectrogram, .sc-oscilloscope, .sc-spectrum, .sc-radial, .sc-vectorscope, .sc-meters) {
+  filter: drop-shadow(calc(-1 * var(--split)) 0 0 var(--magenta))
+    drop-shadow(var(--split) 0 0 var(--cyan));
+  translate: calc(var(--noise-b) * var(--tear) * 1.5cqw) 0;
+}
+.theme-interference .sc-radial,
+.theme-interference .sc-vectorscope {
+  translate: calc(var(--noise-b) * var(--tear) * 1.5cqw) -50%;
+  transform: none;
+}
+/* the spectrogram as hard blocks, like a corrupted frame */
+.theme-interference .sc-spectrogram {
+  image-rendering: pixelated;
+  color: var(--white);
+  opacity: 0.55;
+  mask-image: linear-gradient(to top, #000 20%, transparent);
+}
+.theme-interference .sc-oscilloscope-line,
+.theme-interference .sc-vectorscope-line,
+.theme-interference .sc-spectrum-line,
+.theme-interference .sc-radial-line {
+  stroke: var(--white);
+  stroke-width: 0.12cqw;
+}
+.theme-interference .sc-vectorscope-line {
+  stroke-width: 2.5;
+}
+.theme-interference .sc-oscilloscope-trail,
+.theme-interference .sc-vectorscope-trail {
+  stroke: var(--white);
+  opacity: calc((1 - var(--age)) * 0.3);
+}
+.theme-interference .sc-oscilloscope-axis,
+.theme-interference .sc-vectorscope-grid,
+.theme-interference .sc-radial circle {
+  stroke: rgb(242 242 247 / 0.12);
+  stroke-width: var(--hairline);
+}
+.theme-interference .sc-spectrum rect,
+.theme-interference .sc-radial line {
+  fill: var(--white);
+  stroke: var(--white);
+}
+.theme-interference .sc-spectrum-area,
+.theme-interference .sc-radial-area {
+  fill: rgb(242 242 247 / 0.12);
+}
+.theme-interference .sc-meter-bar {
+  background: rgb(242 242 247 / 0.08);
+}
+.theme-interference .sc-meter-level,
+.theme-interference .sc-meter-peak {
+  background: var(--white);
+}
+.theme-interference .sc-meter-label {
+  margin-top: 1cqh;
+  font-family: var(--font-mono);
+  font-size: 0.75cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-interference .sc-overview-bass,
+.theme-interference .sc-overview-high {
+  fill: rgb(242 242 247 / 0.15);
+}
+.theme-interference .sc-overview-played .sc-overview-bass,
+.theme-interference .sc-overview-played .sc-overview-high {
+  fill: var(--white);
+}
+.theme-interference .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+  stroke: var(--magenta);
+  stroke-width: 0.12cqw;
+}
+.theme-interference .sc-overview-head {
+  stroke: var(--cyan);
+  stroke-width: 0.12cqw;
+}
+
+/* header: terminal lines, torn along with the rest on the drop */
+.theme-interference .sc-header {
+  font-family: var(--font-mono);
+  font-size: 0.95cqw;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  translate: calc(var(--noise-a) * var(--tear) * 1cqw) 0;
+}
+.theme-interference .sc-set-title::before {
+  content: '//';
+  margin-right: 0.8em;
+  color: var(--magenta);
+}
+.theme-interference .sc-clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+  text-shadow:
+    calc(-0.25 * var(--split)) 0 var(--magenta),
+    calc(0.25 * var(--split)) 0 var(--cyan);
+}
+
+/* now playing: wide capitals with the channels split, torn into slices on the drop */
+.theme-interference .sc-panel {
+  max-width: 70cqw;
+  opacity: clamp(0, var(--show, 1) * 1.5, 1);
+  translate: calc(var(--noise-a) * var(--tear) * 3cqw + (1 - var(--show, 1)) * -4cqw) 0;
+  clip-path: inset(
+    calc(max(0, var(--noise-b)) * var(--tear) * 55%) -10cqw
+      calc(max(0, -1 * var(--noise-b)) * var(--tear) * 55%) -10cqw
+  );
+}
+.theme-interference .sc-panel-head {
+  gap: 1cqw;
+  margin-bottom: 1.2cqw;
+  font-family: var(--font-mono);
+  font-size: 0.85cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-interference .sc-deck {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2cqw;
+  height: 2cqw;
+  padding: 0 0.4cqw;
+  font-weight: 700;
+  font-size: 1cqw;
+  letter-spacing: 0;
+  color: var(--black);
+  background: var(--deck);
+}
+.theme-interference .sc-index {
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+}
+.theme-interference .sc-index-sep {
+  margin: 0 0.3em;
+}
+.theme-interference .sc-artist {
+  margin-bottom: 0.8cqw;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.5cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.theme-interference .sc-title {
+  font-size: 3.6cqw;
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow:
+    calc(-1 * var(--split)) 0 var(--magenta),
+    var(--split) 0 var(--cyan);
+  text-wrap: balance;
+}
+.theme-interference .sc-label {
+  margin-top: 1cqw;
+  font-family: var(--font-mono);
+  font-size: 0.9cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--magenta);
+}
+
+/* up next */
+.theme-interference .sc-next {
+  bottom: auto;
+  top: calc(var(--margin) + 5cqh);
+  gap: 0.3cqw;
+  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+}
+.theme-interference .sc-next-label {
+  font-family: var(--font-mono);
+  font-size: 0.75cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--magenta);
+}
+.theme-interference .sc-next-artist {
+  font-family: var(--font-mono);
+  font-size: 1cqw;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.theme-interference .sc-next-title {
+  font-size: 1.5cqw;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+@container (aspect-ratio < 1) {
+  .theme-interference .sc-spectrogram {
+    height: 22cqh;
+  }
+  .theme-interference .sc-oscilloscope {
+    height: 18cqh;
+    bottom: 50cqh;
+  }
+  .theme-interference .sc-header {
+    font-size: 1.8cqw;
+  }
+  .theme-interference .sc-panel {
+    max-width: 92cqw;
+  }
+  .theme-interference .sc-panel-head {
+    font-size: 1.7cqw;
+  }
+  .theme-interference .sc-deck {
+    min-width: 3.8cqw;
+    height: 3.8cqw;
+    font-size: 2cqw;
+  }
+  .theme-interference .sc-artist {
+    font-size: 2.8cqw;
+  }
+  .theme-interference .sc-title {
+    font-size: 6.4cqw;
+  }
+  .theme-interference .sc-label {
+    font-size: 1.7cqw;
+  }
+  .theme-interference .sc-next-label {
+    font-size: 1.5cqw;
+  }
+  .theme-interference .sc-next-artist {
+    font-size: 2cqw;
+  }
+  .theme-interference .sc-next-title {
+    font-size: 3cqw;
+  }
+}
