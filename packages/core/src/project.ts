@@ -9,6 +9,8 @@ export type ResolvedProject = {
   title: string;
   /** Seconds added to the displayed clock and its endpoint, without shifting the timeline. */
   clockOffset: number;
+  /** Displayed total duration, or null to use the offset plus audio duration. */
+  clockTotal: number | null;
   audio: string;
   background: string | null;
   theme: string;

@@ -72,6 +72,7 @@ modulation:
     expect(project.modulation.map((route) => route.target)).toEqual(['bg-zoom', 'vignette']);
     expect(project.fps).toBe(30);
     expect(project.clockOffset).toBe(0);
+    expect(project.clockTotal).toBeNull();
     expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
   });
 
@@ -102,6 +103,29 @@ events: [{ type: drop, time: 14 }]
       });
     },
   );
+
+  test.each(['56:06', '3366'])(
+    'resolves clockTotal %s independently of the offset',
+    async (total) => {
+      const { project } = await load(
+        `audio: assets/mix.wav\ntheme: test\nclockOffset: 14:03\nclockTotal: ${total}\n`,
+      );
+      expect(project.clockTotal).toBe(3366);
+      expect(project.clockOffset).toBe(843);
+    },
+  );
+
+  test.each([
+    ['0', 'clockTotal must be greater than 0. Use the full mix duration, e.g. 56:06.'],
+    ['-1', 'Invalid time "-1". Use seconds'],
+    ['soon', 'Invalid time "soon". Use seconds'],
+  ])('rejects invalid clockTotal %s', async (total, message) => {
+    await expect(
+      load(`audio: assets/mix.wav\ntheme: test\nclockTotal: ${total}\n`),
+    ).rejects.toMatchObject({
+      issues: [{ path: 'clockTotal', message: expect.stringContaining(message) }],
+    });
+  });
 
   test('a track background must exist too', async () => {
     await expect(

@@ -86,6 +86,9 @@ For an excerpt from a longer mix, set `clockOffset: 14:03` to show the original 
 A 5:31 excerpt then opens at `14:03 / 19:34`. The default is `0`; seconds and timecodes
 are accepted. This changes only the displayed clock and endpoint. Track and event times,
 `beatOffset`, `--range`, `--at`, and YouTube chapters still use the audio file's own timeline.
+Set `clockTotal: 56:06` to replace the displayed endpoint with the full mix duration, showing
+`14:03 / 56:06`. This accepts a positive duration in seconds or as a timecode and does not
+extend the rendered video.
 
 ## Customize without JavaScript
 

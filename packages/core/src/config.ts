@@ -73,6 +73,10 @@ export const ProjectConfigSchema = z
       title: z.string({ error: 'title must be text.' }).default(''),
       /** Displayed clock offset; audio, events, and render ranges remain clip-relative. */
       clockOffset: TimeSchema.default(0),
+      /** Displayed total duration; does not change the rendered audio duration. */
+      clockTotal: TimeSchema.refine((seconds) => seconds > 0, {
+        error: 'clockTotal must be greater than 0. Use the full mix duration, e.g. 56:06.',
+      }).optional(),
       audio: relativePath(
         'audio',
         'audio is required: the path to your mix file, e.g. assets/mix.wav.',

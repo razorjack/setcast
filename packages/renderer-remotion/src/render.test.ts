@@ -38,6 +38,7 @@ const project: ResolvedProject = {
   bpm: null,
   beatOffset: 0,
   clockOffset: 0,
+  clockTotal: null,
 };
 
 const run = () => render(project, { projectDir: '.', out: 'out.mp4' });
