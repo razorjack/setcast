@@ -85,6 +85,8 @@ async function prepare(project: ResolvedProject, projectDir: string, report: Rep
     entryPoint: ENTRY,
     rootDir: PACKAGE_ROOT,
     publicDir: projectDir,
+    // Local renders can reuse assets in place, including projects with large previous outputs.
+    symlinkPublicDir: true,
     onProgress: (percent) => report({ stage: 'bundle', progress: percent / 100 }),
   });
 
