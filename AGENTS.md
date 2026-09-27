@@ -311,7 +311,9 @@ Visualizers are SVG under one root class each, with `data-style` set to the bloc
 `.sc-spectrum` (bars are `rect`s; `style: line` draws `.sc-spectrum-line` over
 `.sc-spectrum-area`) and `.sc-radial` (the ring is a `circle`, bars are `line`s; `style: line`
 draws `.sc-radial-line` and `.sc-radial-area`, the band between it and the ring). base.css places
-them and sizes them with `--spectrum-height` and `--radial-size`. The scopes read
+them and sizes them with `--spectrum-height` and `--radial-size`. `--radial-size` and
+`--vectorscope-size` are set on the stage root, capped by width for portrait; override them there,
+not on the element, so the vectorscope stays centered in the ring. The scopes read
 `AudioFeatures.wave`: `.sc-oscilloscope` draws `.sc-oscilloscope-line` over a
 `.sc-oscilloscope-axis` (`--oscilloscope-height`, `--oscilloscope-bottom`), and `.sc-vectorscope`
 draws `.sc-vectorscope-line` over `.sc-vectorscope-grid` (a circle and two axes). base.css centers

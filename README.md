@@ -121,9 +121,10 @@ The vectorscope shows stereo width, so a mono mix draws a vertical line; so does
 has the same audio in both channels. The overview reads the whole audio file before rendering,
 which takes a few seconds for a long set.
 
-Placement and appearance are CSS. Set `--spectrum-height`, `--radial-size`, `--meters-top`,
-`--oscilloscope-height`, `--vectorscope-size`, `--spectrogram-height` or `--overview-height`, or
-restyle `.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`,
+Placement and appearance are CSS. Set `--radial-size` and `--vectorscope-size` on `.setcast`,
+which keeps the vectorscope centered in the ring, or `--spectrum-height`, `--meters-top`,
+`--oscilloscope-height`, `--spectrogram-height` and `--overview-height`, or restyle
+`.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`,
 `.sc-spectrogram` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
 The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell.
 

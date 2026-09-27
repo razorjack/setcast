@@ -402,4 +402,14 @@
   .theme-sterile-tech .sc-spectrum {
     height: 12cqh;
   }
+  .theme-sterile-tech .sc-spectrogram {
+    height: 14cqh;
+  }
+  .theme-sterile-tech .sc-meters {
+    height: 12cqh;
+    --meter-width: 2.6cqw;
+  }
+  .theme-sterile-tech .sc-meter-label {
+    font-size: 1.6cqw;
+  }
 }

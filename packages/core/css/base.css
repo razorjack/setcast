@@ -8,6 +8,9 @@
   color: var(--fg, #fff);
   font-family: var(--font-display, system-ui, sans-serif);
   --margin: 3.4cqw;
+  /* the radial ring and the vectorscope nested in it, capped by the width so portrait fits them */
+  --radial-size: min(62cqh, 84cqw);
+  --vectorscope-size: min(34cqh, 46cqw);
 }
 
 .sc-stage *,
@@ -62,8 +65,8 @@
   position: absolute;
   right: var(--margin);
   top: 50%;
-  width: var(--radial-size, 62cqh);
-  height: var(--radial-size, 62cqh);
+  width: var(--radial-size);
+  height: var(--radial-size);
   transform: translateY(-50%);
   fill: none;
 }
@@ -98,9 +101,9 @@
 .sc-vectorscope {
   position: absolute;
   top: 50%;
-  right: calc(var(--margin) + (var(--radial-size, 62cqh) - var(--vectorscope-size, 34cqh)) / 2);
-  width: var(--vectorscope-size, 34cqh);
-  height: var(--vectorscope-size, 34cqh);
+  right: calc(var(--margin) + (var(--radial-size) - var(--vectorscope-size)) / 2);
+  width: var(--vectorscope-size);
+  height: var(--vectorscope-size);
   transform: translateY(-50%);
   overflow: visible;
   fill: none;
