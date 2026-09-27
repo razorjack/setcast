@@ -41,8 +41,9 @@ function renderStill(theme: string, at: string | undefined): string[] {
   const args = [cli, 'still', projectDir, '--theme', theme, '--out', out];
   if (at) args.push('--at', at);
 
-  const still = spawnSync(process.execPath, args, { stdio: ['ignore', 'ignore', 'inherit'] });
+  const still = spawnSync(process.execPath, args, { encoding: 'utf8' });
   if (still.status !== 0) {
+    process.stderr.write(still.stdout + still.stderr);
     failed.push(`${theme}${at ? ` at ${at}` : ''}`);
     return [];
   }
