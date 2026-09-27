@@ -21,3 +21,14 @@ export async function audioDuration(file: string): Promise<number> {
     input.dispose();
   }
 }
+
+/** Channels in the primary audio track of `url`. */
+export async function audioChannels(url: string): Promise<number> {
+  const input = new Input({ formats: ALL_FORMATS, source: new UrlSource(url) });
+  try {
+    const audio = await input.getPrimaryAudioTrack();
+    return audio?.numberOfChannels ?? 1;
+  } finally {
+    input.dispose();
+  }
+}

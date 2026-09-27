@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { SetcastError, type ResolvedProject } from '@setcast/core';
-import { audioDuration } from './duration.ts';
+import { audioDuration } from './media.ts';
 
 /** Validates the project audio in Node before browser preparation and returns its duration. */
 export async function probeAudio(project: ResolvedProject, projectDir: string): Promise<number> {

@@ -176,8 +176,13 @@ visualizer config, asset paths). Hooks: `useFrame`, `useTime`, `useAudioFeatures
 
 ### AudioFeatures (the seam)
 
-`packages/core/src/audio.ts`. `AudioFeatures = { bass, mids, highs, rms, onset, bins[64] }`, all
-0..1; `bins` are log-spaced and tilt-flattened (raw FFT is bass-heavy). `AudioAnalyzer =
+`packages/core/src/audio.ts`. `AudioFeatures = { bass, mids, highs, rms, onset, bins[64], wave }`,
+all 0..1 but `wave`; `bins` are log-spaced and tilt-flattened (raw FFT is bass-heavy). `wave` is
+`{ left, right }`, `WAVE_POINTS` (512) signed samples per channel covering the `WAVE_SECONDS`
+(1/30 s) that end at the frame, each the mean of the audio it covers (`waveSlice`), for scopes.
+The adapter loads the left and right channel with two `useWindowedAudioData` calls (it returns one
+channel per call; mono loads its channel twice) and holds the first frame until mediabunny has
+read the channel count. `AudioAnalyzer =
 { featuresAt(time) }` is what the adapter provides; `featuresFromSpectrum()` turns a linear
 magnitude spectrum into features and is pure (tested). v1 implementation lives inside the Remotion
 adapter (`useWindowedAudioData` + `visualizeAudio`). Successor (roadmap): FFmpeg subprocess →
@@ -370,7 +375,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   breaks Remotion Studio.
 - `background:` renders as a looping video when the path ends in `.mp4/.mov/.webm/.mkv/.m4v`, and
   as an image otherwise. The adapter binds `Video` to Remotion's `OffthreadVideo` wrapped in
-  `<Loop>` (its length read once through mediabunny, `src/duration.ts`), not to `@remotion/media`'s
+  `<Loop>` (its length read once through mediabunny, `src/media.ts`), not to `@remotion/media`'s
   `Video`: OffthreadVideo draws the frame into an `<img>`, so `object-fit`, `filter` and `transform`
   from `.sc-bg-img` apply exactly as they do to a still. `@remotion/media`'s `Video` loops on its
   own but sets `object-fit` inline, which overrides the theme.
@@ -445,7 +450,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 
 ## Not yet decided
 
-- Sidecar format for precomputed AudioFeatures (JSON first; binary layout later).
+- Sidecar format for precomputed AudioFeatures (JSON first; binary layout later). `wave` is
+  1024 floats per frame, far more than the rest; a renderer that has the PCM anyway should slice
+  it at render time instead of storing it.
 - Whether live mode renders via the same `Stage` in a browser source with a `RenderFrame` driven by
   `requestAnimationFrame` (likely yes) and how event-delay offset is configured.
 - Plugin loading for npm plugins (generated bundle entry vs. config-time import map).

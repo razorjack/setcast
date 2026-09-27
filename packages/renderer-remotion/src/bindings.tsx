@@ -8,7 +8,7 @@ import {
   staticFile,
   useVideoConfig,
 } from 'remotion';
-import { mediaDuration } from './duration.ts';
+import { mediaDuration } from './media.ts';
 
 /** A video's length never changes mid-render, so one read per source is enough. */
 const durations = new Map<string, number>();

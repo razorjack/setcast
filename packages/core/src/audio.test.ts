@@ -1,5 +1,13 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { bandEnergy, logBins, rms, sampleBins, soft, spectrumFeatures } from './audio.ts';
+import {
+  bandEnergy,
+  logBins,
+  rms,
+  sampleBins,
+  soft,
+  spectrumFeatures,
+  waveSlice,
+} from './audio.ts';
 
 const sampleRate = 48000;
 const bins = 1024;
@@ -57,4 +65,11 @@ test('sampleBins keeps the ends and interpolates between them', () => {
   expect(sampleBins(curve, 7)).toEqual([0, 0.5, 1, 1.5, 2, 2.5, 3]);
   expect(sampleBins(curve, 2)).toEqual([0, 3]);
   expect(sampleBins(curve, 1)).toEqual([0]);
+});
+
+test('waveSlice averages each share of the samples and reads past the ends as silence', () => {
+  const samples = [1, 1, -1, -1, 0.5, 0.5];
+  expect(waveSlice(samples, 0, 6, 3)).toEqual([1, -1, 0.5]);
+  expect(waveSlice(samples, -2, 2, 2)).toEqual([0, 1]);
+  expect(waveSlice(samples, 4, 8, 2)).toEqual([0.5, 0]);
 });

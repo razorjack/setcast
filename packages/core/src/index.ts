@@ -3,6 +3,8 @@ export {
   BIN_COUNT,
   FEATURE_SOURCES,
   SILENCE,
+  WAVE_POINTS,
+  WAVE_SECONDS,
   bandEnergy,
   level,
   logBins,
@@ -12,11 +14,13 @@ export {
   silentAnalyzer,
   soft,
   spectrumFeatures,
+  waveSlice,
   type AudioAnalyzer,
   type AudioFeatures,
   type FeatureSource,
   type Pcm,
   type Spectrum,
+  type Wave,
 } from './audio.ts';
 export {
   BPM_RANGE,

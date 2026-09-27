@@ -1,7 +1,7 @@
 import type { ResolvedProject } from '@setcast/core';
 import { Composition, staticFile, type CalculateMetadataFunction } from 'remotion';
 import { COMPOSITION_ID, SetcastComposition } from './composition.tsx';
-import { mediaDuration } from './duration.ts';
+import { mediaDuration } from './media.ts';
 
 /** Placeholder until the CLI passes a real project as input props. */
 const placeholder: ResolvedProject = {

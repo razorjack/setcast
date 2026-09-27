@@ -1,6 +1,6 @@
 import { lerp } from './motion.ts';
 
-/** Per-frame audio descriptors, all normalized to 0..1. */
+/** Per-frame audio descriptors, normalized to 0..1 except the signed `wave`. */
 export interface AudioFeatures {
   /** Sub and low bass energy (~20-150 Hz). */
   bass: number;
@@ -14,6 +14,17 @@ export interface AudioFeatures {
   onset: number;
   /** Log-spaced spectrum magnitudes from bass to highs, flattened against the 1/f tilt. */
   bins: readonly number[];
+  /** The waveform of the last `WAVE_SECONDS`, for scopes. */
+  wave: Wave;
+}
+
+/**
+ * `WAVE_POINTS` samples per channel, -1..1, oldest first, each the mean of the audio it covers.
+ * Mono audio has the same samples in both channels.
+ */
+export interface Wave {
+  left: readonly number[];
+  right: readonly number[];
 }
 
 export const FEATURE_SOURCES = ['bass', 'mids', 'highs', 'rms', 'onset'] as const;
@@ -25,6 +36,11 @@ export interface AudioAnalyzer {
 }
 
 export const BIN_COUNT = 64;
+/** Seconds of waveform in `AudioFeatures.wave`: one frame's worth at 30 fps. */
+export const WAVE_SECONDS = 1 / 30;
+export const WAVE_POINTS = 512;
+
+const silentWave = Object.freeze(new Array<number>(WAVE_POINTS).fill(0));
 
 export const SILENCE: AudioFeatures = Object.freeze({
   bass: 0,
@@ -33,6 +49,7 @@ export const SILENCE: AudioFeatures = Object.freeze({
   rms: 0,
   onset: 0,
   bins: Object.freeze(new Array<number>(BIN_COUNT).fill(0)),
+  wave: Object.freeze({ left: silentWave, right: silentWave }),
 });
 
 export const silentAnalyzer: AudioAnalyzer = { featuresAt: () => SILENCE };
@@ -125,6 +142,27 @@ export function rms(samples: ArrayLike<number>, gain = 3): number {
     sum += sample * sample;
   }
   return soft(Math.sqrt(sum / samples.length), gain);
+}
+
+/**
+ * `points` values spanning `samples[start, end)`, each the mean of the samples it covers, so a
+ * scope draws the waveform without hi-hats aliasing into noise. Indices outside `samples` are
+ * silence.
+ */
+export function waveSlice(
+  samples: ArrayLike<number>,
+  start: number,
+  end: number,
+  points = WAVE_POINTS,
+): number[] {
+  const span = (end - start) / points;
+  return Array.from({ length: points }, (_, point) => {
+    const from = Math.round(start + point * span);
+    const to = Math.max(from + 1, Math.round(start + (point + 1) * span));
+    let sum = 0;
+    for (let index = from; index < to; index++) sum += samples[index] ?? 0;
+    return sum / (to - from);
+  });
 }
 
 /** A bin as a bar height: scaled by `gain`, never under `floor` so silence keeps a baseline, capped at 1. */
