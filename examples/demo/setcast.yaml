@@ -55,7 +55,5 @@ modulation:
     window: 2
     curve: pow2
 
-visualizer:
-  name: spectrum
-  bars: 48
-  gain: 1.1
+# No visualizer: key, so the theme draws what it is designed around (a spectrum for sterile-tech).
+# visualizer: { name: spectrum, bars: 48, gain: 1.1 }

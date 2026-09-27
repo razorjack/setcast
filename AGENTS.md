@@ -84,6 +84,11 @@ Gotchas:
 - To debug the scene in Studio headlessly: start `vp run preview --port 3111` in examples/demo, then
   drive `openBrowser('chrome')` from `@remotion/renderer` at `http://localhost:3111/setcast` and log
   `onBrowserLog`. (A script doing exactly that lived in the scratchpad of the bootstrap session.)
+- A theme's `@container (aspect-ratio < 1)` block cannot restyle the stage root, because an
+  element never matches its own container query. The root's `::before`/`::after` and every
+  descendant do match, so portrait overrides go there. A custom property derived from another
+  (`--rise: calc(100cqw * tan(var(--angle)))`) is computed where it is declared, so a theme that
+  changes `--angle` for portrait declares both on those elements (see escapement).
 - `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a
   positional `dir` argument).
 - Audio feature gains (`spectrumFeatures`, `logBins`) are calibrated against the demo synth. Real

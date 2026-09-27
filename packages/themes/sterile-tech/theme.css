@@ -513,10 +513,8 @@
 
 /* portrait (9:16): the stage is a size container, so the layout follows its aspect ratio */
 @container (aspect-ratio < 1) {
-  .theme-sterile-tech {
-    --radius: 1.8cqw;
-  }
   .theme-sterile-tech .sc-panel {
+    --radius: 1.8cqw;
     max-width: 88cqw;
     padding: 3.4cqw 3.8cqw 3.6cqw 3.6cqw;
   }
