@@ -1,0 +1,417 @@
+/* bunker: stencil on concrete, hazard tape on the beat, and the whole room shaking on the drop. */
+
+@font-face {
+  font-family: 'Big Shoulders Stencil';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/BigShouldersStencil-700-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Big Shoulders Stencil';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/BigShouldersStencil-700-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Big Shoulders Stencil';
+  font-style: normal;
+  font-weight: 900;
+  src: url(../fonts/BigShouldersStencil-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Big Shoulders Stencil';
+  font-style: normal;
+  font-weight: 900;
+  src: url(../fonts/BigShouldersStencil-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-bunker {
+  --hazard: #ffcc00;
+  --rust: #c2361b;
+  --bone: #e8e4da;
+  --dim: #8b877c;
+  --steel: #232421;
+  --fg: var(--bone);
+  --fg-dim: var(--dim);
+  --accent: var(--hazard);
+  --accent-2: var(--rust);
+  --deck-a: var(--hazard);
+  --deck-b: var(--bone);
+  --deck-c: var(--rust);
+  --deck-d: #5fbf4a;
+  --font-display: 'Big Shoulders Stencil', Impact, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --hairline: max(1px, 0.06cqw);
+  --spectrum-height: 24cqh;
+  --tape: 1.4cqh;
+
+  /* a hard jolt at the drop, then the bass keeps the room rattling while it lasts */
+  --jolt: calc(var(--drop-flash) * 0.9cqw + var(--mod-shake, 0) * 1cqw);
+  --shake-x: calc(sin(var(--set-progress, 0) * 51413 + var(--since-drop, 60) * 97) * var(--jolt));
+  --shake-y: calc(cos(var(--set-progress, 0) * 37199 + var(--since-drop, 60) * 83) * var(--jolt));
+  /* one stripe along per beat, so the tape runs like a conveyor in time */
+  --conveyor: calc((var(--beat, 0) + round(down, var(--bar, 0) * 4, 1)) * 2.4cqw);
+  background: #11110f;
+}
+
+/* a breakdown switches to the red emergency light */
+.theme-bunker[data-section='breakdown'] {
+  --hazard: #8a6d00;
+  --emergency: 0.45;
+}
+
+/* the wall: concrete, with the art worked into it like stains */
+.theme-bunker .sc-bg {
+  inset: -2cqw;
+  background: url(./concrete.svg) center / cover;
+  translate: var(--shake-x) var(--shake-y);
+}
+.theme-bunker .sc-bg-img {
+  filter: grayscale(0.5) sepia(0.25) contrast(1.4)
+    brightness(calc(0.9 + var(--rewind-flash) * 0.8 + var(--drop-flash) * 0.4));
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+}
+.theme-bunker .sc-bg-vignette {
+  background:
+    radial-gradient(110% 100% at 50% 40%, transparent 30%, rgb(8 8 6 / 0.85) 100%),
+    linear-gradient(to top, rgb(8 8 6 / 0.8), transparent 40%);
+}
+/* a strobe on the drop */
+.theme-bunker .sc-bg-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fffbe8;
+  opacity: calc(var(--drop-flash) * var(--drop-flash) * 0.45);
+}
+/* red light: steady in a breakdown, pulsing on the beat as a drop gets close */
+.theme-bunker .sc-bg-vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 80% at 50% 0%, var(--rust), transparent 75%);
+  mix-blend-mode: color-dodge;
+  opacity: calc(var(--emergency, 0) + var(--tension) * var(--beat-pulse) * 0.6);
+}
+
+/* hazard tape along the bottom edge, running in time */
+.theme-bunker::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0;
+  height: var(--tape);
+  background: repeating-linear-gradient(-45deg, var(--hazard) 0 1.2cqw, #111 0 2.4cqw)
+    var(--conveyor) 0 / 3.394cqw 100%;
+  box-shadow: 0 -0.2cqh 0.6cqh rgb(0 0 0 / 0.6);
+}
+
+/* spectrum: chunky lamp cells in hazard yellow, sitting on the tape */
+.theme-bunker .sc-spectrum {
+  bottom: var(--tape);
+  translate: var(--shake-x) var(--shake-y);
+  filter: drop-shadow(0 0 calc(0.3cqw + var(--drop-flash) * 0.8cqw) rgb(255 204 0 / 0.5));
+}
+.theme-bunker .sc-spectrum rect {
+  fill: var(--hazard);
+}
+.theme-bunker .sc-spectrum-peaks rect {
+  fill: var(--bone);
+}
+.theme-bunker .sc-spectrum-line,
+.theme-bunker .sc-radial-line,
+.theme-bunker .sc-oscilloscope-line,
+.theme-bunker .sc-vectorscope-line {
+  stroke: var(--hazard);
+  stroke-width: 0.14cqw;
+}
+.theme-bunker .sc-vectorscope-line {
+  stroke-width: 3;
+}
+.theme-bunker .sc-oscilloscope-trail,
+.theme-bunker .sc-vectorscope-trail {
+  stroke: var(--rust);
+  opacity: calc(1 - var(--age));
+}
+.theme-bunker .sc-spectrum-area,
+.theme-bunker .sc-radial-area {
+  fill: rgb(255 204 0 / 0.2);
+}
+.theme-bunker .sc-radial line {
+  stroke: var(--hazard);
+  stroke-width: 6;
+}
+.theme-bunker .sc-radial circle,
+.theme-bunker .sc-oscilloscope-axis,
+.theme-bunker .sc-vectorscope-grid {
+  stroke: rgb(232 228 218 / 0.25);
+  stroke-width: var(--hairline);
+}
+.theme-bunker .sc-radial,
+.theme-bunker .sc-oscilloscope,
+.theme-bunker .sc-vectorscope,
+.theme-bunker .sc-meters,
+.theme-bunker .sc-spectrogram {
+  translate: var(--shake-x) var(--shake-y);
+}
+.theme-bunker .sc-radial,
+.theme-bunker .sc-vectorscope {
+  translate: var(--shake-x) calc(var(--shake-y) - 50%);
+  transform: none;
+}
+.theme-bunker .sc-spectrogram {
+  color: var(--hazard);
+}
+.theme-bunker .sc-meter-bar {
+  background: rgb(255 204 0 / 0.12);
+}
+.theme-bunker .sc-meter-level {
+  background: var(--hazard);
+}
+.theme-bunker .sc-meter[data-band='bass'] .sc-meter-level {
+  background: var(--deck);
+}
+.theme-bunker .sc-meter-peak {
+  background: var(--bone);
+}
+.theme-bunker .sc-meter-label {
+  margin-top: 1cqh;
+  font-weight: 700;
+  font-size: 1cqw;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-bunker .sc-overview-bass,
+.theme-bunker .sc-overview-high {
+  fill: rgb(232 228 218 / 0.2);
+}
+.theme-bunker .sc-overview-played .sc-overview-bass,
+.theme-bunker .sc-overview-played .sc-overview-high {
+  fill: var(--hazard);
+}
+.theme-bunker .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+  stroke: var(--rust);
+  stroke-width: 0.16cqw;
+}
+.theme-bunker .sc-overview-head {
+  stroke: var(--bone);
+  stroke-width: 0.14cqw;
+}
+
+/* header: stenciled on the wall */
+.theme-bunker .sc-header {
+  font-weight: 700;
+  font-size: 1.5cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+  opacity: 0.85;
+}
+.theme-bunker .sc-clock {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--hazard);
+}
+.theme-bunker .sc-clock-total {
+  color: var(--dim);
+}
+
+/* now playing: a riveted steel plate with a strip of hazard tape along the top */
+.theme-bunker .sc-panel {
+  padding: 2.4cqw 2.6cqw 2cqw;
+  --rivet: radial-gradient(circle, #77746c 0.2cqw, #161614 0.28cqw, transparent 0.32cqw);
+  background:
+    var(--rivet) left 0.5cqw top 1.4cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) right 0.5cqw top 1.4cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) left 0.5cqw bottom 0.5cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) right 0.5cqw bottom 0.5cqw / 1cqw 1cqw no-repeat,
+    repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.025) 0 1px, transparent 0 3px),
+    linear-gradient(160deg, #3a3b37, var(--steel) 45%, #1b1c19);
+  border-radius: 1.2cqw;
+  corner-shape: bevel;
+  box-shadow:
+    0 1cqw 2.5cqw rgb(0 0 0 / 0.7),
+    inset 0 0 0 0.12cqw rgb(255 255 255 / 0.06);
+  opacity: clamp(0, var(--show, 1) * 1.5, 1);
+  translate: var(--shake-x) calc(var(--shake-y) + (1 - var(--show, 1)) * 4cqh);
+}
+.theme-bunker .sc-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0 1.2cqw auto;
+  height: 0.8cqh;
+  background: repeating-linear-gradient(-45deg, var(--hazard) 0 0.7cqw, #111 0 1.4cqw)
+    var(--conveyor) 0 / 1.98cqw 100%;
+}
+.theme-bunker .sc-panel-head {
+  gap: 1cqw;
+  margin-bottom: 1cqw;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+/* the deck as a warning lamp; in a drop it turns into a rotating beacon */
+.theme-bunker .sc-deck {
+  display: inline-grid;
+  place-items: center;
+  width: 2.3cqw;
+  height: 2.3cqw;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.3cqw;
+  letter-spacing: 0;
+  color: #111;
+  background: var(--deck);
+  box-shadow: 0 0 calc(0.4cqw + var(--mod-lamp, 0) * 1cqw) var(--deck);
+}
+.theme-bunker:is([data-section='drop'], [data-section='double_drop']) .sc-deck {
+  background: conic-gradient(
+    from calc(var(--bar, 0) * 360deg),
+    var(--deck) 0 25%,
+    #3a2c00 0 50%,
+    var(--deck) 0 75%,
+    #3a2c00 0
+  );
+}
+.theme-bunker .sc-index {
+  font-variant-numeric: tabular-nums;
+}
+.theme-bunker .sc-index-sep {
+  margin: 0 0.3em;
+}
+.theme-bunker .sc-artist {
+  font-weight: 700;
+  font-size: 2.3cqw;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hazard);
+}
+.theme-bunker .sc-title {
+  font-weight: 900;
+  font-size: 5.6cqw;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--bone);
+  text-wrap: balance;
+}
+/* the label on a strip of embossing tape */
+.theme-bunker .sc-label {
+  display: inline-block;
+  margin-top: 1.2cqw;
+  padding: 0.35cqw 0.8cqw;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #f4f4f0;
+  text-shadow: 0 -0.05em 0 rgb(0 0 0 / 0.8);
+  background: #0c0c0c;
+  border-radius: 0.2cqw;
+  rotate: -1.2deg;
+}
+
+/* up next: stenciled on the wall, right */
+.theme-bunker .sc-next {
+  bottom: calc(var(--tape) + var(--margin) + 12cqh);
+  gap: 0.2cqw;
+  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+}
+.theme-bunker .sc-next-label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.8cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hazard);
+}
+.theme-bunker .sc-next-artist {
+  font-weight: 700;
+  font-size: 1.4cqw;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-bunker .sc-next-title {
+  font-weight: 900;
+  font-size: 2.4cqw;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* portrait: bigger type, a shorter spectrum */
+@container (aspect-ratio < 1) {
+  .theme-bunker .sc-spectrum {
+    height: 14cqh;
+  }
+  .theme-bunker .sc-header {
+    font-size: 2.8cqw;
+  }
+  .theme-bunker .sc-panel {
+    max-width: 90cqw;
+    padding: 4.4cqw 4.6cqw 3.6cqw;
+  }
+  .theme-bunker .sc-panel-head {
+    font-size: 1.7cqw;
+  }
+  .theme-bunker .sc-deck {
+    width: 4.4cqw;
+    height: 4.4cqw;
+    font-size: 2.4cqw;
+  }
+  .theme-bunker .sc-artist {
+    font-size: 4.4cqw;
+  }
+  .theme-bunker .sc-title {
+    font-size: 10cqw;
+  }
+  .theme-bunker .sc-label {
+    font-size: 1.8cqw;
+  }
+  .theme-bunker .sc-next {
+    bottom: calc(var(--tape) + 16cqh + var(--margin));
+  }
+  .theme-bunker .sc-next-label {
+    font-size: 1.6cqw;
+  }
+  .theme-bunker .sc-next-artist {
+    font-size: 2.6cqw;
+  }
+  .theme-bunker .sc-next-title {
+    font-size: 4.4cqw;
+  }
+}
