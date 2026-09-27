@@ -148,6 +148,16 @@
   stroke-linejoin: round;
 }
 
+/* spectrogram: the recent past in the second accent, fading out toward the older side */
+.theme-sterile-tech .sc-spectrogram {
+  color: var(--accent-2);
+  mix-blend-mode: screen;
+  opacity: 0.8;
+  mask-image:
+    linear-gradient(to right, transparent, #000 35%), linear-gradient(to top, #000 30%, transparent);
+  mask-composite: intersect;
+}
+
 /* oscilloscope and vectorscope: a glowing trace over a hairline grid, like a lab instrument */
 .theme-sterile-tech .sc-oscilloscope,
 .theme-sterile-tech .sc-vectorscope {

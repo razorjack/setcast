@@ -10,6 +10,7 @@ import {
 import { Meters, MetersConfigSchema } from './components/Meters.tsx';
 import { Oscilloscope, OscilloscopeConfigSchema } from './components/Oscilloscope.tsx';
 import { Radial, RadialConfigSchema } from './components/Radial.tsx';
+import { Spectrogram, SpectrogramConfigSchema } from './components/Spectrogram.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
 import { Vectorscope, VectorscopeConfigSchema } from './components/Vectorscope.tsx';
 
@@ -54,3 +55,4 @@ defineVisualizer({
   component: Oscilloscope,
 });
 defineVisualizer({ name: 'vectorscope', schema: VectorscopeConfigSchema, component: Vectorscope });
+defineVisualizer({ name: 'spectrogram', schema: SpectrogramConfigSchema, component: Spectrogram });

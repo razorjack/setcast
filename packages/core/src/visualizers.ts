@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FEATURE_SOURCES } from './audio.ts';
+import { FEATURE_SOURCES, HISTORY_SECONDS } from './audio.ts';
 import { ConfigError, zodIssues, type Issue } from './errors.ts';
 import { Registry } from './registry.ts';
 
@@ -93,6 +93,13 @@ export const VectorscopeConfigSchema = visualizerSchema('vectorscope', {
 });
 export type VectorscopeConfig = z.infer<typeof VectorscopeConfigSchema>;
 
+export const SpectrogramConfigSchema = visualizerSchema('spectrogram', {
+  /** How much of the past scrolls across, newest at the right. */
+  seconds: numberSetting('seconds', 1, HISTORY_SECONDS).default(4),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+});
+export type SpectrogramConfig = z.infer<typeof SpectrogramConfigSchema>;
+
 /** A `visualizer:` entry after its own schema filled in the defaults. */
 export type VisualizerConfig = { name: string } & Record<string, unknown>;
 
@@ -124,6 +131,7 @@ visualizers.add({ name: 'radial', schema: RadialConfigSchema });
 visualizers.add({ name: 'meters', schema: MetersConfigSchema });
 visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
 visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
+visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
 
 /**
  * The `visualizer:` key as written: one block, or a list of blocks drawn in order (`[]` draws none).

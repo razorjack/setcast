@@ -10,6 +10,11 @@ export {
   type OscilloscopeConfig,
 } from './components/Oscilloscope.tsx';
 export { Radial, RadialConfigSchema, type RadialConfig } from './components/Radial.tsx';
+export {
+  Spectrogram,
+  SpectrogramConfigSchema,
+  type SpectrogramConfig,
+} from './components/Spectrogram.tsx';
 export { Spectrum, SpectrumConfigSchema, type SpectrumConfig } from './components/Spectrum.tsx';
 export { UpNext } from './components/UpNext.tsx';
 export {

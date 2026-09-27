@@ -234,7 +234,7 @@ Each plugin kind is a small interface plus a Zod schema for its config. Extensio
 list; implemented today: visualizer, theme, tracklist importer):
 
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
-  vectorscope ✓); `visualizer:` takes one block
+  vectorscope ✓, spectrogram ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
   path is also a valid theme)
@@ -310,7 +310,10 @@ them and sizes them with `--spectrum-height` and `--radial-size`. The scopes rea
 `AudioFeatures.wave`: `.sc-oscilloscope` draws `.sc-oscilloscope-line` over a
 `.sc-oscilloscope-axis` (`--oscilloscope-height`, `--oscilloscope-bottom`), and `.sc-vectorscope`
 draws `.sc-vectorscope-line` over `.sc-vectorscope-grid` (a circle and two axes). base.css centers
-the vectorscope on the radial ring (`--vectorscope-size`), so the two nest.
+the vectorscope on the radial ring (`--vectorscope-size`), so the two nest. `.sc-spectrogram` is a
+`<canvas>` (`--spectrogram-height`): its CSS `color` paints a full-strength cell and each cell's
+alpha is its level, so a theme colors it with `color` and shapes it with opacity, masks, blend
+modes and filters.
 
 `.sc-meters` is HTML, not SVG: one `.sc-meter` per band (`data-band="bass"`) with its level in
 `--level`, 0..1, holding `.sc-meter-bar` > `.sc-meter-level` and a `.sc-meter-label`. The theme
@@ -468,6 +471,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   mono on the vertical axis, hard left leaning up-left. A point outside the circle is pulled onto
   it rather than clipped by the box. Both scopes draw straight segments through all 512 points;
   at that density a spline adds cost and no visible smoothness.
+- The spectrogram is a canvas, the one visualizer that is not SVG or HTML: 120 columns of 64 bins
+  is 7,680 cells a frame, too many DOM nodes. It repaints entirely in a layout effect every frame
+  from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
+  `color` so appearance stays in the theme. Columns are placed by age, not index, so it scrolls
+  smoothly between the 1/30 s grid moments.
 
 ## Not yet decided
 

@@ -112,14 +112,17 @@ visualizer:
 | `meters`   | level meters on the left                      | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16` |
 | `oscilloscope` | the waveform as one trace near the bottom | `gain: 1` |
 | `vectorscope` | left against right in a circle, inside the radial ring | `gain: 1` |
+| `spectrogram` | the last seconds of spectrum scrolling left, bass at the bottom | `seconds: 4` (at most 8), `gain: 1` |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
 baseline in silence, and `spin` is degrees per second. The scopes draw the last 1/30 s of audio.
 The vectorscope shows stereo width: a mono mix, or the demo, which has the same audio in both
 channels, draws a vertical line. Placement and appearance are CSS: set
-`--spectrum-height`, `--radial-size`, `--meters-top`, `--oscilloscope-height` or
-`--vectorscope-size`, or restyle `.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`
-and `.sc-vectorscope` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
+`--spectrum-height`, `--radial-size`, `--meters-top`, `--oscilloscope-height`,
+`--vectorscope-size` or `--spectrogram-height`, or restyle `.sc-spectrum`, `.sc-radial`,
+`.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope` and `.sc-spectrogram` (see
+[AGENTS.md](AGENTS.md#css-contract) for their elements). The spectrogram is a canvas: its CSS
+`color` is the color of a full-strength cell.
 
 ## Customize without JavaScript
 

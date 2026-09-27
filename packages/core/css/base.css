@@ -68,6 +68,16 @@
   fill: none;
 }
 
+.sc-spectrogram {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--spectrogram-height, 26cqh);
+  display: block;
+}
+
 .sc-oscilloscope {
   position: absolute;
   left: 0;
