@@ -9,12 +9,15 @@ import { useFrame } from './frame.tsx';
 import { useFontsReady } from './renderer.tsx';
 import { resolveVisualizer } from './visualizers.ts';
 
-/** The whole scene: theme CSS, background, visualizer, header, now-playing panel, up next. */
+/** The whole scene: theme CSS, background, visualizers, header, now-playing panel, up next. */
 export function Stage() {
   const { composition, events, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
   useFontsReady();
-  const visualizer = useMemo(() => resolveVisualizer(project.visualizer), [project.visualizer]);
+  const visualizers = useMemo(
+    () => project.visualizers.map((config) => resolveVisualizer(config)),
+    [project.visualizers],
+  );
 
   const style: CSSProperties = {
     width,
@@ -28,7 +31,9 @@ export function Stage() {
     <div className={`setcast sc-stage theme-${project.theme}`} {...stageData(events)} style={style}>
       <style>{project.css}</style>
       <Background />
-      <visualizer.Component config={visualizer.config} />
+      {visualizers.map(({ Component, config }, index) => (
+        <Component key={index} config={config} />
+      ))}
       <Header />
       <NowPlaying />
       <UpNext />

@@ -219,7 +219,8 @@ names, `names`). Instances: `importers` (`@setcast/core`), `visualizers` (`@setc
 Each plugin kind is a small interface plus a Zod schema for its config. Extension points (roadmap
 list; implemented today: visualizer, theme, tracklist importer):
 
-- visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓)
+- visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓); `visualizer:` takes one block
+  or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
   path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
@@ -417,6 +418,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   progress, tempo, render ranges, and YouTube chapters stay on the audio file's timeline.
 - `clockTotal:` optionally replaces the displayed clock endpoint with a positive duration in
   seconds or timecode form. It does not change the composition duration or progress.
+- `visualizer:` takes one block or a list of blocks drawn in order, and `[]` draws none. The key
+  stays singular so existing projects keep working; `ResolvedProject.visualizers` is always a list.
+  `resolveVisualizerConfigs` checks each entry against its own visualizer's schema, so an error
+  names `visualizer[1].bars`, not the list.
 - `trackNumberOffset:` adds a nonnegative integer to the displayed track number (default 0).
   A positive offset hides the total, since an excerpt does not establish the full mix's track
   count. Timeline indices, deck assignment, and track timing remain unchanged.

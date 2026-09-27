@@ -71,7 +71,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
   - { source: beat, target: kick, curve: pow3, when: drop }   # 1 on every beat, needs bpm:
 
-visualizer: { name: spectrum, bars: 48, gain: 1 }   # or { name: radial, radius: 0.3, spin: 2 }
+visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list: [{ name: spectrum }, { name: radial }]
 panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up
 css: overrides.css           # optional, appended after the theme
 ```

@@ -1,7 +1,12 @@
 import type { ComponentType } from 'react';
 import type { z } from 'zod';
 import { SetcastError } from '../errors.ts';
-import { resolveVisualizerConfig, visualizers, type VisualizerSpec } from '../visualizers.ts';
+import {
+  resolveVisualizerConfig,
+  visualizers,
+  type VisualizerConfig,
+  type VisualizerSpec,
+} from '../visualizers.ts';
 import { Radial, RadialConfigSchema } from './components/Radial.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
 
@@ -25,7 +30,7 @@ function completesSchemaOnlyEntry(name: string): boolean {
   return !(visualizers.get(name) as Visualizer).component;
 }
 
-export function resolveVisualizer(config: { name: string } & Record<string, unknown>) {
+export function resolveVisualizer(config: VisualizerConfig) {
   const resolved = resolveVisualizerConfig(config);
   const { component } = visualizers.get(resolved.name) as Visualizer;
   if (!component) {

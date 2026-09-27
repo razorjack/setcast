@@ -15,7 +15,7 @@ const placeholder: ResolvedProject = {
   fps: 30,
   events: [],
   modulation: [],
-  visualizer: { name: 'spectrum' },
+  visualizers: [{ name: 'spectrum' }],
   panel: { dwell: 14, fade: 1.2 },
   bpm: null,
   beatOffset: 0,

@@ -101,10 +101,11 @@ export {
 export {
   RadialConfigSchema,
   SpectrumConfigSchema,
-  VisualizerConfigSchema,
   resolveVisualizerConfig,
+  resolveVisualizerConfigs,
   visualizers,
   type RadialConfig,
   type SpectrumConfig,
+  type VisualizerConfig,
   type VisualizerSpec,
 } from './visualizers.ts';

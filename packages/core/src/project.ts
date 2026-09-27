@@ -1,5 +1,6 @@
 import type { SetEvent } from './events.ts';
 import type { ModRoute } from './modulation.ts';
+import type { VisualizerConfig } from './visualizers.ts';
 
 /**
  * Everything a renderer needs, fully resolved and JSON-serializable. Paths are relative to the
@@ -25,8 +26,8 @@ export type ResolvedProject = {
   events: SetEvent[];
   /** Theme defaults followed by the project's own routes. */
   modulation: ModRoute[];
-  /** The `visualizer:` block after its own schema filled in the defaults. */
-  visualizer: { name: string } & Record<string, unknown>;
+  /** The `visualizer:` entries in drawing order, each after its own schema filled in the defaults. */
+  visualizers: VisualizerConfig[];
   /** How long the now-playing panel stays up after a track change, and how long it takes to leave. */
   panel: { dwell: number; fade: number };
   /** Tempo, or null when the project does not state one. */

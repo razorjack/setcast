@@ -9,7 +9,7 @@ import { sortEvents, type SetEvent } from '../events.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
 import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
-import { resolveVisualizerConfig } from '../visualizers.ts';
+import { resolveVisualizerConfigs } from '../visualizers.ts';
 import { loadCss } from './css.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
@@ -54,7 +54,7 @@ export async function loadProject(
     fps: config.output.fps,
     events,
     modulation,
-    visualizer: resolveVisualizerConfig(config.visualizer),
+    visualizers: resolveVisualizerConfigs(config.visualizer),
     panel: config.panel,
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,

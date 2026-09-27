@@ -75,7 +75,7 @@ modulation:
     expect(project.clockOffset).toBe(0);
     expect(project.clockTotal).toBeNull();
     expect(project.trackNumberOffset).toBe(0);
-    expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
+    expect(project.visualizers).toMatchObject([{ name: 'spectrum', bars: 48 }]);
   });
 
   test.each(['14:03', '843'])('resolves clockOffset %s without moving events', async (offset) => {
@@ -170,7 +170,23 @@ tracks:
   test('an unknown visualizer is reported while loading', async () => {
     await expect(
       load('audio: assets/mix.wav\ntheme: test\nvisualizer: { name: plasma }\n', 'bad-viz'),
-    ).rejects.toBeInstanceOf(ConfigError);
+    ).rejects.toMatchObject({
+      issues: [{ path: 'visualizer.name', message: expect.stringContaining('Available: ') }],
+    });
+  });
+
+  test('visualizer takes a list, drawn in order, and errors name the entry', async () => {
+    const yaml = (list: string) => `audio: assets/mix.wav\ntheme: test\nvisualizer: ${list}\n`;
+    const { project } = await load(yaml('[{ name: radial }, { name: spectrum, bars: 12 }]'));
+    expect(project.visualizers).toMatchObject([{ name: 'radial' }, { name: 'spectrum', bars: 12 }]);
+    expect((await load(yaml('[]'))).project.visualizers).toEqual([]);
+
+    await expect(
+      load(yaml('[{ name: radial }, { name: spectrum, bars: 2 }]')),
+    ).rejects.toMatchObject({ issues: [{ path: 'visualizer[1].bars' }] });
+    await expect(load(yaml('radial'))).rejects.toMatchObject({
+      issues: [{ path: 'visualizer', message: expect.stringContaining('{ name: radial }') }],
+    });
   });
 
   test('decks alternate in play order, and an explicit deck moves the rotation on', async () => {

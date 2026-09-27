@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { DeckSchema, EventSchema, TimeSchema, TrackSchema } from './events.ts';
 import { ModRouteSchema } from './modulation.ts';
-import { VisualizerConfigSchema } from './visualizers.ts';
 
 /** A path relative to the project directory; `loadProject` checks that it stays inside it. */
 const relativePath = (what: string, required = `${what} must be a file path.`) =>
@@ -106,7 +105,8 @@ export const ProjectConfigSchema = z
       tracks: z.array(TrackEntrySchema, { error: 'tracks must be a YAML list.' }).default([]),
       events: z.array(EventSchema, { error: 'events must be a YAML list.' }).default([]),
       modulation: z.array(ModRouteSchema, { error: 'modulation must be a YAML list.' }).default([]),
-      visualizer: VisualizerConfigSchema.prefault({}),
+      /** One block or a list; `resolveVisualizerConfigs` checks each against its own schema. */
+      visualizer: z.unknown().default({}),
       panel: PanelSchema.prefault({}),
       /** Tempo of the set; gives CSS `--beat` and `--bar`. `setcast analyze --write` fills it in. */
       bpm: z

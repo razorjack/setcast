@@ -28,7 +28,19 @@ export const RadialConfigSchema = z.strictObject({
 });
 export type RadialConfig = z.infer<typeof RadialConfigSchema>;
 
-export const VisualizerConfigSchema = z.object({ name: z.string().default('spectrum') }).loose();
+/** A `visualizer:` entry after its own schema filled in the defaults. */
+export type VisualizerConfig = { name: string } & Record<string, unknown>;
+
+const VisualizerEntrySchema = z
+  .object(
+    {
+      name: z
+        .string({ error: 'name must be the name of a visualizer, e.g. spectrum.' })
+        .default('spectrum'),
+    },
+    { error: 'Each visualizer must be a mapping such as { name: radial }.' },
+  )
+  .loose();
 
 /**
  * A visualizer as the isomorphic entry knows it: a name and the schema of its `visualizer:` block.
@@ -45,27 +57,38 @@ export const visualizers = new Registry<VisualizerSpec>('visualizer');
 visualizers.add({ name: 'spectrum', schema: SpectrumConfigSchema });
 visualizers.add({ name: 'radial', schema: RadialConfigSchema });
 
-/** Applies the named visualizer's own schema, filling in its defaults. */
-export function resolveVisualizerConfig(config: { name: string } & Record<string, unknown>) {
-  if (!visualizers.has(config.name)) {
+/**
+ * The `visualizer:` key as written: one block, or a list of blocks drawn in order (`[]` draws none).
+ * Each entry is checked against its own visualizer's schema, so an error points at the entry.
+ */
+export function resolveVisualizerConfigs(written: unknown): VisualizerConfig[] {
+  if (!Array.isArray(written)) return [resolveVisualizerConfig(written)];
+  return written.map((entry, index) => resolveVisualizerConfig(entry, `visualizer[${index}]`));
+}
+
+/** Applies the named visualizer's own schema, filling in its defaults. `path` locates the block. */
+export function resolveVisualizerConfig(written: unknown, path = 'visualizer'): VisualizerConfig {
+  const entry = parseEntry(VisualizerEntrySchema, written, path);
+  if (!visualizers.has(entry.name)) {
     throw new ConfigError('setcast.yaml', [
       {
-        path: 'visualizer.name',
-        message: `Unknown visualizer "${config.name}". Available: ${visualizers.names().join(', ')}.`,
+        path: `${path}.name`,
+        message: `Unknown visualizer "${entry.name}". Available: ${visualizers.names().join(', ')}.`,
       },
     ]);
   }
+  return parseEntry(visualizers.get(entry.name).schema, entry, path) as VisualizerConfig;
+}
 
-  const parsed = visualizers.get(config.name).schema.safeParse(config);
-  if (!parsed.success) {
-    throw new ConfigError('setcast.yaml', underVisualizer(zodIssues(parsed.error)));
-  }
-  return parsed.data as { name: string } & Record<string, unknown>;
+function parseEntry<T>(schema: z.ZodType<T>, written: unknown, path: string): T {
+  const parsed = schema.safeParse(written);
+  if (parsed.success) return parsed.data;
+  throw new ConfigError('setcast.yaml', underPath(path, zodIssues(parsed.error)));
 }
 
 /** The schema sees the block alone; the user reads the path against the whole `setcast.yaml`. */
-const underVisualizer = (issues: Issue[]): Issue[] =>
+const underPath = (prefix: string, issues: Issue[]): Issue[] =>
   issues.map(({ path, message }) => ({
-    path: path ? `visualizer.${path}` : 'visualizer',
+    path: path ? `${prefix}.${path}` : prefix,
     message,
   }));
