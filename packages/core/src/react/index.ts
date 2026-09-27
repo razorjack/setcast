@@ -24,6 +24,7 @@ export {
   type VectorscopeConfig,
 } from './components/Vectorscope.tsx';
 export {
+  audioHistory,
   FrameProvider,
   useAudioFeatures,
   useAudioHistory,
