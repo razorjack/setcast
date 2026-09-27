@@ -11,6 +11,41 @@
   /* the radial ring and the vectorscope nested in it, capped by the width so portrait fits them */
   --radial-size: min(62cqh, 84cqw);
   --vectorscope-size: min(34cqh, 46cqw);
+
+  /* a theme that names only its accents still gets a color for every deck */
+  --deck-a: var(--accent, #fff);
+  --deck-b: var(--accent-2, var(--deck-a));
+  --deck-c: var(--deck-a);
+  --deck-d: var(--deck-b);
+  --deck: var(--deck-a);
+
+  /* the event timeline shaped into 0..1 signals; a theme tunes the lengths in seconds */
+  --drop-flash: calc(
+    clamp(0, 1 - var(--since-drop, 60) / var(--drop-flash-seconds, 0.7), 1) *
+      var(--drop-intensity, 1)
+  );
+  --rewind-flash: clamp(0, 1 - var(--since-rewind, 60) / var(--rewind-flash-seconds, 0.6), 1);
+  --tension: clamp(0, 1 - var(--until-drop, 60) / var(--tension-seconds, 10), 1);
+  /* 1 on the beat, 0 just before the next; stays 0 when the project states no bpm */
+  --beat-pulse: calc(1 - var(--beat, 1));
+}
+
+/* the stage root follows the deck in front, the panel its own track */
+.sc-stage[data-deck='A'],
+.sc-stage [data-deck='A'] {
+  --deck: var(--deck-a);
+}
+.sc-stage[data-deck='B'],
+.sc-stage [data-deck='B'] {
+  --deck: var(--deck-b);
+}
+.sc-stage[data-deck='C'],
+.sc-stage [data-deck='C'] {
+  --deck: var(--deck-c);
+}
+.sc-stage[data-deck='D'],
+.sc-stage [data-deck='D'] {
+  --deck: var(--deck-d);
 }
 
 .sc-stage *,

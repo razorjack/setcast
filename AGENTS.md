@@ -282,9 +282,13 @@ The stage root has class `setcast` plus `--mod-*` variables. Stable class names:
 `sc-bg`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
 `sc-header`, `sc-clock`. `packages/core/css/base.css` is structural only (positions, sizes as
 variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
-`--accent-2`, `--deck-a` … `--deck-d` (one signal color per deck, resolved to `--deck` by the
-`data-deck` attribute), `--fg`, `--fg-dim`, `--blur`, `--radius`, `--font-display`,
-`--font-mono`. Users can add `css: ./overrides.css` in `setcast.yaml`; it is appended last.
+`--accent-2`, `--deck-a` … `--deck-d` (one signal color per deck), `--fg`, `--fg-dim`, `--blur`,
+`--radius`, `--font-display`, `--font-mono`. Users can add `css: ./overrides.css` in
+`setcast.yaml`; it is appended last.
+
+base.css resolves `--deck` from the nearest `data-deck` attribute, so the stage root follows the
+deck in front and the panel its own track. A theme only sets `--deck-a` … `--deck-d`; without them
+the decks fall back to `--accent` and `--accent-2`.
 
 The stage root also carries the event timeline, so a theme can react to the set without any JS:
 
@@ -301,7 +305,11 @@ The stage root also carries the event timeline, so a theme can react to the set 
 
 Shape them in CSS: `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a 0.7 s flash. Never use CSS
 transitions or animations for these – the browser's wall clock is not the timeline (see
-Renderer independence 4).
+Renderer independence 4). base.css already shapes the common ones on the stage root, each 0..1:
+`--drop-flash` (length `--drop-flash-seconds`, 0.7, scaled by `--drop-intensity`),
+`--rewind-flash` (`--rewind-flash-seconds`, 0.6), `--tension`, which climbs over the
+`--tension-seconds` (10) before a drop, and `--beat-pulse`, 1 on the beat and 0 without a tempo.
+A theme changes a length by setting the seconds variable on its root.
 
 `.sc-panel` carries `--show`, 0..1: the now-playing panel springs in on a track change, holds for
 `panel.dwell` seconds and leaves over `panel.fade` (`panel:` in `setcast.yaml`; `dwell: 0` keeps it
