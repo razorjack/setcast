@@ -6,13 +6,13 @@ import { longExposure } from './long-exposure.ts';
 import { patina } from './patina.ts';
 import { quicksilver } from './quicksilver.ts';
 import { sterileTech } from './sterile-tech.ts';
+import { vfd } from './vfd.ts';
 
-export { bristol, bunker, escapement, longExposure, patina, quicksilver, sterileTech };
+export { bristol, bunker, escapement, longExposure, patina, quicksilver, sterileTech, vfd };
 
 /** Built-in themes by name, in the order `setcast init` offers them. */
 export const themes: Record<string, Theme> = Object.fromEntries(
-  [sterileTech, escapement, longExposure, bristol, patina, quicksilver, bunker].map((theme) => [
-    theme.name,
-    theme,
-  ]),
+  [sterileTech, escapement, longExposure, bristol, patina, quicksilver, bunker, vfd].map(
+    (theme) => [theme.name, theme],
+  ),
 );

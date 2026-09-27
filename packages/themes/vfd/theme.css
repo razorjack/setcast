@@ -1,0 +1,345 @@
+/* vfd: the blue-green vacuum fluorescent display of a 90s deck. Set --phosphor for amber or green. */
+
+@font-face {
+  font-family: 'Doto';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/Doto-100-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Doto';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/Doto-100-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-vfd {
+  --phosphor: #46ffd2;
+  --ghost: color-mix(in srgb, var(--phosphor) 7%, transparent);
+  --label: #7c8784;
+  --glass: #020605;
+  --fg: var(--phosphor);
+  --fg-dim: color-mix(in srgb, var(--phosphor) 55%, #000);
+  --accent: var(--phosphor);
+  --accent-2: var(--phosphor);
+  --deck-a: var(--phosphor);
+  --deck-b: var(--phosphor);
+  --deck-c: var(--phosphor);
+  --deck-d: var(--phosphor);
+  --font-display: 'Doto', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --hairline: max(1px, 0.06cqw);
+  --spectrum-height: 30cqh;
+  /* the ghost cells behind the spectrum follow its bars and gap; match them to visualizer: */
+  --vfd-bars: 32;
+  --vfd-gap: 0.35;
+  --vfd-segments: 16;
+  /* lit segments burn brighter on a drop and dim right down in a breakdown, like a dimmer knob */
+  --dimmer: 1;
+  --glow: calc(var(--mod-glow, 0.8) * (1 + var(--drop-flash) * 1.4));
+  --lit: color-mix(in srgb, var(--phosphor) calc(var(--dimmer) * 100%), #0a1a16);
+  background: #010303;
+}
+.theme-vfd[data-section='breakdown'] {
+  --dimmer: calc(1 - 0.5 * clamp(0, var(--section-time, 60) / 1.2, 1));
+}
+/* a rewind glitches the display for a moment */
+.theme-vfd > * {
+  opacity: calc(1 - var(--rewind-flash) * (0.5 + 0.5 * sin(var(--set-progress, 0) * 70001)));
+}
+
+/* background: the art seen dimly through the display's teal filter window */
+.theme-vfd .sc-bg-img {
+  filter: grayscale(1) contrast(1.2) brightness(0.3);
+}
+.theme-vfd .sc-bg-vignette {
+  background:
+    radial-gradient(110% 100% at 50% 45%, transparent 30%, rgb(0 0 0 / 0.85) 100%),
+    color-mix(in srgb, var(--phosphor) 22%, #031412);
+  mix-blend-mode: multiply;
+}
+/* a dot pitch across the glass: every unlit pixel still faintly there */
+.theme-vfd .sc-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, var(--ghost) 0.07cqw, transparent 0.1cqw) 0 0 / 0.4cqw 0.4cqw;
+  opacity: 0.5;
+}
+
+/* lit type: phosphor with its bloom */
+.theme-vfd :is(.sc-header, .sc-artist, .sc-title, .sc-next-artist, .sc-next-title, .sc-index) {
+  font-family: var(--font-display);
+  font-variation-settings: 'ROND' 100;
+  color: var(--lit);
+  text-shadow:
+    0 0 calc(0.12em * var(--glow)) color-mix(in srgb, var(--phosphor) 80%, transparent),
+    0 0 calc(0.5em * var(--glow)) color-mix(in srgb, var(--phosphor) 35%, transparent);
+}
+/* printed labels on the glass */
+.theme-vfd :is(.sc-eyebrow, .sc-next-label, .sc-meter-label, .sc-label) {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+/* header: the set in dot matrix, the clock as a deck's time display, a sync lamp on the beat */
+.theme-vfd .sc-header {
+  font-weight: 700;
+  font-size: 1.4cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.theme-vfd .sc-set-title::before {
+  content: '';
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.8em;
+  border-radius: 50%;
+  background: color-mix(
+    in srgb,
+    var(--phosphor) calc(12% + 88% * var(--beat-pulse) * var(--dimmer)),
+    transparent
+  );
+  box-shadow: 0 0 calc(0.6em * var(--beat-pulse)) var(--phosphor);
+}
+.theme-vfd .sc-clock {
+  font-weight: 800;
+  font-size: 1.7em;
+  font-variant-numeric: tabular-nums;
+}
+.theme-vfd .sc-clock-total {
+  font-size: 0.55em;
+  opacity: 0.55;
+}
+
+/* spectrum: lamp cells over their unlit ghosts, a peak cell hanging above each bar */
+.theme-vfd .sc-spectrum {
+  bottom: 4cqh;
+  --slot: calc(100% / (2 * var(--vfd-bars)));
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0 calc(var(--slot) * var(--vfd-gap) / 2),
+    var(--ghost) 0 calc(var(--slot) * (1 - var(--vfd-gap) / 2)),
+    transparent 0 var(--slot)
+  );
+  mask-image: repeating-linear-gradient(
+    to top,
+    #000 0 calc(70% / var(--vfd-segments)),
+    transparent 0 calc(100% / var(--vfd-segments))
+  );
+  filter: drop-shadow(0 0 calc(0.25cqw * var(--glow)) var(--phosphor));
+}
+.theme-vfd .sc-spectrum rect {
+  fill: var(--lit);
+}
+.theme-vfd .sc-spectrum-line,
+.theme-vfd .sc-radial-line,
+.theme-vfd .sc-oscilloscope-line,
+.theme-vfd .sc-vectorscope-line {
+  stroke: var(--lit);
+  stroke-width: 0.12cqw;
+  filter: drop-shadow(0 0 calc(0.3cqw * var(--glow)) var(--phosphor));
+}
+.theme-vfd .sc-vectorscope-line {
+  stroke-width: 2.5;
+}
+.theme-vfd .sc-oscilloscope-trail,
+.theme-vfd .sc-vectorscope-trail {
+  stroke: var(--phosphor);
+  opacity: calc((1 - var(--age)) * 0.4);
+}
+.theme-vfd .sc-spectrum-area,
+.theme-vfd .sc-radial-area {
+  fill: var(--ghost);
+}
+.theme-vfd .sc-radial line {
+  stroke: var(--lit);
+  stroke-width: 5;
+}
+.theme-vfd .sc-radial circle,
+.theme-vfd .sc-oscilloscope-axis,
+.theme-vfd .sc-vectorscope-grid {
+  stroke: var(--ghost);
+  stroke-width: var(--hairline);
+}
+.theme-vfd .sc-radial {
+  filter: drop-shadow(0 0 calc(0.3cqw * var(--glow)) var(--phosphor));
+}
+.theme-vfd .sc-spectrogram {
+  color: var(--phosphor);
+}
+.theme-vfd .sc-meters {
+  filter: drop-shadow(0 0 calc(0.25cqw * var(--glow)) var(--phosphor));
+}
+.theme-vfd .sc-meter-bar {
+  background: var(--ghost);
+}
+.theme-vfd .sc-meter-level,
+.theme-vfd .sc-meter-peak {
+  background: var(--lit);
+}
+.theme-vfd .sc-meter-label {
+  margin-top: 1cqh;
+  font-size: 0.7cqw;
+}
+.theme-vfd .sc-overview-bass,
+.theme-vfd .sc-overview-high {
+  fill: var(--ghost);
+}
+.theme-vfd .sc-overview-played .sc-overview-bass,
+.theme-vfd .sc-overview-played .sc-overview-high {
+  fill: var(--lit);
+}
+.theme-vfd .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']),
+.theme-vfd .sc-overview-head {
+  stroke: var(--lit);
+  stroke-width: 0.12cqw;
+}
+
+/* now playing: a display window with a bezel, its unlit dots showing */
+.theme-vfd .sc-panel {
+  bottom: calc(4cqh + var(--spectrum-height) + 3cqh);
+  padding: 1.4cqw 2cqw 1.5cqw;
+  background:
+    radial-gradient(circle, var(--ghost) 0.07cqw, transparent 0.1cqw) 0 0 / 0.4cqw 0.4cqw,
+    var(--glass);
+  border: 0.25cqw solid #151a19;
+  border-radius: 0.5cqw;
+  box-shadow:
+    inset 0 0 2cqw rgb(0 0 0 / 0.9),
+    0 0.6cqw 1.6cqw rgb(0 0 0 / 0.6);
+  opacity: clamp(0, var(--show, 1) * 1.5, 1);
+}
+.theme-vfd .sc-panel-head {
+  gap: 1cqw;
+  margin-bottom: 0.9cqw;
+  font-size: 0.75cqw;
+}
+.theme-vfd .sc-deck {
+  display: inline-grid;
+  place-items: center;
+  width: 1.9cqw;
+  height: 1.9cqw;
+  border: 0.12cqw solid var(--lit);
+  border-radius: 0.2cqw;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1cqw;
+  color: var(--lit);
+  box-shadow: 0 0 calc(0.4cqw * var(--glow)) color-mix(in srgb, var(--phosphor) 50%, transparent);
+}
+.theme-vfd .sc-index {
+  font-weight: 700;
+  font-size: 1.3cqw;
+  letter-spacing: 0.1em;
+  margin-left: auto;
+}
+.theme-vfd .sc-index-sep {
+  margin: 0 0.3em;
+  opacity: 0.5;
+}
+.theme-vfd .sc-artist {
+  font-weight: 600;
+  font-size: 1.9cqw;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.theme-vfd .sc-title {
+  font-weight: 900;
+  font-size: 4.2cqw;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.theme-vfd .sc-label {
+  margin-top: 0.9cqw;
+  font-size: 0.8cqw;
+}
+
+/* up next, top right under the clock */
+.theme-vfd .sc-next {
+  bottom: auto;
+  top: calc(var(--margin) + 5cqh);
+  gap: 0.3cqw;
+  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+}
+.theme-vfd .sc-next-label {
+  font-size: 0.7cqw;
+}
+.theme-vfd .sc-next-artist {
+  font-weight: 600;
+  font-size: 1.2cqw;
+  text-transform: uppercase;
+}
+.theme-vfd .sc-next-title {
+  font-weight: 800;
+  font-size: 1.9cqw;
+  text-transform: uppercase;
+}
+
+@container (aspect-ratio < 1) {
+  .theme-vfd .sc-spectrum {
+    height: 18cqh;
+  }
+  .theme-vfd .sc-panel {
+    bottom: calc(4cqh + 18cqh + 3cqh);
+    max-width: 92cqw;
+  }
+  .theme-vfd .sc-header {
+    font-size: 2.4cqw;
+  }
+  .theme-vfd .sc-panel-head {
+    font-size: 1.5cqw;
+  }
+  .theme-vfd .sc-deck {
+    width: 3.6cqw;
+    height: 3.6cqw;
+    font-size: 2cqw;
+  }
+  .theme-vfd .sc-index {
+    font-size: 2.4cqw;
+  }
+  .theme-vfd .sc-artist {
+    font-size: 3.6cqw;
+  }
+  .theme-vfd .sc-title {
+    font-size: 7.4cqw;
+  }
+  .theme-vfd .sc-label {
+    font-size: 1.6cqw;
+  }
+  .theme-vfd .sc-next-label {
+    font-size: 1.4cqw;
+  }
+  .theme-vfd .sc-next-artist {
+    font-size: 2.4cqw;
+  }
+  .theme-vfd .sc-next-title {
+    font-size: 3.6cqw;
+  }
+}
