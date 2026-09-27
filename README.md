@@ -71,7 +71,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: since:drop, target: flash, range: [0, 1], window: 0.8, curve: pow2 }
   - { source: beat, target: kick, curve: pow3, when: drop }   # 1 on every beat, needs bpm:
 
-visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list: [{ name: spectrum }, { name: radial }]
+visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list; see Visualizers below
 panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up
 css: overrides.css           # optional, appended after the theme
 ```
@@ -105,27 +105,27 @@ visualizer:
   - { name: radial, bars: 48, spin: 0 }
 ```
 
-| name       | draws                                         | keys and defaults                                                                                           |
-| ---------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `spectrum` | mirrored bars along the bottom, bass centered | `style: bars` (or `line`), `bars: 48`, `gain: 1`, `floor: 0.02`, `gap: 0.5`, `segments: 0` (cells per bar) |
-| `radial`   | bars around a ring, bass at the bottom        | `style: bars` (or `line`), `bars: 40`, `radius: 0.3`, `length: 0.18`, `gain: 1`, `floor: 0.03`, `spin: 2`  |
-| `meters`   | level meters on the left                      | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16` |
-| `oscilloscope` | the waveform as one trace near the bottom | `gain: 1` |
-| `vectorscope` | left against right in a circle, inside the radial ring | `gain: 1` |
-| `spectrogram` | the last seconds of spectrum scrolling left, bass at the bottom | `seconds: 4` (at most 8), `gain: 1` |
-| `overview` | the whole set as a strip under the header, with track and drop marks and a playhead | none |
+| name           | draws                                                                               | keys and defaults                                                                                          |
+| -------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `spectrum`     | mirrored bars along the bottom, bass centered                                       | `style: bars` (or `line`), `bars: 48`, `gain: 1`, `floor: 0.02`, `gap: 0.5`, `segments: 0` (cells per bar) |
+| `radial`       | bars around a ring, bass at the bottom                                              | `style: bars` (or `line`), `bars: 40`, `radius: 0.3`, `length: 0.18`, `gain: 1`, `floor: 0.03`, `spin: 2`  |
+| `meters`       | level meters on the left                                                            | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16`                    |
+| `oscilloscope` | the waveform as one trace near the bottom                                           | `gain: 1`                                                                                                  |
+| `vectorscope`  | left against right in a circle, inside the radial ring                              | `gain: 1`                                                                                                  |
+| `spectrogram`  | the last seconds of spectrum scrolling left, bass at the bottom                     | `seconds: 4` (at most 8), `gain: 1`                                                                        |
+| `overview`     | the whole set as a strip under the header, with track and drop marks and a playhead | none                                                                                                       |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
-baseline in silence, and `spin` is degrees per second. The scopes draw the last 1/30 s of audio. The
-overview reads the whole audio file before rendering, which takes a few seconds for a long set.
-The vectorscope shows stereo width: a mono mix, or the demo, which has the same audio in both
-channels, draws a vertical line. Placement and appearance are CSS: set
-`--spectrum-height`, `--radial-size`, `--meters-top`, `--oscilloscope-height`,
-`--vectorscope-size`, `--spectrogram-height` or `--overview-height`, or restyle `.sc-spectrum`,
-`.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`, `.sc-spectrogram` and
-`.sc-overview` (see
-[AGENTS.md](AGENTS.md#css-contract) for their elements). The spectrogram is a canvas: its CSS
-`color` is the color of a full-strength cell.
+baseline in silence, and `spin` is degrees per second. The scopes draw the last 1/30 s of audio.
+The vectorscope shows stereo width, so a mono mix draws a vertical line; so does the demo, which
+has the same audio in both channels. The overview reads the whole audio file before rendering,
+which takes a few seconds for a long set.
+
+Placement and appearance are CSS. Set `--spectrum-height`, `--radial-size`, `--meters-top`,
+`--oscilloscope-height`, `--vectorscope-size`, `--spectrogram-height` or `--overview-height`, or
+restyle `.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`,
+`.sc-spectrogram` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
+The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell.
 
 ## Customize without JavaScript
 
