@@ -1,9 +1,9 @@
 import type { Theme } from '@setcast/core';
 import { packaged } from './packaged.ts';
 
-/** A flat grey field, a white contour and the set told in stacked green stripes. */
 export const bristol: Theme = {
   name: 'bristol',
+  description: 'A flat grey field, a white contour and the set told in stacked green stripes.',
   cssFile: packaged('bristol/theme.css'),
   modulation: [],
   visualizer: [

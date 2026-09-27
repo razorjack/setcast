@@ -1,9 +1,10 @@
 import type { Theme } from '@setcast/core';
 import { packaged } from './packaged.ts';
 
-/** A night photograph: the scopes as light trails in sodium amber, lowercase type lit in lime. */
 export const longExposure: Theme = {
   name: 'long-exposure',
+  description:
+    'A night photograph: the scopes as light trails in sodium amber, lowercase type lit in lime.',
   cssFile: packaged('long-exposure/theme.css'),
   modulation: [
     { source: 'highs', target: 'trail-glow', range: [0.7, 1.5], curve: 'sqrt', smooth: 0.1 },

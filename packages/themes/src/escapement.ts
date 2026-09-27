@@ -1,9 +1,10 @@
 import type { Theme } from '@setcast/core';
 import { packaged } from './packaged.ts';
 
-/** White paper, a diagonal cyan band of the art, pixel capitals and a clock ticking on the beat. */
 export const escapement: Theme = {
   name: 'escapement',
+  description:
+    'White paper, a diagonal cyan band of the art, pixel capitals and a clock ticking on the beat.',
   cssFile: packaged('escapement/theme.css'),
   modulation: [
     { source: 'bass', target: 'band', range: [1, 1.16], curve: 'pow2', smooth: 0.1, when: 'drop' },

@@ -1,9 +1,10 @@
 import type { Theme } from '@setcast/core';
 import { packaged } from './packaged.ts';
 
-/** A corrupted signal: the channels split with the bass, the picture tears on the drop. */
 export const interference: Theme = {
   name: 'interference',
+  description:
+    'A corrupted signal: the channels split with the bass, the picture tears on the drop.',
   cssFile: packaged('interference/theme.css'),
   modulation: [
     { source: 'bass', target: 'split', range: [0, 1], curve: 'pow2', smooth: 0.03 },

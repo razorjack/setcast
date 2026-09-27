@@ -4,6 +4,8 @@ import type { VisualizerInput } from './visualizers.ts';
 /** A theme is CSS plus a default modulation patch. Built-in and npm themes implement this. */
 export interface Theme {
   name: string;
+  /** One line on how the theme looks, shown next to its name in `setcast init`. */
+  description?: string;
   /** Absolute path to the theme stylesheet. Relative `url()`s inside it are inlined at load. */
   cssFile: string;
   modulation: ModRouteInput[];

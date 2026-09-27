@@ -264,7 +264,11 @@ function promptFps() {
 function promptTheme() {
   return prompts.select({
     message: 'Theme',
-    options: Object.keys(themes).map((name) => ({ value: name, label: name })),
+    options: Object.values(themes).map((theme) => ({
+      value: theme.name,
+      label: theme.name,
+      hint: theme.description,
+    })),
   });
 }
 

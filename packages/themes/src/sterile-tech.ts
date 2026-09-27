@@ -3,6 +3,7 @@ import { packaged } from './packaged.ts';
 
 export const sterileTech: Theme = {
   name: 'sterile-tech',
+  description: 'Cold steel, frosted glass and one rust accent; a scan line on every drop.',
   cssFile: packaged('sterile-tech/theme.css'),
   modulation: [
     {

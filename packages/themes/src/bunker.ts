@@ -1,9 +1,10 @@
 import type { Theme } from '@setcast/core';
 import { packaged } from './packaged.ts';
 
-/** Stencil on concrete, hazard tape running on the beat, and the room shaking on the drop. */
 export const bunker: Theme = {
   name: 'bunker',
+  description:
+    'Stencil on concrete, hazard tape running on the beat, and the room shaking on the drop.',
   cssFile: packaged('bunker/theme.css'),
   modulation: [
     { source: 'bass', target: 'shake', range: [0, 0.3], curve: 'pow3', smooth: 0.04, when: 'drop' },
