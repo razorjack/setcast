@@ -25,15 +25,17 @@ export interface LoadedProject {
 export interface LoadOptions {
   /** Built-in themes by name. `theme: ./x.css` paths work without any table. */
   themes?: Record<string, Theme>;
+  /** A theme to use instead of the one `setcast.yaml` names, such as the CLI's `--theme`. */
+  theme?: string;
 }
 
 export async function loadProject(
   dir: string,
-  { themes = {} }: LoadOptions = {},
+  { themes = {}, theme: themeOverride }: LoadOptions = {},
 ): Promise<LoadedProject> {
   const root = resolve(dir);
   const { config, input } = await readProjectConfig(root);
-  const theme = await resolveTheme(config.theme, root, themes);
+  const theme = await resolveTheme(themeOverride ?? config.theme, root, themes);
   const events = mergeEvents(config);
   const modulation = [...themeRoutes(theme), ...config.modulation];
 

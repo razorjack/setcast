@@ -7,23 +7,25 @@ import { stem } from '../paths.ts';
 import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 
-export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg]
+export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme name]
 
 Renders one frame as an image, ready to upload as the YouTube thumbnail.
-  --at   the moment to grab; defaults to the first drop, or a quarter into the set
-  --out  output file; .png, .jpg or .webp (default: output.file with a .jpg extension)`;
+  --at     the moment to grab; defaults to the first drop, or a quarter into the set
+  --out    output file; .png, .jpg or .webp (default: output.file with a .jpg extension)
+  --theme  a built-in theme or a .css file to use instead of setcast.yaml's theme:`;
 
 interface StillCommandOptions {
   dir: string | undefined;
   at: number | undefined;
   out: string | undefined;
+  theme: string | undefined;
 }
 
 export async function run(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
   intro('still');
-  const loaded = await load(options.dir);
+  const loaded = await load(options.dir, options.theme);
   const { dir, config } = loaded;
   const duration = await probeAudio(loaded.project, dir);
   warnEventsAfterAudio(loaded.project.events, duration);
@@ -54,13 +56,14 @@ export async function run(argv: string[]): Promise<void> {
 function parseOptions(argv: string[]): StillCommandOptions {
   const { values, positionals } = parseCommandArgs(
     argv,
-    { at: { type: 'string' }, out: { type: 'string' } },
+    { at: { type: 'string' }, out: { type: 'string' }, theme: { type: 'string' } },
     help,
   );
   return {
     dir: positionals[0],
     at: values.at ? parseAt(values.at) : undefined,
     out: values.out,
+    theme: values.theme,
   };
 }
 

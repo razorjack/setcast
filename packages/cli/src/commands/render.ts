@@ -33,11 +33,12 @@ import {
 } from '../ui.ts';
 import { firstDrop } from './still.ts';
 
-export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--concurrency N] [--bundle]
+export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
 Renders the project in <dir> (default: current directory) to an MP4.
   --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
+  --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
   --concurrency  parallel browser tabs (default: Remotion's choice)
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
@@ -45,6 +46,7 @@ interface RenderCommandOptions {
   dir: string | undefined;
   range: [number, number] | undefined;
   out: string | undefined;
+  theme: string | undefined;
   concurrency: number | undefined;
   bundle: boolean;
 }
@@ -54,7 +56,7 @@ export async function run(argv: string[]): Promise<void> {
 
   intro('render');
   validateOptions(options);
-  const loaded = await load(options.dir);
+  const loaded = await load(options.dir, options.theme);
   const { dir, config } = loaded;
   const duration = await probeAudio(loaded.project, dir);
   warnEventsAfterAudio(loaded.project.events, duration);
@@ -95,6 +97,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
     {
       range: { type: 'string' },
       out: { type: 'string' },
+      theme: { type: 'string' },
       concurrency: { type: 'string' },
       bundle: { type: 'boolean' },
     },
@@ -112,6 +115,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
     dir: positionals[0],
     range,
     out: values.out,
+    theme: values.theme,
     concurrency,
     bundle: values.bundle ?? false,
   };

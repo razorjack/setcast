@@ -4,8 +4,9 @@ import { loadProject, readSetEnvelope, type LoadedProject } from '@setcast/core/
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
 
-export async function load(dir = '.'): Promise<LoadedProject> {
-  const loaded = await loadProject(resolve(dir), { themes });
+/** Loads the project in `dir`; `theme` replaces the one its setcast.yaml names. */
+export async function load(dir = '.', theme?: string): Promise<LoadedProject> {
+  const loaded = await loadProject(resolve(dir), { themes, theme });
   for (const warning of loaded.warnings) warn(warning);
   return loaded;
 }

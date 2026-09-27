@@ -199,6 +199,17 @@ tracks:
     expect(own.project.visualizers).toEqual([]);
   });
 
+  test('a theme passed to loadProject replaces the one setcast.yaml names', async () => {
+    const other: Theme = { ...theme, name: 'other', visualizer: { name: 'meters' } };
+    await load('audio: assets/mix.wav\ntheme: test\n', 'override');
+    const { project } = await loadProject(join(dir, 'override'), {
+      themes: { test: theme, other },
+      theme: 'other',
+    });
+    expect(project.theme).toBe('other');
+    expect(project.visualizers).toMatchObject([{ name: 'meters' }]);
+  });
+
   test("an invalid theme visualizer names the theme, not the project's setcast.yaml", async () => {
     const broken: Theme = { ...theme, name: 'broken', visualizer: { name: 'radial', bars: 2 } };
     await expect(

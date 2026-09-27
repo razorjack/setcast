@@ -80,7 +80,8 @@ Commands: `setcast init`, `import <tracklist.txt|.cue> [--write]`, `analyze [--w
 and drafts drop / breakdown events on the beat grid, plus the tempo), `preview`, `render [--range A-B] [--bundle]` (the MP4; `--bundle` also writes the thumbnail and description next to it),
 `clip [--at 1:04] [--all]` (a 45 s promo cut around a drop), `still [--at 1:04]` (one frame as an image, for the thumbnail), `chapters` (YouTube description
 with timestamps, warning about anything that would stop YouTube showing them), and the roadmap
-stub `live`.
+stub `live`. `preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without
+editing `setcast.yaml`, e.g. `setcast still --theme bristol --out bristol.jpg`.
 
 For an excerpt from a longer mix, set `clockOffset: 14:03` to show the original mix time.
 A 5:31 excerpt then opens at `14:03 / 19:34`. The default is `0`; seconds and timecodes

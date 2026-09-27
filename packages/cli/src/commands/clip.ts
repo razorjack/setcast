@@ -18,13 +18,14 @@ const DEFAULT_SECONDS = 45;
 const MIN_SECONDS = 10;
 const MAX_SECONDS = 120;
 
-export const help = `setcast clip [dir] [--at MM:SS] [--seconds 45] [--all] [--out clip.mp4]
+export const help = `setcast clip [dir] [--at MM:SS] [--seconds 45] [--all] [--out clip.mp4] [--theme name]
 
 Cuts a promo clip around a drop, for socials. The drop lands a third of the way in.
   --at       the drop to cut around; defaults to the first drop
   --seconds  clip length, ${MIN_SECONDS} to ${MAX_SECONDS}; clips at the set end (default ${DEFAULT_SECONDS})
   --all      one clip per drop
-  --out      output file; defaults to output.file stamped with the clip's range`;
+  --out      output file; defaults to output.file stamped with the clip's range
+  --theme    a built-in theme or a .css file to use instead of setcast.yaml's theme:`;
 
 interface ClipOptions {
   dir: string | undefined;
@@ -32,13 +33,14 @@ interface ClipOptions {
   seconds: number;
   all: boolean;
   out: string | undefined;
+  theme: string | undefined;
 }
 
 export async function run(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
   intro('clip');
-  const loaded = await load(options.dir);
+  const loaded = await load(options.dir, options.theme);
   const duration = await probeAudio(loaded.project, loaded.dir);
   warnEventsAfterAudio(loaded.project.events, duration);
   const centers = clipCenters(loaded.project.events, options).map((center) =>
@@ -65,6 +67,7 @@ function parseOptions(argv: string[]): ClipOptions {
       seconds: { type: 'string' },
       all: { type: 'boolean' },
       out: { type: 'string' },
+      theme: { type: 'string' },
     },
     help,
   );
@@ -87,6 +90,7 @@ function parseOptions(argv: string[]): ClipOptions {
     seconds,
     all: values.all ?? false,
     out: values.out,
+    theme: values.theme,
   };
 }
 
