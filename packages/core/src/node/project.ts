@@ -42,6 +42,7 @@ export async function loadProject(
 
   const project: ResolvedProject = {
     title: config.title,
+    clockOffset: config.clockOffset,
     audio: config.audio,
     background: config.background ?? null,
     theme: theme.name,

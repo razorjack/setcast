@@ -412,6 +412,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - The adapter checks localhost binding before starting Remotion. In restricted sandboxes,
   Remotion can leave its compositor running after failing to acquire a port; the preflight
   reports the permission problem before starting that process.
+- `clockOffset:` adds a nonnegative timecode or seconds to the header clock and its endpoint
+  (default 0). It is display-only: `RenderFrame.timeSeconds`, event times, audio analysis,
+  progress, tempo, render ranges, and YouTube chapters stay on the audio file's timeline.
 
 ## Not yet decided
 

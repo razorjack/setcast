@@ -19,6 +19,7 @@ const placeholder: ResolvedProject = {
   panel: { dwell: 14, fade: 1.2 },
   bpm: null,
   beatOffset: 0,
+  clockOffset: 0,
 };
 
 const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = async ({ props }) => {

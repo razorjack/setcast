@@ -82,6 +82,11 @@ and drafts drop / breakdown events on the beat grid, plus the tempo), `preview`,
 with timestamps, warning about anything that would stop YouTube showing them), and the roadmap
 stub `live`.
 
+For an excerpt from a longer mix, set `clockOffset: 14:03` to show the original mix time.
+A 5:31 excerpt then opens at `14:03 / 19:34`. The default is `0`; seconds and timecodes
+are accepted. This changes only the displayed clock and endpoint. Track and event times,
+`beatOffset`, `--range`, `--at`, and YouTube chapters still use the audio file's own timeline.
+
 ## Customize without JavaScript
 
 Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variables

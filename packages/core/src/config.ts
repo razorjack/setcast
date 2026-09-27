@@ -71,6 +71,8 @@ export const ProjectConfigSchema = z
   .object(
     {
       title: z.string({ error: 'title must be text.' }).default(''),
+      /** Displayed clock offset; audio, events, and render ranges remain clip-relative. */
+      clockOffset: TimeSchema.default(0),
       audio: relativePath(
         'audio',
         'audio is required: the path to your mix file, e.g. assets/mix.wav.',

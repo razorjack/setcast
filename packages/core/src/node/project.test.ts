@@ -71,8 +71,37 @@ modulation:
     expect(project.css).not.toContain('./fonts/x.woff2');
     expect(project.modulation.map((route) => route.target)).toEqual(['bg-zoom', 'vignette']);
     expect(project.fps).toBe(30);
+    expect(project.clockOffset).toBe(0);
     expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
   });
+
+  test.each(['14:03', '843'])('resolves clockOffset %s without moving events', async (offset) => {
+    const { project } = await load(`
+audio: assets/mix.wav
+theme: test
+clockOffset: ${offset}
+tracks: [{ time: 0, title: Star Trails }]
+events: [{ type: drop, time: 14 }]
+`);
+    expect(project.clockOffset).toBe(843);
+    expect(project.events.map((event) => event.time)).toEqual([0, 14]);
+  });
+
+  test.each(['-1', 'soon'])(
+    'rejects invalid clockOffset %s with its config path',
+    async (offset) => {
+      await expect(
+        load(`audio: assets/mix.wav\ntheme: test\nclockOffset: ${offset}\n`),
+      ).rejects.toMatchObject({
+        issues: [
+          {
+            path: 'clockOffset',
+            message: expect.stringContaining(`Invalid time "${offset}". Use seconds`),
+          },
+        ],
+      });
+    },
+  );
 
   test('a track background must exist too', async () => {
     await expect(

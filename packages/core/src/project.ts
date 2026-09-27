@@ -7,6 +7,8 @@ import type { ModRoute } from './modulation.ts';
  */
 export type ResolvedProject = {
   title: string;
+  /** Seconds added to the displayed clock and its endpoint, without shifting the timeline. */
+  clockOffset: number;
   audio: string;
   background: string | null;
   theme: string;
