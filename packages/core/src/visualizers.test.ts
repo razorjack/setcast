@@ -26,6 +26,15 @@ describe('visualizer schemas', () => {
     ]);
   });
 
+  test('meters name the audio features they show', () => {
+    expect(issuesOf({ name: 'meters', bands: ['bass', 'sub'] })).toEqual([
+      {
+        path: 'visualizer.bands[1]',
+        message: 'bands must be a list of audio features: bass, mids, highs, rms, onset.',
+      },
+    ]);
+  });
+
   test('spectrum segments need bars to cut', () => {
     expect(resolveVisualizerConfig({ name: 'spectrum', segments: 12 })).toMatchObject({
       style: 'bars',

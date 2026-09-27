@@ -109,11 +109,12 @@ visualizer:
 | ---------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `spectrum` | mirrored bars along the bottom, bass centered | `style: bars` (or `line`), `bars: 48`, `gain: 1`, `floor: 0.02`, `gap: 0.5`, `segments: 0` (cells per bar) |
 | `radial`   | bars around a ring, bass at the bottom        | `style: bars` (or `line`), `bars: 40`, `radius: 0.3`, `length: 0.18`, `gain: 1`, `floor: 0.03`, `spin: 2`  |
+| `meters`   | level meters on the left                      | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16` |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
 baseline in silence, and `spin` is degrees per second. Placement and appearance are CSS: set
-`--spectrum-height` or `--radial-size`, or restyle `.sc-spectrum` and `.sc-radial` (see
-[AGENTS.md](AGENTS.md#css-contract) for their elements).
+`--spectrum-height`, `--radial-size` or `--meters-top`, or restyle `.sc-spectrum`, `.sc-radial`
+and `.sc-meters` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
 
 ## Customize without JavaScript
 

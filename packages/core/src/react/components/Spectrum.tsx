@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { level, sampleBins } from '../../audio.ts';
+import { level, sampleBins, segmentedLevel } from '../../audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { smoothPath } from './svg.ts';
@@ -51,7 +51,7 @@ function SpectrumBars({ levels, gap, segments }: SpectrumBarsProps) {
 
   const rects = [];
   for (let bar = 0; bar < levels.length; bar++) {
-    const height = HEIGHT * litLevel(levels[bar]!, segments);
+    const height = HEIGHT * segmentedLevel(levels[bar]!, segments);
     const y = HEIGHT - height;
     const right = CENTRE + bar * slot + inset;
     const left = CENTRE - (bar + 1) * slot + inset;
@@ -69,10 +69,6 @@ function SpectrumBars({ levels, gap, segments }: SpectrumBarsProps) {
     </>
   );
 }
-
-/** A level rounded up to whole cells, so the floor keeps the bottom cell lit. */
-const litLevel = (level: number, segments: number): number =>
-  segments === 0 ? level : Math.ceil(level * segments) / segments;
 
 /**
  * Horizontal dark lines that cut every bar into cells, aligned to the bottom edge. The fills are

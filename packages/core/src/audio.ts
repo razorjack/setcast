@@ -131,6 +131,10 @@ export function rms(samples: ArrayLike<number>, gain = 3): number {
 export const level = (bin: number, gain: number, floor: number): number =>
   Math.max(floor, Math.min(1, bin * gain));
 
+/** A level rounded up to whole cells out of `segments`, so a floor keeps the bottom cell lit. 0 leaves it as is. */
+export const segmentedLevel = (level: number, segments: number): number =>
+  segments === 0 ? level : Math.ceil(level * segments) / segments;
+
 /**
  * Linear resample of `bins` to `count` points, first and last bin included. Visualizers draw a
  * fixed number of bars from a fixed number of bins; this is the one way they agree on.

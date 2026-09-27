@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FEATURE_SOURCES } from './audio.ts';
 import { ConfigError, zodIssues, type Issue } from './errors.ts';
 import { Registry } from './registry.ts';
 
@@ -65,6 +66,21 @@ export const RadialConfigSchema = visualizerSchema('radial', {
 });
 export type RadialConfig = z.infer<typeof RadialConfigSchema>;
 
+const bandsError = `bands must be a list of audio features: ${FEATURE_SOURCES.join(', ')}.`;
+
+export const MetersConfigSchema = visualizerSchema('meters', {
+  /** One level meter per audio feature, left to right. */
+  bands: z
+    .array(z.enum(FEATURE_SOURCES, { error: bandsError }), { error: bandsError })
+    .min(1, { error: bandsError })
+    .default(['bass', 'mids', 'highs', 'rms']),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+  floor: numberSetting('floor', 0, 0.5).default(0),
+  /** Cells per meter, lit from the bottom. 0 is a solid bar. */
+  segments: wholeNumberSetting('segments', 0, 48).default(16),
+});
+export type MetersConfig = z.infer<typeof MetersConfigSchema>;
+
 /** A `visualizer:` entry after its own schema filled in the defaults. */
 export type VisualizerConfig = { name: string } & Record<string, unknown>;
 
@@ -93,6 +109,7 @@ export const visualizers = new Registry<VisualizerSpec>('visualizer');
 
 visualizers.add({ name: 'spectrum', schema: SpectrumConfigSchema });
 visualizers.add({ name: 'radial', schema: RadialConfigSchema });
+visualizers.add({ name: 'meters', schema: MetersConfigSchema });
 
 /**
  * The `visualizer:` key as written: one block, or a list of blocks drawn in order (`[]` draws none).

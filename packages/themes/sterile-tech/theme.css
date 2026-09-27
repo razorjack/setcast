@@ -148,6 +148,29 @@
   stroke-linejoin: round;
 }
 
+/* meters: dim steel cells, lit in the second accent; bass takes the deck color */
+.theme-sterile-tech .sc-meters {
+  mix-blend-mode: screen;
+}
+.theme-sterile-tech .sc-meter-bar {
+  background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+}
+.theme-sterile-tech .sc-meter-level {
+  background: var(--accent-2);
+  box-shadow: 0 0 1cqw color-mix(in srgb, var(--accent-2) 45%, transparent);
+}
+.theme-sterile-tech .sc-meter[data-band='bass'] .sc-meter-level {
+  background: var(--deck);
+}
+.theme-sterile-tech .sc-meter-label {
+  margin-top: 1cqh;
+  font-family: var(--font-mono);
+  font-size: 0.8cqw;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
 /* now playing: frosted glass, hairline; --show is presence (spring in, dwell, leave) */
 .theme-sterile-tech .sc-panel {
   padding: 1.7cqw 2.2cqw 1.9cqw 2.1cqw;

@@ -7,6 +7,7 @@ import {
   type VisualizerConfig,
   type VisualizerSpec,
 } from '../visualizers.ts';
+import { Meters, MetersConfigSchema } from './components/Meters.tsx';
 import { Radial, RadialConfigSchema } from './components/Radial.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
 
@@ -44,3 +45,4 @@ export function resolveVisualizer(config: VisualizerConfig) {
 
 defineVisualizer({ name: 'spectrum', schema: SpectrumConfigSchema, component: Spectrum });
 defineVisualizer({ name: 'radial', schema: RadialConfigSchema, component: Radial });
+defineVisualizer({ name: 'meters', schema: MetersConfigSchema, component: Meters });

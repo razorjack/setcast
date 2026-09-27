@@ -219,7 +219,7 @@ names, `names`). Instances: `importers` (`@setcast/core`), `visualizers` (`@setc
 Each plugin kind is a small interface plus a Zod schema for its config. Extension points (roadmap
 list; implemented today: visualizer, theme, tracklist importer):
 
-- visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓); `visualizer:` takes one block
+- visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
   path is also a valid theme)
@@ -292,6 +292,11 @@ Visualizers are SVG under one root class each, with `data-style` set to the bloc
 `.sc-spectrum-area`) and `.sc-radial` (the ring is a `circle`, bars are `line`s; `style: line`
 draws `.sc-radial-line` and `.sc-radial-area`, the band between it and the ring). base.css places
 them and sizes them with `--spectrum-height` and `--radial-size`.
+
+`.sc-meters` is HTML, not SVG: one `.sc-meter` per band (`data-band="bass"`) with its level in
+`--level`, 0..1, holding `.sc-meter-bar` > `.sc-meter-level` and a `.sc-meter-label`. The theme
+draws the meter from `--level`; base.css positions it (`--meters-top`, `--meters-height`) and,
+when `segments` is not 0 (`data-segmented`), masks `.sc-meter-bar` into `--segments` cells.
 
 `.sc-next` holds the track after this one (`sc-next-label`, `sc-next-artist`, `sc-next-title`) and
 stays mounted for the whole of the current track; the theme decides when it appears, from
@@ -435,6 +440,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   Spectrum `segments` cuts the bars with an SVG mask rather than drawing one rect per cell, which
   keeps a frame at 2 rects per bar. The mask's fills are inline styles, because theme rules such
   as `.sc-spectrum rect { fill }` otherwise repaint the mask and erase the gaps.
+- Meters are HTML with `--level` rather than SVG like the spectrum: a meter is a few boxes and a
+  text label, which CSS lays out and styles more directly than SVG geometry and `<text>`.
 
 ## Not yet decided
 

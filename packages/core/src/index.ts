@@ -8,6 +8,7 @@ export {
   logBins,
   rms,
   sampleBins,
+  segmentedLevel,
   silentAnalyzer,
   soft,
   spectrumFeatures,
@@ -99,11 +100,13 @@ export {
   type Chapter,
 } from './chapters.ts';
 export {
+  MetersConfigSchema,
   RadialConfigSchema,
   SpectrumConfigSchema,
   resolveVisualizerConfig,
   resolveVisualizerConfigs,
   visualizers,
+  type MetersConfig,
   type RadialConfig,
   type SpectrumConfig,
   type VisualizerConfig,
