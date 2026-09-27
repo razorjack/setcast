@@ -1,3 +1,4 @@
+import type { SetEnvelope } from './analysis.ts';
 import type { SetEvent } from './events.ts';
 import type { ModRoute } from './modulation.ts';
 import type { VisualizerConfig } from './visualizers.ts';
@@ -28,6 +29,11 @@ export type ResolvedProject = {
   modulation: ModRoute[];
   /** The `visualizer:` entries in drawing order, each after its own schema filled in the defaults. */
   visualizers: VisualizerConfig[];
+  /**
+   * The whole set's energy, when a visualizer draws it (`drawsWholeSet`). Loading a project leaves
+   * it null; commands that render read the audio and fill it in.
+   */
+  envelope: SetEnvelope | null;
   /** How long the now-playing panel stays up after a track change, and how long it takes to leave. */
   panel: { dwell: number; fade: number };
   /** Tempo, or null when the project does not state one. */

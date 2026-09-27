@@ -263,7 +263,12 @@ Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setc
 relative to the project dir, merged modulation, theme CSS with fonts inlined as data URIs, base CSS,
 visualizer config) and non-fatal configuration warnings. The CLI prints those warnings to stderr.
 Warnings that need the audio duration are added by each command after the Node audio probe.
-The renderer adapter receives `ResolvedProject` as input props and nothing else. Assets referenced
+`ResolvedProject.envelope` is null after loading. A visualizer registered with `wholeSet: true`
+draws the whole set from it, so the commands that render (`render`, `still`, `clip`, `preview`)
+call `withSetEnvelope` after validating their flags: when `drawsWholeSet(project)`,
+`readSetEnvelope` decodes the audio and `summarizeEnvelope` reduces it to at most 1200 points of
+bass and high energy. The renderer adapter receives `ResolvedProject` as input props and nothing
+else. Assets referenced
 by `setcast.yaml` must live inside the project directory (the adapter serves it as the public dir).
 
 Renderer adapter API (`@setcast/renderer-remotion`): `render(project, { projectDir, out, range?,
@@ -476,6 +481,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
   `color` so appearance stays in the theme. Columns are placed by age, not index, so it scrolls
   smoothly between the 1/30 s grid moments.
+- The set envelope is read in Node before rendering, not in the browser: the browser only ever
+  has 30 s of audio loaded, and a Node decode already exists. It decodes at 4 kHz with 0.05 s
+  hops, which is enough for points that each cover seconds and keeps a two-hour set to about
+  230 MB of samples; a two-hour MP3 reads in about 6.5 s. Only projects whose visualizers ask for
+  it pay that, and `chapters`, `analyze` and `import` never do.
 
 ## Not yet decided
 

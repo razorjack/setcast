@@ -55,6 +55,7 @@ export async function loadProject(
     events,
     modulation,
     visualizers: resolveVisualizerConfigs(config.visualizer),
+    envelope: null,
     panel: config.panel,
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,

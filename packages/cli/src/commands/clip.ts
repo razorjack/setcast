@@ -10,7 +10,7 @@ import {
   rangeWithinAudio,
   timeWithinAudio,
 } from '../args.ts';
-import { load, warnEventsAfterAudio } from '../project.ts';
+import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
 import { bold, dim, formatDuration, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 
@@ -49,9 +49,10 @@ export async function run(argv: string[]): Promise<void> {
     return;
   }
 
+  const renderable = { ...loaded, project: await withSetEnvelope(loaded) };
   const files: string[] = [];
   for (const center of centers) {
-    files.push(await renderClip(loaded, center, duration, options));
+    files.push(await renderClip(renderable, center, duration, options));
   }
   outro(`${bold('Done')}  →  ${files.join(', ')}`);
 }

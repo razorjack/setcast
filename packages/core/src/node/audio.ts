@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import { open, type FileHandle } from 'node:fs/promises';
 import { basename } from 'node:path';
+import { envelope, summarizeEnvelope, type SetEnvelope } from '../analysis.ts';
 import type { Pcm } from '../audio.ts';
 import { SetcastError } from '../errors.ts';
 
@@ -28,6 +29,16 @@ export async function decodeMono(file: string, rate = ANALYSIS_RATE): Promise<Pc
     `Cannot decode ${basename(file)}`,
     'Install ffmpeg so Setcast can read this format (brew install ffmpeg). Without ffmpeg only PCM WAV (16/24/32-bit or float) works.',
   );
+}
+
+/** A rate that holds the bass and low mids, which is all an envelope drawn seconds per point needs. */
+const ENVELOPE_RATE = 4000;
+const ENVELOPE_HOP_SECONDS = 0.05;
+
+/** The whole set's energy, summarized for drawing (`ResolvedProject.envelope`). */
+export async function readSetEnvelope(file: string): Promise<SetEnvelope> {
+  const pcm = await decodeMono(file, ENVELOPE_RATE);
+  return summarizeEnvelope(envelope(pcm, ENVELOPE_HOP_SECONDS));
 }
 
 /** Null when ffmpeg is not installed. Anything else it reports is an error worth showing. */

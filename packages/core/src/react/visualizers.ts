@@ -23,8 +23,11 @@ export interface Visualizer<C = unknown> extends VisualizerSpec {
 }
 
 export function defineVisualizer<C>(visualizer: Visualizer<C>): Visualizer<C> {
-  if (completesSchemaOnlyEntry(visualizer.name)) visualizers.replace(visualizer);
-  else visualizers.add(visualizer);
+  if (completesSchemaOnlyEntry(visualizer.name)) {
+    visualizers.replace({ ...visualizers.get(visualizer.name), ...visualizer });
+  } else {
+    visualizers.add(visualizer);
+  }
   return visualizer;
 }
 

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { FEATURE_SOURCES, HISTORY_SECONDS } from './audio.ts';
 import { ConfigError, zodIssues, type Issue } from './errors.ts';
+import type { ResolvedProject } from './project.ts';
 import { Registry } from './registry.ts';
 
 /** A number in a `visualizer:` block, with one message for every way it can be wrong. */
@@ -122,6 +123,8 @@ const VisualizerEntrySchema = z
 export interface VisualizerSpec {
   name: string;
   schema: z.ZodType;
+  /** Draws the whole set from `project.envelope`, which commands that render then read first. */
+  wholeSet?: boolean;
 }
 
 export const visualizers = new Registry<VisualizerSpec>('visualizer');
@@ -132,6 +135,10 @@ visualizers.add({ name: 'meters', schema: MetersConfigSchema });
 visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
 visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
 visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
+
+/** Whether a visualizer of `project` needs `project.envelope`. */
+export const drawsWholeSet = (project: ResolvedProject): boolean =>
+  project.visualizers.some((config) => visualizers.get(config.name).wholeSet === true);
 
 /**
  * The `visualizer:` key as written: one block, or a list of blocks drawn in order (`[]` draws none).

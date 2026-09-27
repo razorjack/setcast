@@ -1,6 +1,14 @@
 import { describe, expect, test } from 'vite-plus/test';
 import type { Pcm } from './audio.ts';
-import { beatOffset, detectSections, envelope, estimateBpm, nearestBeat } from './analysis.ts';
+import {
+  beatOffset,
+  detectSections,
+  envelope,
+  estimateBpm,
+  nearestBeat,
+  summarizeEnvelope,
+  type Envelope,
+} from './analysis.ts';
 
 const RATE = 16000;
 
@@ -74,5 +82,18 @@ describe('estimateBpm', () => {
 
   test('silence has no tempo', () => {
     expect(estimateBpm(envelope(audio(40, () => 0)))).toBeNull();
+  });
+});
+
+describe('summarizeEnvelope', () => {
+  test('averages the set down to a few points that keep its shape, scaled to 0..1', () => {
+    // 10 s of loud bass, then 10 s of almost none, at 100 hops a second.
+    const bass = Array.from({ length: 2000 }, (_, hop) => (hop < 1000 ? 2 : 0.1));
+    const energy: Envelope = { hop: 0.01, bass, high: bass.map(() => 0.5), flux: [] };
+    const summary = summarizeEnvelope(energy, 4);
+
+    expect(summary.step).toBe(5);
+    expect(summary.bass).toEqual([1, 1, 0.05, 0.05]);
+    expect(summary.high).toEqual([1, 1, 1, 1]);
   });
 });

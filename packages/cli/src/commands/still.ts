@@ -4,7 +4,7 @@ import { formatTime, type SetEvent } from '@setcast/core';
 import { probeAudio, still, type StillOptions } from '@setcast/renderer-remotion';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load, warnEventsAfterAudio } from '../project.ts';
+import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg]
@@ -23,16 +23,18 @@ export async function run(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
   intro('still');
-  const { dir, project, config } = await load(options.dir);
-  const duration = await probeAudio(project, dir);
-  warnEventsAfterAudio(project.events, duration);
+  const loaded = await load(options.dir);
+  const { dir, config } = loaded;
+  const duration = await probeAudio(loaded.project, dir);
+  warnEventsAfterAudio(loaded.project.events, duration);
   const at = timeWithinAudio(
-    options.at ?? firstDrop(project.events) ?? duration / 4,
+    options.at ?? firstDrop(loaded.project.events) ?? duration / 4,
     duration,
     '--at',
   );
   const out = options.out ? resolve(options.out) : defaultOut(dir, config.output.file);
   await mkdir(dirname(out), { recursive: true });
+  const project = await withSetEnvelope(loaded);
 
   const ui = new RenderUi();
   const grab: StillOptions = {

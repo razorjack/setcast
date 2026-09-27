@@ -26,6 +26,7 @@ const project: ResolvedProject = {
   events: [],
   modulation: [],
   visualizers: [{ name: 'spectrum' }],
+  envelope: null,
   panel: { dwell: 14, fade: 1.2 },
   bpm: null,
   beatOffset: 0,

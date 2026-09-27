@@ -58,6 +58,33 @@ export function envelope({ samples, sampleRate }: Pcm, hopSeconds = HOP_SECONDS)
   };
 }
 
+/** The whole set at a glance, for drawing: bass and high energy every `step` seconds, 0..1. */
+export interface SetEnvelope {
+  step: number;
+  bass: number[];
+  high: number[];
+}
+
+/**
+ * `energy` averaged down to at most `points` values per band, rescaled so the loud stretches of
+ * the set reach 1, and rounded, because it travels to the renderer as JSON.
+ */
+export function summarizeEnvelope(energy: Envelope, points = 1200): SetEnvelope {
+  const hopsPerPoint = Math.max(1, Math.ceil(energy.bass.length / points));
+  const summarize = (values: number[]) => {
+    const means: number[] = [];
+    for (let start = 0; start < values.length; start += hopsPerPoint) {
+      means.push(mean(values, start, Math.min(values.length, start + hopsPerPoint)));
+    }
+    return normalize(means).map((value) => Math.round(clamp(value, 0, 1) * 1000) / 1000);
+  };
+  return {
+    step: hopsPerPoint * energy.hop,
+    bass: summarize(energy.bass),
+    high: summarize(energy.high),
+  };
+}
+
 /** Tempi outside this are either a different art form or an octave error. */
 export const BPM_RANGE: readonly [number, number] = [85, 185];
 

@@ -33,8 +33,10 @@ export {
   estimateBpm,
   nearestBeat,
   snapToBeats,
+  summarizeEnvelope,
   type Envelope,
   type SectionOptions,
+  type SetEnvelope,
 } from './analysis.ts';
 export {
   OutputSchema,
@@ -112,6 +114,7 @@ export {
   SpectrogramConfigSchema,
   SpectrumConfigSchema,
   VectorscopeConfigSchema,
+  drawsWholeSet,
   resolveVisualizerConfig,
   resolveVisualizerConfigs,
   visualizers,
