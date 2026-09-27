@@ -172,6 +172,19 @@
   height: calc(var(--level, 0) * 100%);
 }
 
+/* the held peak: a hairline at --peak, or the lit part of the cell --peak tops when segmented */
+.sc-meter-peak {
+  position: absolute;
+  inset: auto 0;
+  bottom: calc(var(--peak, 0) * 100% - 2%);
+  height: 2%;
+}
+
+.sc-meters[data-segmented='true'] .sc-meter-peak {
+  bottom: calc(var(--peak, 0) * 100% - 100% / var(--segments));
+  height: calc(70% / var(--segments));
+}
+
 /* segments: dark gaps cut the bar, lit and unlit, into cells counted from the bottom */
 .sc-meters[data-segmented='true'] .sc-meter-bar {
   mask-image: repeating-linear-gradient(

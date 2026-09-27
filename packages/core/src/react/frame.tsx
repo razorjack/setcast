@@ -55,8 +55,15 @@ export interface AudioMoment {
  * The audio at `count` moments over the last `seconds` (at most `HISTORY_SECONDS`), oldest first.
  * Moments before the set starts are silence.
  */
-export function useAudioHistory(seconds: number, count: number): AudioMoment[] {
-  const { analyzer, timeSeconds } = useFrame();
+export const useAudioHistory = (seconds: number, count: number): AudioMoment[] =>
+  audioHistory(useFrame(), seconds, count);
+
+/** `useAudioHistory` for a component that already holds the frame and looks back only sometimes. */
+export function audioHistory(
+  { analyzer, timeSeconds }: RenderFrame,
+  seconds: number,
+  count: number,
+): AudioMoment[] {
   return historyTimes(timeSeconds, seconds, count).map((time) => ({
     time,
     audio: time < 0 ? SILENCE : analyzer.featuresAt(time),

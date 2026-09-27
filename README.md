@@ -109,16 +109,19 @@ visualizer:
 
 | name           | draws                                                                               | keys and defaults                                                                                          |
 | -------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `spectrum`     | mirrored bars along the bottom, bass centered                                       | `style: bars` (or `line`), `bars: 48`, `gain: 1`, `floor: 0.02`, `gap: 0.5`, `segments: 0` (cells per bar) |
+| `spectrum`     | mirrored bars along the bottom, bass centered                                       | `style: bars` (or `line`), `bars: 48`, `gain: 1`, `floor: 0.02`, `gap: 0.5`, `segments: 0` (cells per bar), `peak: 0` |
 | `radial`       | bars around a ring, bass at the bottom                                              | `style: bars` (or `line`), `bars: 40`, `radius: 0.3`, `length: 0.18`, `gain: 1`, `floor: 0.03`, `spin: 2`  |
-| `meters`       | level meters on the left                                                            | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16`                    |
-| `oscilloscope` | the waveform as one trace near the bottom                                           | `gain: 1`                                                                                                  |
-| `vectorscope`  | left against right in a circle, inside the radial ring                              | `gain: 1`                                                                                                  |
+| `meters`       | level meters on the left                                                            | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16`, `peak: 0`          |
+| `oscilloscope` | the waveform as one trace near the bottom                                           | `gain: 1`, `trail: 0`                                                                                      |
+| `vectorscope`  | left against right in a circle, inside the radial ring                              | `gain: 1`, `trail: 0`                                                                                      |
 | `spectrogram`  | the last seconds of spectrum scrolling left, bass at the bottom                     | `seconds: 4` (at most 8), `gain: 1`                                                                        |
 | `overview`     | the whole set as a strip under the header, with track and drop marks and a playhead | none                                                                                                       |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
-baseline in silence, and `spin` is degrees per second. The scopes draw the last 1/30 s of audio.
+baseline in silence, and `spin` is degrees per second. `peak` is the seconds a marker holds each
+bar's highest level before it falls, as on a hi-fi analyzer (`0` draws none, at most 4). The
+scopes draw the last 1/30 s of audio; `trail: 6` also draws the six 1/30 s before it behind the
+current trace, for the theme to fade into an afterimage (at most 12).
 The vectorscope shows stereo width, so a mono mix draws a vertical line; so does the demo, which
 has the same audio in both channels. The overview reads the whole audio file before rendering,
 which takes a few seconds for a long set.

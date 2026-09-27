@@ -3,6 +3,8 @@ import {
   bandEnergy,
   historyTimes,
   logBins,
+  PEAK_FALL_SECONDS,
+  peakHold,
   rms,
   sampleBins,
   soft,
@@ -82,4 +84,21 @@ test('historyTimes sit on a grid that the next frame shares', () => {
   expect(next.slice(0, 3)).toEqual(now.slice(1));
   expect(historyTimes(0.2, 2, 4)).toEqual([-1.5, -1, -0.5, 0]);
   expect(() => historyTimes(0, 30, 10)).toThrow(/HISTORY_SECONDS/);
+});
+
+describe('peakHold', () => {
+  test('holds the highest level for the hold time, then falls at a steady rate', () => {
+    const loud = { age: 0.5, levels: [0.9] };
+    expect(peakHold([0.2], [loud], 1)).toEqual([0.9]);
+
+    const fallen = { age: 1 + PEAK_FALL_SECONDS / 2, levels: [0.9] };
+    expect(peakHold([0.2], [fallen], 1)[0]).toBeCloseTo(0.4);
+
+    const gone = { age: 1 + PEAK_FALL_SECONDS, levels: [0.9] };
+    expect(peakHold([0.2], [gone], 1)).toEqual([0.2]);
+  });
+
+  test('keeps each level to its own peak', () => {
+    expect(peakHold([0.1, 0.8], [{ age: 0.2, levels: [0.6, 0.3] }], 1)).toEqual([0.6, 0.8]);
+  });
 });

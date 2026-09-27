@@ -191,6 +191,34 @@ export function waveSlice(
 export const level = (bin: number, gain: number, floor: number): number =>
   Math.max(floor, Math.min(1, bin * gain));
 
+/** Seconds a held peak takes to fall from full scale to nothing once its hold is over. */
+export const PEAK_FALL_SECONDS = 0.6;
+
+/** Levels at an earlier moment, `age` seconds before the frame. */
+export interface PastLevels {
+  age: number;
+  levels: readonly number[];
+}
+
+/**
+ * The peak-hold marker of a hi-fi analyzer, one per level: the highest level of the last `hold`
+ * seconds, falling at a steady rate once it is older than that.
+ */
+export function peakHold(
+  current: readonly number[],
+  past: readonly PastLevels[],
+  hold: number,
+): number[] {
+  return current.map((level, index) => {
+    let peak = level;
+    for (const { age, levels } of past) {
+      const fall = Math.max(0, age - hold) / PEAK_FALL_SECONDS;
+      peak = Math.max(peak, levels[index]! - fall);
+    }
+    return peak;
+  });
+}
+
 /** A level rounded up to whole cells out of `segments`, so a floor keeps the bottom cell lit. 0 leaves it as is. */
 export const segmentedLevel = (level: number, segments: number): number =>
   segments === 0 ? level : Math.ceil(level * segments) / segments;

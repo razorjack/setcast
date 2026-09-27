@@ -50,4 +50,10 @@ describe('visualizer schemas', () => {
       { path: 'visualizer.segments', message: expect.stringContaining('set style: bars') },
     ]);
   });
+
+  test('spectrum peaks need bars to sit on', () => {
+    expect(issuesOf({ name: 'spectrum', style: 'line', peak: 1 })).toEqual([
+      { path: 'visualizer.peak', message: expect.stringContaining('set style: bars') },
+    ]);
+  });
 });

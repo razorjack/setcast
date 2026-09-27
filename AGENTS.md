@@ -319,7 +319,8 @@ A theme changes a length by setting the seconds variable on its root.
 up for the whole set). The theme decides what presence looks like – sterile-tech fades and slides.
 
 Visualizers are SVG under one root class each, with `data-style` set to the block's `style`:
-`.sc-spectrum` (bars are `rect`s; `style: line` draws `.sc-spectrum-line` over
+`.sc-spectrum` (bars are `rect`s in `.sc-spectrum-bars`, and with `peak` their markers are
+`rect`s in `.sc-spectrum-peaks`; `style: line` draws `.sc-spectrum-line` over
 `.sc-spectrum-area`) and `.sc-radial` (the ring is a `circle`, bars are `line`s; `style: line`
 draws `.sc-radial-line` and `.sc-radial-area`, the band between it and the ring). base.css places
 them and sizes them with `--spectrum-height` and `--radial-size`. `--radial-size` and
@@ -327,7 +328,10 @@ them and sizes them with `--spectrum-height` and `--radial-size`. `--radial-size
 not on the element, so the vectorscope stays centered in the ring. The scopes read
 `AudioFeatures.wave`: `.sc-oscilloscope` draws `.sc-oscilloscope-line` over a
 `.sc-oscilloscope-axis` (`--oscilloscope-height`, `--oscilloscope-bottom`), and `.sc-vectorscope`
-draws `.sc-vectorscope-line` over `.sc-vectorscope-grid` (a circle and two axes). base.css centers
+draws `.sc-vectorscope-line` over `.sc-vectorscope-grid` (a circle and two axes). With `trail`,
+each scope draws the earlier traces first as `.sc-oscilloscope-trail` / `.sc-vectorscope-trail`,
+each with `--age` (0..1, the oldest highest); they have no stroke until a theme gives them one.
+base.css centers
 the vectorscope on the radial ring (`--vectorscope-size`), so the two nest. `.sc-spectrogram` is a
 `<canvas>` (`--spectrogram-height`): its CSS `color` paints a full-strength cell and each cell's
 alpha is its level, so a theme colors it with `color` and shapes it with opacity, masks, blend
@@ -343,6 +347,8 @@ stroke until a theme gives them one, so a theme shows exactly the event types it
 `--level`, 0..1, holding `.sc-meter-bar` > `.sc-meter-level` and a `.sc-meter-label`. The theme
 draws the meter from `--level`; base.css positions it (`--meters-top`, `--meters-height`) and,
 when `segments` is not 0 (`data-segmented`), masks `.sc-meter-bar` into `--segments` cells.
+With `peak`, each `.sc-meter` also carries `--peak` and its bar holds a `.sc-meter-peak`, which
+base.css places as a hairline, or as the lit part of the top cell when segmented.
 
 `.sc-next` holds the track after this one (`sc-next-label`, `sc-next-artist`, `sc-next-title`) and
 stays mounted for the whole of the current track; the theme decides when it appears, from
@@ -505,6 +511,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
   `color` so appearance stays in the theme. Columns are placed by age, not index, so it scrolls
   smoothly between the 1/30 s grid moments.
+- `peak` and `trail` read the audio history (`audioHistory`, the non-hook form of
+  `useAudioHistory`) instead of remembering earlier frames, so every frame still renders on its
+  own. A peak holds for `peak` seconds, then falls at `PEAK_FALL_SECONDS` (0.6) per full scale.
+  Trails sit one wave length (1/30 s) apart, so consecutive traces are consecutive audio.
 - The set envelope is read in Node before rendering, not in the browser: the browser only ever
   has 30 s of audio loaded, and a Node decode already exists. It decodes at 4 kHz with 0.05 s
   hops, which is enough for points that each cover seconds and keeps a two-hour set to about

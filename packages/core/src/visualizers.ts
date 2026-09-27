@@ -35,6 +35,12 @@ function visualizerSchema<Name extends string, Shape extends z.ZodRawShape>(
 
 const StyleSchema = z.enum(['bars', 'line'], { error: 'style must be bars or line.' });
 
+/** Seconds a falling marker holds each level's peak, as on a hi-fi analyzer. 0 draws none. */
+const peakSetting = () => numberSetting('peak', 0, 4).default(0);
+
+/** Earlier traces drawn behind the current one, each a wave length older. 0 draws none. */
+const trailSetting = () => wholeNumberSetting('trail', 0, 12).default(0);
+
 export const SpectrumConfigSchema = visualizerSchema('spectrum', {
   /** Bars as rects, or one smooth line through their tops over a filled area. */
   style: StyleSchema.default('bars'),
@@ -46,10 +52,16 @@ export const SpectrumConfigSchema = visualizerSchema('spectrum', {
   gap: numberSetting('gap', 0, 0.9).default(0.5),
   /** Splits each bar into this many cells, lit from the bottom like an LED ladder. 0 is solid. */
   segments: wholeNumberSetting('segments', 0, 32).default(0),
-}).refine((config) => config.style === 'bars' || config.segments === 0, {
-  path: ['segments'],
-  error: 'segments only applies to style: bars. Remove it, or set style: bars.',
-});
+  peak: peakSetting(),
+})
+  .refine((config) => config.style === 'bars' || config.segments === 0, {
+    path: ['segments'],
+    error: 'segments only applies to style: bars. Remove it, or set style: bars.',
+  })
+  .refine((config) => config.style === 'bars' || config.peak === 0, {
+    path: ['peak'],
+    error: 'peak only applies to style: bars. Remove it, or set style: bars.',
+  });
 export type SpectrumConfig = z.infer<typeof SpectrumConfigSchema>;
 
 export const RadialConfigSchema = visualizerSchema('radial', {
@@ -80,18 +92,21 @@ export const MetersConfigSchema = visualizerSchema('meters', {
   floor: numberSetting('floor', 0, 0.5).default(0),
   /** Cells per meter, lit from the bottom. 0 is a solid bar. */
   segments: wholeNumberSetting('segments', 0, 48).default(16),
+  peak: peakSetting(),
 });
 export type MetersConfig = z.infer<typeof MetersConfigSchema>;
 
 export const OscilloscopeConfigSchema = visualizerSchema('oscilloscope', {
   /** Amplitude scale; the trace clips at the edges of its box. */
   gain: numberSetting('gain', 0.1, 8).default(1),
+  trail: trailSetting(),
 });
 export type OscilloscopeConfig = z.infer<typeof OscilloscopeConfigSchema>;
 
 export const VectorscopeConfigSchema = visualizerSchema('vectorscope', {
   /** Amplitude scale; the trace clips at the edge of its circle. */
   gain: numberSetting('gain', 0.1, 8).default(1),
+  trail: trailSetting(),
 });
 export type VectorscopeConfig = z.infer<typeof VectorscopeConfigSchema>;
 

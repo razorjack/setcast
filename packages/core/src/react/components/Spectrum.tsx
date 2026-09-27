@@ -1,7 +1,8 @@
 import { useId } from 'react';
-import { level, sampleBins, segmentedLevel } from '../../audio.ts';
+import { level, sampleBins, segmentedLevel, type AudioFeatures } from '../../audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
+import { usePeaks } from './history.ts';
 import { smoothPath } from './svg.ts';
 
 export { SpectrumConfigSchema, type SpectrumConfig };
@@ -11,15 +12,21 @@ const HEIGHT = 100;
 const CENTRE = WIDTH / 2;
 /** Share of each cell left dark when bars are split into segments. */
 const CELL_GAP = 0.3;
+/** Height of a peak marker on solid bars, as a share of the full height. */
+const PEAK_MARK = 0.02;
 
 /**
- * Mirrored bars, bass at the center. SVG so themes style it with CSS: `.sc-spectrum rect` for
- * bars, `.sc-spectrum-line` and `.sc-spectrum-area` for `style: line`.
+ * Mirrored bars, bass at the center. SVG so themes style it with CSS: `.sc-spectrum-bars rect`
+ * for bars, `.sc-spectrum-peaks rect` for their peak markers, `.sc-spectrum-line` and
+ * `.sc-spectrum-area` for `style: line`.
  */
 export function Spectrum({ config }: { config: SpectrumConfig }) {
   const { audio } = useFrame();
   const { style, bars, gain, floor } = config;
-  const levels = sampleBins(audio.bins, bars).map((bin) => level(bin, gain, floor));
+  const levelsOf = (features: AudioFeatures) =>
+    sampleBins(features.bins, bars).map((bin) => level(bin, gain, floor));
+  const levels = levelsOf(audio);
+  const peaks = usePeaks(config.peak, levels, levelsOf);
 
   return (
     <svg
@@ -31,7 +38,7 @@ export function Spectrum({ config }: { config: SpectrumConfig }) {
       {style === 'line' ? (
         <SpectrumLine levels={levels} />
       ) : (
-        <SpectrumBars levels={levels} gap={config.gap} segments={config.segments} />
+        <SpectrumBars levels={levels} peaks={peaks} gap={config.gap} segments={config.segments} />
       )}
     </svg>
   );
@@ -39,35 +46,62 @@ export function Spectrum({ config }: { config: SpectrumConfig }) {
 
 interface SpectrumBarsProps {
   levels: number[];
+  /** One per level, or empty when the spectrum holds no peaks. */
+  peaks: number[];
   gap: number;
   segments: number;
 }
 
-function SpectrumBars({ levels, gap, segments }: SpectrumBarsProps) {
+function SpectrumBars({ levels, peaks, gap, segments }: SpectrumBarsProps) {
   const maskId = useId();
-  const slot = CENTRE / levels.length;
-  const barWidth = slot * (1 - gap);
-  const inset = (slot - barWidth) / 2;
+  const mask = segments > 0 ? `url(#${maskId})` : undefined;
+  const markHeight = segments > 0 ? HEIGHT / segments : HEIGHT * PEAK_MARK;
+  const layout = barLayout(levels.length, gap);
 
-  const rects = [];
-  for (let bar = 0; bar < levels.length; bar++) {
-    const height = HEIGHT * segmentedLevel(levels[bar]!, segments);
-    const y = HEIGHT - height;
-    const right = CENTRE + bar * slot + inset;
-    const left = CENTRE - (bar + 1) * slot + inset;
-    rects.push(
-      <rect key={`r${bar}`} x={right} y={y} width={barWidth} height={height} />,
-      <rect key={`l${bar}`} x={left} y={y} width={barWidth} height={height} />,
-    );
-  }
+  const bars = levels.flatMap((level, bar) => {
+    const height = HEIGHT * segmentedLevel(level, segments);
+    return mirroredRects(layout, bar, HEIGHT - height, height);
+  });
+  const marks = peaks.flatMap((peak, bar) => {
+    const top = HEIGHT * (1 - segmentedLevel(peak, segments));
+    return mirroredRects(layout, bar, top, markHeight);
+  });
 
-  if (segments === 0) return rects;
   return (
     <>
-      <CellMask id={maskId} segments={segments} />
-      <g mask={`url(#${maskId})`}>{rects}</g>
+      {segments > 0 && <CellMask id={maskId} segments={segments} />}
+      <g className="sc-spectrum-bars" mask={mask}>
+        {bars}
+      </g>
+      {marks.length > 0 && (
+        <g className="sc-spectrum-peaks" mask={mask}>
+          {marks}
+        </g>
+      )}
     </>
   );
+}
+
+interface BarLayout {
+  slot: number;
+  width: number;
+  inset: number;
+}
+
+const barLayout = (count: number, gap: number): BarLayout => {
+  const slot = CENTRE / count;
+  const width = slot * (1 - gap);
+  return { slot, width, inset: (slot - width) / 2 };
+};
+
+/** Bar `bar` counted out from the center, once on each side. */
+function mirroredRects({ slot, width, inset }: BarLayout, bar: number, y: number, height: number) {
+  const right = CENTRE + bar * slot + inset;
+  const left = CENTRE - (bar + 1) * slot + inset;
+  return [
+    <rect key={`r${bar}`} x={right} y={y} width={width} height={height} />,
+    <rect key={`l${bar}`} x={left} y={y} width={width} height={height} />,
+  ];
 }
 
 /**
