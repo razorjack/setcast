@@ -401,6 +401,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - The README logo uses separate light and dark PNGs under `docs/assets`, selected with a
   `prefers-color-scheme` `<picture>`. Keep both variants the same dimensions so switching themes
   does not change the README layout.
+- Configuration warnings distinguish explicitly written `panel.fade` from its schema default;
+  `panel: { dwell: 0 }` is valid without a warning about an unused default fade.
 
 ## Not yet decided
 

@@ -249,6 +249,14 @@ modulation:
     ).rejects.toThrow(/leaves the project directory/);
   });
 
+  test.each([
+    ['{ dwell: 0 }', false],
+    ['{ dwell: 0, fade: 1.2 }', true],
+  ])('only warns about an explicitly configured unused panel fade: %s', async (panel, warned) => {
+    const { warnings } = await load(`audio: assets/mix.wav\ntheme: test\npanel: ${panel}\n`);
+    expect(warnings.includes('panel.fade has no effect when panel.dwell is 0.')).toBe(warned);
+  });
+
   test('warns about ignored settings and ambiguous track timing', async () => {
     const { warnings } = await load(
       `

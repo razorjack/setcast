@@ -2,7 +2,7 @@ import { access, readFile } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml, YAMLParseError } from 'yaml';
-import { ProjectConfigSchema, type ProjectConfig } from '../config.ts';
+import { ProjectConfigSchema, type ProjectConfig, type ProjectConfigInput } from '../config.ts';
 import { FEATURE_SOURCES } from '../audio.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { sortEvents, type SetEvent } from '../events.ts';
@@ -32,7 +32,7 @@ export async function loadProject(
   { themes = {} }: LoadOptions = {},
 ): Promise<LoadedProject> {
   const root = resolve(dir);
-  const config = await readConfig(root);
+  const { config, input } = await readProjectConfig(root);
   const theme = await resolveTheme(config.theme, root, themes);
   const events = mergeEvents(config);
   const modulation = [...themeRoutes(theme), ...config.modulation];
@@ -56,18 +56,24 @@ export async function loadProject(
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
   };
-  return { dir: root, config, project, warnings: projectWarnings(config, events, modulation) };
+  return {
+    dir: root,
+    config,
+    project,
+    warnings: projectWarnings(config, events, modulation, input),
+  };
 }
 
 function projectWarnings(
   config: ProjectConfig,
   events: readonly SetEvent[],
   routes: readonly ModRoute[],
+  input: ProjectConfigInput,
 ): string[] {
   return [
     ...modulationWarnings(config, events, routes),
     ...trackWarnings(config, events),
-    ...(config.panel.dwell === 0 && config.panel.fade > 0
+    ...(config.panel.dwell === 0 && config.panel.fade > 0 && input.panel?.fade !== undefined
       ? ['panel.fade has no effect when panel.dwell is 0.']
       : []),
   ];
@@ -155,12 +161,17 @@ async function composeCss(theme: Theme, userCssFile: string | null): Promise<str
 }
 
 export async function readConfig(root: string): Promise<ProjectConfig> {
+  const { config } = await readProjectConfig(root);
+  return config;
+}
+
+async function readProjectConfig(root: string) {
   const text = await readConfigFile(join(root, CONFIG_FILE), root);
   const raw = parseConfigYaml(text);
 
   const parsed = ProjectConfigSchema.safeParse(raw ?? {});
   if (!parsed.success) throw new ConfigError(CONFIG_FILE, zodIssues(parsed.error));
-  return parsed.data;
+  return { config: parsed.data, input: raw as ProjectConfigInput };
 }
 
 async function readConfigFile(file: string, root: string): Promise<string> {
