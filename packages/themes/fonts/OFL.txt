@@ -2,7 +2,9 @@ The fonts in this directory are licensed under the SIL Open Font License, Versio
 full below.
 
 - Barlow Condensed: Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)
+- Fira Sans: Copyright (c) 2012-2015, The Mozilla Foundation and Telefonica S.A.
 - JetBrains Mono: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+- Oxanium: Copyright 2019 The Oxanium Project Authors (https://github.com/sevmeyer/oxanium)
 - Silkscreen: Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)
 - Unbounded: Copyright 2022 The Unbounded Project Authors (https://github.com/googlefonts/unbounded)
 

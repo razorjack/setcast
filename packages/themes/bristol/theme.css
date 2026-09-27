@@ -1,0 +1,373 @@
+/* bristol: a flat grey field, a white contour, and the set told in stacked green stripes. */
+
+@font-face {
+  font-family: 'Oxanium';
+  font-style: normal;
+  font-weight: 200 800;
+  src: url(../fonts/Oxanium-200-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Oxanium';
+  font-style: normal;
+  font-weight: 200 800;
+  src: url(../fonts/Oxanium-200-800-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: url(../fonts/FiraSans-Italic-300-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: url(../fonts/FiraSans-Italic-300-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-bristol {
+  --grey: #a0a2a1;
+  --ink: #2f3432;
+  --white: #f4f6f5;
+  --blue: #2b95d6;
+  --blue-dim: #8fb2c6;
+  --teal: #2e6657;
+  --green: #5a8f79;
+  --sage: #93b5a4;
+  --pale: #b7c7be;
+  --fg: var(--white);
+  --fg-dim: var(--ink);
+  --accent: var(--blue);
+  --accent-2: var(--teal);
+  --deck-a: var(--blue);
+  --deck-b: var(--teal);
+  --deck-c: var(--green);
+  --deck-d: var(--white);
+  --font-display: 'Oxanium', system-ui, sans-serif;
+  --font-italic: 'Fira Sans', system-ui, sans-serif;
+  --hairline: max(1px, 0.06cqw);
+  --radial-size: 56cqh;
+  --spectrum-height: 15cqh;
+
+  /* the stripes: a blue rule at --stripes, then teal, green, sage and pale down to the bottom */
+  --stripes: 58cqh;
+  --rule: 0.9cqh;
+  --teal-height: 10.5cqh;
+  --green-height: 7cqh;
+  --sage-height: 7cqh;
+  background: var(--grey);
+}
+
+/* a drop steps the stripes a shade darker for as long as it lasts */
+.theme-bristol:is([data-section='drop'], [data-section='double_drop']) {
+  --teal: #1f4a3f;
+  --green: #2e6657;
+  --sage: #5a8f79;
+  --pale: #93b5a4;
+}
+/* a breakdown drains them toward the grey */
+.theme-bristol[data-section='breakdown'] {
+  --teal: #56625d;
+  --green: #7c8783;
+  --sage: #959d99;
+  --pale: #a6aca9;
+  --blue: #7c9fb4;
+}
+
+/* background: the art as a faint grey wash on the field */
+.theme-bristol .sc-bg-img {
+  filter: grayscale(1) contrast(0.7) brightness(calc(1.5 + var(--rewind-flash)));
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+}
+.theme-bristol .sc-bg-vignette {
+  background: var(--grey);
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
+}
+/* the stripes, and the blue rule lit as far as the set has run */
+.theme-bristol .sc-bg::after {
+  content: '';
+  position: absolute;
+  inset: var(--stripes) 0 0;
+  background:
+    linear-gradient(to right, var(--blue) calc(var(--set-progress, 0) * 100%), var(--blue-dim) 0) 0
+      0 / 100% var(--rule) no-repeat,
+    linear-gradient(
+      to bottom,
+      transparent var(--rule),
+      var(--teal) 0 calc(var(--rule) + var(--teal-height)),
+      var(--green) 0 calc(var(--rule) + var(--teal-height) + var(--green-height)),
+      var(--sage) 0
+        calc(var(--rule) + var(--teal-height) + var(--green-height) + var(--sage-height)),
+      var(--pale) 0
+    );
+}
+
+/* the radial, turned on its side and drawn out: a white contour of a pod, breathing */
+.theme-bristol .sc-radial {
+  right: auto;
+  left: 14cqw;
+  top: 31cqh;
+  transform: none;
+  translate: 0 -50%;
+  rotate: 90deg;
+  scale: 0.72 1.9;
+}
+.theme-bristol .sc-radial circle,
+.theme-bristol .sc-radial line {
+  stroke: var(--white);
+  stroke-width: 1.2;
+}
+.theme-bristol .sc-radial circle {
+  stroke-opacity: 0.35;
+}
+.theme-bristol .sc-radial-line {
+  stroke: var(--white);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.theme-bristol .sc-radial-area {
+  fill: rgb(255 255 255 / 0.12);
+}
+/* the spectrum as a contour resting on the blue rule */
+.theme-bristol .sc-spectrum {
+  bottom: calc(100cqh - var(--stripes));
+}
+.theme-bristol .sc-spectrum-line {
+  stroke: var(--white);
+  stroke-width: var(--hairline);
+}
+.theme-bristol .sc-spectrum-area {
+  fill: rgb(255 255 255 / 0.1);
+}
+.theme-bristol .sc-spectrum rect {
+  fill: var(--white);
+}
+.theme-bristol .sc-spectrum-peaks rect {
+  fill: var(--teal);
+}
+.theme-bristol .sc-oscilloscope-line,
+.theme-bristol .sc-vectorscope-line {
+  stroke: var(--white);
+  stroke-width: var(--hairline);
+}
+.theme-bristol .sc-oscilloscope-trail,
+.theme-bristol .sc-vectorscope-trail {
+  stroke: var(--white);
+  stroke-width: var(--hairline);
+  opacity: calc((1 - var(--age)) * 0.4);
+}
+.theme-bristol .sc-oscilloscope-axis,
+.theme-bristol .sc-vectorscope-grid {
+  stroke: rgb(255 255 255 / 0.3);
+  stroke-width: var(--hairline);
+}
+.theme-bristol .sc-spectrogram {
+  color: var(--white);
+  opacity: 0.8;
+}
+/* meters: horizontal bars stacked like the stripes */
+.theme-bristol .sc-meter-bar {
+  background: rgb(255 255 255 / 0.15);
+}
+.theme-bristol .sc-meter-level {
+  background: var(--white);
+}
+.theme-bristol .sc-meter[data-band='bass'] .sc-meter-level {
+  background: var(--deck);
+}
+.theme-bristol .sc-meter-peak {
+  background: var(--teal);
+}
+.theme-bristol .sc-meter-label {
+  margin-top: 1cqh;
+  font-size: 0.85cqw;
+  color: var(--ink);
+}
+.theme-bristol .sc-overview-bass,
+.theme-bristol .sc-overview-high {
+  fill: rgb(255 255 255 / 0.3);
+}
+.theme-bristol .sc-overview-played .sc-overview-bass,
+.theme-bristol .sc-overview-played .sc-overview-high {
+  fill: var(--white);
+}
+.theme-bristol .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+  stroke: var(--teal);
+  stroke-width: 0.12cqw;
+}
+.theme-bristol .sc-overview-head {
+  stroke: var(--blue);
+  stroke-width: 0.12cqw;
+}
+
+/* header: small lowercase on the grey */
+.theme-bristol .sc-header {
+  font-weight: 400;
+  font-size: 1.1cqw;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+.theme-bristol .sc-clock {
+  font-variant-numeric: tabular-nums;
+}
+.theme-bristol .sc-clock-total {
+  opacity: 0.6;
+}
+
+/*
+ * Now playing: right-aligned, each line in its own place. The artist sits on the grey above the
+ * blue rule, the title in the teal stripe, the label in the green one.
+ */
+.theme-bristol .sc-panel {
+  --head-row: 3cqh;
+  --artist-row: 5cqh;
+  display: grid;
+  grid-template-rows: var(--head-row) var(--artist-row) minmax(var(--teal-height), auto) var(
+      --green-height
+    );
+  align-items: center;
+  justify-items: end;
+  top: calc(var(--stripes) + var(--rule) - var(--head-row) - var(--artist-row) - var(--rule));
+  bottom: auto;
+  left: auto;
+  right: var(--margin);
+  max-width: 70cqw;
+  text-align: right;
+  opacity: clamp(0, var(--show, 1) * 1.4, 1);
+  translate: calc((1 - var(--show, 1)) * 5cqw) 0;
+}
+.theme-bristol .sc-panel-head {
+  gap: 0.9cqw;
+  font-size: 0.85cqw;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+.theme-bristol .sc-deck {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5cqw;
+  height: 1.5cqw;
+  font-weight: 600;
+  font-size: 0.8cqw;
+  letter-spacing: 0;
+  text-transform: lowercase;
+  color: var(--white);
+  background: var(--deck);
+}
+.theme-bristol[data-deck='D'] .sc-deck {
+  color: var(--ink);
+}
+.theme-bristol .sc-index {
+  font-variant-numeric: tabular-nums;
+}
+.theme-bristol .sc-index-sep {
+  margin: 0 0.25em;
+}
+.theme-bristol .sc-artist {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 2.2cqw;
+  color: var(--teal);
+}
+.theme-bristol .sc-title {
+  font-weight: 300;
+  font-size: 4cqw;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--white);
+  text-wrap: balance;
+}
+.theme-bristol .sc-label {
+  font-size: 0.95cqw;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--white);
+}
+
+/* up next: small, in the pale stripe at the bottom */
+.theme-bristol .sc-next {
+  bottom: calc(var(--margin) * 0.8);
+  gap: 0.2cqw;
+  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+}
+.theme-bristol .sc-next-label {
+  font-size: 0.8cqw;
+  letter-spacing: 0.16em;
+  color: var(--ink);
+}
+.theme-bristol .sc-next-artist {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.2cqw;
+  color: var(--teal);
+}
+.theme-bristol .sc-next-title {
+  font-weight: 400;
+  font-size: 1.7cqw;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+
+/* portrait: the stripes lower, the pod above them */
+@container (aspect-ratio < 1) {
+  .theme-bristol .sc-bg::after,
+  .theme-bristol .sc-panel,
+  .theme-bristol .sc-spectrum {
+    --stripes: 64cqh;
+    --teal-height: 8cqh;
+    --green-height: 5cqh;
+    --sage-height: 5cqh;
+  }
+  .theme-bristol .sc-radial {
+    --radial-size: 60cqw;
+    left: 20cqw;
+    top: 34cqh;
+  }
+  .theme-bristol .sc-header {
+    font-size: 2.1cqw;
+  }
+  .theme-bristol .sc-panel {
+    max-width: 90cqw;
+  }
+  .theme-bristol .sc-panel-head {
+    font-size: 1.7cqw;
+  }
+  .theme-bristol .sc-deck {
+    width: 3cqw;
+    height: 3cqw;
+    font-size: 1.6cqw;
+  }
+  .theme-bristol .sc-artist {
+    font-size: 4cqw;
+  }
+  .theme-bristol .sc-title {
+    font-size: 7cqw;
+  }
+  .theme-bristol .sc-label {
+    font-size: 1.8cqw;
+  }
+  .theme-bristol .sc-next-label {
+    font-size: 1.6cqw;
+  }
+  .theme-bristol .sc-next-artist {
+    font-size: 2.4cqw;
+  }
+  .theme-bristol .sc-next-title {
+    font-size: 3.2cqw;
+  }
+}
