@@ -7,6 +7,7 @@ import { bundle } from '@remotion/bundler';
 import { ensureBrowser, renderMedia, renderStill, selectComposition } from '@remotion/renderer';
 import { SetcastError, type ResolvedProject } from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
+import { checkLocalServer } from './local-server.ts';
 import { probeAudio } from './probe.ts';
 import { resolveFrameRange } from './range.ts';
 
@@ -59,6 +60,7 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
 /** Browser, bundle and composition: everything both a render and a still need first. */
 async function prepare(project: ResolvedProject, projectDir: string, report: Report) {
   await probeAudio(project, projectDir);
+  await checkLocalServer();
   let downloadingBrowser = false;
   try {
     await ensureBrowser({
@@ -94,6 +96,8 @@ async function prepare(project: ResolvedProject, projectDir: string, report: Rep
     serveUrl,
     id: COMPOSITION_ID,
     inputProps: project,
+  }).catch((cause: unknown) => {
+    throw translateRenderError(cause);
   });
   return { serveUrl, composition };
 }
@@ -211,6 +215,13 @@ function validateVideoFile(out: string): void {
 
 function translateRenderError(thrown: unknown): Error {
   const cause = thrown instanceof Error ? thrown : new Error(String(thrown));
+  if (cause.message === 'No available ports found') {
+    return new SetcastError(
+      "Cannot start the renderer's local HTTP server",
+      'Allow the renderer to bind a localhost port in your sandbox or firewall settings, or free an occupied port and retry.',
+      { cause, exitCode: 1 },
+    );
+  }
   const failedImage = cause.message.match(/Failed to load (?:image with src )?(.+)/i)?.[1];
   if (failedImage) {
     return new SetcastError(

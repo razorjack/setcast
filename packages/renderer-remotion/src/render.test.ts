@@ -9,6 +9,7 @@ const remotion = vi.hoisted(() => ({
 }));
 
 const audio = vi.hoisted(() => ({ probe: vi.fn() }));
+const localServer = vi.hoisted(() => ({ check: vi.fn() }));
 
 vi.mock('@remotion/bundler', () => ({ bundle: remotion.bundle }));
 vi.mock('@remotion/renderer', () => ({
@@ -17,6 +18,7 @@ vi.mock('@remotion/renderer', () => ({
   selectComposition: remotion.selectComposition,
 }));
 vi.mock('./probe.ts', () => ({ probeAudio: audio.probe }));
+vi.mock('./local-server.ts', () => ({ checkLocalServer: localServer.check }));
 
 const { render } = await import('./index.ts');
 
@@ -42,6 +44,7 @@ const run = () => render(project, { projectDir: '.', out: 'out.mp4' });
 describe('render orchestration failures', () => {
   beforeEach(() => {
     audio.probe.mockReset().mockResolvedValue(10);
+    localServer.check.mockReset().mockResolvedValue(undefined);
     remotion.bundle.mockReset().mockResolvedValue('http://localhost:3000');
     remotion.ensureBrowser.mockReset().mockResolvedValue({
       type: 'local-puppeteer-browser',
@@ -61,6 +64,13 @@ describe('render orchestration failures', () => {
     remotion.ensureBrowser.mockRejectedValue(new Error('browser failed'));
     await expect(run()).rejects.toThrow('browser failed');
     expect(remotion.bundle).not.toHaveBeenCalled();
+  });
+
+  test('checks local server access before starting browser and compositor work', async () => {
+    localServer.check.mockRejectedValue(new Error('local server denied'));
+    await expect(run()).rejects.toThrow('local server denied');
+    expect(remotion.ensureBrowser).not.toHaveBeenCalled();
+    expect(remotion.selectComposition).not.toHaveBeenCalled();
   });
 
   test('translates a browser download failure', async () => {
@@ -83,6 +93,17 @@ describe('render orchestration failures', () => {
   test('stops when composition selection fails', async () => {
     remotion.selectComposition.mockRejectedValue(new Error('selection failed'));
     await expect(run()).rejects.toThrow('selection failed');
+    expect(remotion.renderMedia).not.toHaveBeenCalled();
+  });
+
+  test('explains local server failures during composition selection', async () => {
+    remotion.selectComposition.mockRejectedValue(new Error('No available ports found'));
+    await expect(run()).rejects.toMatchObject({
+      message: "Cannot start the renderer's local HTTP server",
+      hint: expect.stringContaining('localhost port'),
+      exitCode: 1,
+      cause: expect.objectContaining({ message: 'No available ports found' }),
+    });
     expect(remotion.renderMedia).not.toHaveBeenCalled();
   });
 

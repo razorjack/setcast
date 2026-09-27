@@ -405,6 +405,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
 - Configuration warnings distinguish explicitly written `panel.fade` from its schema default;
   `panel: { dwell: 0 }` is valid without a warning about an unused default fade.
+- The adapter checks localhost binding before starting Remotion. In restricted sandboxes,
+  Remotion can leave its compositor running after failing to acquire a port; the preflight
+  reports the permission problem before starting that process.
 
 ## Not yet decided
 
