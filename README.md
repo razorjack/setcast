@@ -135,9 +135,10 @@ The spectrogram is a canvas: its CSS `color` is the color of a full-strength cel
 
 ## Customize without JavaScript
 
-Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variables
-(`--accent`, `--panel-bg`, `--blur`, `--font-display`, …) or restyle any `.sc-*` class, and point
-`theme:` at your file. Modulation routes expose audio as `--mod-<target>` variables, so
+Themes are CSS. To adjust a built-in theme, set its variables (`--accent`, `--deck-a`,
+`--panel-bg`, `--blur`, `--font-display`, …) or restyle any `.sc-*` class in a `css:` file. To
+write your own, copy a theme's `theme.css` into the project and point `theme:` at it; its `url()`s
+point at `../fonts` and `../textures` in `packages/themes`, so copy what it uses or swap in your own. Modulation routes expose audio as `--mod-<target>` variables, so
 `box-shadow: 0 0 calc(var(--mod-panel-glow) * 60px) var(--accent)` reacts to the music with no
 code. The stage root also carries the timeline itself – `data-section`, `data-deck`, `--set-progress`,
 and seconds in `--since-drop`, `--until-drop`, `--until-breakdown`, `--since-rewind`,

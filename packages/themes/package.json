@@ -5,7 +5,10 @@
   "license": "MIT",
   "files": [
     "dist",
-    "sterile-tech"
+    "fonts",
+    "textures",
+    "*/theme.css",
+    "*/*.svg"
   ],
   "type": "module",
   "exports": {

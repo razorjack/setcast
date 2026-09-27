@@ -398,7 +398,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   output is resolution independent, and it stays renderer neutral. 128 rects per frame is cheap.
 - Theme fonts are vendored OFL `.woff2` files inlined as data URIs into the theme CSS string at
   project resolution; renders never touch the network and the scene gets one self-contained CSS
-  string.
+  string. All built-in themes share `packages/themes/fonts/` (one `OFL.txt` lists every family)
+  and `packages/themes/textures/`. Each face ships as the Google Fonts latin subset plus latin-ext
+  cut down to U+0100-024F, so accented names (Polish, Czech, German, …) keep the theme's face
+  without paying for Vietnamese and phonetic glyphs. Variable fonts that would weigh 100 KB+ are
+  instanced to the weights a theme uses (fontTools `instancer`). A font with a Reserved Font Name
+  (Marcellus) ships unmodified, because the OFL forbids modifying it under that name.
 - `RenderFrame.analyzer` is the adapter's `AudioAnalyzer`, exposed so components can look back
   (`useAudioHistory`) the way modulation's `smooth` already did. Anything that reads it stays
   deterministic because the adapter holds each frame until `HISTORY_SECONDS` of audio is loaded.
