@@ -32,3 +32,8 @@ export function smoothPath(points: readonly Point[], closed = false): string {
   if (closed) segments.push('Z');
   return segments.join(' ');
 }
+
+/** Straight segments through every point. */
+export function linePath(points: readonly Point[]): string {
+  return points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${at(point)}`).join(' ');
+}

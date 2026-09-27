@@ -68,6 +68,34 @@
   fill: none;
 }
 
+.sc-oscilloscope {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--oscilloscope-bottom, 4cqh);
+  width: 100%;
+  height: var(--oscilloscope-height, 22cqh);
+  display: block;
+  fill: none;
+}
+
+.sc-oscilloscope path,
+.sc-oscilloscope line {
+  vector-effect: non-scaling-stroke;
+}
+
+/* centered where the radial ring is, so the two nest when a project uses both */
+.sc-vectorscope {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--margin) + (var(--radial-size, 62cqh) - var(--vectorscope-size, 34cqh)) / 2);
+  width: var(--vectorscope-size, 34cqh);
+  height: var(--vectorscope-size, 34cqh);
+  transform: translateY(-50%);
+  overflow: visible;
+  fill: none;
+}
+
 .sc-meters {
   position: absolute;
   left: var(--margin);

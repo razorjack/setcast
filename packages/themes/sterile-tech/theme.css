@@ -148,6 +148,33 @@
   stroke-linejoin: round;
 }
 
+/* oscilloscope and vectorscope: a glowing trace over a hairline grid, like a lab instrument */
+.theme-sterile-tech .sc-oscilloscope,
+.theme-sterile-tech .sc-vectorscope {
+  mix-blend-mode: screen;
+}
+.theme-sterile-tech .sc-oscilloscope-line,
+.theme-sterile-tech .sc-vectorscope-line {
+  stroke: var(--accent-2);
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 0.5cqw color-mix(in srgb, var(--accent-2) 70%, transparent));
+}
+.theme-sterile-tech .sc-oscilloscope-line {
+  stroke-width: 2px;
+}
+.theme-sterile-tech .sc-vectorscope-line {
+  stroke-width: 2.5;
+  opacity: 0.85;
+}
+.theme-sterile-tech .sc-oscilloscope-axis,
+.theme-sterile-tech .sc-vectorscope-grid {
+  stroke: color-mix(in srgb, var(--accent-2) 22%, transparent);
+  stroke-width: 1px;
+}
+.theme-sterile-tech .sc-vectorscope-grid {
+  stroke-width: 1.5;
+}
+
 /* meters: dim steel cells, lit in the second accent; bass takes the deck color */
 .theme-sterile-tech .sc-meters {
   mix-blend-mode: screen;

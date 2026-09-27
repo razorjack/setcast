@@ -81,6 +81,18 @@ export const MetersConfigSchema = visualizerSchema('meters', {
 });
 export type MetersConfig = z.infer<typeof MetersConfigSchema>;
 
+export const OscilloscopeConfigSchema = visualizerSchema('oscilloscope', {
+  /** Amplitude scale; the trace clips at the edges of its box. */
+  gain: numberSetting('gain', 0.1, 8).default(1),
+});
+export type OscilloscopeConfig = z.infer<typeof OscilloscopeConfigSchema>;
+
+export const VectorscopeConfigSchema = visualizerSchema('vectorscope', {
+  /** Amplitude scale; the trace clips at the edge of its circle. */
+  gain: numberSetting('gain', 0.1, 8).default(1),
+});
+export type VectorscopeConfig = z.infer<typeof VectorscopeConfigSchema>;
+
 /** A `visualizer:` entry after its own schema filled in the defaults. */
 export type VisualizerConfig = { name: string } & Record<string, unknown>;
 
@@ -110,6 +122,8 @@ export const visualizers = new Registry<VisualizerSpec>('visualizer');
 visualizers.add({ name: 'spectrum', schema: SpectrumConfigSchema });
 visualizers.add({ name: 'radial', schema: RadialConfigSchema });
 visualizers.add({ name: 'meters', schema: MetersConfigSchema });
+visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
+visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
 
 /**
  * The `visualizer:` key as written: one block, or a list of blocks drawn in order (`[]` draws none).

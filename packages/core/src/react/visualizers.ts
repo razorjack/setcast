@@ -8,8 +8,10 @@ import {
   type VisualizerSpec,
 } from '../visualizers.ts';
 import { Meters, MetersConfigSchema } from './components/Meters.tsx';
+import { Oscilloscope, OscilloscopeConfigSchema } from './components/Oscilloscope.tsx';
 import { Radial, RadialConfigSchema } from './components/Radial.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
+import { Vectorscope, VectorscopeConfigSchema } from './components/Vectorscope.tsx';
 
 export { visualizers };
 
@@ -46,3 +48,9 @@ export function resolveVisualizer(config: VisualizerConfig) {
 defineVisualizer({ name: 'spectrum', schema: SpectrumConfigSchema, component: Spectrum });
 defineVisualizer({ name: 'radial', schema: RadialConfigSchema, component: Radial });
 defineVisualizer({ name: 'meters', schema: MetersConfigSchema, component: Meters });
+defineVisualizer({
+  name: 'oscilloscope',
+  schema: OscilloscopeConfigSchema,
+  component: Oscilloscope,
+});
+defineVisualizer({ name: 'vectorscope', schema: VectorscopeConfigSchema, component: Vectorscope });

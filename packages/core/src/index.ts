@@ -105,14 +105,18 @@ export {
 } from './chapters.ts';
 export {
   MetersConfigSchema,
+  OscilloscopeConfigSchema,
   RadialConfigSchema,
   SpectrumConfigSchema,
+  VectorscopeConfigSchema,
   resolveVisualizerConfig,
   resolveVisualizerConfigs,
   visualizers,
   type MetersConfig,
+  type OscilloscopeConfig,
   type RadialConfig,
   type SpectrumConfig,
+  type VectorscopeConfig,
   type VisualizerConfig,
   type VisualizerSpec,
 } from './visualizers.ts';
