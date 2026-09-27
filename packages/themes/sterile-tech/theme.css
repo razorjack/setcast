@@ -114,6 +114,13 @@
 .theme-sterile-tech .sc-spectrum rect {
   fill: var(--accent-2);
 }
+.theme-sterile-tech .sc-spectrum-area {
+  fill: color-mix(in srgb, var(--accent-2) 22%, transparent);
+}
+.theme-sterile-tech .sc-spectrum-line {
+  stroke: var(--accent-2);
+  stroke-width: 2px;
+}
 .theme-sterile-tech[data-section='breakdown'] .sc-spectrum {
   opacity: calc(0.75 - 0.4 * clamp(0, var(--section-time, 60) / 1.5, 1));
 }
@@ -131,6 +138,14 @@
 .theme-sterile-tech .sc-radial circle {
   stroke: color-mix(in srgb, var(--accent-2) 35%, transparent);
   stroke-width: 1.5;
+}
+.theme-sterile-tech .sc-radial-area {
+  fill: color-mix(in srgb, var(--accent-2) 14%, transparent);
+}
+.theme-sterile-tech .sc-radial-line {
+  stroke: var(--accent-2);
+  stroke-width: 3;
+  stroke-linejoin: round;
 }
 
 /* now playing: frosted glass, hairline; --show is presence (spring in, dwell, leave) */

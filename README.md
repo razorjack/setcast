@@ -94,6 +94,27 @@ Use `trackNumberOffset: 2` when the excerpt begins with track 3. The panel then 
 The default `0` keeps the usual current/total counter. This does not change event indices,
 deck assignment, or track timing.
 
+## Visualizers
+
+`visualizer:` takes one block or a list of them. A list draws every entry in order, so later
+entries sit on top; `[]` draws none. Every key except `name` is optional.
+
+```yaml
+visualizer:
+  - { name: spectrum, style: line }
+  - { name: radial, bars: 48, spin: 0 }
+```
+
+| name       | draws                                         | keys and defaults                                                                                           |
+| ---------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `spectrum` | mirrored bars along the bottom, bass centered | `style: bars` (or `line`), `bars: 48`, `gain: 1`, `floor: 0.02`, `gap: 0.5`, `segments: 0` (cells per bar) |
+| `radial`   | bars around a ring, bass at the bottom        | `style: bars` (or `line`), `bars: 40`, `radius: 0.3`, `length: 0.18`, `gain: 1`, `floor: 0.03`, `spin: 2`  |
+
+`gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
+baseline in silence, and `spin` is degrees per second. Placement and appearance are CSS: set
+`--spectrum-height` or `--radial-size`, or restyle `.sc-spectrum` and `.sc-radial` (see
+[AGENTS.md](AGENTS.md#css-contract) for their elements).
+
 ## Customize without JavaScript
 
 Themes are CSS. Copy `packages/themes/sterile-tech/theme.css`, change the variables

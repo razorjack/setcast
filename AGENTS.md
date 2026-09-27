@@ -287,6 +287,12 @@ Renderer independence 4).
 `panel.dwell` seconds and leaves over `panel.fade` (`panel:` in `setcast.yaml`; `dwell: 0` keeps it
 up for the whole set). The theme decides what presence looks like – sterile-tech fades and slides.
 
+Visualizers are SVG under one root class each, with `data-style` set to the block's `style`:
+`.sc-spectrum` (bars are `rect`s; `style: line` draws `.sc-spectrum-line` over
+`.sc-spectrum-area`) and `.sc-radial` (the ring is a `circle`, bars are `line`s; `style: line`
+draws `.sc-radial-line` and `.sc-radial-area`, the band between it and the ring). base.css places
+them and sizes them with `--spectrum-height` and `--radial-size`.
+
 `.sc-next` holds the track after this one (`sc-next-label`, `sc-next-artist`, `sc-next-title`) and
 stays mounted for the whole of the current track; the theme decides when it appears, from
 `--until-track`. sterile-tech fades it in over the last 8 seconds and lifts it clear of the
@@ -418,13 +424,17 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   progress, tempo, render ranges, and YouTube chapters stay on the audio file's timeline.
 - `clockTotal:` optionally replaces the displayed clock endpoint with a positive duration in
   seconds or timecode form. It does not change the composition duration or progress.
+- `trackNumberOffset:` adds a nonnegative integer to the displayed track number (default 0).
+  A positive offset hides the total, since an excerpt does not establish the full mix's track
+  count. Timeline indices, deck assignment, and track timing remain unchanged.
 - `visualizer:` takes one block or a list of blocks drawn in order, and `[]` draws none. The key
   stays singular so existing projects keep working; `ResolvedProject.visualizers` is always a list.
   `resolveVisualizerConfigs` checks each entry against its own visualizer's schema, so an error
   names `visualizer[1].bars`, not the list.
-- `trackNumberOffset:` adds a nonnegative integer to the displayed track number (default 0).
-  A positive offset hides the total, since an excerpt does not establish the full mix's track
-  count. Timeline indices, deck assignment, and track timing remain unchanged.
+- `style: bars | line` is shared by spectrum and radial so the same word means the same drawing.
+  Spectrum `segments` cuts the bars with an SVG mask rather than drawing one rect per cell, which
+  keeps a frame at 2 rects per bar. The mask's fills are inline styles, because theme rules such
+  as `.sc-spectrum rect { fill }` otherwise repaint the mask and erase the gaps.
 
 ## Not yet decided
 

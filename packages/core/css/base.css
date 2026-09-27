@@ -48,6 +48,16 @@
   display: block;
 }
 
+/* the spectrum's viewBox stretches to the stage; keep its strokes as thick as the theme says */
+.sc-spectrum path {
+  vector-effect: non-scaling-stroke;
+}
+
+.sc-spectrum-line,
+.sc-radial-line {
+  fill: none;
+}
+
 .sc-radial {
   position: absolute;
   right: var(--margin);
