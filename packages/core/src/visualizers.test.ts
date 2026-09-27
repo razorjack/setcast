@@ -20,6 +20,12 @@ describe('visualizer schemas', () => {
     ]);
   });
 
+  test('a visualizer without settings says so', () => {
+    expect(issuesOf({ name: 'overview', height: 3 })).toEqual([
+      { path: 'visualizer', message: 'Unknown key "height". overview takes only name.' },
+    ]);
+  });
+
   test('a setting out of range states its range', () => {
     expect(issuesOf({ name: 'spectrum', bars: 100 })).toEqual([
       { path: 'visualizer.bars', message: 'bars must be a whole number from 8 to 64.' },

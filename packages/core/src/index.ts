@@ -110,6 +110,7 @@ export {
 export {
   MetersConfigSchema,
   OscilloscopeConfigSchema,
+  OverviewConfigSchema,
   RadialConfigSchema,
   SpectrogramConfigSchema,
   SpectrumConfigSchema,
@@ -120,6 +121,7 @@ export {
   visualizers,
   type MetersConfig,
   type OscilloscopeConfig,
+  type OverviewConfig,
   type RadialConfig,
   type SpectrogramConfig,
   type SpectrumConfig,

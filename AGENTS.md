@@ -234,7 +234,7 @@ Each plugin kind is a small interface plus a Zod schema for its config. Extensio
 list; implemented today: visualizer, theme, tracklist importer):
 
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
-  vectorscope ✓, spectrogram ✓); `visualizer:` takes one block
+  vectorscope ✓, spectrogram ✓, overview ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + layout (sterile-tech ✓; a bare `.css`
   path is also a valid theme)
@@ -319,6 +319,12 @@ the vectorscope on the radial ring (`--vectorscope-size`), so the two nest. `.sc
 `<canvas>` (`--spectrogram-height`): its CSS `color` paints a full-strength cell and each cell's
 alpha is its level, so a theme colors it with `color` and shapes it with opacity, masks, blend
 modes and filters.
+
+`.sc-overview` is the whole set as a strip under the header (`--overview-top`, `--overview-height`):
+`.sc-overview-high` above the middle line and `.sc-overview-bass` below it, the same two again
+inside `.sc-overview-played`, clipped to the part that has played, one
+`.sc-overview-mark[data-type]` per event and the `.sc-overview-head` playhead. SVG lines have no
+stroke until a theme gives them one, so a theme shows exactly the event types it styles.
 
 `.sc-meters` is HTML, not SVG: one `.sc-meter` per band (`data-band="bass"`) with its level in
 `--level`, 0..1, holding `.sc-meter-bar` > `.sc-meter-level` and a `.sc-meter-label`. The theme

@@ -143,6 +143,20 @@
   );
 }
 
+.sc-overview {
+  position: absolute;
+  left: var(--margin);
+  top: var(--overview-top, calc(var(--margin) + 3.4cqh));
+  width: calc(100% - 2 * var(--margin));
+  height: var(--overview-height, 4.5cqh);
+  fill: none;
+}
+
+.sc-overview path,
+.sc-overview line {
+  vector-effect: non-scaling-stroke;
+}
+
 .sc-header {
   position: absolute;
   top: var(--margin);

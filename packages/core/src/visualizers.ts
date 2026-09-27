@@ -20,13 +20,14 @@ function visualizerSchema<Name extends string, Shape extends z.ZodRawShape>(
   name: Name,
   shape: Shape,
 ) {
-  const keys = Object.keys(shape).join(', ');
+  const keys = Object.keys(shape);
+  const takes = keys.length ? `${name} takes: ${keys.join(', ')}.` : `${name} takes only name.`;
   return z.strictObject(
     { name: z.literal(name).default(name), ...shape },
     {
       error: (issue) => {
         if (issue.code !== 'unrecognized_keys') return undefined;
-        return `Unknown key "${issue.keys[0]}". ${name} takes: ${keys}.`;
+        return `Unknown key "${issue.keys[0]}". ${takes}`;
       },
     },
   );
@@ -101,6 +102,10 @@ export const SpectrogramConfigSchema = visualizerSchema('spectrogram', {
 });
 export type SpectrogramConfig = z.infer<typeof SpectrogramConfigSchema>;
 
+/** The whole set as a strip; what it marks and how it looks is the theme's. */
+export const OverviewConfigSchema = visualizerSchema('overview', {});
+export type OverviewConfig = z.infer<typeof OverviewConfigSchema>;
+
 /** A `visualizer:` entry after its own schema filled in the defaults. */
 export type VisualizerConfig = { name: string } & Record<string, unknown>;
 
@@ -135,6 +140,7 @@ visualizers.add({ name: 'meters', schema: MetersConfigSchema });
 visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
 visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
 visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
+visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */
 export const drawsWholeSet = (project: ResolvedProject): boolean =>

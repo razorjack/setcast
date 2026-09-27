@@ -113,14 +113,17 @@ visualizer:
 | `oscilloscope` | the waveform as one trace near the bottom | `gain: 1` |
 | `vectorscope` | left against right in a circle, inside the radial ring | `gain: 1` |
 | `spectrogram` | the last seconds of spectrum scrolling left, bass at the bottom | `seconds: 4` (at most 8), `gain: 1` |
+| `overview` | the whole set as a strip under the header, with track and drop marks and a playhead | none |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
-baseline in silence, and `spin` is degrees per second. The scopes draw the last 1/30 s of audio.
+baseline in silence, and `spin` is degrees per second. The scopes draw the last 1/30 s of audio. The
+overview reads the whole audio file before rendering, which takes a few seconds for a long set.
 The vectorscope shows stereo width: a mono mix, or the demo, which has the same audio in both
 channels, draws a vertical line. Placement and appearance are CSS: set
 `--spectrum-height`, `--radial-size`, `--meters-top`, `--oscilloscope-height`,
-`--vectorscope-size` or `--spectrogram-height`, or restyle `.sc-spectrum`, `.sc-radial`,
-`.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope` and `.sc-spectrogram` (see
+`--vectorscope-size`, `--spectrogram-height` or `--overview-height`, or restyle `.sc-spectrum`,
+`.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`, `.sc-spectrogram` and
+`.sc-overview` (see
 [AGENTS.md](AGENTS.md#css-contract) for their elements). The spectrogram is a canvas: its CSS
 `color` is the color of a full-strength cell.
 

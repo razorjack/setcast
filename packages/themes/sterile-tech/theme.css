@@ -185,6 +185,37 @@
   stroke-width: 1.5;
 }
 
+/* overview: the whole set under the header; what has played is lit, drops are rust */
+.theme-sterile-tech .sc-overview-high {
+  fill: color-mix(in srgb, var(--fg-dim) 22%, transparent);
+}
+.theme-sterile-tech .sc-overview-bass {
+  fill: color-mix(in srgb, var(--fg-dim) 32%, transparent);
+}
+.theme-sterile-tech .sc-overview-played .sc-overview-high {
+  fill: color-mix(in srgb, var(--accent-2) 45%, transparent);
+}
+.theme-sterile-tech .sc-overview-played .sc-overview-bass {
+  fill: color-mix(in srgb, var(--accent-2) 65%, transparent);
+}
+.theme-sterile-tech .sc-overview-mark[data-type='track_start'] {
+  stroke: var(--fg-dim);
+  stroke-width: 1px;
+}
+.theme-sterile-tech .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+  stroke: var(--accent);
+  stroke-width: 2px;
+}
+.theme-sterile-tech .sc-overview-mark[data-type='breakdown'] {
+  stroke: var(--accent-2);
+  stroke-width: 1px;
+  stroke-dasharray: 2 3;
+}
+.theme-sterile-tech .sc-overview-head {
+  stroke: var(--fg);
+  stroke-width: 2px;
+}
+
 /* meters: dim steel cells, lit in the second accent; bass takes the deck color */
 .theme-sterile-tech .sc-meters {
   mix-blend-mode: screen;
