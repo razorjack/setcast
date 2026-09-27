@@ -10,17 +10,20 @@ import {
   RendererProvider,
   Stage,
   useHoldUntil,
+  useHoldWhile,
   type RenderFrame,
 } from '@setcast/core/react';
 import { Audio } from '@remotion/media';
 import { useWindowedAudioData } from '@remotion/media-utils';
 import { useMemo } from 'react';
 import { AbsoluteFill, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
-import { windowedAnalyzer } from './analyzer.ts';
+import { coversLookback, windowedAnalyzer, type ChannelWindow } from './analyzer.ts';
 import { remotionBindings } from './bindings.tsx';
 import { audioChannels } from './media.ts';
 
 export const COMPOSITION_ID = 'setcast';
+
+type WindowedAudio = ReturnType<typeof useWindowedAudioData>;
 const WINDOW_SECONDS = 10;
 
 export function SetcastComposition(project: ResolvedProject) {
@@ -64,25 +67,37 @@ function StereoAudio({ project, src, channels }: StereoAudioProps) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const request = { src, frame, fps, windowInSeconds: WINDOW_SECONDS };
-  const left = useWindowedAudioData({ ...request, channelIndex: 0 });
-  const right = useWindowedAudioData({ ...request, channelIndex: Math.min(1, channels - 1) });
+  const left = useLoadedChannel(useWindowedAudioData({ ...request, channelIndex: 0 }));
+  const right = useLoadedChannel(
+    useWindowedAudioData({ ...request, channelIndex: Math.min(1, channels - 1) }),
+  );
+  // Without data the windowed hook holds the frame itself; with it, the lookback has to be there.
+  const lookbackMissing = [left, right].some(
+    (channel) => channel && !coversLookback(channel, frame / fps),
+  );
+  useHoldWhile('audio history', lookbackMissing);
 
   const analyzer = useMemo(() => {
-    if (!left.audioData || !right.audioData) return silentAnalyzer;
-    return windowedAnalyzer(
-      {
-        left: { audioData: left.audioData, dataOffsetInSeconds: left.dataOffsetInSeconds },
-        right: { audioData: right.audioData, dataOffsetInSeconds: right.dataOffsetInSeconds },
-      },
-      fps,
-    );
-  }, [left.audioData, left.dataOffsetInSeconds, right.audioData, right.dataOffsetInSeconds, fps]);
+    if (!left || !right) return silentAnalyzer;
+    return windowedAnalyzer({ left, right }, fps);
+  }, [left, right, fps]);
 
   return (
     <>
       <Scene project={project} analyzer={analyzer} />
       <Audio src={src} />
     </>
+  );
+}
+
+/**
+ * The hook's result as a `ChannelWindow`, or null until it has data. Memoized on the data, so the
+ * analyzer and its cache survive every frame that reads the same windows.
+ */
+function useLoadedChannel({ audioData, dataOffsetInSeconds }: WindowedAudio): ChannelWindow | null {
+  return useMemo(
+    () => (audioData ? { audioData, dataOffsetInSeconds } : null),
+    [audioData, dataOffsetInSeconds],
   );
 }
 
@@ -107,6 +122,7 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
     fps,
     timeSeconds,
     audio: analyzer.featuresAt(timeSeconds),
+    analyzer,
     events,
     composition: { width, height, durationSeconds: durationInFrames / fps, project },
     modulation,

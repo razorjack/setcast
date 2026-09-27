@@ -168,11 +168,20 @@ so defaults may be omitted; `loadProject` runs it through `ModPatchSchema`), the
 
 ### RenderFrame and hooks
 
-`packages/core/src/react/frame.tsx`. `RenderFrame = { frame, fps, timeSeconds, audio, events,
-composition, modulation }`. `CompositionState = { width, height, durationSeconds, project }` where
-`project` is the `ResolvedProject` (everything the CLI resolved: title, tracks/events, theme CSS,
-visualizer config, asset paths). Hooks: `useFrame`, `useTime`, `useAudioFeatures`, `useEventState`,
-`useModulation`, `useComposition`. The adapter wraps the scene in `<FrameProvider frame={...}>`.
+`packages/core/src/react/frame.tsx`. `RenderFrame = { frame, fps, timeSeconds, audio, analyzer,
+events, composition, modulation }`. `CompositionState = { width, height, durationSeconds, project }`
+where `project` is the `ResolvedProject` (everything the CLI resolved: title, tracks/events, theme
+CSS, visualizer config, asset paths). Hooks: `useFrame`, `useTime`, `useAudioFeatures`,
+`useAudioHistory`, `useEventState`, `useModulation`, `useComposition`. The adapter wraps the scene
+in `<FrameProvider frame={...}>`.
+
+`useAudioHistory(seconds, count)` returns `{ time, audio }` at `count` moments over the last
+`seconds`, oldest first, read from `analyzer`. The moments sit on a fixed grid (`historyTimes`), so
+consecutive frames share all but the newest and the analyzer's cache measures one new moment per
+frame. A renderer guarantees `HISTORY_SECONDS` (8) of lookback: the Remotion adapter holds a frame
+(`useHoldWhile`) until both channels hold the audio from `HISTORY_SECONDS` before it
+(`coversLookback`), because `useWindowedAudioData` loads the previous 10 s window after the
+current one, and a frame rendered in between would read clamped audio.
 
 ### AudioFeatures (the seam)
 
@@ -357,6 +366,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Theme fonts are vendored OFL `.woff2` files inlined as data URIs into the theme CSS string at
   project resolution; renders never touch the network and the scene gets one self-contained CSS
   string.
+- `RenderFrame.analyzer` is the adapter's `AudioAnalyzer`, exposed so components can look back
+  (`useAudioHistory`) the way modulation's `smooth` already did. Anything that reads it stays
+  deterministic because the adapter holds each frame until `HISTORY_SECONDS` of audio is loaded.
 - `RenderFrame.modulation` is a top-level field (not part of the original six) because it is
   resolved per frame from audio + events and is the bridge to CSS.
 - `bpm:` and `beatOffset:` are plain top-level keys, not a `tempo:` block, because `bpm: 174` is

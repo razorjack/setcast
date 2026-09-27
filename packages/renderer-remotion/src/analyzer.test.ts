@@ -1,7 +1,7 @@
 import { WAVE_POINTS } from '@setcast/core';
 import type { MediaUtilsAudioData } from '@remotion/media-utils';
 import { describe, expect, test } from 'vite-plus/test';
-import { windowedAnalyzer, type ChannelWindow } from './analyzer.ts';
+import { coversLookback, windowedAnalyzer, type ChannelWindow } from './analyzer.ts';
 
 const audioData = (samples: number, level = 1): MediaUtilsAudioData => ({
   channelWaveforms: [
@@ -67,5 +67,22 @@ describe('windowedAnalyzer', () => {
   test('propagates invalid analysis windows', () => {
     const analyzer = stereo(1024);
     expect(() => analyzer.featuresAt(0)).toThrow(/not big enough/);
+  });
+});
+
+describe('coversLookback', () => {
+  const loaded = (fromSeconds: number, seconds: number): ChannelWindow => ({
+    audioData: { ...audioData(seconds * 48000), durationInSeconds: 60 },
+    dataOffsetInSeconds: fromSeconds,
+  });
+
+  test('needs the seconds of history before the frame, not only the frame', () => {
+    expect(coversLookback(loaded(20, 10), 25)).toBe(false);
+    expect(coversLookback(loaded(10, 20), 25)).toBe(true);
+  });
+
+  test('trims the lookback to the start and the end of the audio', () => {
+    expect(coversLookback(loaded(0, 10), 3)).toBe(true);
+    expect(coversLookback(loaded(40, 20), 60.02)).toBe(true);
   });
 });

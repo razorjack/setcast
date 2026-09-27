@@ -1,4 +1,5 @@
 import {
+  HISTORY_SECONDS,
   rms,
   soft,
   spectrumFeatures,
@@ -14,6 +15,8 @@ const ONSET_LOOKBACK = 0.06;
 /** Fixed seconds, not a frame, so features are the same at 30 and 60 fps. */
 const SMOOTH_LOOKBACK = 1 / 30;
 const RMS_WINDOW = 1 / 30;
+/** `HISTORY_SECONDS`, plus the analysis window and lookbacks `measure` adds to its oldest moment. */
+const LOOKBACK_SECONDS = HISTORY_SECONDS + 0.2;
 
 /** One channel as `useWindowedAudioData` returns it: the loaded windows and where they start. */
 export interface ChannelWindow {
@@ -36,6 +39,21 @@ const windowOf = ({ audioData, dataOffsetInSeconds }: ChannelWindow, fps: number
   samples: audioData.channelWaveforms[0],
   sampleRate: audioData.sampleRate,
 });
+
+/**
+ * Whether `channel` holds the audio from `LOOKBACK_SECONDS` before `time` up to `time`, both
+ * trimmed to the audio itself. `useWindowedAudioData` loads the window before the current one
+ * after the current one, so without this check the first frames of a render could look back into
+ * audio that is not there yet, and render differently from run to run.
+ */
+export function coversLookback({ audioData, dataOffsetInSeconds }: ChannelWindow, time: number) {
+  const from = Math.max(0, time - LOOKBACK_SECONDS);
+  const to = Math.min(time, audioData.durationInSeconds);
+  const samples = audioData.channelWaveforms[0]?.length ?? 0;
+  const loadedTo = dataOffsetInSeconds + samples / audioData.sampleRate;
+  const oneSample = 1 / audioData.sampleRate;
+  return dataOffsetInSeconds <= from + oneSample && loadedTo >= to - oneSample;
+}
 
 /**
  * Turns Remotion's windowed audio data into Setcast's `AudioAnalyzer`. The spectrum and loudness

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vite-plus/test';
 import {
   bandEnergy,
+  historyTimes,
   logBins,
   rms,
   sampleBins,
@@ -72,4 +73,13 @@ test('waveSlice averages each share of the samples and reads past the ends as si
   expect(waveSlice(samples, 0, 6, 3)).toEqual([1, -1, 0.5]);
   expect(waveSlice(samples, -2, 2, 2)).toEqual([0, 1]);
   expect(waveSlice(samples, 4, 8, 2)).toEqual([0.5, 0]);
+});
+
+test('historyTimes sit on a grid that the next frame shares', () => {
+  const now = historyTimes(10.01, 2, 4);
+  const next = historyTimes(10.51, 2, 4);
+  expect(now).toEqual([8.5, 9, 9.5, 10]);
+  expect(next.slice(0, 3)).toEqual(now.slice(1));
+  expect(historyTimes(0.2, 2, 4)).toEqual([-1.5, -1, -0.5, 0]);
+  expect(() => historyTimes(0, 30, 10)).toThrow(/HISTORY_SECONDS/);
 });

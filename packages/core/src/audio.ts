@@ -35,6 +35,28 @@ export interface AudioAnalyzer {
   featuresAt(time: number): AudioFeatures;
 }
 
+/**
+ * How far before the current frame a renderer guarantees `featuresAt`: it holds the frame until
+ * that much audio has loaded, so a frame that looks back renders the same in every run.
+ */
+export const HISTORY_SECONDS = 8;
+
+/**
+ * `count` moments spread over the `seconds` up to `time`, oldest first. They sit on a fixed grid
+ * of `seconds / count`, so the next frame shares every moment but the newest and a cached
+ * analyzer measures only that one.
+ */
+export function historyTimes(time: number, seconds: number, count: number): number[] {
+  if (seconds > HISTORY_SECONDS) {
+    throw new RangeError(
+      `historyTimes() asked for ${seconds} s of history; renderers keep ${HISTORY_SECONDS} s (HISTORY_SECONDS). Ask for less.`,
+    );
+  }
+  const step = seconds / count;
+  const newest = Math.floor(time / step);
+  return Array.from({ length: count }, (_, index) => (newest - count + 1 + index) * step);
+}
+
 export const BIN_COUNT = 64;
 /** Seconds of waveform in `AudioFeatures.wave`: one frame's worth at 30 fps. */
 export const WAVE_SECONDS = 1 / 30;

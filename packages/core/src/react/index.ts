@@ -20,11 +20,13 @@ export {
 export {
   FrameProvider,
   useAudioFeatures,
+  useAudioHistory,
   useComposition,
   useEventState,
   useFrame,
   useModulation,
   useTime,
+  type AudioMoment,
   type CompositionState,
   type RenderFrame,
 } from './frame.tsx';
@@ -37,6 +39,7 @@ export {
   useAssetUrl,
   useFontsReady,
   useHoldUntil,
+  useHoldWhile,
   useRenderer,
   type ImgProps,
   type MediaProps,

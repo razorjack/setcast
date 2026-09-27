@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -107,6 +108,12 @@ export function useHoldUntil(label: string, load: () => Promise<unknown>): boole
   if (state.label !== label) return false;
   if (state.error) throw state.error;
   return state.ready;
+}
+
+/** Holds the frame for as long as `waiting` is true. */
+export function useHoldWhile(label: string, waiting: boolean): void {
+  const { hold } = useRenderer();
+  useLayoutEffect(() => (waiting ? hold(label) : undefined), [hold, label, waiting]);
 }
 
 /** Resolves and preloads an image (or any URL) and holds the frame until it has loaded. */
