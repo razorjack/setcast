@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { beforeAll, describe, expect, test } from 'vite-plus/test';
 import { ConfigError, SetcastError } from '../errors.ts';
 import type { Theme } from '../theme.ts';
+import { Timeline } from '../timeline.ts';
 import { loadProject } from './project.ts';
 
 let dir: string;
@@ -73,6 +74,7 @@ modulation:
     expect(project.fps).toBe(30);
     expect(project.clockOffset).toBe(0);
     expect(project.clockTotal).toBeNull();
+    expect(project.trackNumberOffset).toBe(0);
     expect(project.visualizer).toMatchObject({ name: 'spectrum', bars: 48 });
   });
 
@@ -124,6 +126,35 @@ events: [{ type: drop, time: 14 }]
       load(`audio: assets/mix.wav\ntheme: test\nclockTotal: ${total}\n`),
     ).rejects.toMatchObject({
       issues: [{ path: 'clockTotal', message: expect.stringContaining(message) }],
+    });
+  });
+
+  test('resolves track numbering without shifting timeline indices or decks', async () => {
+    const { project } = await load(`
+audio: assets/mix.wav
+theme: test
+trackNumberOffset: 2
+tracks:
+  - { time: 0, title: Star Trails }
+  - { time: 14, title: Pathogen }
+`);
+    expect(project.trackNumberOffset).toBe(2);
+    const timeline = new Timeline(project.events);
+    expect(timeline.at(0)).toMatchObject({ trackIndex: 0, trackCount: 2, deck: 'A' });
+    expect(timeline.at(14)).toMatchObject({ trackIndex: 1, trackCount: 2, deck: 'B' });
+  });
+
+  test.each(['-1', '1.5', 'two'])('rejects invalid trackNumberOffset %s', async (offset) => {
+    await expect(
+      load(`audio: assets/mix.wav\ntheme: test\ntrackNumberOffset: ${offset}\n`),
+    ).rejects.toMatchObject({
+      issues: [
+        {
+          path: 'trackNumberOffset',
+          message:
+            'trackNumberOffset must be a nonnegative whole number. Use 2 to start at track 3.',
+        },
+      ],
     });
   });
 

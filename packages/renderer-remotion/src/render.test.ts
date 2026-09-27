@@ -39,6 +39,7 @@ const project: ResolvedProject = {
   beatOffset: 0,
   clockOffset: 0,
   clockTotal: null,
+  trackNumberOffset: 0,
 };
 
 const run = () => render(project, { projectDir: '.', out: 'out.mp4' });

@@ -11,6 +11,8 @@ export type ResolvedProject = {
   clockOffset: number;
   /** Displayed total duration, or null to use the offset plus audio duration. */
   clockTotal: number | null;
+  /** Display-only track numbering offset; timeline indices remain zero-based. */
+  trackNumberOffset: number;
   audio: string;
   background: string | null;
   theme: string;

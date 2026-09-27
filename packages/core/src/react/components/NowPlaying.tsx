@@ -12,6 +12,7 @@ export function NowPlaying() {
   if (!track) return null;
 
   const { dwell, fade } = composition.project.panel;
+  const { trackNumberOffset } = composition.project;
   const age = since(events, 'track_start', timeSeconds);
   const show = spring(age, { stiffness: 110, damping: 15 }) * stay(age, dwell, fade);
 
@@ -21,9 +22,13 @@ export function NowPlaying() {
         {track.deck && <span className="sc-deck">{track.deck}</span>}
         <span className="sc-eyebrow">Now playing</span>
         <span className="sc-index">
-          {pad(events.trackIndex + 1)}
-          <span className="sc-index-sep">/</span>
-          {pad(events.trackCount)}
+          {pad(events.trackIndex + 1 + trackNumberOffset)}
+          {trackNumberOffset === 0 && (
+            <>
+              <span className="sc-index-sep">/</span>
+              {pad(events.trackCount)}
+            </>
+          )}
         </span>
       </header>
       <p className="sc-artist">{track.artist}</p>

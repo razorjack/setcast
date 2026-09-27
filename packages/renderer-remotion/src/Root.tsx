@@ -21,6 +21,7 @@ const placeholder: ResolvedProject = {
   beatOffset: 0,
   clockOffset: 0,
   clockTotal: null,
+  trackNumberOffset: 0,
 };
 
 const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = async ({ props }) => {

@@ -31,6 +31,7 @@ const project: ResolvedProject = {
   beatOffset: 0,
   clockOffset: 0,
   clockTotal: null,
+  trackNumberOffset: 0,
 };
 
 const exitWith = (code: number | null, signal: NodeJS.Signals | null = null) => {

@@ -417,6 +417,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   progress, tempo, render ranges, and YouTube chapters stay on the audio file's timeline.
 - `clockTotal:` optionally replaces the displayed clock endpoint with a positive duration in
   seconds or timecode form. It does not change the composition duration or progress.
+- `trackNumberOffset:` adds a nonnegative integer to the displayed track number (default 0).
+  A positive offset hides the total, since an excerpt does not establish the full mix's track
+  count. Timeline indices, deck assignment, and track timing remain unchanged.
 
 ## Not yet decided
 

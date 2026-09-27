@@ -44,6 +44,7 @@ export async function loadProject(
     title: config.title,
     clockOffset: config.clockOffset,
     clockTotal: config.clockTotal ?? null,
+    trackNumberOffset: config.trackNumberOffset,
     audio: config.audio,
     background: config.background ?? null,
     theme: theme.name,

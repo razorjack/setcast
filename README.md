@@ -89,6 +89,10 @@ are accepted. This changes only the displayed clock and endpoint. Track and even
 Set `clockTotal: 56:06` to replace the displayed endpoint with the full mix duration, showing
 `14:03 / 56:06`. This accepts a positive duration in seconds or as a timecode and does not
 extend the rendered video.
+Use `trackNumberOffset: 2` when the excerpt begins with track 3. The panel then displays
+`03`, `04`, and so on, without a total because the excerpt does not contain the full tracklist.
+The default `0` keeps the usual current/total counter. This does not change event indices,
+deck assignment, or track timing.
 
 ## Customize without JavaScript
 
