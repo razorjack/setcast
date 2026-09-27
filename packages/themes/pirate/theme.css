@@ -67,12 +67,12 @@
   --hairline: max(1px, 0.06cqw);
   --spectrum-height: 20cqh;
   /* the halftone cell; a breakdown opens the screen up */
-  --dot: 0.55cqw;
+  --dot: 0.75cqw;
   --tilt: calc(-1.6deg + var(--rewind-flash) * sin(var(--since-rewind, 60) * 40) * 5deg);
   background: var(--paper);
 }
 .theme-pirate[data-section='breakdown'] {
-  --dot: 1cqw;
+  --dot: 1.3cqw;
 }
 
 /*
@@ -345,10 +345,10 @@
 
 @container (aspect-ratio < 1) {
   .theme-pirate .sc-bg-vignette {
-    --dot: 0.95cqw;
+    --dot: 1.3cqw;
   }
   .theme-pirate[data-section='breakdown'] .sc-bg-vignette {
-    --dot: 1.7cqw;
+    --dot: 2.3cqw;
   }
   .theme-pirate .sc-spectrum {
     height: 12cqh;
