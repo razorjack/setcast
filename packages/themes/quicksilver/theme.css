@@ -279,8 +279,12 @@
   translate: -50% 0;
   text-align: center;
 }
+/* the now-playing row under the clock, so the set title keeps the whole top line */
 .theme-quicksilver .sc-panel-head {
-  top: calc(var(--margin) - 0.1cqw);
+  top: calc(var(--margin) + 2.6cqh);
+  left: auto;
+  right: var(--margin);
+  translate: none;
   gap: 1cqw;
   font-family: var(--font-mono);
   font-size: 0.8cqw;
