@@ -57,10 +57,16 @@ cd examples/demo && vp run preview                          # Remotion Studio
 ```
 
 `vp <name>` runs a built-in; `vp run <name>` runs a package script or `vite.config.ts` task.
-Inner loop for an agent: `vp check && vp test`. Before declaring render work done: `vp run smoke`.
+Inner loop for an agent: `vp check && vp test`.
 For theme work, `vp run theme-stills --at 1:50.4 --theme <name>` renders a moment of examples/demo
 into `examples/demo/out/themes/` in about 4 s per still; read the images before committing.
-`vp run ready` is what CI runs (`.github/workflows/ci.yml`), minus asset generation.
+
+Before you finish a larger piece of work (a feature, a refactor, a theme, any change across several
+files) or commit it, run `vp run ready` and read the result. It runs check, tests, ban-check and the
+smoke render in about a minute; run `vp run demo-assets` first on a fresh checkout. If it fails, fix
+the failure or report it with its output. Do not call the work done while it fails. `vp run ready`
+is what CI runs (`.github/workflows/ci.yml`), minus asset generation, but do not rely on CI to catch
+a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
@@ -384,6 +390,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Vite+ 0.2.9 (`vp`), pnpm 11.22.0 under it (`devEngines.packageManager`). One root
   `vite.config.ts` holds fmt/lint/test/run config; per-package `vite.config.ts` only holds `pack`.
   `vite-plus` is a devDependency of every package (the template convention) via the pnpm catalog.
+- CI installs `vp` with `voidzero-dev/setup-vp`, pinned to an exact tag because its moving `v1` tag
+  is frozen at v1.15.0. The action reads the Vite+ version from the pnpm catalog, so CI runs the
+  same `vp` as the lockfile, and `node-manager: false` keeps the Node from `actions/setup-node`.
+  CI used to pipe `https://vite.plus` to bash and add `~/.vite-plus/bin` to the path. When the
+  installer moved `vp` to `~/.local/share/vite-plus/bin`, every run failed with
+  `vp: command not found`.
 - Remotion 4.0.513 pinned exactly (peer dependency of the adapter). Rendering: `@remotion/bundler`
   `bundle({ entryPoint, publicDir: projectDir })` → `selectComposition` → `renderMedia({ codec:
 'h264', audioCodec: 'aac', frameRange })`. Audio in the composition: `<Audio>` from
