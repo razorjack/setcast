@@ -228,6 +228,7 @@
 
 /* now playing: wide capitals with the channels split, torn into slices on the drop */
 .theme-interference .sc-panel {
+  isolation: isolate;
   max-width: 70cqw;
   opacity: clamp(0, var(--show, 1) * 1.5, 1);
   translate: calc(var(--noise-a) * var(--tear) * 3cqw + (1 - var(--show, 1)) * -4cqw) 0;
@@ -235,6 +236,14 @@
     calc(max(0, var(--noise-b)) * var(--tear) * 55%) -10cqw
       calc(max(0, -1 * var(--noise-b)) * var(--tear) * 55%) -10cqw
   );
+}
+/* a dark pool behind the text, so it reads over the spectrogram */
+.theme-interference .sc-panel::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -5cqw -12cqw -4cqw -6cqw;
+  background: radial-gradient(closest-side, rgb(5 5 7 / 0.85), transparent);
 }
 .theme-interference .sc-panel-head {
   gap: 1cqw;
