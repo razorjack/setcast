@@ -150,7 +150,7 @@ editing anything with `setcast still --theme <name>`.
 | `bunker`        | stencil on concrete, hazard tape on the beat, the room shaking on the drop               |
 | `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
 | `interference`  | a corrupted signal: channels split with the bass, the picture tearing on the drop        |
-| `pirate`        | a photocopied rave flyer: toner, a halftone screen, one fluoro spot color (`--fluoro`)   |
+| `pirate`        | a photocopied rave flyer: a worn grey copy, toner dust, one fluoro color (`--fluoro`)    |
 | `afterhours`    | warm and late: amber and plum, an italic serif, the frame ducking with the kick          |
 
 `vp run theme-stills [dir] --at 1:51` renders the same moment in every theme and tiles them into

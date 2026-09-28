@@ -89,6 +89,10 @@ Gotchas:
   descendant do match, so portrait overrides go there. A custom property derived from another
   (`--rise: calc(100cqw * tan(var(--angle)))`) is computed where it is declared, so a theme that
   changes `--angle` for portrait declares both on those elements (see escapement).
+- A regular high-contrast pattern over the whole frame (a halftone dot screen, fine stripes) is
+  hard to watch: the eye cannot settle on it, and at about 10–20 px per period on a 1080p frame
+  it sits where visual strain peaks. Give textures an irregular structure, low contrast or low
+  coverage (pirate's toner dust, not a dot grid).
 - A full-frame `backdrop-filter` roughly triples render time (a 6 s slice: 43 s against 14 s
   without it). Keep backdrop blur on small elements such as the panel.
 - `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a

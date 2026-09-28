@@ -1,4 +1,4 @@
-/* pirate: a photocopied rave flyer. Toner on paper, a halftone screen, one fluoro spot color. */
+/* pirate: a photocopied rave flyer. A worn grey copy on paper, toner dust, one fluoro spot color. */
 
 @font-face {
   font-family: 'Anton';
@@ -66,40 +66,46 @@
   --font-type: 'Courier Prime', 'Courier New', monospace;
   --hairline: max(1px, 0.06cqw);
   --spectrum-height: 20cqh;
-  /* the halftone cell; a breakdown opens the screen up */
-  --dot: 0.75cqw;
+  /* how much the copy lifts the art: raise it for dark art, lower it for bright photos */
+  --exposure: 5.4;
   --tilt: calc(-1.6deg + var(--rewind-flash) * sin(var(--since-rewind, 60) * 40) * 5deg);
   background: var(--paper);
 }
+/* a breakdown fades the copy toward blank paper */
 .theme-pirate[data-section='breakdown'] {
-  --dot: 1.3cqw;
+  --exposure: 7;
 }
 
 /*
- * The art as a photocopy through a halftone screen: the picture, blurred, multiplied by a field
- * of soft dots, then thresholded to pure toner by the contrast filter on the layer.
+ * The art as a worn photocopy: a hard grey copy of the picture with the faults of a tired
+ * machine, sparse toner dust, feed streaks and dark edges. There is deliberately no halftone
+ * screen: a regular dot grid over the whole frame is a pattern the eye cannot settle on, and
+ * it hurts to watch for an hour. The layer stays still for the whole set.
  */
 .theme-pirate .sc-bg {
-  filter: grayscale(1) contrast(24);
   mix-blend-mode: multiply;
+  opacity: 0.72;
 }
-/* the picture squeezed into the upper half of the grey range, so even dark art prints as dots */
 .theme-pirate .sc-bg-img {
   transform: none;
-  filter: grayscale(1) blur(0.25cqw) contrast(0.5) brightness(calc(2 + var(--drop-flash)));
+  filter: grayscale(1) brightness(var(--exposure)) contrast(2.1);
 }
 .theme-pirate .sc-bg-vignette {
-  background: radial-gradient(circle, #737373 0%, #fff 72%) 0 0 / var(--dot) var(--dot);
-  mix-blend-mode: multiply;
-}
-/* toner dust and paper grain over everything */
-.theme-pirate .sc-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url(../textures/grain.svg) 0 0 / 14cqw;
-  mix-blend-mode: multiply;
-  opacity: 0.25;
+  background:
+    url(./toner.svg) 0 0 / 56cqmin,
+    linear-gradient(
+      to right,
+      transparent 17%,
+      rgb(0 0 0 / 0.18) 17.1%,
+      transparent 17.5%,
+      transparent 63%,
+      rgb(0 0 0 / 0.12) 63.05%,
+      transparent 63.3%,
+      transparent 81%,
+      rgb(0 0 0 / 0.2) 81.1%,
+      transparent 81.2%
+    ),
+    radial-gradient(130% 120% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55) 100%);
 }
 
 /* the drop: the copier lamp sweeps across and the fluoro floods the sheet */
@@ -344,12 +350,6 @@
 }
 
 @container (aspect-ratio < 1) {
-  .theme-pirate .sc-bg-vignette {
-    --dot: 1.3cqw;
-  }
-  .theme-pirate[data-section='breakdown'] .sc-bg-vignette {
-    --dot: 2.3cqw;
-  }
   .theme-pirate .sc-spectrum {
     height: 12cqh;
   }
