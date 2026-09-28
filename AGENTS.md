@@ -89,6 +89,8 @@ Gotchas:
   descendant do match, so portrait overrides go there. A custom property derived from another
   (`--rise: calc(100cqw * tan(var(--angle)))`) is computed where it is declared, so a theme that
   changes `--angle` for portrait declares both on those elements (see escapement).
+- A full-frame `backdrop-filter` roughly triples render time (a 6 s slice: 43 s against 14 s
+  without it). Keep backdrop blur on small elements such as the panel.
 - `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a
   positional `dir` argument).
 - Audio feature gains (`spectrumFeatures`, `logBins`) are calibrated against the demo synth. Real

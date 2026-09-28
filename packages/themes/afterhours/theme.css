@@ -59,10 +59,7 @@
   --lights: calc(1 - 0.45 * clamp(0, var(--section-time, 60) / 3, 1));
 }
 
-/*
- * Background: warm, a little soft, and out of focus toward the edges. Every kick ducks it for a
- * moment, the way a sidechain pumps the pads.
- */
+/* background: warm and a little soft; every kick ducks it, the way a sidechain pumps the pads */
 .theme-afterhours .sc-bg-img {
   filter: sepia(0.35) saturate(1.15) contrast(1.05)
     brightness(
@@ -73,7 +70,6 @@
   background:
     radial-gradient(100% 90% at 50% 45%, transparent 30%, rgb(18 8 13 / 0.9) 100%),
     linear-gradient(to top, rgb(58 23 41 / 0.7), transparent 50%);
-  backdrop-filter: blur(1.4cqw);
   mask-image: radial-gradient(75% 70% at 50% 45%, transparent 35%, #000 85%);
 }
 /* a warm grade, so cool art still sits in amber and plum light */
