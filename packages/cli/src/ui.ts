@@ -182,8 +182,11 @@ export class ProgressLine {
   /** Nothing until there is enough progress to extrapolate from, and nothing once it is done. */
   #eta(progress: number): string {
     if (progress <= 0.02 || progress >= 1) return '';
-    const elapsed = (Date.now() - this.#start) / 1000;
-    return `  eta ${formatDuration((elapsed / progress) * (1 - progress))}`;
+    return `  eta ${formatDuration((this.elapsedSeconds / progress) * (1 - progress))}`;
+  }
+
+  get elapsedSeconds(): number {
+    return (Date.now() - this.#start) / 1000;
   }
 
   done(message: string): void {
@@ -192,6 +195,18 @@ export class ProgressLine {
     );
   }
 }
+
+/** `812/1320  24 frames/s`; the rate waits for a second of rendering to measure over. */
+function framesDetail(renderedFrames: number, totalFrames: number, seconds: number): string {
+  const count = `${renderedFrames}/${totalFrames}`;
+  if (seconds < 1) return count;
+  return `${count}  ${frameRate(renderedFrames, seconds)}`;
+}
+
+const frameRate = (frames: number, seconds: number) => {
+  const rate = frames / seconds;
+  return `${rate.toFixed(rate < 10 ? 1 : 0)} frames/s`;
+};
 
 /**
  * Terminal output for a render or a still: a spinner while the browser and bundle come up, then
@@ -225,7 +240,8 @@ export class RenderUi {
       return;
     }
     if (stage === 'frames') {
-      this.#framesLine().update(progress, `${renderedFrames}/${totalFrames}`);
+      const frames = this.#framesLine();
+      frames.update(progress, framesDetail(renderedFrames, totalFrames, frames.elapsedSeconds));
       return;
     }
     this.#encodeLine(totalFrames).update(progress, 'h264 + aac');
@@ -242,12 +258,18 @@ export class RenderUi {
 
   /** Encoding starts once every frame is rendered, so the frames line is closed off first. */
   #encodeLine(totalFrames: number): ProgressLine {
-    this.#frames?.update(1, `${totalFrames}/${totalFrames}`);
     if (!this.#encode) {
-      this.#frames?.done(`Rendered ${totalFrames} frames`);
+      this.#closeFrames(totalFrames);
       this.#encode = new ProgressLine('encode');
     }
     return this.#encode;
+  }
+
+  #closeFrames(totalFrames: number): void {
+    if (!this.#frames) return;
+    const rate = frameRate(totalFrames, this.#frames.elapsedSeconds);
+    this.#frames.update(1, `${totalFrames}/${totalFrames}`);
+    this.#frames.done(`Rendered ${totalFrames} frames  ${dim('·')}  ${rate}`);
   }
 
   /** Runs `task`; a failure while the spinner is up clears it so the error prints cleanly. */
