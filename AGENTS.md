@@ -414,6 +414,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Zod 4.4.3 for every schema. `yaml` 2.9.0 for YAML (maintained, spec-complete, no deps).
 - CLI UX: `@clack/prompts` 1.7 + `picocolors` 1.1; argument parsing with `node:util` `parseArgs`.
   Nothing heavier without justification.
+- Output paths are OSC 8 links and renders report OSC 9;4 progress to the terminal tab, but only
+  in the terminals listed in `packages/cli/src/terminal.ts` (the lists of the supports-hyperlinks
+  and anstyle-progress crates). Other terminals print OSC 8 as text or read OSC 9 as a desktop
+  notification, and there is no way to ask a terminal what it supports.
 - CLI failures use exit code 2 for command usage and project configuration, and 1 for runtime
   failures. `SetcastError` defaults to 2; runtime translations set `exitCode: 1`. Set
   `SETCAST_DEBUG=1` to print complete error and cause stacks.
