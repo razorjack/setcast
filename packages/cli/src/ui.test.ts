@@ -7,6 +7,7 @@ import {
   displayPath,
   errorExitCode,
   formatDuration,
+  formatSize,
   printError,
 } from './ui.ts';
 
@@ -25,6 +26,14 @@ test('displayPath never climbs out of the working directory', () => {
   expect(displayPath(resolve('/', 'setcast-renders', 'set.mp4'))).toBe(
     resolve('/', 'setcast-renders', 'set.mp4'),
   );
+});
+
+test('formatSize uses decimal units with one decimal below 10', () => {
+  expect(formatSize(0)).toBe('0 B');
+  expect(formatSize(512)).toBe('512 B');
+  expect(formatSize(840_000)).toBe('840 KB');
+  expect(formatSize(4_123_456)).toBe('4.1 MB');
+  expect(formatSize(2_345_000_000)).toBe('2.3 GB');
 });
 
 describe('clearSpinnerOnError', () => {

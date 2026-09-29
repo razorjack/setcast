@@ -1,4 +1,4 @@
-import { mkdir } from 'node:fs/promises';
+import { mkdir, stat } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { formatTime, SetcastError, type SetEvent } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
@@ -11,7 +11,7 @@ import {
   timeWithinAudio,
 } from '../args.ts';
 import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
-import { bold, dim, formatDuration, intro, log, outro, RenderUi, shown } from '../ui.ts';
+import { bold, dim, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 
 const DEFAULT_SECONDS = 45;
@@ -134,7 +134,8 @@ async function renderClip(
       onProgress: ui.onProgress,
     }),
   );
-  ui.done(`Encoded ${formatDuration(result.durationSeconds)} of video`);
+  const { size } = await stat(result.file);
+  ui.doneEncoding(result.durationSeconds, size);
   return shown(result.file);
 }
 

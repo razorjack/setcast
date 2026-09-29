@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
   chapterProblems,
@@ -80,7 +80,8 @@ export async function run(argv: string[]): Promise<void> {
   });
 
   const result = await ui.run(() => render(project, job));
-  ui.done(`Encoded ${formatDuration(result.durationSeconds)} of video`);
+  const { size } = await stat(result.file);
+  ui.doneEncoding(result.durationSeconds, size);
 
   const files = [result.file];
   if (options.bundle) {

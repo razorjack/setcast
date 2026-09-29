@@ -1,7 +1,7 @@
 import { homedir } from 'node:os';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import * as p from '@clack/prompts';
-import { ConfigError, hms, SetcastError } from '@setcast/core';
+import { clamp, ConfigError, hms, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/renderer-remotion';
 import pc from 'picocolors';
 
@@ -134,6 +134,15 @@ export function formatDuration(seconds: number): string {
 
 const pad = (part: number) => String(part).padStart(2, '0');
 
+/** Decimal units, as file managers show them: `840 KB`, `4.1 MB`, `2.3 GB`. */
+export function formatSize(bytes: number): string {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const exponent = clamp(Math.floor(Math.log10(bytes) / 3), 0, units.length - 1);
+  const size = bytes / 1000 ** exponent;
+  const decimals = exponent > 0 && size < 10 ? 1 : 0;
+  return `${size.toFixed(decimals)} ${units[exponent]}`;
+}
+
 /** A single in-place progress line: `▰▰▰▱▱ 62%  frames 812/1320  eta 14s`. */
 export class ProgressLine {
   #start = Date.now();
@@ -190,6 +199,7 @@ export class ProgressLine {
  */
 export class RenderUi {
   readonly #spin = spinner();
+  readonly #start = Date.now();
   #frames: ProgressLine | undefined;
   #encode: ProgressLine | undefined;
 
@@ -251,5 +261,16 @@ export class RenderUi {
   done(message: string): void {
     if (this.#encode) this.#encode.done(message);
     else this.#spin.stop(message);
+  }
+
+  /** Closes a video render with its length, file size and speed against playback. */
+  doneEncoding(durationSeconds: number, bytes: number): void {
+    const speed = durationSeconds / ((Date.now() - this.#start) / 1000);
+    const summary = [
+      `Encoded ${formatDuration(durationSeconds)} of video`,
+      formatSize(bytes),
+      `${speed.toFixed(speed < 1 ? 2 : 1)}× realtime`,
+    ];
+    this.done(summary.join(`  ${dim('·')}  `));
   }
 }
