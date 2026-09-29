@@ -1,6 +1,14 @@
+import { homedir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { describe, expect, test, vi } from 'vite-plus/test';
 import { ConfigError, SetcastError } from '@setcast/core';
-import { clearSpinnerOnError, errorExitCode, formatDuration, printError } from './ui.ts';
+import {
+  clearSpinnerOnError,
+  displayPath,
+  errorExitCode,
+  formatDuration,
+  printError,
+} from './ui.ts';
 
 test('formatDuration carries rounded seconds into the minute', () => {
   expect(formatDuration(45.2)).toBe('45s');
@@ -8,6 +16,15 @@ test('formatDuration carries rounded seconds into the minute', () => {
   expect(formatDuration(119.7)).toBe('2m 00s');
   expect(formatDuration(125)).toBe('2m 05s');
   expect(formatDuration(3700)).toBe('1h 01m 40s');
+});
+
+test('displayPath never climbs out of the working directory', () => {
+  expect(displayPath(join(process.cwd(), 'out', 'set.mp4'))).toBe(join('out', 'set.mp4'));
+  expect(displayPath(join(process.cwd(), '..out', 'set.mp4'))).toBe(join('..out', 'set.mp4'));
+  expect(displayPath(join(homedir(), 'set.mp4'))).toBe(join('~', 'set.mp4'));
+  expect(displayPath(resolve('/', 'setcast-renders', 'set.mp4'))).toBe(
+    resolve('/', 'setcast-renders', 'set.mp4'),
+  );
 });
 
 describe('clearSpinnerOnError', () => {

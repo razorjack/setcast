@@ -25,6 +25,7 @@ import {
   intro,
   log,
   outro,
+  shown,
   spinner,
   steel,
 } from '../ui.ts';
@@ -217,7 +218,7 @@ function showWrittenChanges(path: string, changes: AnalysisChanges): void {
   const added: string[] = [];
   if (changes.events.length) added.push(`${changes.events.length} events`);
   if (changes.tempo) added.push(`bpm: ${changes.tempo} with beatOffset`);
-  outro(`Added ${added.join(' and ')} to ${steel(path)}`);
+  outro(`Added ${added.join(' and ')} to ${shown(path)}`);
 }
 
 function toYaml(event: SetEvent): Record<string, string | number> {

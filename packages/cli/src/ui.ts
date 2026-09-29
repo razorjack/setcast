@@ -1,4 +1,5 @@
-import { relative } from 'node:path';
+import { homedir } from 'node:os';
+import { isAbsolute, join, relative, sep } from 'node:path';
 import * as p from '@clack/prompts';
 import { ConfigError, hms, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/renderer-remotion';
@@ -33,8 +34,23 @@ export async function clearSpinnerOnError<T>(
   }
 }
 
-/** A file as the outro names it: relative to the working directory when it is inside. */
-export const shown = (file: string) => steel(relative(process.cwd(), file) || file);
+/** A file as the outro names it, styled. */
+export const shown = (file: string) => steel(displayPath(file));
+
+/** Relative inside the working directory, `~/…` inside the home directory, absolute elsewhere. */
+export function displayPath(file: string): string {
+  const fromWorkingDir = relative(process.cwd(), file);
+  if (isBelow(fromWorkingDir)) return fromWorkingDir;
+
+  const fromHome = relative(homedir(), file);
+  if (isBelow(fromHome)) return join('~', fromHome);
+
+  return file;
+}
+
+/** A relative path that stays inside the directory it starts from. */
+const isBelow = (path: string) =>
+  path !== '' && !isAbsolute(path) && path !== '..' && !path.startsWith(`..${sep}`);
 
 /** A warning that must not end up in a piped stdout. */
 export const warn = (message: string) => process.stderr.write(`${pc.yellow('!')} ${message}\n`);

@@ -1,5 +1,5 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
-import { basename, join, relative, resolve } from 'node:path';
+import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { formatTime, SetcastError } from '@setcast/core';
 import { CONFIG_FILE } from '@setcast/core/node';
@@ -12,11 +12,12 @@ import {
   cancel,
   clearSpinnerOnError,
   dim,
+  displayPath,
   intro,
   log,
   outro,
   prompts,
-  steel,
+  shown,
 } from '../ui.ts';
 
 const TEMPLATES = fileURLToPath(new URL('../../templates/', import.meta.url));
@@ -174,14 +175,17 @@ function configFor(answers: InitAnswers, project: ProjectContent): Record<string
 }
 
 function showNextSteps(dir: string, audio: string): void {
-  const where = relative(process.cwd(), dir) || '.';
-  log.success(`Created ${steel(join(where, CONFIG_FILE))}`);
+  log.success(`Created ${shown(join(dir, CONFIG_FILE))}`);
   if (!audio) {
     log.warn(`Set ${bold('audio:')} in ${CONFIG_FILE} to your mix file before rendering.`);
   }
-  outro(
-    `Next: ${bold(`cd ${where}`)} ${dim('then')} ${bold('setcast preview')} ${dim('or')} ${bold('setcast render')}`,
-  );
+
+  const commands = `${bold('setcast preview')} ${dim('or')} ${bold('setcast render')}`;
+  if (dir === process.cwd()) {
+    outro(`Next: ${commands}`);
+    return;
+  }
+  outro(`Next: ${bold(`cd ${displayPath(dir)}`)} ${dim('then')} ${commands}`);
 }
 
 async function ask(dir: string, demoDefault: boolean): Promise<InitAnswers> {
