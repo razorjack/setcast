@@ -12,8 +12,13 @@ export const steel = rgb(127, 212, 230);
 export const dim = pc.dim;
 export const bold = pc.bold;
 
-export const intro = (command: string) =>
+/** Whether `intro` has drawn the rail that warnings continue. `chapters` draws none. */
+let railStarted = false;
+
+export const intro = (command: string) => {
+  railStarted = true;
   p.intro(`${pc.bgBlack(pc.bold(accent(' setcast ')))} ${dim(command)}`);
+};
 export const outro = p.outro;
 export const note = p.note;
 export const log = p.log;
@@ -53,7 +58,8 @@ const isBelow = (path: string) =>
   path !== '' && !isAbsolute(path) && path !== '..' && !path.startsWith(`..${sep}`);
 
 /** A warning that must not end up in a piped stdout. */
-export const warn = (message: string) => process.stderr.write(`${pc.yellow('!')} ${message}\n`);
+export const warn = (message: string) =>
+  p.log.warn(message, { output: process.stderr, spacing: railStarted ? 1 : 0 });
 
 export function printError(error: unknown): void {
   if (error instanceof ConfigError) {
