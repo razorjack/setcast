@@ -4,7 +4,7 @@ import * as p from '@clack/prompts';
 import { clamp, ConfigError, hms, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/renderer-remotion';
 import pc from 'picocolors';
-import { clearTabProgress, showTabBusy, showTabProgress } from './terminal.ts';
+import { clearTabProgress, linkToFile, showTabBusy, showTabProgress } from './terminal.ts';
 
 const rgb = (r: number, g: number, b: number) => (text: string) =>
   pc.isColorSupported ? `\x1b[38;2;${r};${g};${b}m${text}\x1b[39m` : text;
@@ -73,8 +73,8 @@ export async function clearSpinnerOnError<T>(
   }
 }
 
-/** A file as the outro names it, styled. */
-export const shown = (file: string) => steel(displayPath(file));
+/** A file as the outro names it, styled, and a link to open it where the terminal has links. */
+export const shown = (file: string) => linkToFile(steel(displayPath(file)), file);
 
 /** Relative inside the working directory, `~/…` inside the home directory, absolute elsewhere. */
 export function displayPath(file: string): string {

@@ -1,3 +1,5 @@
+import { pathToFileURL } from 'node:url';
+
 const { env } = process;
 
 /**
@@ -38,4 +40,25 @@ function writeTabProgress(state: 0 | 1 | 3, percent = ''): void {
     clearsOnExit = true;
   }
   process.stdout.write(`\x1b]9;4;${state};${percent}\x1b\\`);
+}
+
+/**
+ * Whether the terminal turns OSC 8 into links. The list follows the supports-hyperlinks crate:
+ * inside tmux, or in a terminal that does not parse OSC, the sequence would print as text.
+ */
+function drawsHyperlinks(): boolean {
+  if (!process.stdout.isTTY) return false;
+  const programs = ['iTerm.app', 'WezTerm', 'ghostty', 'vscode', 'zed', 'Hyper'];
+  if (programs.includes(env.TERM_PROGRAM ?? '')) return true;
+  if (env.TERM === 'xterm-kitty' || env.TERM === 'alacritty') return true;
+  if (env.WT_SESSION !== undefined || env.KONSOLE_VERSION !== undefined) return true;
+  return Number(env.VTE_VERSION) >= 5000;
+}
+
+const hyperlinks = drawsHyperlinks();
+
+/** `text` as a link that opens `file`, where the terminal supports links. */
+export function linkToFile(text: string, file: string): string {
+  if (!hyperlinks) return text;
+  return `\x1b]8;;${pathToFileURL(file).href}\x1b\\${text}\x1b]8;;\x1b\\`;
 }
