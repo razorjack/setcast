@@ -25,6 +25,7 @@ import {
   clearSpinnerOnError,
   dim,
   formatDuration,
+  highlightYaml,
   intro,
   log,
   outro,
@@ -225,7 +226,7 @@ function printDraft(events: SetEvent[], changes: AnalysisChanges): void {
   }
   draft.events = events.map(toYaml);
 
-  process.stdout.write(`\n${stringify(draft)}`);
+  process.stdout.write(`\n${highlightYaml(stringify(draft))}`);
   outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
 }
 

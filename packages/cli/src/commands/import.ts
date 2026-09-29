@@ -11,7 +11,7 @@ import {
 import { CONFIG_FILE } from '@setcast/core/node';
 import { parseDocument, stringify } from 'yaml';
 import { parseCommandArgs } from '../args.ts';
-import { bold, dim, intro, log, outro, shown, steel } from '../ui.ts';
+import { bold, dim, highlightYaml, intro, log, outro, shown, steel } from '../ui.ts';
 
 export const help = `setcast import <tracklist.txt> [--format plain] [--write] [dir]
 
@@ -106,7 +106,7 @@ const trackLine = (track: TrackEntry) => {
 };
 
 function printDraft(tracks: TrackEntry[]): void {
-  process.stdout.write(`\n${stringify({ tracks: tracks.map(toYaml) })}`);
+  process.stdout.write(`\n${highlightYaml(stringify({ tracks: tracks.map(toYaml) }))}`);
   outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
 }
 

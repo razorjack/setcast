@@ -25,6 +25,26 @@ export function formatHelp(help: string): string {
   return [styledUsage, ...styledBody].join('\n');
 }
 
+/**
+ * A YAML draft for the terminal: keys and list dashes dimmed so the values stand out, and event
+ * types in the colors of the event list. Copying from the terminal leaves the colors behind.
+ */
+export const highlightYaml = (yaml: string) => yaml.split('\n').map(highlightYamlLine).join('\n');
+
+/** `  - type: drop` or `    time: 0:33.1`: the indent, the dimmed label, the value. */
+const YAML_ENTRY = /^( *)((?:- )?(\w+):)(.*)$/;
+
+function highlightYamlLine(line: string): string {
+  const entry = YAML_ENTRY.exec(line);
+  if (!entry) return line;
+
+  const [, indent = '', label = '', key, value = ''] = entry;
+  if (key !== 'type') return `${indent}${dim(label)}${value}`;
+  return `${indent}${dim(label)}${eventColor(value.trim())(value)}`;
+}
+
+const eventColor = (type: string) => (type === 'drop' || type === 'double_drop' ? accent : steel);
+
 /** Whether `intro` has drawn the rail that warnings continue. `chapters` draws none. */
 let railStarted = false;
 
