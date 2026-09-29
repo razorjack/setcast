@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
   beatOffset,
+  clamp,
   detectSections,
   envelope,
   estimateBpm,
@@ -9,6 +10,8 @@ import {
   formatTimecode,
   SetcastError,
   snapToBeats,
+  summarizeEnvelope,
+  type Envelope,
   type Pcm,
   type SetEvent,
 } from '@setcast/core';
@@ -43,6 +46,9 @@ Buildups follow musical intent rather than energy, so those stay yours to place.
 /** A drafted event this close to one already in the project is the same event. */
 const SAME_EVENT_SECONDS = 2;
 
+/** Bar heights of the energy overview, quietest first. */
+const LEVELS = '▁▂▃▄▅▆▇█';
+
 interface AnalyzeOptions {
   dir: string;
   sensitivity: number;
@@ -54,6 +60,7 @@ interface AnalysisDraft {
   bpm: number | null;
   offset: number | null;
   seconds: number;
+  energy: Envelope;
 }
 
 interface AnalysisChanges {
@@ -133,6 +140,7 @@ function draftFrom(pcm: Pcm, statedBpm: number | undefined, sensitivity: number)
     bpm,
     offset: bpm ? beatOffset(energy, bpm) : null,
     seconds: pcm.samples.length / pcm.sampleRate,
+    energy,
   };
 }
 
@@ -141,10 +149,43 @@ const audioSummary = ({ seconds, bpm }: AnalysisDraft) => {
   return `${formatDuration(seconds)} of audio${tempo}`;
 };
 
-function showAnalysis(analysis: AnalysisDraft): void {
-  if (analysis.events.length === 0) return;
-  // Padded names line the intensities up; trimmed because an uncoloured terminal shows the padding.
-  log.message(analysis.events.map((event) => eventLine(event).trimEnd()));
+function showAnalysis({ energy, events }: AnalysisDraft): void {
+  const lines = overviewLines(energy, events);
+  if (events.length > 0) {
+    // Padded names line the intensities up; trimmed because an uncoloured terminal shows the padding.
+    lines.push('', ...events.map((event) => eventLine(event).trimEnd()));
+  }
+  log.message(lines);
+}
+
+/**
+ * The set's bass energy as one row of bars, lit where a drafted drop has the bass in, and the
+ * drafted events marked under it: what the drafts were read from, to judge --sensitivity by.
+ */
+function overviewLines(energy: Envelope, events: SetEvent[]): string[] {
+  const { step, bass } = summarizeEnvelope(energy, overviewColumns());
+  const bars = bass.map((level, column) => {
+    const bar = LEVELS[Math.round(level * (LEVELS.length - 1))]!;
+    return bassIsIn(events, (column + 1) * step) ? accent(bar) : dim(bar);
+  });
+  if (events.length === 0) return [bars.join('')];
+
+  const markers = Array<string>(bass.length).fill(' ');
+  for (const event of events) {
+    const column = Math.min(bass.length - 1, Math.floor(event.time / step));
+    markers[column] = event.type === 'drop' ? accent('▲') : steel('▼');
+  }
+  return [bars.join(''), markers.join('').trimEnd()];
+}
+
+/** As wide as the terminal allows beside the rail, and no wider than reads at a glance. */
+const overviewColumns = () => clamp((process.stdout.columns ?? 80) - 4, 16, 120);
+
+/** Whether the drafts have the bass in at `time`. Before the first, the set is the opposite of it. */
+function bassIsIn(events: SetEvent[], time: number): boolean {
+  const latest = events.findLast((event) => event.time <= time);
+  if (latest) return latest.type === 'drop';
+  return events[0]?.type === 'breakdown';
 }
 
 const eventLine = (event: SetEvent): string => {
