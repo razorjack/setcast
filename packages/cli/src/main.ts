@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module';
-import { accent, bold, dim, errorExitCode, printError, steel } from './ui.ts';
+import { accent, bold, dim, errorExitCode, formatHelp, printError, steel } from './ui.ts';
 
 const { version } = createRequire(import.meta.url)('../package.json') as { version: string };
 
@@ -52,7 +52,7 @@ async function main(argv: string[]): Promise<number> {
   }
   const command = await load();
   if (rest.includes('--help') || rest.includes('-h')) {
-    process.stdout.write(`${command.help}\n`);
+    process.stdout.write(`${formatHelp(command.help)}\n`);
     return 0;
   }
   try {

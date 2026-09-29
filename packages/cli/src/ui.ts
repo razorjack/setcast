@@ -12,6 +12,19 @@ export const steel = rgb(127, 212, 230);
 export const dim = pc.dim;
 export const bold = pc.bold;
 
+/** A command's `--help` styled like the top-level usage: the command in bold, flags in steel. */
+export function formatHelp(help: string): string {
+  const [usage = '', ...body] = help.split('\n');
+  const styledUsage = usage.replace(
+    /^setcast (\S+)/,
+    (_, command: string) => `${bold(accent('setcast'))} ${bold(command)}`,
+  );
+  const styledBody = body.map((line) =>
+    line.replace(/^ {2}(--[\w-]+)/, (_, flag: string) => `  ${steel(flag)}`),
+  );
+  return [styledUsage, ...styledBody].join('\n');
+}
+
 /** Whether `intro` has drawn the rail that warnings continue. `chapters` draws none. */
 let railStarted = false;
 
