@@ -4,6 +4,7 @@ import * as p from '@clack/prompts';
 import { clamp, ConfigError, hms, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/renderer-remotion';
 import pc from 'picocolors';
+import { clearTabProgress, showTabBusy, showTabProgress } from './terminal.ts';
 
 const rgb = (r: number, g: number, b: number) => (text: string) =>
   pc.isColorSupported ? `\x1b[38;2;${r};${g};${b}m${text}\x1b[39m` : text;
@@ -240,6 +241,7 @@ export class RenderUi {
 
   constructor() {
     this.#spin.start('Preparing browser');
+    showTabBusy();
   }
 
   readonly onProgress = ({
@@ -262,9 +264,11 @@ export class RenderUi {
     if (stage === 'frames') {
       const frames = this.#framesLine();
       frames.update(progress, framesDetail(renderedFrames, totalFrames, frames.elapsedSeconds));
+      showTabProgress(progress);
       return;
     }
     this.#encodeLine(totalFrames).update(progress, 'h264 + aac');
+    showTabProgress(progress);
   };
 
   /** The first frame report is what tells us the bundle is done, so the spinner stops here. */
@@ -295,12 +299,14 @@ export class RenderUi {
   /** Runs `task`; a failure while the spinner is up clears it so the error prints cleanly. */
   run<T>(task: () => Promise<T>): Promise<T> {
     const clear = () => {
+      clearTabProgress();
       if (!this.#frames) this.#spin.clear();
     };
     return clearSpinnerOnError({ clear }, task);
   }
 
   done(message: string): void {
+    clearTabProgress();
     if (this.#encode) this.#encode.done(message);
     else this.#spin.stop(message);
   }
