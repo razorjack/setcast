@@ -96,7 +96,7 @@ function selectImporter(text: string, { format, file }: ImportOptions): Importer
 
 function showTracks(tracks: TrackEntry[], importerName: string): void {
   log.info(`${bold(String(tracks.length))} tracks via ${steel(importerName)} importer`);
-  for (const track of tracks) log.message(trackLine(track));
+  log.message(tracks.map(trackLine));
 }
 
 const trackLine = (track: TrackEntry) => {

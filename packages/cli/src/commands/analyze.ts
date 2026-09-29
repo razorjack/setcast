@@ -141,8 +141,9 @@ const audioSummary = ({ seconds, bpm }: AnalysisDraft) => {
 };
 
 function showAnalysis(analysis: AnalysisDraft): void {
+  if (analysis.events.length === 0) return;
   // Padded names line the intensities up; trimmed because an uncoloured terminal shows the padding.
-  for (const event of analysis.events) log.message(eventLine(event).trimEnd());
+  log.message(analysis.events.map((event) => eventLine(event).trimEnd()));
 }
 
 const eventLine = (event: SetEvent): string => {
