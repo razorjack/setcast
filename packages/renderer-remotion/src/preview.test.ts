@@ -68,6 +68,14 @@ describe('preview process', () => {
     expect(fs.rm).toHaveBeenCalledOnce();
   });
 
+  test('passes an explicit graphics backend to Studio', async () => {
+    exitWith(0);
+    await preview(project, { projectDir: '/project', gl: 'swangle' });
+    expect(childProcess.spawn.mock.calls[0]![1]).toEqual(
+      expect.arrayContaining(['--gl', 'swangle']),
+    );
+  });
+
   test('reports terminating signals', async () => {
     exitWith(null, 'SIGTERM');
     await expect(preview(project, { projectDir: '/project' })).rejects.toThrow(

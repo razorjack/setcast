@@ -7,6 +7,7 @@ import {
   parseTime,
   SetcastError,
   youtubeDescription,
+  type ProjectConfig,
   type ResolvedProject,
 } from '@setcast/core';
 import {
@@ -76,6 +77,7 @@ export async function run(argv: string[]): Promise<void> {
     out,
     crf: config.output.crf,
     jpegQuality: config.output.jpegQuality,
+    gl: config.output.gl,
     onProgress: ui.onProgress,
   });
 
@@ -85,7 +87,7 @@ export async function run(argv: string[]): Promise<void> {
 
   const files = [result.file];
   if (options.bundle) {
-    files.push(...(await sideOutputs(project, dir, out, config.output.jpegQuality)));
+    files.push(...(await sideOutputs(project, dir, out, config.output)));
   }
 
   const elapsed = formatDuration((Date.now() - started) / 1000);
@@ -163,10 +165,10 @@ async function sideOutputs(
   project: ResolvedProject,
   dir: string,
   video: string,
-  jpegQuality: number,
+  output: ProjectConfig['output'],
 ): Promise<string[]> {
   const base = stem(video);
-  const thumbnail = await renderThumbnail(project, dir, `${base}.jpg`, jpegQuality);
+  const thumbnail = await renderThumbnail(project, dir, `${base}.jpg`, output);
   const description = await writeDescription(project, `${base}.txt`);
   return [thumbnail, description];
 }
@@ -175,14 +177,15 @@ async function renderThumbnail(
   project: ResolvedProject,
   dir: string,
   out: string,
-  jpegQuality: number,
+  output: ProjectConfig['output'],
 ): Promise<string> {
   const ui = new RenderUi();
   const options: StillOptions = {
     projectDir: dir,
     out,
     at: firstDrop(project.events),
-    jpegQuality,
+    jpegQuality: output.jpegQuality,
+    gl: output.gl,
     onProgress: ui.onProgress,
   };
 

@@ -131,6 +131,7 @@ async function renderClip(
       range,
       crf: loaded.config.output.crf,
       jpegQuality: loaded.config.output.jpegQuality,
+      gl: loaded.config.output.gl,
       onProgress: ui.onProgress,
     }),
   );

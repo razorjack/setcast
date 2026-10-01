@@ -5,11 +5,12 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
 import { ensureBrowser, renderMedia, renderStill, selectComposition } from '@remotion/renderer';
-import { SetcastError, type ResolvedProject } from '@setcast/core';
+import { SetcastError, type GraphicsBackend, type ResolvedProject } from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
 import { checkLocalServer } from './local-server.ts';
 import { probeAudio } from './probe.ts';
 import { resolveFrameRange } from './range.ts';
+import { graphicsOptions } from './graphics.ts';
 
 export { probeAudio } from './probe.ts';
 
@@ -38,6 +39,7 @@ export interface RenderOptions {
   concurrency?: number;
   crf?: number;
   jpegQuality?: number;
+  gl?: GraphicsBackend;
   onProgress?: Report;
 }
 
@@ -58,7 +60,12 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
 }
 
 /** Browser, bundle and composition: everything both a render and a still need first. */
-async function prepare(project: ResolvedProject, projectDir: string, report: Report) {
+async function prepare(
+  project: ResolvedProject,
+  options: { projectDir: string; gl?: GraphicsBackend },
+  report: Report,
+) {
+  const { projectDir } = options;
   await probeAudio(project, projectDir);
   await checkLocalServer();
   let downloadingBrowser = false;
@@ -96,6 +103,7 @@ async function prepare(project: ResolvedProject, projectDir: string, report: Rep
     serveUrl,
     id: COMPOSITION_ID,
     inputProps: project,
+    chromiumOptions: graphicsOptions(options.gl),
   }).catch((cause: unknown) => {
     throw translateRenderError(cause);
   });
@@ -105,7 +113,7 @@ async function prepare(project: ResolvedProject, projectDir: string, report: Rep
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   validateVideoFile(options.out);
   const report = options.onProgress ?? (() => {});
-  const { serveUrl, composition } = await prepare(project, options.projectDir, report);
+  const { serveUrl, composition } = await prepare(project, options, report);
 
   const { fps, durationInFrames } = composition;
   const frameRange = options.range ? resolveFrameRange(options.range, fps, durationInFrames) : null;
@@ -123,6 +131,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
       inputProps: project,
       frameRange,
       concurrency: options.concurrency ?? null,
+      chromiumOptions: graphicsOptions(options.gl),
       // Remotion counts rendered and encoded frames on one callback; Setcast shows them as stages.
       onProgress: ({ renderedFrames, encodedFrames, stitchStage }) => {
         if (renderedFrames < totalFrames) {
@@ -148,6 +157,7 @@ export interface StillOptions {
   /** Seconds into the set. Defaults to a quarter of the way in. */
   at?: number;
   jpegQuality?: number;
+  gl?: GraphicsBackend;
   onProgress?: Report;
 }
 
@@ -172,7 +182,7 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
 async function stillIn(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
   const imageFormat = stillFormat(options.out);
   const report = options.onProgress ?? (() => {});
-  const { serveUrl, composition } = await prepare(project, options.projectDir, report);
+  const { serveUrl, composition } = await prepare(project, options, report);
 
   const { fps, durationInFrames } = composition;
   const at = options.at ?? durationInFrames / fps / 4;
@@ -184,6 +194,7 @@ async function stillIn(project: ResolvedProject, options: StillOptions): Promise
       serveUrl,
       output: options.out,
       frame,
+      chromiumOptions: graphicsOptions(options.gl),
       inputProps: project,
       imageFormat,
       // Remotion rejects a quality for a lossless format, so png and webp must pass none.
@@ -248,6 +259,7 @@ function translateRenderError(thrown: unknown): Error {
 export interface PreviewOptions {
   projectDir: string;
   port?: number;
+  gl?: GraphicsBackend;
 }
 
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
@@ -265,6 +277,8 @@ export async function preview(project: ResolvedProject, options: PreviewOptions)
 function studioArgs(propsFile: string, options: PreviewOptions): string[] {
   const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', options.projectDir];
   if (options.port) args.push('--port', String(options.port));
+  const { gl } = graphicsOptions(options.gl);
+  if (gl) args.push('--gl', gl);
   return args;
 }
 

@@ -44,6 +44,7 @@ export async function run(argv: string[]): Promise<void> {
     out,
     at,
     jpegQuality: config.output.jpegQuality,
+    gl: config.output.gl,
     onProgress: ui.onProgress,
   };
 

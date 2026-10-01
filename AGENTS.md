@@ -477,6 +477,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Renders pass `jpegQuality: 95` (Remotion defaults to 80) and `output.crf` (default 18). The
   intermediate frames the encoder reads are JPEGs, and the default look is a dark scene full of
   smooth gradients, blur and a vignette, which bands badly below ~90. Both are `output:` keys.
+- `output.gl` defaults to `auto`: ANGLE on macOS, Chromium's default elsewhere. `default` restores
+  Chromium's own choice on any platform; explicit backend names pass through the adapter. The same
+  setting applies to metadata, renders, stills, bundled thumbnails and Studio render settings.
+  The backend stays out of `ResolvedProject`: it configures the renderer, not the scene.
 - The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
   never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
   in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.

@@ -64,6 +64,13 @@ describe('render orchestration failures', () => {
     expect(remotion.ensureBrowser).not.toHaveBeenCalled();
   });
 
+  test('uses the selected graphics backend for metadata and rendered frames', async () => {
+    await render(project, { projectDir: '.', out: 'out.mp4', gl: 'swangle' });
+    const graphics = { chromiumOptions: { gl: 'swangle' } };
+    expect(remotion.selectComposition).toHaveBeenCalledWith(expect.objectContaining(graphics));
+    expect(remotion.renderMedia).toHaveBeenCalledWith(expect.objectContaining(graphics));
+  });
+
   test('stops when browser preparation fails', async () => {
     remotion.ensureBrowser.mockRejectedValue(new Error('browser failed'));
     await expect(run()).rejects.toThrow('browser failed');

@@ -9,6 +9,15 @@ const relativePath = (what: string, required = `${what} must be a file path.`) =
 export const TrackEntrySchema = TrackSchema.extend({ time: TimeSchema });
 export type TrackEntry = z.infer<typeof TrackEntrySchema>;
 
+const GraphicsBackendSchema = z.enum(
+  ['auto', 'default', 'angle', 'egl', 'swiftshader', 'swangle', 'vulkan', 'angle-egl'],
+  {
+    error:
+      'gl must be auto, default, angle, egl, swiftshader, swangle, vulkan or angle-egl. Use auto for the platform default.',
+  },
+);
+export type GraphicsBackend = z.infer<typeof GraphicsBackendSchema>;
+
 const outputShape = {
   width: z
     .number({ error: 'width must be a number of pixels.' })
@@ -31,6 +40,7 @@ const outputShape = {
       error: 'file must end in .mp4, .mov or .mkv.',
     })
     .default('out/set.mp4'),
+  gl: GraphicsBackendSchema.default('auto'),
   /** x264 constant rate factor: lower is better and bigger. 1-51. */
   crf: z
     .number({ error: 'crf must be a whole number from 1 to 51.' })

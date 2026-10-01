@@ -115,7 +115,7 @@ background: assets/bg.svg
 theme: sterile-tech          # built-in name, or a path to your own .css
 bpm: 174                     # gives CSS --beat and --bar; `setcast analyze --write` fills it in
 beatOffset: 0.12             # seconds to the first beat; analyze fills it in with bpm
-output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4, crf: 18, jpegQuality: 95 }
+output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4, crf: 18, jpegQuality: 95, gl: auto }
 deckOrder: [A, B]            # decks tracks rotate through when they name none
 
 tracks:                      # becomes track_start events; decks alternate A/B if omitted
@@ -137,6 +137,12 @@ css: overrides.css           # optional, appended after the theme
 ```
 
 Times accept `1:23`, `1:23.5`, `1:02:03` or plain seconds.
+
+`output.gl: auto` uses ANGLE on macOS and lets Chromium choose its backend elsewhere.
+Set `gl: default` to use Chromium's choice on macOS too, or select `angle`, `egl`,
+`swiftshader`, `swangle`, `vulkan` or `angle-egl` explicitly. This applies to renders,
+clips, stills and Studio's render settings. Software backends can be useful on machines
+without a GPU, but can make glows and other effects slower.
 
 ## Commands
 

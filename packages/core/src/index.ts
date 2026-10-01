@@ -43,6 +43,7 @@ export {
   PanelSchema,
   ProjectConfigSchema,
   TrackEntrySchema,
+  type GraphicsBackend,
   type ProjectConfig,
   type ProjectConfigInput,
   type TrackEntry,
