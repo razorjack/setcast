@@ -44,9 +44,11 @@ export {
   ProjectConfigSchema,
   TrackEntrySchema,
   type GraphicsBackend,
+  type HardwareAcceleration,
   type ProjectConfig,
   type ProjectConfigInput,
   type TrackEntry,
+  type VideoBitrate,
 } from './config.ts';
 export {
   DeckSchema,

@@ -144,6 +144,26 @@ Set `gl: default` to use Chromium's choice on macOS too, or select `angle`, `egl
 clips, stills and Studio's render settings. Software backends can be useful on machines
 without a GPU, but can make glows and other effects slower.
 
+Video encoding uses software H.264 with `crf: 18` by default. To try hardware encoding
+(VideoToolbox on macOS, NVENC on supported NVIDIA systems), configure a bitrate instead:
+
+```yaml
+output:
+  hardwareAcceleration: if-possible
+  videoBitrate: 12M
+```
+
+Remove any explicit `crf` from that output block. `videoBitrate` accepts positive values in
+megabits/s (`12M`) or kilobits/s (`12000k`); it also works with software encoding.
+`hardwareAcceleration` accepts `disable` (default), `if-possible` or `required`. With
+`if-possible`, Remotion falls back to software if its FFmpeg build lacks the hardware encoder;
+`required` fails instead. Device or driver failures can still stop an encode in either mode.
+These settings apply to renders, clips and Studio's render settings.
+
+Hardware encoding speeds up compression, while frame rendering still uses Chromium. A bitrate
+of `12M` is a starting point for 1080p/30 fps, not a quality equivalent to CRF 18. Compare a short
+slice for dark gradients, moving detail and file size before exporting a full set.
+
 The bundled procedural textures and default background are pre-rendered PNGs, so exporting
 does not repeatedly evaluate SVG noise and blur. SVG backgrounds still work; for an existing
 project, pre-render complex static artwork to a bitmap with enough pixels for the output and

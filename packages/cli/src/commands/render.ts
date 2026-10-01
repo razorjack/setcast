@@ -76,6 +76,8 @@ export async function run(argv: string[]): Promise<void> {
     projectDir: dir,
     out,
     crf: config.output.crf,
+    hardwareAcceleration: config.output.hardwareAcceleration,
+    videoBitrate: config.output.videoBitrate,
     jpegQuality: config.output.jpegQuality,
     gl: config.output.gl,
     onProgress: ui.onProgress,

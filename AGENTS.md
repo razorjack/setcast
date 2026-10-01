@@ -477,6 +477,13 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Renders pass `jpegQuality: 95` (Remotion defaults to 80) and `output.crf` (default 18). The
   intermediate frames the encoder reads are JPEGs, and the default look is a dark scene full of
   smooth gradients, blur and a vignette, which bands badly below ~90. Both are `output:` keys.
+- Hardware encoding is opt-in with `output.hardwareAcceleration` (`disable`, `if-possible`,
+  `required`) and requires `output.videoBitrate` (e.g. `12M`). Explicit CRF conflicts with bitrate
+  or hardware encoding; the schema adds CRF 18 only when no bitrate is present. The adapter
+  validates the same rules for direct API calls before browser work and passes `crf: null` for
+  bitrate encoding. Studio receives the same encoding and JPEG quality settings as CLI renders.
+  Remotion's `if-possible` fallback checks the encoder in its bundled FFmpeg; it does not recover
+  from a device or driver failure after encoding starts.
 - `output.gl` defaults to `auto`: ANGLE on macOS, Chromium's default elsewhere. `default` restores
   Chromium's own choice on any platform; explicit backend names pass through the adapter. The same
   setting applies to metadata, renders, stills, bundled thumbnails and Studio render settings.

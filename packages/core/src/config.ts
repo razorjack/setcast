@@ -18,6 +18,21 @@ const GraphicsBackendSchema = z.enum(
 );
 export type GraphicsBackend = z.infer<typeof GraphicsBackendSchema>;
 
+const HardwareAccelerationSchema = z.enum(['disable', 'if-possible', 'required'], {
+  error: 'hardwareAcceleration must be disable, if-possible or required.',
+});
+export type HardwareAcceleration = z.infer<typeof HardwareAccelerationSchema>;
+export type VideoBitrate = `${number}${'k' | 'K' | 'M'}`;
+
+const bitrateError = 'videoBitrate must be a positive bitrate such as 12M or 12000k.';
+const VideoBitrateSchema = z
+  .string({ error: bitrateError })
+  .regex(/^(?:\d+(?:\.\d+)?|\.\d+)[kKM]$/, { error: bitrateError })
+  .refine((value) => Number.isFinite(Number(value.slice(0, -1))) && parseFloat(value) > 0, {
+    error: bitrateError,
+  })
+  .transform((value): VideoBitrate => value as VideoBitrate);
+
 const outputShape = {
   width: z
     .number({ error: 'width must be a number of pixels.' })
@@ -41,13 +56,15 @@ const outputShape = {
     })
     .default('out/set.mp4'),
   gl: GraphicsBackendSchema.default('auto'),
+  hardwareAcceleration: HardwareAccelerationSchema.default('disable'),
+  videoBitrate: VideoBitrateSchema.optional(),
   /** x264 constant rate factor: lower is better and bigger. 1-51. */
   crf: z
     .number({ error: 'crf must be a whole number from 1 to 51.' })
     .int({ error: 'crf must be a whole number from 1 to 51.' })
     .min(1, { error: 'crf must be a whole number from 1 to 51.' })
     .max(51, { error: 'crf must be a whole number from 1 to 51.' })
-    .default(18),
+    .optional(),
   /** Quality of the intermediate frames the encoder reads. Dark gradients band below ~90. */
   jpegQuality: z
     .number({ error: 'jpegQuality must be a whole number from 1 to 100.' })
@@ -57,9 +74,31 @@ const outputShape = {
     .default(95),
 };
 
-export const OutputSchema = z.strictObject(outputShape, {
-  error: (issue) => unknownOutputKey(issue, Object.keys(outputShape)),
-});
+export const OutputSchema = z
+  .strictObject(outputShape, {
+    error: (issue) => unknownOutputKey(issue, Object.keys(outputShape)),
+  })
+  .superRefine((output, ctx) => {
+    const hardware = output.hardwareAcceleration !== 'disable';
+    if (hardware && !output.videoBitrate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['videoBitrate'],
+        message: 'Set videoBitrate, e.g. 12M, when enabling hardwareAcceleration.',
+      });
+    }
+    if (output.crf !== undefined && (output.videoBitrate || hardware)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['crf'],
+        message: 'Remove crf when using videoBitrate or hardwareAcceleration.',
+      });
+    }
+  })
+  .transform((output) => ({
+    ...output,
+    crf: output.crf ?? (output.videoBitrate ? undefined : 18),
+  }));
 
 export const PanelSchema = z.strictObject({
   /** Seconds the now-playing panel stays up after a track change. 0 keeps it up for the whole set. */

@@ -71,6 +71,39 @@ describe('render orchestration failures', () => {
     expect(remotion.renderMedia).toHaveBeenCalledWith(expect.objectContaining(graphics));
   });
 
+  test('defaults to software CRF 18 and JPEG quality 95', async () => {
+    await run();
+    expect(remotion.renderMedia).toHaveBeenCalledWith(
+      expect.objectContaining({ crf: 18, hardwareAcceleration: 'disable', jpegQuality: 95 }),
+    );
+  });
+
+  test.each(['disable', 'if-possible', 'required'] as const)(
+    'forwards bitrate encoding with %s hardware acceleration and no CRF',
+    async (hardwareAcceleration) => {
+      await render(project, {
+        projectDir: '.',
+        out: 'out.mp4',
+        hardwareAcceleration,
+        videoBitrate: '12M',
+      });
+      expect(remotion.renderMedia).toHaveBeenCalledWith(
+        expect.objectContaining({ hardwareAcceleration, videoBitrate: '12M', crf: null }),
+      );
+    },
+  );
+
+  test.each([
+    { crf: 18, videoBitrate: '12M' as const },
+    { hardwareAcceleration: 'required' as const },
+  ])('rejects invalid encoding options before audio or browser work: %j', async (options) => {
+    await expect(render(project, { projectDir: '.', out: 'out.mp4', ...options })).rejects.toThrow(
+      'Invalid video encoding settings',
+    );
+    expect(audio.probe).not.toHaveBeenCalled();
+    expect(remotion.ensureBrowser).not.toHaveBeenCalled();
+  });
+
   test('stops when browser preparation fails', async () => {
     remotion.ensureBrowser.mockRejectedValue(new Error('browser failed'));
     await expect(run()).rejects.toThrow('browser failed');

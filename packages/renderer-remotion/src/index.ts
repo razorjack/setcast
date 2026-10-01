@@ -11,6 +11,7 @@ import { checkLocalServer } from './local-server.ts';
 import { probeAudio } from './probe.ts';
 import { resolveFrameRange } from './range.ts';
 import { graphicsOptions } from './graphics.ts';
+import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './encoding.ts';
 
 export { probeAudio } from './probe.ts';
 
@@ -31,13 +32,12 @@ export interface RenderProgress {
 
 type Report = (progress: RenderProgress) => void;
 
-export interface RenderOptions {
+export interface RenderOptions extends EncodingOptions {
   projectDir: string;
   out: string;
   /** Seconds; inclusive start, exclusive end. */
   range?: [number, number];
   concurrency?: number;
-  crf?: number;
   jpegQuality?: number;
   gl?: GraphicsBackend;
   onProgress?: Report;
@@ -112,6 +112,7 @@ async function prepare(
 
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   validateVideoFile(options.out);
+  const encoding = encodingOptions(options);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition } = await prepare(project, options, report);
 
@@ -125,7 +126,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
       serveUrl,
       codec: 'h264',
       audioCodec: 'aac',
-      crf: options.crf ?? null,
+      ...encoding,
       jpegQuality: options.jpegQuality ?? 95,
       outputLocation: options.out,
       inputProps: project,
@@ -256,10 +257,11 @@ function translateRenderError(thrown: unknown): Error {
   return cause;
 }
 
-export interface PreviewOptions {
+export interface PreviewOptions extends EncodingOptions {
   projectDir: string;
   port?: number;
   gl?: GraphicsBackend;
+  jpegQuality?: number;
 }
 
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
@@ -276,6 +278,7 @@ export async function preview(project: ResolvedProject, options: PreviewOptions)
 
 function studioArgs(propsFile: string, options: PreviewOptions): string[] {
   const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', options.projectDir];
+  args.push(...studioEncodingArgs(options), '--jpeg-quality', String(options.jpegQuality ?? 95));
   if (options.port) args.push('--port', String(options.port));
   const { gl } = graphicsOptions(options.gl);
   if (gl) args.push('--gl', gl);

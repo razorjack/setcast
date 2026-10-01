@@ -130,6 +130,8 @@ async function renderClip(
       out,
       range,
       crf: loaded.config.output.crf,
+      hardwareAcceleration: loaded.config.output.hardwareAcceleration,
+      videoBitrate: loaded.config.output.videoBitrate,
       jpegQuality: loaded.config.output.jpegQuality,
       gl: loaded.config.output.gl,
       onProgress: ui.onProgress,

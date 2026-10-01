@@ -76,6 +76,38 @@ describe('preview process', () => {
     );
   });
 
+  test('passes hardware bitrate settings to Studio without a conflicting CRF', async () => {
+    exitWith(0);
+    await preview(project, {
+      projectDir: '/project',
+      hardwareAcceleration: 'required',
+      videoBitrate: '12M',
+      jpegQuality: 98,
+    });
+    const args = childProcess.spawn.mock.calls[0]![1];
+    expect(args).toEqual(
+      expect.arrayContaining([
+        '--hardware-acceleration',
+        'required',
+        '--video-bitrate',
+        '12M',
+        '--jpeg-quality',
+        '98',
+      ]),
+    );
+    expect(args).not.toContain('--crf');
+  });
+
+  test('uses the same software quality defaults for Studio and CLI renders', async () => {
+    exitWith(0);
+    await preview(project, { projectDir: '/project' });
+    const args = childProcess.spawn.mock.calls[0]![1];
+    expect(args).toEqual(
+      expect.arrayContaining(['--crf', '18', '--hardware-acceleration', 'disable']),
+    );
+    expect(args).not.toContain('--video-bitrate');
+  });
+
   test('reports terminating signals', async () => {
     exitWith(null, 'SIGTERM');
     await expect(preview(project, { projectDir: '/project' })).rejects.toThrow(
