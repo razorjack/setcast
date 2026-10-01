@@ -486,6 +486,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   ordinary rendering and `init` need no rasterizer dependency. The 2304x1296 background leaves
   room for the demo's zoom at 1080p; larger outputs can regenerate it or use the SVG directly.
   Keep geometric assets such as escapement's dial as SVG so their fine lines stay sharp.
+- Long-exposure's scopes use two chained drop shadows. Each shadow filters the preceding result,
+  so adding a third wide blur is expensive on these large SVGs. Keep all history traces and tune
+  the two radii for the light-trail halo; compare both a drop flash and sustained playback.
 - The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
   never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
   in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.

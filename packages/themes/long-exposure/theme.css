@@ -110,9 +110,8 @@
 .theme-long-exposure .sc-vectorscope,
 .theme-long-exposure .sc-oscilloscope {
   mix-blend-mode: screen;
-  filter: drop-shadow(0 0 calc(0.18cqw * var(--burn)) var(--amber))
-    drop-shadow(0 0 calc(0.7cqw * var(--burn)) var(--orange))
-    drop-shadow(0 0 calc(1.8cqw * var(--burn)) color-mix(in srgb, var(--red) 80%, transparent));
+  filter: drop-shadow(0 0 calc(0.22cqw * var(--burn)) var(--amber))
+    drop-shadow(0 0 calc(1.1cqw * var(--burn)) var(--orange));
 }
 .theme-long-exposure .sc-vectorscope-line,
 .theme-long-exposure .sc-oscilloscope-line {
