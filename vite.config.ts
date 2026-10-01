@@ -74,6 +74,10 @@ export default defineConfig({
         command: 'node scripts/theme-stills.ts',
         cache: false,
       },
+      'rasterize-assets': {
+        command: 'node scripts/rasterize-assets.ts',
+        cache: false,
+      },
     },
   },
 });

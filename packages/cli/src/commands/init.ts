@@ -91,7 +91,7 @@ function defaultAnswers(dir: string, demo: boolean): InitAnswers {
 
 async function writeBackground(dir: string): Promise<void> {
   await mkdir(join(dir, 'assets'), { recursive: true });
-  await writeFile(join(dir, 'assets/bg.svg'), await readFile(join(TEMPLATES, 'bg.svg')));
+  await writeFile(join(dir, 'assets/bg.png'), await readFile(join(TEMPLATES, 'bg.png')));
 }
 
 async function prepareProject(dir: string, audio: string): Promise<ProjectContent> {
@@ -162,7 +162,7 @@ function configFor(answers: InitAnswers, project: ProjectContent): Record<string
   const config: Record<string, unknown> = {
     title: answers.title,
     audio: project.audio || 'CHANGE-ME.wav',
-    background: 'assets/bg.svg',
+    background: 'assets/bg.png',
     theme: answers.theme,
     renderer: 'remotion',
     output: { width: 1920, height: 1080, fps: answers.fps, file: 'out/set.mp4' },

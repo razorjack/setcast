@@ -8,7 +8,8 @@
     "fonts",
     "textures",
     "*/theme.css",
-    "*/*.svg"
+    "*/*.svg",
+    "*/*.png"
   ],
   "type": "module",
   "exports": {

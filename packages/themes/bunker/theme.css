@@ -87,7 +87,7 @@
 /* the wall: concrete, with the art worked into it like stains */
 .theme-bunker .sc-bg {
   inset: -2cqw;
-  background: url(./concrete.svg) center / cover;
+  background: url(./concrete.png) center / cover;
   translate: var(--shake-x) var(--shake-y);
 }
 .theme-bunker .sc-bg-img {

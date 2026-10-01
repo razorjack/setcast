@@ -105,13 +105,13 @@ A project is a directory:
 my-set/
   setcast.yaml      # everything below
   assets/mix.wav    # your audio (wav, mp3, m4a, flac)
-  assets/bg.svg     # background art (png/jpg/svg, or mp4/mov/webm for a looping video)
+  assets/bg.png     # background art (png/jpg/svg, or mp4/mov/webm for a looping video)
 ```
 
 ```yaml
 title: Sterile Session 01
 audio: assets/mix.wav
-background: assets/bg.svg
+background: assets/bg.png
 theme: sterile-tech          # built-in name, or a path to your own .css
 bpm: 174                     # gives CSS --beat and --bar; `setcast analyze --write` fills it in
 beatOffset: 0.12             # seconds to the first beat; analyze fills it in with bpm
@@ -143,6 +143,13 @@ Set `gl: default` to use Chromium's choice on macOS too, or select `angle`, `egl
 `swiftshader`, `swangle`, `vulkan` or `angle-egl` explicitly. This applies to renders,
 clips, stills and Studio's render settings. Software backends can be useful on machines
 without a GPU, but can make glows and other effects slower.
+
+The bundled procedural textures and default background are pre-rendered PNGs, so exporting
+does not repeatedly evaluate SVG noise and blur. SVG backgrounds still work; for an existing
+project, pre-render complex static artwork to a bitmap with enough pixels for the output and
+its largest zoom. The default PNG is 2304×1296 for 1080p output with zoom headroom. Editable
+SVG sources remain in the repository. After changing them, regenerate the shipped assets with
+`vp run rasterize-assets` (requires `rsvg-convert` from librsvg, only for regeneration).
 
 ## Commands
 

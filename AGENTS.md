@@ -481,6 +481,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   Chromium's own choice on any platform; explicit backend names pass through the adapter. The same
   setting applies to metadata, renders, stills, bundled thumbnails and Studio render settings.
   The backend stays out of `ResolvedProject`: it configures the renderer, not the scene.
+- Procedural theme textures and the scaffold/demo background ship as pre-rendered PNGs, generated
+  by `vp run rasterize-assets` with librsvg's `rsvg-convert`. SVGs remain the editable sources;
+  ordinary rendering and `init` need no rasterizer dependency. The 2304x1296 background leaves
+  room for the demo's zoom at 1080p; larger outputs can regenerate it or use the SVG directly.
+  Keep geometric assets such as escapement's dial as SVG so their fine lines stay sharp.
 - The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
   never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
   in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.

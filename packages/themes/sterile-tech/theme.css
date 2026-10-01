@@ -164,7 +164,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url(../textures/grain.svg) 0 0 / 12.5cqw;
+  background: url(../textures/grain.png) 0 0 / 12.5cqw;
   mix-blend-mode: overlay;
   opacity: 0.07;
 }

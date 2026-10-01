@@ -1,7 +1,7 @@
 # Setcast demo project. Audio is generated: run `vp run demo-assets` from the repo root.
 title: Setcast Demo Session
 audio: assets/demo-set.wav
-background: assets/bg.svg
+background: assets/bg.png
 theme: sterile-tech
 renderer: remotion
 bpm: 174

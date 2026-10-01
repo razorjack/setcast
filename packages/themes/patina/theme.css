@@ -59,7 +59,7 @@
 .theme-patina .sc-bg {
   --window: 15cqh 5cqw 23cqh 5cqw;
   clip-path: inset(var(--window) round 0.7cqw);
-  background: url(./stains.svg) center / cover;
+  background: url(./stains.png) center / cover;
 }
 /* olive and bronze, a little lifted by the music, flickering like projected film */
 .theme-patina .sc-bg-img {
@@ -82,7 +82,7 @@
   position: absolute;
   inset: 0;
   background:
-    url(../textures/grain.svg) 0 0 / 11cqw,
+    url(../textures/grain.png) 0 0 / 11cqw,
     linear-gradient(
       96deg,
       transparent 21%,
