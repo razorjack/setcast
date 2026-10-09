@@ -334,8 +334,10 @@
 .theme-escapement .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 1.8cqw;
+  min-width: 1.8cqw;
   height: 1.8cqw;
+  padding-inline: 0.35em;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-size: 1cqw;
   letter-spacing: 0;
@@ -428,7 +430,7 @@
     font-size: 1.7cqw;
   }
   .theme-escapement .sc-deck {
-    width: 3.4cqw;
+    min-width: 3.4cqw;
     height: 3.4cqw;
     font-size: 1.9cqw;
   }
@@ -455,10 +457,135 @@
   }
 }
 
+/* DJ: the credits stack outward from the band's edge at its angle, the focused ones in chartreuse */
+.theme-escapement[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 1.2cqw;
+  --slot-bleed: 0.4cqw;
+  left: calc(var(--margin) + 5cqw);
+  bottom: calc(
+    100cqh - var(--band-y) + var(--band) / 2 + var(--margin) * tan(var(--angle)) + 2.2cqh
+  );
+  width: 40cqw;
+  transform-origin: 0 100%;
+  rotate: calc(-1 * var(--angle));
+}
+/* deck, artist / title / label, details: each line wraps only when it has something on it */
 .theme-escapement[data-presentation='dj'] .sc-panel {
-  background: var(--paper);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.8cqw;
+  padding-bottom: 0.9cqw;
+  border-bottom: var(--hairline) solid var(--ink);
+  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
+}
+.theme-escapement[data-presentation='dj'] .sc-panel-head {
+  gap: 0.6cqw;
+  margin: 0;
+  font-size: 0.7cqw;
+}
+.theme-escapement[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-escapement[data-presentation='dj']
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-escapement[data-presentation='dj'] .sc-deck {
+  min-width: 1.3cqw;
+  height: 1.3cqw;
+  font-size: 0.7cqw;
+  translate: 0 0.15cqw;
+}
+.theme-escapement[data-presentation='dj'] .sc-artist {
+  margin-bottom: 0.45cqw;
+  font-size: 1.2cqw;
 }
 .theme-escapement[data-presentation='dj'] .sc-title {
+  flex-basis: 100%;
+  font-size: 2.5cqw;
+}
+.theme-escapement[data-presentation='dj'] .sc-label {
+  margin-top: 0.6cqw;
+  font-size: 0.65cqw;
+}
+.theme-escapement .sc-credit-details {
+  margin-top: 0.6cqw;
+  font-size: 0.65cqw;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-escapement .sc-label + .sc-credit-details::before {
+  content: '/ ';
+}
+.theme-escapement[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  border-bottom-color: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.theme-escapement[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
   color: var(--ink);
   text-shadow: none;
+}
+.theme-escapement[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: var(--ink-dim);
+}
+.theme-escapement .sc-contributor-count,
+.theme-escapement .sc-overflow {
+  font-size: 0.65cqw;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.theme-escapement .sc-contributor-count {
+  margin-bottom: 0.2cqw;
+}
+.theme-escapement .sc-overflow {
+  margin-top: 0.8cqw;
+}
+
+/* portrait: the stack leans left as it grows, so it starts further in, under a smaller dial */
+@container (aspect-ratio < 1) {
+  .theme-escapement[data-presentation='dj']::before,
+  .theme-escapement[data-presentation='dj']::after,
+  .theme-escapement[data-presentation='dj'] > * {
+    --radial-size: 58cqw;
+    --dial-y: 25cqh;
+    --dial-x: 50cqw;
+    --beat-x: calc(var(--dial-x) + var(--radial-size) * 0.6);
+    --beat-y: calc(var(--dial-y) + var(--radial-size) * 0.48);
+  }
+  .theme-escapement[data-presentation='dj'] .sc-contributors {
+    --stack-gap: 2.4cqw;
+    left: calc(var(--margin) + 14cqw);
+    width: 62cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-panel {
+    column-gap: 1.6cqw;
+    padding-bottom: 1.8cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-panel-head,
+  .theme-escapement .sc-credit-details,
+  .theme-escapement[data-presentation='dj'] .sc-label,
+  .theme-escapement .sc-contributor-count,
+  .theme-escapement .sc-overflow {
+    font-size: 1.3cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-deck {
+    min-width: 2.6cqw;
+    height: 2.6cqw;
+    font-size: 1.4cqw;
+    translate: 0 0.3cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-artist {
+    font-size: 2.3cqw;
+    margin-bottom: 0.8cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-title {
+    font-size: 4.6cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-label,
+  .theme-escapement .sc-credit-details {
+    margin-top: 1.2cqw;
+  }
 }
