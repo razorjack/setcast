@@ -555,6 +555,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   bright art well and any darkening sinks it into the texture. Verify changes against real art,
   not the demo art, which is nearly black and flat; the gitignored `demos/backgrounds/` holds a
   local test set when present (never commit those images).
+- `setcast still --theme all` loads the project once per built-in theme and names each file
+  after it (`thumb-pirate.jpg`). The CLI prints each configuration warning once per process.
 - Configuration warnings distinguish explicitly written `panel.fade` from its schema default;
   `panel: { dwell: 0 }` is valid without a warning about an unused default fade.
 - The adapter checks localhost binding before starting Remotion. In restricted sandboxes,

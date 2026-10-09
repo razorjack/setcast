@@ -43,8 +43,10 @@ flyer to the fluorescent display of a 90s CD deck.
 ## Themes
 
 Switch themes with one line in `setcast.yaml` (`theme: bristol`), or try one without editing
-anything: `setcast still --theme bristol`. Each theme brings its own visualizers and reactions, so
-the name alone gives you the look as designed. A theme can also be a path to your own `.css`.
+anything: `setcast still --theme bristol`. `setcast still --theme all` grabs the same moment in
+every theme, one image each, to see which one suits your art. Each theme brings its own
+visualizers and reactions, so the name alone gives you the look as designed. A theme can also be
+a path to your own `.css`.
 
 | theme           | look                                                                                    |
 | --------------- | --------------------------------------------------------------------------------------- |
@@ -209,7 +211,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast preview`  | opens the set in Remotion Studio                                                                 |
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
-| `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment                   |
+| `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
 | `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |
 | `setcast live`     | planned: live overlay mode                                                                       |

@@ -5,14 +5,23 @@ import { probeAudio } from '@setcast/renderer-remotion';
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
 
-/** Loads the project in `dir`; `theme` replaces the one its setcast.yaml names. */
+const warned = new Set<string>();
+
+/**
+ * Loads the project in `dir`; `theme` replaces the one its setcast.yaml names. A command that
+ * loads the project once per theme prints each warning once.
+ */
 export async function load(dir = '.', theme?: string): Promise<LoadedProject> {
   const loaded = await loadProject(resolve(dir), {
     themes,
     theme,
     probeDuration: (audio, root) => probeAudio({ audio }, root),
   });
-  for (const warning of loaded.warnings) warn(warning);
+  for (const warning of loaded.warnings) {
+    if (warned.has(warning)) continue;
+    warned.add(warning);
+    warn(warning);
+  }
   return loaded;
 }
 
