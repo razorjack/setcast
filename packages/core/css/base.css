@@ -255,11 +255,13 @@
  * sinks out of it. The vertical clip keeps a moving panel off its neighbors; --slot-bleed lets a
  * theme's shadows and ornaments past it and should stay within --stack-gap.
  */
+/* the anchor lets a theme keep up next clear of the stack, however tall it is */
 .sc-stage[data-presentation='dj'] .sc-contributors {
   position: absolute;
   left: var(--margin);
   bottom: var(--margin);
   width: 44cqw;
+  anchor-name: --contributors;
 }
 /* block flow, not flex: Chrome ignores calc-size() heights on flex items */
 .sc-stage[data-presentation='dj'] .sc-slot {

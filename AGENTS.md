@@ -331,7 +331,8 @@ reset it. Themes use `--presence`, which follows show in playlist mode; in DJ mo
 holds for the run and eases out over its last 0.6 s, so DJ credits remain legible after dwell.
 `--presence` sits on the panel's `.sc-slot`. In DJ mode base.css stacks the slots in play order,
 anchored at the bottom, each as tall as `--presence` times its panel, so the stack opens and
-closes smoothly (`--stack-gap`, `--slot-bleed`). `.sc-contributors` shows up to four panels in
+closes smoothly (`--stack-gap`, `--slot-bleed`). The DJ stack is the CSS anchor `--contributors`,
+which a theme uses to keep `.sc-next` clear of it. `.sc-contributors` shows up to four panels in
 landscape or three in portrait, retains focused plays first, and adds an explicit overflow count
 and accessible full list. There is no data-model concurrency limit.
 

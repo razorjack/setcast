@@ -82,7 +82,9 @@ slots in play order, anchored at the bottom of `.sc-contributors`, and sets each
 to `--presence` times its panel's height. The stack opens as a panel rises into its slot and
 closes as one sinks out of it, without a jump. Slots clip vertically; `--stack-gap` spaces them
 and `--slot-bleed` lets shadows and ornaments past the clip. A theme can rearrange the slots,
-for example into a row that collapses their width instead.
+for example into a row that collapses their width instead. The DJ `.sc-contributors` is the
+anchor `--contributors`, so a theme can keep `.sc-next` above the stack with
+`position-anchor: --contributors; bottom: calc(anchor(top) + 2cqw)`.
 
 `.sc-contributors` lays out current panels. Built-ins show up to four panels in landscape and
 three in portrait, keeping focused plays visible first and preserving play order among the
