@@ -582,6 +582,13 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 
 ## Not yet decided
 
+- The proposed multi-play timeline and authoring format are specified in
+  `docs/dj-mix-model.md`, with sourced findings, report critiques, and decision rationale in
+  `docs/dj-mix-evidence.md`. Original inputs are archived under `docs/research/dj-mix/`.
+  This is design work, not implemented behavior. The user explicitly waived backward
+  compatibility for this redesign on 2026-10-09; do not preserve the current event schema or
+  tracklist syntax at the expense of the new design. Current architecture sections above still
+  describe the running implementation until that redesign is built.
 - Sidecar format for precomputed AudioFeatures (JSON first; binary layout later). `wave` is
   1024 floats per frame, far more than the rest; a renderer that has the PCM anyway should slice
   it at render time instead of storing it.

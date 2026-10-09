@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track contribution timeline</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; color: var(--foreground); font-family: var(--font-sans); }
+  * { box-sizing: border-box; }
+  #mix-explainer { --series-a: var(--chart-1); --series-b: var(--chart-2); --series-c: var(--chart-3); }
+  h2 { margin: 0 0 16px; font-size: 1.15em; font-weight: 500; }
+  select { max-width: 100%; width: 100%; padding: 9px; background: var(--background); color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius); font: inherit; }
+  label { display: block; margin-bottom: 7px; }
+  .secondary { color: var(--muted-foreground); }
+  #provenance { margin: 10px 0 20px; }
+  .chart { display: grid; grid-template-columns: 108px minmax(0, 1fr); column-gap: 12px; row-gap: 18px; padding-top: 16px; }
+  .name { min-width: 0; overflow-wrap: anywhere; }
+  .lane { position: relative; height: 24px; align-self: center; background: color-mix(in srgb, var(--muted) 50%, transparent); }
+  .bar { position: absolute; top: 0; height: 100%; background: var(--series-a); opacity: .55; }
+  .bar.active { opacity: 1; }
+  .bar.tease { top: 6px; height: 12px; }
+  .needle { position: absolute; top: -7px; bottom: -7px; width: 2px; background: var(--foreground); }
+  .drop { position: absolute; top: -11px; bottom: -11px; width: 1px; background: var(--muted-foreground); }
+  .axis { grid-column: 2; display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; color: var(--muted-foreground); }
+  .scale-label { grid-column: 2; margin-top: -9px; color: var(--muted-foreground); }
+  .time-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 24px 0 6px; }
+  #time { width: 100%; margin: 5px 0 18px; accent-color: var(--primary); }
+  output { font-variant-numeric: tabular-nums; }
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0; }
+  h3 { margin: 0 0 7px; font-size: 1em; font-weight: 500; }
+  .credits { min-height: 52px; }
+  .credit { margin-top: 5px; overflow-wrap: anywhere; }
+  #detail { margin: 14px 0 0; min-height: 2.5em; }
+  #legend { margin-top: 14px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .key { display: inline-block; width: 18px; height: 10px; margin-right: 5px; background: var(--muted-foreground); }
+  .key.tease { height: 5px; vertical-align: middle; }
+  @media (max-width: 410px) {
+    .chart { grid-template-columns: 80px minmax(0, 1fr); column-gap: 9px; }
+    .comparison { grid-template-columns: 1fr; gap: 14px; }
+    .credits { min-height: 0; }
+  }
+</style>
+</head>
+<body>
+<section id="mix-explainer" aria-label="Proposed track contribution model">
+  <h2>One timeline, overlapping track credits</h2>
+  <label for="scenario">Example</label>
+  <select id="scenario">
+    <option value="demo">Stakka &amp; Skynet demo: two long blends</option>
+    <option value="teases">Illustrative set: teases and a double drop</option>
+  </select>
+  <div id="provenance" class="secondary"></div>
+  <div id="chart" class="chart" role="img"></div>
+  <div id="legend" class="secondary"></div>
+  <label class="time-label" for="time"><span>Mix time</span><output id="clock" for="time"></output></label>
+  <input type="range" id="time" min="0" max="331" step="0.1" value="30">
+  <div class="comparison" aria-live="polite">
+    <div><h3>Playlist credit</h3><div class="credits" id="playlist"></div></div>
+    <div><h3>DJ mix credits</h3><div class="credits" id="dj"></div></div>
+  </div>
+  <div id="detail" class="secondary" aria-live="polite"></div>
+</section>
+<script>
+(() => {
+  const root = document.getElementById('mix-explainer');
+  const scenarios = {
+    demo: {
+      duration: 331,
+      selected: 30,
+      source: 'Existing demo annotations. Times are relative to the 14:03 excerpt start.',
+      tracks: [
+        { name: 'Star Trails', deck: 'A', intervals: [[0, 91, 'direct']] },
+        { name: 'Pathogen', deck: 'B', intervals: [[14, 244, 'direct']] },
+        { name: 'Clockwork', deck: 'A', intervals: [[200, 331, 'direct']] }
+      ]
+    },
+    teases: {
+      duration: 300,
+      selected: 140,
+      source: 'Illustrative timings, not a transcription of a cited performance.',
+      drop: 140,
+      tracks: [
+        { name: 'Foundation', deck: 'A', intervals: [[0, 260, 'direct']] },
+        { name: 'Visitor', deck: 'B', intervals: [[60, 68, 'tease'], [84, 92, 'tease'], [120, 300, 'direct']] }
+      ]
+    }
+  };
+  const selector = root.querySelector('#scenario');
+  const slider = root.querySelector('#time');
+  const chart = root.querySelector('#chart');
+  const format = seconds => {
+    const minutes = Math.floor(seconds / 60);
+    const rest = Math.floor(seconds % 60);
+    return `${minutes}:${String(rest).padStart(2, '0')}`;
+  };
+  const current = () => scenarios[selector.value];
+  const active = (scenario, time) => scenario.tracks.flatMap((track, index) => {
+    const interval = track.intervals.find(([from, to]) => time >= from && time < to);
+    return interval ? [{ track, index, interval }] : [];
+  });
+  const playlist = (scenario, time) => {
+    const available = active(scenario, time);
+    const main = available.filter(play => play.interval[2] !== 'tease');
+    return (main.length ? main : available).sort((a, b) => b.interval[0] - a.interval[0])[0];
+  };
+  const credit = (name, suffix = '') => {
+    const line = document.createElement('div');
+    line.className = 'credit';
+    line.textContent = name + suffix;
+    return line;
+  };
+  function build() {
+    const scenario = current();
+    slider.max = scenario.duration;
+    slider.value = scenario.selected;
+    chart.replaceChildren();
+    root.querySelector('#provenance').textContent = scenario.source;
+    chart.setAttribute('aria-label', scenario.tracks.map(track => `${track.name}: ${track.intervals.map(([from, to, type]) => `${format(from)} to ${format(to)}${type === 'tease' ? ', tease' : ''}`).join('; ')}`).join('. '));
+    scenario.tracks.forEach((track, index) => {
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = track.name;
+      const lane = document.createElement('div');
+      lane.className = 'lane';
+      track.intervals.forEach(([from, to, type]) => {
+        const bar = document.createElement('div');
+        bar.className = `bar ${type}`;
+        bar.style.left = `${from / scenario.duration * 100}%`;
+        bar.style.width = `${(to - from) / scenario.duration * 100}%`;
+        bar.style.background = `var(--series-${['a', 'b', 'c'][index]})`;
+        bar.dataset.from = from;
+        bar.dataset.to = to;
+        lane.append(bar);
+      });
+      if (scenario.drop !== undefined) {
+        const drop = document.createElement('div');
+        drop.className = 'drop';
+        drop.style.left = `${scenario.drop / scenario.duration * 100}%`;
+        lane.append(drop);
+      }
+      const needle = document.createElement('div');
+      needle.className = 'needle';
+      lane.append(needle);
+      chart.append(name, lane);
+    });
+    const axis = document.createElement('div');
+    axis.className = 'axis';
+    for (const time of [0, scenario.duration / 2, scenario.duration]) {
+      const tick = document.createElement('span');
+      tick.textContent = format(time);
+      axis.append(tick);
+    }
+    const label = document.createElement('div');
+    label.className = 'scale-label';
+    label.textContent = 'Time in mix (minutes:seconds)';
+    chart.append(axis, label);
+    root.querySelector('#legend').innerHTML = selector.value === 'teases'
+      ? '<span><i class="key"></i>In mix</span><span><i class="key tease"></i>Tease</span><span>Thin line: double drop at 2:20</span>'
+      : '';
+    update();
+  }
+  function update() {
+    const scenario = current();
+    const time = Number(slider.value);
+    const audible = active(scenario, time);
+    root.querySelector('#clock').textContent = `${format(time)} / ${format(scenario.duration)}`;
+    slider.setAttribute('aria-valuetext', format(time));
+    chart.querySelectorAll('.needle').forEach(line => line.style.left = `calc(${time / scenario.duration * 100}% - 1px)`);
+    chart.querySelectorAll('.bar').forEach(bar => bar.classList.toggle('active', time >= Number(bar.dataset.from) && time < Number(bar.dataset.to)));
+    const chosen = playlist(scenario, time);
+    root.querySelector('#playlist').replaceChildren(credit(chosen ? chosen.track.name : 'No track'));
+    root.querySelector('#dj').replaceChildren(...(audible.length ? audible.map(play => credit(play.track.name, ` · Deck ${play.track.deck}${play.interval[2] === 'tease' ? ' · tease' : ''}`)) : [credit('No track')]));
+    let detail = `${audible.length} ${audible.length === 1 ? 'contribution' : 'contributions'} at this time.`;
+    if (scenario.drop !== undefined && time >= scenario.drop && time < scenario.drop + 2) detail = 'Double drop: both plays are already in the mix; the marker identifies the shared moment.';
+    else if (audible.some(play => play.interval[2] === 'tease')) detail = 'The tease adds a credit while the continuing track keeps the playlist focus.';
+    else if (audible.length > 1) detail = 'Both tracks remain credited until their own intervals end.';
+    root.querySelector('#detail').textContent = detail;
+  }
+  const checks = [
+    ['demo at 0', active(scenarios.demo, 0).map(play => play.track.name), ['Star Trails']],
+    ['demo at 14', active(scenarios.demo, 14).map(play => play.track.name), ['Star Trails', 'Pathogen']],
+    ['demo at 91', active(scenarios.demo, 91).map(play => play.track.name), ['Pathogen']],
+    ['demo at 200', active(scenarios.demo, 200).map(play => play.track.name), ['Pathogen', 'Clockwork']],
+    ['demo at 244', active(scenarios.demo, 244).map(play => play.track.name), ['Clockwork']],
+    ['demo end', active(scenarios.demo, 331).map(play => play.track.name), []],
+    ['tease at 64', active(scenarios.teases, 64).map(play => play.track.name), ['Foundation', 'Visitor']],
+    ['tease exit at 68', active(scenarios.teases, 68).map(play => play.track.name), ['Foundation']],
+    ['double drop at 140', active(scenarios.teases, 140).map(play => play.track.name), ['Foundation', 'Visitor']]
+  ];
+  for (const [name, actual, expected] of checks) {
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) throw new Error(`Invalid timeline: ${name}`);
+  }
+  selector.addEventListener('change', build);
+  slider.addEventListener('input', update);
+  build();
+  const initial = selector.value;
+  selector.value = 'teases';
+  selector.dispatchEvent(new Event('change'));
+  slider.value = 64;
+  slider.dispatchEvent(new Event('input'));
+  if (root.querySelector('#dj').children.length !== 2 || root.querySelector('#playlist').textContent !== 'Foundation') throw new Error('Tease interaction failed');
+  slider.value = 68;
+  slider.dispatchEvent(new Event('input'));
+  if (root.querySelector('#dj').children.length !== 1) throw new Error('Mix-out interaction failed');
+  selector.value = initial;
+  selector.dispatchEvent(new Event('change'));
+  console.log('Passed 9 timeline boundary checks and scenario/slider interaction checks.');
+  requestAnimationFrame(() => console.log('Layout', { width: document.documentElement.clientWidth, contentWidth: document.documentElement.scrollWidth, height: document.body.scrollHeight }));
+})();
+</script>
+</body>
+</html>
