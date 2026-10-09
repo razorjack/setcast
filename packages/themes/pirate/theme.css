@@ -271,10 +271,12 @@
 .theme-pirate .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 2.4cqw;
+  min-width: 2.4cqw;
   height: 2.4cqw;
+  padding-inline: 0.35em;
   border: 0.2cqw solid var(--deck);
-  border-radius: 50%;
+  border-radius: 1.2cqw;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-size: 1.3cqw;
   color: var(--deck);
@@ -367,8 +369,9 @@
     font-size: 1.8cqw;
   }
   .theme-pirate .sc-deck {
-    width: 4.6cqw;
+    min-width: 4.6cqw;
     height: 4.6cqw;
+    border-radius: 2.3cqw;
     font-size: 2.4cqw;
   }
   .theme-pirate .sc-artist {
@@ -446,14 +449,11 @@
   display: none;
 }
 .theme-pirate[data-presentation='dj'] .sc-deck {
-  width: auto;
   min-width: 1.8cqw;
   height: 1.8cqw;
-  padding-inline: 0.35em;
   border-width: 0.15cqw;
   border-radius: 1cqw;
   font-size: 1cqw;
-  white-space: nowrap;
 }
 .theme-pirate[data-presentation='dj'] .sc-artist {
   display: inline-block;

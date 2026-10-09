@@ -243,6 +243,7 @@
   font-weight: 700;
   font-size: 0.75cqw;
   letter-spacing: 0.1em;
+  white-space: nowrap;
   color: #2a1019;
   background: var(--deck);
 }
@@ -398,7 +399,6 @@
   height: 1.15cqw;
   padding: 0 0.45cqw;
   font-size: 0.62cqw;
-  white-space: nowrap;
 }
 .theme-afterhours[data-presentation='dj'] .sc-artist {
   margin: 0;
