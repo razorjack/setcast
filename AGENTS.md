@@ -552,25 +552,26 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   composed in that canvas: the art whole over a blurred, darker copy, handed to `.sc-bg-img` as a
   blob URL. One image keeps every theme's filter, blend mode, clip and drift working unchanged; a
   second DOM layer would have needed each theme's treatment twice and broken its blend modes.
-- Loading warns about art the frame enlarges more than 1.5×, naming the side that limits it, and
-  notes when `auto` shows art whole. `readImageSize` reads PNG, JPEG and WebP headers itself
-  rather than adding an image dependency; other formats are skipped.
+- Each theme starts its `.sc-bg-img` filter with an exposure correction whose strength is
+  `--bg-correction`, the theme's default in the fallback so users can override it. The default
+  is applied only where it fixes something visible, judged against the test images. Pirate and
+  escapement correct fully toward `REFERENCE_LUMA`: pirate's `brightness(5.4) contrast(2.1)`
+  turns any bright image into blank paper otherwise, and escapement's band washes out to white.
+  sterile-tech, long-exposure, afterhours and quicksilver correct halfway (0.5): full correction
+  darkens bright art until it disappears. patina, bunker, interference and vfd correct fully
+  toward their own `--art-luma` (0.3, 0.26, 0.45, 0.45), the brightness at which their blends
+  show art; at the demo's 0.09 they showed dark art, the usual drum and bass art, as nothing.
+  The demo background now shows faintly in those four. bristol's faint wash needs no correction.
+  Verify changes against real art, not the demo art, which is nearly black and flat; the
+  gitignored `demos/backgrounds/` holds a local test set when present (never commit those images).
 - The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark
   but saturated scene still reads as its color, with a minimum share so a few stray pixels in
   grey art give none. Only sterile-tech's accents and interference's duotone take them, at the
   theme's own lightness and chroma so contrast stays as designed. Interference's RGB-split ghosts
   stay magenta and cyan, and themes whose palette is their identity do not take art colors.
-- `--bg-exposure` scales the art's mean luma to
-  `REFERENCE_LUMA`, the demo background's, because that is what every theme's filter constants
-  were tuned against; the demo look therefore stays put. A theme applies it only where it fixes
-  something. Pirate and escapement use full strength: pirate's `brightness(5.4) contrast(2.1)`
-  turns any bright image into blank paper otherwise, and escapement's band washes out to white.
-  sterile-tech, long-exposure, afterhours and quicksilver use `pow(…, 0.5)`: full correction
-  darkens bright art until it disappears, half keeps it visible without losing the dark look.
-  patina, bunker, interference, vfd and bristol leave it out, because their blends already carry
-  bright art well and any darkening sinks it into the texture. Verify changes against real art,
-  not the demo art, which is nearly black and flat; the gitignored `demos/backgrounds/` holds a
-  local test set when present (never commit those images).
+- Loading warns about art the frame enlarges more than 1.5×, naming the side that limits it, and
+  notes when `auto` shows art whole. `readImageSize` reads PNG, JPEG and WebP headers itself
+  rather than adding an image dependency; other formats are skipped.
 - `setcast still --theme all` loads the project once per built-in theme and names each file
   after it (`thumb-pirate.jpg`). The CLI prints each configuration warning once per process.
 - Configuration warnings distinguish explicitly written `panel.fade` from its schema default;

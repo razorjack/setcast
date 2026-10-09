@@ -84,7 +84,8 @@
 
 /* background: the art as a faint grey wash on the field */
 .theme-bristol .sc-bg-img {
-  filter: grayscale(1) contrast(0.7) brightness(calc(1.5 + var(--rewind-flash)));
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0))) grayscale(1) contrast(0.7)
+    brightness(calc(1.5 + var(--rewind-flash)));
   mix-blend-mode: multiply;
   opacity: 0.22;
 }

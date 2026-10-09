@@ -119,7 +119,7 @@
   );
 }
 .theme-escapement .sc-bg-img {
-  filter: brightness(var(--bg-exposure, 1)) grayscale(1)
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 1))) grayscale(1)
     brightness(calc(2.6 + var(--rewind-flash) * 2)) contrast(1.25);
   mix-blend-mode: luminosity;
   opacity: 0.5;

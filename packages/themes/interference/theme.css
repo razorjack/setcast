@@ -82,7 +82,12 @@
 
 /* background: the art pushed into two colors, its own or the channels', under faint scanlines */
 .theme-interference .sc-bg-img {
-  filter: grayscale(1) contrast(1.5) brightness(calc(0.55 + var(--drop-flash) * 0.5));
+  /* the mean luma this treatment shows art best at; any art is brought to it */
+  --art-luma: 0.45;
+  filter: brightness(
+      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
+    )
+    grayscale(1) contrast(1.5) brightness(calc(0.55 + var(--drop-flash) * 0.5));
   translate: calc(var(--noise-a) * var(--tear) * 2cqw) 0;
 }
 .theme-interference .sc-bg-vignette {

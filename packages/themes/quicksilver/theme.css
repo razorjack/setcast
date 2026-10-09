@@ -132,8 +132,8 @@
   );
 }
 .theme-quicksilver .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), 0.5)) grayscale(1) contrast(1.3)
-    brightness(calc(1.4 + var(--rewind-flash)));
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0.5))) grayscale(1)
+    contrast(1.3) brightness(calc(1.4 + var(--rewind-flash)));
   mix-blend-mode: luminosity;
   opacity: 0.45;
 }

@@ -131,7 +131,7 @@
 
 /* background: desaturated, darkened, snapping bright for a moment on a rewind */
 .theme-sterile-tech .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), 0.5))
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0.5)))
     saturate(calc(0.7 + var(--rewind-flash) * 1.1))
     brightness(calc(0.9 + var(--rewind-flash) * 0.45)) contrast(1.05);
 }

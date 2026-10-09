@@ -91,7 +91,12 @@
   translate: var(--shake-x) var(--shake-y);
 }
 .theme-bunker .sc-bg-img {
-  filter: grayscale(0.5) sepia(0.25) contrast(1.4)
+  /* the mean luma this treatment shows art best at; any art is brought to it */
+  --art-luma: 0.26;
+  filter: brightness(
+      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
+    )
+    grayscale(0.5) sepia(0.25) contrast(1.4)
     brightness(calc(0.9 + var(--rewind-flash) * 0.8 + var(--drop-flash) * 0.4));
   mix-blend-mode: soft-light;
   opacity: 0.9;

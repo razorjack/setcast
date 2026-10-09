@@ -65,9 +65,14 @@
 }
 /* olive and bronze, a little lifted by the music, flickering like projected film */
 .theme-patina .sc-bg-img {
+  /* the mean luma this treatment shows art best at; any art is brought to it */
+  --art-luma: 0.3;
   --flicker: calc(0.035 * sin(var(--set-progress, 0) * 91919));
   mix-blend-mode: screen;
-  filter: grayscale(1) sepia(0.55) saturate(0.8) contrast(1.25)
+  filter: brightness(
+      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
+    )
+    grayscale(1) sepia(0.55) saturate(0.8) contrast(1.25)
     brightness(
       calc(
         0.75 * var(--mod-exposure, 1) * var(--dim-out, 1) + var(--flicker) + var(--drop-flash) *

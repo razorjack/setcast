@@ -70,7 +70,12 @@
 
 /* background: the art seen dimly through the display's teal filter window */
 .theme-vfd .sc-bg-img {
-  filter: grayscale(1) contrast(1.2) brightness(0.3);
+  /* the mean luma this treatment shows art best at; any art is brought to it */
+  --art-luma: 0.45;
+  filter: brightness(
+      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
+    )
+    grayscale(1) contrast(1.2) brightness(0.3);
 }
 .theme-vfd .sc-bg-vignette {
   background:
