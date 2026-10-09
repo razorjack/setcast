@@ -435,14 +435,17 @@
   text-transform: uppercase;
   color: var(--fg-dim);
 }
+/* a square for a letter; a longer deck label such as "Loop bus" stretches it into a tab */
 .theme-sterile-tech .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 2.1cqw;
+  min-width: 2.1cqw;
   height: 2.1cqw;
+  padding-inline: 0.35em;
   font-weight: 600;
   font-size: 1.1cqw;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
   color: #0a0d10;
   background: var(--deck);
 }
@@ -529,7 +532,7 @@
     margin-bottom: 2.3cqw;
   }
   .theme-sterile-tech .sc-deck {
-    width: 3.8cqw;
+    min-width: 3.8cqw;
     height: 3.8cqw;
     font-size: 2cqw;
   }
@@ -572,5 +575,151 @@
   }
   .theme-sterile-tech .sc-meter-label {
     font-size: 1.6cqw;
+  }
+}
+
+/* DJ: a rack of glass modules of one width, one per current play; focus lights its stripe */
+.theme-sterile-tech[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 0.8cqw;
+  --slot-bleed: 0.8cqw;
+  width: 33cqw;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'artist head'
+    'title title'
+    'label details';
+  align-items: baseline;
+  padding: 1.15cqw 1.4cqw 1.2cqw 1.6cqw;
+  --radius: 0.7cqw;
+  box-shadow:
+    inset 0 var(--hairline) 0 rgb(255 255 255 / 0.08),
+    0 0 calc((var(--mod-panel-glow, 0) + var(--tension)) * 2.4cqw)
+      color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel::before {
+  top: 0.9cqw;
+  bottom: 0.9cqw;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel-head {
+  grid-area: head;
+  gap: 0.6cqw;
+  margin: 0 0 0 1cqw;
+  font-size: 0.7cqw;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-eyebrow {
+  color: var(--accent);
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-deck {
+  min-width: 1.45cqw;
+  height: 1.45cqw;
+  font-size: 0.8cqw;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-artist {
+  grid-area: artist;
+  margin-bottom: 0.65cqw;
+  font-size: 1.25cqw;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-title {
+  grid-area: title;
+  font-size: 2.7cqw;
+  transition: none;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-label {
+  grid-area: label;
+  margin-top: 0.75cqw;
+  font-size: 0.72cqw;
+}
+.theme-sterile-tech .sc-credit-details {
+  grid-area: details;
+  margin: 0.75cqw 0 0 1cqw;
+  font-size: 0.7cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-box: trim-both cap alphabetic;
+  opacity: clamp(0, (var(--presence, 1) - 0.55) / 0.45, 1);
+}
+/* the rest of the rack stays readable but steps back from the focused module */
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  background-color: rgb(12 16 21 / 0.4);
+  --deck-glow: 0;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false']::before {
+  opacity: 0.4;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  color: color-mix(in srgb, var(--fg) 62%, var(--fg-dim));
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: color-mix(in srgb, var(--accent) 55%, var(--fg-dim));
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='true']::before {
+  box-shadow: 0 0 calc(0.5cqw + var(--drop-flash) * 1.4cqw) var(--deck);
+}
+.theme-sterile-tech .sc-contributor-count,
+.theme-sterile-tech .sc-overflow {
+  font-size: 0.75cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.theme-sterile-tech .sc-contributor-count {
+  margin-bottom: 0.4cqw;
+}
+.theme-sterile-tech .sc-overflow {
+  margin-top: 0.8cqw;
+  padding: 0.7cqw 1.6cqw;
+  color: var(--accent);
+  background: var(--panel-bg);
+  border: var(--hairline) solid var(--panel-border);
+  backdrop-filter: blur(var(--blur));
+}
+
+@container (aspect-ratio < 1) {
+  .theme-sterile-tech[data-presentation='dj'] .sc-contributors {
+    --stack-gap: 1.6cqw;
+    --slot-bleed: 1.6cqw;
+    width: calc(100cqw - 2 * var(--margin));
+    bottom: calc(var(--margin) + 4cqh);
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+    bottom: calc(anchor(top) + 3cqw);
+  }
+  .theme-sterile-tech .sc-overflow {
+    padding: 1.4cqw 3.2cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-panel {
+    padding: 2.4cqw 2.8cqw 2.5cqw 3.2cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-panel::before {
+    top: 1.8cqw;
+    bottom: 1.8cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-panel-head,
+  .theme-sterile-tech .sc-credit-details,
+  .theme-sterile-tech[data-presentation='dj'] .sc-label,
+  .theme-sterile-tech .sc-contributor-count,
+  .theme-sterile-tech .sc-overflow {
+    font-size: 1.5cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-deck {
+    min-width: 3cqw;
+    height: 3cqw;
+    font-size: 1.6cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-artist {
+    font-size: 2.6cqw;
+    margin-bottom: 1.3cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-title {
+    font-size: 5.6cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-label {
+    margin-top: 1.5cqw;
   }
 }
