@@ -266,8 +266,10 @@
 .theme-long-exposure .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 2.2cqw;
+  min-width: 2.2cqw;
   height: 2.2cqw;
+  padding-inline: 0.35em;
+  white-space: nowrap;
   border: 0.1cqw solid color-mix(in srgb, var(--fg) 45%, transparent);
   font-family: var(--font-display);
   font-weight: 900;
@@ -370,7 +372,7 @@
     font-size: 1.7cqw;
   }
   .theme-long-exposure .sc-deck {
-    width: 4cqw;
+    min-width: 4cqw;
     height: 4cqw;
     font-size: 2cqw;
   }
@@ -391,5 +393,133 @@
   }
   .theme-long-exposure .sc-next-title {
     font-size: 3.6cqw;
+  }
+}
+
+/* DJ: one pool of darkness under the stack; the focused title is lit, the others are unlit signs */
+.theme-long-exposure[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 1.3cqw;
+  --slot-bleed: 1.2cqw;
+  isolation: isolate;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-contributors::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -6cqw -12cqw -5cqw -8cqw;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.82), transparent);
+}
+/* deck, artist / title / label, details: each line wraps only when it has something on it */
+.theme-long-exposure[data-presentation='dj'] .sc-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.7cqw;
+  translate: calc((1 - var(--presence, 1)) * -3cqw) 0;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-title {
+  flex-basis: 100%;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-panel::before {
+  content: none;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-panel-head {
+  gap: 0.7cqw;
+  margin: 0;
+  font-size: 0.75cqw;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-long-exposure[data-presentation='dj']
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-eyebrow {
+  color: var(--amber);
+}
+.theme-long-exposure[data-presentation='dj'] .sc-deck {
+  min-width: 1.6cqw;
+  height: 1.6cqw;
+  font-size: 0.85cqw;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-artist {
+  font-size: 1.3cqw;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-title {
+  font-size: 3cqw;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-label {
+  margin-top: 0.6cqw;
+  font-size: 0.75cqw;
+}
+.theme-long-exposure .sc-credit-details {
+  margin-top: 0.6cqw;
+  padding-left: 0.4cqw;
+  font-size: 0.75cqw;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+}
+/* the lights are off on everything but the focused credit */
+.theme-long-exposure[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  -webkit-text-stroke-color: color-mix(in srgb, var(--fg) 42%, transparent);
+  text-shadow: none;
+}
+.theme-long-exposure[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-artist {
+  color: var(--fg-dim);
+}
+.theme-long-exposure[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: color-mix(in srgb, var(--amber) 55%, var(--fg-dim));
+}
+.theme-long-exposure[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-deck {
+  text-shadow: none;
+}
+.theme-long-exposure .sc-contributor-count,
+.theme-long-exposure .sc-overflow {
+  font-size: 0.75cqw;
+  letter-spacing: 0.1em;
+}
+.theme-long-exposure .sc-contributor-count {
+  margin-bottom: 0.3cqw;
+}
+.theme-long-exposure .sc-overflow {
+  margin-top: 1cqw;
+  color: var(--amber);
+}
+
+@container (aspect-ratio < 1) {
+  .theme-long-exposure[data-presentation='dj'] .sc-contributors {
+    --stack-gap: 2.6cqw;
+    --slot-bleed: 2.4cqw;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+    bottom: calc(anchor(top) + 4cqw);
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-panel-head,
+  .theme-long-exposure[data-presentation='dj'] .sc-label,
+  .theme-long-exposure .sc-credit-details,
+  .theme-long-exposure .sc-contributor-count,
+  .theme-long-exposure .sc-overflow {
+    font-size: 1.5cqw;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-panel {
+    column-gap: 1.4cqw;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-deck {
+    min-width: 3.2cqw;
+    height: 3.2cqw;
+    font-size: 1.7cqw;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-artist {
+    font-size: 2.8cqw;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-title {
+    font-size: 6.2cqw;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-label,
+  .theme-long-exposure .sc-credit-details {
+    margin-top: 1.2cqw;
   }
 }
