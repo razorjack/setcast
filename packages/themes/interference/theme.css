@@ -370,3 +370,138 @@
     font-size: 3cqw;
   }
 }
+
+/*
+ * DJ: the focused credit carries the live signal, split by the bass; the others are weak, clean
+ * signals. A tear shears each line by its own amount, and one dark pool sits under the stack.
+ */
+.theme-interference[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 1.4cqw;
+  --slot-bleed: 1.2cqw;
+  width: 48cqw;
+  isolation: isolate;
+}
+.theme-interference[data-presentation='dj'] .sc-contributors::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -5cqw -14cqw -4cqw -6cqw;
+  background: radial-gradient(closest-side, rgb(5 5 7 / 0.85), transparent);
+}
+.theme-interference[data-presentation='dj'] .sc-slot {
+  translate: calc(sin(var(--set-progress, 0) * 71713 + sibling-index() * 2.3) * var(--tear) * 3cqw)
+    0;
+}
+/* deck, artist / title / label, details: each line wraps only when it has something on it */
+.theme-interference[data-presentation='dj'] .sc-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.9cqw;
+  translate: calc((1 - var(--presence, 1)) * -3cqw) 0;
+}
+.theme-interference[data-presentation='dj'] .sc-panel::before {
+  content: none;
+}
+.theme-interference[data-presentation='dj'] .sc-panel-head {
+  gap: 0.6cqw;
+  margin: 0;
+  font-size: 0.7cqw;
+}
+.theme-interference[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-interference[data-presentation='dj']
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-interference[data-presentation='dj'] .sc-eyebrow {
+  color: var(--magenta);
+}
+.theme-interference[data-presentation='dj'] .sc-deck {
+  min-width: 1.5cqw;
+  height: 1.5cqw;
+  padding: 0 0.3cqw;
+  font-size: 0.75cqw;
+}
+.theme-interference[data-presentation='dj'] .sc-artist {
+  margin-bottom: 0.5cqw;
+  font-size: 1.1cqw;
+}
+.theme-interference[data-presentation='dj'] .sc-title {
+  flex-basis: 100%;
+  font-size: 2.6cqw;
+}
+.theme-interference[data-presentation='dj'] .sc-label {
+  margin-top: 0.7cqw;
+  font-size: 0.7cqw;
+}
+.theme-interference .sc-credit-details {
+  margin-top: 0.7cqw;
+  font-size: 0.7cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.theme-interference[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  color: color-mix(in srgb, var(--white) 62%, var(--dim));
+  text-shadow: none;
+}
+.theme-interference[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-artist {
+  color: color-mix(in srgb, var(--cyan) 45%, var(--dim));
+}
+.theme-interference[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: color-mix(in srgb, var(--magenta) 45%, var(--dim));
+}
+.theme-interference .sc-contributor-count,
+.theme-interference .sc-overflow {
+  font-size: 0.7cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.theme-interference .sc-contributor-count {
+  margin-bottom: 0.4cqw;
+}
+.theme-interference .sc-overflow {
+  margin-top: 1cqw;
+  color: var(--cyan);
+}
+
+@container (aspect-ratio < 1) {
+  .theme-interference[data-presentation='dj'] .sc-contributors {
+    --stack-gap: 2.6cqw;
+    --slot-bleed: 2.4cqw;
+    width: calc(100cqw - 2 * var(--margin));
+  }
+  .theme-interference[data-presentation='dj'] .sc-next {
+    top: auto;
+    position-anchor: --contributors;
+    bottom: calc(anchor(top) + 4cqw);
+  }
+  .theme-interference[data-presentation='dj'] .sc-panel {
+    column-gap: 1.8cqw;
+  }
+  .theme-interference[data-presentation='dj'] .sc-panel-head,
+  .theme-interference[data-presentation='dj'] .sc-label,
+  .theme-interference .sc-credit-details,
+  .theme-interference .sc-contributor-count,
+  .theme-interference .sc-overflow {
+    font-size: 1.5cqw;
+  }
+  .theme-interference[data-presentation='dj'] .sc-deck {
+    min-width: 3cqw;
+    height: 3cqw;
+    font-size: 1.5cqw;
+  }
+  .theme-interference[data-presentation='dj'] .sc-artist {
+    font-size: 2.3cqw;
+    margin-bottom: 1cqw;
+  }
+  .theme-interference[data-presentation='dj'] .sc-title {
+    font-size: 5cqw;
+  }
+  .theme-interference[data-presentation='dj'] .sc-label,
+  .theme-interference .sc-credit-details {
+    margin-top: 1.4cqw;
+  }
+}
