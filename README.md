@@ -38,7 +38,8 @@ flyer to the fluorescent display of a 90s CD deck.
 - **Backgrounds that fit the set.** A still image or a looping video, optionally a different one
   for each track, crossfading at the track change. Themes measure each image and adjust its
   exposure, so bright art does not wash out a theme made for dark backgrounds. A square cover, or
-  landscape art in a vertical clip, is shown whole over a blurred copy of itself.
+  landscape art in a vertical clip, is shown whole over a blurred copy of itself, and some themes
+  take their accent colors from the art.
 - **Tracklists you already have.** Import a plain `MM:SS Artist - Title` list or a `.cue` file.
 
 ## Themes
@@ -285,8 +286,10 @@ shared. The stage has no single global deck. `data-background` on the stage is `
 `video`, so a theme can style a set without art differently from one with it. For an image,
 `--bg-luma` is its mean brightness and `--bg-exposure` the factor that brings it to the dark level
 the built-in themes are tuned for; start the art's filter with `brightness(var(--bg-exposure, 1))`,
-or `brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. See the
-[CSS contract](docs/theme-plugin-contract.md).
+or `brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. `--bg-color-1` and
+`--bg-color-2` are its two most prominent hues; sterile-tech takes its accents and interference
+its duotone from them, and `.setcast { --bg-accent: initial; --bg-accent-2: initial; }` keeps the
+theme's own colors. See the [CSS contract](docs/theme-plugin-contract.md).
 
 With `backgroundFit: cover`, art of another shape is cropped to the frame. When the subject sits
 off center, keep it in frame with `.sc-bg-img { object-position: 70% 50%; }` in your `css:` file.

@@ -19,14 +19,40 @@ describe('measureBackground', () => {
     expect(measureBackground(rgba([0, 255, 0])).luma).toBeCloseTo(0.7152);
     expect(measureBackground([]).luma).toBe(0);
   });
+
+  test('finds the heaviest hue and a second one at least 60° away', () => {
+    const grey = new Array<[number, number, number]>(200).fill([90, 90, 90]);
+    const red = new Array<[number, number, number]>(20).fill([200, 20, 20]);
+    const orange = new Array<[number, number, number]>(10).fill([200, 90, 20]);
+    const blue = new Array<[number, number, number]>(5).fill([20, 40, 200]);
+    expect(measureBackground(rgba(...grey, ...red, ...orange, ...blue)).colors).toEqual([
+      'rgb(200 43 20)',
+      'rgb(20 40 200)',
+    ]);
+  });
+
+  test('takes no colors from grey art or from a few stray pixels', () => {
+    expect(
+      measureBackground(rgba(...new Array<[number, number, number]>(100).fill([80, 85, 90])))
+        .colors,
+    ).toEqual([]);
+    const stray: [number, number, number][] = [
+      ...new Array<[number, number, number]>(999).fill([60, 60, 60]),
+      [255, 0, 0],
+    ];
+    expect(measureBackground(rgba(...stray)).colors).toEqual([]);
+  });
 });
 
 describe('backgroundVars', () => {
   test('scales the art to the reference luma, within limits', () => {
-    expect(backgroundVars({ luma: 0.09 })['--bg-exposure']).toBe('1.000');
-    expect(backgroundVars({ luma: 0.45 })['--bg-exposure']).toBe('0.200');
-    expect(backgroundVars({ luma: 1 })['--bg-exposure']).toBe('0.100');
-    expect(backgroundVars({ luma: 0 })['--bg-exposure']).toBe('4.000');
+    expect(backgroundVars({ luma: 0.09, colors: [] })['--bg-exposure']).toBe('1.000');
+    expect(backgroundVars({ luma: 0.45, colors: [] })['--bg-exposure']).toBe('0.200');
+    expect(backgroundVars({ luma: 1, colors: [] })['--bg-exposure']).toBe('0.100');
+    expect(backgroundVars({ luma: 0, colors: [] })['--bg-exposure']).toBe('4.000');
+    expect(backgroundVars({ luma: 0.2, colors: ['rgb(1 2 3)'] })['--bg-color-1']).toBe(
+      'rgb(1 2 3)',
+    );
   });
 
   test('says nothing when there is no measured art', () => {

@@ -64,7 +64,14 @@ For an image, the stage also carries `--bg-luma`, the art's mean Rec. 709 luma (
 background every built-in theme is tuned against). A theme starts the art's filter with
 `brightness(var(--bg-exposure, 1))` to see the same brightness from any image, or
 `brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. Both stay near 1 on the demo
-background. Video backgrounds are not measured, so the fallback applies.
+background.
+
+`--bg-color-1` and `--bg-color-2` are the art's most prominent hues as `rgb()` colors, the second
+at least 60° from the first; grey art has neither. A theme derives its colors in variables of its
+own, keeping its lightness and chroma, such as `--bg-accent: oklch(from var(--bg-color-1) 0.7 0.19
+h)`, and uses `var(--bg-accent, <its own color>)`. A missing hue then falls back, and a user can
+set `--bg-accent: initial` to keep the theme's colors. Video backgrounds are not measured, so every
+fallback applies.
 
 `backgroundFit` decides how art of another shape than the frame is shown: `cover` crops it,
 `contain` shows it whole over a blurred, darker copy of itself, and `auto` (the default) contains

@@ -39,6 +39,11 @@
   --dim: #74748a;
   --magenta: #ff2bd6;
   --cyan: #00ffc8;
+  /* the art's duotone takes its own two main hues, at the channel colors' lightness and chroma */
+  --bg-accent: oklch(from var(--bg-color-1) 0.691 0.282 h);
+  --bg-accent-2: oklch(from var(--bg-color-2) 0.889 0.177 h);
+  --tint-a: var(--bg-accent, var(--magenta));
+  --tint-b: var(--bg-accent-2, var(--cyan));
   --fg: var(--white);
   --fg-dim: var(--dim);
   --accent: var(--magenta);
@@ -71,9 +76,11 @@
   --split-gain: 0.15;
   --magenta: #8a8a9c;
   --cyan: #c9c9d6;
+  --tint-a: var(--magenta);
+  --tint-b: var(--cyan);
 }
 
-/* background: the art pushed into the two channel colors, under faint scanlines */
+/* background: the art pushed into two colors, its own or the channels', under faint scanlines */
 .theme-interference .sc-bg-img {
   filter: grayscale(1) contrast(1.5) brightness(calc(0.55 + var(--drop-flash) * 0.5));
   translate: calc(var(--noise-a) * var(--tear) * 2cqw) 0;
@@ -81,7 +88,7 @@
 .theme-interference .sc-bg-vignette {
   background:
     radial-gradient(110% 100% at 50% 45%, transparent 25%, rgb(5 5 7 / 0.9) 100%),
-    linear-gradient(115deg, var(--magenta), #1a0a30 45%, var(--cyan));
+    linear-gradient(115deg, var(--tint-a), #1a0a30 45%, var(--tint-b));
   mix-blend-mode: multiply;
 }
 .theme-interference .sc-bg::after {

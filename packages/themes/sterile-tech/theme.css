@@ -68,8 +68,11 @@
 .theme-sterile-tech {
   --fg: #e6ecf0;
   --fg-dim: #8a98a6;
-  --accent: #ff6a2b;
-  --accent-2: #7fd4e6;
+  /* the art's two main hues, at the lightness and chroma of the theme's own accents */
+  --bg-accent: oklch(from var(--bg-color-1) 0.702 0.196 h);
+  --bg-accent-2: oklch(from var(--bg-color-2) 0.822 0.086 h);
+  --accent: var(--bg-accent, #ff6a2b);
+  --accent-2: var(--bg-accent-2, #7fd4e6);
   --deck-a: var(--accent);
   --deck-b: var(--accent-2);
   --deck-c: #9fd98a;

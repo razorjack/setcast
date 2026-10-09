@@ -319,7 +319,8 @@ arbitrary deck labels are permitted and use the theme accent unless styled expli
 has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section`,
 `data-shared-drop` and `data-background` (`none`, `image` or `video`: the kind of art the
 background shows right now, so a theme can treat art differently or show its own material
-without any). For an image it also has `--bg-luma` and `--bg-exposure` (see Decisions). Its
+without any). For an image it also has `--bg-luma`, `--bg-exposure`, `--bg-color-1` and
+`--bg-color-2` (see Decisions). Its
 section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
@@ -554,6 +555,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Loading warns about art the frame enlarges more than 1.5×, naming the side that limits it, and
   notes when `auto` shows art whole. `readImageSize` reads PNG, JPEG and WebP headers itself
   rather than adding an image dependency; other formats are skipped.
+- The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark
+  but saturated scene still reads as its color, with a minimum share so a few stray pixels in
+  grey art give none. Only sterile-tech's accents and interference's duotone take them, at the
+  theme's own lightness and chroma so contrast stays as designed. Interference's RGB-split ghosts
+  stay magenta and cyan, and themes whose palette is their identity do not take art colors.
 - `--bg-exposure` scales the art's mean luma to
   `REFERENCE_LUMA`, the demo background's, because that is what every theme's filter constants
   were tuned against; the demo look therefore stays put. A theme applies it only where it fixes
