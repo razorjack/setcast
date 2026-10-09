@@ -285,9 +285,11 @@
 .theme-bunker .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 2.3cqw;
+  min-width: 2.3cqw;
   height: 2.3cqw;
-  border-radius: 50%;
+  padding-inline: 0.4em;
+  border-radius: 1.15cqw;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 1.3cqw;
@@ -389,8 +391,9 @@
     font-size: 1.7cqw;
   }
   .theme-bunker .sc-deck {
-    width: 4.4cqw;
+    min-width: 4.4cqw;
     height: 4.4cqw;
+    border-radius: 2.2cqw;
     font-size: 2.4cqw;
   }
   .theme-bunker .sc-artist {
@@ -413,5 +416,158 @@
   }
   .theme-bunker .sc-next-title {
     font-size: 4.4cqw;
+  }
+}
+
+/*
+ * DJ: a rack of plates, one per current play, shaken together. Only the focused plate runs its
+ * tape and lights its lamp; the others idle, their tape still and dull.
+ */
+.theme-bunker[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 0.9cqw;
+  --slot-bleed: 0.9cqw;
+  bottom: calc(var(--tape) + var(--margin) * 0.6);
+  width: 34cqw;
+  translate: var(--shake-x) var(--shake-y);
+}
+.theme-bunker[data-presentation='dj'] .sc-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'artist head'
+    'title title'
+    'label details';
+  align-items: center;
+  padding: 1.7cqw 1.8cqw 1.3cqw;
+  border-radius: 0.9cqw;
+  box-shadow:
+    0 0.4cqw 0.9cqw rgb(0 0 0 / 0.6),
+    inset 0 0 0 0.12cqw rgb(255 255 255 / 0.06);
+  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
+  translate: none;
+}
+.theme-bunker[data-presentation='dj'] .sc-panel::before {
+  height: 0.6cqh;
+}
+.theme-bunker[data-presentation='dj'] .sc-panel[data-focused='false']::before {
+  background-position: 0 0;
+  filter: grayscale(1) brightness(0.55);
+}
+.theme-bunker[data-presentation='dj'] .sc-panel-head {
+  grid-area: head;
+  gap: 0.6cqw;
+  margin: 0 0 0 1cqw;
+  font-size: 0.7cqw;
+}
+.theme-bunker[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-bunker[data-presentation='dj'] .sc-eyebrow {
+  color: var(--hazard);
+}
+.theme-bunker[data-presentation='dj'] .sc-deck {
+  min-width: 1.6cqw;
+  height: 1.6cqw;
+  border-radius: 0.8cqw;
+  font-size: 0.9cqw;
+}
+/* an unlit lamp: dark glass with its letter in the lamp's color */
+.theme-bunker[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-deck {
+  color: color-mix(in srgb, var(--deck) 80%, var(--dim));
+  background: #1a1b18;
+  box-shadow:
+    inset 0 0 0 0.1cqw color-mix(in srgb, var(--deck) 45%, transparent),
+    inset 0 0 0.4cqw rgb(0 0 0 / 0.9);
+}
+.theme-bunker[data-presentation='dj'] .sc-artist {
+  grid-area: artist;
+  margin-bottom: 0.4cqw;
+  font-size: 1.45cqw;
+}
+.theme-bunker[data-presentation='dj'] .sc-title {
+  grid-area: title;
+  font-size: 3.2cqw;
+}
+.theme-bunker[data-presentation='dj'] .sc-label {
+  grid-area: label;
+  justify-self: start;
+  margin-top: 0.8cqw;
+  padding: 0.25cqw 0.6cqw;
+  font-size: 0.7cqw;
+}
+.theme-bunker .sc-credit-details {
+  grid-area: details;
+  margin: 0.8cqw 0 0 1cqw;
+  font-weight: 700;
+  font-size: 0.7cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-bunker[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-artist {
+  color: color-mix(in srgb, var(--hazard) 55%, var(--dim));
+}
+.theme-bunker[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  color: color-mix(in srgb, var(--bone) 70%, var(--dim));
+}
+.theme-bunker .sc-contributor-count,
+.theme-bunker .sc-overflow {
+  font-weight: 700;
+  font-size: 0.75cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.theme-bunker .sc-contributor-count {
+  margin-bottom: 0.3cqw;
+  color: var(--dim);
+}
+.theme-bunker .sc-overflow {
+  width: fit-content;
+  margin-top: 0.8cqw;
+  padding: 0.35cqw 0.8cqw;
+  font-family: var(--font-mono);
+  color: var(--hazard);
+  background: #0c0c0c;
+  border-radius: 0.2cqw;
+  rotate: -1.2deg;
+}
+
+@container (aspect-ratio < 1) {
+  .theme-bunker[data-presentation='dj'] .sc-contributors {
+    --stack-gap: 1.8cqw;
+    --slot-bleed: 1.8cqw;
+    width: calc(100cqw - 2 * var(--margin));
+    bottom: calc(var(--tape) + var(--margin));
+  }
+  .theme-bunker[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+    bottom: calc(anchor(top) + 3cqw);
+  }
+  .theme-bunker[data-presentation='dj'] .sc-panel {
+    padding: 3.2cqw 3.4cqw 2.6cqw;
+  }
+  .theme-bunker[data-presentation='dj'] .sc-panel-head,
+  .theme-bunker[data-presentation='dj'] .sc-label,
+  .theme-bunker .sc-credit-details,
+  .theme-bunker .sc-contributor-count,
+  .theme-bunker .sc-overflow {
+    font-size: 1.5cqw;
+  }
+  .theme-bunker[data-presentation='dj'] .sc-deck {
+    min-width: 3.2cqw;
+    height: 3.2cqw;
+    border-radius: 1.6cqw;
+    font-size: 1.8cqw;
+  }
+  .theme-bunker[data-presentation='dj'] .sc-artist {
+    font-size: 2.9cqw;
+    margin-bottom: 0.8cqw;
+  }
+  .theme-bunker[data-presentation='dj'] .sc-title {
+    font-size: 6.4cqw;
+  }
+  .theme-bunker[data-presentation='dj'] .sc-label,
+  .theme-bunker .sc-credit-details {
+    margin-top: 1.6cqw;
   }
 }
