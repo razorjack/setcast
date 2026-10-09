@@ -1,4 +1,4 @@
-const TIMECODE = /^(?:(\d+):)?(\d{1,2}):(\d{2}(?:\.\d+)?)$/;
+const TIMECODE = /^(?:(\d+):)?(\d+):(\d{2}(?:\.\d+)?)$/;
 
 /** Parses "MM:SS", "MM:SS.ms", "H:MM:SS", or plain seconds into seconds. Returns null when unparseable. */
 export function parseTime(input: string | number): number | null {
@@ -45,7 +45,7 @@ export function formatChapterTime(seconds: number): string {
  * fraction away, and both tracklists and detected events carry one.
  */
 export function formatTimecode(seconds: number): string {
-  const [whole, fraction] = seconds.toFixed(3).split('.') as [string, string];
+  const [whole, fraction] = seconds.toFixed(6).split('.') as [string, string];
   return formatTime(Number(whole)) + trimmedFraction(fraction);
 }
 

@@ -383,6 +383,11 @@ spectrum with `--next-bottom`.
 
 ## Decisions
 
+- The finite mix domain is implemented in `mix-schema.ts`, `mix.ts`, `mix-validation.ts`, and
+  `mix-timeline.ts`. Authoring times normalize once to integer microseconds. A timeline owns a
+  cloned document revision and indexes intervals, runs, scoped annotations, and focus directives.
+  Application integration is the next step; the old timeline remains in use until that replacement.
+
 Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 
 - Node 26.7.0 pinned (`.node-version`). Remotion 4.0.513 supports Node 26 (browser download fix
