@@ -242,8 +242,10 @@
 .theme-vfd .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 1.9cqw;
+  min-width: 1.9cqw;
   height: 1.9cqw;
+  padding-inline: 0.3em;
+  white-space: nowrap;
   border: 0.12cqw solid var(--lit);
   border-radius: 0.2cqw;
   font-family: var(--font-display);
@@ -317,7 +319,7 @@
     font-size: 1.5cqw;
   }
   .theme-vfd .sc-deck {
-    width: 3.6cqw;
+    min-width: 3.6cqw;
     height: 3.6cqw;
     font-size: 2cqw;
   }
@@ -341,5 +343,163 @@
   }
   .theme-vfd .sc-next-title {
     font-size: 3.6cqw;
+  }
+}
+
+/*
+ * DJ: one display with a line per current play, like a multi-deck readout. A VFD has a single
+ * color, so focus is brightness: the focused line burns, the others sit at the dimmer.
+ */
+.theme-vfd[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 0px;
+  bottom: calc(4cqh + var(--spectrum-height) + 2.4cqh);
+  width: 46cqw;
+  padding-inline: 2cqw;
+  border-radius: 0.5cqw;
+}
+.theme-vfd[data-presentation='dj'] .sc-contributors:has(.sc-slot) {
+  background:
+    radial-gradient(circle, var(--ghost) 0.07cqw, transparent 0.1cqw) 0 0 / 0.4cqw 0.4cqw,
+    var(--glass);
+  border: 0.25cqw solid #151a19;
+  box-shadow:
+    inset 0 0 2cqw rgb(0 0 0 / 0.9),
+    0 0.6cqw 1.6cqw rgb(0 0 0 / 0.6);
+}
+.theme-vfd[data-presentation='dj'] .sc-panel {
+  --panel-dim: 1;
+  --lit: color-mix(in srgb, var(--phosphor) calc(var(--dimmer) * var(--panel-dim) * 100%), #0a1a16);
+  --glow: calc(var(--mod-glow, 0.8) * (1 + var(--drop-flash) * 1.4) * var(--panel-dim));
+  display: grid;
+  grid-template-columns: minmax(2.2cqw, auto) minmax(0, 1fr) auto auto auto;
+  grid-template-areas:
+    'deck artist flag label details'
+    'deck title title title title';
+  align-items: baseline;
+  padding: 0.75cqw 0 0.85cqw;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.theme-vfd[data-presentation='dj'] .sc-slot + .sc-slot .sc-panel {
+  border-top: 0.15cqw dotted color-mix(in srgb, var(--phosphor) 22%, transparent);
+}
+.theme-vfd[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  --panel-dim: 0.42;
+}
+.theme-vfd[data-presentation='dj'] .sc-panel-head {
+  display: contents;
+}
+.theme-vfd[data-presentation='dj'] .sc-deck {
+  grid-area: deck;
+  align-self: center;
+  justify-self: start;
+  min-width: 2.2cqw;
+  height: 2.2cqw;
+  margin-right: 1.2cqw;
+  font-size: 1.2cqw;
+}
+/* an unknown deck leaves its field unlit, so every title starts at the same place */
+.theme-vfd[data-presentation='dj'] .sc-panel:not(:has(.sc-deck))::before {
+  content: '';
+  grid-area: deck;
+  align-self: center;
+  width: 2.2cqw;
+  height: 2.2cqw;
+  margin-right: 1.2cqw;
+  border: 0.12cqw solid var(--ghost);
+  border-radius: 0.2cqw;
+}
+.theme-vfd[data-presentation='dj'] .sc-eyebrow {
+  grid-area: flag;
+  margin-left: 1cqw;
+  font-size: 0.65cqw;
+}
+.theme-vfd[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-vfd[data-presentation='dj'] .sc-artist {
+  grid-area: artist;
+  margin-bottom: 0.25cqw;
+  font-size: 1.3cqw;
+}
+.theme-vfd[data-presentation='dj'] .sc-title {
+  grid-area: title;
+  font-size: 2.6cqw;
+}
+.theme-vfd[data-presentation='dj'] .sc-label {
+  grid-area: label;
+  margin: 0 0 0 1cqw;
+  font-size: 0.65cqw;
+}
+.theme-vfd .sc-credit-details {
+  grid-area: details;
+  margin-left: 1cqw;
+  font-family: var(--font-display);
+  font-variation-settings: 'ROND' 100;
+  font-weight: 700;
+  font-size: 1cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lit);
+}
+.theme-vfd .sc-contributor-count,
+.theme-vfd .sc-overflow {
+  font-weight: 600;
+  font-size: 0.65cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+/* the count shares the overflow line, at its right end */
+.theme-vfd .sc-contributor-count {
+  position: absolute;
+  right: 2cqw;
+  bottom: 0.9cqw;
+}
+.theme-vfd .sc-overflow {
+  padding: 0.8cqw 0 0.9cqw;
+  border-top: 0.15cqw dotted color-mix(in srgb, var(--phosphor) 22%, transparent);
+}
+
+@container (aspect-ratio < 1) {
+  .theme-vfd[data-presentation='dj'] .sc-contributors {
+    bottom: calc(4cqh + 18cqh + 3cqh);
+    width: calc(100cqw - 2 * var(--margin));
+    padding-inline: 3cqw;
+  }
+  .theme-vfd .sc-contributor-count {
+    right: 3cqw;
+    bottom: 1.8cqw;
+  }
+  .theme-vfd[data-presentation='dj'] .sc-panel {
+    grid-template-columns: minmax(4.4cqw, auto) minmax(0, 1fr) auto auto auto;
+    padding: 1.8cqw 0 2cqw;
+  }
+  .theme-vfd[data-presentation='dj'] .sc-deck,
+  .theme-vfd[data-presentation='dj'] .sc-panel:not(:has(.sc-deck))::before {
+    min-width: 4.4cqw;
+    height: 4.4cqw;
+    margin-right: 2.4cqw;
+    font-size: 2.4cqw;
+  }
+  .theme-vfd[data-presentation='dj'] .sc-artist {
+    font-size: 2.8cqw;
+  }
+  .theme-vfd[data-presentation='dj'] .sc-title {
+    font-size: 5.4cqw;
+  }
+  .theme-vfd[data-presentation='dj'] .sc-label,
+  .theme-vfd[data-presentation='dj'] .sc-eyebrow,
+  .theme-vfd .sc-contributor-count,
+  .theme-vfd .sc-overflow {
+    font-size: 1.4cqw;
+  }
+  .theme-vfd .sc-overflow {
+    padding-block: 1.6cqw 1.8cqw;
+  }
+  .theme-vfd .sc-credit-details {
+    font-size: 2cqw;
   }
 }
