@@ -1,4 +1,5 @@
 import type { SetEnvelope } from './analysis.ts';
+import type { BackgroundFit } from './background.ts';
 import type { MixDocument } from './mix-schema.ts';
 import type { ModRoute } from './modulation.ts';
 import type { VisualizerConfig } from './visualizers.ts';
@@ -15,6 +16,8 @@ export type ResolvedProject = {
   clockTotal: number | null;
   audio: string;
   background: string | null;
+  /** How art of another shape than the frame is shown; `auto` decides per image. */
+  backgroundFit: BackgroundFit;
   theme: string;
   /** Base CSS + theme CSS (fonts inlined) + user CSS, in that order. */
   css: string;

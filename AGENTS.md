@@ -542,9 +542,19 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   in evidence, and unknown deck labels are omitted.
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
-- Background art is measured in the browser, not in Node: `useBackgroundStats` draws the image
-  into a 64x36 canvas once per file and holds the frame until it has, so any format Chrome decodes
-  works without ffmpeg. Video is not measured. `--bg-exposure` scales the art's mean luma to
+- Background art is prepared in the browser, not in Node: `useBackgroundArt` loads each image
+  once, fits it to the frame and measures what the frame shows in a 64x36 canvas, holding the
+  frame until it is done, so any format Chrome decodes works without ffmpeg. Video is neither
+  fitted nor measured. The canvases are CPU-backed (`willReadFrequently`), so every render tab
+  composes and measures the same pixels.
+- `backgroundFit: contain`, and `auto` once covering would cut more than 30% of the art, is
+  composed in that canvas: the art whole over a blurred, darker copy, handed to `.sc-bg-img` as a
+  blob URL. One image keeps every theme's filter, blend mode, clip and drift working unchanged; a
+  second DOM layer would have needed each theme's treatment twice and broken its blend modes.
+- Loading warns about art the frame enlarges more than 1.5×, naming the side that limits it, and
+  notes when `auto` shows art whole. `readImageSize` reads PNG, JPEG and WebP headers itself
+  rather than adding an image dependency; other formats are skipped.
+- `--bg-exposure` scales the art's mean luma to
   `REFERENCE_LUMA`, the demo background's, because that is what every theme's filter constants
   were tuned against; the demo look therefore stays put. A theme applies it only where it fixes
   something. Pirate and escapement use full strength: pirate's `brightness(5.4) contrast(2.1)`

@@ -19,6 +19,7 @@ const project: ResolvedProject = {
   title: 'Test',
   audio: 'audio.wav',
   background: null,
+  backgroundFit: 'auto',
   theme: 'test',
   css: '',
   width: 1920,

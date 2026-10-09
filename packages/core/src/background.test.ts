@@ -1,5 +1,12 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { backgroundVars, currentBackground, measureBackground } from './background.ts';
+import {
+  backgroundVars,
+  backgroundWarnings,
+  coverCrop,
+  currentBackground,
+  measureBackground,
+  resolveFit,
+} from './background.ts';
 import { normalizeMix } from './mix.ts';
 import { Timeline } from './timeline.ts';
 
@@ -42,4 +49,34 @@ test('the first focused play supplies the background, else the project', () => {
   expect(currentBackground(timeline.at(10), 'assets/bg.png')).toBe('assets/a.png');
   expect(currentBackground(timeline.at(70), 'assets/bg.png')).toBe('assets/bg.png');
   expect(currentBackground(timeline.at(70), null)).toBe(null);
+});
+
+const frame = { width: 1920, height: 1080 };
+
+describe('resolveFit', () => {
+  test('auto covers art of nearly the frame shape and shows other shapes whole', () => {
+    expect(coverCrop({ width: 1192, height: 670 }, frame)).toBeCloseTo(0, 2);
+    expect(coverCrop({ width: 1000, height: 1000 }, frame)).toBeCloseTo(0.4375);
+    expect(resolveFit('auto', { width: 1096, height: 729 }, frame)).toBe('cover');
+    expect(resolveFit('auto', { width: 1000, height: 1000 }, frame)).toBe('contain');
+    expect(resolveFit('cover', { width: 1000, height: 1000 }, frame)).toBe('cover');
+  });
+});
+
+describe('backgroundWarnings', () => {
+  test('warns that enlarged art will look soft and names the size that will not', () => {
+    expect(
+      backgroundWarnings('background bg.png', { width: 1192, height: 670 }, frame, 'auto'),
+    ).toEqual([
+      'background bg.png is 1192×670, so the 1920×1080 frame enlarges it 1.6× and it will look soft. Use a version at least 1080 px tall if you have one.',
+    ]);
+  });
+
+  test('notes that auto shows art of another shape whole, unless the fit is explicit', () => {
+    const square = { width: 1000, height: 1000 };
+    expect(backgroundWarnings('background cover.png', square, frame, 'auto')).toEqual([
+      'background cover.png is 1000×1000, another shape than the 1920×1080 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.',
+    ]);
+    expect(backgroundWarnings('background cover.png', square, frame, 'contain')).toEqual([]);
+  });
 });

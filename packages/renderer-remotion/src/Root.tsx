@@ -8,6 +8,7 @@ const placeholder: ResolvedProject = {
   title: 'Setcast',
   audio: '',
   background: null,
+  backgroundFit: 'auto',
   theme: 'none',
   css: '',
   width: 1920,

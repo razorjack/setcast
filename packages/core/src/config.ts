@@ -128,6 +128,12 @@ export const ProjectConfigSchema = z
         'audio is required: the path to your mix file, e.g. assets/mix.wav.',
       ),
       background: relativePath('background').optional(),
+      /** Art of another shape than the frame: crop it to fill (cover), or show it whole (contain). */
+      backgroundFit: z
+        .enum(['auto', 'cover', 'contain'], {
+          error: 'backgroundFit must be auto, cover or contain.',
+        })
+        .default('auto'),
       theme: z
         .string({ error: 'theme must be a built-in name or CSS file path.' })
         .default('sterile-tech'),

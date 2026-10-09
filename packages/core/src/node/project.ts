@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig, type ProjectConfigInput } from '../config.ts';
 import { FEATURE_SOURCES } from '../audio.ts';
+import { backgroundWarnings, isVideoFile } from '../background.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { compileMix, mixWarnings } from '../mix.ts';
 import { Timeline } from '../timeline.ts';
@@ -12,6 +13,7 @@ import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
 import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.ts';
 import { loadCss } from './css.ts';
+import { readImageSize } from './image-size.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
 const BASE_CSS = fileURLToPath(new URL('../../css/base.css', import.meta.url));
@@ -57,6 +59,7 @@ export async function loadProject(
     clockTotal: config.clockTotal ?? null,
     audio: config.audio,
     background: config.background ?? null,
+    backgroundFit: config.backgroundFit,
     theme: theme.name,
     css: await composeCss(theme, userCssFile),
     width: config.output.width,
@@ -75,7 +78,11 @@ export async function loadProject(
     dir: root,
     config,
     project,
-    warnings: [...projectWarnings(config, modulation, input), ...mixWarnings(mix)],
+    warnings: [
+      ...projectWarnings(config, modulation, input),
+      ...mixWarnings(mix),
+      ...(await artWarnings(root, config)),
+    ],
   };
 }
 
@@ -130,6 +137,31 @@ async function requireAssets(root: string, config: ProjectConfig): Promise<void>
   for (const [index, play] of config.plays.entries()) {
     if (play.background) await requireFile(root, play.background, `plays[${index}].background`);
   }
+}
+
+/** Art that will look soft, or that `backgroundFit: auto` shows whole, before anything renders. */
+async function artWarnings(root: string, config: ProjectConfig): Promise<string[]> {
+  const frame = { width: config.output.width, height: config.output.height };
+  const warnings: string[] = [];
+  for (const [path, key] of backgroundPaths(config)) {
+    if (isVideoFile(path)) continue;
+    const size = await readImageSize(join(root, path));
+    if (!size) continue;
+    warnings.push(...backgroundWarnings(`${key} ${path}`, size, frame, config.backgroundFit));
+  }
+  return warnings;
+}
+
+/** Each background file once, with the first key that names it. */
+function backgroundPaths(config: ProjectConfig): Map<string, string> {
+  const paths = new Map<string, string>();
+  if (config.background) paths.set(config.background, 'background');
+  for (const [index, play] of config.plays.entries()) {
+    if (play.background && !paths.has(play.background)) {
+      paths.set(play.background, `plays[${index}].background`);
+    }
+  }
+  return paths;
 }
 
 /** Base CSS, then the theme with its fonts inlined, then the user's overrides, in that order. */

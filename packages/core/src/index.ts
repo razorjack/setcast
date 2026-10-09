@@ -108,9 +108,15 @@ export { SECONDS_CAP, beatVars, stageData, stageVars, playVars } from './stage.t
 export {
   REFERENCE_LUMA,
   backgroundVars,
+  backgroundWarnings,
+  coverCrop,
   currentBackground,
+  enlargement,
   measureBackground,
+  resolveFit,
+  type BackgroundFit,
   type BackgroundStats,
+  type Size,
 } from './background.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
 export {

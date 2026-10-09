@@ -2,7 +2,7 @@ import { useMemo, type CSSProperties } from 'react';
 import { modulationVars } from '../modulation.ts';
 import { backgroundVars, currentBackground } from '../background.ts';
 import { beatVars, stageData, stageVars } from '../stage.ts';
-import { Background, useBackgroundStats } from './components/Background.tsx';
+import { Background, useBackgroundArt } from './components/Background.tsx';
 import { Header } from './components/Header.tsx';
 import { NowPlaying } from './components/NowPlaying.tsx';
 import { UpNext } from './components/UpNext.tsx';
@@ -16,7 +16,7 @@ export function Stage() {
   const { project, width, height } = composition;
   useFontsReady();
   const background = currentBackground(mix, project.background);
-  const backgroundStats = useBackgroundStats(background);
+  const backgroundArt = useBackgroundArt(background);
   const visualizers = useMemo(
     () => project.visualizers.map((config) => resolveVisualizer(config)),
     [project.visualizers],
@@ -28,7 +28,7 @@ export function Stage() {
     ...stageVars(mix, timeSeconds, composition.durationSeconds),
     ...beatVars(timeSeconds, project.bpm, project.beatOffset),
     ...modulationVars(modulation),
-    ...backgroundVars(backgroundStats),
+    ...backgroundVars(backgroundArt?.stats ?? null),
   };
 
   return (

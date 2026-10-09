@@ -37,7 +37,8 @@ flyer to the fluorescent display of a 90s CD deck.
   thumbnail, and 45-second promo clips cut around the drops. Render at 9:16 for Shorts and Reels.
 - **Backgrounds that fit the set.** A still image or a looping video, optionally a different one
   for each track, crossfading at the track change. Themes measure each image and adjust its
-  exposure, so bright art does not wash out a theme made for dark backgrounds.
+  exposure, so bright art does not wash out a theme made for dark backgrounds. A square cover, or
+  landscape art in a vertical clip, is shown whole over a blurred copy of itself.
 - **Tracklists you already have.** Import a plain `MM:SS Artist - Title` list or a `.cue` file.
 
 ## Themes
@@ -115,6 +116,7 @@ my-set/
 title: Sterile Session 01
 audio: assets/mix.wav
 background: assets/bg.png
+backgroundFit: auto          # art of another shape: cover crops it, contain shows it whole
 theme: sterile-tech          # built-in name, or a path to your own .css
 bpm: 174                     # gives CSS --beat and --bar; `setcast analyze --write` fills it in
 beatOffset: 0.12             # seconds to the first beat; analyze fills it in with bpm
@@ -286,8 +288,8 @@ the built-in themes are tuned for; start the art's filter with `brightness(var(-
 or `brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. See the
 [CSS contract](docs/theme-plugin-contract.md).
 
-The art fills the frame and is cropped to it. When the subject sits off center, keep it in frame
-in vertical output with `.sc-bg-img { object-position: 70% 50%; }` in your `css:` file.
+With `backgroundFit: cover`, art of another shape is cropped to the frame. When the subject sits
+off center, keep it in frame with `.sc-bg-img { object-position: 70% 50%; }` in your `css:` file.
 
 Vertical output is `output: { width: 1080, height: 1920 }`. The stage is a CSS size container, so
 a theme adapts with `@container (aspect-ratio < 1) { ... }` (sterile-tech does). Plugins

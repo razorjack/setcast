@@ -66,6 +66,11 @@ background every built-in theme is tuned against). A theme starts the art's filt
 `brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. Both stay near 1 on the demo
 background. Video backgrounds are not measured, so the fallback applies.
 
+`backgroundFit` decides how art of another shape than the frame is shown: `cover` crops it,
+`contain` shows it whole over a blurred, darker copy of itself, and `auto` (the default) contains
+art that covering would cut by more than 30%. A contained image reaches `.sc-bg-img` as one image
+the size of the frame, so theme rules apply to it unchanged, and `--bg-luma` measures it as shown.
+
 Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--since-drop`, `--until-drop`, `--since-breakdown`, `--until-breakdown`,
 `--since-buildup`, `--until-buildup`, `--since-rewind`, `--until-rewind`,
