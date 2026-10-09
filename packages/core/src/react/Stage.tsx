@@ -30,7 +30,7 @@ export function Stage() {
   return (
     <div
       className={`setcast sc-stage theme-${project.theme}`}
-      {...stageData(mix)}
+      {...stageData(mix, project.background)}
       data-presentation={project.presentation}
       style={style}
     >

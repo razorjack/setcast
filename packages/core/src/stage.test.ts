@@ -74,9 +74,29 @@ describe('beatVars', () => {
 });
 
 test('the stage carries mix section and explicit count, never a global deck', () => {
-  expect(stageData(timeline.at(35))).toEqual({
+  expect(stageData(timeline.at(35), null)).toEqual({
     'data-section': 'drop',
     'data-current-plays': 1,
     'data-shared-drop': false,
+    'data-background': 'none',
   });
+});
+
+test('the stage names the kind of background it shows', () => {
+  const backgrounds = new Timeline(
+    normalizeMix(
+      {
+        plays: [
+          { id: 'a', at: 0, title: 'Alpha', background: 'assets/loop.webm' },
+          { id: 'b', at: 60, title: 'Beta' },
+        ],
+      },
+      120,
+    ),
+  );
+  const background = (time: number, project: string | null) =>
+    stageData(backgrounds.at(time), project)['data-background'];
+  expect(background(10, 'assets/bg.png')).toBe('video');
+  expect(background(70, 'assets/bg.png')).toBe('image');
+  expect(background(70, null)).toBe('none');
 });

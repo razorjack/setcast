@@ -55,7 +55,9 @@ Media still uses Setcast's `Img`, `Video`, `useAsset` and renderer readiness bin
 
 The stage carries `data-presentation="playlist|dj"`, `data-current-plays`, and optional
 `data-section="drop|breakdown|buildup"`. `data-shared-drop="true"` means the current mix section
-was established by a drop naming multiple participants. The stage has no global deck.
+was established by a drop naming multiple participants. `data-background="none|image|video"`
+names the art the background shows right now: the first focused play's, else the project's, and
+`none` when neither exists. The stage has no global deck.
 
 Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--since-drop`, `--until-drop`, `--since-breakdown`, `--until-breakdown`,

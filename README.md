@@ -276,7 +276,9 @@ a flash on a mix drop, `width: calc(var(--set-progress) * 100%)` is a progress b
 Each play panel has its own `data-play`, optional `data-deck`, local `data-section`, and
 `--since-entry`. A route with `scope: play` reads that panel's local cues and writes its own
 `--mod-*` values. Shared drops reach every named participant; master audio features remain
-shared. The stage has no single global deck. See the [CSS contract](docs/theme-plugin-contract.md).
+shared. The stage has no single global deck. `data-background` on the stage is `none`, `image` or
+`video`, so a theme can style a set without art differently from one with it. See the
+[CSS contract](docs/theme-plugin-contract.md).
 
 Vertical output is `output: { width: 1080, height: 1920 }`. The stage is a CSS size container, so
 a theme adapts with `@container (aspect-ratio < 1) { ... }` (sterile-tech does). Plugins

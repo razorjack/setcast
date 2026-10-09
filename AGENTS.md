@@ -316,8 +316,10 @@ variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-borde
 
 base.css resolves `--deck` on each panel's optional `data-deck`. A-D keep their theme colors;
 arbitrary deck labels are permitted and use the theme accent unless styled explicitly. The stage
-has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section` and
-`data-shared-drop`. Its section and cue variables describe the mix.
+has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section`,
+`data-shared-drop` and `data-background` (`none`, `image` or `video`: the kind of art the
+background shows right now, so a theme can treat art differently or show its own material
+without any). Its section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
 `data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run;

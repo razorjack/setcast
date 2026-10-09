@@ -1,13 +1,11 @@
 import type { CSSProperties } from 'react';
+import { currentBackground, isVideoFile } from '../../stage.ts';
 import { useFrame } from '../frame.tsx';
 import { Img, Video } from '../renderer.tsx';
 
-const VIDEO_FILE = /\.(mp4|mov|webm|mkv|m4v)$/i;
-
-/** The first focused play supplies its art; an empty focus uses the project background. */
 export function Background() {
   const { timeSeconds, mix, composition } = useFrame();
-  const current = mix.focusPlays[0]?.play.background ?? composition.project.background;
+  const current = currentBackground(mix, composition.project.background);
   return (
     <div className="sc-bg" style={drift(timeSeconds)}>
       {current && <Layer src={current} className="sc-bg-img" />}
@@ -26,7 +24,7 @@ function drift(timeSeconds: number): CSSProperties {
 }
 
 const Layer = ({ src, className }: { src: string; className: string }) =>
-  VIDEO_FILE.test(src) ? (
+  isVideoFile(src) ? (
     <Video className={className} src={src} loop muted />
   ) : (
     <Img className={className} src={src} />
