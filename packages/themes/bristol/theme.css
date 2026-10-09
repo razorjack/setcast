@@ -257,8 +257,10 @@
 .theme-bristol .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 1.5cqw;
+  min-width: 1.5cqw;
   height: 1.5cqw;
+  padding-inline: 0.35em;
+  white-space: nowrap;
   font-weight: 600;
   font-size: 0.8cqw;
   letter-spacing: 0;
@@ -327,6 +329,7 @@
 @container (aspect-ratio < 1) {
   .theme-bristol .sc-bg::after,
   .theme-bristol .sc-panel,
+  .theme-bristol .sc-contributors,
   .theme-bristol .sc-spectrum {
     --stripes: 64cqh;
     --teal-height: 8cqh;
@@ -348,7 +351,7 @@
     font-size: 1.7cqw;
   }
   .theme-bristol .sc-deck {
-    width: 3cqw;
+    min-width: 3cqw;
     height: 3cqw;
     font-size: 1.6cqw;
   }
@@ -372,9 +375,146 @@
   }
 }
 
-.theme-bristol[data-presentation='dj'] .sc-panel {
-  background: var(--teal);
+/*
+ * DJ: every current play takes a stripe of its own, read like a line of a tracklist. The stripes
+ * share one height, so when an earlier play leaves, the rows below slide up into its stripe.
+ */
+.theme-bristol[data-presentation='dj'] {
+  --stripe: 7.5cqh;
 }
-.theme-bristol[data-presentation='dj'] :is(.sc-artist, .sc-panel-head, .sc-credit-details) {
-  color: var(--pale);
+.theme-bristol[data-presentation='dj'] .sc-bg::after {
+  --teal-height: var(--stripe);
+  --green-height: var(--stripe);
+  --sage-height: var(--stripe);
+}
+.theme-bristol[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 0px;
+  top: calc(var(--stripes) + var(--rule));
+  bottom: auto;
+  width: calc(100cqw - 2 * var(--margin));
+}
+.theme-bristol[data-presentation='dj'] .sc-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: center;
+  column-gap: 1.2cqw;
+  height: var(--stripe);
+  text-align: left;
+  opacity: 1;
+  translate: calc((1 - var(--presence, 1)) * 4cqw) 0;
+  --on-stripe: var(--white);
+  --on-stripe-dim: var(--pale);
+}
+/* the sage and pale stripes are light, so the type on them turns dark */
+.theme-bristol[data-presentation='dj'] .sc-slot:nth-child(n + 3 of .sc-slot) .sc-panel {
+  --on-stripe: var(--ink);
+  --on-stripe-dim: var(--teal);
+}
+.theme-bristol[data-presentation='dj'] .sc-panel-head {
+  order: 0;
+  font-size: 0.8cqw;
+  color: var(--on-stripe);
+}
+.theme-bristol[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-bristol[data-presentation='dj']
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-bristol[data-presentation='dj'] .sc-label {
+  order: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.8cqw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--on-stripe-dim);
+}
+.theme-bristol .sc-credit-details {
+  order: 2;
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 0.8cqw;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--on-stripe-dim);
+}
+.theme-bristol[data-presentation='dj'] .sc-artist {
+  order: 3;
+  flex: none;
+  margin-left: auto;
+  font-size: 1.45cqw;
+  color: var(--on-stripe-dim);
+}
+.theme-bristol[data-presentation='dj'] .sc-title {
+  order: 4;
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  font-size: 2.5cqw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--on-stripe);
+}
+.theme-bristol[data-presentation='dj'] .sc-artist + .sc-title {
+  margin-left: 0;
+}
+.theme-bristol[data-presentation='dj'] .sc-panel[data-focused='true'] .sc-title {
+  font-weight: 500;
+}
+.theme-bristol[data-presentation='dj'] .sc-panel[data-focused='false'] :is(.sc-title, .sc-artist) {
+  opacity: 0.75;
+}
+.theme-bristol .sc-contributor-count,
+.theme-bristol .sc-overflow {
+  font-family: var(--font-display);
+  font-size: 0.8cqw;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+.theme-bristol .sc-contributor-count {
+  position: absolute;
+  bottom: calc(100% + var(--rule) + 1cqh);
+}
+.theme-bristol .sc-overflow {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  height: var(--stripe);
+}
+.theme-bristol[data-presentation='dj'] .sc-next {
+  position-anchor: --contributors;
+  top: calc(anchor(bottom) + 1.4cqh);
+  bottom: auto;
+}
+
+/* portrait: the title gets a line of its own under the rest of the row */
+@container (aspect-ratio < 1) {
+  .theme-bristol[data-presentation='dj'] .sc-bg::after,
+  .theme-bristol[data-presentation='dj'] .sc-contributors {
+    --stripe: 9cqh;
+  }
+  .theme-bristol[data-presentation='dj'] .sc-panel {
+    row-gap: 0.6cqh;
+    column-gap: 2cqw;
+  }
+  .theme-bristol[data-presentation='dj'] .sc-title {
+    flex-basis: 100%;
+    text-align: right;
+    font-size: 5.4cqw;
+  }
+  .theme-bristol[data-presentation='dj'] .sc-artist {
+    font-size: 2.8cqw;
+  }
+  .theme-bristol[data-presentation='dj'] .sc-panel-head,
+  .theme-bristol[data-presentation='dj'] .sc-label,
+  .theme-bristol .sc-credit-details,
+  .theme-bristol .sc-contributor-count,
+  .theme-bristol .sc-overflow {
+    font-size: 1.6cqw;
+  }
 }
