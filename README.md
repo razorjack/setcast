@@ -36,7 +36,8 @@ flyer to the fluorescent display of a 90s CD deck.
 - **Everything the upload needs.** The YouTube description with chapters from your tracklist, a
   thumbnail, and 45-second promo clips cut around the drops. Render at 9:16 for Shorts and Reels.
 - **Backgrounds that fit the set.** A still image or a looping video, optionally a different one
-  for each track, crossfading at the track change.
+  for each track, crossfading at the track change. Themes measure each image and adjust its
+  exposure, so bright art does not wash out a theme made for dark backgrounds.
 - **Tracklists you already have.** Import a plain `MM:SS Artist - Title` list or a `.cue` file.
 
 ## Themes
@@ -277,8 +278,14 @@ Each play panel has its own `data-play`, optional `data-deck`, local `data-secti
 `--since-entry`. A route with `scope: play` reads that panel's local cues and writes its own
 `--mod-*` values. Shared drops reach every named participant; master audio features remain
 shared. The stage has no single global deck. `data-background` on the stage is `none`, `image` or
-`video`, so a theme can style a set without art differently from one with it. See the
+`video`, so a theme can style a set without art differently from one with it. For an image,
+`--bg-luma` is its mean brightness and `--bg-exposure` the factor that brings it to the dark level
+the built-in themes are tuned for; start the art's filter with `brightness(var(--bg-exposure, 1))`,
+or `brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. See the
 [CSS contract](docs/theme-plugin-contract.md).
+
+The art fills the frame and is cropped to it. When the subject sits off center, keep it in frame
+in vertical output with `.sc-bg-img { object-position: 70% 50%; }` in your `css:` file.
 
 Vertical output is `output: { width: 1080, height: 1920 }`. The stage is a CSS size container, so
 a theme adapts with `@container (aspect-ratio < 1) { ... }` (sterile-tech does). Plugins

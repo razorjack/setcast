@@ -88,7 +88,7 @@
 }
 .theme-pirate .sc-bg-img {
   transform: none;
-  filter: grayscale(1) brightness(var(--exposure)) contrast(2.1);
+  filter: grayscale(1) brightness(calc(var(--exposure) * var(--bg-exposure, 1))) contrast(2.1);
 }
 .theme-pirate .sc-bg-vignette {
   background:

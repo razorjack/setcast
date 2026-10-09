@@ -1,3 +1,4 @@
+import { backgroundKind } from './background.ts';
 import { clamp } from './motion.ts';
 import {
   lastAnnotations,
@@ -8,25 +9,14 @@ import {
 } from './timeline.ts';
 
 export const SECONDS_CAP = 60;
-export const stageData = (state: MixState, projectBackground: string | null) => ({
+export const stageData = (state: MixState, background: string | null) => ({
   'data-section': state.mixSection?.kind,
   'data-current-plays': state.currentPlayCount,
   'data-shared-drop':
     state.mixSection?.kind === 'drop' &&
     (lastAnnotations(state, 'drop')[0]?.participants?.length ?? 0) > 1,
-  'data-background': backgroundKind(currentBackground(state, projectBackground)),
+  'data-background': backgroundKind(background),
 });
-
-/** The first focused play supplies its art; an empty focus uses the project background. */
-export const currentBackground = (state: MixState, projectBackground: string | null) =>
-  state.focusPlays[0]?.play.background ?? projectBackground;
-
-export const isVideoFile = (path: string) => /\.(?:mp4|mov|webm|mkv|m4v)$/i.test(path);
-
-function backgroundKind(path: string | null): 'none' | 'image' | 'video' {
-  if (!path) return 'none';
-  return isVideoFile(path) ? 'video' : 'image';
-}
 
 export function cueVars(state: MixState, play?: CurrentPlay): Record<string, string> {
   const scope = play ? { play: play.play.id } : undefined;

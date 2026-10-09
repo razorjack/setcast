@@ -51,8 +51,13 @@ const isUrl = (src: string) => /^(?:[a-z]+:|\/\/|\/)/i.test(src);
 
 /** Resolves a project-relative path through the renderer; URLs and data URIs pass through. */
 export function useAssetUrl(src: string): string {
+  return useAssetResolver()(src);
+}
+
+/** `useAssetUrl` for a path known only later, or not at all. */
+export function useAssetResolver(): (src: string) => string {
   const { asset } = useRenderer();
-  return isUrl(src) ? src : asset(src);
+  return (src) => (isUrl(src) ? src : asset(src));
 }
 
 const RendererContext = createContext<RendererBindings>(domBindings);

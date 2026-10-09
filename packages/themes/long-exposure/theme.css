@@ -87,7 +87,7 @@
 
 /* background: crushed to a night photograph, where only the highlights survive */
 .theme-long-exposure .sc-bg-img {
-  filter: saturate(1.5) contrast(1.7)
+  filter: brightness(pow(var(--bg-exposure, 1), 0.5)) saturate(1.5) contrast(1.7)
     brightness(calc(0.42 + var(--mod-exposure, 0) + var(--drop-flash) * 0.5));
 }
 .theme-long-exposure .sc-bg-vignette {

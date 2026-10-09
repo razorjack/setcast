@@ -61,7 +61,7 @@
 
 /* background: warm and a little soft; every kick ducks it, the way a sidechain pumps the pads */
 .theme-afterhours .sc-bg-img {
-  filter: sepia(0.35) saturate(1.15) contrast(1.05)
+  filter: brightness(pow(var(--bg-exposure, 1), 0.5)) sepia(0.35) saturate(1.15) contrast(1.05)
     brightness(
       calc((0.55 + 0.25 * var(--mod-warmth, 0.6)) * var(--lights) * (1 - var(--mod-pump, 0) * 0.3))
     );

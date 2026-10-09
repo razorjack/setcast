@@ -59,6 +59,13 @@ was established by a drop naming multiple participants. `data-background="none|i
 names the art the background shows right now: the first focused play's, else the project's, and
 `none` when neither exists. The stage has no global deck.
 
+For an image, the stage also carries `--bg-luma`, the art's mean Rec. 709 luma (0..1), and
+`--bg-exposure`, the factor (0.1..4) that scales it to `REFERENCE_LUMA` (0.09, the demo
+background every built-in theme is tuned against). A theme starts the art's filter with
+`brightness(var(--bg-exposure, 1))` to see the same brightness from any image, or
+`brightness(pow(var(--bg-exposure, 1), 0.5))` to correct halfway. Both stay near 1 on the demo
+background. Video backgrounds are not measured, so the fallback applies.
+
 Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--since-drop`, `--until-drop`, `--since-breakdown`, `--until-breakdown`,
 `--since-buildup`, `--until-buildup`, `--since-rewind`, `--until-rewind`,

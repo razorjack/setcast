@@ -319,7 +319,8 @@ arbitrary deck labels are permitted and use the theme accent unless styled expli
 has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section`,
 `data-shared-drop` and `data-background` (`none`, `image` or `video`: the kind of art the
 background shows right now, so a theme can treat art differently or show its own material
-without any). Its section and cue variables describe the mix.
+without any). For an image it also has `--bg-luma` and `--bg-exposure` (see Decisions). Its
+section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
 `data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run;
@@ -541,6 +542,19 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   in evidence, and unknown deck labels are omitted.
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
+- Background art is measured in the browser, not in Node: `useBackgroundStats` draws the image
+  into a 64x36 canvas once per file and holds the frame until it has, so any format Chrome decodes
+  works without ffmpeg. Video is not measured. `--bg-exposure` scales the art's mean luma to
+  `REFERENCE_LUMA`, the demo background's, because that is what every theme's filter constants
+  were tuned against; the demo look therefore stays put. A theme applies it only where it fixes
+  something. Pirate and escapement use full strength: pirate's `brightness(5.4) contrast(2.1)`
+  turns any bright image into blank paper otherwise, and escapement's band washes out to white.
+  sterile-tech, long-exposure, afterhours and quicksilver use `pow(…, 0.5)`: full correction
+  darkens bright art until it disappears, half keeps it visible without losing the dark look.
+  patina, bunker, interference, vfd and bristol leave it out, because their blends already carry
+  bright art well and any darkening sinks it into the texture. Verify changes against real art,
+  not the demo art, which is nearly black and flat; the gitignored `demos/backgrounds/` holds a
+  local test set when present (never commit those images).
 - Configuration warnings distinguish explicitly written `panel.fade` from its schema default;
   `panel: { dwell: 0 }` is valid without a warning about an unused default fade.
 - The adapter checks localhost binding before starting Remotion. In restricted sandboxes,

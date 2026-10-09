@@ -105,6 +105,13 @@ export type { ResolvedProject } from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export { SECONDS_CAP, beatVars, stageData, stageVars, playVars } from './stage.ts';
+export {
+  REFERENCE_LUMA,
+  backgroundVars,
+  currentBackground,
+  measureBackground,
+  type BackgroundStats,
+} from './background.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
 export {
   Timeline,
