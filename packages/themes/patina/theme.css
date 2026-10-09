@@ -52,12 +52,14 @@
   --font-italic: 'Cormorant Garamond', Georgia, serif;
   --hairline: max(1px, 0.06cqw);
   --oscilloscope-height: 34cqh;
+  --window-top: 15cqh;
+  --window-bottom: 23cqh;
   background: var(--black);
 }
 
 /* the print: the art in a window with worn edges, the rest of the frame left dark */
 .theme-patina .sc-bg {
-  --window: 15cqh 5cqw 23cqh 5cqw;
+  --window: var(--window-top) 5cqw var(--window-bottom) 5cqw;
   clip-path: inset(var(--window) round 0.7cqw);
   background: url(./stains.png) center / cover;
 }
@@ -128,7 +130,10 @@
 
 /* the string: the oscilloscope as a single wire across the print */
 .theme-patina .sc-oscilloscope {
-  bottom: calc(23cqh + (100cqh - 38cqh - var(--oscilloscope-height)) / 2);
+  bottom: calc(
+    var(--window-bottom) +
+      (100cqh - var(--window-top) - var(--window-bottom) - var(--oscilloscope-height)) / 2
+  );
   left: 5cqw;
   width: 90cqw;
   mix-blend-mode: screen;
@@ -262,8 +267,10 @@
 .theme-patina .sc-deck {
   display: inline-grid;
   place-items: center;
-  width: 1.7cqw;
+  min-width: 1.7cqw;
   height: 1.7cqw;
+  padding-inline: 0.4em;
+  white-space: nowrap;
   border: var(--hairline) solid var(--deck);
   border-radius: 50%;
   font-family: var(--font-display);
@@ -359,7 +366,7 @@
     font-size: 2.2cqw;
   }
   .theme-patina .sc-deck {
-    width: 3.4cqw;
+    min-width: 3.4cqw;
     height: 3.4cqw;
     font-size: 1.6cqw;
   }
@@ -387,6 +394,197 @@
   }
 }
 
+/*
+ * DJ: the captions stand side by side under the print like labels on a gallery wall, a bronze
+ * hairline between them. Their lines share subgrid rows, so every title sits on one line. A slot
+ * opens in width rather than height, so the row re-centers smoothly.
+ */
+.theme-patina[data-presentation='dj'] {
+  --window-top: 13cqh;
+  --window-bottom: 26cqh;
+}
+.theme-patina[data-presentation='dj'] .sc-contributors {
+  left: 50%;
+  bottom: calc(var(--margin) * 0.9);
+  width: max-content;
+  max-width: 90cqw;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(5, auto);
+  justify-content: center;
+  translate: -50% 0;
+}
+.theme-patina[data-presentation='dj'] :is(.sc-slot, .sc-panel) {
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template-rows: subgrid;
+  justify-items: center;
+  align-items: start;
+}
+.theme-patina[data-presentation='dj'] .sc-slot {
+  position: relative;
+  width: calc-size(max-content, size * var(--fit));
+  height: auto;
+  margin: 0;
+  padding-inline: calc(var(--fit) * 1.8cqw);
+  overflow: clip visible;
+}
+.theme-patina[data-presentation='dj'] .sc-slot + .sc-slot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.2cqw;
+  bottom: 0.6cqw;
+  width: var(--hairline);
+  background: var(--bronze);
+  opacity: calc(var(--fit) * 0.45);
+}
 .theme-patina[data-presentation='dj'] .sc-panel {
-  background: rgb(11 12 10 / 0.9);
+  left: auto;
+  bottom: auto;
+  width: max-content;
+  max-width: 26cqw;
+}
+.theme-patina[data-presentation='dj'] .sc-panel-head {
+  grid-row: 1;
+}
+.theme-patina[data-presentation='dj'] .sc-artist {
+  grid-row: 2;
+}
+.theme-patina[data-presentation='dj'] .sc-title {
+  grid-row: 3;
+}
+.theme-patina[data-presentation='dj'] .sc-label {
+  grid-row: 4;
+}
+.theme-patina[data-presentation='dj'] .sc-credit-details {
+  grid-row: 5;
+}
+.theme-patina[data-presentation='dj'] .sc-panel:not(:has(.sc-label)) .sc-credit-details {
+  grid-row: 4;
+}
+.theme-patina[data-presentation='dj'] .sc-panel-head {
+  min-height: 1.4cqw;
+  margin-bottom: 0.7cqw;
+  font-size: 0.9cqw;
+}
+.theme-patina[data-presentation='dj'] .sc-panel[data-returning='true'] .sc-eyebrow {
+  display: inline;
+}
+.theme-patina[data-presentation='dj'] .sc-deck {
+  min-width: 1.4cqw;
+  height: 1.4cqw;
+  font-size: 0.65cqw;
+}
+.theme-patina[data-presentation='dj'] .sc-artist {
+  margin-bottom: 0.4cqw;
+  font-size: 0.95cqw;
+}
+.theme-patina[data-presentation='dj'] .sc-title {
+  font-size: 1.9cqw;
+  letter-spacing: 0.18em;
+}
+.theme-patina[data-presentation='dj'] .sc-label {
+  margin-top: 0.5cqw;
+  font-size: 1cqw;
+}
+.theme-patina .sc-credit-details {
+  margin-top: 0.2cqw;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: 1cqw;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+.theme-patina[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  color: color-mix(in srgb, var(--parchment) 62%, var(--dim));
+}
+.theme-patina[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: color-mix(in srgb, var(--verdigris) 60%, var(--dim));
+}
+.theme-patina .sc-contributor-count,
+.theme-patina .sc-overflow {
+  grid-row: 1 / -1;
+  align-self: center;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: 1cqw;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+.theme-patina .sc-contributor-count {
+  margin-right: 1.8cqw;
+}
+.theme-patina .sc-overflow {
+  max-width: 10cqw;
+  margin-left: 1.8cqw;
+}
+/* up next moves to one line above the print, out of the captions' way */
+.theme-patina[data-presentation='dj'] .sc-next {
+  top: calc(var(--margin) + 3.2cqh);
+  bottom: auto;
+  max-width: 40cqw;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.8cqw;
+}
+
+@container (aspect-ratio < 1) {
+  .theme-patina[data-presentation='dj'] .sc-contributors {
+    bottom: 3cqh;
+    max-width: 94cqw;
+    display: block;
+    text-align: center;
+  }
+  .theme-patina[data-presentation='dj'] :is(.sc-slot, .sc-panel) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .theme-patina[data-presentation='dj'] .sc-slot {
+    width: auto;
+    height: calc-size(auto, size * var(--fit));
+    padding: calc(var(--fit) * 1.6cqh) 0 0;
+    overflow: visible clip;
+  }
+  .theme-patina[data-presentation='dj'] .sc-slot + .sc-slot::before {
+    inset: 0 auto auto 50%;
+    width: 8cqw;
+    height: var(--hairline);
+    translate: -50% 0;
+  }
+  .theme-patina[data-presentation='dj'] .sc-panel {
+    max-width: 88cqw;
+  }
+  .theme-patina[data-presentation='dj'] .sc-panel-head {
+    min-height: 0;
+    margin-bottom: 0.8cqw;
+    font-size: 1.8cqw;
+  }
+  .theme-patina[data-presentation='dj'] .sc-deck {
+    min-width: 2.8cqw;
+    height: 2.8cqw;
+    font-size: 1.3cqw;
+  }
+  .theme-patina[data-presentation='dj'] .sc-artist {
+    font-size: 1.9cqw;
+  }
+  .theme-patina[data-presentation='dj'] .sc-title {
+    font-size: 3.8cqw;
+  }
+  .theme-patina[data-presentation='dj'] .sc-label,
+  .theme-patina .sc-credit-details,
+  .theme-patina .sc-contributor-count,
+  .theme-patina .sc-overflow {
+    font-size: 2cqw;
+  }
+  .theme-patina .sc-contributor-count,
+  .theme-patina .sc-overflow {
+    max-width: none;
+    margin: 1cqh 0 0;
+  }
+  .theme-patina[data-presentation='dj'] .sc-next {
+    top: calc(var(--margin) + 2.6cqh);
+    max-width: 88cqw;
+  }
 }
