@@ -501,11 +501,14 @@
   font-size: 0.75cqw;
 }
 .theme-quicksilver .sc-credit-details {
-  bottom: calc(var(--bottom) - 3.6cqw);
+  bottom: 3.6cqh;
   font-size: 0.7cqw;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--steel-dim);
+}
+.theme-quicksilver[data-presentation='dj'] .sc-credit-details {
+  bottom: calc(var(--bottom) - 3.6cqw);
 }
 .theme-quicksilver[data-presentation='dj']
   .sc-panel[data-focused='false']
@@ -571,6 +574,9 @@
     bottom: calc(var(--bottom) - 3.6cqw);
   }
   .theme-quicksilver .sc-credit-details {
+    bottom: 4.6cqh;
+  }
+  .theme-quicksilver[data-presentation='dj'] .sc-credit-details {
     bottom: calc(var(--bottom) - 6cqw);
   }
   .theme-quicksilver[data-presentation='dj'] .sc-panel-head,
