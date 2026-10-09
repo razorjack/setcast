@@ -48,6 +48,7 @@ export function playVars(state: MixState, play: CurrentPlay): Record<string, str
     ...cueVars(state, play),
     '--since-entry': cssSeconds((state.time - play.run.from) / 1_000_000),
     '--until-exit': cssSeconds((play.run.until - state.time) / 1_000_000),
+    '--play-order': String(play.play.order),
   };
 }
 

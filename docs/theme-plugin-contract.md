@@ -64,9 +64,11 @@ Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--beat` and `--bar` remain optional tempo phases, not inferred hardware state.
 
 Every `.sc-panel` has `data-play`, `data-focused`, `data-returning`, its own optional
-`data-deck`, `data-section`, `data-tail`, and space-separated `data-tags`. Its cue variables are local,
-including cues propagated by a shared drop. It also has `--since-entry` and `--until-exit`
+`data-deck`, `data-section`, `data-tail`, and space-separated `data-tags`. Its cue variables are
+local, including cues propagated by a shared drop. It also has `--since-entry` and `--until-exit`
 from the uninterrupted run. Metadata changes between adjacent intervals do not reset them.
+`--play-order` is the play's input position and never changes for a play, so themes can derive
+stable per-play variety from it, such as a tilt of `calc(sin(var(--play-order)) * 2deg)`.
 `--drop-flash`, `--rewind-flash`, and `--tension` are recomputed on panels, so mix-level
 flashes are not accidentally inherited as local cues.
 

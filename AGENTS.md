@@ -320,7 +320,8 @@ has no global deck. It carries `data-presentation`, `data-current-plays`, `data-
 `data-shared-drop`. Its section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
-`data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run.
+`data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run;
+`--play-order` is the play's input position, a stable seed for per-play variety.
 Both stage and panels have scoped `--since-*`/`--until-*` for drop, breakdown, buildup and rewind,
 `--drop-intensity`, `--drop-participants` and `--section-time`. Seconds cap at 60. Shaped
 `--drop-flash`, `--rewind-flash`, `--tension` recompute locally, avoiding inherited mix cues.
