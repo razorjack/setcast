@@ -39,15 +39,23 @@ export function NowPlaying() {
   );
 }
 
+const EXIT_SECONDS = 0.6;
+
+/**
+ * `--show` springs in at run start, holds for `panel.dwell` and fades over `panel.fade`.
+ * `--presence`, which themes animate, follows it in playlist mode; in DJ mode it holds for the
+ * whole run and eases out at its end. It sits on the slot, whose height follows it.
+ */
 function PlayPanel({ current }: { current: CurrentPlay }) {
   const frame = useFrame();
   const { mix, timeSeconds, composition, fps, analyzer } = frame;
   const { project } = composition;
   const { contribution, run, play } = current;
   const age = timeSeconds - run.from / 1_000_000;
-  const show =
-    spring(age, { stiffness: 110, damping: 15 }) *
-    stay(age, project.panel.dwell, project.panel.fade);
+  const entrance = spring(age, { stiffness: 110, damping: 15 });
+  const show = entrance * stay(age, project.panel.dwell, project.panel.fade);
+  const exit = leave(run.until / 1_000_000 - timeSeconds);
+  const presence = project.presentation === 'dj' ? entrance * exit : show;
   const modulation = evaluateModulation(project.modulation, {
     time: timeSeconds,
     fps,
@@ -59,30 +67,26 @@ function PlayPanel({ current }: { current: CurrentPlay }) {
   });
   const cues = playVars(mix, current);
   const focused = mix.focusPlays.some((entry) => entry.play.id === play.id);
-  const listingIndex = mix.listings.findIndex((listing) => listing.play === play.id);
   return (
-    <section
-      className="sc-panel"
-      data-play={play.id}
-      data-shared-drop={current.section?.kind === 'drop' && Number(cues['--drop-participants']) > 1}
-      data-deck={contribution.deck}
-      data-section={current.section?.kind}
-      data-focused={focused}
-      data-tail={contribution.tail}
-      data-tags={contribution.tags?.join(' ')}
-      style={{ '--show': show, ...cues, ...modulationVars(modulation) }}
-    >
-      <header className="sc-panel-head">
-        {contribution.deck && <span className="sc-deck">{contribution.deck}</span>}
-        <span className="sc-eyebrow">{run.returning ? 'Returning' : 'Now playing'}</span>
-        {project.presentation === 'playlist' && listingIndex >= 0 && (
-          <span className="sc-index">
-            Listing {listingIndex + 1} / {mix.listingCount}
-          </span>
-        )}
-      </header>
-      <Credit current={current} />
-    </section>
+    <div className="sc-slot" style={{ '--presence': presence }}>
+      <section
+        className="sc-panel"
+        data-play={play.id}
+        data-shared-drop={
+          current.section?.kind === 'drop' && Number(cues['--drop-participants']) > 1
+        }
+        data-deck={contribution.deck}
+        data-section={current.section?.kind}
+        data-focused={focused}
+        data-returning={run.returning}
+        data-tail={contribution.tail}
+        data-tags={contribution.tags?.join(' ')}
+        style={{ '--show': show, ...cues, ...modulationVars(modulation) }}
+      >
+        <PanelHead current={current} />
+        <Credit current={current} />
+      </section>
+    </div>
   );
 }
 
@@ -91,6 +95,26 @@ const stay = (age: number, dwell: number, fade: number): number => {
   if (fade === 0) return age < dwell ? 1 : 0;
   return interpolate(age, [dwell, dwell + fade], [1, 0], { easing: ease.inOut });
 };
+
+const leave = (remaining: number): number =>
+  interpolate(remaining, [0, EXIT_SECONDS], [0, 1], { easing: ease.inOut });
+
+function PanelHead({ current }: { current: CurrentPlay }) {
+  const { mix, composition } = useFrame();
+  const { contribution, run, play } = current;
+  const listingIndex = mix.listings.findIndex((listing) => listing.play === play.id);
+  return (
+    <header className="sc-panel-head">
+      {contribution.deck && <span className="sc-deck">{contribution.deck}</span>}
+      <span className="sc-eyebrow">{run.returning ? 'Returning' : 'Now playing'}</span>
+      {composition.project.presentation === 'playlist' && listingIndex >= 0 && (
+        <span className="sc-index">
+          Listing {listingIndex + 1} / {mix.listingCount}
+        </span>
+      )}
+    </header>
+  );
+}
 
 function Credit({ current }: { current: CurrentPlay }) {
   const { recording, contribution } = current;

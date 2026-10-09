@@ -63,8 +63,8 @@ Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--drop-intensity`, and `--drop-participants`. Seconds cap at 60, including absent cues.
 `--beat` and `--bar` remain optional tempo phases, not inferred hardware state.
 
-Every `.sc-panel` has `data-play`, `data-focused`, its own optional `data-deck`,
-`data-section`, `data-tail`, and space-separated `data-tags`. Its cue variables are local,
+Every `.sc-panel` has `data-play`, `data-focused`, `data-returning`, its own optional
+`data-deck`, `data-section`, `data-tail`, and space-separated `data-tags`. Its cue variables are local,
 including cues propagated by a shared drop. It also has `--since-entry` and `--until-exit`
 from the uninterrupted run. Metadata changes between adjacent intervals do not reset them.
 `--drop-flash`, `--rewind-flash`, and `--tension` are recomputed on panels, so mix-level
@@ -72,9 +72,17 @@ flashes are not accidentally inherited as local cues.
 
 `--show` springs in at run start, holds for `panel.dwell`, and fades over `panel.fade`.
 `dwell: 0` keeps it present; `fade: 0` cuts at the dwell endpoint. Built-in themes consume
-`--presence`, which follows `--show` in playlist mode and remains 1 in DJ mode so current
-credits stay readable. DJ emphasis still reflects focus and dwell. A shared drop does not
-retrigger an entrance; themes can react to its local `--drop-flash` instead.
+`--presence`, which follows `--show` in playlist mode. In DJ mode it springs in the same way,
+holds for the whole run so current credits stay readable, and eases out over the run's last
+0.6 seconds. DJ emphasis still reflects focus and dwell. A shared drop does not retrigger an
+entrance; themes can react to its local `--drop-flash` instead.
+
+Each panel sits in a `.sc-slot` that carries its `--presence`. In DJ mode base.css stacks the
+slots in play order, anchored at the bottom of `.sc-contributors`, and sets each slot's height
+to `--presence` times its panel's height. The stack opens as a panel rises into its slot and
+closes as one sinks out of it, without a jump. Slots clip vertically; `--stack-gap` spaces them
+and `--slot-bleed` lets shadows and ornaments past the clip. A theme can rearrange the slots,
+for example into a row that collapses their width instead.
 
 `.sc-contributors` lays out current panels. Built-ins show up to four panels in landscape and
 three in portrait, keeping focused plays visible first and preserving play order among the
@@ -83,7 +91,8 @@ accessible list of every contributor. This is a presentation limit, not a domain
 Playlist mode selects the first focused play; all overlaps remain available to queries and
 exports. A playlist counter explicitly says “Listing”. Unknown artists and decks are omitted.
 
-`.sc-next` carries `--until-next`. Its label is “Next in tracklist” in playlist mode;
+`.sc-next` carries `--until-next` and one `.sc-next-artist` (when known) and `.sc-next-title`
+pair per upcoming play. Its label is “Next in tracklist” in playlist mode;
 DJ mode shows the next group of run entrances as “Next entry” or “Returning”. It does not
 predict loaded decks. `Background` uses the first focused play's art, falling back to the
 project art, with an immediate change when focus changes. It never invents a previous track.

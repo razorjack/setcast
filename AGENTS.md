@@ -319,18 +319,21 @@ arbitrary deck labels are permitted and use the theme accent unless styled expli
 has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section` and
 `data-shared-drop`. Its section and cue variables describe the mix.
 
-Each `.sc-panel` has `data-play`, `data-focused`, optional `data-deck`, local `data-section`,
-`data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run.
+Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
+`data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run.
 Both stage and panels have scoped `--since-*`/`--until-*` for drop, breakdown, buildup and rewind,
 `--drop-intensity`, `--drop-participants` and `--section-time`. Seconds cap at 60. Shaped
 `--drop-flash`, `--rewind-flash`, `--tension` recompute locally, avoiding inherited mix cues.
 The stage also has `--set-progress`, `--current-plays`, and optional `--beat`/`--bar`.
 
 `--show` springs in at run start and follows `panel.dwell`/`panel.fade`; metadata changes do not
-reset it. Themes use `--presence`, which follows show in playlist mode and stays 1 in DJ mode.
-DJ credits remain legible after dwell. `.sc-contributors` shows up to four panels in landscape
-or three in portrait, retains focused plays first, and adds an explicit overflow count and
-accessible full list. There is no data-model concurrency limit.
+reset it. Themes use `--presence`, which follows show in playlist mode; in DJ mode it springs in,
+holds for the run and eases out over its last 0.6 s, so DJ credits remain legible after dwell.
+`--presence` sits on the panel's `.sc-slot`. In DJ mode base.css stacks the slots in play order,
+anchored at the bottom, each as tall as `--presence` times its panel, so the stack opens and
+closes smoothly (`--stack-gap`, `--slot-bleed`). `.sc-contributors` shows up to four panels in
+landscape or three in portrait, retains focused plays first, and adds an explicit overflow count
+and accessible full list. There is no data-model concurrency limit.
 
 Visualizers are SVG under one root class each, with `data-style` set to the block's `style`:
 `.sc-spectrum` (bars are `rect`s in `.sc-spectrum-bars`, and with `peak` their markers are
@@ -387,6 +390,13 @@ the theme's visibility. Never infer a next deck from missing hardware informatio
 - Background selection follows the first focused play and changes immediately. There is no
   fabricated "previous track" during an overlap. DJ panels retain credits after dwell;
   `--presence` separates this layout policy from the deterministic per-run `--show` signal.
+- A DJ slot's height is `calc-size(auto, size * var(--fit))` in block flow. Chrome ignores
+  `calc-size()` heights on flex items, and `overflow-clip-margin` rejects `calc()`, so the bleed
+  is a constant. The clip is on the slot rather than a `clip-path`, because a `clip-path`
+  ancestor becomes the backdrop root and empties every panel's `backdrop-filter`.
+- Built-in themes design their DJ layout explicitly (`[data-presentation='dj']` rules) instead
+  of inheriting a shared grid. Focus changes emphasis (brightness, accent), never size, because
+  automatic focus moves on every entrance and a size change there would jump.
 - Archived research under `docs/research/` is excluded from formatting. Preserve its bytes.
 - `vp run mix-stills` renders tease, shared-drop, overlap, portrait and overflow acceptance images.
 - Composition frame counts exclude any final frame whose time rounds to mix end in microseconds.
