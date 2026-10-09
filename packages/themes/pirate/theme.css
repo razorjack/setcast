@@ -393,3 +393,179 @@
     font-size: 4cqw;
   }
 }
+
+/*
+ * DJ: slips taped over each other on the flyer, each at its own angle. The focused slip is the
+ * fresh copy with the fluoro label; the others are tired grey copies of copies.
+ */
+.theme-pirate[data-presentation='dj'] .sc-contributors {
+  --stack-gap: -0.8cqw;
+  --slot-bleed: 2cqw;
+  width: 40cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-panel {
+  --tilt: calc(
+    sin(var(--play-order) * 2.4 + 1) * 2.4deg + var(--rewind-flash) *
+      sin(var(--since-rewind, 60) * 40) * 5deg
+  );
+  width: fit-content;
+  min-width: 18cqw;
+  max-width: calc(100% - 2.4cqw);
+  padding: 1.2cqw 1.8cqw 1.1cqw;
+  box-shadow: 0.3cqw 0.5cqw 0 rgb(0 0 0 / 0.28);
+  translate: calc((sin(var(--play-order) * 1.7) + 1) * 1.2cqw) 0;
+  scale: calc(1 + (1 - var(--presence, 1)) * 0.08);
+}
+.theme-pirate[data-presentation='dj'] .sc-panel::before,
+.theme-pirate[data-presentation='dj'] .sc-panel::after {
+  width: 4cqw;
+  height: 1.3cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-panel::before {
+  top: -0.5cqw;
+  left: -1.1cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-panel::after {
+  right: -1.1cqw;
+  bottom: -0.4cqw;
+}
+/* a block, not flex: a wrapping flex container is as wide as all of its items on one line */
+.theme-pirate[data-presentation='dj'] .sc-panel-head {
+  display: inline-flex;
+  gap: 0.6cqw;
+  margin: 0 0.7cqw 0 0;
+  vertical-align: middle;
+  font-size: 0.8cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-pirate[data-presentation='dj']
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-pirate[data-presentation='dj'] .sc-deck {
+  width: auto;
+  min-width: 1.8cqw;
+  height: 1.8cqw;
+  padding-inline: 0.35em;
+  border-width: 0.15cqw;
+  border-radius: 1cqw;
+  font-size: 1cqw;
+  white-space: nowrap;
+}
+.theme-pirate[data-presentation='dj'] .sc-artist {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 1.2cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-title {
+  margin-top: 0.2cqw;
+  font-size: 3cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-label {
+  margin-top: 0.5cqw;
+  font-size: 0.85cqw;
+}
+.theme-pirate .sc-credit-details {
+  display: inline-block;
+  margin-top: 0.5cqw;
+  font-family: var(--font-type);
+  font-size: 0.85cqw;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-pirate .sc-label + .sc-credit-details {
+  margin-left: 0.8cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  background: #e6e3dc;
+  filter: grayscale(1);
+}
+.theme-pirate[data-presentation='dj'] .sc-panel[data-focused='false'] :is(.sc-artist, .sc-title) {
+  color: var(--fg-dim);
+}
+.theme-pirate[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  background: linear-gradient(
+    176deg,
+    transparent 18%,
+    rgb(20 20 20 / 0.16) 20% 84%,
+    transparent 86%
+  );
+}
+.theme-pirate .sc-contributor-count,
+.theme-pirate .sc-overflow {
+  font-family: var(--font-type);
+  font-weight: 700;
+  font-size: 0.85cqw;
+  text-transform: uppercase;
+  color: var(--toner);
+}
+.theme-pirate .sc-contributor-count {
+  width: fit-content;
+  margin-bottom: 0.8cqw;
+  padding: 0.2cqw 0.6cqw;
+  color: var(--paper);
+  background: var(--toner);
+  rotate: -1deg;
+}
+.theme-pirate .sc-overflow {
+  width: fit-content;
+  margin-top: 1.2cqw;
+  padding: 0.5cqw 0.9cqw;
+  background: var(--slip);
+  box-shadow: 0.2cqw 0.3cqw 0 rgb(0 0 0 / 0.2);
+  rotate: 1.2deg;
+}
+
+@container (aspect-ratio < 1) {
+  .theme-pirate[data-presentation='dj'] .sc-contributors {
+    --stack-gap: -0.8cqw;
+    --slot-bleed: 4cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+    bottom: calc(anchor(top) + 5cqw);
+  }
+  .theme-pirate[data-presentation='dj'] .sc-panel {
+    min-width: 50cqw;
+    max-width: calc(100% - 4cqw);
+    padding: 2.4cqw 3.4cqw 2.2cqw;
+    translate: calc((sin(var(--play-order) * 1.7) + 1) * 2cqw) 0;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-panel::before,
+  .theme-pirate[data-presentation='dj'] .sc-panel::after {
+    width: 8cqw;
+    height: 2.6cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-panel-head {
+    margin-right: 1.4cqw;
+  }
+  .theme-pirate .sc-label + .sc-credit-details {
+    margin-left: 1.6cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-panel-head,
+  .theme-pirate[data-presentation='dj'] .sc-label,
+  .theme-pirate .sc-credit-details,
+  .theme-pirate .sc-contributor-count,
+  .theme-pirate .sc-overflow {
+    font-size: 1.7cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-deck {
+    min-width: 3.6cqw;
+    height: 3.6cqw;
+    border-radius: 2cqw;
+    font-size: 2cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-artist {
+    font-size: 2.4cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-title {
+    font-size: 6cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-label,
+  .theme-pirate .sc-credit-details {
+    margin-top: 1cqw;
+  }
+}
