@@ -344,3 +344,158 @@
     font-size: 3.6cqw;
   }
 }
+
+/*
+ * DJ: one warm glass card, a soft row per play. The focused row is lit from the side and its
+ * title is cream; the others sit back in the dim, their deck pills outlined instead of filled.
+ */
+.theme-afterhours[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 0px;
+  width: 34cqw;
+  border-radius: 1.4cqw;
+}
+.theme-afterhours[data-presentation='dj'] .sc-contributors:has(.sc-slot) {
+  background: rgb(58 23 41 / 0.38);
+  border: var(--hairline) solid rgb(255 230 210 / 0.1);
+  backdrop-filter: blur(1.6cqw) saturate(1.3);
+  box-shadow:
+    0 1.4cqw 3.4cqw rgb(0 0 0 / 0.4),
+    0 0 calc(var(--mod-warmth, 0.5) * 3cqw) color-mix(in srgb, var(--amber) 16%, transparent);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.8cqw;
+  padding: 1.1cqw 2cqw 1.2cqw;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.theme-afterhours[data-presentation='dj'] .sc-slot + .sc-slot .sc-panel {
+  border-top: var(--hairline) solid rgb(255 230 210 / 0.1);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='true'] {
+  background: radial-gradient(70% 120% at 0% 50%, rgb(255 179 107 / 0.12), transparent);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel-head {
+  gap: 0.6cqw;
+  margin: 0;
+  font-size: 0.65cqw;
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-afterhours[data-presentation='dj']
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-afterhours[data-presentation='dj'] .sc-deck {
+  min-width: 1.7cqw;
+  height: 1.15cqw;
+  padding: 0 0.45cqw;
+  font-size: 0.62cqw;
+  white-space: nowrap;
+}
+.theme-afterhours[data-presentation='dj'] .sc-artist {
+  margin: 0;
+  font-size: 1.1cqw;
+}
+.theme-afterhours[data-presentation='dj'] .sc-title {
+  flex-basis: 100%;
+  margin-top: 0.15cqw;
+  font-size: 2.6cqw;
+}
+.theme-afterhours[data-presentation='dj'] .sc-label {
+  margin-top: 0.6cqw;
+  font-size: 0.68cqw;
+}
+.theme-afterhours .sc-credit-details {
+  margin-top: 0.6cqw;
+  font-family: var(--font-sans);
+  font-size: 0.68cqw;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='true'] .sc-title {
+  text-shadow: 0 0 1.4cqw rgb(255 179 107 / 0.3);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  color: rgb(243 230 214 / 0.55);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-artist {
+  color: color-mix(in srgb, var(--rose) 60%, transparent);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: color-mix(in srgb, var(--amber) 55%, transparent);
+}
+.theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-deck {
+  color: var(--deck);
+  background: none;
+  box-shadow: inset 0 0 0 max(1px, 0.08cqw) var(--deck);
+}
+.theme-afterhours .sc-contributor-count,
+.theme-afterhours .sc-overflow {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.68cqw;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.theme-afterhours .sc-contributor-count {
+  padding: 1.1cqw 2cqw 0.2cqw;
+  color: var(--dim);
+}
+.theme-afterhours .sc-overflow {
+  padding: 0.9cqw 2cqw 1.1cqw;
+  border-top: var(--hairline) solid rgb(255 230 210 / 0.1);
+  color: var(--amber);
+}
+
+@container (aspect-ratio < 1) {
+  .theme-afterhours[data-presentation='dj'] .sc-contributors {
+    width: calc(100cqw - 2 * var(--margin));
+    border-radius: 2.6cqw;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+    bottom: calc(anchor(top) + 4cqw);
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-panel {
+    column-gap: 1.6cqw;
+    padding: 2.4cqw 4cqw 2.6cqw;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-panel-head,
+  .theme-afterhours[data-presentation='dj'] .sc-label,
+  .theme-afterhours .sc-credit-details,
+  .theme-afterhours .sc-contributor-count,
+  .theme-afterhours .sc-overflow {
+    font-size: 1.4cqw;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-deck {
+    min-width: 3.4cqw;
+    height: 2.3cqw;
+    padding: 0 0.9cqw;
+    font-size: 1.25cqw;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-artist {
+    font-size: 2.2cqw;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-title {
+    font-size: 5.4cqw;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-label,
+  .theme-afterhours .sc-credit-details {
+    margin-top: 1.2cqw;
+  }
+  .theme-afterhours .sc-contributor-count {
+    padding: 2.4cqw 4cqw 0.4cqw;
+  }
+  .theme-afterhours .sc-overflow {
+    padding: 1.8cqw 4cqw 2.2cqw;
+  }
+}
