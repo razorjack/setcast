@@ -1,8 +1,8 @@
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { formatTime, SetcastError, type SetEvent } from '@setcast/core';
+import { formatTime, SetcastError, type Annotation } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { probeAudio, render } from '@setcast/renderer-remotion';
+import { render } from '@setcast/renderer-remotion';
 import {
   parseAt,
   parseCommandArgs,
@@ -10,7 +10,7 @@ import {
   rangeWithinAudio,
   timeWithinAudio,
 } from '../args.ts';
-import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
+import { load, withSetEnvelope } from '../project.ts';
 import { bold, dim, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 
@@ -41,9 +41,8 @@ export async function run(argv: string[]): Promise<void> {
 
   intro('clip');
   const loaded = await load(options.dir, options.theme);
-  const duration = await probeAudio(loaded.project, loaded.dir);
-  warnEventsAfterAudio(loaded.project.events, duration);
-  const centers = clipCenters(loaded.project.events, options).map((center) =>
+  const duration = loaded.project.mix.duration / 1_000_000;
+  const centers = clipCenters(loaded.project.mix.annotations, options).map((center) =>
     timeWithinAudio(center, duration, '--at'),
   );
   if (centers.length === 0) {
@@ -94,20 +93,20 @@ function parseOptions(argv: string[]): ClipOptions {
   };
 }
 
-function clipCenters(events: SetEvent[], options: ClipOptions): number[] {
+function clipCenters(events: Annotation[], options: ClipOptions): number[] {
   if (options.center !== undefined) return [options.center];
 
   const drops = events.filter(isDrop);
-  if (options.all) return drops.map((event) => event.time);
+  if (options.all) return drops.map((event) => event.at / 1_000_000);
 
   const firstDrop = drops[0];
   if (!firstDrop) {
     throw new SetcastError(
       'No drop to cut around',
-      'Add a drop event to setcast.yaml (or run `setcast analyze --write`), or pass --at.',
+      'Add a mix-scoped drop annotation to setcast.yaml (or run `setcast analyze --write`), or pass --at.',
     );
   }
-  return [firstDrop.time];
+  return [firstDrop.at / 1_000_000];
 }
 
 async function renderClip(
@@ -151,4 +150,4 @@ export function clipRange(at: number, seconds: number): [number, number] {
   return [start, start + seconds];
 }
 
-const isDrop = (event: SetEvent) => event.type === 'drop' || event.type === 'double_drop';
+const isDrop = (event: Annotation) => event.kind === 'drop' && event.scope === 'mix';

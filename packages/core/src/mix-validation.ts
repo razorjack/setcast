@@ -108,7 +108,7 @@ function span(document: MixDocument, from: number, until: number, path: string):
 function validateContributions(document: MixDocument, playIds: Set<string>): void {
   const ends = new Map<string, number>();
   document.contributions.forEach((interval, index) => {
-    const path = interval.origins.from.path || `contributions[${index}]`;
+    const path = `contributions[${index}]`;
     reference(playIds, interval.play, `${path}.play`);
     span(document, interval.from, interval.until, path);
     if (interval.from < (ends.get(interval.play) ?? 0))

@@ -1,62 +1,36 @@
-import type { SetEvent } from './events.ts';
+import type { MixDocument } from './mix-schema.ts';
 import { formatChapterTime } from './time.ts';
 
-/** YouTube shows chapters only from this many up, and only if each one runs this long. */
 export const MIN_CHAPTERS = 3;
 export const MIN_CHAPTER_SECONDS = 10;
+export type Chapter = MixDocument['chapters'][number];
+export const chapterList = (mix: MixDocument): Chapter[] => mix.chapters;
+export const chapters = (mix: MixDocument): string[] =>
+  mix.chapters.map((chapter) => `${formatChapterTime(chapter.at / 1_000_000)} ${chapter.title}`);
 
-export interface Chapter {
-  time: number;
-  text: string;
-}
-
-/**
- * One chapter per track and per explicit `chapter` event; a chapter at a track's time names that
- * track instead of doubling it. The first starts at 00:00 as YouTube requires.
- */
-export function chapterList(events: readonly SetEvent[]): Chapter[] {
-  const list: Chapter[] = [];
-  for (const event of events.toSorted((a, b) => a.time - b.time)) {
-    if (event.type === 'track_start') {
-      list.push({ time: event.time, text: `${event.artist} - ${event.title}` });
-    }
-    if (event.type === 'chapter') {
-      if (list.at(-1)?.time === event.time) list.pop();
-      list.push({ time: event.time, text: event.title });
-    }
-  }
-  if (list[0]) list[0].time = 0;
-  return list;
-}
-
-export const chapters = (events: readonly SetEvent[]): string[] =>
-  chapterList(events).map((chapter) => `${formatChapterTime(chapter.time)} ${chapter.text}`);
-
-/**
- * What would stop YouTube from turning the timestamps into chapters. Empty means they work.
- * The last chapter's length is not checked here; only the set's duration decides it.
- */
-export function chapterProblems(events: readonly SetEvent[]): string[] {
-  const list = chapterList(events);
+export function chapterProblems(mix: MixDocument): string[] {
+  const list = mix.chapters;
+  if (!list.length) return [];
   const problems: string[] = [];
-  if (list.length < MIN_CHAPTERS) {
+  if (list.length < MIN_CHAPTERS)
     problems.push(
-      `Only ${list.length} chapter${list.length === 1 ? '' : 's'}. YouTube shows chapters from ${MIN_CHAPTERS} up, so add tracks or chapter events.`,
+      `Only ${list.length} chapters; YouTube needs at least ${MIN_CHAPTERS}. Add listings or explicit chapters.`,
     );
-  }
+  if (list[0]!.at !== 0)
+    problems.push(
+      'The first chapter is not at 00:00. Add an explicit chapter at zero for YouTube; authored timestamps are preserved.',
+    );
   for (const [index, chapter] of list.entries()) {
-    const next = list[index + 1];
-    if (!next) continue;
-    const seconds = Math.round((next.time - chapter.time) * 10) / 10;
-    if (seconds >= MIN_CHAPTER_SECONDS) continue;
-    problems.push(
-      `"${chapter.text}" runs ${seconds}s, under YouTube's ${MIN_CHAPTER_SECONDS}s minimum, which turns off chapters for the whole video. Merge it into a neighbour or move ${formatChapterTime(next.time)}.`,
-    );
+    const end = list[index + 1]?.at ?? mix.duration;
+    const seconds = Math.floor(end / 1_000_000) - Math.floor(chapter.at / 1_000_000);
+    if (seconds < MIN_CHAPTER_SECONDS)
+      problems.push(
+        `"${chapter.title}" runs ${seconds}s in the exported timestamps, under YouTube's ${MIN_CHAPTER_SECONDS}s minimum. Merge it with a neighbour or move its timestamp.`,
+      );
   }
   return problems;
 }
-
-export function youtubeDescription(title: string, events: readonly SetEvent[]): string {
+export function youtubeDescription(title: string, mix: MixDocument): string {
   const head = title ? `${title}\n\n` : '';
-  return `${head}Tracklist:\n${chapters(events).join('\n')}\n`;
+  return mix.chapters.length ? `${head}Tracklist:\n${chapters(mix).join('\n')}\n` : `${title}\n`;
 }

@@ -40,14 +40,17 @@ export function Overview() {
       <g className="sc-overview-played" clipPath={`url(#${playedId})`}>
         {energy}
       </g>
-      {project.events.map((event, index) => (
+      {[
+        ...project.mix.listings.map((listing) => ({ ...listing, kind: 'listing' })),
+        ...project.mix.annotations,
+      ].map((event, index) => (
         <line
           key={index}
           className="sc-overview-mark"
-          data-type={event.type}
-          x1={xAt(event.time)}
+          data-type={event.kind}
+          x1={xAt(event.at / 1_000_000)}
           y1={0}
-          x2={xAt(event.time)}
+          x2={xAt(event.at / 1_000_000)}
           y2={HEIGHT}
         />
       ))}

@@ -6,17 +6,20 @@ import {
   importers,
   SetcastError,
   type Importer,
-  type TrackEntry,
+  ProjectConfigSchema,
+  compileMix,
+  type ImportedPlay,
 } from '@setcast/core';
 import { CONFIG_FILE } from '@setcast/core/node';
 import { parseDocument, stringify } from 'yaml';
+import { load } from '../project.ts';
 import { parseCommandArgs } from '../args.ts';
 import { bold, dim, highlightYaml, intro, log, outro, shown, steel } from '../ui.ts';
 
 export const help = `setcast import <tracklist.txt> [--format plain] [--write] [dir]
 
 Parses a tracklist into Setcast tracks and prints them as YAML.
-  --write   replace the tracks: section of setcast.yaml in <dir> (default: current directory)
+  --write   replace the plays: section of setcast.yaml in <dir> (default: current directory)
   --format  importer to use (default: auto-detect). Available: ${importers.names().join(', ')}`;
 
 interface ImportOptions {
@@ -38,15 +41,15 @@ export async function run(argv: string[]): Promise<void> {
   showTracks(tracks, importer.name);
 
   if (!options.write) {
-    printDraft(tracks);
+    printDraft(tracks, options.file);
     return;
   }
 
-  const path = await replaceTracks(options.dir, tracks);
+  const path = await replaceTracks(options.dir, tracks, options.file);
   outro(`Wrote ${tracks.length} tracks to ${shown(path)}`);
 }
 
-export function requireTracks(tracks: TrackEntry[], file: string): void {
+export function requireTracks(tracks: ImportedPlay[], file: string): void {
   if (tracks.length > 0) return;
   throw new SetcastError(
     `No tracks found in ${file}`,
@@ -94,27 +97,39 @@ function selectImporter(text: string, { format, file }: ImportOptions): Importer
   );
 }
 
-function showTracks(tracks: TrackEntry[], importerName: string): void {
+function showTracks(tracks: ImportedPlay[], importerName: string): void {
   log.info(`${bold(String(tracks.length))} tracks via ${steel(importerName)} importer`);
   log.message(tracks.map(trackLine));
 }
 
-const trackLine = (track: TrackEntry) => {
-  const time = dim(formatTime(track.time).padStart(7));
+const trackLine = (track: ImportedPlay) => {
+  const time = dim(formatTime(track.at).padStart(7));
   const label = track.label ? dim(`  [${track.label}]`) : '';
-  return `${time}  ${track.artist} ${dim('-')} ${track.title}${label}`;
+  const artist = track.artist ? `${track.artist} ${dim('-')} ` : '';
+  return `${time}  ${artist}${track.title}${label}`;
 };
 
-function printDraft(tracks: TrackEntry[]): void {
-  process.stdout.write(`\n${highlightYaml(stringify({ tracks: tracks.map(toYaml) }))}`);
+function printDraft(tracks: ImportedPlay[], file: string): void {
+  process.stdout.write(
+    `\n${highlightYaml(stringify({ sources: { 'imported-tracklist': importSource(file) }, plays: tracks.map((track) => ({ ...toYaml(track), evidence: ['imported-tracklist'] })) }))}`,
+  );
   outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
 }
 
-/** Swaps the `tracks:` block, leaving every other key of the file as the user wrote it. */
-async function replaceTracks(dir: string, tracks: TrackEntry[]): Promise<string> {
+/** Swaps the `plays:` block, leaving every other key of the file as the user wrote it. */
+async function replaceTracks(dir: string, tracks: ImportedPlay[], file: string): Promise<string> {
   const path = join(resolve(dir), CONFIG_FILE);
   const doc = parseDocument(await readProjectConfig(path, dir));
-  doc.set('tracks', tracks.map(toYaml));
+  const loaded = await load(dir);
+  const sources = loaded.config.sources;
+  let source = 'imported-tracklist';
+  for (let suffix = 2; source in sources; suffix++) source = `imported-tracklist-${suffix}`;
+  doc.setIn(['sources', source], importSource(file));
+  doc.set(
+    'plays',
+    tracks.map((track) => ({ ...toYaml(track), evidence: [source] })),
+  );
+  compileMix(ProjectConfigSchema.parse(doc.toJS()), loaded.project.mix.duration / 1_000_000);
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
   return path;
@@ -136,13 +151,17 @@ async function readProjectConfig(path: string, dir: string): Promise<string> {
 const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
   error instanceof Error && 'code' in error && error.code === 'ENOENT';
 
-function toYaml(track: TrackEntry): Record<string, string> {
+function toYaml(track: ImportedPlay): Record<string, string> {
   const entry: Record<string, string> = {
-    time: formatTimecode(track.time),
-    artist: track.artist,
+    at: formatTimecode(track.at),
     title: track.title,
   };
   if (track.label) entry.label = track.label;
-  if (track.deck) entry.deck = track.deck;
+  if (track.artist) entry.artist = track.artist;
   return entry;
 }
+
+const importSource = (file: string) => ({
+  title: `Imported tracklist: ${file}`,
+  note: 'Editorial timestamps imported from a tracklist; fallback participation is inferred, not measured.',
+});

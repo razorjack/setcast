@@ -1,0 +1,128 @@
+# Theme and plugin contract
+
+Setcast's offline domain is a finite `MixDocument`. The YAML authoring contract and its
+validation rules are in [dj-mix-model.md](dj-mix-model.md). This replaces the unreleased
+single-track contract; there are no compatibility aliases.
+
+## Domain and renderer APIs
+
+`@setcast/core` exports `normalizeMix(authoring, durationSeconds)`,
+`readMixDocument(json)`, `Timeline`, `MixDocument`, `MixState`, and `CurrentPlay`.
+`normalizeMix` takes authoring seconds or timecodes. `readMixDocument` takes normalized JSON
+with safe integer microseconds and validates its structure and references. Never feed a
+normalized document back to `normalizeMix`: these are different input formats.
+
+`Timeline` indexes one cloned document revision. Construct another instance when the document
+changes. `at(timeSeconds)` supports direct access, forward playback and reverse scrubbing;
+it rejects negative times and times at or after the document duration. Intervals and spans
+are half open. Membership at a boundary is the membership after that boundary.
+
+`MixState` exposes `currentPlays`, `focusPlays`, `mixSection`, `activeAnnotations`,
+`nextEntries`, `nextListings`, `listings`, and `recordingCount`, `playCount`, `listingCount`,
+`currentPlayCount`. Each current play contains `play`, `recording`, `contribution`, `run`,
+optional `deck`, and `section`. A run has `id`, `play`, `from`, `until`, and `returning`.
+Section state has `kind` and `start`, or is null. All of these times are microseconds.
+
+`lastAnnotations(state, kind, scope)` and `nextAnnotations(state, kind, scope)` return the
+nearest timestamp group in original annotation order. Scope is `'mix'` by default, or
+`{play: 'play-id'}`. Local history can be queried even during a contribution gap. Mix drops
+with participants are indexed at the mix scope and at each participant's scope; other mix
+annotations are not propagated. Last includes the query instant, next is strictly later.
+`sinceAnnotation` and `untilAnnotation` return seconds, or Infinity for an absent cue. They
+choose the first annotation in a tied group and accept an optional fourth argument, a run,
+which restricts local visual reactions to that run. Persistent local sections also reset at
+a run's end. Descriptive tags never affect any of these rules.
+
+`ResolvedProject.mix` holds the document, and `ResolvedProject.presentation` is the resolved
+`playlist` or `dj` mode. `loadProject(dir, {themes, probeDuration})` validates assets, calls the
+renderer-owned `probeDuration(audioPath, projectDir)` function, and compiles the timeline before
+returning. Theme CSS and the visualizer configuration remain outside the domain document.
+
+The renderer supplies `RenderFrame` through `FrameProvider`:
+
+```ts
+{ frame, fps, timeSeconds, audio, analyzer, mix, composition, modulation }
+```
+
+React components consume `useMixState()`, `useFrame()`, `useTime()`, `useComposition()`,
+`useAudioFeatures()`, `useAudioHistory()` and `useModulation()` from `@setcast/core/react`.
+`timeSeconds` uses the original mix clock, including during a render slice. `composition`
+contains `width`, `height`, `durationSeconds` and the resolved `project`. Audio features,
+waveforms and history describe the mixed master only. There is no per-play audio or meter.
+Media still uses Setcast's `Img`, `Video`, `useAsset` and renderer readiness bindings.
+
+## CSS state
+
+The stage carries `data-presentation="playlist|dj"`, `data-current-plays`, and optional
+`data-section="drop|breakdown|buildup"`. `data-shared-drop="true"` means the current mix section
+was established by a drop naming multiple participants. The stage has no global deck.
+
+Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
+`--since-drop`, `--until-drop`, `--since-breakdown`, `--until-breakdown`,
+`--since-buildup`, `--until-buildup`, `--since-rewind`, `--until-rewind`,
+`--drop-intensity`, and `--drop-participants`. Seconds cap at 60, including absent cues.
+`--beat` and `--bar` remain optional tempo phases, not inferred hardware state.
+
+Every `.sc-panel` has `data-play`, `data-focused`, its own optional `data-deck`,
+`data-section`, `data-tail`, and space-separated `data-tags`. Its cue variables are local,
+including cues propagated by a shared drop. It also has `--since-entry` and `--until-exit`
+from the uninterrupted run. Metadata changes between adjacent intervals do not reset them.
+`--drop-flash`, `--rewind-flash`, and `--tension` are recomputed on panels, so mix-level
+flashes are not accidentally inherited as local cues.
+
+`--show` springs in at run start, holds for `panel.dwell`, and fades over `panel.fade`.
+`dwell: 0` keeps it present; `fade: 0` cuts at the dwell endpoint. Built-in themes consume
+`--presence`, which follows `--show` in playlist mode and remains 1 in DJ mode so current
+credits stay readable. DJ emphasis still reflects focus and dwell. A shared drop does not
+retrigger an entrance; themes can react to its local `--drop-flash` instead.
+
+`.sc-contributors` lays out current panels. Built-ins show up to four panels in landscape and
+three in portrait, keeping focused plays visible first and preserving play order among the
+visible subset. More contributors produce an explicit count, an overflow count and an
+accessible list of every contributor. This is a presentation limit, not a domain limit.
+Playlist mode selects the first focused play; all overlaps remain available to queries and
+exports. A playlist counter explicitly says “Listing”. Unknown artists and decks are omitted.
+
+`.sc-next` carries `--until-next`. Its label is “Next in tracklist” in playlist mode;
+DJ mode shows the next group of run entrances as “Next entry” or “Returning”. It does not
+predict loaded decks. `Background` uses the first focused play's art, falling back to the
+project art, with an immediate change when focus changes. It never invents a previous track.
+
+Overview marks use `data-type="listing"` for editorial listings and the annotation kind for
+cues. Shared drops are `data-type="drop"`, with their participants in the document.
+Existing visualizer classes, media wrappers, font loading and master-audio contracts remain.
+
+## Scoped modulation
+
+Routes accept `scope: mix` (default) or `scope: play`. Mix routes produce stage `--mod-*`
+variables. Play routes evaluate separately for every current panel and override inherited
+variables on that panel. Routes with the same scope and target use the last definition.
+
+```yaml
+modulation:
+  - {source: since:drop, target: wash, window: 0.7}
+  - {source: since:drop, scope: play, target: panel-glow, window: 2}
+  - {source: bass, scope: play, target: pulse, when: drop}
+```
+
+For play routes, `since:<kind>`, `until:<kind>` and `when` use local annotations and sections
+within the current run. Audio sources still read the master bus, including on a panel.
+Tempo sources use the project's stated tempo. Kinds accepted as timeline sources are `drop`,
+`breakdown`, `buildup`, `section_end`, `rewind`, `technique`, and `note`.
+
+## Importers and inspection
+
+An importer returns `ImportedPlay[]`: `{at: seconds, title, artist?, label?}`. These are
+editorial timestamps, not measured entrance or exit boundaries. The CLI attaches an evidence
+source identifying the imported file. Custom importer callers should likewise attach source
+metadata before normalization. Importing does not assign decks or deduplicate matching titles.
+
+`setcast inspect --json` exports the normalized document with every generated ID materialized.
+`setcast inspect --at 1:23 --json` exports a query instead. Without `--json`, inspection
+explains every boundary's mechanical origin: `authored`, `listing`, `next_listing`, or
+`mix_end`. These origins are not confidence scores. `chapters: []` disables chapter output;
+otherwise export preserves the compiled chapter timestamps and warns about YouTube constraints.
+
+Namespaced custom annotations and extension payloads survive normalization and inspection.
+Unknown core fields fail validation. Capture logs, source transport, hardware occupancy,
+per-deck audio and live receipt-time replay remain deferred.

@@ -1,5 +1,18 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { resolveFrameRange } from './range.ts';
+import { microseconds, normalizeMix, Timeline } from '@setcast/core';
+import { framesWithinMix, resolveFrameRange } from './range.ts';
+
+test('every selected frame queries inside the finite mix after microsecond rounding', () => {
+  for (const fps of [24, 25, 30, 60]) {
+    for (const seconds of [0.000001, 0.066667, 1, 1.000001, 1.033333, 1.033334]) {
+      const timeline = new Timeline(normalizeMix({}, seconds));
+      const frames = framesWithinMix(microseconds(seconds), fps);
+      expect(frames).toBeGreaterThan(0);
+      expect(() => timeline.at((frames - 1) / fps)).not.toThrow();
+      expect(() => timeline.at(frames / fps)).toThrow(RangeError);
+    }
+  }
+});
 
 describe('resolveFrameRange', () => {
   test('converts seconds and clips the end to the composition', () => {

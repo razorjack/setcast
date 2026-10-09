@@ -1,18 +1,24 @@
 import { useFrame } from '../frame.tsx';
 
-/**
- * The track after this one. It is rendered for the whole track; the theme decides when it becomes
- * visible by shaping `--until-track` from the stage root.
- */
 export function UpNext() {
-  const { events } = useFrame();
-  const next = events.next.track_start;
-  if (!next) return null;
+  const { mix, composition } = useFrame();
+  const { project } = composition;
+  const dj = project.presentation === 'dj';
+  const next = dj ? mix.nextEntries : mix.nextListings;
+  if (!next.length) return null;
+  const at = 'from' in next[0]! ? next[0].from : next[0]!.at;
+  const titles = next.map((entry) => {
+    const play = project.mix.plays.find((play) => play.id === entry.play)!;
+    const recording = project.mix.recordings.find((recording) => recording.id === play.recording)!;
+    return recording.artist ? `${recording.artist} - ${recording.title}` : recording.title;
+  });
+  const returning = dj && mix.nextEntries.every((entry) => entry.returning);
+  let label = 'Next in tracklist';
+  if (dj) label = returning ? 'Returning' : 'Next entry';
   return (
-    <aside className="sc-next">
-      <span className="sc-next-label">Up next</span>
-      <span className="sc-next-artist">{next.artist}</span>
-      <span className="sc-next-title">{next.title}</span>
+    <aside className="sc-next" style={{ '--until-next': (at - mix.time) / 1_000_000 }}>
+      <span className="sc-next-label">{label}</span>
+      <span className="sc-next-title">{titles.join(' / ')}</span>
     </aside>
   );
 }

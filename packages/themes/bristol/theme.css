@@ -67,7 +67,7 @@
 }
 
 /* a drop steps the stripes a shade darker for as long as it lasts */
-.theme-bristol:is([data-section='drop'], [data-section='double_drop']) {
+.theme-bristol[data-section='drop'] {
   --teal: #1f4a3f;
   --green: #2e6657;
   --sage: #5a8f79;
@@ -201,7 +201,7 @@
 .theme-bristol .sc-overview-played .sc-overview-high {
   fill: var(--white);
 }
-.theme-bristol .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-bristol .sc-overview-mark[data-type='drop'] {
   stroke: var(--teal);
   stroke-width: 0.12cqw;
 }
@@ -244,8 +244,8 @@
   right: var(--margin);
   max-width: 70cqw;
   text-align: right;
-  opacity: clamp(0, var(--show, 1) * 1.4, 1);
-  translate: calc((1 - var(--show, 1)) * 5cqw) 0;
+  opacity: clamp(0, var(--presence, 1) * 1.4, 1);
+  translate: calc((1 - var(--presence, 1)) * 5cqw) 0;
 }
 .theme-bristol .sc-panel-head {
   gap: 0.9cqw;
@@ -266,7 +266,7 @@
   color: var(--white);
   background: var(--deck);
 }
-.theme-bristol[data-deck='D'] .sc-deck {
+.theme-bristol .sc-panel[data-deck='D'] .sc-deck {
   color: var(--ink);
 }
 .theme-bristol .sc-index {
@@ -302,7 +302,7 @@
 .theme-bristol .sc-next {
   bottom: calc(var(--margin) * 0.8);
   gap: 0.2cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-bristol .sc-next-label {
   font-size: 0.8cqw;
@@ -370,4 +370,11 @@
   .theme-bristol .sc-next-title {
     font-size: 3.2cqw;
   }
+}
+
+.theme-bristol[data-presentation='dj'] .sc-panel {
+  background: var(--teal);
+}
+.theme-bristol[data-presentation='dj'] :is(.sc-artist, .sc-panel-head, .sc-credit-details) {
+  color: var(--pale);
 }

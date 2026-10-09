@@ -5,7 +5,8 @@ import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig, type ProjectConfigInput } from '../config.ts';
 import { FEATURE_SOURCES } from '../audio.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
-import { sortEvents, type SetEvent } from '../events.ts';
+import { compileMix, mixWarnings } from '../mix.ts';
+import { Timeline } from '../timeline.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
 import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
@@ -23,6 +24,8 @@ export interface LoadedProject {
 }
 
 export interface LoadOptions {
+  /** Renderer-owned audio probe, called before finite timeline normalization. */
+  probeDuration?: (audio: string, root: string) => Promise<number>;
   /** Built-in themes by name. `theme: ./x.css` paths work without any table. */
   themes?: Record<string, Theme>;
   /** A theme to use instead of the one `setcast.yaml` names, such as the CLI's `--theme`. */
@@ -31,22 +34,27 @@ export interface LoadOptions {
 
 export async function loadProject(
   dir: string,
-  { themes = {}, theme: themeOverride }: LoadOptions = {},
+  { themes = {}, theme: themeOverride, probeDuration }: LoadOptions = {},
 ): Promise<LoadedProject> {
   const root = resolve(dir);
   const { config, input } = await readProjectConfig(root);
   const theme = await resolveTheme(themeOverride ?? config.theme, root, themes);
-  const events = mergeEvents(config);
   const modulation = [...themeRoutes(theme), ...config.modulation];
 
-  await requireAssets(root, config, events);
+  await requireAssets(root, config);
+  if (!probeDuration)
+    throw new Error(
+      'loadProject requires options.probeDuration(audio, root) to finalize finite mix intervals.',
+    );
+  const mix = compileMix(config, await probeDuration(config.audio, root));
+  let presentation = config.presentation.mode;
+  if (presentation === 'auto') presentation = new Timeline(mix).overlaps ? 'dj' : 'playlist';
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
 
   const project: ResolvedProject = {
     title: config.title,
     clockOffset: config.clockOffset,
     clockTotal: config.clockTotal ?? null,
-    trackNumberOffset: config.trackNumberOffset,
     audio: config.audio,
     background: config.background ?? null,
     theme: theme.name,
@@ -54,7 +62,8 @@ export async function loadProject(
     width: config.output.width,
     height: config.output.height,
     fps: config.output.fps,
-    events,
+    mix,
+    presentation,
     modulation,
     visualizers: resolveVisualizers(config.visualizer, theme),
     envelope: null,
@@ -66,32 +75,28 @@ export async function loadProject(
     dir: root,
     config,
     project,
-    warnings: projectWarnings(config, events, modulation, input),
+    warnings: [...projectWarnings(config, modulation, input), ...mixWarnings(mix)],
   };
 }
 
 function projectWarnings(
   config: ProjectConfig,
-  events: readonly SetEvent[],
   routes: readonly ModRoute[],
   input: ProjectConfigInput,
 ): string[] {
   return [
-    ...modulationWarnings(config, events, routes),
-    ...trackWarnings(config, events),
+    ...modulationWarnings(config, routes),
     ...(config.panel.dwell === 0 && config.panel.fade > 0 && input.panel?.fade !== undefined
       ? ['panel.fade has no effect when panel.dwell is 0.']
       : []),
   ];
 }
 
-function modulationWarnings(
-  config: ProjectConfig,
-  events: readonly SetEvent[],
-  routes: readonly ModRoute[],
-): string[] {
-  const effectiveRoutes = [...new Map(routes.map((route) => [route.target, route])).values()];
-  const hasDrop = events.some((event) => event.type === 'drop' || event.type === 'double_drop');
+function modulationWarnings(config: ProjectConfig, routes: readonly ModRoute[]): string[] {
+  const effectiveRoutes = [
+    ...new Map(routes.map((route) => [`${route.scope}:${route.target}`, route])).values(),
+  ];
+  const hasDrop = config.annotations.some((annotation) => annotation.kind === 'drop');
   return effectiveRoutes.flatMap((route) => {
     const warnings: string[] = [];
     if ((route.source === 'beat' || route.source === 'bar') && !config.bpm) {
@@ -111,50 +116,19 @@ function modulationWarnings(
     }
     if (route.when === 'drop' && !hasDrop) {
       warnings.push(
-        `modulation route "${route.target}" uses when: drop, but the set has no drop events; the route never fires.`,
+        `modulation route "${route.target}" uses when: drop, but the set has no drop annotations; the route never fires.`,
       );
     }
     return warnings;
   });
 }
 
-function trackWarnings(config: ProjectConfig, events: readonly SetEvent[]): string[] {
-  const warnings: string[] = [];
-  for (let index = 1; index < config.tracks.length; index++) {
-    const track = config.tracks[index]!;
-    const previous = config.tracks[index - 1]!;
-    if (track.time < previous.time) {
-      warnings.push(
-        `track "${track.title}" at ${track.time} s appears after a later track in tracks:; Setcast sorts tracks by time.`,
-      );
-    }
-  }
-
-  const tracks = events.filter((event) => event.type === 'track_start');
-  for (let index = 1; index < tracks.length; index++) {
-    const track = tracks[index]!;
-    const previous = tracks[index - 1]!;
-    if (track.time === previous.time) {
-      warnings.push(
-        `tracks "${previous.title}" and "${track.title}" both start at ${track.time} s.`,
-      );
-    }
-  }
-  return warnings;
-}
-
 /** Every media path a project names has to exist and stay inside the project directory. */
-async function requireAssets(
-  root: string,
-  config: ProjectConfig,
-  events: readonly SetEvent[],
-): Promise<void> {
+async function requireAssets(root: string, config: ProjectConfig): Promise<void> {
   await requireFile(root, config.audio, 'audio');
   if (config.background) await requireFile(root, config.background, 'background');
-  for (const event of events) {
-    if (event.type === 'track_start' && event.background) {
-      await requireFile(root, event.background, `track "${event.title}" background`);
-    }
+  for (const [index, play] of config.plays.entries()) {
+    if (play.background) await requireFile(root, play.background, `plays[${index}].background`);
   }
 }
 
@@ -195,7 +169,7 @@ async function readConfigFile(file: string, root: string): Promise<string> {
 
 function parseConfigYaml(text: string): unknown {
   try {
-    return parseYaml(text);
+    return parseYaml(text, { version: '1.2' });
   } catch (error) {
     throw new SetcastError(
       `${CONFIG_FILE} is not valid YAML${yamlLine(error)}: ${firstLine(error)}`,
@@ -287,17 +261,3 @@ function escapesRoot(root: string, absolute: string): boolean {
 
 const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
   error instanceof Error && 'code' in error && error.code === 'ENOENT';
-
-/** Decks alternate in play order, and an explicit deck moves the rotation on from there. */
-function mergeEvents(config: ProjectConfig): SetEvent[] {
-  const decks = config.deckOrder;
-  let nextDeck = 0;
-  const trackEvents = config.tracks.map((track): SetEvent => ({ type: 'track_start', ...track }));
-
-  return sortEvents([...trackEvents, ...config.events]).map((event) => {
-    if (event.type !== 'track_start') return event;
-    const deck = event.deck ?? decks[nextDeck % decks.length]!;
-    nextDeck = decks.indexOf(deck) + 1;
-    return { ...event, deck };
-  });
-}

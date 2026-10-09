@@ -1,8 +1,8 @@
 # Evidence and decisions behind the DJ mix model
 
-Status: research and decision record, 9 October 2026. The normative proposal is
-[DJ mix model and authoring format](dj-mix-model.md). Neither document describes implemented
-multi-play behavior. This record explains what supports the design, what remains uncertain,
+Status: research and decision record, 9 October 2026. The implemented offline contract is
+[DJ mix model and authoring format](dj-mix-model.md). The implementation follows that contract;
+deferred capture capabilities remain outside scope. This record explains what supports the design, what remains uncertain,
 and which recommendations were deliberately rejected.
 
 ## Inputs and their authority

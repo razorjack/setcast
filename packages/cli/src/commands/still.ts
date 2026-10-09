@@ -1,10 +1,10 @@
 import { mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { formatTime, type SetEvent } from '@setcast/core';
-import { probeAudio, still, type StillOptions } from '@setcast/renderer-remotion';
+import { formatTime, type Annotation } from '@setcast/core';
+import { still, type StillOptions } from '@setcast/renderer-remotion';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
+import { load, withSetEnvelope } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme name]
@@ -27,10 +27,9 @@ export async function run(argv: string[]): Promise<void> {
   intro('still');
   const loaded = await load(options.dir, options.theme);
   const { dir, config } = loaded;
-  const duration = await probeAudio(loaded.project, dir);
-  warnEventsAfterAudio(loaded.project.events, duration);
+  const duration = loaded.project.mix.duration / 1_000_000;
   const at = timeWithinAudio(
-    options.at ?? firstDrop(loaded.project.events) ?? duration / 4,
+    options.at ?? firstDrop(loaded.project.mix.annotations) ?? duration / 4,
     duration,
     '--at',
   );
@@ -72,5 +71,9 @@ function parseOptions(argv: string[]): StillCommandOptions {
 const defaultOut = (dir: string, videoFile: string) => resolve(dir, `${stem(videoFile)}.jpg`);
 
 /** The drop a set is best known by. Undefined lets the renderer pick a quarter of the way in. */
-export const firstDrop = (events: readonly SetEvent[]): number | undefined =>
-  events.find((event) => event.type === 'drop' || event.type === 'double_drop')?.time;
+export function firstDrop(annotations: readonly Annotation[]): number | undefined {
+  const drop = annotations.find(
+    (annotation) => annotation.kind === 'drop' && annotation.scope === 'mix',
+  );
+  return drop ? drop.at / 1_000_000 : undefined;
+}

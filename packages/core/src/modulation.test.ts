@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vite-plus/test';
 import { SILENCE, type AudioAnalyzer } from './audio.ts';
-import type { SetEvent } from './events.ts';
+import { normalizeMix } from './mix.ts';
 import { evaluateModulation, ModRouteSchema, modulationVars } from './modulation.ts';
 import { Timeline } from './timeline.ts';
 
@@ -8,16 +8,23 @@ const constant = (bass: number): AudioAnalyzer => ({ featuresAt: () => ({ ...SIL
 const route = (over: object) =>
   ModRouteSchema.parse({ source: 'bass', target: 'bg-zoom', ...over });
 
-const timeline = new Timeline([
-  { type: 'drop', time: 10, intensity: 1 },
-  { type: 'drop', time: 20, intensity: 1 },
-  { type: 'double_drop', time: 50, intensity: 1 },
-] satisfies SetEvent[]);
+const timeline = new Timeline(
+  normalizeMix(
+    {
+      annotations: [
+        { kind: 'drop', at: 10, intensity: 1 },
+        { kind: 'drop', at: 20, intensity: 1 },
+        { kind: 'drop', at: 50, intensity: 1 },
+      ],
+    },
+    300,
+  ),
+);
 /** A `ModContext` at `time`, with no tempo unless the test overrides one. */
 const at = (time: number, analyzer: AudioAnalyzer = constant(0)) => ({
   time,
   fps: 30,
-  events: timeline.at(time),
+  mix: timeline.at(time),
   analyzer,
   bpm: null,
   beatOffset: 0,
@@ -119,4 +126,51 @@ describe('timeline sources', () => {
 
 test('modulationVars prefixes and rounds', () => {
   expect(modulationVars({ 'bg-zoom': 1.23456789 })).toEqual({ '--mod-bg-zoom': '1.2346' });
+});
+
+test('play routes use local sections and run history while mix routes stay on the stage', () => {
+  const mix = new Timeline(
+    normalizeMix(
+      {
+        plays: [
+          {
+            id: 'a',
+            title: 'A',
+            contributions: [
+              { from: 0, until: 20 },
+              { from: 21, until: 100 },
+            ],
+          },
+          { id: 'b', title: 'B', at: 0 },
+        ],
+        annotations: [
+          { at: 10, kind: 'drop', participants: ['a'] },
+          { at: 10, kind: 'breakdown', scope: { plays: ['b'] } },
+        ],
+      },
+      100,
+    ),
+  );
+  const routes = [
+    route({ source: 'since:drop', window: 60 }),
+    route({ source: 'since:drop', scope: 'play', window: 60 }),
+  ];
+  const state = mix.at(11);
+  const context = { ...at(11), mix: state };
+  expect(evaluateModulation(routes, context)['bg-zoom']).toBeCloseTo(59 / 60);
+  expect(
+    evaluateModulation(routes, { ...context, play: state.currentPlays[0] })['bg-zoom'],
+  ).toBeCloseTo(59 / 60);
+  expect(evaluateModulation(routes, { ...context, play: state.currentPlays[1] })['bg-zoom']).toBe(
+    0,
+  );
+  const returned = mix.at(21);
+  expect(
+    evaluateModulation(routes, {
+      ...context,
+      time: 21,
+      mix: returned,
+      play: returned.currentPlays[0],
+    })['bg-zoom'],
+  ).toBe(0);
 });

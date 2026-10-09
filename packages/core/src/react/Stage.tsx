@@ -11,7 +11,7 @@ import { resolveVisualizer } from './visualizers.ts';
 
 /** The whole scene: theme CSS, background, visualizers, header, now-playing panel, up next. */
 export function Stage() {
-  const { composition, events, modulation, timeSeconds } = useFrame();
+  const { composition, mix, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
   useFontsReady();
   const visualizers = useMemo(
@@ -22,13 +22,18 @@ export function Stage() {
   const style: CSSProperties = {
     width,
     height,
-    ...stageVars(events, timeSeconds, composition.durationSeconds),
+    ...stageVars(mix, timeSeconds, composition.durationSeconds),
     ...beatVars(timeSeconds, project.bpm, project.beatOffset),
     ...modulationVars(modulation),
   };
 
   return (
-    <div className={`setcast sc-stage theme-${project.theme}`} {...stageData(events)} style={style}>
+    <div
+      className={`setcast sc-stage theme-${project.theme}`}
+      {...stageData(mix)}
+      data-presentation={project.presentation}
+      style={style}
+    >
       <style>{project.css}</style>
       <Background />
       {visualizers.map(({ Component, config }, index) => (

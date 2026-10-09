@@ -1,3 +1,4 @@
+import { normalizeMix } from '@setcast/core';
 import { beforeEach, describe, expect, test, vi } from 'vite-plus/test';
 import type { ResolvedProject } from '@setcast/core';
 
@@ -31,7 +32,8 @@ const project: ResolvedProject = {
   width: 1920,
   height: 1080,
   fps: 30,
-  events: [],
+  mix: normalizeMix({}, 10),
+  presentation: 'playlist',
   modulation: [],
   visualizers: [{ name: 'spectrum' }],
   envelope: null,
@@ -40,7 +42,6 @@ const project: ResolvedProject = {
   beatOffset: 0,
   clockOffset: 0,
   clockTotal: null,
-  trackNumberOffset: 0,
 };
 
 const run = () => render(project, { projectDir: '.', out: 'out.mp4' });

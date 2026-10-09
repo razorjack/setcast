@@ -24,8 +24,8 @@ test('cue sheets: INDEX 01 is the start, frames are 1/75 s, set-level fields are
   expect(cueImporter.test(sheet)).toBe(true);
   expect(plainImporter.test(sheet)).toBe(false);
   expect(cueImporter.parse(sheet)).toEqual([
-    { time: 0, artist: 'Noisia', title: 'Stigma' },
-    { time: 225.4, artist: 'ID', title: 'ID' },
-    { time: 4030, artist: 'Phace', title: 'Thick Lips' },
+    { at: 0, artist: 'Noisia', title: 'Stigma' },
+    { at: 225.4, artist: undefined, title: 'ID' },
+    { at: 4030, artist: 'Phace', title: 'Thick Lips' },
   ]);
 });

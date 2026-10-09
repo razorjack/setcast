@@ -173,7 +173,7 @@
 .theme-afterhours .sc-overview-played .sc-overview-high {
   fill: var(--amber);
 }
-.theme-afterhours .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-afterhours .sc-overview-mark[data-type='drop'] {
   stroke: var(--rose);
   stroke-width: 0.12cqw;
 }
@@ -220,8 +220,8 @@
   box-shadow:
     0 1.4cqw 3.4cqw rgb(0 0 0 / 0.4),
     0 0 calc(var(--mod-warmth, 0.5) * 3cqw) color-mix(in srgb, var(--amber) 16%, transparent);
-  opacity: clamp(0, var(--show, 1) * 1.2, 1);
-  translate: 0 calc((1 - var(--show, 1)) * 2.5cqh);
+  opacity: clamp(0, var(--presence, 1) * 1.2, 1);
+  translate: 0 calc((1 - var(--presence, 1)) * 2.5cqh);
 }
 .theme-afterhours .sc-panel-head {
   gap: 0.9cqw;
@@ -284,7 +284,7 @@
 /* up next */
 .theme-afterhours .sc-next {
   gap: 0.2cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-afterhours .sc-next-label {
   font-family: var(--font-sans);

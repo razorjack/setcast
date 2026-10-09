@@ -4,7 +4,7 @@ Setcast is an event-driven visual engine for DJ sets. It turns a recorded set (a
 tracklist + background art) into a broadcast-quality MP4 for YouTube: a themeable, CSS-styled UI
 with a frosted-glass "now playing" panel, deck indicators, and audio-reactive spectral
 visualization. Default aesthetic: dark, sterile sci-fi / rusty tech (neurofunk, techstep, jungle).
-Everything is a timestamped event on a single timeline, which later enables live mode: the same
+Credited intervals and musical annotations share a finite mix timeline. A future live mode can use the same
 components rendering as an OBS browser-source overlay during Twitch streams, driven by real-time
 events from DJ hardware, recording an event log that regenerates the polished VOD afterward
 ("stream once, publish twice"). Live mode is not built yet; the architecture anticipates it.
@@ -27,7 +27,7 @@ scripts/                    repo tasks: smoke render, Remotion-ban check, demo a
 
 Entry points of `@setcast/core`:
 
-- `@setcast/core` – isomorphic, pure: events, timeline, motion, modulation, audio types,
+- `@setcast/core` – isomorphic, pure: mix schemas, timeline, motion, modulation, audio types,
   config schema, importers, registry. No `node:*` imports, no React.
 - `@setcast/core/react` – React: `RenderFrame` context + hooks, `Img`/`Video`/`useAsset`,
   built-in components (`Stage`, `Background`, `NowPlaying`, `Spectrum`), visualizer registry.
@@ -121,9 +121,9 @@ exists from day one because it cannot be retrofitted after community plugins exi
    `@setcast/core` and `@setcast/themes` and fails if any Remotion package appears. A seam
    maintained by discipline decays; a seam maintained by the linter doesn't.
 2. **Setcast owns time.** The public contract is the Setcast-owned `RenderFrame`:
-   `{ frame, fps, timeSeconds, audio: AudioFeatures, events: EventState, composition:
+   `{ frame, fps, timeSeconds, audio: AudioFeatures, mix: MixState, composition:
 CompositionState, modulation }`. Components consume it via Setcast hooks: `useFrame`, `useTime`,
-   `useAudioFeatures`, `useEventState`, `useModulation`, plus Setcast-owned `interpolate`, `spring`,
+   `useAudioFeatures`, `useMixState`, `useModulation`, plus Setcast-owned `interpolate`, `spring`,
    `ease`, `impulse`, `rampUp` (thin math in `packages/core/src/motion.ts`; never re-export
    Remotion's). The Remotion adapter translates `useCurrentFrame()` into a `RenderFrame` at the
    composition root; a future renderer feeds the identical `RenderFrame` from its own loop.
@@ -144,35 +144,43 @@ CompositionState, modulation }`. Components consume it via Setcast hooks: `useFr
 
 ## Architecture
 
-### Event timeline (the core abstraction)
+### Finite mix timeline
 
-A set is a sorted list of typed, timestamped events (`packages/core/src/events.ts`). Types:
-`track_start` (title, artist, label?, deck?), `drop` (intensity), `double_drop`, `breakdown`,
-`buildup`, `rewind`, `switch` (deck), `chapter` (title). `time` is seconds; YAML accepts `1:23`,
-`1:23.5`, `1:02:03`, or plain seconds (`TimeSchema`). Every event may carry an optional `id`;
-nothing reads it today, it is reserved for live mode, where the event log needs to correct or
-delete an event it already emitted. The schema is the most stable public contract: add types,
-never rename or remove.
+`mix-schema.ts` defines strict authoring and normalized schemas; `mix.ts` normalizes authoring
+against the probed duration and `mix-validation.ts` validates references and temporal rules.
+`timeline.ts` indexes a document revision for deterministic queries. The normative contract is
+`docs/dj-mix-model.md`; `docs/theme-plugin-contract.md` documents the concrete APIs and CSS.
 
-`Timeline.at(time)` returns `EventState`: `all`, `track`, `trackIndex`, `trackCount`, `last[type]`,
-`next[type]`, `section` (latest of drop/double_drop/breakdown/buildup), `sectionStart` and `deck`
-(the deck named by the most recent event that names one, so `switch` moves it mid-track). Helpers
-`since()`, `until()`, `lastEvent()`, `nextEvent()`; for all of them `drop` also means
-`double_drop`. Every visual behavior derives from this (trigger: `since(state,'drop',t)`
-small; sustain: `section === 'drop'`; ramp: `until(state,'drop',t)`).
+`plays:` rows describe independently identifiable uses of recordings. Inline metadata creates a
+recording per play, or `recording:` references `recordings:`. `at` is an editorial listing and
+supplies fallback participation until the next strictly later listing or mix end. `until`
+refines that fallback; explicit `contributions: [{from, until}]` replaces it without moving the
+listing. Unlisted overlays never truncate fallback credits. Tied listings create concurrent
+credits. Decks, parts, tags and positive `tail: true` are optional interval metadata.
 
-`packages/core/src/stage.ts` turns that state into the stage root's `data-*` attributes and
-`--since-*` custom properties (see CSS contract). It is isomorphic and pure, so a non-React
-renderer sets the same attributes.
+Times normalize once to safe integer microseconds. Intervals are finite and half open. Adjacent
+intervals within a play form one uninterrupted run; only a positive gap resets entrance dwell,
+local sections and focus pins. `Timeline.at(seconds)` rejects queries outside `[0, duration)`.
+It exposes all current plays, ordered focus, separate counts, local and mix sections, active
+annotation spans, next run entrances (including returns) and next editorial listings.
 
-In `setcast.yaml`, `tracks:` is sugar: each entry becomes a `track_start` event; `events:` holds
-everything else. Both land on one timeline. Tracks without `deck` alternate A/B.
+`annotations:` use `at`, `kind`, optional `scope: {plays: [...]}` (otherwise mix) and mix-only
+`participants`. Section kinds are drop, breakdown and buildup; section_end clears a section.
+Only a mix drop with participants also establishes local drops. Rewinds do not change membership.
+Same-time writes to a section conflict. Scoped last/next helpers return timestamp groups, never
+hide tied moments. `lastAnnotations(state, kind, {play: id})` queries a play; omitted scope is mix.
+
+`focus:` pins current runs; pins expire independently and do not resurrect on return. Automatic
+focus selects the latest non-tail run, with input order breaking ties. Tags are descriptive.
+`presentation.mode: auto` selects DJ layout project-wide if any credits overlap. Explicit
+playlist/dj mode never changes normalization. Chapters follow grouped listings, unless an explicit
+`chapters:` list replaces them; an empty list disables output.
 
 ### Modulation matrix
 
-`packages/core/src/modulation.ts`. Routes: `{ source, target, range, curve, smooth, window, when }`.
+`packages/core/src/modulation.ts`. Routes: `{ source, target, scope, range, curve, smooth, window, when }`.
 Sources are all 0..1 and come in three kinds: audio (`bass | mids | highs | rms | onset`),
-timeline (`since:<event>` / `until:<event>` for every event type) and tempo (`beat | bar`: 1 on
+timeline (`since:<event>` / `until:<event>` for every built-in annotation kind) and tempo (`beat | bar`: 1 on
 the beat or the bar's downbeat, falling to 0 before the next; 0 when the project has no `bpm:`). Target names are kebab-case and
 become CSS custom properties `--mod-<target>` on the stage root, so themes consume any modulation
 without JS. `range: [a, b]` maps source 0..1 to a..b; `curve`: `linear | sqrt | pow2 | pow3 |
@@ -180,19 +188,20 @@ smooth`; `smooth` seconds of trailing recency-weighted average, audio sources on
 (frame-independent: it re-samples the audio analyzer at earlier times, no state across frames);
 `window` seconds over which a timeline source ramps, so `since:drop` with `window: 4` is 1 at the
 drop and 0 four seconds later, and `until:drop` climbs to 1 as the drop approaches and releases
-when it lands; `when: drop` gates a route to a section (rests at `range[0]` otherwise; `drop`
-covers `double_drop`). Later
-routes override earlier ones with the same target; a theme ships a default patch (`ModRouteInput`,
+when it lands; `when: drop` applies a route during that section (rests at `range[0]` otherwise).
+`scope: mix` routes write stage variables; `scope: play` routes evaluate local cues and sections
+for each current panel. Audio still comes from the master. Later routes override earlier routes
+with the same scope and target; a theme ships a default patch (`ModRouteInput`,
 so defaults may be omitted; `loadProject` runs it through `ModPatchSchema`), the project's
 `modulation:` list is appended after it.
 
 ### RenderFrame and hooks
 
 `packages/core/src/react/frame.tsx`. `RenderFrame = { frame, fps, timeSeconds, audio, analyzer,
-events, composition, modulation }`. `CompositionState = { width, height, durationSeconds, project }`
-where `project` is the `ResolvedProject` (everything the CLI resolved: title, tracks/events, theme
+mix, composition, modulation }`. `CompositionState = { width, height, durationSeconds, project }`
+where `project` is the `ResolvedProject` (everything the CLI resolved: title, mix document, theme
 CSS, visualizer config, asset paths). Hooks: `useFrame`, `useTime`, `useAudioFeatures`,
-`useAudioHistory`, `useEventState`, `useModulation`, `useComposition`. The adapter wraps the scene
+`useAudioHistory`, `useMixState`, `useModulation`, `useComposition`. The adapter wraps the scene
 in `<FrameProvider frame={...}>`.
 
 `useAudioHistory(seconds, count)` returns `{ time, audio }` at `count` moments over the last
@@ -229,9 +238,8 @@ a `drop` where the bass comes in and a `breakdown` where it drops out; `estimate
 autocorrelates the onset flux over several windows and takes the median, preferring the fastest
 lag that still correlates so a 174 BPM roller does not read as 87. `nearestBeat()` folds the onset
 flux around a moment by the beat period and reads the grid off where the hits pile up; it is local
-(±8 s) so a tempo a tenth of a BPM off cannot drift the grid over an hour. `snapToBeats()` moves
-drafted events onto it and `beatOffset()` places the first beat. `setcast analyze` prints those as
-a draft `events:` block plus `bpm:` and `beatOffset:`, or merges them into `setcast.yaml` with
+(±8 s) so a tempo a tenth of a BPM off cannot drift the grid over an hour. `snapToBeats()` is an explicit helper for callers that choose to move drafts onto it and `beatOffset()` places the first beat. `setcast analyze` prints detected times without snapping as
+a draft `annotations:` block plus `bpm:` and `beatOffset:`, or merges them into `setcast.yaml` with
 `--write`.
 
 `decodeMono()` in `@setcast/core/node` produces the PCM: ffmpeg subprocess when it is on PATH
@@ -260,10 +268,10 @@ list; implemented today: visualizer, theme, tracklist importer):
   (11 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
-- analysis: BPM and drop / breakdown detection → draft events, snapped to the beat grid
+- analysis: BPM and drop / breakdown detection → draft mix annotations without automatic snapping
   (`setcast analyze` ✓); downbeat detection is not built
-- background engines: static image ✓, looping video ✓, per-track backgrounds ✓
-  (`tracks[].background`, crossfaded by CSS from `--since-track`), generative
+- background engines: static image ✓, looping video ✓, per-play backgrounds ✓
+  (`plays[].background`, selected from the first focused play), generative
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical ✓ (`@container (aspect-ratio < 1)` in the
   theme; the stage root is a size container), promo clips cut around `drop` events
   (`setcast clip` ✓)
@@ -278,11 +286,11 @@ Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setc
 
 ### Project resolution and orchestration
 
-`setcast.yaml` (schema: `packages/core/src/config.ts`) → `loadProject(dir)` in
+`setcast.yaml` (schema: `packages/core/src/config.ts`) → `loadProject(dir, {themes, probeDuration})` in
 `@setcast/core/node` → `LoadedProject` with the `ResolvedProject` (plain JSON: absolute-free paths
 relative to the project dir, merged modulation, theme CSS with fonts inlined as data URIs, base CSS,
 visualizer config) and non-fatal configuration warnings. The CLI prints those warnings to stderr.
-Warnings that need the audio duration are added by each command after the Node audio probe.
+The renderer-owned audio probe runs during loading, before finite timeline normalization.
 `ResolvedProject.envelope` is null after loading. A visualizer registered with `wholeSet: true`
 draws the whole set from it, so the commands that render (`render`, `still`, `clip`, `preview`)
 call `withSetEnvelope` after validating their flags: when `drawsWholeSet(project)`,
@@ -306,34 +314,23 @@ variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-borde
 `--radius`, `--font-display`, `--font-mono`. Users can add `css: ./overrides.css` in
 `setcast.yaml`; it is appended last.
 
-base.css resolves `--deck` from the nearest `data-deck` attribute, so the stage root follows the
-deck in front and the panel its own track. A theme only sets `--deck-a` … `--deck-d`; without them
-the decks fall back to `--accent` and `--accent-2`.
+base.css resolves `--deck` on each panel's optional `data-deck`. A-D keep their theme colors;
+arbitrary deck labels are permitted and use the theme accent unless styled explicitly. The stage
+has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section` and
+`data-shared-drop`. Its section and cue variables describe the mix.
 
-The stage root also carries the event timeline, so a theme can react to the set without any JS:
+Each `.sc-panel` has `data-play`, `data-focused`, optional `data-deck`, local `data-section`,
+`data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run.
+Both stage and panels have scoped `--since-*`/`--until-*` for drop, breakdown, buildup and rewind,
+`--drop-intensity`, `--drop-participants` and `--section-time`. Seconds cap at 60. Shaped
+`--drop-flash`, `--rewind-flash`, `--tension` recompute locally, avoiding inherited mix cues.
+The stage also has `--set-progress`, `--current-plays`, and optional `--beat`/`--bar`.
 
-- `data-section` – `drop | double_drop | breakdown | buildup`, absent before the first one.
-- `data-deck` – the deck in front (`EventState.deck`).
-- `--since-<name>` and `--until-<name>` for `track`, `drop`, `breakdown`, `buildup` and `rewind`,
-  plus `--section-time` – seconds, capped at `SECONDS_CAP` (60) because CSS has no Infinity. The
-  drop variables count `double_drop` too. `--until-breakdown` is the "bass is about to leave" cue.
-- `--drop-intensity` – 0..1, the `intensity` of the drop `--since-drop` refers to.
-- `--set-progress` – 0..1, how far the set has run.
-- `--beat`, `--bar` – 0..1 phase within the beat and the four-beat bar, from `bpm:` and
-  `beatOffset:` (`beatVars` in `stage.ts`). Absent when the project states no tempo, so themes
-  write `var(--beat, 1)`.
-
-Shape them in CSS: `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is a 0.7 s flash. Never use CSS
-transitions or animations for these – the browser's wall clock is not the timeline (see
-Renderer independence 4). base.css already shapes the common ones on the stage root, each 0..1:
-`--drop-flash` (length `--drop-flash-seconds`, 0.7, scaled by `--drop-intensity`),
-`--rewind-flash` (`--rewind-flash-seconds`, 0.6), `--tension`, which climbs over the
-`--tension-seconds` (10) before a drop, and `--beat-pulse`, 1 on the beat and 0 without a tempo.
-A theme changes a length by setting the seconds variable on its root.
-
-`.sc-panel` carries `--show`, 0..1: the now-playing panel springs in on a track change, holds for
-`panel.dwell` seconds and leaves over `panel.fade` (`panel:` in `setcast.yaml`; `dwell: 0` keeps it
-up for the whole set). The theme decides what presence looks like – sterile-tech fades and slides.
+`--show` springs in at run start and follows `panel.dwell`/`panel.fade`; metadata changes do not
+reset it. Themes use `--presence`, which follows show in playlist mode and stays 1 in DJ mode.
+DJ credits remain legible after dwell. `.sc-contributors` shows up to four panels in landscape
+or three in portrait, retains focused plays first, and adds an explicit overflow count and
+accessible full list. There is no data-model concurrency limit.
 
 Visualizers are SVG under one root class each, with `data-style` set to the block's `style`:
 `.sc-spectrum` (bars are `rect`s in `.sc-spectrum-bars`, and with `peak` their markers are
@@ -357,7 +354,7 @@ modes and filters.
 `.sc-overview` is the whole set as a strip under the header (`--overview-top`, `--overview-height`):
 `.sc-overview-high` above the middle line and `.sc-overview-bass` below it, the same two again
 inside `.sc-overview-played`, clipped to the part that has played, one
-`.sc-overview-mark[data-type]` per event and the `.sc-overview-head` playhead. SVG lines have no
+`.sc-overview-mark[data-type]` per annotation or listing (`data-type="listing"`) and the `.sc-overview-head` playhead. SVG lines have no
 stroke until a theme gives them one, so a theme shows exactly the event types it styles.
 
 `.sc-meters` is HTML, not SVG: one `.sc-meter` per band (`data-band="bass"`) with its level in
@@ -367,10 +364,9 @@ when `segments` is not 0 (`data-segmented`), masks `.sc-meter-bar` into `--segme
 With `peak`, each `.sc-meter` also carries `--peak` and its bar holds a `.sc-meter-peak`, which
 base.css places as a hairline, or as the lit part of the top cell when segmented.
 
-`.sc-next` holds the track after this one (`sc-next-label`, `sc-next-artist`, `sc-next-title`) and
-stays mounted for the whole of the current track; the theme decides when it appears, from
-`--until-track`. sterile-tech fades it in over the last 8 seconds and lifts it clear of the
-spectrum with `--next-bottom`.
+`.sc-next` shows the next listing group in playlist mode and next contribution-run group in DJ
+mode, labelled "Next in tracklist", "Next entry" or "Returning". Its own `--until-next` drives
+the theme's visibility. Never infer a next deck from missing hardware information.
 
 ## Roadmap (beyond v1)
 
@@ -383,10 +379,20 @@ spectrum with `--next-bottom`.
 
 ## Decisions
 
-- The finite mix domain is implemented in `mix-schema.ts`, `mix.ts`, `mix-validation.ts`, and
-  `mix-timeline.ts`. Authoring times normalize once to integer microseconds. A timeline owns a
-  cloned document revision and indexes intervals, runs, scoped annotations, and focus directives.
-  Application integration is the next step; the old timeline remains in use until that replacement.
+- The finite mix model replaces the old tracks/events contract without compatibility aliases.
+  `ResolvedProject.mix` is finalized before rendering. The renderer supplies the audio-duration
+  probe to core/node, keeping core independent of Remotion and avoiding a second media probe stack.
+- `setcast inspect --json` materializes all IDs in a normalized document; `--at` exports a query.
+  Normalized JSON uses integer microseconds and is read with `readMixDocument`, not YAML parsing.
+- Background selection follows the first focused play and changes immediately. There is no
+  fabricated "previous track" during an overlap. DJ panels retain credits after dwell;
+  `--presence` separates this layout policy from the deterministic per-run `--show` signal.
+- Archived research under `docs/research/` is excluded from formatting. Preserve its bytes.
+- `vp run mix-stills` renders tease, shared-drop, overlap, portrait and overflow acceptance images.
+- Composition frame counts exclude any final frame whose time rounds to mix end in microseconds.
+  For example, frame 2 at 30 fps rounds to 66,667 µs and cannot query a mix of that duration.
+  `framesWithinMix` keeps renderer queries inside the half-open timeline.
+  The shipped Knowledge excerpt fixture preserves F11's inherited-annotation qualification.
 
 Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 
@@ -406,7 +412,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 'h264', audioCodec: 'aac', frameRange })`. Audio in the composition: `<Audio>` from
   `@remotion/media` (Mediabunny-backed, the recommended tag; `remotion`'s `<Audio>` is deprecated
   in favor of `Html5Audio`). Duration: `calculateMetadata` computes `durationInFrames` from the
-  audio file. Windowed audio: `useWindowedAudioData` from `@remotion/media-utils` supports all
+  normalized mix duration. Windowed audio: `useWindowedAudioData` from `@remotion/media-utils` supports all
   Mediabunny formats since 4.0.383 (WAV no longer required); MP3/M4A/WAV/FLAC all work.
 - Remotion bundles with webpack (its own esbuild loader for TS/TSX); `rspack: true` exists and is
   the announced future default. Vite+ drives everything else. They coexist because the adapter's
@@ -440,7 +446,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   (`useAudioHistory`) the way modulation's `smooth` already did. Anything that reads it stays
   deterministic because the adapter holds each frame until `HISTORY_SECONDS` of audio is loaded.
 - `RenderFrame.modulation` is a top-level field (not part of the original six) because it is
-  resolved per frame from audio + events and is the bridge to CSS.
+  resolved per frame from audio + mix state and is the bridge to CSS.
 - `bpm:` and `beatOffset:` are plain top-level keys, not a `tempo:` block, because `bpm: 174` is
   what a DJ types. `analyze --write` sets `bpm` and `beatOffset` together, only when the project
   has no `bpm`. The offset is the first beat, not the downbeat: the flux fold finds beats, not
@@ -448,7 +454,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - `setcast analyze` drafts `drop` and `breakdown` only. Both are direct readings of bass energy;
   a buildup is musical intent that the same signal cannot distinguish from the breakdown it sits
   in, so inventing one would be noise the user has to delete.
-- `analyze --write` appends the events it drafted and skips any within 2 s of one already in
+- `analyze --write` appends the annotations it drafted and skips any within 2 s of one already in
   `setcast.yaml`, so it is idempotent and never rewrites what the user wrote. Both it and
   `import --write` stringify with `flowCollectionPadding: false`, so editing one block does not
   reformat `[1, 1.06]` elsewhere in the file.
@@ -466,18 +472,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `Video`: OffthreadVideo draws the frame into an `<img>`, so `object-fit`, `filter` and `transform`
   from `.sc-bg-img` apply exactly as they do to a still. `@remotion/media`'s `Video` loops on its
   own but sets `object-fit` inline, which overrides the theme.
-- Per-track backgrounds are `tracks[].background` (also on a `track_start` event), the same
-  image-or-video rule as `background:`. `Background` mounts the previous track's art as
-  `.sc-bg-out` under the new one as `.sc-bg-in`, and base CSS fades `.sc-bg-in` up over
-  `--bg-fade` seconds (1.5) of `--since-track`, so the crossfade is CSS a theme can reshape and
-  the frame stays deterministic. The outgoing layer stays mounted for the whole track, which is
-  one extra image; a video underneath keeps decoding, which is the price of a video slideshow.
 - `render()` serializes calls and temporarily `process.chdir()`s into the adapter package so
   Remotion's browser and bundle caches are shared across projects instead of each project dir
   getting a `.remotion/`. Serialization prevents concurrent calls from restoring the process-wide
   working directory in the wrong order.
 - Audio duration comes from `mediabunny` (`Input` + `UrlSource`, `getDurationFromMetadata()` with
-  `computeDuration()` fallback) inside `calculateMetadata`; Remotion's `getAudioDurationInSeconds`
+  `computeDuration()` fallback) during project loading; Remotion's `getAudioDurationInSeconds`
   is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.
 - Renders pass `jpegQuality: 95` (Remotion defaults to 80) and `output.crf` (default 18). The
   intermediate frames the encoder reads are JPEGs, and the default look is a dark scene full of
@@ -501,13 +501,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Long-exposure's scopes use two chained drop shadows. Each shadow filters the preceding result,
   so adding a third wide blur is expensive on these large SVGs. Keep all history traces and tune
   the two radii for the light-trail halo; compare both a drop flash and sustained playback.
-- The now-playing panel leaves by default (`panel.dwell: 14`, `panel.fade: 1.2`). A panel that
-  never leaves is wrong for a two-hour VOD. When it shows and for how long is behavior, so it lives
-  in `setcast.yaml`; what leaving looks like is appearance, so the theme shapes `--show`.
-- `setcast chapters` writes the description to stdout and anything that would stop YouTube from
-  showing the chapters to stderr, so piping the description into a file stays clean. It checks the
-  two rules the tracklist alone decides (at least 3 chapters, each at least 10 s) and not the last
-  chapter's length, which only the set's duration settles.
+- Playlist panels leave after `panel.dwell: 14` and `panel.fade: 1.2` by default. DJ panels keep
+  credits visible, with focus controlling emphasis. Every entrance/dwell uses run start.
+- `setcast chapters` preserves compiled timestamps on stdout and prints platform constraints to
+  stderr, including the first timestamp, minimum chapter count and final chapter duration.
 - `setcast render --bundle` writes the thumbnail and the description next to the MP4 (same base
   name, `.jpg` and `.txt`) with the defaults of `setcast still` and `setcast chapters`. It is a
   flag, not the default, so a plain render still produces exactly one file, and it refuses
@@ -526,8 +523,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   does not change the README layout.
 - Local real-mix demos live in gitignored `/demos/`, including original downloaded audio and
   rendered videos. The Stakka & Skynet demo keeps source-clock timings in `demo.yaml` and
-  regenerates a clip-relative `setcast.yaml` with `regenerate.mjs`. Blend observations are
-  retained separately because the current now-playing panel displays one track at a time.
+  regenerates a clip-relative `setcast.yaml` with `regenerate.mjs`. Inherited blend observations define overlapping contributions; their qualification is retained
+  in evidence, and unknown deck labels are omitted.
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
 - Configuration warnings distinguish explicitly written `panel.fade` from its schema default;
@@ -540,9 +537,6 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   progress, tempo, render ranges, and YouTube chapters stay on the audio file's timeline.
 - `clockTotal:` optionally replaces the displayed clock endpoint with a positive duration in
   seconds or timecode form. It does not change the composition duration or progress.
-- `trackNumberOffset:` adds a nonnegative integer to the displayed track number (default 0).
-  A positive offset hides the total, since an excerpt does not establish the full mix's track
-  count. Timeline indices, deck assignment, and track timing remain unchanged.
 - `visualizer:` takes one block or a list of blocks drawn in order, and `[]` draws none. The key
   stays singular so existing projects keep working; `ResolvedProject.visualizers` is always a list.
   `resolveVisualizerConfigs` checks each entry against its own visualizer's schema, so an error
@@ -587,13 +581,6 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 
 ## Not yet decided
 
-- The proposed multi-play timeline and authoring format are specified in
-  `docs/dj-mix-model.md`, with sourced findings, report critiques, and decision rationale in
-  `docs/dj-mix-evidence.md`. Original inputs are archived under `docs/research/dj-mix/`.
-  This is design work, not implemented behavior. The user explicitly waived backward
-  compatibility for this redesign on 2026-10-09; do not preserve the current event schema or
-  tracklist syntax at the expense of the new design. Current architecture sections above still
-  describe the running implementation until that redesign is built.
 - Sidecar format for precomputed AudioFeatures (JSON first; binary layout later). `wave` is
   1024 floats per frame, far more than the rest; a renderer that has the PCM anyway should slice
   it at render time instead of storing it.
@@ -681,7 +668,7 @@ and report them; do not let them fall through to whatever the platform or a depe
   it does expensive work: a bad `--range`, a corrupt audio file or a missing font must fail before
   the browser downloads and the composition bundles, not after.
 - **Every user-facing error has three parts**: what is wrong, the offending value with where it is
-  (`setcast.yaml` path such as `tracks[2].time`, file, line, flag), and what to do about it. When
+  (`setcast.yaml` path such as `plays[2].at`, file, line, flag), and what to do about it. When
   the valid choices are a short list, list them (`Available importers: cue, plain`). Throw
   `SetcastError(message, hint)` for these, or `ConfigError` for a list of `setcast.yaml` issues.
   The CLI prints message and hint; nothing else needs to know about terminals.
@@ -700,7 +687,7 @@ and report them; do not let them fall through to whatever the platform or a depe
   error class, a known message), and rethrow anything else untouched. A `catch` block that discards
   the error it caught is a bug even when the replacement message reads well.
 - **Warn about predicted states that are not fatal.** A route on `beat` in a project without
-  `bpm:`, an event past the end of the audio, `--all` with a set that has no drops: when the run can
+  `bpm:`, `--all` with a set that has no drops: when the run can
   still produce something, say what will happen and why, on stderr, and continue. Silence is only
   right when the state is unremarkable.
 - **Consistent policy for out-of-range times.** A flag or value that points outside the set is an

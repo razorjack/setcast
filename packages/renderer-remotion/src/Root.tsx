@@ -1,7 +1,7 @@
-import type { ResolvedProject } from '@setcast/core';
-import { Composition, staticFile, type CalculateMetadataFunction } from 'remotion';
+import { normalizeMix, type ResolvedProject } from '@setcast/core';
+import { Composition, type CalculateMetadataFunction } from 'remotion';
 import { COMPOSITION_ID, SetcastComposition } from './composition.tsx';
-import { mediaDuration } from './media.ts';
+import { framesWithinMix } from './range.ts';
 
 /** Placeholder until the CLI passes a real project as input props. */
 const placeholder: ResolvedProject = {
@@ -13,7 +13,8 @@ const placeholder: ResolvedProject = {
   width: 1920,
   height: 1080,
   fps: 30,
-  events: [],
+  mix: normalizeMix({}, 10),
+  presentation: 'playlist',
   modulation: [],
   visualizers: [{ name: 'spectrum' }],
   envelope: null,
@@ -22,13 +23,11 @@ const placeholder: ResolvedProject = {
   beatOffset: 0,
   clockOffset: 0,
   clockTotal: null,
-  trackNumberOffset: 0,
 };
 
-const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = async ({ props }) => {
-  const durationSeconds = props.audio ? await mediaDuration(staticFile(props.audio)) : 10;
+const calculateMetadata: CalculateMetadataFunction<ResolvedProject> = ({ props }) => {
   return {
-    durationInFrames: Math.max(1, Math.ceil(durationSeconds * props.fps)),
+    durationInFrames: framesWithinMix(props.mix.duration, props.fps),
     fps: props.fps,
     width: props.width,
     height: props.height,

@@ -199,7 +199,7 @@
 .theme-pirate .sc-overview-played .sc-overview-high {
   fill: var(--fluoro);
 }
-.theme-pirate .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']),
+.theme-pirate .sc-overview-mark[data-type='drop'],
 .theme-pirate .sc-overview-head {
   stroke: var(--toner);
   stroke-width: 0.16cqw;
@@ -236,8 +236,8 @@
   background: var(--slip);
   box-shadow: 0.4cqw 0.7cqw 0 rgb(0 0 0 / 0.28);
   rotate: var(--tilt);
-  opacity: clamp(0, var(--show, 1) * 1.5, 1);
-  translate: 0 calc((1 - var(--show, 1)) * 6cqh);
+  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
+  translate: 0 calc((1 - var(--presence, 1)) * 6cqh);
 }
 .theme-pirate .sc-panel::before,
 .theme-pirate .sc-panel::after {
@@ -327,7 +327,7 @@
   background: var(--slip);
   box-shadow: 0.3cqw 0.5cqw 0 rgb(0 0 0 / 0.25);
   rotate: 1.4deg;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-pirate .sc-next-label {
   font-family: var(--font-type);

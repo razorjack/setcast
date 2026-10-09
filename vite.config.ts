@@ -4,7 +4,7 @@ export default defineConfig({
   fmt: {
     singleQuote: true,
     printWidth: 100,
-    ignorePatterns: ['**/*.md'],
+    ignorePatterns: ['**/*.md', 'docs/research/**'],
   },
   lint: {
     ignorePatterns: ['dist/**', 'examples/*/out/**'],
@@ -70,6 +70,7 @@ export default defineConfig({
         command: 'node scripts/make-demo-assets.ts',
         cache: false,
       },
+      'mix-stills': { command: 'node scripts/mix-stills.ts', cache: false },
       'theme-stills': {
         command: 'node scripts/theme-stills.ts',
         cache: false,

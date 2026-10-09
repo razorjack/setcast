@@ -3,9 +3,15 @@ import { SetcastError, type ResolvedProject } from '@setcast/core';
 import { audioDuration } from './media.ts';
 
 /** Validates the project audio in Node before browser preparation and returns its duration. */
-export async function probeAudio(project: ResolvedProject, projectDir: string): Promise<number> {
+export async function probeAudio(
+  project: Pick<ResolvedProject, 'audio'>,
+  projectDir: string,
+): Promise<number> {
   try {
-    return await audioDuration(resolve(projectDir, project.audio));
+    const duration = await audioDuration(resolve(projectDir, project.audio));
+    if (!Number.isFinite(duration) || duration <= 0)
+      throw new Error(`Audio duration ${duration} must be finite and positive.`);
+    return duration;
   } catch (cause) {
     throw new SetcastError(
       `Cannot read ${project.audio} as audio`,

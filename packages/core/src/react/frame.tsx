@@ -1,7 +1,7 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { historyTimes, SILENCE, type AudioAnalyzer, type AudioFeatures } from '../audio.ts';
 import type { ResolvedProject } from '../project.ts';
-import type { EventState } from '../timeline.ts';
+import type { MixState } from '../timeline.ts';
 
 export interface CompositionState {
   width: number;
@@ -18,7 +18,7 @@ export interface RenderFrame {
   audio: AudioFeatures;
   /** Features at other moments, for components that look back; see `useAudioHistory`. */
   analyzer: AudioAnalyzer;
-  events: EventState;
+  mix: MixState;
   composition: CompositionState;
   /** Resolved modulation targets, e.g. `{ 'bg-zoom': 1.04 }`. Exposed to CSS as `--mod-*`. */
   modulation: Record<string, number>;
@@ -42,7 +42,7 @@ export function useFrame(): RenderFrame {
 
 export const useTime = (): number => useFrame().timeSeconds;
 export const useAudioFeatures = (): AudioFeatures => useFrame().audio;
-export const useEventState = (): EventState => useFrame().events;
+export const useMixState = (): MixState => useFrame().mix;
 export const useComposition = (): CompositionState => useFrame().composition;
 export const useModulation = (): Record<string, number> => useFrame().modulation;
 

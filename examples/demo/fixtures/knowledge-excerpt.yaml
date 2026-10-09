@@ -1,0 +1,43 @@
+# Attribution fixture only. Supply your own audio for rendering.
+# Original mix 14:03–19:34; fixture zero equals original 14:03.
+sources:
+  inherited:
+    title: Existing Stakka & Skynet Knowledge Magazine excerpt annotations, April 2001
+    url: https://www.youtube.com/watch?v=Nk_g9sGIBUY
+    note: Inherited local annotations, not newly verified measurements. Decks are unknown. See docs/dj-mix-evidence.md F11. Duration is 331 seconds.
+plays:
+  - id: star-trails
+    at: 0
+    artist: Kemal & Rob Data
+    title: Star Trails
+    contributions: [{ from: 0, until: 91, evidence: [inherited] }]
+  - id: pathogen
+    at: 14
+    artist: Stakka & Skynet
+    title: Pathogen
+    contributions: [{ from: 14, until: 244, evidence: [inherited] }]
+  - id: clockwork
+    at: 200
+    artist: Stakka & Skynet
+    title: Clockwork
+    contributions: [{ from: 200, until: 331, evidence: [inherited] }]
+annotations:
+  - {
+      at: 14,
+      until: 91,
+      kind: technique,
+      participants: [star-trails, pathogen],
+      tags: [blend],
+      evidence: [inherited],
+    }
+  - { at: 25, kind: note, text: Both described as fully blended, evidence: [inherited] }
+  - { at: 72, kind: note, text: Star Trails described as beginning to fade, evidence: [inherited] }
+  - {
+      at: 200,
+      until: 244,
+      kind: technique,
+      participants: [pathogen, clockwork],
+      tags: [blend],
+      evidence: [inherited],
+    }
+  - { at: 211, kind: note, text: Both described as fully blended, evidence: [inherited] }

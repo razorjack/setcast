@@ -1,17 +1,22 @@
 import { describe, expect, test } from 'vite-plus/test';
-import type { SetEvent } from './events.ts';
+import { normalizeMix } from './mix.ts';
 import { beatVars, stageData, stageVars } from './stage.ts';
 import { Timeline } from './timeline.ts';
 
-const events: SetEvent[] = [
-  { type: 'track_start', time: 0, title: 'Alpha', artist: 'A', deck: 'A' },
-  { type: 'buildup', time: 20 },
-  { type: 'drop', time: 30, intensity: 0.8 },
-  { type: 'switch', time: 40, deck: 'B' },
-  { type: 'rewind', time: 50 },
-  { type: 'double_drop', time: 60, intensity: 1 },
-];
-const timeline = new Timeline(events);
+const timeline = new Timeline(
+  normalizeMix(
+    {
+      plays: [{ id: 'a', at: 0, title: 'Alpha' }],
+      annotations: [
+        { kind: 'buildup', at: 20 },
+        { kind: 'drop', at: 30, intensity: 0.8 },
+        { kind: 'rewind', at: 50 },
+        { kind: 'drop', at: 60 },
+      ],
+    },
+    300,
+  ),
+);
 const vars = (time: number, duration = 120) => stageVars(timeline.at(time), time, duration);
 
 describe('stageVars', () => {
@@ -33,7 +38,7 @@ describe('stageVars', () => {
     });
   });
 
-  test('a double drop is a drop', () => {
+  test('a later drop replaces intensity', () => {
     expect(vars(61)).toMatchObject({
       '--since-drop': '1',
       '--drop-intensity': '1',
@@ -68,13 +73,10 @@ describe('beatVars', () => {
   });
 });
 
-describe('stageData', () => {
-  test('carries the section and the deck in front', () => {
-    expect(stageData(timeline.at(35))).toEqual({ 'data-section': 'drop', 'data-deck': 'A' });
-    expect(stageData(timeline.at(45))).toEqual({ 'data-section': 'drop', 'data-deck': 'B' });
-    expect(stageData(timeline.at(-1))).toEqual({
-      'data-section': undefined,
-      'data-deck': undefined,
-    });
+test('the stage carries mix section and explicit count, never a global deck', () => {
+  expect(stageData(timeline.at(35))).toEqual({
+    'data-section': 'drop',
+    'data-current-plays': 1,
+    'data-shared-drop': false,
   });
 });

@@ -27,9 +27,8 @@ export function compileMix(input: MixInput, durationSeconds: number): MixDocumen
     plays: [],
     contributions: [],
     listings: [],
-    annotations: input.annotations.map(
-      (annotation, order) =>
-        ({ ...annotation, id: annotation.id ?? `$annotation:${order}`, order }) as Annotation,
+    annotations: input.annotations.map((annotation, order) =>
+      normalizeAnnotation(annotation, order, duration),
     ),
     focus: input.focus.map((focus, order) => ({ ...focus, id: focus.id ?? `$focus:${order}` })),
     chapters: input.chapters ?? [],
@@ -37,13 +36,39 @@ export function compileMix(input: MixInput, durationSeconds: number): MixDocumen
     extensions: input.extensions,
   };
   input.plays.forEach((row, order) => appendPlay(document, input, row, order));
+  if (input.chapters === undefined) document.chapters = generatedChapters(document);
+  try {
+    validateMix(document);
+  } catch (error) {
+    if (!(error instanceof ConfigError)) throw error;
+    throw new ConfigError(
+      'setcast.yaml',
+      error.issues.map((issue) => ({ ...issue, path: authoringPath(document, issue.path) })),
+    );
+  }
   document.listings.sort((left, right) => left.at - right.at || left.order - right.order);
   document.annotations.sort((left, right) => left.at - right.at || left.order - right.order);
   document.focus.sort((left, right) => left.at - right.at);
-  if (input.chapters === undefined) document.chapters = generatedChapters(document);
   document.chapters.sort((left, right) => left.at - right.at);
-  validateMix(document);
   return document;
+}
+
+function authoringPath(document: MixDocument, path: string): string {
+  const match = /^(recordings|contributions|listings)\[(\d+)\](.*)$/.exec(path);
+  if (!match) return path;
+  const [, kind, index, field] = match;
+  const position = Number(index);
+  if (kind === 'listings') return `plays[${document.listings[position]!.order}].at`;
+  if (kind === 'contributions') {
+    const interval = document.contributions[position]!;
+    const base = interval.origins.from.path.replace(/\.(from|at)$/, '');
+    return `${base}${field}`;
+  }
+  const recording = document.recordings[position]!;
+  const inline = document.plays.find((play) => play.recording === recording.id);
+  return recording.id.startsWith('$')
+    ? `plays[${inline!.order}]${field}`
+    : `recordings.${recording.id}${field}`;
 }
 
 function appendPlay(
@@ -163,3 +188,14 @@ export function mixWarnings(document: MixDocument): string[] {
 
 export const contains = (interval: Pick<Contribution, 'from' | 'until'>, time: number): boolean =>
   interval.from <= time && time < interval.until;
+
+function normalizeAnnotation(
+  annotation: MixInput['annotations'][number],
+  order: number,
+  duration: number,
+): Annotation {
+  const normalized = { ...annotation, id: annotation.id ?? `$annotation:${order}`, order };
+  if ('until' in normalized && normalized.until === 'end')
+    return { ...normalized, until: duration };
+  return normalized as Annotation;
+}

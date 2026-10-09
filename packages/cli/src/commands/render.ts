@@ -10,16 +10,10 @@ import {
   type ProjectConfig,
   type ResolvedProject,
 } from '@setcast/core';
-import {
-  probeAudio,
-  render,
-  still,
-  type RenderOptions,
-  type StillOptions,
-} from '@setcast/renderer-remotion';
+import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
+import { load, withSetEnvelope } from '../project.ts';
 import {
   bold,
   dim,
@@ -59,8 +53,7 @@ export async function run(argv: string[]): Promise<void> {
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
   const { dir, config } = loaded;
-  const duration = await probeAudio(loaded.project, dir);
-  warnEventsAfterAudio(loaded.project.events, duration);
+  const duration = loaded.project.mix.duration / 1_000_000;
   if (options.range) {
     options = { ...options, range: rangeWithinAudio(options.range, duration, 'Render range') };
   }
@@ -143,10 +136,9 @@ function outputPath(options: RenderCommandOptions, dir: string, configuredFile: 
 }
 
 function showProject(project: ResolvedProject, range: [number, number] | undefined): void {
-  const tracks = project.events.filter((event) => event.type === 'track_start').length;
   const summary = [
     bold(project.title || 'Untitled set'),
-    `${tracks} tracks, ${project.events.length - tracks} events`,
+    `${project.mix.recordings.length} recordings, ${project.mix.plays.length} plays, ${project.mix.listings.length} listings`,
     `${project.width}×${project.height} @ ${project.fps} fps`,
     `theme ${steel(project.theme)}`,
   ];
@@ -185,7 +177,7 @@ async function renderThumbnail(
   const options: StillOptions = {
     projectDir: dir,
     out,
-    at: firstDrop(project.events),
+    at: firstDrop(project.mix.annotations),
     jpegQuality: output.jpegQuality,
     gl: output.gl,
     onProgress: ui.onProgress,
@@ -197,8 +189,8 @@ async function renderThumbnail(
 }
 
 async function writeDescription(project: ResolvedProject, out: string): Promise<string> {
-  await writeFile(out, youtubeDescription(project.title, project.events));
-  for (const problem of chapterProblems(project.events)) warn(problem);
+  await writeFile(out, youtubeDescription(project.title, project.mix));
+  for (const problem of chapterProblems(project.mix)) warn(problem);
   return out;
 }
 

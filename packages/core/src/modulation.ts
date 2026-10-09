@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { FEATURE_SOURCES, type AudioAnalyzer, type FeatureSource } from './audio.ts';
-import { EVENT_TYPES, SECTION_TYPES, type EventType, type SectionType } from './events.ts';
+import { ANNOTATION_KINDS, SECTION_KINDS } from './mix-schema.ts';
 import { clamp } from './motion.ts';
 import { beatPhase } from './stage.ts';
-import { since, until, type EventState } from './timeline.ts';
+import { sinceAnnotation, untilAnnotation, type MixState, type CurrentPlay } from './timeline.ts';
 
 /** Shapes a 0..1 source into a 0..1 amount before `range` maps it onto the target. */
 export const CURVES = {
@@ -20,11 +20,12 @@ export type Curve = keyof typeof CURVES;
  * `until:drop` is the anticipation: it climbs to 1 as the drop approaches and releases to 0 once
  * the drop lands, where `since:drop` takes over.
  */
-export type TimelineSource = `since:${EventType}` | `until:${EventType}`;
-export const TIMELINE_SOURCES: TimelineSource[] = EVENT_TYPES.flatMap((type): TimelineSource[] => [
-  `since:${type}`,
-  `until:${type}`,
-]);
+export type TimelineSource =
+  | `since:${(typeof ANNOTATION_KINDS)[number]}`
+  | `until:${(typeof ANNOTATION_KINDS)[number]}`;
+export const TIMELINE_SOURCES: TimelineSource[] = ANNOTATION_KINDS.flatMap(
+  (type): TimelineSource[] => [`since:${type}`, `until:${type}`],
+);
 
 /** Tempo sources: 1 on the beat (or the bar's downbeat), falling to 0 just before the next. 0 without `bpm:`. */
 export const BEAT_SOURCES = ['beat', 'bar'] as const;
@@ -37,6 +38,9 @@ const SOURCES = [...FEATURE_SOURCES, ...TIMELINE_SOURCES, ...BEAT_SOURCES] as [
 ];
 
 export const ModRouteSchema = z.strictObject({
+  scope: z
+    .enum(['mix', 'play'], { error: 'Use mix for stage routes or play for per-panel routes.' })
+    .default('mix'),
   source: z.enum(SOURCES, {
     error: (issue) =>
       typeof issue.input === 'string'
@@ -77,7 +81,7 @@ export const ModRouteSchema = z.strictObject({
     .max(60, { error: 'window must be no more than 60 seconds.' })
     .default(1),
   /** Only active during this section; rests at range[0] otherwise. */
-  when: z.enum(SECTION_TYPES, { error: `when must be ${SECTION_TYPES.join(', ')}.` }).optional(),
+  when: z.enum(SECTION_KINDS, { error: `when must be ${SECTION_KINDS.join(', ')}.` }).optional(),
 });
 export type ModRoute = z.infer<typeof ModRouteSchema>;
 /** A route as written: everything but `source` and `target` has a default. */
@@ -89,7 +93,8 @@ export const ModPatchSchema = z.array(ModRouteSchema);
 export interface ModContext {
   time: number;
   fps: number;
-  events: EventState;
+  mix: MixState;
+  play?: CurrentPlay;
   analyzer: AudioAnalyzer;
   /** Tempo, or null when the project states none; beat sources are 0 then. */
   bpm: number | null;
@@ -104,7 +109,11 @@ export function evaluateModulation(
   routes: readonly ModRoute[],
   context: ModContext,
 ): Record<string, number> {
-  const byTarget = new Map(routes.map((route) => [route.target, route]));
+  const byTarget = new Map(
+    routes
+      .filter((route) => route.scope === (context.play ? 'play' : 'mix'))
+      .map((route) => [route.target, route]),
+  );
   return Object.fromEntries(
     [...byTarget.values()].map((route) => [route.target, evaluateRoute(route, context)]),
   );
@@ -112,14 +121,11 @@ export function evaluateModulation(
 
 export function evaluateRoute(route: ModRoute, context: ModContext): number {
   const [from, to] = route.range;
-  if (route.when && !inSection(context.events.section, route.when)) return from;
+  const section = context.play ? context.play.section : context.mix.mixSection;
+  if (route.when && section?.kind !== route.when) return from;
   const amount = clamp(sourceValue(route, context), 0, 1);
   return from + (to - from) * CURVES[route.curve](amount);
 }
-
-/** `when: drop` covers double drops, as `since:drop` and `--since-drop` do. */
-const inSection = (section: SectionType | null, when: SectionType) =>
-  section === when || (when === 'drop' && section === 'double_drop');
 
 const isTimeline = (source: ModSource): source is TimelineSource => source.includes(':');
 const isBeat = (source: ModSource): source is BeatSource =>
@@ -133,11 +139,21 @@ function sourceValue(route: ModRoute, context: ModContext): number {
   }
   if (!isTimeline(source)) return smoothed(source, route.smooth, context);
 
-  const [direction, type] = source.split(':') as ['since' | 'until', EventType];
+  const [direction, type] = source.split(':') as ['since' | 'until', string];
   const seconds =
     direction === 'since'
-      ? since(context.events, type, context.time)
-      : until(context.events, type, context.time);
+      ? sinceAnnotation(
+          context.mix,
+          type,
+          context.play ? { play: context.play.play.id } : undefined,
+          context.play?.run,
+        )
+      : untilAnnotation(
+          context.mix,
+          type,
+          context.play ? { play: context.play.play.id } : undefined,
+          context.play?.run,
+        );
   return 1 - seconds / route.window;
 }
 

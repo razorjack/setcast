@@ -1,8 +1,8 @@
 # DJ mix model and authoring format
 
-Status: proposed specification, not implemented. Revised 9 October 2026.
+Status: offline implementation complete. Revised 9 October 2026.
 
-Setcast should model **recordings, plays, contributions, and annotations**, with a separate
+Setcast models **recordings, plays, contributions, and annotations**, with a separate
 editorial tracklist and presentation policy. Any number of plays can contribute at once. A
 basic set needs only a timestamp and track metadata per row; richer descriptions add detail
 locally. The audio remains one already mixed recording. This is a visualization and attribution
@@ -10,13 +10,13 @@ model, not instructions for producing or reconstructing that audio.
 
 This design replaces the earlier proposal. Backward compatibility is explicitly out of scope:
 there are no legacy event aliases, synthetic deck assignments, or compatibility reducers to
-preserve. Existing project files and themes can be rewritten when this is implemented. The
+preserve. Project files, components, CLI output and built-in themes use this contract. The
 renderer-independent `RenderFrame` principle remains.
 
 [The evidence record](dj-mix-evidence.md) separates source observations, report critiques, and
 engineering decisions. References such as **F01** and **D01** refer to that document. Original
-research inputs are archived there. All examples below are proposed syntax, not currently
-accepted configuration. Unless identified otherwise, their names and timings are illustrative.
+research inputs are archived there. The examples below use accepted authoring syntax. Unless
+identified otherwise, their names and timings are illustrative.
 
 ## 1. Concepts and boundaries
 
@@ -526,7 +526,7 @@ through contribution data. Missing decks, unknown metadata, gaps, sparse fallbac
 or an unlisted overlay are valid input,
 not warning-worthy mistakes. Explain fallback origins in inspection output.
 
-These are required semantic fixtures for implementation, not claims that the schema exists today:
+These semantic fixtures are covered by the implementation tests:
 
 1. **Basic and cut:** listings at 0 and 200 yield `[0,200)` and `[200,D)`. At 200 only the second
    is current. First listing after zero yields no earlier credited play.
@@ -566,11 +566,19 @@ and mode-independent normalization. Test authored errors and boundary times, not
 
 ## 8. Implementation scope and future live data
 
-Implement the finite offline model first: schemas and normalization, projection, importer and
-chapter behavior, multi-play components, CSS contracts, and realistic demo fixtures. Replace the
-current singular `track`/`deck` state and update modulation to distinguish mix and play scope.
-Rewrite demos and import output to the new format; there is no migration compatibility layer.
-Document changes to theme and plugin contracts before calling this design implemented.
+The finite offline implementation includes schemas and normalization, indexed projection,
+importer and chapter behavior, multi-play components, scoped modulation, CSS contracts, and demo
+fixtures. It replaces singular track/deck state without a migration compatibility layer.
+[Theme and plugin contracts](theme-plugin-contract.md) document the public API, time units,
+CSS attributes, per-run dwell and responsive overflow behavior. `setcast inspect` explains
+boundary origins and exports normalized JSON with materialized IDs.
+
+`vp run ready` validates formatting, lint, types, tests, renderer independence and the smoke
+render. `vp run mix-stills` reproduces the inspected landscape and portrait examples of teases,
+overlaps, shared drops and overflow. `vp run theme-stills --at 0:33.3 --at 1:18` checks the
+built-in themes. The Knowledge excerpt fixture under `examples/demo/fixtures/` retains its
+inherited-annotation qualification; the runnable demo uses synthetic audio and illustrative
+credits. The original research archive is unchanged.
 
 Keep capture and audio reconstruction outside this first implementation. Hardware transport,
 loaded/cued state, fader/EQ telemetry, per-deck waveforms, source positions, tempo maps, and

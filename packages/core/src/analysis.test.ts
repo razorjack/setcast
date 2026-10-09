@@ -39,16 +39,16 @@ describe('detectSections', () => {
 
   test('marks where the bass drops out and where it comes back', () => {
     const events = detectSections(envelope(set));
-    expect(events.map((event) => event.type)).toEqual(['breakdown', 'drop']);
-    expect(events[0]!.time).toBeGreaterThan(9);
-    expect(events[0]!.time).toBeLessThan(11);
-    expect(events[1]!.time).toBeGreaterThan(19);
-    expect(events[1]!.time).toBeLessThan(21);
+    expect(events.map((event) => event.kind)).toEqual(['breakdown', 'drop']);
+    expect(events[0]!.at).toBeGreaterThan(9);
+    expect(events[0]!.at).toBeLessThan(11);
+    expect(events[1]!.at).toBeGreaterThan(19);
+    expect(events[1]!.at).toBeLessThan(21);
   });
 
   test('a drop carries the mean bass of its stretch as intensity', () => {
     const drop = detectSections(envelope(set))[1]!;
-    expect(drop.type === 'drop' && drop.intensity).toBeGreaterThan(0.7);
+    expect(drop.kind === 'drop' && drop.intensity).toBeGreaterThan(0.7);
   });
 
   test('nothing to split means no events', () => {

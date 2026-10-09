@@ -13,6 +13,7 @@ const commands: Record<string, () => Promise<Command>> = {
   render: () => import('./commands/render.ts'),
   clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
+  inspect: () => import('./commands/inspect.ts'),
   chapters: () => import('./commands/chapters.ts'),
   live: () =>
     import('./commands/stubs.ts').then((stubs) => ({ help: stubs.liveHelp, run: stubs.live })),
@@ -23,12 +24,13 @@ const usage = `${bold(accent('setcast'))} ${dim(`v${version}`)}  event-driven vi
 ${bold('Usage')}  setcast <command> [options]
 
   ${steel('init')}      scaffold a project (interactive; --demo ships a working demo)
-  ${steel('import')}    turn a tracklist file into tracks: for setcast.yaml
-  ${steel('analyze')}   read the audio and draft drop / breakdown events
+  ${steel('import')}    turn a tracklist file into plays: for setcast.yaml
+  ${steel('analyze')}   read the audio and draft drop / breakdown annotations
   ${steel('preview')}   open the project in Remotion Studio
   ${steel('render')}    render the MP4 (--range for a slice, --bundle adds thumbnail + description)
   ${steel('clip')}      cut a promo clip around a drop (--all for every drop)
   ${steel('still')}     grab one frame as an image, for the thumbnail
+  ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      (planned) live overlay mode
 

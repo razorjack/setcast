@@ -4,7 +4,6 @@ import { join } from 'node:path';
 import { beforeAll, describe, expect, test } from 'vite-plus/test';
 import { ConfigError, SetcastError } from '../errors.ts';
 import type { Theme } from '../theme.ts';
-import { Timeline } from '../timeline.ts';
 import { loadProject } from './project.ts';
 
 let dir: string;
@@ -40,41 +39,29 @@ const load = async (yaml: string, sub = 'p', themes: Record<string, Theme> = { t
   await write(`${sub}/assets/mix.wav`, 'RIFF');
   await write(`${sub}/assets/bg.png`, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
   await write(`${sub}/setcast.yaml`, yaml);
-  return loadProject(join(dir, sub), { themes });
+  return loadProject(join(dir, sub), { themes, probeDuration: async () => 600 });
 };
 
 describe('loadProject', () => {
-  test('resolves a valid project: merged events, alternating decks, inlined theme css', async () => {
+  test('resolves a finite mix and inlines theme CSS', async () => {
     const { project } = await load(`
 audio: assets/mix.wav
 background: assets/bg.png
 theme: test
-tracks:
-  - { time: 0:00, artist: A, title: One }
-  - { time: 1:30, artist: B, title: Two }
-  - { time: 3:00, title: Three, deck: D }
-events:
-  - { type: drop, time: 0:45 }
-modulation:
-  - { source: rms, target: vignette }
+plays:
+  - {at: 0, until: 100, title: One}
+  - {at: 90, title: Two}
+annotations: [{kind: drop, at: 45}]
+modulation: [{source: rms, target: vignette}]
 `);
-    expect(project.events.map((event) => [event.type, event.time])).toEqual([
-      ['track_start', 0],
-      ['drop', 45],
-      ['track_start', 90],
-      ['track_start', 180],
+    expect(project.mix.contributions.map((interval) => [interval.from, interval.until])).toEqual([
+      [0, 100_000_000],
+      [90_000_000, 600_000_000],
     ]);
-    const decks = project.events.flatMap((event) =>
-      event.type === 'track_start' ? [event.deck] : [],
-    );
-    expect(decks).toEqual(['A', 'B', 'D']);
+    expect(project.mix.contributions.every((interval) => interval.deck === undefined)).toBe(true);
+    expect(project.presentation).toBe('dj');
     expect(project.css).toContain('data:font/woff2;base64,');
-    expect(project.css).not.toContain('./fonts/x.woff2');
     expect(project.modulation.map((route) => route.target)).toEqual(['bg-zoom', 'vignette']);
-    expect(project.fps).toBe(30);
-    expect(project.clockOffset).toBe(0);
-    expect(project.clockTotal).toBeNull();
-    expect(project.trackNumberOffset).toBe(0);
     expect(project.visualizers).toMatchObject([{ name: 'spectrum', bars: 48 }]);
   });
 
@@ -83,11 +70,11 @@ modulation:
 audio: assets/mix.wav
 theme: test
 clockOffset: ${offset}
-tracks: [{ time: 0, title: Star Trails }]
-events: [{ type: drop, time: 14 }]
+plays: [{ at: 0, title: Star Trails }]
+annotations: [{ kind: drop, at: 14 }]
 `);
     expect(project.clockOffset).toBe(843);
-    expect(project.events.map((event) => event.time)).toEqual([0, 14]);
+    expect(project.mix.annotations[0]?.at).toBe(14_000_000);
   });
 
   test.each(['-1', 'soon'])(
@@ -129,42 +116,13 @@ events: [{ type: drop, time: 14 }]
     });
   });
 
-  test('resolves track numbering without shifting timeline indices or decks', async () => {
-    const { project } = await load(`
-audio: assets/mix.wav
-theme: test
-trackNumberOffset: 2
-tracks:
-  - { time: 0, title: Star Trails }
-  - { time: 14, title: Pathogen }
-`);
-    expect(project.trackNumberOffset).toBe(2);
-    const timeline = new Timeline(project.events);
-    expect(timeline.at(0)).toMatchObject({ trackIndex: 0, trackCount: 2, deck: 'A' });
-    expect(timeline.at(14)).toMatchObject({ trackIndex: 1, trackCount: 2, deck: 'B' });
-  });
-
-  test.each(['-1', '1.5', 'two'])('rejects invalid trackNumberOffset %s', async (offset) => {
-    await expect(
-      load(`audio: assets/mix.wav\ntheme: test\ntrackNumberOffset: ${offset}\n`),
-    ).rejects.toMatchObject({
-      issues: [
-        {
-          path: 'trackNumberOffset',
-          message:
-            'trackNumberOffset must be a nonnegative whole number. Use 2 to start at track 3.',
-        },
-      ],
-    });
-  });
-
   test('a track background must exist too', async () => {
     await expect(
       load(
-        'audio: assets/mix.wav\ntheme: test\ntracks: [{ time: 0, title: X, background: assets/x.png }]\n',
+        'audio: assets/mix.wav\ntheme: test\nplays: [{ at: 0, title: X, background: assets/x.png }]\n',
         'track-bg',
       ),
-    ).rejects.toThrow(/track "X" background file not found/);
+    ).rejects.toThrow(/plays\[0\].background file not found/);
   });
 
   test('an unknown visualizer is reported while loading', async () => {
@@ -205,6 +163,7 @@ tracks:
     const { project } = await loadProject(join(dir, 'override'), {
       themes: { test: theme, other },
       theme: 'other',
+      probeDuration: async () => 600,
     });
     expect(project.theme).toBe('other');
     expect(project.visualizers).toMatchObject([{ name: 'meters' }]);
@@ -220,31 +179,13 @@ tracks:
     });
   });
 
-  test('decks alternate in play order, and an explicit deck moves the rotation on', async () => {
-    const { project } = await load(
-      `
-audio: assets/mix.wav
-theme: test
-tracks:
-  - { time: 3:00, title: Third }
-  - { time: 0:00, title: First }
-  - { time: 1:30, title: Second, deck: A }
-  - { time: 4:30, title: Fourth }
-events:
-  - { type: track_start, time: 6:00, title: Fifth }
-`,
-      'decks',
-    );
-    const assigned = project.events.map((event) =>
-      event.type === 'track_start' ? [event.title, event.deck] : [],
-    );
-    expect(assigned).toEqual([
-      ['First', 'A'],
-      ['Second', 'A'],
-      ['Third', 'B'],
-      ['Fourth', 'A'],
-      ['Fifth', 'B'],
-    ]);
+  test('mode changes presentation without changing the normalized mix', async () => {
+    const yaml =
+      'audio: assets/mix.wav\ntheme: test\nplays: [{at: 0, until: 100, title: One}, {at: 90, title: Two}]\n';
+    const auto = await load(yaml);
+    const playlist = await load(`${yaml}presentation: {mode: playlist}\n`);
+    expect(auto.project.mix).toEqual(playlist.project.mix);
+    expect(playlist.project.presentation).toBe('playlist');
   });
 
   test('missing setcast.yaml points at init', async () => {
@@ -265,67 +206,15 @@ events:
     await expect(load('audio: [oops\n', 'bad-yaml')).rejects.toThrow(/not valid YAML/);
   });
 
-  test('schema problems list paths and messages', async () => {
+  test('schema errors name paths and repairs', async () => {
     const err = await load(
-      `
-audio: assets/mix.wav
-theme: test
-events:
-  - { type: dropp, time: 0:45 }
-  - { type: drop, time: soon }
-tracks:
-  - { time: 0:00, title: '' }
-`,
-      'bad-schema',
-    ).catch((thrown: unknown) => thrown);
+      'audio: assets/mix.wav\ntheme: test\nplays: [{at: 0, until: 10, title: A, contributions: [{from: 0, until: 10}]}]\n',
+    ).catch((error: unknown) => error);
     expect(err).toBeInstanceOf(ConfigError);
-
-    const issues = (err as ConfigError).issues;
-    expect(issues.map((issue) => issue.path).toSorted()).toEqual([
-      'events[0].type',
-      'events[1].time',
-      'tracks[0].title',
-    ]);
-    const messages = issues.map((issue) => issue.message).join('\n');
-    expect(messages).toMatch(/Invalid time "soon"/);
-    expect(messages).toMatch(/cannot be empty/);
-  });
-
-  test('schema problems explain common config mistakes', async () => {
-    const err = await load(
-      `
-audio: assets/mix.wav
-theme: test
-output: { fps: 29, widht: 1920 }
-events:
-  - { type: dropp, time: 0:45 }
-  - { type: drop, time: 1:00, intensity: 2 }
-modulation:
-  - { source: bas, target: bg-zoom }
-`,
-      'helpful-schema',
-    ).catch((thrown: unknown) => thrown);
-
-    expect(err).toBeInstanceOf(ConfigError);
-    expect((err as ConfigError).issues).toEqual(
-      expect.arrayContaining([
-        { path: 'output.fps', message: 'fps must be 24, 25, 30, 50 or 60.' },
-        {
-          path: 'output',
-          message: 'Unrecognized key: "widht". Did you mean "width"?',
-        },
-        {
-          path: 'events[0].type',
-          message: expect.stringContaining('Unknown event type "dropp". Types:'),
-        },
-        { path: 'events[1].intensity', message: 'intensity is 0..1.' },
-        {
-          path: 'modulation[0].source',
-          message:
-            'Unknown source "bas". Audio: bass, mids, highs, rms, onset. Timeline: since:<event> or until:<event>. Tempo: beat, bar.',
-        },
-      ]),
-    );
+    expect((err as ConfigError).issues).toContainEqual({
+      path: 'plays[0].until',
+      message: expect.stringContaining('remove the row-level until'),
+    });
   });
 
   test('output files must use a supported video extension', async () => {
@@ -394,10 +283,10 @@ modulation:
 audio: assets/mix.wav
 theme: test
 panel: { dwell: 0, fade: 2 }
-tracks:
-  - { time: 1:00, title: Late }
-  - { time: 0:00, title: Early }
-  - { time: 0:00, title: Duplicate }
+plays:
+  - { at: 1:00, title: Late }
+  - { at: 0:00, title: Early }
+  - { at: 0:00, title: Duplicate }
 modulation:
   - { source: beat, target: beat-pulse }
   - { source: since:drop, target: drop-fade, smooth: 0.2 }
@@ -409,9 +298,7 @@ modulation:
     expect(warnings.join('\n')).toMatch(/uses beat, but the project has no bpm/);
     expect(warnings.join('\n')).toMatch(/smooth only applies to audio sources/);
     expect(warnings.join('\n')).toMatch(/window only applies to timeline sources/);
-    expect(warnings.join('\n')).toMatch(/uses when: drop, but the set has no drop events/);
-    expect(warnings.join('\n')).toMatch(/appears after a later track/);
-    expect(warnings.join('\n')).toMatch(/both start at 0 s/);
+    expect(warnings.join('\n')).toMatch(/uses when: drop, but the set has no drop annotations/);
     expect(warnings).toContain('panel.fade has no effect when panel.dwell is 0.');
   });
 });

@@ -1,10 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { parse } from 'yaml';
 import { describe, expect, test } from 'vite-plus/test';
 import { normalizeMix, readMixDocument, mixWarnings } from './mix.ts';
-import { MixTimeline, lastAnnotations } from './mix-timeline.ts';
+import { Timeline, lastAnnotations } from './timeline.ts';
 import { ConfigError } from './errors.ts';
 
-const timeline = (input: unknown, duration = 300) => new MixTimeline(normalizeMix(input, duration));
-const names = (mix: MixTimeline, time: number) =>
+const timeline = (input: unknown, duration = 300) => new Timeline(normalizeMix(input, duration));
+const names = (mix: Timeline, time: number) =>
   mix.at(time).currentPlays.map((entry) => entry.play.id);
 const activeRow = (play: ReturnType<typeof row>, time: number) =>
   play.contributions.some((interval) => interval.from <= time && time < interval.until);
@@ -211,16 +213,13 @@ describe('finite mix normalization', () => {
     expect(mix.at(10).annotations.mix.next.note).toBeUndefined();
   });
   test('known inherited demo retains 77 and 44 second overlaps', () => {
-    const mix = timeline(
-      {
-        plays: [
-          row('star-trails', [[0, 91]]),
-          row('pathogen', [[14, 244]]),
-          row('clockwork', [[200, 331]]),
-        ],
-      },
-      331,
+    const fixture = parse(
+      readFileSync(
+        new URL('../../../examples/demo/fixtures/knowledge-excerpt.yaml', import.meta.url),
+        'utf8',
+      ),
     );
+    const mix = timeline(fixture, 331);
     expect(mix.runs[0]!.until - mix.runs[1]!.from).toBe(77_000_000);
     expect(mix.runs[1]!.until - mix.runs[2]!.from).toBe(44_000_000);
   });
@@ -305,4 +304,94 @@ describe('finite mix normalization', () => {
     for (const time of [0, 49, 50, 99, 100, 299])
       expect(segmented.at(time).currentPlays[0]?.run).toEqual(whole.at(time).currentPlays[0]?.run);
   });
+});
+
+test('scoped history is queryable when a play is absent; metadata boundaries do not clear it', () => {
+  const mix = timeline({
+    plays: [
+      row('a', [
+        [0, 10],
+        [20, 30],
+      ]),
+    ],
+    annotations: [
+      { at: 10, kind: 'rewind', scope: { plays: ['a'] } },
+      { at: 0, until: 'end', kind: 'note', text: 'Whole mix' },
+    ],
+  });
+  expect(lastAnnotations(mix.at(15), 'rewind', { play: 'a' })).toHaveLength(1);
+  expect(mix.at(15).activeAnnotations[0]).toMatchObject({ until: 300_000_000 });
+});
+
+test('input ordering changes stable display order, never membership', () => {
+  const plays = [
+    row('a', [[0, 80]]),
+    row('b', [
+      [10, 20],
+      [60, 90],
+    ]),
+    row('c', [[15, 85]]),
+  ];
+  const forward = timeline({ plays });
+  const reverse = timeline({ plays: plays.toReversed() });
+  for (let time = 0; time < 100; time++)
+    expect(names(forward, time).sort()).toEqual(names(reverse, time).sort());
+});
+
+test('a play named mix is distinct from mix scope, and a timeline owns an immutable revision', () => {
+  const document = normalizeMix(
+    {
+      plays: [{ id: 'mix', at: 0, title: 'Mix' }],
+      annotations: [{ at: 10, kind: 'drop', scope: { plays: ['mix'] } }],
+    },
+    100,
+  );
+  const mix = new Timeline(document);
+  document.contributions[0]!.until = 5_000_000;
+  expect(names(mix, 20)).toEqual(['mix']);
+  expect(lastAnnotations(mix.at(20), 'drop')).toEqual([]);
+  expect(lastAnnotations(mix.at(20), 'drop', { play: 'mix' })).toHaveLength(1);
+  expect(() => {
+    mix.document.contributions[0]!.until = 1;
+  }).toThrow();
+});
+
+test.each([
+  { plays: [{ title: 'A', at: 0, contributions: [{ from: 0, until: null }] }] },
+  { plays: [{ title: 'A', at: 0, contribtions: [] }] },
+  { annotations: [{ at: 0, until: 1, kind: 'drop' }] },
+  { annotations: [{ at: 0, kind: 'note' }] },
+  { annotations: [{ at: 0, kind: 'technique', tags: [] }] },
+  { annotations: [{ at: 0, kind: 'plugin:cue', data: { value: Infinity } }] },
+  { sources: { note: { title: 'Note' } }, extensions: { typo: true } },
+  { plays: [{ title: 'A', at: 0, evidence: ['missing'] }] },
+])('rejects unfinished, misspelled or nonserializable input %#', (input) => {
+  expect(() => normalizeMix(input, 100)).toThrow(ConfigError);
+});
+
+test('semantic errors identify authored rows before chronological sorting', () => {
+  rejects(
+    {
+      annotations: [
+        { at: 400, kind: 'drop' },
+        { at: 0, kind: 'drop' },
+      ],
+    },
+    /annotations\[0\]\.at.*400000000/,
+  );
+  rejects(
+    {
+      focus: [
+        { at: 400, plays: [] },
+        { at: 0, plays: [] },
+      ],
+    },
+    /focus\[0\]\.at.*400000000/,
+  );
+  rejects(
+    { plays: [{ title: 'A', at: 400, contributions: [{ from: 0, until: 10 }] }] },
+    /plays\[0\]\.at.*400000000/,
+  );
+  rejects({ plays: [{ title: 'A', at: 0, evidence: ['missing'] }] }, /plays\[0\]\.evidence/);
+  rejects({ plays: [row('a', [[0, 400]])] }, /plays\[0\]\.contributions\[0\]/);
 });

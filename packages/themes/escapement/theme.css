@@ -298,11 +298,11 @@
 .theme-escapement .sc-overview-played .sc-overview-high {
   fill: var(--cyan);
 }
-.theme-escapement .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-escapement .sc-overview-mark[data-type='drop'] {
   stroke: var(--olive);
   stroke-width: 0.12cqw;
 }
-.theme-escapement .sc-overview-mark[data-type='track_start'] {
+.theme-escapement .sc-overview-mark[data-type='listing'] {
   stroke: var(--ink);
   stroke-width: var(--hairline);
 }
@@ -319,8 +319,8 @@
   );
   max-width: 62cqw;
   transform-origin: 0 100%;
-  transform: rotate(calc(-1 * var(--angle))) translateX(calc((1 - var(--show, 1)) * -5cqw));
-  opacity: clamp(0, var(--show, 1) * 1.5, 1);
+  transform: rotate(calc(-1 * var(--angle))) translateX(calc((1 - var(--presence, 1)) * -5cqw));
+  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
 }
 .theme-escapement .sc-panel-head {
   gap: 1cqw;
@@ -377,7 +377,7 @@
 /* up next: bottom right, on the paper under the band */
 .theme-escapement .sc-next {
   gap: 0.35cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-escapement .sc-next-label {
   font-family: var(--font-mono);
@@ -453,4 +453,12 @@
   .theme-escapement .sc-next-title {
     font-size: 3.6cqw;
   }
+}
+
+.theme-escapement[data-presentation='dj'] .sc-panel {
+  background: var(--paper);
+}
+.theme-escapement[data-presentation='dj'] .sc-title {
+  color: var(--ink);
+  text-shadow: none;
 }

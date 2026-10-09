@@ -215,7 +215,7 @@
 .theme-bunker .sc-overview-played .sc-overview-high {
   fill: var(--hazard);
 }
-.theme-bunker .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-bunker .sc-overview-mark[data-type='drop'] {
   stroke: var(--rust);
   stroke-width: 0.16cqw;
 }
@@ -260,8 +260,8 @@
   box-shadow:
     0 1cqw 2.5cqw rgb(0 0 0 / 0.7),
     inset 0 0 0 0.12cqw rgb(255 255 255 / 0.06);
-  opacity: clamp(0, var(--show, 1) * 1.5, 1);
-  translate: var(--shake-x) calc(var(--shake-y) + (1 - var(--show, 1)) * 4cqh);
+  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
+  translate: var(--shake-x) calc(var(--shake-y) + (1 - var(--presence, 1)) * 4cqh);
 }
 .theme-bunker .sc-panel::before {
   content: '';
@@ -296,7 +296,7 @@
   background: var(--deck);
   box-shadow: 0 0 calc(0.4cqw + var(--mod-lamp, 0) * 1cqw) var(--deck);
 }
-.theme-bunker:is([data-section='drop'], [data-section='double_drop']) .sc-deck {
+.theme-bunker .sc-panel[data-section='drop'] .sc-deck {
   background: conic-gradient(
     from calc(var(--bar, 0) * 360deg),
     var(--deck) 0 25%,
@@ -349,7 +349,7 @@
 .theme-bunker .sc-next {
   bottom: calc(var(--tape) + var(--margin) + 12cqh);
   gap: 0.2cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-bunker .sc-next-label {
   font-family: var(--font-mono);

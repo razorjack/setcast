@@ -29,7 +29,7 @@ export {
   useAudioFeatures,
   useAudioHistory,
   useComposition,
-  useEventState,
+  useMixState,
   useFrame,
   useModulation,
   useTime,

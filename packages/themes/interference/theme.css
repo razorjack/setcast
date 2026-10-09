@@ -195,7 +195,7 @@
 .theme-interference .sc-overview-played .sc-overview-high {
   fill: var(--white);
 }
-.theme-interference .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-interference .sc-overview-mark[data-type='drop'] {
   stroke: var(--magenta);
   stroke-width: 0.12cqw;
 }
@@ -230,8 +230,8 @@
 .theme-interference .sc-panel {
   isolation: isolate;
   max-width: 70cqw;
-  opacity: clamp(0, var(--show, 1) * 1.5, 1);
-  translate: calc(var(--noise-a) * var(--tear) * 3cqw + (1 - var(--show, 1)) * -4cqw) 0;
+  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
+  translate: calc(var(--noise-a) * var(--tear) * 3cqw + (1 - var(--presence, 1)) * -4cqw) 0;
   clip-path: inset(
     calc(max(0, var(--noise-b)) * var(--tear) * 55%) -10cqw
       calc(max(0, -1 * var(--noise-b)) * var(--tear) * 55%) -10cqw
@@ -307,7 +307,7 @@
   bottom: auto;
   top: calc(var(--margin) + 5cqh);
   gap: 0.3cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-interference .sc-next-label {
   font-family: var(--font-mono);

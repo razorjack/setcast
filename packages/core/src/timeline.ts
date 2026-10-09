@@ -1,121 +1,293 @@
 import {
-  SECTION_TYPES,
-  sortEvents,
-  type EventOf,
-  type EventType,
-  type SectionType,
-  type SetEvent,
-  type Track,
-} from './events.ts';
+  microseconds,
+  type MixDocument,
+  type Play,
+  type Recording,
+  type Contribution,
+  type Annotation,
+  type SectionKind,
+} from './mix-schema.ts';
+import { sectionTargets, validateMix } from './mix-validation.ts';
 
-/** Everything a component needs to know about the event timeline at one instant. */
-export interface EventState {
-  /** All events, sorted by time. */
-  all: readonly SetEvent[];
-  /** Active track, from the latest `track_start` at or before now. */
-  track: Track | null;
-  /** Index of the active track among `track_start` events; -1 before the first. */
-  trackIndex: number;
-  /** How many `track_start` events the set has, for "03 / 12" style counters. */
-  trackCount: number;
-  /** Latest event of each type at or before now. */
-  last: Partial<{ [T in EventType]: EventOf<T> }>;
-  /** First event of each type after now. */
-  next: Partial<{ [T in EventType]: EventOf<T> }>;
-  /** Current section, from the latest drop / double_drop / breakdown / buildup. */
-  section: SectionType | null;
-  sectionStart: number;
-  /** Deck in front: the one named by the most recent event that names a deck. */
-  deck: string | null;
+export type ContributionRun = {
+  id: string;
+  play: string;
+  from: number;
+  until: number;
+  returning: boolean;
+};
+export type Section = { kind: SectionKind; start: number };
+export type CurrentPlay = {
+  play: Play;
+  recording: Recording;
+  contribution: Contribution;
+  run: ContributionRun;
+  deck?: string;
+  section: Section | null;
+};
+export type AnnotationQuery = {
+  last: Record<string, Annotation[]>;
+  next: Record<string, Annotation[]>;
+};
+export interface MixState {
+  time: number;
+  currentPlays: CurrentPlay[];
+  focusPlays: CurrentPlay[];
+  mixSection: Section | null;
+  activeAnnotations: Annotation[];
+  annotations: { mix: AnnotationQuery; plays: Record<string, AnnotationQuery> };
+  nextEntries: ContributionRun[];
+  nextListings: MixDocument['listings'];
+  listings: MixDocument['listings'];
+  recordingCount: number;
+  playCount: number;
+  listingCount: number;
+  currentPlayCount: number;
 }
+
+/** First index whose timestamp is strictly later than time. */
+function upperBound<T>(entries: readonly T[], time: number, stamp: (entry: T) => number): number {
+  let low = 0;
+  let high = entries.length;
+  while (low < high) {
+    const middle = (low + high) >>> 1;
+    if (stamp(entries[middle]!) <= time) low = middle + 1;
+    else high = middle;
+  }
+  return low;
+}
+const byAt = (entry: { at: number }) => entry.at;
+const byFrom = (entry: { from: number }) => entry.from;
 
 export class Timeline {
-  readonly events: readonly SetEvent[];
-  readonly tracks: readonly EventOf<'track_start'>[];
+  readonly document: MixDocument;
+  readonly runs: ContributionRun[];
+  readonly overlaps: boolean;
+  private readonly recordings: Map<string, Recording>;
+  private readonly intervals: Map<string, Contribution[]>;
+  private readonly playRuns: Map<string, ContributionRun[]>;
+  private readonly cues = new Map<string, Map<string, Annotation[]>>();
+  private readonly sections = new Map<string, Annotation[]>();
+  private readonly directives: MixDocument['focus'];
 
-  constructor(events: readonly SetEvent[]) {
-    this.events = sortEvents(events);
-    this.tracks = this.events.filter((event) => event.type === 'track_start');
+  constructor(document: MixDocument) {
+    validateMix(document);
+    // Own the revision: later caller mutations cannot invalidate this timeline's indexes.
+    this.document = structuredClone(document);
+    this.recordings = new Map(
+      this.document.recordings.map((recording) => [recording.id, recording]),
+    );
+    this.intervals = Map.groupBy(this.document.contributions, (interval) => interval.play);
+    this.runs = compileRuns(this.document);
+    this.playRuns = Map.groupBy(this.runs, (run) => run.play);
+    this.overlaps = hasOverlap(this.runs);
+    this.directives = this.document.focus.toSorted((left, right) => left.at - right.at);
+    this.document.listings.sort((left, right) => left.at - right.at || left.order - right.order);
+    this.document.plays.sort((left, right) => left.order - right.order);
+    for (const annotation of this.document.annotations.toSorted(
+      (left, right) => left.at - right.at || left.order - right.order,
+    ))
+      this.indexAnnotation(annotation);
+    freezeDocument(this.document);
+    for (const run of this.runs) Object.freeze(run);
+    Object.freeze(this.runs);
   }
 
-  at(time: number): EventState {
-    const last: EventState['last'] = {};
-    const next: EventState['next'] = {};
-    let trackIndex = -1;
-    let section: SectionType | null = null;
-    let sectionStart = 0;
-    let deck: string | null = null;
-
-    for (const event of this.events) {
-      if (event.time > time) {
-        if (!(event.type in next)) (next as Record<string, SetEvent>)[event.type] = event;
-        continue;
-      }
-      (last as Record<string, SetEvent>)[event.type] = event;
-      if (event.type === 'track_start') trackIndex++;
-      if ('deck' in event && event.deck) deck = event.deck;
-      if (isSection(event.type)) {
-        section = event.type;
-        sectionStart = event.time;
-      }
-    }
-
-    const trackStart = last.track_start;
+  at(timeSeconds: number): MixState {
+    const time = microseconds(timeSeconds);
+    if (time >= this.document.duration)
+      throw new RangeError(
+        `Timeline.at(${timeSeconds}) is outside the mix; query 0 <= time < ${this.document.duration / 1_000_000} seconds.`,
+      );
+    const currentPlays = this.document.plays.flatMap((play) => this.currentPlay(play, time));
+    const local = Object.fromEntries(
+      this.document.plays.map((play) => [play.id, this.queryAnnotations(play.id, time)]),
+    );
     return {
-      all: this.events,
-      track: trackStart ? trackOf(trackStart) : null,
-      trackIndex,
-      trackCount: this.tracks.length,
-      last,
-      next,
-      section,
-      sectionStart,
-      deck,
+      time,
+      currentPlays,
+      focusPlays: this.focusAt(currentPlays, time),
+      mixSection: this.sectionAt('$mix', time),
+      activeAnnotations: this.document.annotations.filter(
+        (cue) => 'until' in cue && cue.until !== undefined && cue.at <= time && time < cue.until,
+      ),
+      annotations: { mix: this.queryAnnotations('$mix', time), plays: local },
+      nextEntries: nextGroup(this.runs, time, byFrom),
+      nextListings: nextGroup(this.document.listings, time, byAt),
+      listings: this.document.listings,
+      recordingCount: this.document.recordings.length,
+      playCount: this.document.plays.length,
+      listingCount: this.document.listings.length,
+      currentPlayCount: currentPlays.length,
     };
   }
+
+  private currentPlay(play: Play, time: number): CurrentPlay[] {
+    const intervals = this.intervals.get(play.id)!;
+    const contribution = intervals[upperBound(intervals, time, byFrom) - 1];
+    if (!contribution || time >= contribution.until) return [];
+    const runs = this.playRuns.get(play.id)!;
+    const run = runs[upperBound(runs, time, byFrom) - 1]!;
+    return [
+      {
+        play,
+        recording: this.recordings.get(play.recording)!,
+        contribution,
+        run,
+        deck: contribution.deck,
+        section: this.sectionAt(play.id, time, run.from),
+      },
+    ];
+  }
+
+  private focusAt(current: CurrentPlay[], time: number): CurrentPlay[] {
+    const directive = this.directives[upperBound(this.directives, time, byAt) - 1];
+    if (directive) {
+      const pinned = directive.plays.flatMap((id) =>
+        current.filter(
+          (entry) =>
+            entry.play.id === id &&
+            entry.run.from <= directive.at &&
+            directive.at < entry.run.until,
+        ),
+      );
+      if (pinned.length) return pinned;
+    }
+    const eligible = current.filter((entry) => !entry.contribution.tail);
+    const candidates = eligible.length ? eligible : current;
+    return candidates
+      .toSorted(
+        (left, right) => right.run.from - left.run.from || left.play.order - right.play.order,
+      )
+      .slice(0, 1);
+  }
+
+  private indexAnnotation(annotation: Annotation): void {
+    const targets = annotation.scope === 'mix' ? ['$mix'] : annotation.scope.plays;
+    if (annotation.kind === 'drop' && annotation.scope === 'mix')
+      targets.push(...(annotation.participants ?? []));
+    for (const target of targets) {
+      const kinds = this.cues.get(target) ?? new Map<string, Annotation[]>();
+      const cues = kinds.get(annotation.kind) ?? [];
+      cues.push(annotation);
+      kinds.set(annotation.kind, cues);
+      this.cues.set(target, kinds);
+    }
+    for (const target of sectionTargets(annotation)) {
+      const sections = this.sections.get(target) ?? [];
+      sections.push(annotation);
+      this.sections.set(target, sections);
+    }
+  }
+
+  private sectionAt(target: string, time: number, from = 0): Section | null {
+    const sections = this.sections.get(target) ?? [];
+    const cue = sections[upperBound(sections, time, byAt) - 1];
+    if (!cue || cue.at < from || cue.kind === 'section_end') return null;
+    return { kind: cue.kind as SectionKind, start: cue.at };
+  }
+
+  private queryAnnotations(target: string, time: number): AnnotationQuery {
+    const query: AnnotationQuery = { last: {}, next: {} };
+    for (const [kind, cues] of this.cues.get(target) ?? []) {
+      const next = upperBound(cues, time, byAt);
+      const lastTime = cues[next - 1]?.at;
+      const nextTime = cues[next]?.at;
+      if (lastTime !== undefined)
+        query.last[kind] = cues.slice(upperBound(cues, lastTime - 1, byAt), next);
+      if (nextTime !== undefined)
+        query.next[kind] = cues.slice(next, upperBound(cues, nextTime, byAt));
+    }
+    return query;
+  }
 }
 
-const isSection = (type: EventType): type is SectionType =>
-  (SECTION_TYPES as readonly string[]).includes(type);
-
-const trackOf = ({ type: _type, time: _time, id: _id, ...track }: EventOf<'track_start'>): Track =>
-  track;
-
-/** `drop` covers double drops too: wherever something reacts to a drop, a double drop is one. */
-type Of<T extends EventType> = EventOf<T extends 'drop' ? 'drop' | 'double_drop' : T>;
-
-/** Latest event of `type` at or before now. */
-export function lastEvent<T extends EventType>(state: EventState, type: T): Of<T> | undefined {
-  if (type !== 'drop') return state.last[type] as Of<T> | undefined;
-  return laterOf(state.last.drop, state.last.double_drop) as Of<T> | undefined;
+function compileRuns(document: MixDocument): ContributionRun[] {
+  const runs: ContributionRun[] = [];
+  for (const [play, intervals] of Map.groupBy(
+    document.contributions,
+    (interval) => interval.play,
+  )) {
+    let previous: ContributionRun | undefined;
+    let count = 0;
+    for (const interval of intervals) {
+      if (previous?.until === interval.from) previous.until = interval.until;
+      else {
+        previous = {
+          id: `$run:${play}:${count}`,
+          play,
+          from: interval.from,
+          until: interval.until,
+          returning: count > 0,
+        };
+        runs.push(previous);
+        count++;
+      }
+    }
+  }
+  const order = new Map(document.plays.map((play) => [play.id, play.order]));
+  return runs.sort(
+    (left, right) => left.from - right.from || order.get(left.play)! - order.get(right.play)!,
+  );
 }
-
-/** First event of `type` after now. */
-export function nextEvent<T extends EventType>(state: EventState, type: T): Of<T> | undefined {
-  if (type !== 'drop') return state.next[type] as Of<T> | undefined;
-  return earlierOf(state.next.drop, state.next.double_drop) as Of<T> | undefined;
+function hasOverlap(runs: ContributionRun[]): boolean {
+  let end = 0;
+  for (const run of runs) {
+    if (run.from < end) return true;
+    end = Math.max(end, run.until);
+  }
+  return false;
 }
-
-function laterOf(first?: SetEvent, second?: SetEvent): SetEvent | undefined {
-  if (!first) return second;
-  if (!second) return first;
-  return first.time >= second.time ? first : second;
+function nextGroup<T>(entries: T[], time: number, stamp: (entry: T) => number): T[] {
+  const index = upperBound(entries, time, stamp);
+  const first = entries[index];
+  return first ? entries.slice(index, upperBound(entries, stamp(first), stamp)) : [];
 }
-
-function earlierOf(first?: SetEvent, second?: SetEvent): SetEvent | undefined {
-  if (!first) return second;
-  if (!second) return first;
-  return first.time <= second.time ? first : second;
+export function lastAnnotations(
+  state: MixState,
+  kind: string,
+  scope: 'mix' | { play: string } = 'mix',
+): Annotation[] {
+  return (
+    (scope === 'mix' ? state.annotations.mix : state.annotations.plays[scope.play])?.last[kind] ??
+    []
+  );
 }
-
-/** Seconds since the latest event of `type`, or Infinity when none has happened yet. */
-export const since = (state: EventState, type: EventType, time: number): number => {
-  const event = lastEvent(state, type);
-  return event ? time - event.time : Infinity;
+export function nextAnnotations(
+  state: MixState,
+  kind: string,
+  scope: 'mix' | { play: string } = 'mix',
+): Annotation[] {
+  return (
+    (scope === 'mix' ? state.annotations.mix : state.annotations.plays[scope.play])?.next[kind] ??
+    []
+  );
+}
+/** Single-cue helpers select the first annotation in stable input order within a tied group. */
+export const sinceAnnotation = (
+  state: MixState,
+  kind: string,
+  scope: 'mix' | { play: string } = 'mix',
+  run?: ContributionRun,
+): number => {
+  const cue = lastAnnotations(state, kind, scope)[0];
+  if (run && cue && cue.at < run.from) return Infinity;
+  return cue ? (state.time - cue.at) / 1_000_000 : Infinity;
+};
+export const untilAnnotation = (
+  state: MixState,
+  kind: string,
+  scope: 'mix' | { play: string } = 'mix',
+  run?: ContributionRun,
+): number => {
+  const cue = nextAnnotations(state, kind, scope)[0];
+  if (run && cue && cue.at >= run.until && !(kind === 'rewind' && cue.at === run.until))
+    return Infinity;
+  return cue ? (cue.at - state.time) / 1_000_000 : Infinity;
 };
 
-/** Seconds until the next event of `type`, or Infinity when none is coming. */
-export const until = (state: EventState, type: EventType, time: number): number => {
-  const event = nextEvent(state, type);
-  return event ? event.time - time : Infinity;
-};
+function freezeDocument(document: unknown): void {
+  if (document === null || typeof document !== 'object') return;
+  for (const child of Object.values(document)) freezeDocument(child);
+  Object.freeze(document);
+}

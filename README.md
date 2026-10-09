@@ -116,15 +116,20 @@ theme: sterile-tech          # built-in name, or a path to your own .css
 bpm: 174                     # gives CSS --beat and --bar; `setcast analyze --write` fills it in
 beatOffset: 0.12             # seconds to the first beat; analyze fills it in with bpm
 output: { width: 1920, height: 1080, fps: 30, file: out/set.mp4, crf: 18, jpegQuality: 95, gl: auto }
-deckOrder: [A, B]            # decks tracks rotate through when they name none
 
-tracks:                      # becomes track_start events; decks alternate A/B if omitted
-  - { time: 0:00, artist: Noisia, title: Stigma, label: Vision }
-  - { time: 4:12, artist: ID, title: ID, deck: B, background: assets/id.jpg }  # its own art
+presentation: {mode: auto}   # project-wide DJ layout if any contributions overlap
+plays:
+  - {id: first, at: 0:00, until: 4:40, artist: Noisia, title: Stigma, label: Vision}
+  - id: second
+    at: 4:12                 # editorial tracklist timestamp
+    title: ID                # unknown artist and deck stay unspecified
+    contributions:
+      - {from: 3:50, until: end}
 
-events:                      # drop, double_drop, breakdown, buildup, rewind, switch, chapter
-  - { type: drop, time: 1:04 }
-  - { type: breakdown, time: 3:30 }
+annotations:
+  - {kind: drop, at: 1:04}
+  - {kind: breakdown, at: 3:30}
+  - {kind: drop, at: 4:20, participants: [first, second]}
 
 modulation:                  # audio and timeline → CSS custom properties (--mod-<target>)
   - { source: bass, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.08, when: drop }
@@ -132,11 +137,33 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: beat, target: kick, curve: pow3, when: drop }   # 1 on every beat, needs bpm:
 
 visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list, or leave it to the theme; see Visualizers
-panel: { dwell: 14, fade: 1.2 }   # seconds the now-playing panel stays up; dwell 0 keeps it up
+panel: { dwell: 14, fade: 1.2 }   # run entrance dwell; DJ credits remain visible
 css: overrides.css           # optional, appended after the theme
 ```
 
-Times accept `1:23`, `1:23.5`, `1:02:03` or plain seconds.
+Times accept `1:23`, `1:23.5`, `1:02:03` or nonnegative seconds. They normalize once to
+integer microseconds. `until: end` resolves to the probed mix duration; intervals include the
+start and exclude the end.
+
+A simple `plays: [{at: 0, title: First}, {at: 200, title: Second}]` is enough. A listing supplies
+fallback participation until the next strictly later listing or mix end. Add `until` for an
+overlap, or replace fallback timing with `contributions` for teases and returns. Contributions
+never move the listing or its chapter. An overlay with only contributions creates no chapter
+and cannot truncate another play. Tied listings create concurrent credits and one joined chapter.
+
+Use `recordings: {name: {title: ...}}` and `recording: name` when independently manipulated
+copies share a recording. Otherwise each inline row gets its own recording identity. Optional
+deck labels belong to contribution intervals; Setcast never assigns them automatically.
+
+`presentation.mode` can force `playlist` or `dj` without changing the timeline. DJ mode shows
+current contributors; playlist mode emphasizes one. Automatic focus selects the latest current
+non-tail run. `focus: [{at: 0, plays: [first]}]` pins emphasis until that run ends; an empty list
+restores automatic focus. Tags such as `tease` describe participation but never change focus.
+
+See the [complete authoring contract](docs/dj-mix-model.md) for scopes, shared drops, tails,
+validation and evidence. [Theme and plugin APIs](docs/theme-plugin-contract.md) describe the
+renderer and CSS contracts. `setcast inspect --at 4:20` explains the resolved credits and
+boundary origins; `--json` exports the finite document with IDs.
 
 `output.gl: auto` uses ANGLE on macOS and lets Chromium choose its backend elsewhere.
 Set `gl: default` to use Chromium's choice on macOS too, or select `angle`, `egl`,
@@ -176,12 +203,13 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | command            | does                                                                                             |
 | ------------------ | ------------------------------------------------------------------------------------------------ |
 | `setcast init`     | scaffolds a project; `--demo` includes a generated demo track                                    |
-| `setcast import`   | turns a tracklist file (plain text or `.cue`) into `tracks:`; `--write` adds them to the project |
-| `setcast analyze`  | reads the audio and drafts drop and breakdown events on the beat grid, plus the tempo; `--write` merges them |
+| `setcast import`   | turns a tracklist file (plain text or `.cue`) into `plays:` with source evidence; `--write` replaces that list after validation |
+| `setcast analyze`  | reads the audio and drafts mix drop and breakdown annotations plus tempo, without snapping; `--write` accepts and merges them |
 | `setcast preview`  | opens the set in Remotion Studio                                                                 |
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment                   |
+| `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |
 | `setcast live`     | planned: live overlay mode                                                                       |
 
@@ -238,12 +266,17 @@ into `out/themes/contact-*.jpg`, which helps when comparing.
 
 Modulation routes expose audio as `--mod-<target>` variables, so
 `box-shadow: 0 0 calc(var(--mod-panel-glow) * 60px) var(--accent)` reacts to the music with no
-code. The stage root also carries the timeline itself – `data-section`, `data-deck`,
+code. The stage root also carries the timeline itself – `data-section`, `data-current-plays`,
 `--set-progress`, and seconds in `--since-drop`, `--until-drop`, `--until-breakdown`,
 `--since-rewind`, `--section-time` and friends – so `clamp(0, 1 - var(--since-drop) / 0.7, 1)` is
-a flash on every drop, `width: calc(var(--set-progress) * 100%)` is a progress bar, and with
+a flash on a mix drop, `width: calc(var(--set-progress) * 100%)` is a progress bar, and with
 `bpm:` set, `--beat` and `--bar` run 0..1 on the grid so
 `scale(calc(1 + 0.4 * (1 - var(--beat))))` pulses in time.
+
+Each play panel has its own `data-play`, optional `data-deck`, local `data-section`, and
+`--since-entry`. A route with `scope: play` reads that panel's local cues and writes its own
+`--mod-*` values. Shared drops reach every named participant; master audio features remain
+shared. The stage has no single global deck. See the [CSS contract](docs/theme-plugin-contract.md).
 
 Vertical output is `output: { width: 1080, height: 1920 }`. The stage is a CSS size container, so
 a theme adapts with `@container (aspect-ratio < 1) { ... }` (sterile-tech does). Plugins
@@ -253,24 +286,22 @@ a theme adapts with `@container (aspect-ratio < 1) { ... }` (sterile-tech does).
 
 For an excerpt from a longer mix, set `clockOffset: 14:03` to show the original mix time.
 A 5:31 excerpt then opens at `14:03 / 19:34`. The default is `0`; seconds and timecodes
-are accepted. This changes only the displayed clock and endpoint. Track and event times,
+are accepted. This changes only the displayed clock and endpoint. Play and annotation times,
 `beatOffset`, `--range`, `--at`, and YouTube chapters still use the audio file's own timeline.
 Set `clockTotal: 56:06` to replace the displayed endpoint with the full mix duration, showing
 `14:03 / 56:06`. This accepts a positive duration in seconds or as a timecode and does not
 extend the rendered video.
-Use `trackNumberOffset: 2` when the excerpt begins with track 3. The panel then displays
-`03`, `04`, and so on, without a total because the excerpt does not contain the full tracklist.
-The default `0` keeps the usual current/total counter. This does not change event indices,
-deck assignment, or track timing.
-
 ## How it works
 
-Everything in a set is a timestamped event on one timeline (`track_start`, `drop`, `breakdown`,
-…). Visual behavior subscribes to events, and audio features drive CSS custom properties through
-a modulation matrix. Motion is computed from the timeline for each frame, never from the
-browser's clock, so every frame renders the same way every time. The same components are
-designed to run live as an OBS overlay later, driven by events from DJ hardware ("stream once,
-publish twice"); v1 is the offline render.
+The finite mix document stores recordings, plays, credited intervals, editorial listings,
+annotations and focus directives. An indexed timeline projects them at any time. A play can
+enter, leave and return; any number can overlap. Annotations describe music without changing
+participation. Audio features drive CSS through a modulation matrix.
+
+Every frame derives from the finalized document and original mix time, including render slices.
+The renderer owns frame delivery; Setcast owns the timeline, motion and component contract.
+Live capture remains future work. Reproducing a historical live display would also require
+observation times and corrections, beyond the finalized offline document.
 
 ## Renderer
 

@@ -1,6 +1,8 @@
 import type { Pcm } from './audio.ts';
-import type { SetEvent } from './events.ts';
 import { clamp } from './motion.ts';
+export type DraftAnnotation =
+  | { kind: 'drop'; at: number; intensity: number }
+  | { kind: 'breakdown'; at: number };
 
 /** Seconds between analysis frames: ~86 per second, fine enough to hold a beat grid. */
 export const HOP_SECONDS = 0.0116;
@@ -123,7 +125,7 @@ export interface SectionOptions {
 export function detectSections(
   energy: Envelope,
   { sensitivity = 0.5, minSeconds = 8 }: SectionOptions = {},
-): SetEvent[] {
+): DraftAnnotation[] {
   const bass = movingAverage(energy.bass, Math.round(1 / energy.hop));
   const loudAbove = 0.75 - 0.4 * clamp(sensitivity, 0, 1);
   const runs = segment(bass, loudAbove, loudAbove - 0.2, Math.round(minSeconds / energy.hop));
@@ -131,8 +133,12 @@ export function detectSections(
   // The first run is where the set already was, not a change; only what follows is an event.
   return runs.slice(1).map((run) => {
     const time = round(run.start * energy.hop);
-    if (!run.loud) return { type: 'breakdown', time };
-    return { type: 'drop', time, intensity: round(clamp(mean(bass, run.start, run.end), 0, 1)) };
+    if (!run.loud) return { kind: 'breakdown', at: time };
+    return {
+      kind: 'drop',
+      at: time,
+      intensity: round(clamp(mean(bass, run.start, run.end), 0, 1)),
+    };
   });
 }
 
@@ -161,8 +167,12 @@ export function nearestBeat(energy: Envelope, bpm: number, time: number, span = 
 }
 
 /** Every drafted event moved onto its nearest beat. */
-export const snapToBeats = (events: SetEvent[], energy: Envelope, bpm: number): SetEvent[] =>
-  events.map((event) => ({ ...event, time: round(nearestBeat(energy, bpm, event.time)) }));
+export const snapToBeats = (
+  events: DraftAnnotation[],
+  energy: Envelope,
+  bpm: number,
+): DraftAnnotation[] =>
+  events.map((event) => ({ ...event, at: round(nearestBeat(energy, bpm, event.at)) }));
 
 /** Seconds into the audio of the first beat: where CSS `--beat` should start from. */
 export function beatOffset(energy: Envelope, bpm: number): number {

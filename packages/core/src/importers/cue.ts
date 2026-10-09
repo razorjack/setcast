@@ -1,4 +1,4 @@
-import type { TrackEntry } from '../config.ts';
+import type { ImportedPlay } from './plain.ts';
 import type { Importer } from './plain.ts';
 
 const TRACK = /^\s*TRACK\s+\d+/im;
@@ -20,12 +20,12 @@ export const cueImporter: Importer = {
   name: 'cue',
   test: (text) => TRACK.test(text) && /^\s*INDEX\s+01\s/im.test(text),
   parse(text) {
-    const tracks: TrackEntry[] = [];
-    let current: Partial<TrackEntry> | null = null;
+    const tracks: ImportedPlay[] = [];
+    let current: Partial<ImportedPlay> | null = null;
 
     const finishTrack = () => {
-      if (current?.time === undefined || !current.title) return;
-      tracks.push({ time: current.time, artist: current.artist ?? 'ID', title: current.title });
+      if (current?.at === undefined || !current.title) return;
+      tracks.push({ at: current.at, artist: current.artist, title: current.title });
     };
 
     for (const line of text.split('\n')) {
@@ -38,11 +38,11 @@ export const cueImporter: Importer = {
     }
     finishTrack();
 
-    return tracks.toSorted((a, b) => a.time - b.time);
+    return tracks.toSorted((a, b) => a.at - b.at);
   },
 };
 
-function readField(track: Partial<TrackEntry>, line: string): void {
+function readField(track: Partial<ImportedPlay>, line: string): void {
   const match = FIELD.exec(line);
   if (!match) return;
 
@@ -51,7 +51,7 @@ function readField(track: Partial<TrackEntry>, line: string): void {
   if (field === 'PERFORMER') track.artist = unquote(match[2]!);
   if (field === 'INDEX') {
     const time = indexTime(match[2]!);
-    if (time !== null) track.time = time;
+    if (time !== null) track.at = time;
   }
 }
 
@@ -59,5 +59,6 @@ function readField(track: Partial<TrackEntry>, line: string): void {
 function indexTime(value: string): number | null {
   const match = INDEX.exec(value);
   if (!match) return null;
+  if (Number(match[2]) >= 60 || Number(match[3]) >= 75) return null;
   return Number(match[1]) * 60 + Number(match[2]) + Number(match[3]) / 75;
 }

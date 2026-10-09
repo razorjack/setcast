@@ -1,13 +1,11 @@
 import { z } from 'zod';
-import { DeckSchema, EventSchema, TimeSchema, TrackSchema } from './events.ts';
+import { TimeSchema } from './time-schema.ts';
+import { MixInputShape } from './mix-schema.ts';
 import { ModRouteSchema } from './modulation.ts';
 
 /** A path relative to the project directory; `loadProject` checks that it stays inside it. */
 const relativePath = (what: string, required = `${what} must be a file path.`) =>
   z.string({ error: required }).min(1, { error: `${what} path cannot be empty.` });
-
-export const TrackEntrySchema = TrackSchema.extend({ time: TimeSchema });
-export type TrackEntry = z.infer<typeof TrackEntrySchema>;
 
 const GraphicsBackendSchema = z.enum(
   ['auto', 'default', 'angle', 'egl', 'swiftshader', 'swangle', 'vulkan', 'angle-egl'],
@@ -125,17 +123,6 @@ export const ProjectConfigSchema = z
       clockTotal: TimeSchema.refine((seconds) => seconds > 0, {
         error: 'clockTotal must be greater than 0. Use the full mix duration, e.g. 56:06.',
       }).optional(),
-      trackNumberOffset: z
-        .number({
-          error: 'trackNumberOffset must be a nonnegative whole number. Use 2 to start at track 3.',
-        })
-        .int({
-          error: 'trackNumberOffset must be a nonnegative whole number. Use 2 to start at track 3.',
-        })
-        .min(0, {
-          error: 'trackNumberOffset must be a nonnegative whole number. Use 2 to start at track 3.',
-        })
-        .default(0),
       audio: relativePath(
         'audio',
         'audio is required: the path to your mix file, e.g. assets/mix.wav.',
@@ -151,8 +138,16 @@ export const ProjectConfigSchema = z
         })
         .default('remotion'),
       output: OutputSchema.prefault({}),
-      tracks: z.array(TrackEntrySchema, { error: 'tracks must be a YAML list.' }).default([]),
-      events: z.array(EventSchema, { error: 'events must be a YAML list.' }).default([]),
+      ...MixInputShape,
+      presentation: z
+        .strictObject({
+          mode: z
+            .enum(['auto', 'playlist', 'dj'], {
+              error: 'Choose auto, playlist or dj presentation.',
+            })
+            .default('auto'),
+        })
+        .prefault({}),
       modulation: z.array(ModRouteSchema, { error: 'modulation must be a YAML list.' }).default([]),
       /**
        * One block or a list; `resolveVisualizerConfigs` checks each against its own schema.
@@ -168,10 +163,6 @@ export const ProjectConfigSchema = z
         .optional(),
       /** Seconds into the audio of a downbeat, so `--bar` lines up with the music. */
       beatOffset: TimeSchema.default(0),
-      deckOrder: z
-        .array(DeckSchema, { error: 'deckOrder must be a YAML list of decks.' })
-        .min(1, { error: 'deckOrder must name at least one deck.' })
-        .default(['A', 'B']),
     },
     { error: 'setcast.yaml must be a YAML mapping of keys and values, not a list.' },
   )

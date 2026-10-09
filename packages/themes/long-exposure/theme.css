@@ -210,7 +210,7 @@
 .theme-long-exposure .sc-overview-played .sc-overview-high {
   fill: var(--amber);
 }
-.theme-long-exposure .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-long-exposure .sc-overview-mark[data-type='drop'] {
   stroke: var(--lime);
   stroke-width: 0.12cqw;
 }
@@ -243,8 +243,8 @@
 .theme-long-exposure .sc-panel {
   isolation: isolate;
   max-width: 64cqw;
-  opacity: clamp(0, var(--show, 1) * 1.4, 1);
-  transform: translateX(calc((1 - var(--show, 1)) * -6cqw));
+  opacity: clamp(0, var(--presence, 1) * 1.4, 1);
+  transform: translateX(calc((1 - var(--presence, 1)) * -6cqw));
 }
 .theme-long-exposure .sc-panel::before {
   content: '';
@@ -322,7 +322,7 @@
 /* up next */
 .theme-long-exposure .sc-next {
   gap: 0.3cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-long-exposure .sc-next-label {
   font-family: var(--font-mono);

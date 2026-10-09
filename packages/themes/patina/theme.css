@@ -216,7 +216,7 @@
 .theme-patina .sc-overview-played .sc-overview-high {
   fill: var(--bronze);
 }
-.theme-patina .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-patina .sc-overview-mark[data-type='drop'] {
   stroke: var(--verdigris);
   stroke-width: 0.1cqw;
 }
@@ -248,7 +248,7 @@
   align-items: center;
   text-align: center;
   translate: -50% 0;
-  opacity: clamp(0, var(--show, 1) * 1.2, 1);
+  opacity: clamp(0, var(--presence, 1) * 1.2, 1);
 }
 .theme-patina .sc-panel-head {
   gap: 0.8cqw;
@@ -311,7 +311,7 @@
   bottom: calc(var(--margin) * 0.9);
   max-width: 22cqw;
   gap: 0.2cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-patina .sc-next-label {
   font-family: var(--font-italic);
@@ -385,4 +385,8 @@
   .theme-patina .sc-next-title {
     font-size: 2.4cqw;
   }
+}
+
+.theme-patina[data-presentation='dj'] .sc-panel {
+  background: rgb(11 12 10 / 0.9);
 }

@@ -1,59 +1,53 @@
-# Setcast demo project. Audio is generated: run `vp run demo-assets` from the repo root.
+# Synthetic attribution fixture over the generated demo audio, not a measured DJ performance.
 title: Setcast Demo Session
 audio: assets/demo-set.wav
 background: assets/bg.png
 theme: sterile-tech
-renderer: remotion
 bpm: 174
+output: { width: 1920, height: 1080, fps: 30, file: out/demo.mp4 }
 
-output:
-  width: 1920
-  height: 1080
-  fps: 30
-  file: out/demo.mp4
-
-tracks:
-  - time: 0:00
+plays:
+  - id: foundation
+    at: 0:00
+    until: 1:35
     artist: Null Vector
     title: Sterile Room
     label: Setcast Recordings
-  - time: 1:17
+  - id: visitor
+    at: 1:17
     artist: Oxide Array
     title: Rust Protocol
     label: Setcast Recordings
-  - time: 1:50
-    artist: ID
+    contributions:
+      - { from: 0:24, until: 0:29, tags: [tease] }
+      - { from: 0:31, until: 0:38, tags: [tease] }
+      - { from: 1:10, until: 1:55, deck: B }
+  - id: closer
+    at: 1:50
     title: ID
-    deck: C
+    contributions:
+      - { from: 1:45, until: end, deck: C }
 
-events:
-  - type: buildup
-    time: 0:22
-  - type: drop
-    time: 0:33.1
-    intensity: 0.85
-  - type: breakdown
-    time: 1:17.2
-  - type: buildup
-    time: 1:39.3
-  - type: rewind
-    time: 1:48
-  - type: drop
-    time: 1:50.3
+  - id: texture
+    title: Broken Signal
+    artist: Phase Memory
+    contributions:
+      - { from: 1:12, until: 1:20, parts: [vocals], tags: [loop], deck: Loop bus }
+      - { from: 1:20, until: 1:25, tail: true, tags: [echo-out], deck: Loop bus }
 
-# Theme routes stay active; a route with the same target overrides the theme's.
+annotations:
+  - { kind: buildup, at: 0:22 }
+  - { kind: drop, at: 0:33.1, intensity: 0.85, participants: [foundation, visitor] }
+  - { kind: breakdown, at: 1:17.2 }
+  - { kind: technique, at: 1:10, until: 1:35, participants: [foundation, visitor], tags: [blend] }
+  - { kind: buildup, at: 1:39.3 }
+  - { kind: rewind, at: 1:48, participants: [visitor, closer] }
+  - { kind: drop, at: 1:50.3, participants: [visitor, closer] }
+
+focus:
+  - { at: 0, plays: [foundation] }
+  - { at: 1:10, plays: [] }
+
 modulation:
-  - source: bass
-    target: bg-zoom
-    range: [1, 1.06]
-    curve: pow2
-    smooth: 0.08
-    when: drop
-  # A timeline source: the panel glows for two seconds after every track change.
-  - source: since:track_start
-    target: panel-glow
-    window: 2
-    curve: pow2
-
-# No visualizer: key, so the theme draws what it is designed around (a spectrum for sterile-tech).
-# visualizer: { name: spectrum, bars: 48, gain: 1.1 }
+  - { source: bass, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.08, when: drop }
+  - { source: since:drop, scope: play, target: panel-glow, window: 2, curve: pow2 }

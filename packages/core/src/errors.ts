@@ -36,7 +36,7 @@ export class ConfigError extends SetcastError {
   }
 }
 
-/** Flattens Zod issues into `{ path: 'tracks[2].time', message }` pairs. */
+/** Flattens Zod issues into `{ path: 'plays[2].at', message }` pairs. */
 export function zodIssues(error: z.ZodError): Issue[] {
   return error.issues.map((issue) => ({
     path: issue.path.reduce(appendPath, ''),

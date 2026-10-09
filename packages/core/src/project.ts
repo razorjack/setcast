@@ -1,5 +1,5 @@
 import type { SetEnvelope } from './analysis.ts';
-import type { SetEvent } from './events.ts';
+import type { MixDocument } from './mix-schema.ts';
 import type { ModRoute } from './modulation.ts';
 import type { VisualizerConfig } from './visualizers.ts';
 
@@ -13,8 +13,6 @@ export type ResolvedProject = {
   clockOffset: number;
   /** Displayed total duration, or null to use the offset plus audio duration. */
   clockTotal: number | null;
-  /** Display-only track numbering offset; timeline indices remain zero-based. */
-  trackNumberOffset: number;
   audio: string;
   background: string | null;
   theme: string;
@@ -23,8 +21,8 @@ export type ResolvedProject = {
   width: number;
   height: number;
   fps: number;
-  /** Tracks merged in as `track_start` events, sorted by time. */
-  events: SetEvent[];
+  mix: MixDocument;
+  presentation: 'playlist' | 'dj';
   /** Theme defaults followed by the project's own routes. */
   modulation: ModRoute[];
   /** The `visualizer:` entries in drawing order, each after its own schema filled in the defaults. */

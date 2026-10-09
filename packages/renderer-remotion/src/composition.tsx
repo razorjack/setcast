@@ -104,14 +104,14 @@ function useLoadedChannel({ audioData, dataOffsetInSeconds }: WindowedAudio): Ch
 /** Translates Remotion's frame into a Setcast `RenderFrame` and renders the Stage. */
 function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: AudioAnalyzer }) {
   const frame = useCurrentFrame();
-  const { fps, width, height, durationInFrames } = useVideoConfig();
-  const timeline = useMemo(() => new Timeline(project.events), [project.events]);
+  const { fps, width, height } = useVideoConfig();
+  const timeline = useMemo(() => new Timeline(project.mix), [project.mix]);
   const timeSeconds = frame / fps;
-  const events = timeline.at(timeSeconds);
+  const mix = timeline.at(timeSeconds);
   const modulation = evaluateModulation(project.modulation, {
     time: timeSeconds,
     fps,
-    events,
+    mix,
     analyzer,
     bpm: project.bpm,
     beatOffset: project.beatOffset,
@@ -123,8 +123,8 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
     timeSeconds,
     audio: analyzer.featuresAt(timeSeconds),
     analyzer,
-    events,
-    composition: { width, height, durationSeconds: durationInFrames / fps, project },
+    mix,
+    composition: { width, height, durationSeconds: project.mix.duration / 1_000_000, project },
     modulation,
   };
 

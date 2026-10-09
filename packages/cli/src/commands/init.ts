@@ -38,8 +38,8 @@ interface InitAnswers {
 interface ProjectContent {
   audio: string;
   bpm: number | undefined;
-  tracks: Record<string, string | number>[];
-  events: Record<string, string | number>[];
+  plays: Record<string, string | number>[];
+  annotations: Record<string, string | number>[];
 }
 
 export const help = `setcast init [dir] [--demo] [--yes]
@@ -109,8 +109,8 @@ async function prepareProject(dir: string, audio: string): Promise<ProjectConten
 const placeholderProject = (audio: string): ProjectContent => ({
   audio,
   bpm: undefined,
-  tracks: [{ time: '0:00', artist: 'ID', title: 'ID' }],
-  events: [],
+  plays: [{ at: '0:00', artist: 'ID', title: 'ID' }],
+  annotations: [],
 });
 
 async function writeDemoTrack(dir: string): Promise<DemoAudio> {
@@ -119,23 +119,23 @@ async function writeDemoTrack(dir: string): Promise<DemoAudio> {
   return demo;
 }
 
-/** Tracks and events placed on the demo's own arrangement, so the scaffold renders something real. */
+/** Tracks and annotations placed on the demo's own arrangement, so the scaffold renders something real. */
 function demoProject(sections: DemoSection[]): ProjectContent {
   const at = (index: number) => formatTime(sections[index]!.startSeconds);
   return {
     audio: 'assets/demo-set.wav',
     bpm: 174,
-    tracks: [
-      { time: '0:00', artist: 'Null Vector', title: 'Sterile Room', label: 'Setcast Recordings' },
-      { time: at(3), artist: 'Oxide Array', title: 'Rust Protocol', label: 'Setcast Recordings' },
-      { time: at(5), artist: 'ID', title: 'ID' },
+    plays: [
+      { at: '0:00', artist: 'Null Vector', title: 'Sterile Room', label: 'Setcast Recordings' },
+      { at: at(3), artist: 'Oxide Array', title: 'Rust Protocol', label: 'Setcast Recordings' },
+      { at: at(5), artist: 'ID', title: 'ID' },
     ],
-    events: [
-      { type: 'buildup', time: at(1) },
-      { type: 'drop', time: at(2) },
-      { type: 'breakdown', time: at(3) },
-      { type: 'buildup', time: at(4) },
-      { type: 'drop', time: at(5) },
+    annotations: [
+      { kind: 'buildup', at: at(1) },
+      { kind: 'drop', at: at(2) },
+      { kind: 'breakdown', at: at(3) },
+      { kind: 'buildup', at: at(4) },
+      { kind: 'drop', at: at(5) },
     ],
   };
 }
@@ -148,7 +148,7 @@ async function writeProjectConfig(
   const yaml = [
     '# Setcast project. Paths are relative to this directory. Docs: https://github.com/razorjack/setcast',
     stringify(configFor(answers, project)),
-    '# events: drop, double_drop, breakdown, buildup, rewind, switch (deck: B), chapter (title: …)',
+    '# annotations: {at: 0:30, kind: drop, participants: [play-id, other-id]}',
     '# modulation routes: { source: bass|mids|highs|rms|onset, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.1, when: drop }',
     '# visualizer: { name: spectrum, bars: 48 } or a list; without it the theme draws its own',
     '# import a tracklist:  setcast import tracklist.txt --write',
@@ -168,8 +168,8 @@ function configFor(answers: InitAnswers, project: ProjectContent): Record<string
     output: { width: 1920, height: 1080, fps: answers.fps, file: 'out/set.mp4' },
   };
   if (project.bpm) config.bpm = project.bpm;
-  config.tracks = project.tracks;
-  config.events = project.events;
+  config.plays = project.plays;
+  config.annotations = project.annotations;
   config.modulation = [];
   return config;
 }

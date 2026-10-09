@@ -5,7 +5,12 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
 import { ensureBrowser, renderMedia, renderStill, selectComposition } from '@remotion/renderer';
-import { SetcastError, type GraphicsBackend, type ResolvedProject } from '@setcast/core';
+import {
+  readMixDocument,
+  SetcastError,
+  type GraphicsBackend,
+  type ResolvedProject,
+} from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
 import { checkLocalServer } from './local-server.ts';
 import { probeAudio } from './probe.ts';
@@ -66,6 +71,7 @@ async function prepare(
   report: Report,
 ) {
   const { projectDir } = options;
+  readMixDocument(project.mix);
   await probeAudio(project, projectDir);
   await checkLocalServer();
   let downloadingBrowser = false;
@@ -266,6 +272,7 @@ export interface PreviewOptions extends EncodingOptions {
 
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
 export async function preview(project: ResolvedProject, options: PreviewOptions): Promise<void> {
+  readMixDocument(project.mix);
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));
   try {
     const propsFile = join(dir, 'props.json');

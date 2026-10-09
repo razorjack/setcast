@@ -1,24 +1,19 @@
 import { join, resolve } from 'node:path';
-import { drawsWholeSet, formatTimecode, type ResolvedProject, type SetEvent } from '@setcast/core';
+import { drawsWholeSet, type ResolvedProject } from '@setcast/core';
 import { loadProject, readSetEnvelope, type LoadedProject } from '@setcast/core/node';
+import { probeAudio } from '@setcast/renderer-remotion';
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
 
 /** Loads the project in `dir`; `theme` replaces the one its setcast.yaml names. */
 export async function load(dir = '.', theme?: string): Promise<LoadedProject> {
-  const loaded = await loadProject(resolve(dir), { themes, theme });
+  const loaded = await loadProject(resolve(dir), {
+    themes,
+    theme,
+    probeDuration: (audio, root) => probeAudio({ audio }, root),
+  });
   for (const warning of loaded.warnings) warn(warning);
   return loaded;
-}
-
-export function warnEventsAfterAudio(events: readonly SetEvent[], duration: number): void {
-  for (const event of events) {
-    if (event.time > duration) {
-      warn(
-        `${event.type} event at ${formatTimecode(event.time)} is after the audio ends at ${formatTimecode(duration)}.`,
-      );
-    }
-  }
 }
 
 /**

@@ -1,34 +1,37 @@
 import { expect, test } from 'vite-plus/test';
 import { chapterProblems, chapters } from './chapters.ts';
-import type { SetEvent } from './events.ts';
+import { normalizeMix } from './mix.ts';
 
-test('chapters list tracks and chapter events, forcing the first to 00:00', () => {
-  expect(
-    chapters([
-      { type: 'track_start', time: 2, title: 'Stigma', artist: 'Noisia' },
-      { type: 'chapter', time: 3600, title: 'Second hour' },
-      { type: 'drop', time: 60, intensity: 1 },
-      { type: 'track_start', time: 225, title: 'ID', artist: 'ID' },
-      { type: 'chapter', time: 225, title: 'Guest mix' },
-    ]),
-  ).toEqual(['00:00 Noisia - Stigma', '03:45 Guest mix', '01:00:00 Second hour']);
+test('chapter export preserves custom times and explicit disabling', () => {
+  const mix = normalizeMix(
+    {
+      chapters: [
+        { at: 2, title: 'Intro' },
+        { at: 225, title: 'Guest mix' },
+        { at: 3600, title: 'Second hour' },
+      ],
+    },
+    4000,
+  );
+  expect(chapters(mix)).toEqual(['00:02 Intro', '03:45 Guest mix', '01:00:00 Second hour']);
+  expect(chapterProblems(mix)[0]).toMatch(/first chapter.*00:00/);
+  expect(chapters(normalizeMix({ plays: [{ at: 0, title: 'Track' }], chapters: [] }, 300))).toEqual(
+    [],
+  );
 });
-
-test('chapterProblems reports what would turn YouTube chapters off', () => {
-  const short: SetEvent[] = [
-    { type: 'track_start', time: 0, title: 'One', artist: 'A' },
-    { type: 'track_start', time: 6, title: 'Two', artist: 'B' },
-    { type: 'track_start', time: 300, title: 'Three', artist: 'C' },
-  ];
-  expect(chapterProblems(short)).toEqual([
-    expect.stringContaining('"A - One" runs 6s'),
-  ] satisfies unknown[]);
-
-  expect(chapterProblems(short.slice(0, 2))).toEqual([
-    expect.stringContaining('Only 2 chapters'),
-    expect.stringContaining('runs 6s'),
-  ] satisfies unknown[]);
-
-  const spaced = short.map((track, index) => ({ ...track, time: index * 150 }));
-  expect(chapterProblems(spaced)).toEqual([]);
+test('platform validation checks rounded export times and the final chapter', () => {
+  const mix = normalizeMix(
+    {
+      plays: [
+        { at: 0, title: 'One' },
+        { at: 6, title: 'Two' },
+        { at: 300, title: 'Three' },
+      ],
+    },
+    305,
+  );
+  expect(chapterProblems(mix)).toEqual([
+    expect.stringContaining('"One" runs 6s'),
+    expect.stringContaining('"Three" runs 5s'),
+  ]);
 });

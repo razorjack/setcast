@@ -1,47 +1,54 @@
-import type { EventType } from './events.ts';
 import { clamp } from './motion.ts';
-import { lastEvent, since, until, type EventState } from './timeline.ts';
+import {
+  lastAnnotations,
+  sinceAnnotation,
+  untilAnnotation,
+  type MixState,
+  type CurrentPlay,
+} from './timeline.ts';
 
-/**
- * Seconds handed to CSS are capped here. A custom property cannot hold Infinity, and every effect
- * a theme would write treats "a minute ago" and "never" the same way.
- */
 export const SECONDS_CAP = 60;
-
-/** Stage-root attributes, so CSS can select on the current section and the deck in front. */
-export const stageData = (state: EventState) => ({
-  'data-section': state.section ?? undefined,
-  'data-deck': state.deck ?? undefined,
+export const stageData = (state: MixState) => ({
+  'data-section': state.mixSection?.kind,
+  'data-current-plays': state.currentPlayCount,
+  'data-shared-drop':
+    state.mixSection?.kind === 'drop' &&
+    (lastAnnotations(state, 'drop')[0]?.participants?.length ?? 0) > 1,
 });
 
-/** Event types that get `--since-<name>` and `--until-<name>`. Double drops count as drops. */
-const TIMED_EVENTS: [type: EventType, cssName: string][] = [
-  ['track_start', 'track'],
-  ['drop', 'drop'],
-  ['breakdown', 'breakdown'],
-  ['buildup', 'buildup'],
-  ['rewind', 'rewind'],
-];
-
-/**
- * Stage-root custom properties: the event timeline as numbers CSS can do arithmetic with.
- * `--since-*` and `--until-*` are seconds capped at `SECONDS_CAP`; `--drop-intensity` and
- * `--set-progress` are 0..1.
- */
-export function stageVars(
-  state: EventState,
-  time: number,
-  duration: number,
-): Record<string, string> {
+export function cueVars(state: MixState, play?: CurrentPlay): Record<string, string> {
+  const scope = play ? { play: play.play.id } : undefined;
   const vars: Record<string, string> = {};
-  for (const [type, cssName] of TIMED_EVENTS) {
-    vars[`--since-${cssName}`] = cssSeconds(since(state, type, time));
-    vars[`--until-${cssName}`] = cssSeconds(until(state, type, time));
+  for (const kind of ['drop', 'breakdown', 'buildup', 'rewind']) {
+    vars[`--since-${kind}`] = cssSeconds(sinceAnnotation(state, kind, scope, play?.run));
+    vars[`--until-${kind}`] = cssSeconds(untilAnnotation(state, kind, scope, play?.run));
   }
-  vars['--drop-intensity'] = cssNumber(lastEvent(state, 'drop')?.intensity ?? 0);
-  vars['--section-time'] = cssSeconds(state.section ? time - state.sectionStart : Infinity);
-  vars['--set-progress'] = cssNumber(duration > 0 ? clamp(time / duration, 0, 1) : 0);
+  const previousDrop = lastAnnotations(state, 'drop', scope)[0];
+  const drop =
+    previousDrop && (!play || previousDrop.at >= play.run.from) ? previousDrop : undefined;
+  vars['--drop-intensity'] = cssNumber(drop?.kind === 'drop' ? drop.intensity : 0);
+  vars['--drop-participants'] = String(drop?.participants?.length ?? 0);
+  const section = play ? play.section : state.mixSection;
+  vars['--section-time'] = cssSeconds(
+    section ? (state.time - section.start) / 1_000_000 : Infinity,
+  );
   return vars;
+}
+
+export function stageVars(state: MixState, time: number, duration: number): Record<string, string> {
+  return {
+    ...cueVars(state),
+    '--set-progress': cssNumber(duration > 0 ? clamp(time / duration, 0, 1) : 0),
+    '--current-plays': String(state.currentPlayCount),
+  };
+}
+
+export function playVars(state: MixState, play: CurrentPlay): Record<string, string> {
+  return {
+    ...cueVars(state, play),
+    '--since-entry': cssSeconds((state.time - play.run.from) / 1_000_000),
+    '--until-exit': cssSeconds((play.run.until - state.time) / 1_000_000),
+  };
 }
 
 /**

@@ -1,6 +1,6 @@
-import { preview, probeAudio, type PreviewOptions } from '@setcast/renderer-remotion';
+import { preview, type PreviewOptions } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber } from '../args.ts';
-import { load, warnEventsAfterAudio, withSetEnvelope } from '../project.ts';
+import { load, withSetEnvelope } from '../project.ts';
 import { dim, intro, log } from '../ui.ts';
 
 export const help = `setcast preview [dir] [--port N] [--theme name]
@@ -21,8 +21,6 @@ export async function run(argv: string[]): Promise<void> {
   intro('preview');
   const loaded = await load(options.dir, options.theme);
   const { dir } = loaded;
-  const duration = await probeAudio(loaded.project, dir);
-  warnEventsAfterAudio(loaded.project.events, duration);
   const project = await withSetEnvelope(loaded);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
 

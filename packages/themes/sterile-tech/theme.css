@@ -334,11 +334,11 @@
 .theme-sterile-tech .sc-overview-played .sc-overview-bass {
   fill: color-mix(in srgb, var(--accent-2) 65%, transparent);
 }
-.theme-sterile-tech .sc-overview-mark[data-type='track_start'] {
+.theme-sterile-tech .sc-overview-mark[data-type='listing'] {
   stroke: var(--fg-dim);
   stroke-width: var(--hairline);
 }
-.theme-sterile-tech .sc-overview-mark:is([data-type='drop'], [data-type='double_drop']) {
+.theme-sterile-tech .sc-overview-mark[data-type='drop'] {
   stroke: var(--accent);
   stroke-width: 0.1cqw;
 }
@@ -378,7 +378,7 @@
   color: var(--fg-dim);
 }
 
-/* now playing: a chamfered plate of frosted glass; --show is presence (spring in, dwell, leave) */
+/* now playing: a chamfered plate of frosted glass; --presence follows run dwell or persistent DJ credits (spring in, dwell, leave) */
 .theme-sterile-tech .sc-panel {
   padding: 1.9cqw 2.3cqw 2cqw 2.2cqw;
   background-color: var(--panel-bg);
@@ -392,8 +392,8 @@
     0 1.55cqw 3.1cqw rgb(0 0 0 / 0.45),
     0 0 calc((var(--mod-panel-glow, 0) + var(--tension)) * 3.6cqw)
       color-mix(in srgb, var(--accent) 35%, transparent);
-  opacity: clamp(0, var(--show, 1) * 1.6, 1);
-  transform: translateY(calc((1 - var(--show, 1)) * 3cqh));
+  opacity: clamp(0, var(--presence, 1) * 1.6, 1);
+  transform: translateY(calc((1 - var(--presence, 1)) * 3cqh));
 }
 .theme-sterile-tech .sc-panel::before {
   content: '';
@@ -405,26 +405,26 @@
   background: var(--deck);
   filter: brightness(calc(1 + var(--drop-flash) * 2.4));
   box-shadow: 0 0 calc(var(--drop-flash) * 1.4cqw) var(--deck);
-  transform: scaleY(clamp(0, var(--show, 1) / 0.4, 1));
+  transform: scaleY(clamp(0, var(--presence, 1) / 0.4, 1));
 }
 /* the stripe draws first, then each line of text a moment after the one above it */
 .theme-sterile-tech .sc-panel-head {
-  opacity: clamp(0, (var(--show, 1) - 0.25) / 0.45, 1);
+  opacity: clamp(0, (var(--presence, 1) - 0.25) / 0.45, 1);
 }
 .theme-sterile-tech .sc-artist {
-  opacity: clamp(0, (var(--show, 1) - 0.35) / 0.45, 1);
+  opacity: clamp(0, (var(--presence, 1) - 0.35) / 0.45, 1);
 }
 .theme-sterile-tech .sc-title {
-  opacity: clamp(0, (var(--show, 1) - 0.45) / 0.45, 1);
+  opacity: clamp(0, (var(--presence, 1) - 0.45) / 0.45, 1);
 }
 .theme-sterile-tech .sc-label {
-  opacity: clamp(0, (var(--show, 1) - 0.55) / 0.45, 1);
+  opacity: clamp(0, (var(--presence, 1) - 0.55) / 0.45, 1);
 }
-.theme-sterile-tech[data-section='double_drop'] .sc-panel::before {
-  background: linear-gradient(var(--deck-a) 50%, var(--deck-b) 50%);
+.theme-sterile-tech .sc-panel[data-shared-drop='true']::before {
+  background: linear-gradient(var(--accent) 50%, var(--accent-2) 50%);
 }
-.theme-sterile-tech[data-section='double_drop'] .sc-set-title::before {
-  background: linear-gradient(135deg, var(--deck-a) 50%, var(--deck-b) 50%);
+.theme-sterile-tech[data-shared-drop='true'] .sc-set-title::before {
+  background: linear-gradient(135deg, var(--accent) 50%, var(--accent-2) 50%);
 }
 .theme-sterile-tech .sc-panel-head {
   gap: 1.1cqw;
@@ -487,7 +487,7 @@
 /* up next: fades in over the last seconds of a track, gone the moment the next one starts */
 .theme-sterile-tech .sc-next {
   gap: 0.3cqw;
-  opacity: clamp(0, (8 - var(--until-track, 60)) / 1.5, 1);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-sterile-tech .sc-next-label {
   font-family: var(--font-mono);

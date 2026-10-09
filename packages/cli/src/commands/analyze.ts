@@ -9,15 +9,16 @@ import {
   formatTime,
   formatTimecode,
   SetcastError,
-  snapToBeats,
+  ProjectConfigSchema,
+  compileMix,
   summarizeEnvelope,
   type Envelope,
   type Pcm,
-  type SetEvent,
+  type DraftAnnotation,
 } from '@setcast/core';
 import { CONFIG_FILE, decodeMono, type LoadedProject } from '@setcast/core/node';
 import { isSeq, parseDocument, stringify, type Document } from 'yaml';
-import { load, warnEventsAfterAudio } from '../project.ts';
+import { load } from '../project.ts';
 import { parseCommandArgs } from '../args.ts';
 import {
   accent,
@@ -36,10 +37,10 @@ import {
 
 export const help = `setcast analyze [dir] [--sensitivity 0.5] [--write]
 
-Reads the project audio and drafts drop and breakdown events from its bass energy, plus the tempo.
-Drafted events snap to the beat grid when the project has a bpm or one was found.
+Reads the project audio and drafts drop and breakdown annotations from its bass energy, plus the tempo.
+Drafts retain detected times; review them before accepting with --write.
   --sensitivity  0..1; higher splits the set into more sections (default 0.5)
-  --write        add the drafted events, the tempo and its beatOffset to ${CONFIG_FILE}, keeping
+  --write        add the drafted annotations, the tempo and its beatOffset to ${CONFIG_FILE}, keeping
                  what is there
 
 Buildups follow musical intent rather than energy, so those stay yours to place.`;
@@ -57,7 +58,7 @@ interface AnalyzeOptions {
 }
 
 interface AnalysisDraft {
-  events: SetEvent[];
+  annotations: DraftAnnotation[];
   bpm: number | null;
   offset: number | null;
   seconds: number;
@@ -65,7 +66,7 @@ interface AnalysisDraft {
 }
 
 interface AnalysisChanges {
-  events: SetEvent[];
+  annotations: DraftAnnotation[];
   tempo: number | null;
   offset: number | null;
 }
@@ -76,26 +77,25 @@ export async function run(argv: string[]): Promise<void> {
   intro('analyze');
   const loaded = await load(options.dir);
   const analysis = await analyzeProject(loaded, options.sensitivity);
-  warnEventsAfterAudio(loaded.project.events, analysis.seconds);
 
   showAnalysis(analysis);
-  if (analysis.events.length === 0 && !analysis.bpm) {
-    outro('Nothing stood out. Raise --sensitivity, or write the events by hand.');
+  if (analysis.annotations.length === 0 && !analysis.bpm) {
+    outro('Nothing stood out. Raise --sensitivity, or write the annotations by hand.');
     return;
   }
 
   const changes = changesFor(loaded, analysis);
   if (!options.write) {
-    printDraft(analysis.events, changes);
+    printDraft(analysis.annotations, changes);
     return;
   }
 
-  if (changes.events.length === 0 && !changes.tempo) {
+  if (changes.annotations.length === 0 && !changes.tempo) {
     outro(`${CONFIG_FILE} already has all of these.`);
     return;
   }
 
-  const path = await updateProject(loaded.dir, changes);
+  const path = await updateProject(loaded, changes);
   showWrittenChanges(path, changes);
 }
 
@@ -122,22 +122,21 @@ async function analyzeProject(loaded: LoadedProject, sensitivity: number): Promi
   const analysis = await clearSpinnerOnError(spin, async () => {
     const pcm = await decodeMono(join(loaded.dir, loaded.project.audio));
     spin.message('Analyzing');
-    return draftFrom(pcm, loaded.config.bpm, sensitivity);
+    return draftFrom(pcm, sensitivity);
   });
 
   spin.stop(audioSummary(analysis));
   return analysis;
 }
 
-/** Sections and tempo read off the audio. Drafted events land on whichever beat grid the set has. */
-function draftFrom(pcm: Pcm, statedBpm: number | undefined, sensitivity: number): AnalysisDraft {
+/** Sections and tempo estimated from master audio, without modifying detected times. */
+function draftFrom(pcm: Pcm, sensitivity: number): AnalysisDraft {
   const energy = envelope(pcm);
   const bpm = estimateBpm(energy);
-  const grid = statedBpm ?? bpm;
   const drafted = detectSections(energy, { sensitivity });
 
   return {
-    events: grid ? snapToBeats(drafted, energy, grid) : drafted,
+    annotations: drafted,
     bpm,
     offset: bpm ? beatOffset(energy, bpm) : null,
     seconds: pcm.samples.length / pcm.sampleRate,
@@ -150,31 +149,31 @@ const audioSummary = ({ seconds, bpm }: AnalysisDraft) => {
   return `${formatDuration(seconds)} of audio${tempo}`;
 };
 
-function showAnalysis({ energy, events }: AnalysisDraft): void {
-  const lines = overviewLines(energy, events);
-  if (events.length > 0) {
+function showAnalysis({ energy, annotations }: AnalysisDraft): void {
+  const lines = overviewLines(energy, annotations);
+  if (annotations.length > 0) {
     // Padded names line the intensities up; trimmed because an uncoloured terminal shows the padding.
-    lines.push('', ...events.map((event) => eventLine(event).trimEnd()));
+    lines.push('', ...annotations.map((event) => eventLine(event).trimEnd()));
   }
   log.message(lines);
 }
 
 /**
  * The set's bass energy as one row of bars, lit where a drafted drop has the bass in, and the
- * drafted events marked under it: what the drafts were read from, to judge --sensitivity by.
+ * drafted annotations marked under it: what the drafts were read from, to judge --sensitivity by.
  */
-function overviewLines(energy: Envelope, events: SetEvent[]): string[] {
+function overviewLines(energy: Envelope, annotations: DraftAnnotation[]): string[] {
   const { step, bass } = summarizeEnvelope(energy, overviewColumns());
   const bars = bass.map((level, column) => {
     const bar = LEVELS[Math.round(level * (LEVELS.length - 1))]!;
-    return bassIsIn(events, (column + 1) * step) ? accent(bar) : dim(bar);
+    return bassIsIn(annotations, (column + 1) * step) ? accent(bar) : dim(bar);
   });
-  if (events.length === 0) return [bars.join('')];
+  if (annotations.length === 0) return [bars.join('')];
 
   const markers = Array<string>(bass.length).fill(' ');
-  for (const event of events) {
-    const column = Math.min(bass.length - 1, Math.floor(event.time / step));
-    markers[column] = event.type === 'drop' ? accent('▲') : steel('▼');
+  for (const event of annotations) {
+    const column = Math.min(bass.length - 1, Math.floor(event.at / step));
+    markers[column] = event.kind === 'drop' ? accent('▲') : steel('▼');
   }
   return [bars.join(''), markers.join('').trimEnd()];
 }
@@ -183,29 +182,31 @@ function overviewLines(energy: Envelope, events: SetEvent[]): string[] {
 const overviewColumns = () => clamp((process.stdout.columns ?? 80) - 4, 16, 120);
 
 /** Whether the drafts have the bass in at `time`. Before the first, the set is the opposite of it. */
-function bassIsIn(events: SetEvent[], time: number): boolean {
-  const latest = events.findLast((event) => event.time <= time);
-  if (latest) return latest.type === 'drop';
-  return events[0]?.type === 'breakdown';
+function bassIsIn(annotations: DraftAnnotation[], time: number): boolean {
+  const latest = annotations.findLast((event) => event.at <= time);
+  if (latest) return latest.kind === 'drop';
+  return annotations[0]?.kind === 'breakdown';
 }
 
-const eventLine = (event: SetEvent): string => {
-  const time = dim(formatTime(event.time).padStart(7));
-  const name = event.type.padEnd(9);
-  if (event.type !== 'drop') return `${time}  ${steel(name)}`;
+const eventLine = (event: DraftAnnotation): string => {
+  const time = dim(formatTime(event.at).padStart(7));
+  const name = event.kind.padEnd(9);
+  if (event.kind !== 'drop') return `${time}  ${steel(name)}`;
   return `${time}  ${accent(name)} ${dim(`intensity ${event.intensity.toFixed(2)}`)}`;
 };
 
 function changesFor(loaded: LoadedProject, analysis: AnalysisDraft): AnalysisChanges {
-  const stated = loaded.config.events;
-  const isNew = (drafted: SetEvent) =>
+  const stated = loaded.config.annotations;
+  const isNew = (drafted: DraftAnnotation) =>
     !stated.some(
       (event) =>
-        event.type === drafted.type && Math.abs(event.time - drafted.time) < SAME_EVENT_SECONDS,
+        event.scope === 'mix' &&
+        event.kind === drafted.kind &&
+        Math.abs(event.at / 1_000_000 - drafted.at) < SAME_EVENT_SECONDS,
     );
 
   return {
-    events: analysis.events.filter(isNew),
+    annotations: analysis.annotations.filter(isNew),
     tempo: newTempo(loaded.config.bpm, analysis.bpm),
     offset: analysis.offset,
   };
@@ -218,56 +219,57 @@ const newTempo = (stated: number | undefined, detected: number | null): number |
 };
 
 /** The dry run prints every drafted event, not just the ones `setcast.yaml` is missing. */
-function printDraft(events: SetEvent[], changes: AnalysisChanges): void {
+function printDraft(annotations: DraftAnnotation[], changes: AnalysisChanges): void {
   const draft: Record<string, unknown> = {};
   if (changes.tempo) {
     draft.bpm = changes.tempo;
     draft.beatOffset = changes.offset;
   }
-  draft.events = events.map(toYaml);
+  draft.annotations = annotations.map(toYaml);
 
   process.stdout.write(`\n${highlightYaml(stringify(draft))}`);
   outro(`Add the block above to ${CONFIG_FILE}, or re-run with --write.`);
 }
 
-async function updateProject(root: string, changes: AnalysisChanges): Promise<string> {
-  const path = join(root, CONFIG_FILE);
+async function updateProject(loaded: LoadedProject, changes: AnalysisChanges): Promise<string> {
+  const path = join(loaded.dir, CONFIG_FILE);
   const doc = parseDocument(await readFile(path, 'utf8'));
 
   if (changes.tempo) {
     doc.set('bpm', changes.tempo);
     doc.set('beatOffset', changes.offset);
   }
-  appendEvents(doc, changes.events);
+  appendAnnotations(doc, changes.annotations);
+  compileMix(ProjectConfigSchema.parse(doc.toJS()), loaded.project.mix.duration / 1_000_000);
 
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
   return path;
 }
 
-/** Adds to the `events:` the user already wrote, so nothing of theirs is rewritten. */
-function appendEvents(doc: Document, events: SetEvent[]): void {
-  const existing = doc.get('events');
+/** Adds to the `annotations:` the user already wrote, so nothing of theirs is rewritten. */
+function appendAnnotations(doc: Document, annotations: DraftAnnotation[]): void {
+  const existing = doc.get('annotations');
   if (isSeq(existing)) {
     existing.flow = false;
-    for (const event of events) existing.add(doc.createNode(toYaml(event)));
+    for (const event of annotations) existing.add(doc.createNode(toYaml(event)));
     return;
   }
-  if (events.length) doc.set('events', events.map(toYaml));
+  if (annotations.length) doc.set('annotations', annotations.map(toYaml));
 }
 
 function showWrittenChanges(path: string, changes: AnalysisChanges): void {
   const added: string[] = [];
-  if (changes.events.length) added.push(`${changes.events.length} events`);
+  if (changes.annotations.length) added.push(`${changes.annotations.length} annotations`);
   if (changes.tempo) added.push(`bpm: ${changes.tempo} with beatOffset`);
   outro(`Added ${added.join(' and ')} to ${shown(path)}`);
 }
 
-function toYaml(event: SetEvent): Record<string, string | number> {
+function toYaml(event: DraftAnnotation): Record<string, string | number> {
   const yamlEvent: Record<string, string | number> = {
-    type: event.type,
-    time: formatTimecode(event.time),
+    kind: event.kind,
+    at: formatTimecode(event.at),
   };
-  if (event.type === 'drop') yamlEvent.intensity = event.intensity;
+  if (event.kind === 'drop') yamlEvent.intensity = event.intensity;
   return yamlEvent;
 }
