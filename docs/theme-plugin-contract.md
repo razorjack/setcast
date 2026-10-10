@@ -75,6 +75,31 @@ h)`, and uses `var(--bg-accent, <its own color>)`. A missing hue then falls back
 set `--bg-accent: initial` to keep the theme's colors. Video backgrounds are not measured, so every
 fallback applies.
 
+`.sc-header`, `.sc-set-title`, `.sc-clock`, every `.sc-panel` and `.sc-next` carry
+`--bg-luma-behind`, the mean luma (0..1) of the art under the element's box. It is measured every
+frame, so it follows a panel as it moves. Like `--bg-luma`, it describes the art before the
+theme's filter; multiply it by the brightness the filter applies to estimate what the frame shows
+behind the element. A custom property resolves `var()` where it is declared, so declare variables
+derived from it on the measured elements themselves; their descendants inherit each element's
+result. Use it for appearance, such as shadows, plate opacity or color, and not for size or
+position: it is measured from the layout without it. It is unset for video and when there is no
+art, so `var(--bg-luma-behind, 0)` treats both as dark. The measurement assumes the art is
+centered the way `object-fit: cover` places it, so an `object-position` override or a large
+transform on `.sc-bg-img` moves the art away from what was measured. sterile-tech keeps its header
+and panels legible over bright art, in short like this:
+
+```css
+.theme-sterile-tech {
+  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.5));
+}
+.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+  --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.2) * 4, 1);
+}
+.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-next) {
+  text-shadow: 0 0 calc(var(--glare) * 0.5cqw) rgb(4 6 8 / var(--glare));
+}
+```
+
 `backgroundFit` decides how art of another shape than the frame is shown: `cover` crops it,
 `contain` shows it whole over a blurred, darker copy of itself, and `auto` (the default) contains
 art that covering would cut by more than 30%. A contained image reaches `.sc-bg-img` as one image

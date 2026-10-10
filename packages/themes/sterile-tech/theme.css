@@ -77,6 +77,8 @@
   --deck-b: var(--accent-2);
   --deck-c: #9fd98a;
   --deck-d: #b18ee6;
+  /* how much the exposure correction brightens the art; halfway toward the reference by default */
+  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.5));
   --steel: #2a343d;
   --hud: rgb(159 180 196 / 0.3);
   --hairline: max(1px, 0.05cqw);
@@ -131,8 +133,7 @@
 
 /* background: desaturated, darkened, snapping bright for a moment on a rewind */
 .theme-sterile-tech .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0.5)))
-    saturate(calc(0.7 + var(--rewind-flash) * 1.1))
+  filter: brightness(var(--art-gain)) saturate(calc(0.7 + var(--rewind-flash) * 1.1))
     brightness(calc(0.9 + var(--rewind-flash) * 0.45)) contrast(1.05);
 }
 .theme-sterile-tech .sc-bg-vignette {
@@ -171,6 +172,19 @@
   background: url(../textures/grain.png) 0 0 / 12.5cqw;
   mix-blend-mode: overlay;
   opacity: 0.07;
+}
+
+/* 0 where the art behind the element shows dark, 1 where it shows bright; declared on each
+   element because each has its own --bg-luma-behind */
+.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+  --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.2) * 4, 1);
+}
+/* text without a plate gets a dark outline and halo over bright art */
+.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-next) {
+  text-shadow:
+    0 0 calc(var(--glare) * 0.15cqw) rgb(4 6 8 / var(--glare)),
+    0 0 calc(var(--glare) * 0.5cqw) rgb(4 6 8 / var(--glare)),
+    0 0 calc(var(--glare) * 1.4cqw) rgb(4 6 8 / calc(var(--glare) * 0.8));
 }
 
 /* header */
@@ -385,7 +399,8 @@
 /* now playing: a chamfered plate of frosted glass; --presence follows run dwell or persistent DJ credits (spring in, dwell, leave) */
 .theme-sterile-tech .sc-panel {
   padding: 1.9cqw 2.3cqw 2cqw 2.2cqw;
-  background-color: var(--panel-bg);
+  /* a denser plate over bright art */
+  background-color: color-mix(in srgb, var(--panel-bg), rgb(12 16 21) calc(var(--glare) * 60%));
   background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.045), transparent 40%);
   border: var(--hairline) solid var(--panel-border);
   border-radius: 0 var(--radius) 0 var(--radius);

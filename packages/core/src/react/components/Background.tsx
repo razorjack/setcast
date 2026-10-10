@@ -12,7 +12,8 @@ import {
 import { useFrame } from '../frame.tsx';
 import { Img, useAssetResolver, useHoldUntil, Video } from '../renderer.tsx';
 
-const MEASURE_SIZE: Size = { width: 64, height: 36 };
+/** The art is measured at the frame's shape, this many cells along its long side. */
+const MEASURE_CELLS = 64;
 /** The blurred copy behind contained art: blur as a share of the frame's long side. */
 const FILL_BLUR = 0.03;
 const FILL_BRIGHTNESS = 0.6;
@@ -94,12 +95,13 @@ function prepareOnce(key: string, request: ArtRequest): Promise<BackgroundArt> {
 
 async function prepareArt({ url, fit, frame }: ArtRequest): Promise<BackgroundArt> {
   const image = await loadImage(url);
-  const art = { width: image.naturalWidth, height: image.naturalHeight };
-  if (resolveFit(fit, art, frame) === 'cover') return { src: url, stats: measure(image) };
+  if (resolveFit(fit, sizeOf(image), frame) === 'cover') {
+    return { src: url, stats: measure(image, frame) };
+  }
 
   const composed = containOverBlur(image, frame);
   const src = URL.createObjectURL(await composed.convertToBlob());
-  return { src, stats: measure(composed) };
+  return { src, stats: measure(composed, frame) };
 }
 
 async function loadImage(url: string): Promise<HTMLImageElement> {
@@ -123,29 +125,34 @@ function containOverBlur(image: HTMLImageElement, frame: Size): OffscreenCanvas 
   return canvas;
 }
 
-/** Draws the image centered on the whole canvas, scaled to `fit` it and then by `zoom`. */
+/** Draws the art centered on the whole canvas, scaled to `fit` it and then by `zoom`. */
 function drawFitted(
   context: OffscreenCanvasRenderingContext2D,
-  image: HTMLImageElement,
+  art: HTMLImageElement | OffscreenCanvas,
   fit: 'cover' | 'contain',
   zoom: number,
 ): void {
   const frame = { width: context.canvas.width, height: context.canvas.height };
-  const art = { width: image.naturalWidth, height: image.naturalHeight };
-  const scale = enlargement(art, frame, fit) * zoom;
-  const width = art.width * scale;
-  const height = art.height * scale;
-  context.drawImage(image, (frame.width - width) / 2, (frame.height - height) / 2, width, height);
+  const size = sizeOf(art);
+  const scale = enlargement(size, frame, fit) * zoom;
+  const width = size.width * scale;
+  const height = size.height * scale;
+  context.drawImage(art, (frame.width - width) / 2, (frame.height - height) / 2, width, height);
 }
 
-function measure(source: HTMLImageElement | OffscreenCanvas): BackgroundStats {
-  const canvas = new OffscreenCanvas(MEASURE_SIZE.width, MEASURE_SIZE.height);
-  const context = context2d(canvas);
+const sizeOf = (art: HTMLImageElement | OffscreenCanvas): Size =>
+  art instanceof HTMLImageElement
+    ? { width: art.naturalWidth, height: art.naturalHeight }
+    : { width: art.width, height: art.height };
+
+/** Measures the art cropped as the frame shows it, so the luma grid lines up with the stage. */
+function measure(art: HTMLImageElement | OffscreenCanvas, frame: Size): BackgroundStats {
+  const scale = MEASURE_CELLS / Math.max(frame.width, frame.height);
+  const size = { width: Math.round(frame.width * scale), height: Math.round(frame.height * scale) };
+  const context = context2d(new OffscreenCanvas(size.width, size.height));
   context.imageSmoothingQuality = 'high';
-  context.drawImage(source, 0, 0, MEASURE_SIZE.width, MEASURE_SIZE.height);
-  return measureBackground(
-    context.getImageData(0, 0, MEASURE_SIZE.width, MEASURE_SIZE.height).data,
-  );
+  drawFitted(context, art, 'cover', 1);
+  return measureBackground(context.getImageData(0, 0, size.width, size.height).data, size);
 }
 
 /** A CPU-backed context, so the composed and measured pixels are the same in every render. */

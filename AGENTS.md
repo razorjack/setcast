@@ -60,6 +60,7 @@ cd examples/demo && vp run preview                          # Remotion Studio
 Inner loop for an agent: `vp check && vp test`.
 For theme work, `vp run theme-stills --at 1:50.4 --theme <name>` renders a moment of examples/demo
 into `examples/demo/out/themes/` in about 4 s per still; read the images before committing.
+A theme must also hold up over the user's own art; read "Themes and the user's art" below first.
 
 Before you finish a larger piece of work (a feature, a refactor, a theme, any change across several
 files) or commit it, run `vp run ready` and read the result. It runs check, tests, ban-check and the
@@ -377,6 +378,34 @@ base.css places as a hairline, or as the lit part of the top cell when segmented
 mode, labelled "Next in tracklist", "Next entry" or "Returning". Its own `--until-next` drives
 the theme's visibility. Never infer a next deck from missing hardware information.
 
+### Themes and the user's art
+
+Users replace the demo art with their own: usually a dark drum and bass sleeve, often a bright,
+saturated or busy image from DeviantArt, at any size and shape. A theme tuned only on the demo's
+nearly black, flat `bg.png` breaks on such art. When you build or change a theme, use these tools
+(details in `docs/theme-plugin-contract.md`):
+
+- `data-background` (`none`, `image`, `video`) on the stage: style a set without art, or with a
+  video, on its own terms.
+- Exposure correction: start the `.sc-bg-img` filter with
+  `brightness(pow(var(--bg-exposure, 1), var(--bg-correction, <default>)))`, or the `--art-luma`
+  form when the treatment shows art best at another brightness. The default strength sits in the
+  `--bg-correction` fallback so users can override it.
+- `--bg-color-1` and `--bg-color-2`, the art's hues: derive the theme's own variables from them
+  with `oklch(from …)` at the theme's lightness and chroma, and use `var(--bg-accent, <own color>)`.
+- `--bg-luma-behind` on `.sc-header`, `.sc-set-title`, `.sc-clock`, each `.sc-panel` and
+  `.sc-next`: how bright the art is behind that element, every frame. Scale a text shadow or a
+  plate's opacity with it, so text stays legible over a bright sky without changing the look over
+  dark art. Multiply it by the theme's correction gain, declare derived variables on the measured
+  element itself, and never size or position anything with it. sterile-tech's `--art-gain` and
+  `--glare` are the reference.
+
+Art of another shape reaches `.sc-bg-img` as one frame-sized image (`backgroundFit`), so no theme
+rule needs to handle it. Verify over real art, not only the demo: `setcast still --theme all` on a
+project with the art, or `node demos/backgrounds/sheet.mjs` over the local test images when
+`demos/backgrounds/` exists (gitignored; never commit those images). Check legibility once more
+with `.setcast { --bg-correction: 0; }`, because users can turn the correction off.
+
 ## Roadmap (beyond v1)
 
 - FOSS renderer `@setcast/renderer-browser`: Playwright + pinned Chromium renders frames from the
@@ -544,9 +573,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
 - Background art is prepared in the browser, not in Node: `useBackgroundArt` loads each image
-  once, fits it to the frame and measures what the frame shows in a 64x36 canvas, holding the
-  frame until it is done, so any format Chrome decodes works without ffmpeg. Video is neither
-  fitted nor measured. The canvases are CPU-backed (`willReadFrequently`), so every render tab
+  once, fits it to the frame and measures what the frame shows in a canvas of the frame's shape,
+  64 cells along its long side, holding the frame until it is done, so any format Chrome decodes
+  works without ffmpeg. Video is neither fitted nor measured. The canvases are CPU-backed (`willReadFrequently`), so every render tab
   composes and measures the same pixels.
 - `backgroundFit: contain`, and `auto` once covering would cut more than 30% of the art, is
   composed in that canvas: the art whole over a blurred, darker copy, handed to `.sc-bg-img` as a
@@ -569,6 +598,14 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   grey art give none. Only sterile-tech's accents and interference's duotone take them, at the
   theme's own lightness and chroma so contrast stays as designed. Interference's RGB-split ghosts
   stay magenta and cyan, and themes whose palette is their identity do not take art colors.
+- `--bg-luma-behind` is measured per element, not for fixed zones of the frame: zones would bind
+  every theme to the built-in layout, while an element's box follows whatever layout its theme
+  gives it. A theme cannot add elements and pseudo-elements inherit from their host, so the fixed
+  `MEASURED_ELEMENTS` list in `Stage.tsx` covers custom themes too. A layout effect removes the
+  previous values, reads every box, then sets the new values. Removing first makes every render
+  tab measure the same layout whatever frame it rendered before; reading all boxes before writing
+  lays the frame out once. On a 1080p slice it cost 0.57 ms a frame for four elements, against
+  about 100 ms a frame per render tab, and render times did not change measurably.
 - Loading warns about art the frame enlarges more than 1.5×, naming the side that limits it, and
   notes when `auto` shows art whole. `readImageSize` reads PNG, JPEG and WebP headers itself
   rather than adding an image dependency; other formats are skipped.

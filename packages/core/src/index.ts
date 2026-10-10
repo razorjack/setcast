@@ -112,10 +112,13 @@ export {
   coverCrop,
   currentBackground,
   enlargement,
+  lumaBehind,
   measureBackground,
   resolveFit,
   type BackgroundFit,
   type BackgroundStats,
+  type FrameArea,
+  type LumaGrid,
   type Size,
 } from './background.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';

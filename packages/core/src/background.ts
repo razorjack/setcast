@@ -13,6 +13,12 @@ export interface BackgroundStats {
   luma: number;
   /** Up to two prominent hues as `rgb()` colors, most prominent first; none for grey art. */
   colors: string[];
+  grid: LumaGrid;
+}
+
+/** The luma of each pixel of a downscaled copy of the art as the frame shows it, row by row. */
+export interface LumaGrid extends Size {
+  cells: number[];
 }
 
 /** The first focused play supplies its art; an empty focus uses the project background. */
@@ -110,23 +116,30 @@ interface HueBin {
 }
 
 /** Reads RGBA pixels, as `getImageData` returns them, of a downscaled copy of the art. */
-export function measureBackground(rgba: ArrayLike<number>): BackgroundStats {
-  const pixels = Math.floor(rgba.length / 4);
+export function measureBackground(rgba: ArrayLike<number>, size: Size): BackgroundStats {
+  const pixels = size.width * size.height;
   const bins: HueBin[] = Array.from({ length: HUE_BINS }, () => ({
     weight: 0,
     red: 0,
     green: 0,
     blue: 0,
   }));
+  const cells: number[] = [];
   let lumaSum = 0;
   for (let pixel = 0; pixel < pixels; pixel++) {
     const red = rgba[pixel * 4]! / 255;
     const green = rgba[pixel * 4 + 1]! / 255;
     const blue = rgba[pixel * 4 + 2]! / 255;
-    lumaSum += 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    cells.push(luma);
+    lumaSum += luma;
     addToHueBin(bins, red, green, blue);
   }
-  return { luma: pixels > 0 ? lumaSum / pixels : 0, colors: prominentColors(bins, pixels) };
+  return {
+    luma: pixels > 0 ? lumaSum / pixels : 0,
+    colors: prominentColors(bins, pixels),
+    grid: { ...size, cells },
+  };
 }
 
 /** Saturated pixels weigh more, dark ones included, so a dark red scene still reads as red. */
@@ -191,4 +204,34 @@ export function backgroundVars(stats: BackgroundStats | null): Record<string, st
   };
   for (const [index, color] of stats.colors.entries()) vars[`--bg-color-${index + 1}`] = color;
   return vars;
+}
+
+/** A part of the frame in fractions of its width and height, from its top left corner. */
+export interface FrameArea {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+/**
+ * Mean luma of the art under `area`, each cell weighted by how much of it the area covers, so the
+ * value changes smoothly as an element moves. Null when the area covers none of the frame.
+ */
+export function lumaBehind(grid: LumaGrid, area: FrameArea): number | null {
+  const left = clamp(area.left, 0, 1) * grid.width;
+  const right = clamp(area.right, 0, 1) * grid.width;
+  const top = clamp(area.top, 0, 1) * grid.height;
+  const bottom = clamp(area.bottom, 0, 1) * grid.height;
+  let lumaSum = 0;
+  let coverage = 0;
+  for (let row = Math.floor(top); row < Math.ceil(bottom); row++) {
+    const rowCoverage = Math.min(row + 1, bottom) - Math.max(row, top);
+    for (let column = Math.floor(left); column < Math.ceil(right); column++) {
+      const cellCoverage = rowCoverage * (Math.min(column + 1, right) - Math.max(column, left));
+      lumaSum += grid.cells[row * grid.width + column]! * cellCoverage;
+      coverage += cellCoverage;
+    }
+  }
+  return coverage > 0 ? lumaSum / coverage : null;
 }
