@@ -1,0 +1,463 @@
+/* passe-partout: the art as a framed print, untouched, on a wall in its own colors, with a
+   museum label beside it. */
+
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  src: url(../fonts/InstrumentSans-400-700-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  src: url(../fonts/InstrumentSans-400-700-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  src: url(../fonts/InstrumentSerif-Italic-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  src: url(../fonts/InstrumentSerif-Italic-400-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-passe-partout {
+  /* 1 hangs the print on a light wall in a white mat, 0 in a dark room; bright art gets the light
+     wall. Set it to 0 or 1 to choose. */
+  --wall-light: clamp(0, (var(--bg-luma, 0.2) - 0.36) * 1000, 1);
+  /* every surface takes the art's hue at a whisper of chroma; grey art gets a warm white */
+  --hue-of: var(--bg-color-1, oklch(0.6 0.02 75));
+  --wall: oklch(from var(--hue-of) calc(0.205 + var(--wall-light) * 0.695) 0.014 h);
+  --mat-color: oklch(from var(--hue-of) calc(0.13 + var(--wall-light) * 0.845) 0.007 h);
+  --bevel: oklch(from var(--hue-of) calc(0.32 + var(--wall-light) * 0.68) 0.006 h);
+  --frame: oklch(from var(--hue-of) calc(0.29 - var(--wall-light) * 0.08) 0.014 h);
+  --ink: oklch(from var(--hue-of) calc(0.93 - var(--wall-light) * 0.73) 0.012 h);
+  --ink-dim: color-mix(in oklab, var(--ink) 56%, var(--wall));
+  --accent: oklch(from var(--hue-of) calc(0.76 - var(--wall-light) * 0.24) 0.12 h);
+  --fg: var(--ink);
+  --fg-dim: var(--ink-dim);
+  --deck-a: var(--accent);
+  --deck-b: oklch(
+    from var(--bg-color-2, var(--accent)) calc(0.76 - var(--wall-light) * 0.24) 0.12 h
+  );
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: var(--font-sans);
+  --hairline: max(1px, 0.06cqw);
+  /* the mat around the print, the frame around the mat, and the label column beside it */
+  --mat: 3.1cqw;
+  --frame-width: 0.3cqw;
+  --bevel-width: max(2px, 0.14cqw);
+  --print-w: min(55cqw, 64cqh * var(--bg-aspect, 1.7778));
+  --column-gap: 3.8cqw;
+  --column-w: 22cqw;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  /* a gallery light on the print, breathing with the music and brighter on a drop */
+  background: radial-gradient(
+      58cqw 82cqh at 36cqw 44cqh,
+      color-mix(
+        in oklab,
+        var(--wall),
+        white calc(5% + var(--mod-spot, 0.5) * 4% + var(--drop-flash) * 5%)
+      ),
+      var(--wall) 62%,
+      color-mix(in oklab, var(--wall), black 16%)
+    )
+    var(--wall);
+}
+
+/* the print: .sc-bg takes the art's shape and holds it; video and a set without art get a 16:9
+   print */
+.theme-passe-partout .sc-bg {
+  inset: auto;
+  left: calc(var(--margin) * 1.7 + var(--mat));
+  top: calc(50% - var(--print-w) / var(--bg-aspect, 1.7778) / 2);
+  width: var(--print-w);
+  aspect-ratio: var(--bg-aspect, 16 / 9);
+  anchor-name: --print;
+}
+.theme-passe-partout[data-background='image'] .sc-bg-img {
+  display: none;
+}
+.theme-passe-partout .sc-bg-img {
+  transform: none;
+}
+/* the art untouched, unless a user sets --bg-correction */
+.theme-passe-partout .sc-art {
+  display: block;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0)));
+}
+/* the mat board in its frame, hanging a little off the wall */
+.theme-passe-partout .sc-bg::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--mat));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--mat-color), white 3%),
+    var(--mat-color) 60%
+  );
+  box-shadow:
+    0 0 0 var(--frame-width) var(--frame),
+    0 1.4cqw 2.6cqw -0.6cqw rgb(0 0 0 / calc(0.3 + (1 - var(--wall-light)) * 0.25)),
+    0 0.25cqw 0.5cqw rgb(0 0 0 / 0.18);
+}
+/* the bevelled cut of the window, and the shadow the mat casts on the print */
+.theme-passe-partout .sc-bg-vignette {
+  inset: calc(-1 * var(--bevel-width));
+  border: var(--bevel-width) solid var(--bevel);
+  box-shadow:
+    inset 0 0.5cqw 0.8cqw -0.3cqw rgb(0 0 0 / 0.5),
+    inset 0.3cqw 0 0.6cqw -0.35cqw rgb(0 0 0 / 0.3);
+}
+.theme-passe-partout[data-background='none'] .sc-bg-vignette {
+  background: color-mix(in oklab, var(--mat-color), var(--frame) 12%);
+}
+
+/* the music shows through the bottom of the print as the art itself, lit */
+.theme-passe-partout .sc-spectrum {
+  position-anchor: --print;
+  left: anchor(left);
+  right: auto;
+  width: anchor-size(width);
+  top: auto;
+  bottom: anchor(bottom);
+  height: calc(anchor-size(height) * 0.3);
+}
+.theme-passe-partout .sc-spectrum :is(rect, path) {
+  fill: none;
+  stroke: none;
+}
+.theme-passe-partout .sc-spectrum-art {
+  filter: brightness(1.32) saturate(1.3) contrast(1.04);
+  opacity: calc(1 - 0.6 * clamp(0, var(--section-time, 60) / 2, 1) * var(--in-breakdown, 0));
+}
+.theme-passe-partout[data-section='breakdown'] {
+  --in-breakdown: 1;
+}
+/* other visualizers sit on the wall in ink */
+.theme-passe-partout :is(.sc-radial line, .sc-radial circle, .sc-radial-line) {
+  stroke: var(--ink-dim);
+  stroke-width: 2;
+}
+.theme-passe-partout :is(.sc-spectrum-line, .sc-oscilloscope-line, .sc-vectorscope-line) {
+  stroke: var(--ink);
+  stroke-width: 0.08cqw;
+}
+.theme-passe-partout .sc-spectrogram {
+  color: var(--ink-dim);
+}
+.theme-passe-partout .sc-meter-level {
+  background: var(--accent);
+}
+.theme-passe-partout .sc-meter-bar {
+  background: color-mix(in oklab, var(--ink) 12%, transparent);
+}
+.theme-passe-partout .sc-meter-label {
+  margin-top: 0.8cqh;
+  font-size: 0.7cqw;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-passe-partout :is(.sc-overview-high, .sc-overview-bass) {
+  fill: color-mix(in oklab, var(--ink) 16%, transparent);
+}
+.theme-passe-partout .sc-overview-played :is(.sc-overview-high, .sc-overview-bass) {
+  fill: color-mix(in oklab, var(--accent) 70%, transparent);
+}
+.theme-passe-partout .sc-overview-head {
+  stroke: var(--ink);
+  stroke-width: 0.08cqw;
+}
+
+/* the column beside the frame: the exhibition at the top, the label at the bottom */
+.theme-passe-partout :is(.sc-header, .sc-panel, .sc-contributors, .sc-next) {
+  position-anchor: --print;
+  left: calc(anchor(right) + var(--mat) + var(--column-gap));
+  right: auto;
+  width: var(--column-w);
+  max-width: none;
+}
+.theme-passe-partout .sc-header {
+  top: calc(anchor(top) - var(--mat));
+  flex-direction: column;
+  align-items: start;
+  gap: 0.45cqw;
+  font-size: 0.78cqw;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-passe-partout .sc-set-title {
+  color: var(--ink);
+}
+.theme-passe-partout .sc-clock {
+  font-variant-numeric: tabular-nums;
+}
+/* how far the set has run, as a hairline under the exhibition */
+.theme-passe-partout .sc-header::after {
+  content: '';
+  width: 100%;
+  height: var(--hairline);
+  margin-top: 0.7cqw;
+  background: linear-gradient(
+    to right,
+    var(--accent) calc(var(--set-progress, 0) * 100%),
+    color-mix(in oklab, var(--ink) 16%, transparent) 0
+  );
+}
+
+/* the label stays as long as its print hangs: it rises in at the start of the run and leaves
+   with it */
+.theme-passe-partout .sc-panel {
+  --hang: min(clamp(0, var(--since-entry, 60) / 1.4, 1), clamp(0, var(--until-exit, 60) / 0.6, 1));
+  bottom: calc(anchor(bottom) - var(--mat));
+}
+.theme-passe-partout[data-presentation='playlist'] .sc-panel {
+  anchor-name: --label;
+}
+.theme-passe-partout .sc-panel > * {
+  opacity: var(--hang);
+  translate: 0 calc((1 - var(--hang)) * 0.8cqh);
+}
+.theme-passe-partout .sc-panel::before {
+  content: '';
+  display: block;
+  width: calc(var(--hang) * 2.6cqw);
+  height: max(2px, 0.12cqw);
+  margin-bottom: 1.3cqw;
+  background: var(--deck);
+}
+.theme-passe-partout .sc-panel-head {
+  gap: 0.7cqw;
+  margin-bottom: 1.1cqw;
+  font-size: 0.7cqw;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-passe-partout .sc-deck {
+  font-weight: 700;
+  color: var(--deck);
+}
+.theme-passe-partout .sc-index::before {
+  content: '·';
+  margin-right: 0.7cqw;
+}
+.theme-passe-partout .sc-artist {
+  margin-bottom: 0.5cqw;
+  font-size: 1.2cqw;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.theme-passe-partout .sc-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 2.7cqw;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.theme-passe-partout .sc-label {
+  margin-top: 1cqw;
+  font-size: 0.9cqw;
+  line-height: 1.35;
+  color: var(--ink-dim);
+}
+.theme-passe-partout .sc-credit-details {
+  margin-top: 0.5cqw;
+  font-family: var(--font-sans);
+  font-size: 0.8cqw;
+  color: var(--ink-dim);
+}
+
+/* up next: a smaller label above the current one, over the last seconds of the track */
+.theme-passe-partout .sc-next {
+  bottom: auto;
+  align-items: start;
+  gap: 0.35cqw;
+  text-align: left;
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
+}
+.theme-passe-partout[data-presentation='playlist'] .sc-next {
+  position-anchor: --label;
+  left: anchor(left);
+  bottom: calc(anchor(top) + 3.2cqh);
+}
+.theme-passe-partout .sc-next-label {
+  margin-bottom: 0.3cqw;
+  font-size: 0.68cqw;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-passe-partout .sc-next-artist {
+  font-size: 0.95cqw;
+  font-weight: 600;
+}
+.theme-passe-partout .sc-next-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6cqw;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+/* DJ: the labels of every current play stack up the column; focus sets the ink, never the size */
+.theme-passe-partout[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 1.5cqh;
+  --slot-bleed: 0.4cqw;
+  left: calc(anchor(right) + var(--mat) + var(--column-gap));
+  bottom: calc(anchor(bottom) - var(--mat));
+  width: var(--column-w);
+}
+.theme-passe-partout[data-presentation='dj'] .sc-panel {
+  --hang: 1;
+  bottom: auto;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-panel::before {
+  width: 1.6cqw;
+  margin-bottom: 0.8cqw;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-panel-head {
+  margin-bottom: 0.6cqw;
+  font-size: 0.62cqw;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-artist {
+  margin-bottom: 0.3cqw;
+  font-size: 1.05cqw;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-title {
+  font-size: 2.15cqw;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-label {
+  margin-top: 0.5cqw;
+  font-size: 0.8cqw;
+}
+.theme-passe-partout[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  color: var(--ink-dim);
+}
+.theme-passe-partout[data-presentation='dj'] .sc-panel[data-focused='false']::before {
+  background: color-mix(in oklab, var(--deck) 40%, transparent);
+}
+.theme-passe-partout[data-presentation='dj'] .sc-next {
+  position-anchor: --contributors;
+  left: anchor(left);
+  bottom: calc(anchor(top) + 3cqh);
+}
+.theme-passe-partout .sc-contributor-count,
+.theme-passe-partout .sc-overflow {
+  font-family: var(--font-sans);
+  font-size: 0.66cqw;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-passe-partout .sc-contributor-count {
+  margin-bottom: 0.4cqw;
+}
+.theme-passe-partout .sc-overflow {
+  margin-top: 1.2cqh;
+}
+
+/* portrait (9:16): the print hangs at the top, the label under it */
+@container (aspect-ratio < 1) {
+  .theme-passe-partout .sc-bg {
+    --print-w: min(80cqw, 46cqh * var(--bg-aspect, 1.7778));
+    left: calc(50% - var(--print-w) / 2);
+    top: calc(41% - var(--print-w) / var(--bg-aspect, 1.7778) / 2);
+  }
+  .theme-passe-partout :is(.sc-header, .sc-panel, .sc-next),
+  .theme-passe-partout[data-presentation='dj'] .sc-contributors {
+    left: calc(anchor(left) - var(--mat));
+    width: calc(anchor-size(width) + 2 * var(--mat));
+  }
+  .theme-passe-partout .sc-header {
+    top: auto;
+    bottom: calc(anchor(top) + var(--mat) + 3.5cqh);
+    font-size: 1.7cqw;
+  }
+  .theme-passe-partout .sc-header::after {
+    margin-top: 1.2cqw;
+  }
+  .theme-passe-partout .sc-panel,
+  .theme-passe-partout[data-presentation='dj'] .sc-contributors {
+    top: calc(anchor(bottom) + var(--mat) + 5cqh);
+    bottom: auto;
+  }
+  .theme-passe-partout .sc-panel::before {
+    width: calc(var(--hang) * 6cqw);
+    margin-bottom: 2.6cqw;
+  }
+  .theme-passe-partout .sc-panel-head {
+    font-size: 1.6cqw;
+    margin-bottom: 2.2cqw;
+  }
+  .theme-passe-partout .sc-artist {
+    font-size: 2.8cqw;
+    margin-bottom: 1cqw;
+  }
+  .theme-passe-partout .sc-title {
+    font-size: 6.4cqw;
+  }
+  .theme-passe-partout .sc-label {
+    margin-top: 2cqw;
+    font-size: 2cqw;
+  }
+  .theme-passe-partout[data-presentation='playlist'] .sc-next {
+    top: calc(anchor(bottom) + 4.5cqh);
+    bottom: auto;
+  }
+  .theme-passe-partout[data-presentation='dj'] .sc-next {
+    top: auto;
+    bottom: calc(var(--margin) * 1.6);
+    left: var(--margin);
+  }
+  .theme-passe-partout .sc-next-label {
+    font-size: 1.5cqw;
+  }
+  .theme-passe-partout .sc-next-artist {
+    font-size: 2.1cqw;
+  }
+  .theme-passe-partout .sc-next-title {
+    font-size: 3.6cqw;
+  }
+  .theme-passe-partout[data-presentation='dj'] .sc-panel-head,
+  .theme-passe-partout .sc-contributor-count,
+  .theme-passe-partout .sc-overflow {
+    font-size: 1.4cqw;
+  }
+  .theme-passe-partout[data-presentation='dj'] .sc-artist {
+    font-size: 2.2cqw;
+  }
+  .theme-passe-partout[data-presentation='dj'] .sc-title {
+    font-size: 4.2cqw;
+  }
+  .theme-passe-partout[data-presentation='dj'] .sc-label {
+    font-size: 1.7cqw;
+  }
+}

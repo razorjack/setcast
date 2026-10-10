@@ -266,7 +266,7 @@ list; implemented today: visualizer, theme, tracklist importer):
   vectorscope ✓, spectrogram ✓, overview ✓, bloom ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
-  (11 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
+  (12 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft mix annotations without automatic snapping

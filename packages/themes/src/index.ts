@@ -5,6 +5,7 @@ import { bunker } from './bunker.ts';
 import { escapement } from './escapement.ts';
 import { interference } from './interference.ts';
 import { longExposure } from './long-exposure.ts';
+import { passePartout } from './passe-partout.ts';
 import { patina } from './patina.ts';
 import { pirate } from './pirate.ts';
 import { quicksilver } from './quicksilver.ts';
@@ -18,6 +19,7 @@ export {
   escapement,
   interference,
   longExposure,
+  passePartout,
   patina,
   pirate,
   quicksilver,
@@ -39,5 +41,6 @@ export const themes: Record<string, Theme> = Object.fromEntries(
     interference,
     pirate,
     afterhours,
+    passePartout,
   ].map((theme) => [theme.name, theme]),
 );
