@@ -136,7 +136,7 @@ export function enlargement(art: Size, frame: Size, fit: 'cover' | 'contain'): n
 
 const HUE_BINS = 24;
 /** Pixels greyer than this have no hue worth taking. */
-const MIN_CHROMA = 0.1;
+export const MIN_CHROMA = 0.1;
 /** A hue counts once it weighs this share of the pixels, at full saturation. */
 const MIN_HUE_SHARE = 0.002;
 /** The second color sits at least this many bins (60°) from the first. */
@@ -255,7 +255,7 @@ function addToHueBin(bins: HueBin[], red: number, green: number, blue: number): 
 }
 
 /** HSV hue in degrees, 0..360, of a color that has some chroma. */
-function hue(red: number, green: number, blue: number): number {
+export function hue(red: number, green: number, blue: number): number {
   const max = Math.max(red, green, blue);
   const chroma = max - Math.min(red, green, blue);
   if (max === red) return (((green - blue) / chroma + 6) % 6) * 60;

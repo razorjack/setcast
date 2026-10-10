@@ -29,7 +29,8 @@ flyer to the fluorescent display of a 90s CD deck.
   track, and the deck letter shows which deck is up. A header shows the set title and the clock.
 - **Visuals that react to the music.** Spectrum bars, a radial ring, level meters, an
   oscilloscope, a vectorscope, a scrolling spectrogram and a strip showing the whole set, all
-  driven by the bass, mids, highs and beat of your mix.
+  driven by the bass, mids, highs and beat of your mix. The art can join in: its lamps and signs
+  glow with the bass, and the bars can show the picture through them.
 - **The moments of the set on screen.** Mark drops, breakdowns, buildups and rewinds, and the
   theme reacts with a flash, a shake or a tear in the picture. `setcast analyze` reads the mix,
   drafts the drops and breakdowns, and estimates the tempo, so beat-synced effects stay on the beat.
@@ -244,6 +245,7 @@ visualizer:
 | `vectorscope`  | left against right in a circle, inside the radial ring                              | `gain: 1`, `trail: 0`                                                                                      |
 | `spectrogram`  | the last seconds of spectrum scrolling left, bass at the bottom                     | `seconds: 4` (at most 8), `gain: 1`                                                                        |
 | `overview`     | the whole set as a strip under the header, with track and drop marks and a playhead | none                                                                                                       |
+| `bloom`        | the art's own lamps, signs and suns glowing with the music                          | `bands: [bass, highs]` (one or two), `gain: 1`, `lights: 0.05` (share of the art), `radius: 0.015`, `smooth: 0.1` |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
 baseline in silence, and `spin` is degrees per second. `peak` is the seconds a marker holds each
@@ -255,7 +257,10 @@ music opens windows onto the picture; the theme decides how the art looks there,
 brighter and more colorful than the background around it.
 The vectorscope shows stereo width, so a mono mix draws a vertical line; so does the demo, which
 has the same audio in both channels. The overview reads the whole audio file before rendering,
-which takes a few seconds for a long set.
+which takes a few seconds for a long set. Bloom finds the lights of an image background, the
+parts clearly brighter than their surroundings, and lights them with the bands: the first band
+the lights in the art's main color and the white ones, the second those in its second color. A
+video background or a set without art has nothing for it to light.
 
 Placement and appearance are CSS. Set `--radial-size` and `--vectorscope-size` on `.setcast`,
 which keeps the vectorscope centered in the ring, or `--spectrum-height`, `--meters-top`,

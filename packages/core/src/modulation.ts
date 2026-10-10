@@ -137,7 +137,7 @@ function sourceValue(route: ModRoute, context: ModContext): number {
     if (!context.bpm) return 0;
     return 1 - beatPhase(context.time, context.bpm, context.beatOffset)[source];
   }
-  if (!isTimeline(source)) return smoothed(source, route.smooth, context);
+  if (!isTimeline(source)) return smoothedFeature(source, route.smooth, context);
 
   const [direction, type] = source.split(':') as ['since' | 'until', string];
   const seconds =
@@ -158,10 +158,10 @@ function sourceValue(route: ModRoute, context: ModContext): number {
 }
 
 /** Frame-independent smoothing: a recency-weighted average over the trailing window. */
-function smoothed(
+export function smoothedFeature(
   source: FeatureSource,
   seconds: number,
-  { time, fps, analyzer }: ModContext,
+  { time, fps, analyzer }: Pick<ModContext, 'time' | 'fps' | 'analyzer'>,
 ): number {
   if (seconds <= 0) return analyzer.featuresAt(time)[source];
 

@@ -89,6 +89,18 @@
   object-fit: cover;
 }
 
+/* the art's lights, each layer screened over the art as bright as its band */
+.sc-bloom,
+.sc-bloom-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.sc-bloom-light {
+  mix-blend-mode: screen;
+  opacity: var(--level, 0);
+}
+
 .sc-spectrum {
   position: absolute;
   left: 0;

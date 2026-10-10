@@ -7,6 +7,7 @@ import {
   type VisualizerConfig,
   type VisualizerSpec,
 } from '../visualizers.ts';
+import { Bloom, BloomConfigSchema } from './components/Bloom.tsx';
 import { Meters, MetersConfigSchema } from './components/Meters.tsx';
 import { Oscilloscope, OscilloscopeConfigSchema } from './components/Oscilloscope.tsx';
 import { Overview, OverviewConfigSchema } from './components/Overview.tsx';
@@ -61,3 +62,4 @@ defineVisualizer({
 defineVisualizer({ name: 'vectorscope', schema: VectorscopeConfigSchema, component: Vectorscope });
 defineVisualizer({ name: 'spectrogram', schema: SpectrogramConfigSchema, component: Spectrogram });
 defineVisualizer({ name: 'overview', schema: OverviewConfigSchema, component: Overview });
+defineVisualizer({ name: 'bloom', schema: BloomConfigSchema, component: Bloom });

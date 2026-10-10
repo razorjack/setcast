@@ -122,6 +122,29 @@ export const SpectrogramConfigSchema = visualizerSchema('spectrogram', {
 });
 export type SpectrogramConfig = z.infer<typeof SpectrogramConfigSchema>;
 
+const bloomBandsError = `bands must be one or two audio features: ${FEATURE_SOURCES.join(', ')}.`;
+
+/** The art's own lights, glowing with the music. */
+export const BloomConfigSchema = visualizerSchema('bloom', {
+  /**
+   * What lights them: the first band lights the lights nearest the art's main hue and the grey
+   * ones, the second those nearest its second hue.
+   */
+  bands: z
+    .array(z.enum(FEATURE_SOURCES, { error: bloomBandsError }), { error: bloomBandsError })
+    .min(1, { error: bloomBandsError })
+    .max(2, { error: bloomBandsError })
+    .default(['bass', 'highs']),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+  /** Share of the art that may count as light, its brightest pixels first. */
+  lights: numberSetting('lights', 0.005, 0.3).default(0.05),
+  /** How far the glow spreads, as a share of the frame's long side. */
+  radius: numberSetting('radius', 0.002, 0.1).default(0.015),
+  /** Seconds of trailing average, so the lights swell with the music rather than flicker. */
+  smooth: numberSetting('smooth', 0, 2).default(0.1),
+});
+export type BloomConfig = z.infer<typeof BloomConfigSchema>;
+
 /** The whole set as a strip; what it marks and how it looks is the theme's. */
 export const OverviewConfigSchema = visualizerSchema('overview', {});
 export type OverviewConfig = z.infer<typeof OverviewConfigSchema>;
@@ -164,6 +187,7 @@ visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
 visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
 visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
 visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true });
+visualizers.add({ name: 'bloom', schema: BloomConfigSchema });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */
 export const drawsWholeSet = (project: ResolvedProject): boolean =>

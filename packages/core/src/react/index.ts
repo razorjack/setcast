@@ -1,6 +1,7 @@
 import './css.ts';
 
 export { Background } from './components/Background.tsx';
+export { Bloom, BloomConfigSchema, type BloomConfig } from './components/Bloom.tsx';
 export { Header } from './components/Header.tsx';
 export { Meters, MetersConfigSchema, type MetersConfig } from './components/Meters.tsx';
 export { NowPlaying } from './components/NowPlaying.tsx';

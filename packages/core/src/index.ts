@@ -105,6 +105,7 @@ export type { ResolvedProject } from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export { SECONDS_CAP, beatVars, stageData, stageVars, playVars } from './stage.ts';
+export { lightLayers, type LightOptions } from './lights.ts';
 export {
   REFERENCE_LUMA,
   artBehind,
@@ -148,6 +149,7 @@ export {
   type Chapter,
 } from './chapters.ts';
 export {
+  BloomConfigSchema,
   MetersConfigSchema,
   OscilloscopeConfigSchema,
   OverviewConfigSchema,
@@ -159,6 +161,7 @@ export {
   resolveVisualizerConfig,
   resolveVisualizerConfigs,
   visualizers,
+  type BloomConfig,
   type MetersConfig,
   type OscilloscopeConfig,
   type OverviewConfig,

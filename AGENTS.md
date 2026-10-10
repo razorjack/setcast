@@ -263,7 +263,7 @@ Each plugin kind is a small interface plus a Zod schema for its config. Extensio
 list; implemented today: visualizer, theme, tracklist importer):
 
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
-  vectorscope ✓, spectrogram ✓, overview ✓); `visualizer:` takes one block
+  vectorscope ✓, spectrogram ✓, overview ✓, bloom ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
   (11 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
@@ -370,6 +370,13 @@ modes and filters.
 inside `.sc-overview-played`, clipped to the part that has played, one
 `.sc-overview-mark[data-type]` per annotation or listing (`data-type="listing"`) and the `.sc-overview-head` playhead. SVG lines have no
 stroke until a theme gives them one, so a theme shows exactly the event types it styles.
+
+`.sc-bloom` is the art's own lights glowing with the music: one `.sc-bloom-light[data-band]` per
+band with its level in `--level`, each holding a `.sc-bg-copy` image of glowing lights placed over
+`.sc-bg-img`. base.css screens each layer over the art at opacity `--level`; a theme may change
+the blend, scale the glow with `filter: brightness()`, or shape the level with `calc()`. The first
+band lights the lights nearest the art's first hue and the grey ones, the second those nearest
+its second hue.
 
 `.sc-meters` is HTML, not SVG: one `.sc-meter` per band (`data-band="bass"`) with its level in
 `--level`, 0..1, holding `.sc-meter-bar` > `.sc-meter-level` and a `.sc-meter-label`. The theme
@@ -662,6 +669,14 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   Spectrum `segments` cuts the bars with an SVG mask rather than drawing one rect per cell, which
   keeps a frame at 2 rects per bar. The mask's fills are inline styles, because theme rules such
   as `.sc-spectrum rect { fill }` otherwise repaint the mask and erase the gaps.
+- Bloom finds the art's lights once per image, in a canvas 480 px along the frame's long side:
+  pixels among the brightest `lights` share that are also 0.12 brighter than the mean of their
+  surroundings (6% of the long side) and at least 0.3 luma (`lightLayers` in `lights.ts`, pure and
+  tested). The surroundings rule keeps a bright sky or paper from glowing while lamps in a dark
+  room do. Each layer is blurred into a halo and a tighter core and kept as a blob URL, so a frame
+  only changes opacity. Splitting by hue relates sound to color without an arbitrary mapping of
+  frequency to position: in a bar with warm lamps and cyan screens, bass swells the lamps and the
+  highs flicker the screens.
 - Meters are HTML with `--level` rather than SVG like the spectrum: a meter is a few boxes and a
   text label, which CSS lays out and styles more directly than SVG geometry and `<text>`.
 - The vectorscope plots `(right - left, left + right) / √2`, the usual goniometer orientation:
