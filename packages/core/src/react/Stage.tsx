@@ -1,11 +1,11 @@
 import { useLayoutEffect, useMemo, useRef, type CSSProperties, type RefObject } from 'react';
 import { modulationVars } from '../modulation.ts';
 import {
+  artBehind,
   backgroundVars,
   currentBackground,
-  lumaBehind,
+  type ArtGrid,
   type FrameArea,
-  type LumaGrid,
 } from '../background.ts';
 import { beatVars, stageData, stageVars } from '../stage.ts';
 import { Background, useBackgroundArt } from './components/Background.tsx';
@@ -24,7 +24,7 @@ export function Stage() {
   const background = currentBackground(mix, project.background);
   const backgroundArt = useBackgroundArt(background);
   const stageRef = useRef<HTMLDivElement>(null);
-  useLumaBehind(stageRef, backgroundArt?.stats.grid ?? null);
+  useArtBehind(stageRef, backgroundArt?.stats.grid ?? null);
   const visualizers = useMemo(
     () => project.visualizers.map((config) => resolveVisualizer(config)),
     [project.visualizers],
@@ -44,6 +44,7 @@ export function Stage() {
       ref={stageRef}
       className={`setcast sc-stage theme-${project.theme}`}
       {...stageData(mix, background)}
+      data-bg-calm={backgroundArt?.stats.calm.anchor}
       data-presentation={project.presentation}
       style={style}
     >
@@ -59,29 +60,35 @@ export function Stage() {
   );
 }
 
-/** The elements whose text a theme may need to keep legible over bright parts of the art. */
+/** The elements whose text a theme may need to keep legible over bright or busy parts of the art. */
 const MEASURED_ELEMENTS = '.sc-header, .sc-set-title, .sc-clock, .sc-panel, .sc-next';
 const LUMA_BEHIND = '--bg-luma-behind';
+const DETAIL_BEHIND = '--bg-detail-behind';
 
 /**
- * Sets `--bg-luma-behind` on each measured element to the luma of the art under its box, every
- * frame, since panels move. The previous values are removed before the boxes are read, so every
- * render tab measures the same layout whatever frame it rendered before, and all boxes are read
- * before any value is set, so the browser lays the frame out once.
+ * Sets `--bg-luma-behind` and `--bg-detail-behind` on each measured element to the art under its
+ * box, every frame, since panels move. The previous values are removed before the boxes are read,
+ * so every render tab measures the same layout whatever frame it rendered before, and all boxes
+ * are read before any value is set, so the browser lays the frame out once.
  */
-function useLumaBehind(stageRef: RefObject<HTMLDivElement | null>, grid: LumaGrid | null): void {
+function useArtBehind(stageRef: RefObject<HTMLDivElement | null>, grid: ArtGrid | null): void {
   useLayoutEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
     const elements = Array.from(stage.querySelectorAll<HTMLElement>(MEASURED_ELEMENTS));
-    for (const element of elements) element.style.removeProperty(LUMA_BEHIND);
+    for (const element of elements) {
+      element.style.removeProperty(LUMA_BEHIND);
+      element.style.removeProperty(DETAIL_BEHIND);
+    }
     if (!grid) return;
 
     const frame = stage.getBoundingClientRect();
     const areas = elements.map((element) => frameArea(element.getBoundingClientRect(), frame));
     for (const [index, element] of elements.entries()) {
-      const luma = lumaBehind(grid, areas[index]!);
-      if (luma !== null) element.style.setProperty(LUMA_BEHIND, luma.toFixed(3));
+      const behind = artBehind(grid, areas[index]!);
+      if (!behind) continue;
+      element.style.setProperty(LUMA_BEHIND, behind.luma.toFixed(3));
+      element.style.setProperty(DETAIL_BEHIND, behind.detail.toFixed(3));
     }
   });
 }

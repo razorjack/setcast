@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vite-plus/test';
 import {
+  artBehind,
   backgroundVars,
   backgroundWarnings,
   coverCrop,
   currentBackground,
-  lumaBehind,
   measureBackground,
   resolveFit,
   type BackgroundStats,
@@ -27,7 +27,8 @@ describe('measureBackground', () => {
     expect(measure([255, 255, 255], [0, 0, 0]).grid).toEqual({
       width: 2,
       height: 1,
-      cells: [1, 0],
+      luma: [1, 0],
+      detail: [1, 1],
     });
   });
 
@@ -54,11 +55,65 @@ describe('measureBackground', () => {
   });
 });
 
+describe('detail', () => {
+  const grey: [number, number, number] = [128, 128, 128];
+  const white: [number, number, number] = [255, 255, 255];
+  const black: [number, number, number] = [0, 0, 0];
+  /** Rows of pixels, top first. */
+  const measureRows = (...rows: [number, number, number][][]) =>
+    measureBackground(
+      rows.flat().flatMap(([red, green, blue]) => [red, green, blue, 255]),
+      { width: rows[0]!.length, height: rows.length },
+    );
+  /** A row of `width` pixels, alternating black and white where `busy`, grey elsewhere. */
+  const row = (width: number, busy: (column: number) => boolean) =>
+    Array.from({ length: width }, (_, column) => {
+      if (!busy(column)) return grey;
+      return column % 2 === 0 ? black : white;
+    });
+  const flatRow = (width: number) => row(width, () => false);
+  const busyRow = (width: number) => row(width, () => true);
+
+  test('flat art has no detail, its focus at the center and its calm area at the bottom left', () => {
+    const flat = measureRows(flatRow(4), flatRow(4), flatRow(4));
+    expect(flat.detail).toBe(0);
+    expect(flat.focus).toEqual({ x: 0.5, y: 0.5 });
+    expect(flat.calm).toEqual({ anchor: 'bottom-left', luma: expect.closeTo(0.502, 3), detail: 0 });
+  });
+
+  test('the focus sits on the busiest part of the art', () => {
+    const corner = measureRows(
+      [grey, grey, grey, white],
+      [grey, grey, grey, grey],
+      [grey, grey, grey, grey],
+    );
+    expect(corner.focus.x).toBeGreaterThan(0.75);
+    expect(corner.focus.y).toBeLessThan(0.3);
+  });
+
+  test('the calm area is the candidate with the least detail', () => {
+    const quietTopRight = (rowIndex: number) => row(10, (column) => !(rowIndex < 2 && column >= 6));
+    const art = measureRows(...Array.from({ length: 6 }, (_, index) => quietTopRight(index)));
+    expect(art.calm.anchor).toBe('top-right');
+    expect(art.calm.detail).toBeLessThan(art.detail);
+  });
+
+  test('a portrait frame chooses between bands across the top and the bottom', () => {
+    const busyBottom = Array.from({ length: 6 }, (_, index) =>
+      index >= 3 ? busyRow(3) : flatRow(3),
+    );
+    expect(measureRows(...busyBottom).calm.anchor).toBe('top');
+  });
+});
+
 describe('backgroundVars', () => {
   const stats = (luma: number, colors: string[] = []): BackgroundStats => ({
     luma,
+    detail: 0.02,
     colors,
-    grid: { width: 0, height: 0, cells: [] },
+    focus: { x: 0.25, y: 0.75 },
+    calm: { anchor: 'top-right', luma: 0.1, detail: 0.01 },
+    grid: { width: 0, height: 0, luma: [], detail: [] },
   });
 
   test('scales the art to the reference luma, within limits', () => {
@@ -67,6 +122,16 @@ describe('backgroundVars', () => {
     expect(backgroundVars(stats(1))['--bg-exposure']).toBe('0.100');
     expect(backgroundVars(stats(0))['--bg-exposure']).toBe('4.000');
     expect(backgroundVars(stats(0.2, ['rgb(1 2 3)']))['--bg-color-1']).toBe('rgb(1 2 3)');
+  });
+
+  test('passes on the detail, the focus and the calm area', () => {
+    expect(backgroundVars(stats(0.2))).toMatchObject({
+      '--bg-detail': '0.020',
+      '--bg-focus-x': '0.250',
+      '--bg-focus-y': '0.750',
+      '--bg-calm-luma': '0.100',
+      '--bg-calm-detail': '0.010',
+    });
   });
 
   test('says nothing when there is no measured art', () => {
@@ -91,19 +156,21 @@ test('the first focused play supplies the background, else the project', () => {
   expect(currentBackground(timeline.at(70), null)).toBe(null);
 });
 
-describe('lumaBehind', () => {
-  const grid = { width: 2, height: 2, cells: [0, 0.2, 0.6, 1] };
+describe('artBehind', () => {
+  const grid = { width: 2, height: 2, luma: [0, 0.2, 0.6, 1], detail: [0.1, 0, 0, 0.3] };
+  const lumaBehind = (area: Parameters<typeof artBehind>[1]) => artBehind(grid, area)?.luma;
 
   test('averages the cells under the area, weighted by how much of each it covers', () => {
-    expect(lumaBehind(grid, { left: 0, top: 0, right: 1, bottom: 1 })).toBeCloseTo(0.45);
-    expect(lumaBehind(grid, { left: 0, top: 0.5, right: 1, bottom: 1 })).toBeCloseTo(0.8);
-    expect(lumaBehind(grid, { left: 0.25, top: 0.5, right: 1, bottom: 1 })).toBeCloseTo(1.3 / 1.5);
+    expect(lumaBehind({ left: 0, top: 0, right: 1, bottom: 1 })).toBeCloseTo(0.45);
+    expect(lumaBehind({ left: 0, top: 0.5, right: 1, bottom: 1 })).toBeCloseTo(0.8);
+    expect(lumaBehind({ left: 0.25, top: 0.5, right: 1, bottom: 1 })).toBeCloseTo(1.3 / 1.5);
+    expect(artBehind(grid, { left: 0, top: 0, right: 1, bottom: 1 })?.detail).toBeCloseTo(0.1);
   });
 
   test('clips the area to the frame, and has nothing for an area outside it or without size', () => {
-    expect(lumaBehind(grid, { left: -1, top: 0.5, right: 0.5, bottom: 2 })).toBeCloseTo(0.6);
-    expect(lumaBehind(grid, { left: 1.2, top: 0, right: 1.5, bottom: 1 })).toBeNull();
-    expect(lumaBehind(grid, { left: 0.3, top: 0.3, right: 0.3, bottom: 0.6 })).toBeNull();
+    expect(lumaBehind({ left: -1, top: 0.5, right: 0.5, bottom: 2 })).toBeCloseTo(0.6);
+    expect(artBehind(grid, { left: 1.2, top: 0, right: 1.5, bottom: 1 })).toBeNull();
+    expect(artBehind(grid, { left: 0.3, top: 0.3, right: 0.3, bottom: 0.6 })).toBeNull();
   });
 });
 

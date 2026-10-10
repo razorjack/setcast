@@ -100,6 +100,20 @@ and panels legible over bright art, in short like this:
 }
 ```
 
+An image's detail is measured too. `--bg-detail` is the mean absolute luma difference between
+neighboring cells of a grid 64 cells along the frame's long side: about 0.005 for flat art such
+as the demo's, 0.02 to 0.05 for a dark scene and 0.1 for busy art. The measured elements carry
+`--bg-detail-behind`, the detail under their box, next to `--bg-luma-behind`; a dense pattern of
+moderate brightness needs a plate behind text as much as a bright sky does. `--bg-focus-x` and
+`--bg-focus-y` (0..1) are where the subject sits: the center of the cells busier than the mean,
+or the middle of the frame for flat art. `data-bg-calm` names the candidate area for a block of
+text with the least detail, and `--bg-calm-luma` and `--bg-calm-detail` are measured over it. In
+a landscape frame the candidates are the corners (`top-left`, `top-right`, `bottom-left`,
+`bottom-right`) and the middle of each edge (`top`, `left`, `right`, `bottom`), each about a third
+of the frame; in portrait they are bands across the top and the bottom thirds (`top`, `bottom`).
+`[data-bg-calm^='top']` selects the top row and `[data-bg-calm$='left']` the left column. Ties
+go to `bottom-left`. Video and a stage without art carry none of these.
+
 `backgroundFit` decides how art of another shape than the frame is shown: `cover` crops it,
 `contain` shows it whole over a blurred, darker copy of itself, and `auto` (the default) contains
 art that covering would cut by more than 30%. A contained image reaches `.sc-bg-img` as one image

@@ -107,18 +107,22 @@ export { Registry } from './registry.ts';
 export { SECONDS_CAP, beatVars, stageData, stageVars, playVars } from './stage.ts';
 export {
   REFERENCE_LUMA,
+  artBehind,
   backgroundVars,
   backgroundWarnings,
   coverCrop,
   currentBackground,
   enlargement,
-  lumaBehind,
   measureBackground,
   resolveFit,
+  type ArtBehind,
+  type ArtGrid,
   type BackgroundFit,
   type BackgroundStats,
+  type CalmAnchor,
+  type CalmArea,
   type FrameArea,
-  type LumaGrid,
+  type FramePoint,
   type Size,
 } from './background.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';

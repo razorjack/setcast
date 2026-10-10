@@ -291,8 +291,10 @@ most prominent hues. Each built-in theme corrects the art's exposure by `--bg-co
 its accents and interference its duotone from the art's hues; `.setcast { --bg-accent: initial;
 --bg-accent-2: initial; }` keeps the theme's own colors. The header, the clock, each panel and up
 next also carry `--bg-luma-behind`, the brightness of the art behind that element, so a theme can
-darken a text shadow or a panel only where bright art would wash it out; sterile-tech does. See
-the [CSS contract](docs/theme-plugin-contract.md).
+darken a text shadow or a panel only where bright art would wash it out; sterile-tech does.
+`--bg-detail-behind` says how busy the art is there. `data-bg-calm` names the emptiest part of
+the art (`top-left`, `bottom-right`, …) and `--bg-focus-x` and `--bg-focus-y` where its subject
+sits. See the [CSS contract](docs/theme-plugin-contract.md).
 
 With `backgroundFit: cover`, art of another shape is cropped to the frame. When the subject sits
 off center, keep it in frame with `.sc-bg-img { object-position: 70% 50%; }` in your `css:` file.

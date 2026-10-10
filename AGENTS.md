@@ -320,9 +320,9 @@ arbitrary deck labels are permitted and use the theme accent unless styled expli
 has no global deck. It carries `data-presentation`, `data-current-plays`, `data-section`,
 `data-shared-drop` and `data-background` (`none`, `image` or `video`: the kind of art the
 background shows right now, so a theme can treat art differently or show its own material
-without any). For an image it also has `--bg-luma`, `--bg-exposure`, `--bg-color-1` and
-`--bg-color-2` (see Decisions). Its
-section and cue variables describe the mix.
+without any). For an image it also has `--bg-luma`, `--bg-exposure`, `--bg-color-1`,
+`--bg-color-2`, `--bg-detail`, `--bg-focus-x`, `--bg-focus-y`, `data-bg-calm`, `--bg-calm-luma`
+and `--bg-calm-detail` (see Decisions). Its section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
 `data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run;
@@ -399,6 +399,14 @@ nearly black, flat `bg.png` breaks on such art. When you build or change a theme
   dark art. Multiply it by the theme's correction gain, declare derived variables on the measured
   element itself, and never size or position anything with it. sterile-tech's `--art-gain` and
   `--glare` are the reference.
+- `--bg-detail-behind` on the same elements: how busy the art is behind it. Brightness alone
+  misses a dense pattern of moderate luma (psychedelic art), which needs a plate as much as a
+  bright sky does. `--bg-detail` is the same for the whole art.
+- `data-bg-calm` on the stage names the candidate text area with the least detail (`top-left`,
+  `top`, `top-right`, `left`, `right`, `bottom-left`, `bottom`, `bottom-right`; `top` and `bottom`
+  in portrait), with `--bg-calm-luma` and `--bg-calm-detail` measured over it. A theme can set its
+  type where the art is empty and choose its ink from the area's luma. `--bg-focus-x` and
+  `--bg-focus-y` are where the subject is, for a crop or a zoom that keeps it in frame.
 
 Art of another shape reaches `.sc-bg-img` as one frame-sized image (`backgroundFit`), so no theme
 rule needs to handle it. Verify over real art, not only the demo: `setcast still --theme all` on a
@@ -606,6 +614,13 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   tab measure the same layout whatever frame it rendered before; reading all boxes before writing
   lays the frame out once. On a 1080p slice it cost 0.57 ms a frame for four elements, against
   about 100 ms a frame per render tab, and render times did not change measurably.
+- Detail is the mean absolute luma difference between a cell of the measured grid and its four
+  neighbors, so it measures structure at about 1/64 of the frame: a texture finer than a cell
+  averages out, and a dense image of moderate luma still reads as busy. The focus is the center
+  of the cells busier than the mean, weighted by how much busier, which lands on the subject of
+  every test image. The calm candidates are fixed areas of about a third of the frame rather than
+  a free search, so a theme can lay out each one in CSS; ties go to the bottom left, where
+  credits usually sit. All of it is measured once per image, before the theme's filter.
 - Loading warns about art the frame enlarges more than 1.5×, naming the side that limits it, and
   notes when `auto` shows art whole. `readImageSize` reads PNG, JPEG and WebP headers itself
   rather than adding an image dependency; other formats are skipped.
