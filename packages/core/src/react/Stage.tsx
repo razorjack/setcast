@@ -36,7 +36,7 @@ export function Stage() {
     ...stageVars(mix, timeSeconds, composition.durationSeconds),
     ...beatVars(timeSeconds, project.bpm, project.beatOffset),
     ...modulationVars(modulation),
-    ...backgroundVars(backgroundArt?.stats ?? null),
+    ...backgroundVars(backgroundArt),
   };
 
   return (

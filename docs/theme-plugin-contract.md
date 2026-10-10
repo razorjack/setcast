@@ -117,7 +117,11 @@ go to `bottom-left`. Video and a stage without art carry none of these.
 `backgroundFit` decides how art of another shape than the frame is shown: `cover` crops it,
 `contain` shows it whole over a blurred, darker copy of itself, and `auto` (the default) contains
 art that covering would cut by more than 30%. A contained image reaches `.sc-bg-img` as one image
-the size of the frame, so theme rules apply to it unchanged.
+the size of the frame, so theme rules apply to it unchanged. `.sc-art`, next to it in `.sc-bg`,
+is the file itself at its own shape, for a theme that shows the art as an object, such as a print
+on a wall. It is hidden until a theme shows it. `--bg-aspect` on the stage is the file's width
+over its height, so `width: min(80cqw, 70cqh * var(--bg-aspect))` fits it in a box. Video has
+neither.
 
 Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--since-drop`, `--until-drop`, `--since-breakdown`, `--until-breakdown`,

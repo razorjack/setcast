@@ -67,6 +67,13 @@
   transform-origin: center;
 }
 
+/* the art at its own shape, for a theme that shows it as an object such as a print; hidden
+   unless a theme shows it */
+.sc-art {
+  display: none;
+  position: absolute;
+}
+
 .sc-spectrum {
   position: absolute;
   left: 0;

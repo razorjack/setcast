@@ -293,11 +293,20 @@ function binColor(bins: HueBin[], index: number): string {
   return `rgb(${channel((bin) => bin.red)} ${channel((bin) => bin.green)} ${channel((bin) => bin.blue)})`;
 }
 
+/** An image as the stage knows it: its own shape and what the frame shows of it. */
+export interface MeasuredArt {
+  /** The image's width over its height. */
+  aspect: number;
+  stats: BackgroundStats;
+}
+
 /** Nothing for a video or a stage without art, so themes fall back to `var(--bg-exposure, 1)`. */
-export function backgroundVars(stats: BackgroundStats | null): Record<string, string> {
-  if (!stats) return {};
+export function backgroundVars(art: MeasuredArt | null): Record<string, string> {
+  if (!art) return {};
+  const { stats } = art;
   const exposure = clamp(REFERENCE_LUMA / stats.luma, ...EXPOSURE_LIMITS);
   const vars: Record<string, string> = {
+    '--bg-aspect': art.aspect.toFixed(4),
     '--bg-luma': stats.luma.toFixed(3),
     '--bg-exposure': exposure.toFixed(3),
     '--bg-detail': stats.detail.toFixed(3),

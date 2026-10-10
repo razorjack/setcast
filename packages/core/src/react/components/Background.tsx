@@ -7,6 +7,7 @@ import {
   resolveFit,
   type BackgroundFit,
   type BackgroundStats,
+  type MeasuredArt,
   type Size,
 } from '../../background.ts';
 import { useFrame } from '../frame.tsx';
@@ -28,6 +29,7 @@ export function Background() {
     <div className="sc-bg" style={drift(timeSeconds)}>
       {current && isVideoFile(current) && <Video className="sc-bg-img" src={current} loop muted />}
       {art && <Img className="sc-bg-img" src={art.src} />}
+      {art && <Img className="sc-art" src={art.original} />}
       <div className="sc-bg-vignette" />
     </div>
   );
@@ -42,10 +44,12 @@ function drift(timeSeconds: number): CSSProperties {
   };
 }
 
-/** An image background as the frame shows it: the art, or the art whole over a blurred copy. */
-export interface BackgroundArt {
+/** An image background: the file, and the art as the frame shows it. */
+export interface BackgroundArt extends MeasuredArt {
+  /** The art fitted to the frame: the file itself, or the art whole over a blurred copy. */
   src: string;
-  stats: BackgroundStats;
+  /** The file as it is, at its own shape. */
+  original: string;
 }
 
 interface ArtRequest {
@@ -95,13 +99,15 @@ function prepareOnce(key: string, request: ArtRequest): Promise<BackgroundArt> {
 
 async function prepareArt({ url, fit, frame }: ArtRequest): Promise<BackgroundArt> {
   const image = await loadImage(url);
-  if (resolveFit(fit, sizeOf(image), frame) === 'cover') {
-    return { src: url, stats: measure(image, frame) };
+  const size = sizeOf(image);
+  const aspect = size.width / size.height;
+  if (resolveFit(fit, size, frame) === 'cover') {
+    return { src: url, original: url, aspect, stats: measure(image, frame) };
   }
 
   const composed = containOverBlur(image, frame);
   const src = URL.createObjectURL(await composed.convertToBlob());
-  return { src, stats: measure(composed, frame) };
+  return { src, original: url, aspect, stats: measure(composed, frame) };
 }
 
 async function loadImage(url: string): Promise<HTMLImageElement> {

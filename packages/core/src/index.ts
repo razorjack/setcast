@@ -123,6 +123,7 @@ export {
   type CalmArea,
   type FrameArea,
   type FramePoint,
+  type MeasuredArt,
   type Size,
 } from './background.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';

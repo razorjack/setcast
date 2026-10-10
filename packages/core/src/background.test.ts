@@ -7,7 +7,7 @@ import {
   currentBackground,
   measureBackground,
   resolveFit,
-  type BackgroundStats,
+  type MeasuredArt,
 } from './background.ts';
 import { normalizeMix } from './mix.ts';
 import { Timeline } from './timeline.ts';
@@ -107,25 +107,29 @@ describe('detail', () => {
 });
 
 describe('backgroundVars', () => {
-  const stats = (luma: number, colors: string[] = []): BackgroundStats => ({
-    luma,
-    detail: 0.02,
-    colors,
-    focus: { x: 0.25, y: 0.75 },
-    calm: { anchor: 'top-right', luma: 0.1, detail: 0.01 },
-    grid: { width: 0, height: 0, luma: [], detail: [] },
+  const art = (luma: number, colors: string[] = []): MeasuredArt => ({
+    aspect: 1.5,
+    stats: {
+      luma,
+      detail: 0.02,
+      colors,
+      focus: { x: 0.25, y: 0.75 },
+      calm: { anchor: 'top-right', luma: 0.1, detail: 0.01 },
+      grid: { width: 0, height: 0, luma: [], detail: [] },
+    },
   });
 
   test('scales the art to the reference luma, within limits', () => {
-    expect(backgroundVars(stats(0.09))['--bg-exposure']).toBe('1.000');
-    expect(backgroundVars(stats(0.45))['--bg-exposure']).toBe('0.200');
-    expect(backgroundVars(stats(1))['--bg-exposure']).toBe('0.100');
-    expect(backgroundVars(stats(0))['--bg-exposure']).toBe('4.000');
-    expect(backgroundVars(stats(0.2, ['rgb(1 2 3)']))['--bg-color-1']).toBe('rgb(1 2 3)');
+    expect(backgroundVars(art(0.09))['--bg-exposure']).toBe('1.000');
+    expect(backgroundVars(art(0.45))['--bg-exposure']).toBe('0.200');
+    expect(backgroundVars(art(1))['--bg-exposure']).toBe('0.100');
+    expect(backgroundVars(art(0))['--bg-exposure']).toBe('4.000');
+    expect(backgroundVars(art(0.2, ['rgb(1 2 3)']))['--bg-color-1']).toBe('rgb(1 2 3)');
   });
 
-  test('passes on the detail, the focus and the calm area', () => {
-    expect(backgroundVars(stats(0.2))).toMatchObject({
+  test('passes on the shape, the detail, the focus and the calm area', () => {
+    expect(backgroundVars(art(0.2))).toMatchObject({
+      '--bg-aspect': '1.5000',
       '--bg-detail': '0.020',
       '--bg-focus-x': '0.250',
       '--bg-focus-y': '0.750',

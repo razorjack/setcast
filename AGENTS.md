@@ -308,7 +308,7 @@ Remotion's bundler compiles it).
 ### CSS contract
 
 The stage root has class `setcast` plus `--mod-*` variables. Stable class names: `sc-stage`,
-`sc-bg`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
+`sc-bg`, `sc-art`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
 `sc-header`, `sc-clock`. `packages/core/css/base.css` is structural only (positions, sizes as
 variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
 `--accent-2`, `--deck-a` … `--deck-d` (one signal color per deck), `--fg`, `--fg-dim`, `--blur`,
@@ -321,7 +321,7 @@ has no global deck. It carries `data-presentation`, `data-current-plays`, `data-
 `data-shared-drop` and `data-background` (`none`, `image` or `video`: the kind of art the
 background shows right now, so a theme can treat art differently or show its own material
 without any). For an image it also has `--bg-luma`, `--bg-exposure`, `--bg-color-1`,
-`--bg-color-2`, `--bg-detail`, `--bg-focus-x`, `--bg-focus-y`, `data-bg-calm`, `--bg-calm-luma`
+`--bg-color-2`, `--bg-aspect`, `--bg-detail`, `--bg-focus-x`, `--bg-focus-y`, `data-bg-calm`, `--bg-calm-luma`
 and `--bg-calm-detail` (see Decisions). Its section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
@@ -409,7 +409,8 @@ nearly black, flat `bg.png` breaks on such art. When you build or change a theme
   `--bg-focus-y` are where the subject is, for a crop or a zoom that keeps it in frame.
 
 Art of another shape reaches `.sc-bg-img` as one frame-sized image (`backgroundFit`), so no theme
-rule needs to handle it. Verify over real art, not only the demo: `setcast still --theme all` on a
+rule needs to handle it. A theme that shows the art as an object, a print or a sleeve, shows
+`.sc-art` instead: the file at its own shape, hidden by default, sized with `--bg-aspect`. Verify over real art, not only the demo: `setcast still --theme all` on a
 project with the art, or `node demos/backgrounds/sheet.mjs` over the local test images when
 `demos/backgrounds/` exists (gitignored; never commit those images). Check legibility once more
 with `.setcast { --bg-correction: 0; }`, because users can turn the correction off.
