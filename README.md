@@ -14,7 +14,7 @@ track, a clock runs through the set, and the visuals move with the music.
 
 It is made for DJs who publish their mixes on YouTube and want more than a still image over the
 audio, without spending an evening in a video editor for every set. You describe the set in one
-YAML file and pick one of 12 themes. Themes are plain CSS, so if you can edit a stylesheet you can
+YAML file and pick one of 13 themes. Themes are plain CSS, so if you can edit a stylesheet you can
 change anything on screen, and you never need JavaScript. The default look is dark, sterile
 sci-fi, made for neurofunk, techstep and jungle; the other themes range from a photocopied rave
 flyer to the fluorescent display of a 90s CD deck.
@@ -65,6 +65,7 @@ a path to your own `.css`.
 | `pirate`        | a photocopied rave flyer: a worn grey copy, toner dust, one fluoro color (`--fluoro`)    |
 | `afterhours`    | warm and late: amber and plum, an italic serif, the frame ducking with the kick          |
 | `passe-partout` | your art untouched as a framed print on a wall in its colors, a museum label beside it   |
+| `masthead`      | your art full bleed, the track set in its emptiest part like a magazine's cover lines   |
 
 ## Get started
 

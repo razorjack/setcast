@@ -1,0 +1,434 @@
+/* masthead: the art full bleed and untouched, the track set into its emptiest part like the
+   cover line of a magazine, in ink taken from the art. */
+
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400 900;
+  src: url(../fonts/BodoniModa-400-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400 900;
+  src: url(../fonts/BodoniModa-400-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: italic;
+  font-weight: 400 900;
+  src: url(../fonts/BodoniModa-Italic-400-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: italic;
+  font-weight: 400 900;
+  src: url(../fonts/BodoniModa-Italic-400-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/HankenGrotesk-100-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/HankenGrotesk-100-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-masthead {
+  /* the ink takes the art's hue; grey art and a set without art get warm paper and black */
+  --tint: var(--bg-color-1, oklch(0.6 0.02 80));
+  /* 1 where the cover lines sit on bright art, so they are set in dark ink */
+  --bright-area: clamp(0, (var(--bg-calm-luma, 0.1) - 0.45) * 1000, 1);
+  /* art with no empty part gets a solid band behind the cover lines; a video, unmeasured, too */
+  --band-on: clamp(0, (var(--bg-calm-detail, 0.05) - 0.03) * 200, 1);
+  --ink: oklch(from var(--tint) calc(0.96 - var(--bright-area) * 0.79) 0.022 h);
+  --paper: oklch(from var(--tint) calc(0.13 + var(--bright-area) * 0.84) 0.014 h);
+  --accent: oklch(from var(--tint) calc(0.8 - var(--bright-area) * 0.32) 0.13 h);
+  --fg: var(--ink);
+  --fg-dim: color-mix(in oklab, var(--ink) 72%, transparent);
+  --deck-a: var(--accent);
+  --font-display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: var(--font-sans);
+  --hairline: max(1px, 0.06cqw);
+  /* the cover lines sit in the calm third of the art; bottom left without art */
+  --edge-x: 5cqw;
+  --edge-y: 8cqh;
+  --cover-w: 40cqw;
+  --cover-top: auto;
+  --cover-right: auto;
+  --cover-bottom: var(--edge-y);
+  --cover-left: var(--edge-x);
+  --cover-margin: 0;
+  --cover-align: left;
+  --cover-justify: start;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: #0c0c0d;
+}
+/* without art there is nothing to set the lines apart from */
+.theme-masthead[data-background='none'] {
+  --band-on: 0;
+}
+.theme-masthead[data-bg-calm$='right'] {
+  --cover-left: auto;
+  --cover-right: var(--edge-x);
+  --cover-align: right;
+  --cover-justify: end;
+}
+.theme-masthead[data-bg-calm^='top'] {
+  --cover-bottom: auto;
+  --cover-top: calc(var(--edge-y) + 3cqh);
+}
+.theme-masthead:is([data-bg-calm='left'], [data-bg-calm='right']) {
+  --cover-top: 0;
+  --cover-bottom: 0;
+  --cover-margin: auto 0;
+}
+.theme-masthead:is([data-bg-calm='top'], [data-bg-calm='bottom']) {
+  --cover-left: 0;
+  --cover-right: 0;
+  --cover-margin: 0 auto;
+  --cover-align: center;
+  --cover-justify: center;
+}
+
+/* the art untouched, unless a user sets --bg-correction */
+.theme-masthead .sc-bg-img {
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0)));
+}
+.theme-masthead .sc-bg-vignette {
+  background: radial-gradient(130% 120% at 50% 45%, transparent 55%, rgb(0 0 0 / 0.3));
+}
+
+/* bloom: the art's own lights, a little brighter than base.css leaves them */
+.theme-masthead .sc-bloom-glow {
+  filter: brightness(1.25);
+}
+
+/* the masthead: the set's name and clock along the edge away from the cover lines */
+.theme-masthead .sc-header {
+  --behind-bright: clamp(0, (var(--bg-luma-behind, 0) - 0.5) * 1000, 1);
+  --header-ink: oklch(from var(--tint) calc(0.95 - var(--behind-bright) * 0.78) 0.02 h);
+  top: calc(var(--margin) * 0.9);
+  padding-bottom: 1cqh;
+  font-size: 0.82cqw;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--header-ink);
+  text-shadow: 0 0 1cqw
+    oklch(from var(--header-ink) calc(1 - l) 0.01 h / calc(0.3 + var(--bg-detail-behind, 0) * 5));
+}
+.theme-masthead[data-bg-calm^='top'] .sc-header {
+  top: auto;
+  bottom: calc(var(--margin) * 0.9);
+}
+.theme-masthead .sc-clock {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2em;
+}
+.theme-masthead .sc-clock-total {
+  opacity: 0.6;
+}
+/* the issue line: how far the set has run */
+.theme-masthead .sc-header::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--hairline);
+  background: linear-gradient(
+    to right,
+    var(--header-ink) calc(var(--set-progress, 0) * 100%),
+    color-mix(in oklab, var(--header-ink) 28%, transparent) 0
+  );
+}
+
+/* the cover lines: where they sit comes from the art, on a band when the art is busy there */
+.theme-masthead[data-presentation='playlist'] .sc-panel,
+.theme-masthead[data-presentation='dj'] .sc-contributors {
+  inset: var(--cover-top) var(--cover-right) var(--cover-bottom) var(--cover-left);
+  width: var(--cover-w);
+  max-width: none;
+  height: fit-content;
+  margin: var(--cover-margin);
+  padding: calc(var(--band-on) * 2.4cqw) calc(var(--band-on) * 2.8cqw);
+  text-align: var(--cover-align);
+  background: oklch(
+    from var(--paper) l c h / calc(var(--band-on) * 0.94 * var(--band-presence, 1))
+  );
+  text-shadow: 0 0 1.6cqw oklch(from var(--paper) l c h / calc((1 - var(--band-on)) * 0.5));
+}
+.theme-masthead[data-presentation='playlist'] .sc-panel {
+  --band-presence: clamp(0, var(--presence, 1) * 1.6, 1);
+  anchor-name: --cover;
+}
+.theme-masthead .sc-panel > * {
+  opacity: clamp(0, (var(--presence, 1) - 0.2) * 1.8, 1);
+  transform: translateY(calc((1 - var(--presence, 1)) * 1.4cqh));
+}
+.theme-masthead .sc-panel-head {
+  justify-content: var(--cover-justify);
+  gap: 0.9cqw;
+  margin-bottom: 1.5cqw;
+  font-size: 0.78cqw;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.theme-masthead .sc-deck {
+  padding: 0.1em 0.45em;
+  border: var(--hairline) solid currentColor;
+  letter-spacing: 0.08em;
+}
+.theme-masthead .sc-index {
+  color: var(--fg-dim);
+}
+.theme-masthead .sc-artist {
+  margin-bottom: 1cqw;
+  font-size: 1.25cqw;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.theme-masthead .sc-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 5.6cqw;
+  line-height: 0.96;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  text-box: trim-both cap alphabetic;
+}
+.theme-masthead .sc-label {
+  margin-top: 1cqw;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.45cqw;
+  color: var(--fg-dim);
+}
+.theme-masthead .sc-credit-details {
+  margin-top: 0.8cqw;
+  font-family: var(--font-sans);
+  font-size: 0.75cqw;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+/* the rule under the title: it draws in with the lines, swells with the bass, and on a drop
+   runs out across the frame */
+.theme-masthead {
+  /* a panel has its own cue variables; the sweep follows every drop of the mix */
+  --mix-since-drop: var(--since-drop, 60);
+}
+/* the rule sits in the title's own padding: a DJ slot clips whatever hangs below it */
+.theme-masthead .sc-title {
+  --rule-room: 1.6cqw;
+  --sweep: calc(
+    clamp(0, var(--mix-since-drop) / 0.35, 1) *
+      clamp(0, 1 - (var(--mix-since-drop) - 0.35) / 2.6, 1)
+  );
+  position: relative;
+  padding-bottom: var(--rule-room);
+}
+.theme-masthead .sc-title::after {
+  content: '';
+  position: absolute;
+  bottom: calc(var(--rule-room) * 0.3);
+  left: var(--rule-left, 0);
+  right: var(--rule-right, auto);
+  width: calc(clamp(0, (var(--presence, 1) - 0.3) * 1.5, 1) * (6cqw + var(--sweep) * 100cqw));
+  height: calc(max(1px, 0.07cqw) + var(--mod-rule, 0) * 0.22cqw);
+  background: var(--accent);
+  translate: var(--rule-shift, 0) 50%;
+}
+.theme-masthead[data-bg-calm$='right'] .sc-title {
+  --rule-left: auto;
+  --rule-right: 0;
+}
+.theme-masthead:is([data-bg-calm='top'], [data-bg-calm='bottom']) .sc-title {
+  --rule-left: 50%;
+  --rule-shift: -50%;
+}
+
+/* up next: a small cover line on the far side of the main one, over the last seconds */
+.theme-masthead .sc-next {
+  left: var(--cover-left);
+  right: var(--cover-right);
+  width: var(--cover-w);
+  max-width: none;
+  margin: var(--cover-margin);
+  align-items: var(--cover-justify);
+  gap: 0.35cqw;
+  text-align: var(--cover-align);
+  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
+  text-shadow: 0 0 1.4cqw oklch(from var(--paper) l c h / 0.6);
+}
+.theme-masthead[data-presentation='playlist'] .sc-next {
+  position-anchor: --cover;
+  bottom: calc(anchor(top) + 3.5cqh);
+}
+.theme-masthead[data-presentation='dj'] .sc-next {
+  position-anchor: --contributors;
+  bottom: calc(anchor(top) + 3.5cqh);
+}
+.theme-masthead[data-bg-calm^='top'] .sc-next,
+.theme-masthead:is([data-bg-calm='left'], [data-bg-calm='right']) .sc-next {
+  top: calc(anchor(bottom) + 3.5cqh);
+  bottom: auto;
+}
+.theme-masthead .sc-next-label {
+  margin-bottom: 0.3cqw;
+  font-size: 0.72cqw;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.theme-masthead .sc-next-artist {
+  font-size: 0.85cqw;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.theme-masthead .sc-next-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2cqw;
+  line-height: 1.05;
+}
+
+/* DJ: every current play is a cover line of one size; focus sets the ink */
+.theme-masthead[data-presentation='dj'] .sc-contributors {
+  --stack-gap: 2.4cqh;
+  --slot-bleed: 1cqw;
+}
+.theme-masthead[data-presentation='dj'] .sc-panel {
+  text-align: var(--cover-align);
+}
+.theme-masthead[data-presentation='dj'] .sc-panel-head {
+  margin-bottom: 0.8cqw;
+  font-size: 0.66cqw;
+}
+.theme-masthead[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-masthead[data-presentation='dj'] .sc-artist {
+  margin-bottom: 0.7cqw;
+  font-size: 0.95cqw;
+}
+.theme-masthead[data-presentation='dj'] .sc-title {
+  --rule-room: 1.3cqw;
+  font-size: 3.3cqw;
+}
+.theme-masthead[data-presentation='dj'] .sc-title::after {
+  width: calc(var(--focused, 1) * (3.5cqw + var(--sweep) * 100cqw));
+}
+.theme-masthead[data-presentation='dj'] .sc-label {
+  margin-top: 0.6cqw;
+  font-size: 1.05cqw;
+}
+.theme-masthead[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  --focused: 0;
+  color: var(--fg-dim);
+}
+.theme-masthead .sc-contributor-count,
+.theme-masthead .sc-overflow {
+  font-size: 0.68cqw;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.theme-masthead .sc-contributor-count {
+  margin-bottom: 0.4cqh;
+}
+.theme-masthead .sc-overflow {
+  margin-top: 2cqh;
+}
+
+/* portrait (9:16): the cover lines run across the top or the bottom third */
+@container (aspect-ratio < 1) {
+  .theme-masthead .sc-header {
+    font-size: 1.7cqw;
+  }
+  .theme-masthead[data-presentation='playlist'] .sc-panel,
+  .theme-masthead[data-presentation='dj'] .sc-contributors,
+  .theme-masthead .sc-next {
+    --edge-x: 7cqw;
+    --cover-w: 86cqw;
+    --cover-left: 0;
+    --cover-right: 0;
+    --cover-margin: 0 auto;
+    --cover-align: left;
+    --cover-justify: start;
+    padding: calc(var(--band-on) * 5cqw);
+  }
+  .theme-masthead[data-bg-calm] .sc-title {
+    --rule-left: 0;
+    --rule-right: auto;
+    --rule-shift: 0;
+  }
+  .theme-masthead .sc-title {
+    --rule-room: 3cqw;
+    font-size: 11.5cqw;
+  }
+  .theme-masthead .sc-panel-head {
+    gap: 2cqw;
+    font-size: 1.7cqw;
+    margin-bottom: 3cqw;
+  }
+  .theme-masthead .sc-artist {
+    font-size: 2.6cqw;
+    margin-bottom: 2.2cqw;
+  }
+  .theme-masthead .sc-label {
+    margin-top: 2cqw;
+    font-size: 3cqw;
+  }
+  .theme-masthead .sc-next {
+    padding: 0;
+  }
+  .theme-masthead .sc-next-label {
+    font-size: 1.6cqw;
+  }
+  .theme-masthead .sc-next-artist {
+    font-size: 1.9cqw;
+  }
+  .theme-masthead .sc-next-title {
+    font-size: 4.4cqw;
+  }
+  .theme-masthead[data-presentation='dj'] .sc-panel-head,
+  .theme-masthead .sc-contributor-count,
+  .theme-masthead .sc-overflow {
+    font-size: 1.5cqw;
+  }
+  .theme-masthead[data-presentation='dj'] .sc-artist {
+    font-size: 2cqw;
+  }
+  .theme-masthead[data-presentation='dj'] .sc-title {
+    --rule-room: 2.4cqw;
+    font-size: 7cqw;
+  }
+  .theme-masthead[data-presentation='dj'] .sc-label {
+    font-size: 2.3cqw;
+  }
+}
