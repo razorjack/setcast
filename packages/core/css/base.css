@@ -74,6 +74,21 @@
   position: absolute;
 }
 
+/* a visualizer's shapes filled with the art: copies of .sc-bg-img placed over it and clipped to
+   the shapes every frame */
+.sc-spectrum-art,
+.sc-radial-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sc-bg-copy {
+  position: absolute;
+  max-width: none;
+  object-fit: cover;
+}
+
 .sc-spectrum {
   position: absolute;
   left: 0;

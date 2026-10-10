@@ -35,6 +35,9 @@ function visualizerSchema<Name extends string, Shape extends z.ZodRawShape>(
 
 const StyleSchema = z.enum(['bars', 'line'], { error: 'style must be bars or line.' });
 
+/** The theme paints the shapes, or the background art shows through them. */
+const FillSchema = z.enum(['theme', 'art'], { error: 'fill must be theme or art.' });
+
 /** Seconds a falling marker holds each level's peak, as on a hi-fi analyzer. 0 draws none. */
 const peakSetting = () => numberSetting('peak', 0, 4).default(0);
 
@@ -53,6 +56,7 @@ export const SpectrumConfigSchema = visualizerSchema('spectrum', {
   /** Splits each bar into this many cells, lit from the bottom like an LED ladder. 0 is solid. */
   segments: wholeNumberSetting('segments', 0, 32).default(0),
   peak: peakSetting(),
+  fill: FillSchema.default('theme'),
 })
   .refine((config) => config.style === 'bars' || config.segments === 0, {
     path: ['segments'],
@@ -77,6 +81,7 @@ export const RadialConfigSchema = visualizerSchema('radial', {
   floor: numberSetting('floor', 0, 0.5).default(0.03),
   /** Slow rotation in degrees per second; 0 to pin. */
   spin: numberSetting('spin', -90, 90).default(2),
+  fill: FillSchema.default('theme'),
 });
 export type RadialConfig = z.infer<typeof RadialConfigSchema>;
 

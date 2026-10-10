@@ -37,3 +37,12 @@ export function smoothPath(points: readonly Point[], closed = false): string {
 export function linePath(points: readonly Point[]): string {
   return points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${at(point)}`).join(' ');
 }
+
+/** A closed shape with straight sides through every point. */
+export const polygonPath = (points: readonly Point[]): string => `${linePath(points)} Z`;
+
+/**
+ * The area under a smooth line: the line, then straight down through `base`, back to its start.
+ */
+export const areaPath = (line: readonly Point[], base: readonly Point[]): string =>
+  [smoothPath(line), ...base.map((point) => `L ${at(point)}`), 'Z'].join(' ');

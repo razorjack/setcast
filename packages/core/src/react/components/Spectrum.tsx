@@ -1,9 +1,10 @@
-import { useId } from 'react';
+import { useId, useRef } from 'react';
 import { level, sampleBins, segmentedLevel, type AudioFeatures } from '../../audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
+import { ArtReveal, type Outline } from './ArtReveal.tsx';
 import { usePeaks } from './history.ts';
-import { smoothPath } from './svg.ts';
+import { areaPath, polygonPath, smoothPath, type Point } from './svg.ts';
 
 export { SpectrumConfigSchema, type SpectrumConfig };
 
@@ -14,73 +15,92 @@ const CENTRE = WIDTH / 2;
 const CELL_GAP = 0.3;
 /** Height of a peak marker on solid bars, as a share of the full height. */
 const PEAK_MARK = 0.02;
+const BASE: Point[] = [
+  { x: WIDTH, y: HEIGHT },
+  { x: 0, y: HEIGHT },
+];
+
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 /**
  * Mirrored bars, bass at the center. SVG so themes style it with CSS: `.sc-spectrum-bars rect`
  * for bars, `.sc-spectrum-peaks rect` for their peak markers, `.sc-spectrum-line` and
- * `.sc-spectrum-area` for `style: line`.
+ * `.sc-spectrum-area` for `style: line`. With `fill: art`, `.sc-spectrum-art` shows the background
+ * art through the bars or the area.
  */
 export function Spectrum({ config }: { config: SpectrumConfig }) {
   const { audio } = useFrame();
-  const { style, bars, gain, floor } = config;
+  const { style, bars, gain, floor, gap, segments } = config;
+  const svgRef = useRef<SVGSVGElement>(null);
   const levelsOf = (features: AudioFeatures) =>
     sampleBins(features.bins, bars).map((bin) => level(bin, gain, floor));
   const levels = levelsOf(audio);
   const peaks = usePeaks(config.peak, levels, levelsOf);
+  const barShapes = style === 'bars' ? barRects(levels, gap, segments) : [];
+  const line = style === 'line' ? linePoints(levels) : [];
 
   return (
-    <svg
-      className="sc-spectrum"
-      data-style={style}
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      preserveAspectRatio="none"
-    >
-      {style === 'line' ? (
-        <SpectrumLine levels={levels} />
-      ) : (
-        <SpectrumBars levels={levels} peaks={peaks} gap={config.gap} segments={config.segments} />
+    <>
+      <svg
+        ref={svgRef}
+        className="sc-spectrum"
+        data-style={style}
+        data-fill={config.fill}
+        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        preserveAspectRatio="none"
+      >
+        {style === 'line' ? (
+          <SpectrumLine line={line} />
+        ) : (
+          <SpectrumBars
+            bars={barShapes}
+            peaks={peakRects(peaks, gap, segments)}
+            segments={segments}
+          />
+        )}
+      </svg>
+      {config.fill === 'art' && (
+        <ArtReveal
+          className="sc-spectrum-art"
+          target={svgRef}
+          outline={style === 'line' ? areaOutline(line) : barsOutline(barShapes, segments)}
+        />
       )}
-    </svg>
+    </>
   );
 }
 
 interface SpectrumBarsProps {
-  levels: number[];
-  /** One per level, or empty when the spectrum holds no peaks. */
-  peaks: number[];
-  gap: number;
+  bars: Rect[];
+  /** One per bar, or empty when the spectrum holds no peaks. */
+  peaks: Rect[];
   segments: number;
 }
 
-function SpectrumBars({ levels, peaks, gap, segments }: SpectrumBarsProps) {
+function SpectrumBars({ bars, peaks, segments }: SpectrumBarsProps) {
   const maskId = useId();
   const mask = segments > 0 ? `url(#${maskId})` : undefined;
-  const markHeight = segments > 0 ? HEIGHT / segments : HEIGHT * PEAK_MARK;
-  const layout = barLayout(levels.length, gap);
-
-  const bars = levels.flatMap((level, bar) => {
-    const height = HEIGHT * segmentedLevel(level, segments);
-    return mirroredRects(layout, bar, HEIGHT - height, height);
-  });
-  const marks = peaks.flatMap((peak, bar) => {
-    const top = HEIGHT * (1 - segmentedLevel(peak, segments));
-    return mirroredRects(layout, bar, top, markHeight);
-  });
-
   return (
     <>
       {segments > 0 && <CellMask id={maskId} segments={segments} />}
       <g className="sc-spectrum-bars" mask={mask}>
-        {bars}
+        {bars.map(rectElement)}
       </g>
-      {marks.length > 0 && (
+      {peaks.length > 0 && (
         <g className="sc-spectrum-peaks" mask={mask}>
-          {marks}
+          {peaks.map(rectElement)}
         </g>
       )}
     </>
   );
 }
+
+const rectElement = (rect: Rect, index: number) => <rect key={index} {...rect} />;
 
 interface BarLayout {
   slot: number;
@@ -94,13 +114,28 @@ const barLayout = (count: number, gap: number): BarLayout => {
   return { slot, width, inset: (slot - width) / 2 };
 };
 
+function barRects(levels: number[], gap: number, segments: number): Rect[] {
+  const layout = barLayout(levels.length, gap);
+  return levels.flatMap((level, bar) => {
+    const height = HEIGHT * segmentedLevel(level, segments);
+    return mirroredRects(layout, bar, HEIGHT - height, height);
+  });
+}
+
+function peakRects(peaks: number[], gap: number, segments: number): Rect[] {
+  const layout = barLayout(peaks.length, gap);
+  const markHeight = segments > 0 ? HEIGHT / segments : HEIGHT * PEAK_MARK;
+  return peaks.flatMap((peak, bar) => {
+    const top = HEIGHT * (1 - segmentedLevel(peak, segments));
+    return mirroredRects(layout, bar, top, markHeight);
+  });
+}
+
 /** Bar `bar` counted out from the center, once on each side. */
 function mirroredRects({ slot, width, inset }: BarLayout, bar: number, y: number, height: number) {
-  const right = CENTRE + bar * slot + inset;
-  const left = CENTRE - (bar + 1) * slot + inset;
   return [
-    <rect key={`r${bar}`} x={right} y={y} width={width} height={height} />,
-    <rect key={`l${bar}`} x={left} y={y} width={width} height={height} />,
+    { x: CENTRE + bar * slot + inset, y, width, height },
+    { x: CENTRE - (bar + 1) * slot + inset, y, width, height },
   ];
 }
 
@@ -127,8 +162,35 @@ function CellMask({ id, segments }: { id: string; segments: number }) {
   );
 }
 
-/** One smooth line through the bar tops, mirrored like the bars, over the area beneath it. */
-function SpectrumLine({ levels }: { levels: number[] }) {
+/** The lit part of every cell a bar fills, as the cell mask shows it. */
+function cellRects(bar: Rect, segments: number): Rect[] {
+  if (segments === 0) return [bar];
+  const cell = HEIGHT / segments;
+  const count = Math.round(bar.height / cell);
+  return Array.from({ length: count }, (_, index) => ({
+    ...bar,
+    y: HEIGHT - (index + 1) * cell + cell * CELL_GAP,
+    height: cell * (1 - CELL_GAP),
+  }));
+}
+
+const corners = ({ x, y, width, height }: Rect): Point[] => [
+  { x, y },
+  { x: x + width, y },
+  { x: x + width, y: y + height },
+  { x, y: y + height },
+];
+
+const barsOutline =
+  (bars: Rect[], segments: number): Outline =>
+  (toStage) =>
+    bars
+      .flatMap((bar) => cellRects(bar, segments))
+      .map((cell) => polygonPath(corners(cell).map(toStage)))
+      .join(' ');
+
+/** The line through the bar tops, mirrored like the bars, out to both edges. */
+function linePoints(levels: number[]): Point[] {
   const slot = CENTRE / levels.length;
   const right = levels.map((level, bar) => ({
     x: CENTRE + (bar + 0.5) * slot,
@@ -136,12 +198,20 @@ function SpectrumLine({ levels }: { levels: number[] }) {
   }));
   const left = right.map(({ x, y }) => ({ x: WIDTH - x, y })).reverse();
   const edge = right.at(-1)!.y;
-  const line = smoothPath([{ x: 0, y: edge }, ...left, ...right, { x: WIDTH, y: edge }]);
+  return [{ x: 0, y: edge }, ...left, ...right, { x: WIDTH, y: edge }];
+}
 
+const areaOutline =
+  (line: Point[]): Outline =>
+  (toStage) =>
+    areaPath(line.map(toStage), BASE.map(toStage));
+
+/** One smooth line through the bar tops over the area beneath it. */
+function SpectrumLine({ line }: { line: Point[] }) {
   return (
     <>
-      <path className="sc-spectrum-area" d={`${line} L ${WIDTH} ${HEIGHT} L 0 ${HEIGHT} Z`} />
-      <path className="sc-spectrum-line" d={line} />
+      <path className="sc-spectrum-area" d={areaPath(line, BASE)} />
+      <path className="sc-spectrum-line" d={smoothPath(line)} />
     </>
   );
 }

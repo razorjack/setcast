@@ -1,12 +1,18 @@
+import { useRef } from 'react';
 import { level, sampleBins } from '../../audio.ts';
 import { RadialConfigSchema, type RadialConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
-import { smoothPath, type Point } from './svg.ts';
+import { ArtReveal, type Outline } from './ArtReveal.tsx';
+import { polygonPath, smoothPath, type Point } from './svg.ts';
 
 export { RadialConfigSchema, type RadialConfig };
 
 const BOX = 1000;
 const CENTRE = BOX / 2;
+/** Share of its slot around the ring that a bar shows the art through with `fill: art`. */
+const WEDGE = 0.6;
+/** Corners of the ring as `fill: art` cuts it out of the band, enough to look round. */
+const RING_POINTS = 120;
 
 interface Spoke {
   angle: number;
@@ -16,26 +22,45 @@ interface Spoke {
 
 /**
  * Bars radiating from a ring. SVG so themes style it: `.sc-radial line` and `.sc-radial circle`,
- * plus `.sc-radial-line` and `.sc-radial-area` for `style: line`.
+ * plus `.sc-radial-line` and `.sc-radial-area` for `style: line`. With `fill: art`,
+ * `.sc-radial-art` shows the background art through a wedge per bar, or through the band.
  */
 export function Radial({ config }: { config: RadialConfig }) {
   const { audio, timeSeconds } = useFrame();
   const { style, bars, radius, length, gain, floor, spin } = config;
+  const svgRef = useRef<SVGSVGElement>(null);
   const ringRadius = radius * BOX;
+  const rotation = (timeSeconds * spin) % 360;
   const levels = sampleBins(audio.bins, bars).map((bin) => level(bin, gain, floor));
   const spokes = spokesAround(levels, ringRadius, length * BOX);
 
   return (
-    <svg className="sc-radial" data-style={style} viewBox={`0 0 ${BOX} ${BOX}`}>
-      <g transform={`rotate(${(timeSeconds * spin) % 360} ${CENTRE} ${CENTRE})`}>
-        <circle cx={CENTRE} cy={CENTRE} r={ringRadius} />
-        {style === 'line' ? (
-          <RadialLine spokes={spokes} ringRadius={ringRadius} />
-        ) : (
-          <RadialBars spokes={spokes} ringRadius={ringRadius} />
-        )}
-      </g>
-    </svg>
+    <>
+      <svg
+        ref={svgRef}
+        className="sc-radial"
+        data-style={style}
+        data-fill={config.fill}
+        viewBox={`0 0 ${BOX} ${BOX}`}
+      >
+        <g transform={`rotate(${rotation} ${CENTRE} ${CENTRE})`}>
+          <circle cx={CENTRE} cy={CENTRE} r={ringRadius} />
+          {style === 'line' ? (
+            <RadialLine spokes={spokes} ringRadius={ringRadius} />
+          ) : (
+            <RadialBars spokes={spokes} ringRadius={ringRadius} />
+          )}
+        </g>
+      </svg>
+      {config.fill === 'art' && (
+        <ArtReveal
+          className="sc-radial-art"
+          target={svgRef}
+          outline={revealOutline(style, rotated(spokes, rotation), ringRadius)}
+          fillRule={style === 'line' ? 'evenodd' : 'nonzero'}
+        />
+      )}
+    </>
   );
 }
 
@@ -84,3 +109,26 @@ function RadialLine({ spokes, ringRadius }: { spokes: Spoke[]; ringRadius: numbe
 
 const circlePath = (radius: number): string =>
   `M ${CENTRE - radius} ${CENTRE} a ${radius} ${radius} 0 1 0 ${radius * 2} 0 a ${radius} ${radius} 0 1 0 ${-radius * 2} 0 Z`;
+
+const rotated = (spokes: Spoke[], degrees: number): Spoke[] =>
+  spokes.map((spoke) => ({ ...spoke, angle: spoke.angle + (degrees * Math.PI) / 180 }));
+
+/** The shapes `fill: art` shows the art through: a wedge per bar, or the band and its hole. */
+function revealOutline(style: 'bars' | 'line', spokes: Spoke[], ringRadius: number): Outline {
+  if (style === 'line') {
+    const ring = Array.from({ length: RING_POINTS }, (_, index) =>
+      polar((index / RING_POINTS) * 2 * Math.PI, ringRadius),
+    );
+    const outline = spokes.map(({ angle, reach }) => polar(angle, reach));
+    return (toStage) =>
+      `${smoothPath(outline.map(toStage), true)} ${polygonPath(ring.map(toStage))}`;
+  }
+  const halfWidth = (Math.PI / spokes.length) * WEDGE;
+  const wedges = spokes.map(({ angle, reach }) => [
+    polar(angle - halfWidth, ringRadius),
+    polar(angle - halfWidth, reach),
+    polar(angle + halfWidth, reach),
+    polar(angle + halfWidth, ringRadius),
+  ]);
+  return (toStage) => wedges.map((wedge) => polygonPath(wedge.map(toStage))).join(' ');
+}

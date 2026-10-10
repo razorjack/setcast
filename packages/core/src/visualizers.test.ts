@@ -51,6 +51,13 @@ describe('visualizer schemas', () => {
     ]);
   });
 
+  test('fill names what fills the shapes', () => {
+    expect(resolveVisualizerConfig({ name: 'radial', fill: 'art' })).toMatchObject({ fill: 'art' });
+    expect(issuesOf({ name: 'spectrum', fill: 'image' })).toEqual([
+      { path: 'visualizer.fill', message: 'fill must be theme or art.' },
+    ]);
+  });
+
   test('spectrum peaks need bars to sit on', () => {
     expect(issuesOf({ name: 'spectrum', style: 'line', peak: 1 })).toEqual([
       { path: 'visualizer.peak', message: expect.stringContaining('set style: bars') },

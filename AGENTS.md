@@ -347,7 +347,11 @@ Visualizers are SVG under one root class each, with `data-style` set to the bloc
 `rect`s in `.sc-spectrum-peaks`; `style: line` draws `.sc-spectrum-line` over
 `.sc-spectrum-area`) and `.sc-radial` (the ring is a `circle`, bars are `line`s; `style: line`
 draws `.sc-radial-line` and `.sc-radial-area`, the band between it and the ring). base.css places
-them and sizes them with `--spectrum-height` and `--radial-size`. `--radial-size` and
+them and sizes them with `--spectrum-height` and `--radial-size`. With `fill: art`, a
+`.sc-spectrum-art` or `.sc-radial-art` layer after the SVG shows the background art through its
+shapes (the bars, cells, area, a wedge per radial bar, or the radial band): it holds a
+`.sc-bg-copy` image placed over `.sc-bg-img` and is clipped to the shapes. The SVG still draws, so
+a theme can paint or glow behind the art; it styles the art with `.sc-spectrum-art .sc-bg-copy`. `--radial-size` and
 `--vectorscope-size` are set on the stage root, capped by width for portrait; override them there,
 not on the element, so the vectorscope stays centered in the ring. The scopes read
 `AudioFeatures.wave`: `.sc-oscilloscope` draws `.sc-oscilloscope-line` over a
@@ -664,6 +668,14 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   mono on the vertical axis, hard left leaning up-left. A point outside the circle is pulled onto
   it rather than clipped by the box. Both scopes draw straight segments through all 512 points;
   at that density a spline adds cost and no visible smoothness.
+- `fill: art` places its copy of the art and its clip path from the frame's layout in a layout
+  effect, every frame: the copy goes over `.sc-bg-img`'s measured box (transforms included) with
+  its `object-position`, and the clip follows the SVG's measured box. Themes position visualizers
+  and move the background freely (bunker insets and shakes `.sc-bg`, interference translates the
+  image, pirate drops the drift), and CSS alone cannot align a layer with another element's box.
+  A clip on `.sc-bg` (escapement, patina, quicksilver) does not apply to the copy, so the shapes
+  show the art also where the theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the
+  copy; no theme does.
 - The spectrogram is a canvas, the one visualizer that is not SVG or HTML: 120 columns of 64 bins
   is 7,680 cells a frame, too many DOM nodes. It repaints entirely in a layout effect every frame
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
