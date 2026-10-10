@@ -337,7 +337,7 @@ reset it. Themes use `--presence`, which follows show in playlist mode; in DJ mo
 holds for the run and eases out over its last 0.6 s, so DJ credits remain legible after dwell.
 `--presence` sits on the panel's `.sc-slot`. In DJ mode base.css stacks the slots in play order,
 anchored at the bottom, each as tall as `--presence` times its panel, so the stack opens and
-closes smoothly (`--stack-gap`, `--slot-bleed`). The DJ stack is the CSS anchor `--contributors`,
+closes smoothly (`--stack-gap`). The DJ stack is the CSS anchor `--contributors`,
 which a theme uses to keep `.sc-next` clear of it. `.sc-contributors` shows up to four panels in
 landscape or three in portrait, retains focused plays first, and adds an explicit overflow count
 and accessible full list. There is no data-model concurrency limit.
@@ -449,7 +449,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - A DJ slot's height is `calc-size(auto, size * var(--fit))` in block flow. Chrome ignores
   `calc-size()` heights on flex items, and `overflow-clip-margin` rejects `calc()`, so the bleed
   is a constant. The clip is on the slot rather than a `clip-path`, because a `clip-path`
-  ancestor becomes the backdrop root and empties every panel's `backdrop-filter`.
+  ancestor becomes the backdrop root and empties every panel's `backdrop-filter`. Chrome applies
+  `overflow-clip-margin` only when both axes are `clip`, so on the slot's `overflow: visible clip`
+  `--slot-bleed` has no effect and whatever hangs below a slot is cut off. Masthead keeps its
+  title rule in the title's padding for that reason.
 - Built-in themes design their DJ layout explicitly (`[data-presentation='dj']` rules) instead
   of inheriting a shared grid. Focus changes emphasis (brightness, accent), never size, because
   automatic focus moves on every entrance and a size change there would jump.

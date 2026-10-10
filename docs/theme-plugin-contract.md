@@ -149,8 +149,10 @@ entrance; themes can react to its local `--drop-flash` instead.
 Each panel sits in a `.sc-slot` that carries its `--presence`. In DJ mode base.css stacks the
 slots in play order, anchored at the bottom of `.sc-contributors`, and sets each slot's height
 to `--presence` times its panel's height. The stack opens as a panel rises into its slot and
-closes as one sinks out of it, without a jump. Slots clip vertically; `--stack-gap` spaces them
-and `--slot-bleed` lets shadows and ornaments past the clip. A theme can rearrange the slots,
+closes as one sinks out of it, without a jump. Slots clip vertically at their own edges and
+`--stack-gap` spaces them. Keep shadows and ornaments above or below a panel inside its padding:
+Chrome applies `overflow-clip-margin` only when both axes clip, so `--slot-bleed` does not reach
+past the slot's vertical clip. A theme can rearrange the slots,
 for example into a row that collapses their width instead. The DJ `.sc-contributors` is the
 anchor `--contributors`, so a theme can keep `.sc-next` above the stack with
 `position-anchor: --contributors; bottom: calc(anchor(top) + 2cqw)`.

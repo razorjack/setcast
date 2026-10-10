@@ -287,8 +287,9 @@
 /*
  * DJ presentation stacks one slot per current play, in play order, anchored at the bottom. A slot's
  * height follows its --presence, so the stack opens as a panel rises into it and closes as one
- * sinks out of it. The vertical clip keeps a moving panel off its neighbors; --slot-bleed lets a
- * theme's shadows and ornaments past it and should stay within --stack-gap.
+ * sinks out of it. The vertical clip keeps a moving panel off its neighbors. Chrome applies
+ * overflow-clip-margin only when both axes clip, so --slot-bleed does not reach past it: a theme
+ * keeps shadows and ornaments above or below a panel inside the panel's padding.
  */
 /* the anchor lets a theme keep up next clear of the stack, however tall it is */
 .sc-stage[data-presentation='dj'] .sc-contributors {
