@@ -100,6 +100,9 @@ Gotchas:
   hard to watch: the eye cannot settle on it, and at about 10–20 px per period on a 1080p frame
   it sits where visual strain peaks. Give textures an irregular structure, low contrast or low
   coverage (pirate's toner dust, not a dot grid).
+- A theme variable must not reuse the name of a variable the stage sets inline (`--bar`, `--beat`,
+  `--since-*`, `--bg-*`, …): the inline value overrides the theme's rule on the root, and every
+  use of it breaks without an error. Anamorphic calls its bar height `--matte` for that reason.
 - A full-frame `backdrop-filter` roughly triples render time (a 6 s slice: 43 s against 14 s
   without it). Keep backdrop blur on small elements such as the panel.
 - `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a
@@ -266,7 +269,7 @@ list; implemented today: visualizer, theme, tracklist importer):
   vectorscope ✓, spectrogram ✓, overview ✓, bloom ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
-  (13 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
+  (14 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft mix annotations without automatic snapping

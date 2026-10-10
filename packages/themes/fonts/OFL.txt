@@ -15,6 +15,7 @@ full below.
 - Instrument Sans: Copyright 2022 The Instrument Sans Project Authors (https://github.com/Instrument/instrument-sans)
 - Instrument Serif: Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)
 - JetBrains Mono: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+- Jost: Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type/Jost)
 - Marcellus: Copyright (c) 2012, Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names "Marcellus"
 - Michroma: Copyright 2011 The Michroma Project Authors (https://github.com/googlefonts/Michroma-font)
 - Oxanium: Copyright 2019 The Oxanium Project Authors (https://github.com/sevmeyer/oxanium)

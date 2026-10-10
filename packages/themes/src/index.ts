@@ -1,5 +1,6 @@
 import type { Theme } from '@setcast/core';
 import { afterhours } from './afterhours.ts';
+import { anamorphic } from './anamorphic.ts';
 import { bristol } from './bristol.ts';
 import { bunker } from './bunker.ts';
 import { escapement } from './escapement.ts';
@@ -15,6 +16,7 @@ import { vfd } from './vfd.ts';
 
 export {
   afterhours,
+  anamorphic,
   bristol,
   bunker,
   escapement,
@@ -45,5 +47,6 @@ export const themes: Record<string, Theme> = Object.fromEntries(
     afterhours,
     passePartout,
     masthead,
+    anamorphic,
   ].map((theme) => [theme.name, theme]),
 );

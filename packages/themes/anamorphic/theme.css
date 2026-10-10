@@ -1,0 +1,399 @@
+/* anamorphic: the set as a film. The art in a 2.39:1 band between bars of its own deepest tone,
+   the credits set in the bars; a drop opens the frame, a breakdown narrows it. */
+
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/Jost-100-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/Jost-100-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-anamorphic {
+  /* the bars take the art's hue at the depth of a projected black */
+  --tint: var(--bg-color-1, oklch(0.5 0.01 250));
+  --matte-color: oklch(from var(--tint) 0.075 0.014 h);
+  --ink: oklch(from var(--tint) 0.94 0.012 h);
+  --accent: oklch(from var(--tint) 0.8 0.07 h);
+  --fg: var(--ink);
+  --fg-dim: color-mix(in oklab, var(--ink) 56%, transparent);
+  --deck-a: var(--accent);
+  --font-display: 'Jost', 'Futura', 'Century Gothic', sans-serif;
+  --font-mono: var(--font-display);
+  --hairline: max(1px, 0.06cqw);
+
+  /* a drop pulls the bars back over about a beat; they return over the next 8 s */
+  --open-in: clamp(0, var(--since-drop, 60) / 0.4, 1);
+  --open-out: clamp(0, 1 - (var(--since-drop, 60) - 0.4) / 8, 1);
+  --open: calc(
+    var(--open-in) * (2 - var(--open-in)) * var(--open-out) * var(--open-out) *
+      (3 - 2 * var(--open-out)) * var(--drop-intensity, 1)
+  );
+  /* the credits leave the bars as they open and come back as they close */
+  --in-matte: clamp(0, 1 - var(--open) * 1.8, 1);
+
+  /* a breakdown narrows the band to 2.76:1 over 3 s, and so do the 10 s before a drop */
+  --breakdown-in: clamp(0, var(--since-breakdown, 60) / 3, 1);
+  --buildup-in: clamp(0, var(--since-buildup, 60) / 3, 1);
+  --narrowing: max(var(--narrow-section, 0), var(--tension) * 0.6);
+  --narrow: calc(var(--narrowing) * var(--narrowing) * (3 - 2 * var(--narrowing)));
+  --band-aspect: calc(2.39 + var(--narrow) * 0.37);
+
+  /* the bars' height (--bar is the stage's tempo signal); lengths resolve where they are used */
+  --matte: calc((100cqh - 100cqw / var(--band-aspect)) / 2 * (1 - var(--open)));
+
+  font-family: var(--font-display);
+  color: var(--ink);
+  background: var(--matte-color);
+}
+.theme-anamorphic[data-section='breakdown'] {
+  --narrow-section: var(--breakdown-in);
+}
+/* a buildup keeps the narrow band of the breakdown before it, or narrows on its own */
+.theme-anamorphic[data-section='buildup'] {
+  --after-breakdown: clamp(0, (var(--since-drop, 60) - var(--since-breakdown, 60)) * 1000, 1);
+  --narrow-section: max(var(--after-breakdown) * var(--breakdown-in), var(--buildup-in));
+}
+
+/* the bars: one box whose top and bottom borders cover the art outside the band */
+.theme-anamorphic::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-block: var(--matte) solid var(--matte-color);
+  pointer-events: none;
+}
+.theme-anamorphic :is(.sc-spectrum, .sc-header, .sc-contributors, .sc-panel, .sc-next) {
+  z-index: 2;
+}
+
+/* the art untouched */
+.theme-anamorphic .sc-bg-img {
+  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0)));
+}
+/* Framed "common top", like a film cropped to 2.39:1: the bars hide the art's bottom, where
+   heads and horizons rarely are, unless its detail sits low. It tilts back to center as they
+   open. The art's height is a lower bound, as tall as the frame or as wide art shown whole. */
+.theme-anamorphic[data-background='image'] .sc-bg-img {
+  --art-height: min(100cqh, 100cqw / var(--bg-aspect));
+  --art-hidden: max(0px, (var(--art-height) - 100cqw / 2.39) / 2);
+  --focus-shift: clamp(
+    -1 * var(--art-hidden),
+    1.15 * (0.12 * var(--art-height) - (var(--bg-focus-y) - 0.5) * 100cqh),
+    var(--art-hidden)
+  );
+  translate: 0 calc(var(--focus-shift) * (1 - var(--open)));
+}
+/* without art the band is a lit screen with nothing projected on it yet */
+.theme-anamorphic[data-background='none'] .sc-bg {
+  background: radial-gradient(
+    90% 120% at 50% 45%,
+    oklch(from var(--tint) 0.19 0.01 h),
+    oklch(from var(--tint) 0.12 0.01 h)
+  );
+}
+.theme-anamorphic .sc-bg-vignette {
+  background: radial-gradient(120% 90% at 50% 50%, transparent 60%, rgb(0 0 0 / 0.28));
+}
+.theme-anamorphic .sc-bloom-glow {
+  filter: brightness(1.2);
+}
+
+/* the lower bar's edge is the spectrum: the bar itself rises with the music */
+.theme-anamorphic .sc-spectrum {
+  bottom: calc(var(--matte) - 1px);
+  height: 5.5cqh;
+}
+.theme-anamorphic .sc-spectrum-area {
+  fill: var(--matte-color);
+}
+.theme-anamorphic .sc-spectrum-line {
+  stroke: color-mix(in oklab, var(--accent) 55%, transparent);
+  stroke-width: var(--hairline);
+}
+
+/* the upper bar: the set's title and clock at its ends, up next between them */
+.theme-anamorphic .sc-header {
+  top: calc(var(--matte) / 2);
+  align-items: center;
+  translate: 0 -50%;
+  font-size: 0.74cqw;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  opacity: var(--in-matte);
+}
+.theme-anamorphic .sc-clock {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.24em;
+}
+.theme-anamorphic .sc-clock-total {
+  opacity: 0.55;
+}
+.theme-anamorphic .sc-next {
+  top: calc(var(--matte) / 2);
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  max-width: 50cqw;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.9cqw;
+  translate: -50% -50%;
+  white-space: nowrap;
+  opacity: calc(clamp(0, (10 - var(--until-next, 60)) / 1.5, 1) * var(--in-matte));
+}
+.theme-anamorphic .sc-next-label {
+  font-size: 0.66cqw;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.theme-anamorphic .sc-next-artist {
+  font-size: 0.74cqw;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-anamorphic .sc-next-title {
+  font-size: 1.15cqw;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
+/* the credits: centered in the lower bar like an opening title, fading in as they space out */
+.theme-anamorphic .sc-panel {
+  --entering: clamp(0, 1 - var(--presence, 1), 1);
+  opacity: calc(clamp(0, var(--presence, 1) * 1.3 - 0.15, 1) * var(--in-matte));
+  text-align: center;
+}
+.theme-anamorphic[data-presentation='playlist'] .sc-panel {
+  left: 0;
+  right: 0;
+  bottom: calc(var(--matte) / 2);
+  max-width: none;
+  translate: 0 50%;
+}
+.theme-anamorphic .sc-panel-head {
+  display: none;
+}
+.theme-anamorphic .sc-artist {
+  margin-bottom: 0.55cqw;
+  padding-left: 0.46em;
+  font-size: 0.8cqw;
+  font-weight: 500;
+  letter-spacing: calc(0.46em + var(--entering) * 0.3em);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  text-box: trim-both cap alphabetic;
+}
+.theme-anamorphic .sc-title {
+  font-size: 2cqw;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: 0.07em;
+  text-box: trim-both cap alphabetic;
+}
+.theme-anamorphic .sc-label,
+.theme-anamorphic .sc-credit-details {
+  margin-top: 0.6cqw;
+  padding-left: 0.34em;
+  font-size: 0.6cqw;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  text-box: trim-both cap alphabetic;
+}
+.theme-anamorphic .sc-label + .sc-credit-details {
+  margin-top: 0.4cqw;
+}
+
+/* DJ: the current plays as co-credits side by side, a hairline between them. Their lines share
+   subgrid rows, so the titles sit on one line; a slot opens in width, so the row re-centers. */
+.theme-anamorphic[data-presentation='dj'] .sc-contributors {
+  left: 50%;
+  bottom: calc(var(--matte) / 2);
+  width: max-content;
+  max-width: 94cqw;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(5, auto);
+  justify-content: center;
+  translate: -50% 50%;
+}
+.theme-anamorphic[data-presentation='dj'] :is(.sc-slot, .sc-panel) {
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template-rows: subgrid;
+  justify-items: center;
+  align-items: start;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-slot {
+  position: relative;
+  width: calc-size(max-content, size * var(--fit));
+  height: auto;
+  margin: 0;
+  padding-inline: calc(var(--fit) * 2.4cqw);
+  overflow: clip visible;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-slot + .sc-slot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  bottom: 15%;
+  width: var(--hairline);
+  background: var(--fg-dim);
+  opacity: calc(var(--fit) * 0.5 * var(--in-matte));
+}
+.theme-anamorphic[data-presentation='dj'] .sc-panel {
+  width: max-content;
+  max-width: 28cqw;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  color: color-mix(in oklab, var(--ink) 62%, transparent);
+}
+.theme-anamorphic[data-presentation='dj'] .sc-panel-head {
+  grid-row: 1;
+  display: flex;
+  margin-bottom: 0.5cqw;
+  font-size: 0.56cqw;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-eyebrow {
+  display: none;
+}
+.theme-anamorphic .sc-deck {
+  text-transform: uppercase;
+  color: var(--deck);
+}
+.theme-anamorphic[data-presentation='dj'] .sc-artist {
+  grid-row: 2;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-title {
+  grid-row: 3;
+  font-size: 1.55cqw;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-label {
+  grid-row: 4;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-credit-details {
+  grid-row: 5;
+}
+.theme-anamorphic[data-presentation='dj'] .sc-panel:not(:has(.sc-label)) .sc-credit-details {
+  grid-row: 4;
+}
+.theme-anamorphic .sc-contributor-count {
+  display: none;
+}
+.theme-anamorphic .sc-overflow {
+  grid-row: 1 / -1;
+  align-self: center;
+  padding-left: 2.4cqw;
+  font-size: 0.6cqw;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+/* portrait (9:16): the band is a window across the middle, the credits below it, and a drop
+   opens it only part of the way, so the credits stay */
+@container (aspect-ratio < 1) {
+  .theme-anamorphic::after,
+  .theme-anamorphic :is(.sc-spectrum, .sc-header, .sc-contributors, .sc-panel, .sc-next) {
+    --matte: calc((100cqh - 100cqw / var(--band-aspect)) / 2 * (1 - var(--open) * 0.25));
+    --in-matte: 1;
+  }
+  .theme-anamorphic .sc-spectrum {
+    height: 2.4cqh;
+  }
+  .theme-anamorphic .sc-header {
+    font-size: 1.6cqw;
+  }
+  .theme-anamorphic .sc-next {
+    top: auto;
+    bottom: calc(100cqh - var(--matte) + 5cqh);
+    max-width: 88cqw;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6cqh;
+    translate: -50% 0;
+    text-align: center;
+    white-space: normal;
+  }
+  .theme-anamorphic .sc-next-label {
+    font-size: 1.5cqw;
+  }
+  .theme-anamorphic .sc-next-artist {
+    font-size: 1.7cqw;
+  }
+  .theme-anamorphic .sc-next-title {
+    font-size: 3.4cqw;
+  }
+  .theme-anamorphic[data-presentation='playlist'] .sc-panel {
+    left: 7cqw;
+    right: 7cqw;
+    text-wrap: balance;
+  }
+  .theme-anamorphic .sc-artist {
+    margin-bottom: 1.6cqw;
+    font-size: 2.1cqw;
+  }
+  .theme-anamorphic .sc-title {
+    font-size: 6.4cqw;
+  }
+  .theme-anamorphic :is(.sc-label, .sc-credit-details) {
+    margin-top: 2cqw;
+    font-size: 1.5cqw;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-contributors {
+    width: 86cqw;
+    display: block;
+  }
+  .theme-anamorphic[data-presentation='dj'] :is(.sc-slot, .sc-panel) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-slot {
+    width: auto;
+    height: calc-size(auto, size * var(--fit));
+    margin-top: calc(var(--fit) * 3cqh);
+    padding: 0;
+    overflow: visible clip;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-slot:first-of-type {
+    margin-top: 0;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-slot + .sc-slot::before {
+    inset: calc(var(--fit) * -1.5cqh) auto auto 50%;
+    width: 8cqw;
+    height: var(--hairline);
+    translate: -50% 0;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-panel {
+    max-width: none;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-panel-head {
+    font-size: 1.3cqw;
+    margin-bottom: 1.2cqw;
+  }
+  .theme-anamorphic[data-presentation='dj'] .sc-title {
+    font-size: 4.6cqw;
+  }
+}
