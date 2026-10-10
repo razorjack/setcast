@@ -5,9 +5,10 @@ import { Img } from '../renderer.tsx';
 import {
   artPlacement,
   boxInStage,
-  placeCopies,
+  placeCopy,
   stageView,
   viewBoxToStage,
+  type ArtPlacement,
   type StageView,
 } from './art-copy.ts';
 import { useBackgroundArt } from './Background.tsx';
@@ -26,10 +27,10 @@ interface ArtRevealProps {
 }
 
 /**
- * The background art shown through a visualizer's shapes: a copy of the image placed over
- * `.sc-bg-img`, clipped to `outline` every frame. Both come from the frame's own layout, so the
- * reveal follows wherever the theme puts the visualizer and however it moves the background.
- * Video and a stage without art reveal nothing.
+ * The art shown through a visualizer's shapes: a copy of the image placed over the art the theme
+ * shows (`.sc-bg-img`, or `.sc-art` when the theme shows that), clipped to `outline` every frame.
+ * Both come from the frame's own layout, so the reveal follows wherever the theme puts the
+ * visualizer and however it moves the art. Video and a stage without art reveal nothing.
  */
 export function ArtReveal({ className, target, outline, fillRule = 'nonzero' }: ArtRevealProps) {
   const { mix, composition } = useFrame();
@@ -44,7 +45,8 @@ export function ArtReveal({ className, target, outline, fillRule = 'nonzero' }: 
     if (!stage) return;
     const placement = artPlacement(stage);
     const path = outline(svgToStage(svg, stage));
-    placeCopies(reveal, placement);
+    placeCopy(copyOf(reveal, 'background'), shown(placement, 'background'));
+    placeCopy(copyOf(reveal, 'art'), shown(placement, 'art'));
     reveal.style.clipPath = `path(${fillRule}, '${path}')`;
   });
 
@@ -52,9 +54,17 @@ export function ArtReveal({ className, target, outline, fillRule = 'nonzero' }: 
   return (
     <div ref={revealRef} className={className}>
       <Img className="sc-bg-copy" src={art.src} />
+      <Img className="sc-art-copy" src={art.original} />
     </div>
   );
 }
+
+/** The copy of `.sc-bg-img` or of `.sc-art`; only the copy of the art the theme shows is shown. */
+const copyOf = (reveal: HTMLElement, of: ArtPlacement['shows']) =>
+  reveal.querySelector<HTMLElement>(of === 'art' ? '.sc-art-copy' : '.sc-bg-copy')!;
+
+const shown = (placement: ArtPlacement | null, of: ArtPlacement['shows']) =>
+  placement?.shows === of ? placement : null;
 
 function svgToStage(svg: SVGSVGElement, stage: StageView): (point: Point) => Point {
   const { width, height } = svg.viewBox.baseVal;

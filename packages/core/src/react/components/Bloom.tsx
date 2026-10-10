@@ -6,7 +6,7 @@ import { smoothedFeature } from '../../modulation.ts';
 import { BloomConfigSchema, type BloomConfig } from '../../visualizers.ts';
 import { useFrame, type RenderFrame } from '../frame.tsx';
 import { Img } from '../renderer.tsx';
-import { artPlacement, placeCopies, stageView } from './art-copy.ts';
+import { artPlacement, placeCopy, stageView, type ArtPlacement } from './art-copy.ts';
 import { useBackgroundArt, type BackgroundArt } from './Background.tsx';
 import { context2d, drawFitted, loadImage } from './canvas.ts';
 import { PreparedCache, usePrepared } from './prepared.ts';
@@ -18,23 +18,28 @@ const LIGHT_CELLS = 480;
 
 /**
  * The art's own lights glowing with the music. Once per image, the lamps, signs and suns of the
- * art are picked out, blurred into a glow and split by hue into one layer per band. Each frame
- * only the layers' `--level` changes. `.sc-bloom-light[data-band]` holds a `.sc-bg-copy` placed
- * over `.sc-bg-img`; base.css screens it over the art at its level. Video and a stage without art
- * draw nothing.
+ * file are picked out, blurred into a glow and split by hue into one layer per band. Each frame
+ * only the layers' `--level` changes. `.sc-bloom-light[data-band]` holds a `.sc-bloom-glow` placed
+ * over the art the theme shows; base.css screens it over the art at its level. Video and a stage
+ * without art draw nothing.
  */
 export function Bloom({ config }: { config: BloomConfig }) {
   const frame = useFrame();
   const { mix, composition } = frame;
   const art = useBackgroundArt(currentBackground(mix, composition.project.background));
-  const lights = useLights(art, config, composition);
+  const lights = useLights(art, config);
   const bloomRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const bloom = bloomRef.current;
-    if (!bloom) return;
+    if (!bloom || !art) return;
     const stage = stageView(bloom, composition.width);
-    if (stage) placeCopies(bloom, artPlacement(stage));
+    if (!stage) return;
+    const placement = artPlacement(stage);
+    const fit = glowFit(art, placement);
+    for (const glow of bloom.querySelectorAll<HTMLElement>('.sc-bloom-glow')) {
+      placeCopy(glow, placement, fit);
+    }
   });
 
   if (!lights) return null;
@@ -59,7 +64,7 @@ interface BloomLightProps {
 function BloomLight({ src, band, level }: BloomLightProps) {
   return (
     <div className="sc-bloom-light" data-band={band} style={{ '--level': level }}>
-      <Img className="sc-bg-copy" src={src} />
+      <Img className="sc-bloom-glow" src={src} />
     </div>
   );
 }
@@ -70,9 +75,17 @@ function bandLevel(frame: RenderFrame, band: FeatureSource, { gain, smooth }: Bl
   return Math.round(level(feature, gain, 0) * 1000) / 1000;
 }
 
+/**
+ * The glow is the file's own shape. Over `.sc-art` it takes the art's fit; over a background that
+ * shows the file whole over a blurred copy, it covers only the file.
+ */
+function glowFit(art: BackgroundArt, placement: ArtPlacement | null): string | undefined {
+  if (placement?.shows === 'background' && art.fit === 'contain') return 'contain';
+  return placement?.objectFit;
+}
+
 interface LightsRequest {
   art: BackgroundArt;
-  frame: Size;
   lights: number;
   radius: number;
   layers: number;
@@ -80,11 +93,10 @@ interface LightsRequest {
 
 const prepared = new PreparedCache<string[]>('lights');
 
-/** One glow image per band, prepared once per image and setting. */
-function useLights(art: BackgroundArt | null, config: BloomConfig, frame: Size): string[] | null {
+/** One glow image per band, prepared once per file and setting. */
+function useLights(art: BackgroundArt | null, config: BloomConfig): string[] | null {
   const request: LightsRequest | null = art && {
     art,
-    frame: { width: frame.width, height: frame.height },
     lights: config.lights,
     radius: config.radius,
     layers: config.bands.length,
@@ -92,17 +104,17 @@ function useLights(art: BackgroundArt | null, config: BloomConfig, frame: Size):
   return usePrepared(prepared, request, lightsKey, prepareLights);
 }
 
-const lightsKey = ({ art, frame, lights, radius, layers }: LightsRequest) =>
-  `${art.src} ${frame.width}x${frame.height} ${lights} ${radius} ${layers}`;
+const lightsKey = ({ art, lights, radius, layers }: LightsRequest) =>
+  `${art.original} ${art.stats.colors.join()} ${lights} ${radius} ${layers}`;
 
 async function prepareLights(request: LightsRequest): Promise<string[]> {
-  const { art, frame } = request;
-  const scale = LIGHT_CELLS / Math.max(frame.width, frame.height);
-  const size = { width: Math.round(frame.width * scale), height: Math.round(frame.height * scale) };
+  const { art } = request;
+  const scale = LIGHT_CELLS / Math.max(art.aspect, 1);
+  const size = { width: Math.round(scale * art.aspect), height: Math.round(scale) };
   const canvas = new OffscreenCanvas(size.width, size.height);
   const context = context2d(canvas);
   context.imageSmoothingQuality = 'high';
-  drawFitted(context, await loadImage(art.src), 'cover', 1);
+  drawFitted(context, await loadImage(art.original), 'cover', 1);
 
   const pixels = context.getImageData(0, 0, size.width, size.height).data;
   const layers = lightLayers(pixels, size, {

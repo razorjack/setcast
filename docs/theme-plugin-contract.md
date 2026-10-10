@@ -121,7 +121,8 @@ the size of the frame, so theme rules apply to it unchanged. `.sc-art`, next to 
 is the file itself at its own shape, for a theme that shows the art as an object, such as a print
 on a wall. It is hidden until a theme shows it. `--bg-aspect` on the stage is the file's width
 over its height, so `width: min(80cqw, 70cqh * var(--bg-aspect))` fits it in a box. Video has
-neither.
+neither. Visualizers that draw with the art itself (`fill: art`, `bloom`) follow the art the theme
+shows: `.sc-art` when it is displayed, else `.sc-bg-img`.
 
 Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--since-drop`, `--until-drop`, `--since-breakdown`, `--until-breakdown`,

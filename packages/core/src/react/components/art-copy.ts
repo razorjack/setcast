@@ -35,37 +35,51 @@ export function boxInStage(element: Element, stage: StageView): StageBox {
   };
 }
 
-/** Where the background image is drawn, so a copy of it can be placed exactly over it. */
+/** Where the art is drawn, so a copy of it can be placed exactly over it. */
 export interface ArtPlacement {
+  /** The art the theme shows: `.sc-art`, the file at its own shape, or the background image. */
+  shows: 'art' | 'background';
   box: StageBox;
+  objectFit: string;
   objectPosition: string;
 }
 
-/** Null when the stage shows no image. */
+/** `.sc-art` when the theme shows it, else `.sc-bg-img`; null when the stage shows no image. */
 export function artPlacement(stage: StageView): ArtPlacement | null {
-  const art = stage.element.querySelector('.sc-bg .sc-bg-img');
-  if (!art) return null;
-  return { box: boxInStage(art, stage), objectPosition: getComputedStyle(art).objectPosition };
+  const art = stage.element.querySelector('.sc-bg .sc-art');
+  if (art && getComputedStyle(art).display !== 'none') return placement('art', art, stage);
+  const background = stage.element.querySelector('.sc-bg .sc-bg-img');
+  if (background) return placement('background', background, stage);
+  return null;
+}
+
+function placement(shows: ArtPlacement['shows'], image: Element, stage: StageView): ArtPlacement {
+  const { objectFit, objectPosition } = getComputedStyle(image);
+  return { shows, box: boxInStage(image, stage), objectFit, objectPosition };
 }
 
 /**
- * Puts every `.sc-bg-copy` in `container` over the background image, so it shows the same pixels
- * in the same place however the theme moves or scales the background.
+ * Puts `copy` over the art, so it shows the same pixels in the same place however the theme
+ * places, moves or scales the art. `objectFit` overrides the art's own, for a copy of a
+ * differently composed image. Null hides the copy.
  */
-export function placeCopies(container: HTMLElement, placement: ArtPlacement | null): void {
-  for (const copy of container.querySelectorAll<HTMLElement>('.sc-bg-copy')) {
-    if (!placement) {
-      copy.style.display = 'none';
-      continue;
-    }
-    const { box, objectPosition } = placement;
-    copy.style.display = '';
-    copy.style.left = `${box.left}px`;
-    copy.style.top = `${box.top}px`;
-    copy.style.width = `${box.width}px`;
-    copy.style.height = `${box.height}px`;
-    copy.style.objectPosition = objectPosition;
+export function placeCopy(
+  copy: HTMLElement,
+  placement: ArtPlacement | null,
+  objectFit = placement?.objectFit,
+): void {
+  if (!placement) {
+    copy.style.display = 'none';
+    return;
   }
+  const { box, objectPosition } = placement;
+  copy.style.display = '';
+  copy.style.left = `${box.left}px`;
+  copy.style.top = `${box.top}px`;
+  copy.style.width = `${box.width}px`;
+  copy.style.height = `${box.height}px`;
+  copy.style.objectFit = objectFit ?? '';
+  copy.style.objectPosition = objectPosition;
 }
 
 /**

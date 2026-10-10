@@ -74,8 +74,8 @@
   position: absolute;
 }
 
-/* a visualizer's shapes filled with the art: copies of .sc-bg-img placed over it and clipped to
-   the shapes every frame */
+/* a visualizer's shapes filled with the art: copies of the art the theme shows (.sc-bg-img, or
+   .sc-art), placed over it and clipped to the shapes every frame */
 .sc-spectrum-art,
 .sc-radial-art {
   position: absolute;
@@ -83,10 +83,11 @@
   pointer-events: none;
 }
 
-.sc-bg-copy {
+.sc-bg-copy,
+.sc-art-copy,
+.sc-bloom-glow {
   position: absolute;
   max-width: none;
-  object-fit: cover;
 }
 
 /* the art's lights, each layer screened over the art as bright as its band */

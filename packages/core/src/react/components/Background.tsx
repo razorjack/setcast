@@ -51,6 +51,8 @@ export interface BackgroundArt extends MeasuredArt {
   src: string;
   /** The file as it is, at its own shape. */
   original: string;
+  /** How `src` shows the file: cropped to the frame, or whole over a blurred copy. */
+  fit: 'cover' | 'contain';
 }
 
 interface ArtRequest {
@@ -86,12 +88,12 @@ async function prepareArt({ url, fit, frame }: ArtRequest): Promise<BackgroundAr
   const size = sizeOf(image);
   const aspect = size.width / size.height;
   if (resolveFit(fit, size, frame) === 'cover') {
-    return { src: url, original: url, aspect, stats: measure(image, frame) };
+    return { src: url, original: url, fit: 'cover', aspect, stats: measure(image, frame) };
   }
 
   const composed = containOverBlur(image, frame);
   const src = URL.createObjectURL(await composed.convertToBlob());
-  return { src, original: url, aspect, stats: measure(composed, frame) };
+  return { src, original: url, fit: 'contain', aspect, stats: measure(composed, frame) };
 }
 
 /** The whole art centered over a darker, blurred copy that covers the frame. */
