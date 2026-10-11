@@ -91,7 +91,9 @@ interface LightsRequest {
   layers: number;
 }
 
-const prepared = new PreparedCache<string[]>('lights');
+const prepared = new PreparedCache<string[]>('lights', (urls) => {
+  for (const url of urls) URL.revokeObjectURL(url);
+});
 
 /** One glow image per band, prepared once per file and setting. */
 function useLights(art: BackgroundArt | null, config: BloomConfig): string[] | null {

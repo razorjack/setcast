@@ -61,7 +61,9 @@ interface ArtRequest {
   frame: Size;
 }
 
-const arts = new PreparedCache<BackgroundArt>('background');
+const arts = new PreparedCache<BackgroundArt>('background', (art) => {
+  if (art.src !== art.original) URL.revokeObjectURL(art.src);
+});
 
 /**
  * Holds the frame until the image background is fitted to the frame and measured, once per file.
