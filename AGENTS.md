@@ -227,7 +227,7 @@ channel per call; mono loads its channel twice) and holds the first frame until 
 read the channel count. `AudioAnalyzer =
 { featuresAt(time) }` is what the adapter provides; `featuresFromSpectrum()` turns a linear
 magnitude spectrum into features and is pure (tested). v1 implementation lives inside the Remotion
-adapter (`useWindowedAudioData` + `visualizeAudio`). Successor (roadmap): FFmpeg subprocess →
+adapter (`useWindowedAudioData` + a fixed-reference 2048-point FFT). Successor (roadmap): FFmpeg subprocess →
 streamed PCM → fft.js → precomputed sidecar per frame (JSON first, binary later). Live mode later:
 Web Audio `AnalyserNode` feeding the same interface. FFmpeg policy: **subprocess only, never
 linked**; keeps MIT Setcast cleanly separate from (L)GPL FFmpeg builds.
@@ -486,6 +486,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   in favor of `Html5Audio`). Duration: `calculateMetadata` computes `durationInFrames` from the
   normalized mix duration. Windowed audio: `useWindowedAudioData` from `@remotion/media-utils` supports all
   Mediabunny formats since 4.0.383 (WAV no longer required); MP3/M4A/WAV/FLAC all work.
+- Render analysis uses full-scale PCM as its FFT reference, never the peak of the loaded window.
+  Stereo magnitudes and RMS combine channel power without phase cancellation; silence stays zero.
+  Readiness includes FFT lookahead as well as history. Audio smoothing samples a fixed 30 Hz grid,
+  independent of output FPS.
 - Remotion bundles with webpack (its own esbuild loader for TS/TSX); `rspack: true` exists and is
   the announced future default. Vite+ drives everything else. They coexist because the adapter's
   bundle entry is plain TSX resolved through package `exports` → `src/*.ts`. No `tsconfig paths`

@@ -64,9 +64,41 @@ describe('windowedAnalyzer', () => {
     expect(analyzer.featuresAt(offset + 100)).toBe(analyzer.featuresAt(offset + 1));
   });
 
-  test('propagates invalid analysis windows', () => {
-    const analyzer = stereo(1024);
-    expect(() => analyzer.featuresAt(0)).toThrow(/not big enough/);
+  test('pads short clips with silence', () => {
+    expect(stereo(1024).featuresAt(0).bins.every(Number.isFinite)).toBe(true);
+  });
+
+  test('silence is finite and right-only audio contributes energy', () => {
+    const channel = (level: number) => ({
+      audioData: audioData(48000, level),
+      dataOffsetInSeconds: 0,
+    });
+    const silent = channel(0);
+    const signal = channel(1);
+    const quiet = windowedAnalyzer({ left: silent, right: silent }, 30).featuresAt(0.5);
+    expect([quiet.bass, quiet.mids, quiet.highs, quiet.rms, quiet.onset, ...quiet.bins]).toEqual(
+      Array(69).fill(0),
+    );
+    const right = windowedAnalyzer({ left: silent, right: signal }, 30).featuresAt(0.5);
+    const left = windowedAnalyzer({ left: signal, right: silent }, 30).featuresAt(0.5);
+    expect(right.rms).toBeGreaterThan(0);
+    expect(right.mids).toBeGreaterThan(0);
+    expect(right.bins).toEqual(left.bins);
+    expect(right.rms).toBe(left.rms);
+  });
+
+  test('unrelated loaded audio cannot change the current spectrum', () => {
+    const short = audioData(480000, 0.1);
+    const long = audioData(960000, 0.1);
+    long.channelWaveforms[0]!.fill(1, 480000);
+    const analyze = (audioData: MediaUtilsAudioData) => {
+      const channel = {
+        audioData: { ...audioData, durationInSeconds: 20 },
+        dataOffsetInSeconds: 0,
+      };
+      return windowedAnalyzer({ left: channel, right: channel }, 30).featuresAt(5);
+    };
+    expect(analyze(short)).toEqual(analyze(long));
   });
 });
 
@@ -79,6 +111,11 @@ describe('coversLookback', () => {
   test('needs the seconds of history before the frame, not only the frame', () => {
     expect(coversLookback(loaded(20, 10), 25)).toBe(false);
     expect(coversLookback(loaded(10, 20), 25)).toBe(true);
+  });
+
+  test('requires the FFT lookahead before a window boundary', () => {
+    expect(coversLookback(loaded(0, 10), 9.99)).toBe(false);
+    expect(coversLookback(loaded(0, 20), 9.99)).toBe(true);
   });
 
   test('trims the lookback to the start and the end of the audio', () => {
