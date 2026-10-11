@@ -4,6 +4,8 @@ import type { ResolvedProject } from '@setcast/core';
 
 const remotion = vi.hoisted(() => ({
   bundle: vi.fn(),
+  openBrowser: vi.fn(),
+  closeBrowser: vi.fn(),
   ensureBrowser: vi.fn(),
   renderMedia: vi.fn(),
   selectComposition: vi.fn(),
@@ -15,13 +17,14 @@ const localServer = vi.hoisted(() => ({ check: vi.fn() }));
 vi.mock('@remotion/bundler', () => ({ bundle: remotion.bundle }));
 vi.mock('@remotion/renderer', () => ({
   ensureBrowser: remotion.ensureBrowser,
+  openBrowser: remotion.openBrowser,
   renderMedia: remotion.renderMedia,
   selectComposition: remotion.selectComposition,
 }));
 vi.mock('./probe.ts', () => ({ probeAudio: audio.probe }));
 vi.mock('./local-server.ts', () => ({ checkLocalServer: localServer.check }));
 
-const { render } = await import('./index.ts');
+const { render, withRenderSession } = await import('./index.ts');
 
 const project: ResolvedProject = {
   title: 'Test',
@@ -49,6 +52,8 @@ const run = () => render(project, { projectDir: '.', out: 'out.mp4' });
 
 describe('render orchestration failures', () => {
   beforeEach(() => {
+    remotion.closeBrowser.mockReset().mockResolvedValue(undefined);
+    remotion.openBrowser.mockReset().mockResolvedValue({ close: remotion.closeBrowser });
     audio.probe.mockReset().mockResolvedValue(10);
     localServer.check.mockReset().mockResolvedValue(undefined);
     remotion.bundle.mockReset().mockResolvedValue('http://localhost:3000');
@@ -58,6 +63,35 @@ describe('render orchestration failures', () => {
     });
     remotion.selectComposition.mockReset().mockResolvedValue({ fps: 30, durationInFrames: 300 });
     remotion.renderMedia.mockReset().mockResolvedValue(undefined);
+  });
+
+  test('shares browser, bundle, and metadata within a batch and cleans up on failure', async () => {
+    await expect(
+      withRenderSession(async () => {
+        await run();
+        remotion.renderMedia.mockRejectedValueOnce(new Error('second failed'));
+        await run();
+      }),
+    ).rejects.toThrow('second failed');
+    expect(remotion.bundle).toHaveBeenCalledOnce();
+    expect(remotion.openBrowser).toHaveBeenCalledOnce();
+    expect(remotion.selectComposition).toHaveBeenCalledOnce();
+    expect(remotion.closeBrowser).toHaveBeenCalledOnce();
+  });
+
+  test('new theme props get fresh metadata without rebuilding the batch bundle', async () => {
+    await withRenderSession(async () => {
+      await run();
+      await render(
+        { ...project, theme: 'other', css: 'body {color:red}' },
+        { projectDir: '.', out: 'other.mp4' },
+      );
+    });
+    expect(remotion.bundle).toHaveBeenCalledOnce();
+    expect(remotion.selectComposition).toHaveBeenCalledTimes(2);
+    expect(remotion.renderMedia).toHaveBeenLastCalledWith(
+      expect.objectContaining({ inputProps: expect.objectContaining({ theme: 'other' }) }),
+    );
   });
 
   test('probes audio before preparing the browser', async () => {

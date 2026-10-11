@@ -1,5 +1,6 @@
+import { withRenderSession } from '@setcast/renderer-remotion';
 import { mkdir, stat } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, extname, resolve } from 'node:path';
 import { formatTime, SetcastError, type Annotation } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import { render } from '@setcast/renderer-remotion';
@@ -13,6 +14,7 @@ import {
 import { load, withSetEnvelope } from '../project.ts';
 import { bold, dim, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
+import { stem } from '../paths.ts';
 
 const DEFAULT_SECONDS = 45;
 const MIN_SECONDS = 10;
@@ -36,7 +38,9 @@ interface ClipOptions {
   theme: string | undefined;
 }
 
-export async function run(argv: string[]): Promise<void> {
+export const run = (argv: string[]) => withRenderSession(() => runCommand(argv));
+
+async function runCommand(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
   intro('clip');
@@ -116,7 +120,12 @@ async function renderClip(
   options: ClipOptions,
 ): Promise<string> {
   const range = rangeWithinAudio(clipRange(center, options.seconds), duration, 'Clip range');
-  const out = clipPath(loaded, range, options.out);
+  const out = options.out
+    ? resolve(options.out)
+    : resolve(
+        loaded.dir,
+        clipFile(loaded.config.output.file, range, options.all ? center : undefined),
+      );
   await mkdir(dirname(out), { recursive: true });
 
   const span = `${formatTime(range[0])} → ${formatTime(range[1])}`;
@@ -141,8 +150,11 @@ async function renderClip(
   return shown(result.file);
 }
 
-const clipPath = (loaded: LoadedProject, range: [number, number], out: string | undefined) =>
-  out ? resolve(out) : resolve(loaded.dir, rangeName(loaded.config.output.file, range));
+/** A drop suffix keeps early drops distinct even when both clips clamp to the same range. */
+export function clipFile(file: string, range: [number, number], center?: number): string {
+  const named = center === undefined ? file : `${stem(file)}.drop-${center}s${extname(file)}`;
+  return rangeName(named, range);
+}
 
 /** The clip's range: the drop a third of the way in, and never before the set starts. */
 export function clipRange(at: number, seconds: number): [number, number] {

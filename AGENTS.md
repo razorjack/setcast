@@ -604,6 +604,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   rendered videos. The Stakka & Skynet demo keeps source-clock timings in `demo.yaml` and
   regenerates a clip-relative `setcast.yaml` with `regenerate.mjs`. Inherited blend observations define overlapping contributions; their qualification is retained
   in evidence, and unknown deck labels are omitted.
+- `withRenderSession` shares a browser and bundle across clip batches, theme stills and upload
+  side outputs, then closes the browser and removes temporary bundles even on failure.
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
 - Background art is prepared in the browser, not in Node: `useBackgroundArt` loads each image

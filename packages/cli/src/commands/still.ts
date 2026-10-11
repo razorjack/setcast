@@ -1,3 +1,4 @@
+import { withRenderSession } from '@setcast/renderer-remotion';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { formatTime, type Annotation, type ResolvedProject, type SetEnvelope } from '@setcast/core';
@@ -28,7 +29,9 @@ interface StillCommandOptions {
 
 type StillPlan = Omit<StillOptions, 'onProgress'> & { at: number };
 
-export async function run(argv: string[]): Promise<void> {
+export const run = (argv: string[]) => withRenderSession(() => runCommand(argv));
+
+async function runCommand(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
   intro('still');

@@ -1,3 +1,4 @@
+import { withRenderSession } from '@setcast/renderer-remotion';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
@@ -47,7 +48,9 @@ interface RenderCommandOptions {
   bundle: boolean;
 }
 
-export async function run(argv: string[]): Promise<void> {
+export const run = (argv: string[]) => withRenderSession(() => runCommand(argv));
+
+async function runCommand(argv: string[]): Promise<void> {
   let options = parseOptions(argv);
 
   intro('render');

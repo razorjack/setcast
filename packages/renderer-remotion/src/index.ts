@@ -3,8 +3,7 @@ import { mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { bundle } from '@remotion/bundler';
-import { ensureBrowser, renderMedia, renderStill, selectComposition } from '@remotion/renderer';
+import { renderMedia, renderStill } from '@remotion/renderer';
 import {
   readMixDocument,
   SetcastError,
@@ -12,17 +11,16 @@ import {
   type ResolvedProject,
 } from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
-import { checkLocalServer } from './local-server.ts';
-import { probeAudio } from './probe.ts';
 import { resolveFrameRange } from './range.ts';
 import { graphicsOptions } from './graphics.ts';
 import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './encoding.ts';
 
 export { probeAudio } from './probe.ts';
 
-export const ENTRY = fileURLToPath(new URL('../entry/index.tsx', import.meta.url));
-const PACKAGE_ROOT = dirname(dirname(ENTRY));
-const COMPOSITION_ID = 'setcast';
+export { ENTRY } from './paths.ts';
+import { ENTRY, PACKAGE_ROOT } from './paths.ts';
+import { currentSession, withRenderSession } from './session.ts';
+export { withRenderSession } from './session.ts';
 
 export type RenderStage = 'browser' | 'bundle' | 'frames' | 'encode';
 
@@ -61,66 +59,26 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
   // process.cwd(). Run from this package so every project shares one cache instead of each
   // project directory growing a 100 MB .remotion folder. Renders are serialized because cwd is
   // process-global.
-  return renderInPackage(() => renderIn(project, options));
+  return withRenderSession(() => renderInPackage(() => renderIn(project, options)));
 }
 
-/** Browser, bundle and composition: everything both a render and a still need first. */
 async function prepare(
   project: ResolvedProject,
   options: { projectDir: string; gl?: GraphicsBackend },
   report: Report,
 ) {
-  const { projectDir } = options;
-  readMixDocument(project.mix);
-  await probeAudio(project, projectDir);
-  await checkLocalServer();
-  let downloadingBrowser = false;
-  try {
-    await ensureBrowser({
-      onBrowserDownload: () => {
-        downloadingBrowser = true;
-        report({ stage: 'browser', progress: 0 });
-        return {
-          version: null,
-          onProgress: ({ percent }) => report({ stage: 'browser', progress: percent }),
-        };
-      },
+  return currentSession()
+    .prepare(project, options, report)
+    .catch((cause: unknown) => {
+      throw translateRenderError(cause);
     });
-  } catch (cause) {
-    if (!downloadingBrowser) throw cause;
-    throw new SetcastError(
-      'Cannot download Chrome Headless Shell',
-      "Check your internet connection. Delete the renderer package's node_modules/.remotion directory to retry the download.",
-      { cause, exitCode: 1 },
-    );
-  }
-  report({ stage: 'browser', progress: 1 });
-
-  const serveUrl = await bundle({
-    entryPoint: ENTRY,
-    rootDir: PACKAGE_ROOT,
-    publicDir: projectDir,
-    // Local renders can reuse assets in place, including projects with large previous outputs.
-    symlinkPublicDir: true,
-    onProgress: (percent) => report({ stage: 'bundle', progress: percent / 100 }),
-  });
-
-  const composition = await selectComposition({
-    serveUrl,
-    id: COMPOSITION_ID,
-    inputProps: project,
-    chromiumOptions: graphicsOptions(options.gl),
-  }).catch((cause: unknown) => {
-    throw translateRenderError(cause);
-  });
-  return { serveUrl, composition };
 }
 
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   validateVideoFile(options.out);
   const encoding = encodingOptions(options);
   const report = options.onProgress ?? (() => {});
-  const { serveUrl, composition } = await prepare(project, options, report);
+  const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
 
   const { fps, durationInFrames } = composition;
   const frameRange = options.range ? resolveFrameRange(options.range, fps, durationInFrames) : null;
@@ -130,6 +88,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
     await renderMedia({
       composition,
       serveUrl,
+      puppeteerInstance,
       codec: 'h264',
       audioCodec: 'aac',
       ...encoding,
@@ -183,13 +142,13 @@ const STILL_FORMATS: Record<string, 'png' | 'jpeg' | 'webp'> = {
 
 /** Renders a single frame as an image, for a thumbnail. */
 export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
-  return renderInPackage(() => stillIn(project, options));
+  return withRenderSession(() => renderInPackage(() => stillIn(project, options)));
 }
 
 async function stillIn(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
   const imageFormat = stillFormat(options.out);
   const report = options.onProgress ?? (() => {});
-  const { serveUrl, composition } = await prepare(project, options, report);
+  const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
 
   const { fps, durationInFrames } = composition;
   const at = options.at ?? durationInFrames / fps / 4;
@@ -199,6 +158,7 @@ async function stillIn(project: ResolvedProject, options: StillOptions): Promise
     await renderStill({
       composition,
       serveUrl,
+      puppeteerInstance,
       output: options.out,
       frame,
       chromiumOptions: graphicsOptions(options.gl),

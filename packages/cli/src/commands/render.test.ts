@@ -1,5 +1,5 @@
 import { expect, test } from 'vite-plus/test';
-import { clipRange } from './clip.ts';
+import { clipFile, clipRange } from './clip.ts';
 import { parseRange, rangeName } from './render.ts';
 
 test('rangeName stamps a slice without colons', () => {
@@ -20,4 +20,10 @@ test('parseRange accepts timecodes and seconds, rejects nonsense', () => {
 test('clipRange puts the drop a third of the way in, never before the set', () => {
   expect(clipRange(64, 45)).toEqual([49, 94]);
   expect(clipRange(5, 45)).toEqual([0, 45]);
+});
+
+test('early drops cannot overwrite clips with the same clamped range', () => {
+  expect(clipFile('set.mp4', clipRange(1, 45), 1)).not.toBe(
+    clipFile('set.mp4', clipRange(2, 45), 2),
+  );
 });
