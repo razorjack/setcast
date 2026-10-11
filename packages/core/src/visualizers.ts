@@ -176,6 +176,8 @@ export interface VisualizerSpec {
   schema: z.ZodType;
   /** Draws the whole set from `project.envelope`, which commands that render then read first. */
   wholeSet?: boolean;
+  /** Set false only when the component never reads real-time audio or its history. */
+  audio?: boolean;
 }
 
 export const visualizers = new Registry<VisualizerSpec>('visualizer');
@@ -186,7 +188,7 @@ visualizers.add({ name: 'meters', schema: MetersConfigSchema });
 visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
 visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
 visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
-visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true });
+visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true, audio: false });
 visualizers.add({ name: 'bloom', schema: BloomConfigSchema });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */

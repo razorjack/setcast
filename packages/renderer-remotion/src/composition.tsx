@@ -1,5 +1,7 @@
 import {
   evaluateModulation,
+  FEATURE_SOURCES,
+  visualizers,
   silentAnalyzer,
   Timeline,
   type AudioAnalyzer,
@@ -51,26 +53,58 @@ function useChannelCount(src: string): number | null {
 
 function WithAudio({ project }: { project: ResolvedProject }) {
   const src = staticFile(project.audio);
+  if (!needsAudioAnalysis(project))
+    return (
+      <>
+        <Scene project={project} analyzer={silentAnalyzer} />
+        <Audio src={src} />
+      </>
+    );
+  return <AnalyzedAudio project={project} src={src} />;
+}
+
+function AnalyzedAudio({ project, src }: StereoAudioProps) {
   const channels = useChannelCount(src);
   if (channels === null) return null;
-  return <StereoAudio project={project} src={src} channels={channels} />;
+  return channels === 1 ? (
+    <MonoAudio project={project} src={src} />
+  ) : (
+    <StereoAudio project={project} src={src} />
+  );
 }
 
 interface StereoAudioProps {
   project: ResolvedProject;
   src: string;
-  channels: number;
 }
 
-/** Loads both channels around the current frame; mono audio loads its one channel twice. */
-function StereoAudio({ project, src, channels }: StereoAudioProps) {
+/** Loads both channels around the current frame. */
+function StereoAudio({ project, src }: StereoAudioProps) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const request = { src, frame, fps, windowInSeconds: WINDOW_SECONDS };
   const left = useLoadedChannel(useWindowedAudioData({ ...request, channelIndex: 0 }));
-  const right = useLoadedChannel(
-    useWindowedAudioData({ ...request, channelIndex: Math.min(1, channels - 1) }),
+  const right = useLoadedChannel(useWindowedAudioData({ ...request, channelIndex: 1 }));
+  return <LoadedAudio project={project} src={src} left={left} right={right} />;
+}
+
+function MonoAudio({ project, src }: StereoAudioProps) {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const channel = useLoadedChannel(
+    useWindowedAudioData({ src, frame, fps, windowInSeconds: WINDOW_SECONDS, channelIndex: 0 }),
   );
+  return <LoadedAudio project={project} src={src} left={channel} right={channel} />;
+}
+
+function LoadedAudio({
+  project,
+  src,
+  left,
+  right,
+}: StereoAudioProps & { left: ChannelWindow | null; right: ChannelWindow | null }) {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
   // Without data the windowed hook holds the frame itself; with it, the lookback has to be there.
   const lookbackMissing = [left, right].some(
     (channel) => channel && !coversLookback(channel, frame / fps),
@@ -134,5 +168,12 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
         <Stage />
       </AbsoluteFill>
     </FrameProvider>
+  );
+}
+
+function needsAudioAnalysis(project: ResolvedProject): boolean {
+  return (
+    project.visualizers.some((config) => visualizers.get(config.name).audio !== false) ||
+    project.modulation.some((route) => FEATURE_SOURCES.some((source) => source === route.source))
   );
 }

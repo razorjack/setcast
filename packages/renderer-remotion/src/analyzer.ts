@@ -80,18 +80,40 @@ export function windowedAnalyzer(
 
 /** The spectrum smoothed against the frame before it, loudness now and a moment ago, the waveform. */
 function measure(left: AudioWindow, right: AudioWindow, time: number): AudioFeatures {
-  const current = stereoSpectrum(left, right, time);
-  const previous = stereoSpectrum(left, right, withinWindow(left, time - SMOOTH_LOOKBACK));
-  const magnitudes = current.map((magnitude, index) => 0.6 * magnitude + 0.4 * previous[index]!);
-
-  const loudness = stereoLoudness(left, right, time);
-  const before = stereoLoudness(left, right, withinWindow(left, time - ONSET_LOOKBACK));
-
+  const bands = once(() => {
+    const current = stereoSpectrum(left, right, time);
+    const previous = stereoSpectrum(left, right, withinWindow(left, time - SMOOTH_LOOKBACK));
+    const magnitudes = current.map((magnitude, index) => 0.6 * magnitude + 0.4 * previous[index]!);
+    return spectrumFeatures({ magnitudes, sampleRate: left.sampleRate });
+  });
+  const loudness = once(() => stereoLoudness(left, right, time));
+  const onset = once(() => {
+    const before = stereoLoudness(left, right, withinWindow(left, time - ONSET_LOOKBACK));
+    return soft(Math.max(0, loudness() - before) * 4);
+  });
+  const wave = once(() => ({ left: waveAt(left, time), right: waveAt(right, time) }));
   return {
-    ...spectrumFeatures({ magnitudes, sampleRate: left.sampleRate }),
-    rms: loudness,
-    onset: soft(Math.max(0, loudness - before) * 4),
-    wave: { left: waveAt(left, time), right: waveAt(right, time) },
+    get bass() {
+      return bands().bass;
+    },
+    get mids() {
+      return bands().mids;
+    },
+    get highs() {
+      return bands().highs;
+    },
+    get bins() {
+      return bands().bins;
+    },
+    get rms() {
+      return loudness();
+    },
+    get onset() {
+      return onset();
+    },
+    get wave() {
+      return wave();
+    },
   };
 }
 
@@ -142,4 +164,17 @@ function stereoSpectrum(left: AudioWindow, right: AudioWindow, time: number): nu
   if (left === right) return magnitudes;
   const other = spectrumAt(right, time);
   return magnitudes.map((magnitude, index) => Math.hypot(magnitude, other[index]!) / Math.SQRT2);
+}
+
+/** Scopes need PCM, meters need energy, and spectra need FFTs; only compute what is read. */
+function once<T>(measure: () => T): () => T {
+  let value: T;
+  let measured = false;
+  return () => {
+    if (!measured) {
+      value = measure();
+      measured = true;
+    }
+    return value;
+  };
 }
