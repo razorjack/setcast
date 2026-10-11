@@ -76,6 +76,16 @@ describe('evaluateModulation', () => {
     expect(calls).toBe(1);
   });
 
+  test('smoothing does not depend on output frame rate', () => {
+    const analyzer: AudioAnalyzer = {
+      featuresAt: (time) => ({ ...SILENCE, bass: time >= 1 ? 1 : 0 }),
+    };
+    const patch = [route({ smooth: 0.1 })];
+    expect(evaluateModulation(patch, { ...at(1, analyzer), fps: 30 })).toEqual(
+      evaluateModulation(patch, { ...at(1, analyzer), fps: 60 }),
+    );
+  });
+
   test('smoothing averages the trailing window', () => {
     const analyzer: AudioAnalyzer = {
       featuresAt: (time) => ({ ...SILENCE, bass: time >= 1 ? 1 : 0 }),

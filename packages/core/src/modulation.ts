@@ -161,11 +161,11 @@ function sourceValue(route: ModRoute, context: ModContext): number {
 export function smoothedFeature(
   source: FeatureSource,
   seconds: number,
-  { time, fps, analyzer }: Pick<ModContext, 'time' | 'fps' | 'analyzer'>,
+  { time, analyzer }: Pick<ModContext, 'time' | 'fps' | 'analyzer'>,
 ): number {
   if (seconds <= 0) return analyzer.featuresAt(time)[source];
 
-  const sampleCount = Math.min(8, Math.max(2, Math.ceil(seconds * fps)));
+  const sampleCount = Math.min(8, Math.max(2, Math.ceil(seconds * 30)));
   let weightedSum = 0;
   let totalWeight = 0;
   for (let i = 0; i < sampleCount; i++) {
