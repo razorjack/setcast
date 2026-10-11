@@ -12,6 +12,7 @@ import {
   RendererProvider,
   Stage,
   useHoldUntil,
+  useAssetUrl,
   useHoldWhile,
   type RenderFrame,
 } from '@setcast/core/react';
@@ -28,9 +29,20 @@ export const COMPOSITION_ID = 'setcast';
 type WindowedAudio = ReturnType<typeof useWindowedAudioData>;
 const WINDOW_SECONDS = 10;
 
-export function SetcastComposition(project: ResolvedProject) {
+export function SetcastComposition(project: ResolvedProject & { previewRevision?: number }) {
+  const revision = project.previewRevision;
+  const bindings = useMemo(
+    () =>
+      revision === undefined
+        ? remotionBindings
+        : {
+            ...remotionBindings,
+            asset: (path: string) => `${staticFile(path)}?revision=${revision}`,
+          },
+    [revision],
+  );
   return (
-    <RendererProvider bindings={remotionBindings}>
+    <RendererProvider bindings={bindings}>
       {project.audio ? (
         <WithAudio project={project} />
       ) : (
@@ -52,7 +64,7 @@ function useChannelCount(src: string): number | null {
 }
 
 function WithAudio({ project }: { project: ResolvedProject }) {
-  const src = staticFile(project.audio);
+  const src = useAssetUrl(project.audio);
   if (!needsAudioAnalysis(project))
     return (
       <>

@@ -1,7 +1,8 @@
 import { preview, type PreviewOptions } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load, withSetEnvelope } from '../project.ts';
-import { dim, intro, log } from '../ui.ts';
+import { watchInputs } from '../watch.ts';
+import { dim, intro, log, printError } from '../ui.ts';
 
 export const help = `setcast preview [dir] [--port N] [--theme name]
 
@@ -19,7 +20,8 @@ export async function run(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
 
   intro('preview');
-  const loaded = await load(options.dir, options.theme);
+  const dependencies = new Set<string>();
+  const loaded = await load(options.dir, options.theme, dependencies);
   const { dir } = loaded;
   const project = await withSetEnvelope(loaded);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
@@ -27,6 +29,15 @@ export async function run(argv: string[]): Promise<void> {
   const { gl, crf, hardwareAcceleration, videoBitrate, jpegQuality } = loaded.config.output;
   const studio: PreviewOptions = {
     projectDir: dir,
+    watch: (update) =>
+      watchInputs(
+        dependencies,
+        async (files) => {
+          const next = await load(dir, options.theme, files);
+          await update(await withSetEnvelope(next));
+        },
+        printError,
+      ),
     gl,
     crf,
     hardwareAcceleration,

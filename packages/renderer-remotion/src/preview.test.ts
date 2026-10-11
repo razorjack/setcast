@@ -8,6 +8,7 @@ const fs = vi.hoisted(() => ({
   mkdtemp: vi.fn(),
   rm: vi.fn(),
   writeFile: vi.fn(),
+  rename: vi.fn(),
 }));
 
 vi.mock('node:child_process', () => ({ spawn: childProcess.spawn }));
@@ -60,6 +61,37 @@ describe('preview process', () => {
       recursive: true,
       force: true,
     });
+  });
+
+  test('publishes atomic updates and stops watching before removing props', async () => {
+    let update!: (next: ResolvedProject) => Promise<void>;
+    let child!: EventEmitter;
+    childProcess.spawn.mockImplementation(() => {
+      child = new EventEmitter();
+      return child;
+    });
+    const stop = vi.fn(async () => {});
+    const running = preview(project, {
+      projectDir: '/project',
+      watch: (publish) => {
+        update = publish;
+        return stop;
+      },
+    });
+    await vi.waitFor(() => expect(child).toBeDefined());
+    await update({ ...project, title: 'Edited' });
+    expect(fs.writeFile).toHaveBeenLastCalledWith(
+      '/tmp/setcast-preview-test/props.json.tmp',
+      expect.stringContaining('"title":"Edited"'),
+    );
+    expect(fs.rename).toHaveBeenCalledWith(
+      '/tmp/setcast-preview-test/props.json.tmp',
+      '/tmp/setcast-preview-test/props.json',
+    );
+    child.emit('exit', 0);
+    await running;
+    expect(stop).toHaveBeenCalledOnce();
+    expect(stop.mock.invocationCallOrder[0]).toBeLessThan(fs.rm.mock.invocationCallOrder[0]!);
   });
 
   test('reports non-zero exits', async () => {

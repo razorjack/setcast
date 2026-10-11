@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -264,6 +264,8 @@ function translateRenderError(thrown: unknown): Error {
 }
 
 export interface PreviewOptions extends EncodingOptions {
+  /** Subscribe to project edits. Cleanup must wait for outstanding updates. */
+  watch?: (update: (project: ResolvedProject) => Promise<void>) => () => Promise<void>;
   projectDir: string;
   port?: number;
   gl?: GraphicsBackend;
@@ -274,11 +276,19 @@ export interface PreviewOptions extends EncodingOptions {
 export async function preview(project: ResolvedProject, options: PreviewOptions): Promise<void> {
   readMixDocument(project.mix);
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));
+  let stop: (() => Promise<void>) | undefined;
   try {
     const propsFile = join(dir, 'props.json');
     await writeFile(propsFile, JSON.stringify(project));
+    let revision = 0;
+    stop = options.watch?.(async (next) => {
+      readMixDocument(next.mix);
+      await writeFile(`${propsFile}.tmp`, JSON.stringify({ ...next, previewRevision: ++revision }));
+      await rename(`${propsFile}.tmp`, propsFile);
+    });
     await runStudio(studioArgs(propsFile, options));
   } finally {
+    await stop?.();
     await rm(dir, { recursive: true, force: true });
   }
 }

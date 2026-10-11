@@ -26,6 +26,8 @@ export interface LoadedProject {
 }
 
 export interface LoadOptions {
+  /** Receives every input path, including missing inputs, for preview reloads. */
+  dependencies?: Set<string>;
   /** Renderer-owned audio probe, called before finite timeline normalization. */
   probeDuration?: (audio: string, root: string) => Promise<number>;
   /** Built-in themes by name. `theme: ./x.css` paths work without any table. */
@@ -36,12 +38,19 @@ export interface LoadOptions {
 
 export async function loadProject(
   dir: string,
-  { themes = {}, theme: themeOverride, probeDuration }: LoadOptions = {},
+  {
+    themes = {},
+    theme: themeOverride,
+    probeDuration,
+    dependencies = new Set<string>(),
+  }: LoadOptions = {},
 ): Promise<LoadedProject> {
   const root = resolve(dir);
+  dependencies.add(join(root, CONFIG_FILE));
   const { config, input } = await readProjectConfig(root);
-  const theme = await resolveTheme(themeOverride ?? config.theme, root, themes);
-  const modulation = [...themeRoutes(theme), ...config.modulation];
+  const themeName = themeOverride ?? config.theme;
+  trackDependencies(root, config, themeName, dependencies);
+  const theme = await resolveTheme(themeName, root, themes);
 
   await requireAssets(root, config);
   if (!probeDuration)
@@ -49,11 +58,36 @@ export async function loadProject(
       'loadProject requires options.probeDuration(audio, root) to finalize finite mix intervals.',
     );
   const mix = compileMix(config, await probeDuration(config.audio, root));
-  let presentation = config.presentation.mode;
-  if (presentation === 'auto') presentation = new Timeline(mix).overlaps ? 'dj' : 'playlist';
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
 
-  const project: ResolvedProject = {
+  const project = resolveProject(
+    config,
+    theme,
+    mix,
+    await composeCss(theme, userCssFile, dependencies),
+  );
+  return {
+    dir: root,
+    config,
+    project,
+    warnings: [
+      ...projectWarnings(config, project.modulation, input),
+      ...mixWarnings(mix),
+      ...(await artWarnings(root, config)),
+    ],
+  };
+}
+
+function resolveProject(
+  config: ProjectConfig,
+  theme: Theme,
+  mix: ResolvedProject['mix'],
+  css: string,
+): ResolvedProject {
+  const modulation = [...themeRoutes(theme), ...config.modulation];
+  let presentation = config.presentation.mode;
+  if (presentation === 'auto') presentation = new Timeline(mix).overlaps ? 'dj' : 'playlist';
+  return {
     title: config.title,
     clockOffset: config.clockOffset,
     clockTotal: config.clockTotal ?? null,
@@ -61,7 +95,7 @@ export async function loadProject(
     background: config.background ?? null,
     backgroundFit: config.backgroundFit,
     theme: theme.name,
-    css: await composeCss(theme, userCssFile),
+    css,
     width: config.output.width,
     height: config.output.height,
     fps: config.output.fps,
@@ -74,16 +108,18 @@ export async function loadProject(
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
   };
-  return {
-    dir: root,
-    config,
-    project,
-    warnings: [
-      ...projectWarnings(config, modulation, input),
-      ...mixWarnings(mix),
-      ...(await artWarnings(root, config)),
-    ],
-  };
+}
+
+function trackDependencies(
+  root: string,
+  config: ProjectConfig,
+  theme: string,
+  dependencies: Set<string>,
+) {
+  for (const path of [config.audio, config.css, ...backgroundPaths(config).keys()]) {
+    if (path) dependencies.add(resolve(root, path));
+  }
+  if (theme.endsWith('.css')) dependencies.add(resolve(root, theme));
 }
 
 function projectWarnings(
@@ -165,10 +201,15 @@ function backgroundPaths(config: ProjectConfig): Map<string, string> {
 }
 
 /** Base CSS, then the theme with its fonts inlined, then the user's overrides, in that order. */
-async function composeCss(theme: Theme, userCssFile: string | null): Promise<string> {
+async function composeCss(
+  theme: Theme,
+  userCssFile: string | null,
+  dependencies?: Set<string>,
+): Promise<string> {
+  dependencies?.add(BASE_CSS);
   const base = await readFile(BASE_CSS, 'utf8');
-  const themeCss = await loadCss(theme.cssFile);
-  const userCss = userCssFile ? await loadCss(userCssFile) : '';
+  const themeCss = await loadCss(theme.cssFile, dependencies);
+  const userCss = userCssFile ? await loadCss(userCssFile, dependencies) : '';
   return [base, themeCss, userCss].join('\n');
 }
 

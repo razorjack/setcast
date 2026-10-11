@@ -22,13 +22,15 @@ const ELSEWHERE = /^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i;
 const urlValue = (quoted?: string, bare?: string): string => (quoted ?? bare ?? '').trim();
 
 /** Reads a stylesheet and inlines relative `url()` references as data URIs, so the CSS is self-contained. */
-export async function loadCss(file: string): Promise<string> {
+export async function loadCss(file: string, dependencies?: Set<string>): Promise<string> {
+  dependencies?.add(file);
   const css = await readFile(file, 'utf8');
   const dir = dirname(file);
 
   const inlined = new Map<string, string>();
   for (const reference of localReferences(css)) {
     const asset = resolve(dir, stripQuery(reference));
+    dependencies?.add(asset);
     try {
       const fragment = reference.includes('#') ? reference.slice(reference.indexOf('#')) : '';
       inlined.set(reference, (await dataUri(asset)) + fragment);
