@@ -33,8 +33,13 @@ test('scaffold, inspect, import and analysis write the new contract without losi
     });
     expect(imported.plays[0].artist).toBeUndefined();
     expect(imported.sources['imported-tracklist'].note).toContain('not measured');
+    const configFile = join(dir, 'setcast.yaml');
+    const withoutTempo = (await readFile(configFile, 'utf8')).replace(/^bpm:.*\n/m, '');
+    await writeFile(configFile, withoutTempo + '\nbeatOffset: 1.23\n');
     await run('analyze', dir, '--write');
     const once = await readFile(join(dir, 'setcast.yaml'), 'utf8');
+    expect(parse(once).beatOffset).toBe(1.23);
+    expect(parse(once).bpm).toBeGreaterThan(0);
     await run('analyze', dir, '--write');
     expect(await readFile(join(dir, 'setcast.yaml'), 'utf8')).toBe(once);
     const mix = JSON.parse((await run('inspect', dir, '--at', '0:05', '--json')).stdout);

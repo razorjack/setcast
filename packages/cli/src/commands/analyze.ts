@@ -237,7 +237,7 @@ async function updateProject(loaded: LoadedProject, changes: AnalysisChanges): P
 
   if (changes.tempo) {
     doc.set('bpm', changes.tempo);
-    doc.set('beatOffset', changes.offset);
+    if (!doc.has('beatOffset')) doc.set('beatOffset', changes.offset);
   }
   appendAnnotations(doc, changes.annotations);
   compileMix(ProjectConfigSchema.parse(doc.toJS()), loaded.project.mix.duration / 1_000_000);
