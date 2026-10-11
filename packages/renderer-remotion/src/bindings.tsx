@@ -8,32 +8,44 @@ import {
   staticFile,
   useVideoConfig,
 } from 'remotion';
-import { mediaDuration } from './media.ts';
+import { resolveFit } from '@setcast/core';
+import { videoInfo } from './media.ts';
 
-/** A video's length never changes mid-render, so one read per source is enough. */
-const durations = new Map<string, number>();
+const videos = new Map<string, Awaited<ReturnType<typeof videoInfo>>>();
 
-/** Length of `src` in frames, or null while it is unknown. Holds the frame until it is read. */
-function useLoopFrames(src: string | null, fps: number): number | null {
-  const ready = useHoldUntil(`duration:${src ?? ''}`, async () => {
-    if (src && !durations.has(src)) durations.set(src, await mediaDuration(src));
+function RemotionVideo({ src, className, style, loop, muted, fit }: VideoProps) {
+  const { fps, width, height } = useVideoConfig();
+  const ready = useHoldUntil(`video:${src}`, async () => {
+    if (!videos.has(src)) videos.set(src, await videoInfo(src));
   });
-  if (!src || !ready) return null;
-
-  const seconds = durations.get(src);
-  return seconds ? Math.max(1, Math.round(seconds * fps)) : null;
-}
-
-/**
- * OffthreadVideo draws the current frame into an `<img>`, so one CSS rule covers image and video
- * backgrounds alike. It cannot repeat by itself; `<Loop>` does, once the length is known.
- */
-function RemotionVideo({ src, className, style, loop, muted }: VideoProps) {
-  const { fps } = useVideoConfig();
-  const frames = useLoopFrames(loop ? src : null, fps);
-  const video = <OffthreadVideo src={src} className={className} style={style} muted={muted} />;
-  return frames ? (
-    <Loop durationInFrames={frames} layout="none">
+  const info = ready ? videos.get(src) : undefined;
+  if (!info) return null;
+  const objectFit = fit ? resolveFit(fit, info, { width, height }) : undefined;
+  const video = (
+    <>
+      {objectFit === 'contain' && (
+        <OffthreadVideo
+          src={src}
+          className={className}
+          muted
+          style={{
+            ...style,
+            objectFit: 'cover',
+            filter: 'blur(30px) brightness(0.6)',
+            scale: '1.1',
+          }}
+        />
+      )}
+      <OffthreadVideo
+        src={src}
+        className={className}
+        style={{ ...style, ...(objectFit ? { objectFit } : {}) }}
+        muted={muted}
+      />
+    </>
+  );
+  return loop ? (
+    <Loop durationInFrames={Math.max(1, Math.round(info.duration * fps))} layout="none">
       {video}
     </Loop>
   ) : (

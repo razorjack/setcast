@@ -32,3 +32,20 @@ export async function audioChannels(url: string): Promise<number> {
     input.dispose();
   }
 }
+
+export async function videoInfo(
+  url: string,
+): Promise<{ duration: number; width: number; height: number }> {
+  const input = new Input({ formats: ALL_FORMATS, source: new UrlSource(url) });
+  try {
+    const video = await input.getPrimaryVideoTrack();
+    if (!video) throw new Error('Input has no video track.');
+    return {
+      duration: (await video.getDurationFromMetadata()) ?? (await video.computeDuration()),
+      width: video.displayWidth,
+      height: video.displayHeight,
+    };
+  } finally {
+    input.dispose();
+  }
+}

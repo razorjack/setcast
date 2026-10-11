@@ -28,7 +28,15 @@ export function Background() {
   const art = useBackgroundArt(current);
   return (
     <div className="sc-bg" style={drift(timeSeconds)}>
-      {current && isVideoFile(current) && <Video className="sc-bg-img" src={current} loop muted />}
+      {current && isVideoFile(current) && (
+        <Video
+          className="sc-bg-img"
+          src={current}
+          fit={composition.project.backgroundFit}
+          loop
+          muted
+        />
+      )}
       {art && <Img className="sc-bg-img" src={art.src} />}
       {art && <Img className="sc-art" src={art.original} />}
       <div className="sc-bg-vignette" />

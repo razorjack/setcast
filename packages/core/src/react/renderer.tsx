@@ -9,6 +9,7 @@ import {
   type ComponentType,
   type ReactNode,
 } from 'react';
+import { resolveFit, type BackgroundFit } from '../background.ts';
 import { holdUntil } from './hold.ts';
 
 /** Deliberately small: only what every renderer can honor. Appearance belongs in CSS. */
@@ -19,6 +20,8 @@ export interface MediaProps {
 }
 export type ImgProps = MediaProps;
 export type VideoProps = MediaProps & {
+  /** Background fitting; auto preserves art whose aspect ratio differs substantially. */
+  fit?: BackgroundFit;
   /** Repeat for as long as the video is on screen. */
   loop?: boolean;
   /** Silence the video's own audio. In a render the set audio is the only sound. */
@@ -42,10 +45,33 @@ export interface RendererBindings {
 export const domBindings: RendererBindings = {
   name: 'dom',
   Img: (props) => <img {...props} />,
-  Video: (props) => <video {...props} />,
+  Video: DomVideo,
   hold: () => () => {},
   asset: (path) => path,
 };
+
+function DomVideo({ fit, style, ...props }: VideoProps) {
+  const [objectFit, setFit] = useState<'contain' | 'cover'>(
+    fit === 'contain' ? 'contain' : 'cover',
+  );
+  return (
+    <video
+      {...props}
+      style={{ ...style, ...(fit ? { objectFit: fit === 'auto' ? objectFit : fit } : {}) }}
+      onLoadedMetadata={(event) => {
+        const video = event.currentTarget;
+        if (fit)
+          setFit(
+            resolveFit(
+              fit,
+              { width: video.videoWidth, height: video.videoHeight },
+              video.getBoundingClientRect(),
+            ),
+          );
+      }}
+    />
+  );
+}
 
 const isUrl = (src: string) => /^(?:[a-z]+:|\/\/|\/)/i.test(src);
 
