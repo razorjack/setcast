@@ -23,3 +23,11 @@ test('rejects text without timecodes', () => {
   expect(plainImporter.test('hello\nworld')).toBe(false);
   expect(plainImporter.parse('hello')).toEqual([]);
 });
+
+test('imports long sets and rejects malformed timestamped lines without dropping credits', () => {
+  expect(plainImporter.parse('100:00 Artist - Late\n120:00 Finale').map((play) => play.at)).toEqual(
+    [6000, 7200],
+  );
+  expect(() => plainImporter.parse('00:00 First\n100:99 Broken')).toThrow('line 2: 100:99 Broken');
+  expect(() => plainImporter.parse('01:20')).toThrow('Invalid tracklist entry');
+});

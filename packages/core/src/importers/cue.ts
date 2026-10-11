@@ -1,5 +1,6 @@
 import type { ImportedPlay } from './plain.ts';
 import type { Importer } from './plain.ts';
+import { SetcastError } from '../errors.ts';
 
 const TRACK = /^\s*TRACK\s+\d+/im;
 const FIELD = /^\s*(TITLE|PERFORMER|INDEX)\s+(.*?)\s*$/i;
@@ -20,6 +21,12 @@ export const cueImporter: Importer = {
   name: 'cue',
   test: (text) => TRACK.test(text) && /^\s*INDEX\s+01\s/im.test(text),
   parse(text) {
+    if ([...text.matchAll(/^\s*FILE\s+.+$/gim)].length > 1) {
+      throw new SetcastError(
+        'The CUE sheet contains multiple FILE entries with separate timelines',
+        'Export a single-file CUE sheet for the recorded mix, or convert its timestamps to offsets in that mix.',
+      );
+    }
     const tracks: ImportedPlay[] = [];
     let current: Partial<ImportedPlay> | null = null;
 

@@ -29,3 +29,9 @@ test('cue sheets: INDEX 01 is the start, frames are 1/75 s, set-level fields are
     { at: 4030, artist: 'Phace', title: 'Thick Lips' },
   ]);
 });
+
+test('rejects multi-file timelines instead of treating their local starts as mix times', () => {
+  expect(() => cueImporter.parse(sheet + '\nFILE "second.wav" WAVE\n')).toThrow(
+    'multiple FILE entries',
+  );
+});

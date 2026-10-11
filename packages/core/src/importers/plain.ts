@@ -1,5 +1,6 @@
 export type ImportedPlay = { at: number; title: string; artist?: string; label?: string };
 import { parseTime } from '../time.ts';
+import { SetcastError } from '../errors.ts';
 
 export interface Importer {
   name: string;
@@ -8,7 +9,8 @@ export interface Importer {
   parse(text: string): ImportedPlay[];
 }
 
-const LINE = /^\s*(?:\d+[.)]\s+)?\[?(\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?)\]?\s*[-–—:]?\s*(.+?)\s*$/;
+const LINE = /^\s*(?:\d+[.)]\s+)?\[?(\d+:\d{2}(?::\d{2})?(?:\.\d+)?)\]?\s*[-–—:]?\s*(.+?)\s*$/;
+const TIMESTAMP_LINE = /^\s*(?:\d+[.)]\s+)?\[?\d+:/;
 const LABEL = /^(.*?)\s*\[([^\]]+)\]\s*$/;
 const ARTIST_TITLE = /^(.+?)\s+[-–—]\s+(.+)$/;
 
@@ -24,9 +26,15 @@ export const plainImporter: Importer = {
   test: (text) => text.split('\n').some((line) => LINE.test(line)),
   parse(text) {
     const tracks: ImportedPlay[] = [];
-    for (const line of text.split('\n')) {
+    for (const [index, line] of text.split('\n').entries()) {
       const track = parseLine(line);
       if (track) tracks.push(track);
+      else if (TIMESTAMP_LINE.test(line)) {
+        throw new SetcastError(
+          `Invalid tracklist entry on line ${index + 1}: ${line.trim()}`,
+          'Use M:SS or H:MM:SS followed by a title; seconds and hour-format minutes must be below 60.',
+        );
+      }
     }
     return tracks;
   },
