@@ -274,12 +274,20 @@ async function requireFile(root: string, path: string, purpose: string): Promise
       `Use a path inside ${root} (e.g. "assets/mix.wav"), not an absolute path or "..".`,
     );
   }
+  if (isAbsolute(path)) {
+    throw new SetcastError(
+      `${purpose} requires a project-relative path: ${path}`,
+      `Use ${JSON.stringify(relative(root, absolute))} in ${CONFIG_FILE}.`,
+    );
+  }
   try {
     await access(absolute);
-  } catch {
+  } catch (cause) {
+    if (!isEnoent(cause)) throw cause;
     throw new SetcastError(
       `${purpose} file not found: ${path}`,
       `Expected it at ${absolute}. Paths in ${CONFIG_FILE} are relative to the project directory and must stay inside it.`,
+      { cause },
     );
   }
   return absolute;

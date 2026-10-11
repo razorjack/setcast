@@ -269,6 +269,16 @@ annotations: [{ kind: drop, at: 14 }]
     ).rejects.toThrow(/leaves the project directory/);
   });
 
+  test('absolute paths inside the project are rejected with their relative replacement', async () => {
+    const audio = join(dir, 'absolute-inside/assets/mix.wav');
+    await expect(
+      load(`audio: ${JSON.stringify(audio)}\ntheme: test\n`, 'absolute-inside'),
+    ).rejects.toMatchObject({
+      message: `audio requires a project-relative path: ${audio}`,
+      hint: 'Use "assets/mix.wav" in setcast.yaml.',
+    });
+  });
+
   test.each([
     ['{ dwell: 0 }', false],
     ['{ dwell: 0, fade: 1.2 }', true],
