@@ -62,7 +62,7 @@ test('usage and config errors use exit code 2; runtime errors use 1', () => {
 });
 
 test('printError shows causes and full stacks in debug mode', () => {
-  const write = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
+  const write = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
   const previous = process.env.SETCAST_DEBUG;
   process.env.SETCAST_DEBUG = '1';
   const cause = new Error('media parser failed');

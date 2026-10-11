@@ -30,7 +30,8 @@ export function formatHelp(help: string): string {
  * A YAML draft for the terminal: keys and list dashes dimmed so the values stand out, and event
  * types in the colors of the event list. Copying from the terminal leaves the colors behind.
  */
-export const highlightYaml = (yaml: string) => yaml.split('\n').map(highlightYamlLine).join('\n');
+export const highlightYaml = (yaml: string) =>
+  process.stdout.isTTY ? yaml.split('\n').map(highlightYamlLine).join('\n') : yaml;
 
 /** `  - kind: drop` or `    at: 0:33.1`: the indent, the dimmed label, the value. */
 const YAML_ENTRY = /^( *)((?:- )?(\w+):)(.*)$/;
@@ -51,13 +52,27 @@ let railStarted = false;
 
 export const intro = (command: string) => {
   railStarted = true;
-  p.intro(`${pc.bgBlack(pc.bold(accent(' setcast ')))} ${dim(command)}`);
+  p.intro(`${pc.bgBlack(pc.bold(accent(' setcast ')))} ${dim(command)}`, {
+    output: process.stderr,
+  });
 };
-export const outro = p.outro;
-export const note = p.note;
-export const log = p.log;
-export const cancel = p.cancel;
-export const spinner = p.spinner;
+export const outro: typeof p.outro = (message, options) =>
+  p.outro(message, { ...options, output: process.stderr });
+export const note: typeof p.note = (message, title, options) =>
+  p.note(message, title, { ...options, output: process.stderr });
+export const log: typeof p.log = {
+  message: (message, options) => p.log.message(message, { ...options, output: process.stderr }),
+  info: (message, options) => p.log.info(message, { ...options, output: process.stderr }),
+  success: (message, options) => p.log.success(message, { ...options, output: process.stderr }),
+  step: (message, options) => p.log.step(message, { ...options, output: process.stderr }),
+  warn: (message, options) => p.log.warn(message, { ...options, output: process.stderr }),
+  warning: (message, options) => p.log.warning(message, { ...options, output: process.stderr }),
+  error: (message, options) => p.log.error(message, { ...options, output: process.stderr }),
+};
+export const cancel: typeof p.cancel = (message, options) =>
+  p.cancel(message, { ...options, output: process.stderr });
+export const spinner: typeof p.spinner = (options) =>
+  p.spinner({ ...options, output: process.stderr });
 export const isCancel = p.isCancel;
 export const prompts = p;
 
@@ -93,31 +108,31 @@ const isBelow = (path: string) =>
 
 /** A warning that must not end up in a piped stdout. */
 export const warn = (message: string) =>
-  p.log.warn(message, { output: process.stderr, spacing: railStarted ? 1 : 0 });
+  log.warn(message, { output: process.stderr, spacing: railStarted ? 1 : 0 });
 
 export function printError(error: unknown): void {
   if (error instanceof ConfigError) {
-    p.log.error(pc.red(error.message));
+    log.error(pc.red(error.message));
     for (const issue of error.issues) {
-      p.log.message(`${accent(issue.path || '(root)')}  ${issue.message}`, { symbol: pc.red('│') });
+      log.message(`${accent(issue.path || '(root)')}  ${issue.message}`, { symbol: pc.red('│') });
     }
-    p.log.message(dim(error.hint ?? ''));
+    log.message(dim(error.hint ?? ''));
     printCause(error);
     printDebugStacks(error);
     return;
   }
   if (error instanceof SetcastError) {
-    p.log.error(pc.red(error.message));
-    if (error.hint) p.log.message(dim(error.hint));
+    log.error(pc.red(error.message));
+    if (error.hint) log.message(dim(error.hint));
     printCause(error);
     printDebugStacks(error);
     return;
   }
   const unexpected = error as Error | undefined;
-  p.log.error(pc.red(unexpected?.message ?? String(error)));
+  log.error(pc.red(unexpected?.message ?? String(error)));
   printCause(error);
   if (process.env.SETCAST_DEBUG === '1') printDebugStacks(error);
-  else if (unexpected?.stack) p.log.message(dim(topOfStack(unexpected.stack)));
+  else if (unexpected?.stack) log.message(dim(topOfStack(unexpected.stack)));
 }
 
 export const errorExitCode = (error: unknown): 1 | 2 =>
@@ -125,7 +140,7 @@ export const errorExitCode = (error: unknown): 1 | 2 =>
 
 function printCause(error: unknown): void {
   if (!(error instanceof Error) || error.cause === undefined) return;
-  p.log.message(dim(`caused by: ${causeMessage(error.cause)}`));
+  log.message(dim(`caused by: ${causeMessage(error.cause)}`));
 }
 
 function causeMessage(cause: unknown): string {
@@ -136,9 +151,9 @@ function causeMessage(cause: unknown): string {
 
 function printDebugStacks(error: unknown): void {
   if (process.env.SETCAST_DEBUG !== '1' || !(error instanceof Error)) return;
-  if (error.stack) p.log.message(dim(error.stack));
+  if (error.stack) log.message(dim(error.stack));
   if (error.cause instanceof Error && error.cause.stack) {
-    p.log.message(dim(`cause stack:\n${error.cause.stack}`));
+    log.message(dim(`cause stack:\n${error.cause.stack}`));
   }
 }
 
@@ -174,7 +189,7 @@ export class ProgressLine {
 
   constructor(label: string) {
     this.#label = label;
-    process.stdout.write('\n');
+    process.stderr.write('\n');
   }
 
   update(progress: number, detail = ''): void {
@@ -185,13 +200,13 @@ export class ProgressLine {
     const line = `${dim('│')}  ${bold(this.#label.padEnd(8))} ${this.#bar(progress)} ${percent}  ${dim(detail)}${dim(this.#eta(progress))}`;
     if (line === this.#last) return;
 
-    process.stdout.write(process.stdout.isTTY ? `\r\x1b[2K${line}` : `${line}\n`);
+    process.stderr.write(process.stderr.isTTY ? `\r\x1b[2K${line}` : `${line}\n`);
     this.#last = line;
   }
 
   /** Without a TTY there is no redraw in place, so a log gets one line per tenth instead. */
   #tooSoon(progress: number): boolean {
-    if (process.stdout.isTTY || progress >= 1) return false;
+    if (process.stderr.isTTY || progress >= 1) return false;
     return Math.floor(progress * 10) === this.#tick;
   }
 
@@ -211,7 +226,7 @@ export class ProgressLine {
   }
 
   done(message: string): void {
-    process.stdout.write(
+    process.stderr.write(
       `${process.stdout.isTTY ? '\r\x1b[2K' : ''}${pc.green('◇')}  ${message}\n`,
     );
   }

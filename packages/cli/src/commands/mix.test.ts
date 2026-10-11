@@ -25,6 +25,9 @@ test('scaffold, inspect, import and analysis write the new contract without losi
     ).toBe(true);
     const tracklist = join(dir, 'tracklist.txt');
     await writeFile(tracklist, '00:00 First title\n00:10 Artist - Second title\n');
+    const draft = await run('import', tracklist);
+    expect(parse(draft.stdout).plays).toHaveLength(2);
+    expect(draft.stderr).toContain('tracks via');
     await run('import', tracklist, '--write', dir);
     const imported = parse(await readFile(join(dir, 'setcast.yaml'), 'utf8'));
     expect(imported.plays[0]).toMatchObject({
@@ -36,6 +39,7 @@ test('scaffold, inspect, import and analysis write the new contract without losi
     const configFile = join(dir, 'setcast.yaml');
     const withoutTempo = (await readFile(configFile, 'utf8')).replace(/^bpm:.*\n/m, '');
     await writeFile(configFile, withoutTempo + '\nbeatOffset: 1.23\n');
+    expect(parse((await run('analyze', dir)).stdout).annotations).toBeInstanceOf(Array);
     await run('analyze', dir, '--write');
     const once = await readFile(join(dir, 'setcast.yaml'), 'utf8');
     expect(parse(once).beatOffset).toBe(1.23);
