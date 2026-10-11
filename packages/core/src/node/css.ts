@@ -30,7 +30,8 @@ export async function loadCss(file: string): Promise<string> {
   for (const reference of localReferences(css)) {
     const asset = resolve(dir, stripQuery(reference));
     try {
-      inlined.set(reference, await dataUri(asset));
+      const fragment = reference.includes('#') ? reference.slice(reference.indexOf('#')) : '';
+      inlined.set(reference, (await dataUri(asset)) + fragment);
     } catch (cause) {
       if (!isEnoent(cause)) throw cause;
       throw new SetcastError(
@@ -61,7 +62,7 @@ async function dataUri(path: string): Promise<string> {
   return `data:${mime};base64,${bytes.toString('base64')}`;
 }
 
-/** `fonts/x.woff2?v=2#hash` points at `fonts/x.woff2`; the rest is cache busting. */
+/** Query strings and fragments are not part of the file's path on disk. */
 const stripQuery = (reference: string) => reference.replace(/[?#].*$/, '');
 
 const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
