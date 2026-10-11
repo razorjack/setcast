@@ -2,7 +2,8 @@ import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vite-plus/test';
-import { readWav } from './audio.ts';
+import { envelope } from '../analysis.ts';
+import { readWav, readEnvelope, decodeMono } from './audio.ts';
 
 type Variant = { format: number; bits: number; extensible?: boolean };
 
@@ -99,4 +100,12 @@ test.each(variants)('reads %s WAV', async (name, variant) => {
 
   expect(samples?.length).toBe(FRAMES);
   expect(samples?.[1]).toBeCloseTo(sineAt(1), 3);
+});
+
+test('streamed decoding produces the same envelope as explicit PCM decoding', async () => {
+  const file = join(dir, 'streamed.wav');
+  await writeFile(file, wav({ format: 3, bits: 32 }));
+  expect(await readEnvelope(file, RATE, 0.002)).toEqual(
+    envelope(await decodeMono(file, RATE), 0.002),
+  );
 });

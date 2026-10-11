@@ -246,8 +246,9 @@ flux around a moment by the beat period and reads the grid off where the hits pi
 a draft `annotations:` block plus `bpm:` and `beatOffset:`, or merges them into `setcast.yaml` with
 `--write`.
 
-`decodeMono()` in `@setcast/core/node` produces the PCM: ffmpeg subprocess when it is on PATH
-(every format, streamed), and a built-in PCM WAV reader (16/24/32-bit, float) otherwise, so a freshly scaffolded
+`readEnvelope()` in `@setcast/core/node` streams PCM into energy hops without retaining the set's
+full decoded audio. `decodeMono()` remains available when a caller explicitly needs all PCM. Both use ffmpeg subprocess when it is on PATH
+(every format, streamed), and a built-in PCM WAV reader (16/24/32-bit, float) with windowed-sinc resampling otherwise, so a freshly scaffolded
 project analyzes without any install. This is the first half of the AudioFeatures sidecar on the
 roadmap.
 

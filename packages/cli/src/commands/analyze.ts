@@ -4,7 +4,6 @@ import {
   beatOffset,
   clamp,
   detectSections,
-  envelope,
   estimateBpm,
   formatTime,
   formatTimecode,
@@ -13,10 +12,9 @@ import {
   compileMix,
   summarizeEnvelope,
   type Envelope,
-  type Pcm,
   type DraftAnnotation,
 } from '@setcast/core';
-import { CONFIG_FILE, decodeMono, type LoadedProject } from '@setcast/core/node';
+import { CONFIG_FILE, readEnvelope, type LoadedProject } from '@setcast/core/node';
 import { isSeq, parseDocument, stringify, type Document } from 'yaml';
 import { load } from '../project.ts';
 import { parseCommandArgs } from '../args.ts';
@@ -120,9 +118,9 @@ async function analyzeProject(loaded: LoadedProject, sensitivity: number): Promi
   spin.start(`Reading ${loaded.project.audio}`);
 
   const analysis = await clearSpinnerOnError(spin, async () => {
-    const pcm = await decodeMono(join(loaded.dir, loaded.project.audio));
+    const energy = await readEnvelope(join(loaded.dir, loaded.project.audio));
     spin.message('Analyzing');
-    return draftFrom(pcm, sensitivity);
+    return draftFrom(energy, sensitivity);
   });
 
   spin.stop(audioSummary(analysis));
@@ -130,8 +128,7 @@ async function analyzeProject(loaded: LoadedProject, sensitivity: number): Promi
 }
 
 /** Sections and tempo estimated from master audio, without modifying detected times. */
-function draftFrom(pcm: Pcm, sensitivity: number): AnalysisDraft {
-  const energy = envelope(pcm);
+function draftFrom(energy: Envelope, sensitivity: number): AnalysisDraft {
   const bpm = estimateBpm(energy);
   const drafted = detectSections(energy, { sensitivity });
 
@@ -139,7 +136,7 @@ function draftFrom(pcm: Pcm, sensitivity: number): AnalysisDraft {
     annotations: drafted,
     bpm,
     offset: bpm ? beatOffset(energy, bpm) : null,
-    seconds: pcm.samples.length / pcm.sampleRate,
+    seconds: energy.bass.length * energy.hop,
     energy,
   };
 }

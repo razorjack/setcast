@@ -25,39 +25,49 @@ export interface Envelope {
  * detection, and it needs no FFT.
  */
 export function envelope({ samples, sampleRate }: Pcm, hopSeconds = HOP_SECONDS): Envelope {
-  const hop = Math.max(1, Math.round(hopSeconds * sampleRate));
-  const hopCount = Math.floor(samples.length / hop);
-  const bass = new Array<number>(hopCount);
-  const high = new Array<number>(hopCount);
+  const reader = new EnvelopeReader(sampleRate, hopSeconds);
+  reader.push(samples);
+  return reader.done();
+}
 
-  // One pole per stage, so the two together roll off at 12 dB per octave from 150 Hz.
-  const response = 1 - Math.exp((-2 * Math.PI * 150) / sampleRate);
-  let firstStage = 0;
-  let secondStage = 0;
+/** Accumulates energy per hop without retaining decoded PCM between chunks. */
+export class EnvelopeReader {
+  private readonly sampleRate: number;
+  private readonly hop: number;
+  private readonly response: number;
+  private readonly bass: number[] = [];
+  private readonly high: number[] = [];
+  private firstStage = 0;
+  private secondStage = 0;
+  private lowSum = 0;
+  private highSum = 0;
+  private count = 0;
 
-  for (let hopIndex = 0; hopIndex < hopCount; hopIndex++) {
-    let lowSum = 0;
-    let highSum = 0;
-    for (let i = hopIndex * hop; i < (hopIndex + 1) * hop; i++) {
-      const sample = samples[i]!;
-      firstStage += response * (sample - firstStage);
-      secondStage += response * (firstStage - secondStage);
-      const above = sample - secondStage;
-      lowSum += secondStage * secondStage;
-      highSum += above * above;
-    }
-    bass[hopIndex] = Math.sqrt(lowSum / hop);
-    high[hopIndex] = Math.sqrt(highSum / hop);
+  constructor(sampleRate: number, hopSeconds = HOP_SECONDS) {
+    this.sampleRate = sampleRate;
+    this.hop = Math.max(1, Math.round(hopSeconds * sampleRate));
+    this.response = 1 - Math.exp((-2 * Math.PI * 150) / sampleRate);
   }
 
-  const bassLevels = normalize(bass);
-  const highLevels = normalize(high);
-  return {
-    hop: hop / sampleRate,
-    bass: bassLevels,
-    high: highLevels,
-    flux: onsetFlux(bassLevels, highLevels),
-  };
+  push(samples: Float32Array): void {
+    for (const sample of samples) {
+      this.firstStage += this.response * (sample - this.firstStage);
+      this.secondStage += this.response * (this.firstStage - this.secondStage);
+      const above = sample - this.secondStage;
+      this.lowSum += this.secondStage * this.secondStage;
+      this.highSum += above * above;
+      if (++this.count !== this.hop) continue;
+      this.bass.push(Math.sqrt(this.lowSum / this.hop));
+      this.high.push(Math.sqrt(this.highSum / this.hop));
+      this.count = this.lowSum = this.highSum = 0;
+    }
+  }
+
+  done(): Envelope {
+    const bass = normalize(this.bass);
+    const high = normalize(this.high);
+    return { hop: this.hop / this.sampleRate, bass, high, flux: onsetFlux(bass, high) };
+  }
 }
 
 /** The whole set at a glance, for drawing: bass and high energy every `step` seconds, 0..1. */

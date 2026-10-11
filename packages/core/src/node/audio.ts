@@ -1,8 +1,15 @@
 import { spawn } from 'node:child_process';
 import { open, type FileHandle } from 'node:fs/promises';
 import { basename } from 'node:path';
-import { envelope, summarizeEnvelope, type SetEnvelope } from '../analysis.ts';
+import {
+  EnvelopeReader,
+  HOP_SECONDS,
+  summarizeEnvelope,
+  type Envelope,
+  type SetEnvelope,
+} from '../analysis.ts';
 import type { Pcm } from '../audio.ts';
+import { Resampler } from './resampler.ts';
 import { SetcastError } from '../errors.ts';
 
 /** Analysis rate. 22.05 kHz holds everything section and beat detection look at, at half the work. */
@@ -14,11 +21,18 @@ export const ANALYSIS_RATE = 22050;
  * is still read directly, so a freshly scaffolded project works out of the box.
  */
 export async function decodeMono(file: string, rate = ANALYSIS_RATE): Promise<Pcm> {
-  const ffmpegSamples = await ffmpegPcm(file, rate);
-  if (ffmpegSamples) return { samples: ffmpegSamples, sampleRate: rate };
+  const samples = new Samples();
+  await streamMono(file, rate, (chunk) => samples.push(chunk));
+  return { samples: samples.done(), sampleRate: rate };
+}
 
-  const wav = await inspectWav(file, rate);
-  if (wav.samples) return { samples: wav.samples, sampleRate: rate };
+type Consume = (samples: Float32Array) => void;
+
+async function streamMono(file: string, rate: number, consume: Consume): Promise<void> {
+  if (!Number.isFinite(rate) || rate <= 0) throw new RangeError('Sample rate must be positive.');
+  if (await ffmpegPcm(file, rate, consume)) return;
+  const wav = await inspectWav(file, rate, consume);
+  if (wav.decoded) return;
   if (wav.unsupportedFormat) {
     throw new SetcastError(
       `${basename(file)} is ${wav.unsupportedFormat}`,
@@ -31,32 +45,42 @@ export async function decodeMono(file: string, rate = ANALYSIS_RATE): Promise<Pc
   );
 }
 
+/** Offline analysis stores only energy hops, regardless of the decoded audio length. */
+export async function readEnvelope(
+  file: string,
+  rate = ANALYSIS_RATE,
+  hop = HOP_SECONDS,
+): Promise<Envelope> {
+  const reader = new EnvelopeReader(rate, hop);
+  await streamMono(file, rate, (samples) => reader.push(samples));
+  return reader.done();
+}
+
 /** A rate that holds the bass and low mids, which is all an envelope drawn seconds per point needs. */
 const ENVELOPE_RATE = 4000;
 const ENVELOPE_HOP_SECONDS = 0.05;
 
 /** The whole set's energy, summarized for drawing (`ResolvedProject.envelope`). */
 export async function readSetEnvelope(file: string): Promise<SetEnvelope> {
-  const pcm = await decodeMono(file, ENVELOPE_RATE);
-  return summarizeEnvelope(envelope(pcm, ENVELOPE_HOP_SECONDS));
+  return summarizeEnvelope(await readEnvelope(file, ENVELOPE_RATE, ENVELOPE_HOP_SECONDS));
 }
 
-/** Null when ffmpeg is not installed. Anything else it reports is an error worth showing. */
-function ffmpegPcm(file: string, rate: number): Promise<Float32Array | null> {
+/** False when ffmpeg is not installed. Anything else it reports is an error worth showing. */
+function ffmpegPcm(file: string, rate: number, consume: Consume): Promise<boolean> {
   const args = ['-v', 'error', '-i', file, '-f', 'f32le', '-ac', '1', '-ar', String(rate), '-'];
   return new Promise((resolve, reject) => {
     const ffmpeg = spawn('ffmpeg', args);
-    const samples = new Samples();
+    const samples = new PcmBytes(consume);
     let stderr = '';
     ffmpeg.stdout.on('data', (chunk: Buffer) => samples.push(chunk));
     ffmpeg.stderr.on('data', (chunk: Buffer) => (stderr += chunk));
     ffmpeg.on('error', (error: NodeJS.ErrnoException) => {
-      if (error.code === 'ENOENT') resolve(null);
+      if (error.code === 'ENOENT') resolve(false);
       else reject(error);
     });
     ffmpeg.on('close', (code) => {
       if (code === 0) {
-        resolve(samples.done());
+        resolve(true);
         return;
       }
       reject(
@@ -69,38 +93,40 @@ function ffmpegPcm(file: string, rate: number): Promise<Float32Array | null> {
   });
 }
 
-/**
- * Collects streamed f32le bytes into one growing Float32Array. A two-hour set is 600 MB of
- * samples, so the bytes go straight into their final buffer instead of a list of chunks that
- * is concatenated afterwards.
- */
-class Samples {
-  #floats = new Float32Array(1 << 20);
-  #length = 0;
-  #carry = Buffer.alloc(0);
-
+/** Splits arbitrary byte chunks into complete PCM samples, preserving partial floats. */
+class PcmBytes {
+  private carry = Buffer.alloc(0);
+  private readonly consume: Consume;
+  constructor(consume: Consume) {
+    this.consume = consume;
+  }
   push(chunk: Buffer): void {
-    const bytes = this.#carry.length ? Buffer.concat([this.#carry, chunk]) : chunk;
-    // A chunk boundary can split a float; the leftover bytes wait for the next one.
-    const wholeBytes = bytes.length & ~3;
-    this.#carry = Buffer.from(bytes.subarray(wholeBytes));
-
-    const count = wholeBytes / 4;
-    this.#reserve(this.#length + count);
-    new Uint8Array(this.#floats.buffer).set(bytes.subarray(0, wholeBytes), this.#length * 4);
-    this.#length += count;
+    const bytes = this.carry.length ? Buffer.concat([this.carry, chunk]) : chunk;
+    const count = Math.floor(bytes.length / 4);
+    this.carry = Buffer.from(bytes.subarray(count * 4));
+    const samples = new Float32Array(count);
+    for (let index = 0; index < count; index++) samples[index] = bytes.readFloatLE(index * 4);
+    this.consume(samples);
   }
+}
 
-  #reserve(floats: number): void {
-    while (floats > this.#floats.length) {
-      const grown = new Float32Array(this.#floats.length * 2);
-      grown.set(this.#floats);
-      this.#floats = grown;
+/** The explicit decodeMono API returns PCM; rendering and analysis use readEnvelope instead. */
+class Samples {
+  private floats = new Float32Array(1 << 20);
+  private length = 0;
+  push(samples: Float32Array): void {
+    if (this.length + samples.length > this.floats.length) {
+      const grown = new Float32Array(
+        Math.max(this.floats.length * 2, this.length + samples.length),
+      );
+      grown.set(this.floats);
+      this.floats = grown;
     }
+    this.floats.set(samples, this.length);
+    this.length += samples.length;
   }
-
   done(): Float32Array {
-    return this.#floats.subarray(0, this.#length);
+    return this.floats.subarray(0, this.length);
   }
 }
 
@@ -114,26 +140,29 @@ const CHUNK_FRAMES = 1 << 16;
  * in pieces and resampled on the way, so a two-hour WAV never sits in memory as a whole.
  */
 export async function readWav(file: string, rate: number): Promise<Float32Array | null> {
-  return (await inspectWav(file, rate)).samples;
+  const samples = new Samples();
+  const result = await inspectWav(file, rate, (chunk) => samples.push(chunk));
+  return result.decoded ? samples.done() : null;
 }
 
 interface WavInspection {
-  samples: Float32Array | null;
+  decoded: boolean;
   unsupportedFormat?: string;
 }
 
-async function inspectWav(file: string, rate: number): Promise<WavInspection> {
+async function inspectWav(file: string, rate: number, consume: Consume): Promise<WavInspection> {
   const fileHandle = await open(file);
   try {
     const { size } = await fileHandle.stat();
     const readAt = readerFor(fileHandle, size);
     const wav = await readWavInfo(readAt, size);
-    if (!wav) return { samples: null };
+    if (!wav) return { decoded: false };
     if ('unsupportedFormat' in wav) {
-      return { samples: null, unsupportedFormat: wav.unsupportedFormat };
+      return { decoded: false, unsupportedFormat: wav.unsupportedFormat };
     }
 
-    return { samples: await decodeWavData(readAt, wav, rate) };
+    await decodeWavData(readAt, wav, rate, consume);
+    return { decoded: true };
   } finally {
     await fileHandle.close();
   }
@@ -221,18 +250,20 @@ async function decodeWavData(
   readAt: ReadAt,
   wav: WavInfo,
   outputRate: number,
-): Promise<Float32Array> {
+  consume: Consume,
+): Promise<void> {
   const frameBytes = wav.bytesPerSample * wav.channels;
   const frames = Math.floor(wav.data.length / frameBytes);
-  const output = new Resampler(frames, wav.sampleRate, outputRate);
+  const resampler = new Resampler(frames, wav.sampleRate, outputRate);
 
   for (let frame = 0; frame < frames; frame += CHUNK_FRAMES) {
     const count = Math.min(CHUNK_FRAMES, frames - frame);
     const chunk = await readAt(wav.data.offset + frame * frameBytes, count * frameBytes);
-    output.push(toMono(chunk, wav.channels, wav.bytesPerSample, wav.readSample));
+    const samples = resampler.push(toMono(chunk, wav.channels, wav.bytesPerSample, wav.readSample));
+    consume(samples);
   }
 
-  return output.done();
+  consume(resampler.done());
 }
 
 const tag = (buffer: Buffer, offset: number) => buffer.toString('latin1', offset, offset + 4);
@@ -265,43 +296,4 @@ function toMono(
     mono[frame] = sum / channels;
   }
   return mono;
-}
-
-/** Linear resampler fed in pieces: keeps the last input sample so a chunk edge is no seam. */
-class Resampler {
-  readonly #ratio: number;
-  readonly #out: Float32Array;
-  #written = 0;
-  #base = 0;
-  #last = 0;
-
-  constructor(frames: number, fromRate: number, toRate: number) {
-    this.#ratio = fromRate / toRate;
-    this.#out = new Float32Array(Math.floor(frames / this.#ratio));
-  }
-
-  push(chunk: Float32Array): void {
-    const chunkEnd = this.#base + chunk.length;
-    const inputAt = (index: number) =>
-      index < this.#base ? this.#last : chunk[index - this.#base]!;
-
-    for (; this.#written < this.#out.length; this.#written++) {
-      const position = this.#written * this.#ratio;
-      const index = Math.floor(position);
-      if (index + 1 >= chunkEnd) break;
-      const fraction = position - index;
-      this.#out[this.#written] = inputAt(index) * (1 - fraction) + inputAt(index + 1) * fraction;
-    }
-
-    this.#base = chunkEnd;
-    if (chunk.length) this.#last = chunk[chunk.length - 1]!;
-  }
-
-  /** Outputs still waiting for a sample past the end repeat the last one, as the edge does. */
-  done(): Float32Array {
-    for (; this.#written < this.#out.length; this.#written++) {
-      this.#out[this.#written] = this.#last;
-    }
-    return this.#out;
-  }
 }

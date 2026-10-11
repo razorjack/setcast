@@ -4,6 +4,7 @@ import {
   beatOffset,
   detectSections,
   envelope,
+  EnvelopeReader,
   estimateBpm,
   nearestBeat,
   summarizeEnvelope,
@@ -96,4 +97,12 @@ describe('summarizeEnvelope', () => {
     expect(summary.bass).toEqual([1, 1, 0.05, 0.05]);
     expect(summary.high).toEqual([1, 1, 1, 1]);
   });
+});
+
+test('streamed envelopes are independent of PCM chunk boundaries', () => {
+  const pcm = audio(2, (time) => (Math.sin(2 * Math.PI * 90 * time) * time) / 2);
+  const reader = new EnvelopeReader(pcm.sampleRate);
+  for (let index = 0; index < pcm.samples.length; index += 317)
+    reader.push(pcm.samples.subarray(index, index + 317));
+  expect(reader.done()).toEqual(envelope(pcm));
 });
