@@ -50,6 +50,7 @@ vp test                    # vitest, all packages, from the root
 vp run demo-assets         # synthesize examples/demo audio (gitignored, deterministic)
 vp run smoke               # renders 3 s of the demo and validates the MP4 (audio + motion)
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
+vp run package-smoke       # build local tarballs; test installed CLI, all themes and video
 vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
 vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
@@ -223,7 +224,7 @@ all 0..1 but `wave`; `bins` are log-spaced and tilt-flattened (raw FFT is bass-h
 `{ left, right }`, `WAVE_POINTS` (512) signed samples per channel covering the `WAVE_SECONDS`
 (1/30 s) that end at the frame, each the mean of the audio it covers (`waveSlice`), for scopes.
 The adapter loads the left and right channel with two `useWindowedAudioData` calls (it returns one
-channel per call; mono loads its channel twice) and holds the first frame until mediabunny has
+channel per call; mono loads once and shares the channel) and holds the first frame until mediabunny has
 read the channel count. `AudioAnalyzer =
 { featuresAt(time) }` is what the adapter provides; `featuresFromSpectrum()` turns a linear
 magnitude spectrum into features and is pure (tested). v1 implementation lives inside the Remotion
@@ -255,7 +256,7 @@ roadmap.
 ### Media wrappers and readiness
 
 `packages/core/src/react/renderer.tsx`. `RendererBindings = { name, Img, Video, hold }`.
-`Img`/`Video` are the adapter's components; `Video` also takes `loop` and `muted`; `useAsset(src)` preloads and holds the frame until
+`Img`/`Video` are the adapter's components; `Video` also takes `loop`, `muted` and background `fit`; `useAsset(src)` preloads and holds the frame until
 loaded; `useFontsReady()` holds until `document.fonts.ready`. The default bindings (no adapter)
 are plain `<img>`/`<video>` with a no-op `hold`, used in tests.
 
@@ -489,8 +490,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   Mediabunny formats since 4.0.383 (WAV no longer required); MP3/M4A/WAV/FLAC all work.
 - Render analysis uses full-scale PCM as its FFT reference, never the peak of the loaded window.
   Stereo magnitudes and RMS combine channel power without phase cancellation; silence stays zero.
-  Readiness includes FFT lookahead as well as history. Audio smoothing samples a fixed 30 Hz grid,
-  independent of output FPS.
+  Readiness includes FFT lookahead as well as history. Audio smoothing uses a fixed sampling schedule,
+  independent of output FPS. Waveforms, energy and FFTs are computed only when read; scenes
+  without audio consumers skip analysis.
 - Remotion bundles with webpack (its own esbuild loader for TS/TSX); `rspack: true` exists and is
   the announced future default. Vite+ drives everything else. They coexist because the adapter's
   bundle entry is plain TSX resolved through package `exports` → `src/*.ts`. No `tsconfig paths`
@@ -502,6 +504,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - TypeScript 7.0.2 (tsgo). `erasableSyntaxOnly` is on so Node can strip types: no enums,
   namespaces, or parameter properties. Imports use explicit `.ts` extensions.
 - Zod 4.4.3 for every schema. `yaml` 2.9.0 for YAML (maintained, spec-complete, no deps).
+- CLI diagnostics and progress go to stderr; redirected import/analyze drafts are uncolored YAML
+  on stdout.
 - CLI UX: `@clack/prompts` 1.7 + `picocolors` 1.1; argument parsing with `node:util` `parseArgs`.
   Nothing heavier without justification.
 - Output paths are OSC 8 links and renders report OSC 9;4 progress to the terminal tab, but only
@@ -540,6 +544,13 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Demo audio is synthesized by `scripts/make-demo-assets.ts` in pure Node (deterministic, no
   ffmpeg), written as WAV, and gitignored; the background is a committed SVG. Fixtures in tests are
   inline strings.
+- Publishing keeps the source-based development loop. The CLI's published bin is the executable
+  `dist/main.mjs`; its templates resolve from a shared module at the same depth in `src` and `dist`.
+  The renderer ships a compiled `Root.mjs`; its source bundle entry resolves the `./composition`
+  package export, which points to source in the workspace and compiled JS in tarballs.
+  `vp run package-smoke` builds and extracts all four tarballs into an isolated temporary directory,
+  reuses installed third-party dependencies, and exercises init, inspect, every theme and video.
+  It requires pnpm and publishes nothing. Run it before a release or changing package layouts.
 - Package `exports` → `src/*.ts`, `publishConfig.exports` → `dist/*.js`. Workspace development runs
   TypeScript sources directly on Node 26.
 - `Img`/`Video` wrapper props are exactly `{ src, className, style }` (`MediaProps`), plus `loop`
@@ -608,8 +619,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   side outputs, then closes the browser and removes temporary bundles even on failure.
 - Local Remotion bundles use `symlinkPublicDir` so subsequent renders do not copy source audio
   and previous outputs into each temporary bundle. Remotion falls back to copying on Windows.
+- Prepared background and bloom caches retain active resources plus four inactive entries,
+  evicting least recently used entries and revoking generated blob URLs. Failed preparations can retry.
 - Background art is prepared in the browser, not in Node: `useBackgroundArt` loads each image
-  once, fits it to the frame and measures what the frame shows in a canvas of the frame's shape,
+  on demand, fits it to the frame and measures what the frame shows in a canvas of the frame's shape,
   64 cells along its long side, holding the frame until it is done, so any format Chrome decodes
   works without ffmpeg. Video is neither fitted nor measured. The canvases are CPU-backed (`willReadFrequently`), so every render tab
   composes and measures the same pixels.
@@ -734,11 +747,6 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Whether live mode renders via the same `Stage` in a browser source with a `RenderFrame` driven by
   `requestAnimationFrame` (likely yes) and how event-delay offset is configured.
 - Plugin loading for npm plugins (generated bundle entry vs. config-time import map).
-- Publishing layout. `vp pack` builds `dist/*.mjs` + `.d.mts` and `publishConfig.exports` points
-  there, but two things are unresolved: the CLI `bin` imports `src/main.ts` (fine in the workspace,
-  Node refuses to type-strip inside `node_modules`, so a published bin must import `dist`), and the
-  Remotion bundle entry (`entry/index.tsx`) imports `src/Root.tsx`, which a published package would
-  not ship. Decide when publishing becomes real; nothing in the dev loop depends on it.
 
 ## Code values (binding)
 

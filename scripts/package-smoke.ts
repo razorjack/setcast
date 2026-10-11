@@ -1,0 +1,112 @@
+import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { mkdir, mkdtemp, readFile, realpath, rm, stat, symlink, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
+
+const execute = promisify(execFile);
+const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const names = ['core', 'themes', 'renderer-remotion', 'cli'];
+const temporary = await mkdtemp(join(tmpdir(), 'setcast-packages-'));
+const modules = join(temporary, 'node_modules');
+
+try {
+  await buildAndPack();
+  await extractPackages();
+  await reuseBrowser();
+  await exerciseCli();
+  console.log('package-smoke: PASS (packed CLI, project loading, all themes, H.264 + AAC)');
+} finally {
+  await rm(temporary, { recursive: true, force: true });
+}
+
+async function command(file: string, args: string[], cwd = root) {
+  try {
+    return await execute(file, args, { cwd, maxBuffer: 8 * 1024 * 1024 });
+  } catch (error) {
+    const result = error as { stdout?: string; stderr?: string };
+    console.error(result.stdout ?? '', result.stderr ?? '');
+    throw error;
+  }
+}
+
+async function buildAndPack(): Promise<void> {
+  await Promise.all(
+    names.map((name) =>
+      command(join(root, 'node_modules/.bin/vp'), ['pack'], join(root, 'packages', name)),
+    ),
+  );
+  await command('pnpm', ['--filter', '@setcast/*', '-r', 'pack', '--pack-destination', temporary]);
+}
+
+interface Manifest {
+  name: string;
+  version: string;
+  dependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  bin?: { setcast: string };
+}
+
+/** Only Setcast tarballs are copied. Third-party runtime dependencies reuse the installed versions. */
+async function extractPackages(): Promise<void> {
+  for (const name of names) {
+    const source = join(root, 'packages', name);
+    const manifest: Manifest = JSON.parse(await readFile(join(source, 'package.json'), 'utf8'));
+    const target = join(modules, '@setcast', name);
+    await mkdir(target, { recursive: true });
+    await command('tar', [
+      '-xzf',
+      join(temporary, `setcast-${name}-${manifest.version}.tgz`),
+      '--strip-components=1',
+      '-C',
+      target,
+    ]);
+    assert(!existsSync(join(target, 'src')), 'Package smoke must not have workspace source files');
+    for (const dependency of Object.keys({
+      ...manifest.dependencies,
+      ...manifest.peerDependencies,
+    })) {
+      if (dependency.startsWith('@setcast/')) continue;
+      const link = join(modules, dependency);
+      if (existsSync(link)) continue;
+      await mkdir(dirname(link), { recursive: true });
+      await symlink(await realpath(join(source, 'node_modules', dependency)), link);
+    }
+  }
+}
+
+async function reuseBrowser(): Promise<void> {
+  const installed = join(root, 'packages/renderer-remotion/node_modules/.remotion');
+  if (!existsSync(installed)) return;
+  const target = join(modules, '@setcast/renderer-remotion/node_modules');
+  await mkdir(target, { recursive: true });
+  await symlink(installed, join(target, '.remotion'));
+}
+
+async function exerciseCli(): Promise<void> {
+  const cliPackage = join(modules, '@setcast/cli');
+  const manifest: Manifest = JSON.parse(await readFile(join(cliPackage, 'package.json'), 'utf8'));
+  assert(manifest.bin?.setcast);
+  const cli = join(cliPackage, manifest.bin.setcast);
+  assert((await readFile(cli, 'utf8')).startsWith('#!/usr/bin/env node'));
+  const run = (...args: string[]) => command(process.execPath, [cli, ...args], temporary);
+  assert.equal((await run('--version')).stdout.trim(), manifest.version);
+  const project = join(temporary, 'project');
+  await run('init', project, '--demo', '--yes');
+  const configFile = join(project, 'setcast.yaml');
+  const config = (await readFile(configFile, 'utf8'))
+    .replace('width: 1920', 'width: 640')
+    .replace('height: 1080', 'height: 360');
+  await writeFile(configFile, config);
+  const inspected = JSON.parse((await run('inspect', project, '--json')).stdout);
+  assert(inspected.plays.length > 0);
+  await run('still', project, '--theme', 'all', '--at', '1', '--out', join(temporary, 'theme.jpg'));
+  assert((await stat(join(temporary, 'theme-sterile-tech.jpg'))).size > 0);
+  const video = join(temporary, 'render.mp4');
+  await run('render', project, '--range', '0-0.2', '--out', video, '--concurrency', '1');
+  const bytes = (await readFile(video)).toString('latin1');
+  for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
+}

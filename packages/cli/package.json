@@ -8,10 +8,15 @@
   },
   "files": [
     "dist",
-    "bin",
     "templates"
   ],
   "type": "module",
+  "publishConfig": {
+    "bin": {
+      "setcast": "./dist/main.mjs"
+    },
+    "access": "public"
+  },
   "scripts": {
     "build": "vp pack"
   },

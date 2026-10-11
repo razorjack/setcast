@@ -1,4 +1,4 @@
 import { registerRoot } from 'remotion';
-import { Root } from '../src/Root.tsx';
+import { Root } from '@setcast/renderer-remotion/composition';
 
 registerRoot(Root);

@@ -10,12 +10,14 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./composition": "./src/Root.tsx"
   },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
-      "./package.json": "./package.json"
+      "./package.json": "./package.json",
+      "./composition": "./dist/Root.mjs"
     },
     "access": "public"
   },

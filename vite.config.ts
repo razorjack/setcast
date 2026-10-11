@@ -58,6 +58,7 @@ export default defineConfig({
   },
   run: {
     tasks: {
+      'package-smoke': { command: 'node scripts/package-smoke.ts', cache: false },
       smoke: {
         command: 'node scripts/smoke.ts',
         cache: false,

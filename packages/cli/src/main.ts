@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { createRequire } from 'node:module';
 import { accent, bold, dim, errorExitCode, formatHelp, printError, steel } from './ui.ts';
 

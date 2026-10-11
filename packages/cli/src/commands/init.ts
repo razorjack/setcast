@@ -1,12 +1,12 @@
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { basename, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { formatTime, SetcastError } from '@setcast/core';
 import { CONFIG_FILE } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { stringify } from 'yaml';
 import { synthesizeDemo, type DemoAudio, type DemoSection } from '../demo/synth.ts';
 import { parseCommandArgs } from '../args.ts';
+import { TEMPLATES } from '../paths.ts';
 import {
   bold,
   cancel,
@@ -19,8 +19,6 @@ import {
   prompts,
   shown,
 } from '../ui.ts';
-
-const TEMPLATES = fileURLToPath(new URL('../../templates/', import.meta.url));
 
 interface InitOptions {
   dir: string;
