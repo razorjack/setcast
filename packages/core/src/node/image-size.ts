@@ -1,9 +1,54 @@
-import { readFile } from 'node:fs/promises';
+import { open, type FileHandle } from 'node:fs/promises';
 import type { Size } from '../background.ts';
 
-/** The pixel size of a PNG, JPEG or WebP file, or null for any other format. */
+const sizes = new Map<string, { revision: string; size: Size | null }>();
+
+/** Reads only image headers; JPEG metadata segments are skipped without buffering their bodies. */
 export async function readImageSize(file: string): Promise<Size | null> {
-  return imageSize(await readFile(file));
+  const handle = await open(file);
+  try {
+    const stat = await handle.stat({ bigint: true });
+    const revision = `${stat.ino}:${stat.size}:${stat.mtimeNs}:${stat.ctimeNs}`;
+    const cached = sizes.get(file);
+    if (cached?.revision === revision) return cached.size;
+    const header = await readHeader(handle, 0, 32);
+    const size =
+      header[0] === 0xff && header[1] === 0xd8
+        ? await jpegFileSize(handle, Number(stat.size))
+        : imageSize(header);
+    sizes.delete(file);
+    sizes.set(file, { revision, size });
+    if (sizes.size > 128) sizes.delete(sizes.keys().next().value!);
+    return size;
+  } finally {
+    await handle.close();
+  }
+}
+
+async function readHeader(handle: FileHandle, offset: number, length: number): Promise<Buffer> {
+  const bytes = Buffer.alloc(length);
+  const { bytesRead } = await handle.read(bytes, 0, length, offset);
+  return bytes.subarray(0, bytesRead);
+}
+
+async function jpegFileSize(handle: FileHandle, length: number): Promise<Size | null> {
+  for (let offset = 2; offset + 4 <= length;) {
+    const header = await readHeader(handle, offset, 10);
+    if (header[0] !== 0xff) return null;
+    const marker = header[1]!;
+    if (marker === 0xff) {
+      offset++;
+      continue;
+    }
+    if (marker === 0xda || marker === 0xd9) return null;
+    if (isFrameHeader(marker) && header.length >= 9) {
+      return { width: header.readUInt16BE(7), height: header.readUInt16BE(5) };
+    }
+    const segmentLength = header.readUInt16BE(2);
+    if (segmentLength < 2) return null;
+    offset += 2 + segmentLength;
+  }
+  return null;
 }
 
 /** Reads the size from the file header; null when the bytes are not a PNG, JPEG or WebP. */
