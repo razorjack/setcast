@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { formatTime, SetcastError } from '@setcast/core';
@@ -56,6 +56,8 @@ export async function run(argv: string[]): Promise<void> {
     ? defaultAnswers(options.dir, options.demo)
     : await ask(options.dir, options.demo);
 
+  await ensureAvailable(options.dir, 'assets/bg.png');
+  if (answers.audio === 'demo') await ensureAvailable(options.dir, 'assets/demo-set.wav');
   await writeBackground(options.dir);
   const project = await prepareProject(options.dir, answers.audio);
   await writeProjectConfig(options.dir, answers, project);
@@ -76,11 +78,11 @@ function parseOptions(argv: string[]): InitOptions {
   };
 }
 
-async function ensureAvailable(dir: string): Promise<void> {
-  if (await exists(join(dir, CONFIG_FILE))) {
+async function ensureAvailable(dir: string, file = CONFIG_FILE): Promise<void> {
+  if (await exists(join(dir, file))) {
     throw new SetcastError(
-      `${CONFIG_FILE} already exists in ${dir}`,
-      'Pick another directory or remove it first.',
+      `${file} already exists in ${dir}`,
+      'Pick another directory or move the existing file before initializing.',
     );
   }
 }
@@ -91,7 +93,9 @@ function defaultAnswers(dir: string, demo: boolean): InitAnswers {
 
 async function writeBackground(dir: string): Promise<void> {
   await mkdir(join(dir, 'assets'), { recursive: true });
-  await writeFile(join(dir, 'assets/bg.png'), await readFile(join(TEMPLATES, 'bg.png')));
+  await writeFile(join(dir, 'assets/bg.png'), await readFile(join(TEMPLATES, 'bg.png')), {
+    flag: 'wx',
+  });
 }
 
 async function prepareProject(dir: string, audio: string): Promise<ProjectContent> {
@@ -115,7 +119,7 @@ const placeholderProject = (audio: string): ProjectContent => ({
 
 async function writeDemoTrack(dir: string): Promise<DemoAudio> {
   const demo = synthesizeDemo(0.25);
-  await writeFile(join(dir, 'assets/demo-set.wav'), demo.wav);
+  await writeFile(join(dir, 'assets/demo-set.wav'), demo.wav, { flag: 'wx' });
   return demo;
 }
 
@@ -154,7 +158,7 @@ async function writeProjectConfig(
     '# import a tracklist:  setcast import tracklist.txt --write',
     '',
   ].join('\n');
-  await writeFile(join(dir, CONFIG_FILE), yaml);
+  await writeFile(join(dir, CONFIG_FILE), yaml, { flag: 'wx' });
 }
 
 /** Assembled key by key, because the order they appear in is the order a user edits them in. */
@@ -282,8 +286,12 @@ const titleFrom = (dir: string) =>
     .replace(/[-_]+/g, ' ')
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-const exists = (path: string) =>
-  access(path).then(
-    () => true,
-    () => false,
-  );
+async function exists(path: string): Promise<boolean> {
+  try {
+    await lstat(path);
+    return true;
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
+    throw error;
+  }
+}
