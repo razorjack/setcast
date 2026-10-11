@@ -6,6 +6,8 @@ test('rangeName stamps a slice without colons', () => {
   expect(rangeName('out/set.mp4', [30, 45])).toBe('out/set.0m30s-0m45s.mp4');
   expect(rangeName('out/set.mp4', [3600, 3723])).toBe('out/set.1h00m00s-1h02m03s.mp4');
   expect(rangeName('out/set', [30, 45])).toBe('out/set.0m30s-0m45s');
+  expect(rangeName('set.mp4', [60.1, 90.1])).toBe('set.1m00.1s-1m30.1s.mp4');
+  expect(rangeName('set.mp4', [60.9, 90.9])).toBe('set.1m00.9s-1m30.9s.mp4');
 });
 
 test('parseRange accepts timecodes and seconds, rejects nonsense', () => {

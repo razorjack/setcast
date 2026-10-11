@@ -4,6 +4,7 @@ import {
   chapterProblems,
   formatTime,
   hms,
+  microseconds,
   parseTime,
   SetcastError,
   youtubeDescription,
@@ -217,9 +218,14 @@ export const rangeName = (file: string, [start, end]: [number, number]) =>
 
 /** `0m30s`, `1h02m03s`. Filename-safe, so no colons. */
 const stamp = (seconds: number) => {
-  const { h, m, s } = hms(seconds);
-  if (h > 0) return `${h}h${pad(m)}m${pad(s)}s`;
-  return `${m}m${pad(s)}s`;
+  const time = microseconds(seconds);
+  const { h, m, s } = hms(time / 1_000_000);
+  const fraction = String(time % 1_000_000)
+    .padStart(6, '0')
+    .replace(/0+$/, '');
+  const suffix = fraction ? `.${fraction}` : '';
+  if (h > 0) return `${h}h${pad(m)}m${pad(s)}${suffix}s`;
+  return `${m}m${pad(s)}${suffix}s`;
 };
 
 const pad = (part: number) => String(part).padStart(2, '0');
