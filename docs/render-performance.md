@@ -5,8 +5,9 @@ bottleneck on this machine. The most useful near-term changes are an optional fa
 profile and bounded chunks for long renders. Replacing the renderer with another Chromium
 screenshot loop would retain much of the current cost.
 
-This evaluation adds reproducible benchmarks. It does not change rendering defaults, themes,
-or dependencies. Experimental output stays in the gitignored `demos/render-performance/`. The
+The original evaluation added reproducible benchmarks without changing production rendering.
+The fast profile and chunk pipeline are now implemented; see the implementation notes below.
+Experimental output stays in the gitignored `demos/render-performance/`. The
 [62 timing records](benchmarks/render-performance-2026-10-12.csv) are retained with this report.
 
 ## Scope and method
@@ -227,8 +228,8 @@ preset. Remove `crf` when using bitrate or hardware encoding. Hardware accelerat
 and encoder dependent, and the tested 12 Mbit/s is not a quality guarantee for other scenes.
 Keep JPEG 95 for gradient-sensitive work. Keep 60 fps if its motion is part of the desired look.
 
-The software `veryfast` setting is currently available only in the benchmark's direct Remotion
-call. A production option would need schema validation and forwarding through renders, clips
+The software `veryfast` setting is now available through `output.x264Preset`, or as the default
+for `output.profile: fast`. Both have schema validation and forwarding through renders, clips
 and Studio. CRF 18 with a different preset is not a promise of identical quality or file size.
 The [Remotion API](https://www.remotion.dev/docs/renderer/render-media) documents these encoder
 controls; the measurements here use the installed 4.0.513 implementation.
@@ -305,7 +306,52 @@ ffmpeg -i reference.mp4 -i candidate.mp4 \
   -an -f null -
 ```
 
-## Validation
+## Implementation and acceptance checks
+
+`output.profile: fast` selects JPEG quality 92 and x264 `veryfast`. Explicit quality settings
+override those defaults. Standard quality remains JPEG 95, x264 `medium` and CRF 18. Hardware
+encoding uses the profile's JPEG quality without an x264 preset.
+
+CLI exports longer than 60 seconds now use bounded video-only chunks. Set `output.chunkSeconds`
+to 1–60 to change their size, or 0 to disable them. Absolute frame ranges preserve the mix,
+modulation, history queries and video loops. The master audio is encoded once in parallel with
+the video, then the final mux copies the encoded streams. MP4/MOV use a 90 kHz movie timescale
+so the final audio edit is not rounded to whole milliseconds. This uses Remotion's bundled
+FFmpeg subprocess and requires no system FFmpeg installation.
+
+A 65-second 1080p30 demo export (84–149 seconds) with the fast profile took **43 seconds** with
+60-second chunks and **43 seconds** without chunks. Encoding audio only after video rendering
+had taken 51 seconds; overlapping it removed that avoidable serial work. These are single
+validation runs using rounded CLI times, including preparation, unlike the repeated benchmark
+means above. They do not establish an hour-long speedup.
+
+The final 65-second export has 1,950 frames with the expected presentation timestamps, starts
+both streams at zero, and contains 3,120,000 decoded mono samples at 48 kHz. Source correlation
+at 0.1, 59.96, 60.04 and 64.85 seconds found zero sample offset. A comparison of chunked and
+unchunked video at matching times scored 0.998646 SSIM.
+
+A more aggressive test used two-second chunks and a one-frame final chunk, beginning at frame
+3,241. It produced 181 frames, with 0.995010 SSIM against the unchunked fast-profile reference.
+Full-frame inspection at a join showed matching text, layout and spectrum. A 1080p60 export
+with a looping video background produced exactly 361 frames and 288,800 decoded mono samples
+at 48 kHz; source correlation around its join found zero offset and confirmed that the video's
+own test tone did not enter the soundtrack.
+
+Automated tests exercise partitioning at every supported FPS, partial final chunks, progress,
+unchunked short exports, explicit opt-out, preserving an existing output after failure, and
+cancelling the other worker when audio or video fails. Real bundled-FFmpeg tests cover MP4,
+MOV and MKV; MP4/MOV decoded samples match a single reference encode of the source range,
+including source audio that ends slightly before the last video frame.
+
+Chunking bounds temporary JPEGs and per-render frame/asset history. Encoded chunks and the
+soundtrack still grow with duration until final assembly. There is no resumable cache yet, and
+Studio exports continue to use its own unchunked pipeline. The separate `render-bench` task
+still measures direct Remotion calls so its original experiments remain comparable.
+
+`vp run ready` passed for the implemented pipeline: formatting, lint, type checks, 288 tests
+across 40 files, renderer dependency isolation, and the three-second smoke render.
+
+## Original evaluation validation
 
 `vp run ready` passed after restoring the production renderer: formatting, lint and type checks,
 264 tests across 38 files, renderer dependency isolation, and the three-second smoke render.

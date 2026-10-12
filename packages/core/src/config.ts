@@ -82,6 +82,18 @@ const outputShape = {
   gl: GraphicsBackendSchema.default('auto'),
   profile: ExportProfileSchema.default('standard'),
   x264Preset: X264PresetSchema.optional(),
+  chunkSeconds: z
+    .number({
+      error: 'chunkSeconds must be a whole number from 0 to 60. Use 0 to disable chunking.',
+    })
+    .int({ error: 'chunkSeconds must be a whole number from 0 to 60. Use 0 to disable chunking.' })
+    .min(0, {
+      error: 'chunkSeconds must be a whole number from 0 to 60. Use 0 to disable chunking.',
+    })
+    .max(60, {
+      error: 'chunkSeconds must be a whole number from 0 to 60. Use 0 to disable chunking.',
+    })
+    .default(60),
   hardwareAcceleration: HardwareAccelerationSchema.default('disable'),
   videoBitrate: VideoBitrateSchema.optional(),
   /** x264 constant rate factor: lower is better and bigger. 1-51. */

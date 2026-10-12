@@ -216,6 +216,20 @@ changes only JPEG quality; omit `x264Preset`, which configures software encoding
 The [rendering benchmarks](docs/render-performance.md) measured 14–25% shorter exports
 with this combination on the tested clips. Actual gains depend on the theme and machine.
 
+CLI renders and clips longer than 60 seconds use 60-second chunks by default. This bounds
+the frame bookkeeping and temporary JPEG files held by each render batch. Timeline positions,
+audio-reactive motion and background video loops keep their original timing. The master
+soundtrack is encoded once alongside the video; the final file joins the encoded streams
+without another encode or separate audio segments at chunk boundaries.
+
+Set `output.chunkSeconds: 30` for smaller batches, or `0` to disable chunking. Accepted values
+are whole seconds from 0 to 60. Exports that fit in one chunk use the original rendering path.
+Chunks can change compression slightly near joins and add startup overhead; their main benefit
+is keeping resource use predictable on long sets. Encoded chunks and the soundtrack stay beside
+the destination in a temporary directory until assembly completes, then are removed. A failed
+chunked export preserves an existing output file. Studio exports use Remotion's own rendering
+pipeline and do not use this chunk setting.
+
 The bundled procedural textures and default background are pre-rendered PNGs, so exporting
 does not repeatedly evaluate SVG noise and blur. SVG backgrounds still work; for an existing
 project, pre-render complex static artwork to a bitmap with enough pixels for the output and

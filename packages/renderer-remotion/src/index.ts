@@ -1,9 +1,9 @@
 import { spawn } from 'node:child_process';
 import { mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderMedia, renderStill } from '@remotion/renderer';
+import { renderStill } from '@remotion/renderer';
 import {
   readMixDocument,
   SetcastError,
@@ -14,6 +14,7 @@ import { serializeInDirectory } from './cwd.ts';
 import { resolveFrameRange } from './range.ts';
 import { graphicsOptions } from './graphics.ts';
 import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './encoding.ts';
+import { renderVideo, resolveChunkSeconds } from './chunks.ts';
 
 export { probeAudio } from './probe.ts';
 
@@ -41,6 +42,8 @@ export interface RenderOptions extends EncodingOptions {
   /** Seconds; inclusive start, exclusive end. */
   range?: [number, number];
   concurrency?: number;
+  /** Maximum seconds per render batch. Defaults to 60; 0 disables chunking. */
+  chunkSeconds?: number;
   gl?: GraphicsBackend;
   onProgress?: Report;
 }
@@ -58,7 +61,12 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
   // process.cwd(). Run from this package so every project shares one cache instead of each
   // project directory growing a 100 MB .remotion folder. Renders are serialized because cwd is
   // process-global.
-  return withRenderSession(() => renderInPackage(() => renderIn(project, options)));
+  const resolved = {
+    ...options,
+    projectDir: resolve(options.projectDir),
+    out: resolve(options.out),
+  };
+  return withRenderSession(() => renderInPackage(() => renderIn(project, resolved)));
 }
 
 async function prepare(
@@ -76,38 +84,37 @@ async function prepare(
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   validateVideoFile(options.out);
   const encoding = encodingOptions(options);
+  const chunkSeconds = resolveChunkSeconds(options.chunkSeconds);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
 
   const { fps, durationInFrames } = composition;
-  const frameRange = options.range ? resolveFrameRange(options.range, fps, durationInFrames) : null;
-  const totalFrames = frameRange ? frameRange[1] - frameRange[0] + 1 : durationInFrames;
+  const frameRange: [number, number] = options.range
+    ? resolveFrameRange(options.range, fps, durationInFrames)
+    : [0, durationInFrames - 1];
+  const totalFrames = frameRange[1] - frameRange[0] + 1;
 
   try {
-    await renderMedia({
-      composition,
-      serveUrl,
-      puppeteerInstance,
-      codec: 'h264',
-      audioCodec: 'aac',
-      ...encoding,
-      outputLocation: options.out,
-      inputProps: project,
-      frameRange,
-      concurrency: options.concurrency ?? null,
-      chromiumOptions: graphicsOptions(options.gl),
-      // Remotion counts rendered and encoded frames on one callback; Setcast shows them as stages.
-      onProgress: ({ renderedFrames, encodedFrames, stitchStage }) => {
-        if (renderedFrames < totalFrames) {
-          const progress = renderedFrames / totalFrames;
-          report({ stage: 'frames', progress, renderedFrames, totalFrames });
-          return;
-        }
-        // Muxing runs after the last frame is encoded, and reports no count of its own.
-        const encoded = stitchStage === 'muxing' ? totalFrames : encodedFrames;
-        report({ stage: 'encode', progress: encoded / totalFrames, renderedFrames, totalFrames });
+    await renderVideo(
+      {
+        composition,
+        serveUrl,
+        puppeteerInstance,
+        codec: 'h264',
+        audioCodec: 'aac',
+        ...encoding,
+        outputLocation: options.out,
+        inputProps: project,
+        concurrency: options.concurrency ?? null,
+        chromiumOptions: graphicsOptions(options.gl),
       },
-    });
+      {
+        frameRange,
+        chunkSeconds,
+        audio: project.audio ? resolve(options.projectDir, project.audio) : null,
+        report,
+      },
+    );
   } catch (cause) {
     throw translateRenderError(cause);
   }

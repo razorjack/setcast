@@ -29,7 +29,9 @@ export const COMPOSITION_ID = 'setcast';
 type WindowedAudio = ReturnType<typeof useWindowedAudioData>;
 const WINDOW_SECONDS = 10;
 
-export function SetcastComposition(project: ResolvedProject & { previewRevision?: number }) {
+export function SetcastComposition(
+  project: ResolvedProject & { previewRevision?: number; renderAudio?: boolean },
+) {
   const revision = project.previewRevision;
   const bindings = useMemo(
     () =>
@@ -44,7 +46,7 @@ export function SetcastComposition(project: ResolvedProject & { previewRevision?
   return (
     <RendererProvider bindings={bindings}>
       {project.audio ? (
-        <WithAudio project={project} />
+        <WithAudio project={project} renderAudio={project.renderAudio !== false} />
       ) : (
         <Scene project={project} analyzer={silentAnalyzer} />
       )}
@@ -63,16 +65,18 @@ function useChannelCount(src: string): number | null {
   return ready ? (channelCounts.get(src) ?? null) : null;
 }
 
-function WithAudio({ project }: { project: ResolvedProject }) {
+function WithAudio({ project, renderAudio }: { project: ResolvedProject; renderAudio: boolean }) {
   const src = useAssetUrl(project.audio);
-  if (!needsAudioAnalysis(project))
-    return (
-      <>
+  return (
+    <>
+      {needsAudioAnalysis(project) ? (
+        <AnalyzedAudio project={project} src={src} />
+      ) : (
         <Scene project={project} analyzer={silentAnalyzer} />
-        <Audio src={src} />
-      </>
-    );
-  return <AnalyzedAudio project={project} src={src} />;
+      )}
+      {renderAudio && <Audio src={src} />}
+    </>
+  );
 }
 
 function AnalyzedAudio({ project, src }: StereoAudioProps) {
@@ -97,7 +101,7 @@ function StereoAudio({ project, src }: StereoAudioProps) {
   const request = { src, frame, fps, windowInSeconds: WINDOW_SECONDS };
   const left = useLoadedChannel(useWindowedAudioData({ ...request, channelIndex: 0 }));
   const right = useLoadedChannel(useWindowedAudioData({ ...request, channelIndex: 1 }));
-  return <LoadedAudio project={project} src={src} left={left} right={right} />;
+  return <LoadedAudio project={project} left={left} right={right} />;
 }
 
 function MonoAudio({ project, src }: StereoAudioProps) {
@@ -106,15 +110,18 @@ function MonoAudio({ project, src }: StereoAudioProps) {
   const channel = useLoadedChannel(
     useWindowedAudioData({ src, frame, fps, windowInSeconds: WINDOW_SECONDS, channelIndex: 0 }),
   );
-  return <LoadedAudio project={project} src={src} left={channel} right={channel} />;
+  return <LoadedAudio project={project} left={channel} right={channel} />;
 }
 
 function LoadedAudio({
   project,
-  src,
   left,
   right,
-}: StereoAudioProps & { left: ChannelWindow | null; right: ChannelWindow | null }) {
+}: {
+  project: ResolvedProject;
+  left: ChannelWindow | null;
+  right: ChannelWindow | null;
+}) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   // Without data the windowed hook holds the frame itself; with it, the lookback has to be there.
@@ -128,12 +135,7 @@ function LoadedAudio({
     return windowedAnalyzer({ left, right }, fps);
   }, [left, right, fps]);
 
-  return (
-    <>
-      <Scene project={project} analyzer={analyzer} />
-      <Audio src={src} />
-    </>
-  );
+  return <Scene project={project} analyzer={analyzer} />;
 }
 
 /**

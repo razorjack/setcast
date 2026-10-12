@@ -168,6 +168,14 @@ describe('render orchestration failures', () => {
     expect(remotion.bundle).not.toHaveBeenCalled();
   });
 
+  test('rejects invalid chunk sizes before audio or browser work', async () => {
+    await expect(
+      render(project, { projectDir: '.', out: 'out.mp4', chunkSeconds: -1 }),
+    ).rejects.toThrow('Invalid render chunkSeconds');
+    expect(audio.probe).not.toHaveBeenCalled();
+    expect(remotion.ensureBrowser).not.toHaveBeenCalled();
+  });
+
   test('checks local server access before starting browser and compositor work', async () => {
     localServer.check.mockRejectedValue(new Error('local server denied'));
     await expect(run()).rejects.toThrow('local server denied');
@@ -235,7 +243,7 @@ describe('render orchestration failures', () => {
 
   test('rejects an unsupported video extension before browser preparation', async () => {
     await expect(render(project, { projectDir: '.', out: 'out.avi' })).rejects.toThrow(
-      'Cannot write video to out.avi',
+      /Cannot write video to .*out\.avi/,
     );
     expect(remotion.ensureBrowser).not.toHaveBeenCalled();
   });

@@ -575,7 +575,24 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - `render()` serializes calls and temporarily `process.chdir()`s into the adapter package so
   Remotion's browser and bundle caches are shared across projects instead of each project dir
   getting a `.remotion/`. Serialization prevents concurrent calls from restoring the process-wide
-  working directory in the wrong order.
+  working directory in the wrong order. Render input/output paths resolve before changing cwd.
+- `render()` and CLI clips split ranges longer than `output.chunkSeconds` (default 60, whole
+  seconds 0–60; 0 disables) into sequential video-only batches in one shared session. Short
+  exports keep the original path. Frame ranges stay absolute, and the composition duration is
+  unchanged. The adapter sets `renderAudio: false` in both input and resolved composition props;
+  Remotion reads the latter independently. Audio analysis and its readiness holds still run.
+- Chunked exports encode the master once as stereo 48 kHz AAC at 320 kbit/s while rendering
+  video. Final assembly copies both streams. This implements the existing master-only soundtrack;
+  future audible plugin media needs a compatible mixing policy. Source audio starts at the
+  rounded first frame, and pads a fractional final frame with silence. MP4/MOV use a 90 kHz
+  movie timescale to avoid millisecond rounding of the final audio edit. FFmpeg remains a
+  subprocess, through pinned Remotion's `RenderInternals.callFf` so its bundled binary and
+  library paths work without a system install.
+- Chunk files and the assembled output live in a temporary directory beside the destination.
+  Only the final rename replaces an existing export. A failed audio or video worker cancels the
+  other; both settle before temporary files are removed. Temporary JPEGs and asset history are
+  limited to one chunk, but encoded files grow with set length until assembly. This is not a
+  resumable export cache. Studio uses Remotion's own pipeline and does not apply chunking.
 - Audio duration comes from `mediabunny` (`Input` + `UrlSource`, `getDurationFromMetadata()` with
   `computeDuration()` fallback) during project loading; Remotion's `getAudioDurationInSeconds`
   is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.
