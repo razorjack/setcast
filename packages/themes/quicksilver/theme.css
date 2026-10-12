@@ -1,4 +1,5 @@
-/* quicksilver: a bright silver field, a chrome spindle around a cobalt orb, spaced chrome capitals. */
+/* quicksilver: a bright silver field, a chrome spindle around a cobalt glass orb that holds the
+   art, spaced chrome capitals. The chrome mirrors the art's colors. */
 
 @font-face {
   font-family: 'Marcellus';
@@ -37,69 +38,38 @@
 }
 
 .theme-quicksilver {
+  /* the chrome mirrors a sky in the art's main hue over a ground in its second, at the theme's
+     own depths; grey art and a set without art give a cobalt sky over steel */
+  --sky: var(--bg-color-1, oklch(0.45 0.15 262));
+  --ground: var(--bg-color-2, var(--bg-color-1, oklch(0.45 0.02 250)));
+  --sky-deep: oklch(from var(--sky) 0.42 min(c * 1.3, 0.13) h);
+  --sky-pale: oklch(from var(--sky) 0.95 min(c * 0.3, 0.03) h);
+  --ground-dark: oklch(from var(--ground) 0.24 min(c * 0.8, 0.05) h);
+  --ground-lit: oklch(from var(--ground) 0.7 min(c * 1.2, 0.09) h);
+  --rim: oklch(from var(--sky) 0.97 0.012 h);
+  --edge: oklch(from var(--ground) 0.2 min(c * 0.6, 0.04) h);
   --paper: #f2f4f6;
-  --steel: #5d6874;
-  --steel-dim: #8a949e;
+  --steel: #4f5a66;
+  --steel-dim: #7d8893;
   --cobalt: #1f46b4;
   --cobalt-deep: #0e2463;
   --ice: #9fc3ff;
   --fg: var(--steel);
   --fg-dim: var(--steel-dim);
-  --accent: var(--cobalt);
+  --accent: var(--sky-deep);
   --accent-2: var(--steel);
-  --deck-a: var(--cobalt);
+  --deck-a: var(--sky-deep);
   --deck-b: #4f5b67;
-  --deck-c: #3c8fd8;
+  --deck-c: oklch(from var(--ground) 0.48 min(c * 1.2, 0.12) h);
   --deck-d: #8a6a2f;
   --font-display: 'Marcellus', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --hairline: max(1px, 0.06cqw);
-  --radial-size: 50cqh;
+  --radial-size: 63cqh;
   --orb: calc(var(--radial-size) * 0.3);
-  /* polished chrome: hard light and dark bands, shifted by the music */
-  --chrome: linear-gradient(
-    100deg,
-    #5f6a75 0%,
-    #eef2f5 14%,
-    #a3adb7 26%,
-    #ffffff 40%,
-    #66717d 52%,
-    #cfd6dd 66%,
-    #f7f9fa 80%,
-    #7d8893 100%
-  );
-  /* chrome lettering: a bright sky, a hard dark horizon, a lighter ground */
-  --chrome-type: linear-gradient(
-    to bottom,
-    #8c97a3 0%,
-    #dfe5ea 42%,
-    #3e4854 50%,
-    #6c7784 68%,
-    #b3bcc5 100%
-  );
-  --shine: calc(var(--mod-shine, 0.5) * 30% + var(--drop-flash) * 60%);
-  --spin: calc(clamp(0, 1 - var(--since-rewind, 60) / 0.6, 1) * -180deg);
-  background: radial-gradient(80% 90% at 50% 50%, #ffffff, var(--paper) 55%, #d9dee3);
-}
-
-/* a breakdown lets the orb go dark and the chrome dull */
-.theme-quicksilver[data-section='breakdown'] {
-  --cobalt: #26365f;
-  --ice: #6f7f9f;
-}
-
-/* the spindle: a tall four-pointed star of chrome, and a cobalt one inside it */
-.theme-quicksilver::before,
-.theme-quicksilver::after {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  rotate: var(--spin);
+  --vectorscope-size: calc(var(--orb) * 1.7);
   /* sharp points top and bottom, drawn in near the tips and full around the orb */
-  clip-path: shape(
+  --spindle: shape(
     from 50% 0%,
     curve to 100% 50% with 53% 30% / 100% 34%,
     curve to 50% 100% with 100% 66% / 53% 70%,
@@ -107,67 +77,187 @@
     curve to 50% 0% with 0% 34% / 47% 30%,
     close
   );
+  /* chrome lettering: a sky darkening upward, a hard horizon, a dark ground, a bright rim; the
+     stops are in cap heights, so every line of a wrapped title gets its own */
+  --chrome-type: linear-gradient(
+    to bottom,
+    var(--sky-deep) 0,
+    var(--sky-pale) 0.5cap,
+    var(--ground-dark) 0.5cap,
+    var(--ground-lit) 0.86cap,
+    var(--rim) 1cap
+  );
+  /* the lettering stands off the silver on a dark bevel */
+  --type-depth: drop-shadow(0 0.04em 0 var(--edge)) drop-shadow(0 0.08em 0.08em rgb(20 30 40 / 0.3));
+  --shine-turn: calc(var(--mod-shine, 0.5) * 16deg - 8deg + var(--drop-flash) * 40deg);
+  --spin: calc(clamp(0, 1 - var(--since-rewind, 60) / 0.6, 1) * -180deg);
+  /* the silver takes a breath of the art's light around the spindle */
+  background:
+    radial-gradient(
+      34cqh 44cqh at 50% 50%,
+      oklch(from var(--sky) 0.92 min(c, 0.04) h / 0.7),
+      transparent
+    ),
+    radial-gradient(80% 90% at 50% 50%, #ffffff, var(--paper) 55%, #d9dee3);
+}
+
+/* a breakdown dims the orb and its enamel over 3 s */
+.theme-quicksilver[data-section='breakdown'] {
+  --cobalt: #26365f;
+  --ice: #6f7f9f;
+  --dim: clamp(0, var(--section-time, 60) / 3, 1);
+}
+
+/* the spindle: a tall four-pointed star of chrome on a dark bevel, a cobalt one inside it, all
+   sized from the orb */
+.theme-quicksilver::before,
+.theme-quicksilver::after,
+.theme-quicksilver .sc-bg::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--orb) * 2.86);
+  height: calc(var(--orb) * 3.5);
+  translate: -50% -50%;
+  rotate: var(--spin);
+  clip-path: var(--spindle);
 }
 .theme-quicksilver::before {
-  width: 42cqh;
-  height: 64cqh;
-  background: var(--chrome) var(--shine) 0 / 200% 100%;
-  filter: drop-shadow(0 0 0.4cqw rgb(40 50 60 / 0.3));
+  width: calc(var(--orb) * 2.92);
+  height: calc(var(--orb) * 3.6);
+  translate: -50% calc(-50% + var(--orb) * 0.012);
+  background: var(--edge);
 }
+/* turned chrome: the sky above, the ground below, a horizon at each side */
 .theme-quicksilver::after {
-  width: 31cqh;
-  height: 52cqh;
+  background: conic-gradient(
+    from var(--shine-turn) at 50% 50%,
+    var(--sky-deep) 0deg,
+    var(--sky-pale) 34deg,
+    var(--rim) 62deg,
+    var(--sky-pale) 87deg,
+    var(--ground-dark) 90deg,
+    var(--ground-lit) 128deg,
+    var(--rim) 152deg,
+    var(--ground-dark) 180deg,
+    var(--rim) 208deg,
+    var(--ground-lit) 232deg,
+    var(--ground-dark) 270deg,
+    var(--sky-pale) 273deg,
+    var(--rim) 298deg,
+    var(--sky-pale) 326deg,
+    var(--sky-deep) 360deg
+  );
+}
+.theme-quicksilver .sc-bg::before {
+  z-index: auto;
+  width: calc(var(--orb) * 2.33);
+  height: calc(var(--orb) * 2.96);
   background: radial-gradient(closest-side, var(--ice), var(--cobalt) 55%, var(--cobalt-deep));
 }
 
-/* the orb: the art, washed cobalt, inside the ring */
+/* the orb: the art in its own colors under cobalt glass, breathing with the bass. It shows the
+   file itself rather than the frame-sized copy, so art of any shape fills it in any frame, panned
+   toward its subject and a little above, where heads usually are. */
 .theme-quicksilver .sc-bg {
   z-index: 2;
+}
+.theme-quicksilver[data-background='image'] .sc-bg-img {
+  display: none;
+}
+.theme-quicksilver :is(.sc-art, .sc-bg-img) {
+  --art-size: calc(var(--orb) * (2.5 + var(--mod-orb, 0) * 0.05));
+  --reach: calc(var(--art-size) / 2 - var(--orb));
+  /* 1 for art wider than tall: object-position pans it across, the box moves it up and down */
+  --wide: clamp(0, (var(--bg-aspect, 1.78) - 1) * 1000, 1);
+  --shift-x: calc(
+    (1 - var(--wide)) *
+      clamp(-1 * var(--reach), (0.5 - var(--bg-focus-x, 0.5)) * var(--art-size), var(--reach))
+  );
+  --shift-y: calc(
+    var(--wide) *
+      clamp(-1 * var(--reach), (0.58 - var(--bg-focus-y, 0.5)) * var(--art-size), var(--reach))
+  );
+  display: block;
+  inset: auto;
+  left: calc(50% + var(--shift-x));
+  top: calc(50% + var(--shift-y));
+  width: var(--art-size);
+  height: var(--art-size);
+  translate: -50% -50%;
+  transform: none;
+  object-fit: cover;
+  object-position: calc(var(--bg-focus-x, 0.5) * 100%)
+    calc(clamp(0, var(--bg-focus-y, 0.5) - 0.08, 1) * 100%);
+  clip-path: circle(var(--orb) at calc(50% - var(--shift-x)) calc(50% - var(--shift-y)));
+  filter: brightness(
+      calc(
+        pow(var(--bg-exposure, 1), var(--bg-correction, 0)) * (1 - var(--dim, 0) * 0.35) +
+          var(--rewind-flash)
+      )
+    )
+    saturate(calc(1 - var(--dim, 0) * 0.5));
+}
+.theme-quicksilver .sc-bg-vignette {
   clip-path: circle(var(--orb) at 50% 50%);
-  background: radial-gradient(
-    closest-side,
+  background:
+    radial-gradient(
+      circle calc(var(--orb) * 0.7) at calc(50% - var(--orb) * 0.3) calc(50% - var(--orb) * 0.42),
+      rgb(255 255 255 / 0.22),
+      transparent
+    ),
+    radial-gradient(
+      circle var(--orb) at 50% 50%,
+      transparent 58%,
+      rgb(14 36 99 / 0.35) 85%,
+      rgb(8 20 60 / 0.8)
+    );
+}
+/* without art the orb is cobalt glass, lit by the bass */
+.theme-quicksilver[data-background='none'] .sc-bg-vignette {
+  background-color: var(--cobalt);
+  background-image: radial-gradient(
+    circle var(--orb) at 50% 50%,
     color-mix(in srgb, var(--ice) calc(40% + 50% * var(--mod-orb, 0.5)), var(--cobalt)),
     var(--cobalt) 60%,
     var(--cobalt-deep)
   );
 }
-.theme-quicksilver .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0.5))) grayscale(1)
-    contrast(1.3) brightness(calc(1.4 + var(--rewind-flash)));
-  mix-blend-mode: luminosity;
-  opacity: 0.45;
-}
-.theme-quicksilver .sc-bg-vignette {
-  background: radial-gradient(
-    circle at 50% 50%,
-    transparent calc(var(--orb) * 0.6),
-    rgb(8 20 60 / 0.7) var(--orb)
-  );
+/* the art's own lights, inside the orb only */
+.theme-quicksilver .sc-bloom {
+  z-index: 2;
+  clip-path: circle(var(--orb) at 50% 50%);
+  mix-blend-mode: screen;
 }
 
-/* radial: a chrome ring around the orb, its bars polished steel ticks */
-.theme-quicksilver .sc-radial {
+/* radial: ticks engraved around the orb, set in a bright bezel */
+.theme-quicksilver .sc-radial,
+.theme-quicksilver .sc-radial-art {
   z-index: 3;
+}
+.theme-quicksilver .sc-radial {
   right: auto;
   left: 50%;
   translate: -50% 0;
-  filter: drop-shadow(0 0.1cqw 0.15cqw rgb(20 30 40 / 0.35));
 }
 .theme-quicksilver .sc-radial line {
-  stroke: #7d8893;
-  stroke-width: 4;
+  stroke: var(--edge);
+  stroke-width: 3;
   stroke-linecap: round;
+  stroke-opacity: 0.75;
 }
 .theme-quicksilver .sc-radial circle {
-  stroke: #e9eef2;
+  stroke: var(--rim);
   stroke-width: 7;
 }
 .theme-quicksilver .sc-radial-line {
-  stroke: var(--steel);
+  stroke: var(--edge);
   stroke-width: 3;
 }
 .theme-quicksilver .sc-radial-area {
-  fill: rgb(125 136 147 / 0.25);
+  fill: oklch(from var(--edge) l c h / 0.2);
 }
 .theme-quicksilver .sc-vectorscope {
   z-index: 3;
@@ -176,7 +266,7 @@
   translate: -50% 0;
 }
 
-/* the other visualizers: steel on the silver */
+/* the other visualizers: steel and the chrome's sky on the silver */
 .theme-quicksilver .sc-spectrum,
 .theme-quicksilver .sc-meters,
 .theme-quicksilver .sc-oscilloscope,
@@ -187,12 +277,12 @@
   fill: var(--steel-dim);
 }
 .theme-quicksilver .sc-spectrum-peaks rect {
-  fill: var(--cobalt);
+  fill: var(--sky-deep);
 }
 .theme-quicksilver .sc-spectrum-line,
 .theme-quicksilver .sc-oscilloscope-line,
 .theme-quicksilver .sc-vectorscope-line {
-  stroke: var(--cobalt);
+  stroke: var(--sky-deep);
   stroke-width: 0.1cqw;
 }
 .theme-quicksilver .sc-vectorscope-line {
@@ -200,7 +290,7 @@
 }
 .theme-quicksilver .sc-oscilloscope-trail,
 .theme-quicksilver .sc-vectorscope-trail {
-  stroke: var(--ice);
+  stroke: oklch(from var(--sky-deep) 0.7 c h);
   opacity: calc(1 - var(--age));
 }
 .theme-quicksilver .sc-spectrum-area {
@@ -212,7 +302,7 @@
   stroke-width: var(--hairline);
 }
 .theme-quicksilver .sc-spectrogram {
-  color: var(--cobalt);
+  color: var(--sky-deep);
 }
 .theme-quicksilver .sc-meter-bar {
   background: rgb(93 104 116 / 0.12);
@@ -224,7 +314,7 @@
   background: var(--deck);
 }
 .theme-quicksilver .sc-meter-peak {
-  background: var(--cobalt);
+  background: var(--sky-deep);
 }
 .theme-quicksilver .sc-meter-label {
   margin-top: 1cqh;
@@ -241,11 +331,11 @@
   fill: var(--steel);
 }
 .theme-quicksilver .sc-overview-mark[data-type='drop'] {
-  stroke: var(--cobalt);
+  stroke: var(--sky-deep);
   stroke-width: 0.12cqw;
 }
 .theme-quicksilver .sc-overview-head {
-  stroke: var(--cobalt);
+  stroke: var(--sky-deep);
   stroke-width: 0.12cqw;
 }
 
@@ -312,33 +402,34 @@
 }
 .theme-quicksilver :is(.sc-artist, .sc-title) {
   text-transform: uppercase;
-  background: var(--chrome-type);
+  text-box: trim-both cap alphabetic;
+  background: var(--chrome-type) 0 0 / 100% 1lh repeat-y;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 0.012em #5d6874;
-  filter: drop-shadow(0 0.05em 0.03em rgb(20 30 40 / 0.35));
+  -webkit-text-stroke: 0.01em var(--edge);
+  filter: var(--type-depth);
 }
 .theme-quicksilver .sc-artist {
-  top: 10cqh;
-  font-size: 3cqw;
+  top: 9cqh;
+  font-size: 2.8cqw;
   letter-spacing: 0.5em;
   margin-right: -0.5em;
 }
 .theme-quicksilver .sc-title {
-  bottom: 9cqh;
+  bottom: 10cqh;
   font-size: 3.4cqw;
-  line-height: 1.1;
+  line-height: 1.3;
   letter-spacing: 0.42em;
   margin-right: -0.42em;
   text-wrap: balance;
 }
 .theme-quicksilver .sc-label {
-  bottom: 5.5cqh;
+  bottom: 5.6cqh;
   font-family: var(--font-mono);
   font-size: 0.8cqw;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--cobalt);
+  color: var(--sky-deep);
 }
 
 /* up next: small, bottom right */
@@ -364,24 +455,17 @@
   font-size: 1.5cqw;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--cobalt);
+  color: var(--sky-deep);
 }
 
 /* portrait: the spindle taller, the type larger */
 @container (aspect-ratio < 1) {
-  .theme-quicksilver::before {
-    width: 76cqw;
-    height: 60cqh;
-  }
-  .theme-quicksilver::after {
-    width: 56cqw;
-    height: 48cqh;
-  }
-  .theme-quicksilver .sc-radial,
-  .theme-quicksilver .sc-bg,
-  .theme-quicksilver .sc-bg-vignette {
-    --radial-size: 64cqw;
+  .theme-quicksilver::before,
+  .theme-quicksilver::after,
+  .theme-quicksilver :is(.sc-bg, .sc-bloom, .sc-radial, .sc-vectorscope) {
+    --radial-size: 100cqw;
     --orb: calc(var(--radial-size) * 0.3);
+    --vectorscope-size: calc(var(--orb) * 1.7);
   }
   .theme-quicksilver .sc-header {
     font-size: 1.8cqw;
@@ -425,7 +509,8 @@
  * DJ: each play is a column, its artist above the spindle and its title below it, so one play
  * looks as it does alone and a second opens a column beside it. Columns open in width, so the
  * pairs re-center smoothly around the spindle, and shrink together when they run out of room.
- * The deck, label and details are pinned at fixed heights, so every title ends on one line.
+ * The deck shares the line under the title with the label, and that line and the details have
+ * fixed heights, so every title ends on one line, with or without an artist, deck or label.
  */
 .theme-quicksilver[data-presentation='dj'] .sc-contributors {
   z-index: 3;
@@ -433,8 +518,10 @@
   width: auto;
   display: flex;
   justify-content: center;
-  --top: 12cqh;
-  --bottom: 9cqh;
+  --top: 9cqh;
+  --bottom: 4cqh;
+  --meta-row: 5.4cqh;
+  --details-row: 2.2cqh;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-slot {
   flex: 0 1 auto;
@@ -449,45 +536,53 @@
   inset: auto;
   height: 100%;
   max-width: 40cqw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto minmax(0, auto) 1fr;
+  grid-template-rows: auto 1fr auto var(--meta-row) var(--details-row);
   padding: var(--top) 0 var(--bottom);
   text-align: center;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-panel > * {
-  position: absolute;
-  left: 0;
-  right: 0;
+  position: static;
+  grid-column: 1 / -1;
   width: auto;
-  max-width: none;
+  max-width: 100%;
+  margin-right: 0;
   translate: none;
 }
 /* spaced capitals end in a letter space, so the same space on the left keeps them centered */
-.theme-quicksilver[data-presentation='dj'] .sc-panel > :is(.sc-artist, .sc-title, .sc-panel-head) {
-  position: static;
-  max-width: 100%;
-  margin-right: 0;
-}
 .theme-quicksilver[data-presentation='dj'] .sc-artist {
+  grid-row: 1;
   font-size: 1.9cqw;
   letter-spacing: 0.42em;
   padding-left: 0.42em;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-title {
-  margin-top: auto;
+  grid-row: 3;
   font-size: 2.5cqw;
   letter-spacing: 0.3em;
   padding-left: 0.3em;
 }
+.theme-quicksilver[data-presentation='dj'] :is(.sc-panel-head, .sc-label) {
+  grid-row: 4;
+  align-self: center;
+  white-space: nowrap;
+}
 .theme-quicksilver[data-presentation='dj'] .sc-panel-head {
-  order: 1;
-  margin-top: 0.9cqw;
-  justify-content: center;
+  grid-column: 2;
   font-size: 0.7cqw;
 }
-.theme-quicksilver[data-presentation='dj'] .sc-title {
-  order: 2;
+.theme-quicksilver[data-presentation='dj'] .sc-label {
+  grid-column: 3;
+  padding-left: 0.4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75cqw;
+}
+.theme-quicksilver[data-presentation='dj']
+  .sc-panel:is(:has(.sc-deck), [data-returning='true'])
+  .sc-panel-head {
+  margin-right: 1cqw;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
   display: none;
@@ -497,9 +592,9 @@
   height: 1.4cqw;
   font-size: 0.75cqw;
 }
-.theme-quicksilver[data-presentation='dj'] .sc-label {
-  bottom: calc(var(--bottom) - 2.2cqw);
-  font-size: 0.75cqw;
+.theme-quicksilver[data-presentation='dj'] .sc-credit-details {
+  grid-row: 5;
+  align-self: end;
 }
 .theme-quicksilver .sc-credit-details {
   bottom: 3.6cqh;
@@ -508,13 +603,12 @@
   text-transform: uppercase;
   color: var(--steel-dim);
 }
-.theme-quicksilver[data-presentation='dj'] .sc-credit-details {
-  bottom: calc(var(--bottom) - 3.6cqw);
-}
+/* a play out of focus keeps its chrome but not the art's colors */
 .theme-quicksilver[data-presentation='dj']
   .sc-panel[data-focused='false']
   :is(.sc-artist, .sc-title) {
-  opacity: 0.5;
+  opacity: 0.6;
+  filter: grayscale(1) var(--type-depth);
 }
 .theme-quicksilver[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
   color: var(--steel-dim);
@@ -522,7 +616,7 @@
 .theme-quicksilver .sc-contributor-count,
 .theme-quicksilver .sc-overflow {
   position: absolute;
-  bottom: 2.4cqh;
+  bottom: 1.6cqh;
   font-size: 0.7cqw;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -550,7 +644,9 @@
 @container (aspect-ratio < 1) {
   .theme-quicksilver[data-presentation='dj'] .sc-contributors {
     --top: 12cqh;
-    --bottom: 9cqh;
+    --bottom: 4cqh;
+    --meta-row: 3.4cqh;
+    --details-row: 2cqh;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-slot {
     padding-inline: calc(var(--fit) * 2cqw);
@@ -559,26 +655,17 @@
     max-width: 44cqw;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-artist {
-    font-size: 3cqw;
+    font-size: 3.6cqw;
     letter-spacing: 0.3em;
     padding-left: 0.3em;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-title {
-    font-size: 3.6cqw;
+    font-size: 4cqw;
     letter-spacing: 0.22em;
     padding-left: 0.22em;
   }
-  .theme-quicksilver[data-presentation='dj'] .sc-panel-head {
-    margin-top: 1.6cqw;
-  }
-  .theme-quicksilver[data-presentation='dj'] .sc-label {
-    bottom: calc(var(--bottom) - 3.6cqw);
-  }
   .theme-quicksilver .sc-credit-details {
     bottom: 4.6cqh;
-  }
-  .theme-quicksilver[data-presentation='dj'] .sc-credit-details {
-    bottom: calc(var(--bottom) - 6cqw);
   }
   .theme-quicksilver[data-presentation='dj'] .sc-panel-head,
   .theme-quicksilver[data-presentation='dj'] .sc-label,

@@ -659,30 +659,33 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   blob URL. One image keeps every theme's filter, blend mode, clip and drift working unchanged; a
   second DOM layer would have needed each theme's treatment twice and broken its blend modes.
 - Each theme starts the filter of the art it shows (`.sc-bg-img`, or `.sc-art`) with an exposure
-  correction whose strength is `--bg-correction`, the theme's default in the fallback so users
-  can override it. The default is applied only where it fixes something visible, judged against
-  the test images. Pirate corrects fully toward `REFERENCE_LUMA`: its `brightness(5.4)
-  contrast(2.1)` turns any bright image into blank paper otherwise. escapement corrects halfway
-  (0.5) toward its own `--art-luma` (0.3), so a dark sleeve and a sunny image both read in its
-  band. long-exposure and quicksilver correct halfway (0.5): full correction darkens bright art
-  until it disappears. sterile-tech corrects a fifth of the way (0.2), so a sunny image dims a
-  little and keeps its color. afterhours only dims: it corrects halfway toward its own
-  `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
-  image turns to evening light. bunker also only dims, at 0.6 toward its own `--art-luma` (0.2);
-  its lamp pool and the bloom do the rest. interference corrects halfway (0.5) toward its own
-  `--art-luma` (0.3) and keeps the art's colors; caption boxes keep its type legible. vfd also
-  corrects halfway toward 0.3: the art is the room its display sits in. patina corrects fully
-  toward its own `--art-luma` (0.3), the brightness at which its print shows art; at the demo's
-  0.09 it showed dark art, the usual drum and bass art, as nothing. bristol corrects fully toward
-  its own `--art-luma` (0.42) before printing the art through its gradient map (`print.svg`), so
-  dark and bright art both use every ink. Verify changes against real art, not the demo art, which is nearly black and flat; the
-  gitignored `demos/backgrounds/` holds a local test set when present (never commit those images).
+  correction whose strength is `--bg-correction`, the theme's default in the fallback so users can
+  override it. The default is applied only where it fixes something visible, judged against the
+  test images. Pirate corrects fully toward `REFERENCE_LUMA`: its `brightness(5.4) contrast(2.1)`
+  turns any bright image into blank paper otherwise. escapement corrects halfway (0.5) toward its
+  own `--art-luma` (0.3), so a dark sleeve and a sunny image both read in its band. long-exposure
+  corrects halfway (0.5): full correction darkens bright art until it disappears. quicksilver
+  leaves the art untouched (0): it shows it in a glass orb on bright silver, where art of any
+  brightness reads. sterile-tech corrects a fifth of the way (0.2), so a sunny image dims a little
+  and keeps its color. afterhours only dims: it corrects halfway toward its own `--art-luma` (0.2)
+  and never brightens darker art, so a dark sleeve stays as it is and a sunny image turns to
+  evening light. bunker also only dims, at 0.6 toward its own `--art-luma` (0.2); its lamp pool
+  and the bloom do the rest. interference corrects halfway (0.5) toward its own `--art-luma` (0.3)
+  and keeps the art's colors; caption boxes keep its type legible. vfd also corrects halfway
+  toward 0.3: the art is the room its display sits in. patina corrects fully toward its own
+  `--art-luma` (0.3), the brightness at which its print shows art; at the demo's 0.09 it showed
+  dark art, the usual drum and bass art, as nothing. bristol corrects fully toward its own
+  `--art-luma` (0.42) before printing the art through its gradient map (`print.svg`), so dark and
+  bright art both use every ink. Verify changes against real art, not the demo art, which is
+  nearly black and flat; the gitignored `demos/backgrounds/` holds a local test set when present
+  (never commit those images).
 - The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark
-  but saturated scene still reads as its color, with a minimum share so a few stray pixels in
-  grey art give none. sterile-tech's accents, masthead's and anamorphic's ink, passe-partout's
-  wall and the faint tint of vfd's glass reflection take them, at the theme's own lightness and chroma so contrast stays as designed.
-  interference shows the art in its own colors and keeps its RGB-split ghosts magenta and cyan,
-  and themes whose palette is their identity do not take art colors.
+  but saturated scene still reads as its color, with a minimum share so a few stray pixels in grey
+  art give none. sterile-tech's accents, masthead's and anamorphic's ink, passe-partout's wall,
+  quicksilver's chrome (a sky from the first hue over a ground from the second) and the faint tint
+  of vfd's glass reflection take them, at the theme's own lightness and chroma so contrast stays
+  as designed. interference shows the art in its own colors and keeps its RGB-split ghosts magenta
+  and cyan, and themes whose palette is their identity do not take art colors.
 - `--bg-luma-behind` is measured per element, not for fixed zones of the frame: zones would bind
   every theme to the built-in layout, while an element's box follows whatever layout its theme
   gives it. A theme cannot add elements and pseudo-elements inherit from their host, so the fixed
@@ -757,8 +760,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   the file). Themes position visualizers
   and move the background freely (bunker insets and shakes `.sc-bg`, interference translates the
   image, pirate drops the drift), and CSS alone cannot align a layer with another element's box.
-  interference shows `.sc-art` as a moving ghost, so art copies and bloom follow its offset.
-  A clip on `.sc-bg` (escapement and quicksilver, or patina's `overflow: clip` around a `.sc-art`
+  interference shows `.sc-art` as a moving ghost, so art copies and bloom follow its offset;
+  quicksilver clips `.sc-art` itself to its orb, so they follow that clip.
+  A clip on `.sc-bg` (escapement, or patina's `overflow: clip` around a `.sc-art`
   larger than its print) does not apply to the copy, so the shapes show the art also where the
   theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the copy, so pirate pads and
   rotates its spectrum only without `fill: art` (`[data-fill='theme']`).

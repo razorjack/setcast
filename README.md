@@ -58,7 +58,7 @@ a path to your own `.css`.
 | `long-exposure` | a night shot of your art: its lamps flaring, one sodium-amber trail, lime lowercase     |
 | `bristol`       | your art printed in teal and grey inks, a white contour, the set told in green stripes  |
 | `patina`        | a worn, hand-tinted print cropped to its subject, tracked capitals, one string under it |
-| `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |
+| `quicksilver`   | your art in a cobalt glass orb, set in chrome that mirrors its colors, on bright silver |
 | `bunker`        | your art through an opening in a concrete wall, lit by a work lamp; hazard tape on drops |
 | `vfd`           | a 90s deck's fluorescent display under your art: dot matrix, level meters (`--phosphor`) |
 | `interference`  | your art in color on a corrupted signal: channels split with the bass, tears on the drop |
