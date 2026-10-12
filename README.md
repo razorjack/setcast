@@ -51,22 +51,22 @@ every theme, one image each, to see which one suits your art. Each theme brings 
 visualizers and reactions, so the name alone gives you the look as designed. A theme can also be
 a path to your own `.css`.
 
-| theme           | look                                                                                    |
-| --------------- | --------------------------------------------------------------------------------------- |
-| `sterile-tech`  | the default: steel and frosted glass around your art, one rust accent, a scan per drop  |
-| `escapement`    | white paper, your art through a band of cyan glass, pixel capitals, a beat-ticking dial |
-| `long-exposure` | a night shot of your art: its lamps flaring, one sodium-amber trail, lime lowercase     |
-| `bristol`       | your art printed in teal and grey inks, a white contour, the set told in green stripes  |
-| `patina`        | a worn, hand-tinted print cropped to its subject, tracked capitals, one string under it |
-| `quicksilver`   | your art in a cobalt glass orb, set in chrome that mirrors its colors, on bright silver |
+| theme           | look                                                                                     |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| `sterile-tech`  | the default: steel and frosted glass around your art, one rust accent, a scan per drop   |
+| `escapement`    | white paper, your art through a band of cyan glass, pixel capitals, a beat-ticking dial  |
+| `long-exposure` | a night shot of your art: its lamps flaring, one sodium-amber trail, lime lowercase      |
+| `bristol`       | your art printed in teal and grey inks, a white contour, the set told in green stripes   |
+| `patina`        | a worn, hand-tinted print cropped to its subject, tracked capitals, one string under it  |
+| `quicksilver`   | your art in a cobalt glass orb, set in chrome that mirrors its colors, on bright silver  |
 | `bunker`        | your art through an opening in a concrete wall, lit by a work lamp; hazard tape on drops |
 | `vfd`           | a 90s deck's fluorescent display under your art: dot matrix, level meters (`--phosphor`) |
 | `interference`  | your art in color on a corrupted signal: channels split with the bass, tears on the drop |
-| `pirate`        | a photocopied rave flyer: grey copy, taped slips, a torn fluoro strip (`--fluoro`)      |
+| `pirate`        | a photocopied rave flyer: grey copy, taped slips, a torn fluoro strip (`--fluoro`)       |
 | `afterhours`    | warm and late: your art in amber evening light, its lamps glowing, credits on rose glass |
 | `passe-partout` | your art untouched as a framed print on a wall in its colors, a museum label beside it   |
-| `masthead`      | your art full bleed, the track set in its emptiest part like a magazine's cover lines   |
-| `anamorphic`    | the set as a film: your art in a 2.39:1 band, the credits in the bars, drops open it    |
+| `masthead`      | your art full bleed, the track set in its emptiest part like a magazine's cover lines    |
+| `anamorphic`    | the set as a film: your art in a 2.39:1 band, the credits in the bars, drops open it     |
 
 ## Get started
 
