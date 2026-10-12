@@ -637,9 +637,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   composed in that canvas: the art whole over a blurred, darker copy, handed to `.sc-bg-img` as a
   blob URL. One image keeps every theme's filter, blend mode, clip and drift working unchanged; a
   second DOM layer would have needed each theme's treatment twice and broken its blend modes.
-- Each theme starts its `.sc-bg-img` filter with an exposure correction whose strength is
-  `--bg-correction`, the theme's default in the fallback so users can override it. The default
-  is applied only where it fixes something visible, judged against the test images. Pirate and
+- Each theme starts the filter of the art it shows (`.sc-bg-img`, or `.sc-art`) with an exposure
+  correction whose strength is `--bg-correction`, the theme's default in the fallback so users
+  can override it. The default is applied only where it fixes something visible, judged against
+  the test images. Pirate and
   escapement correct fully toward `REFERENCE_LUMA`: pirate's `brightness(5.4) contrast(2.1)`
   turns any bright image into blank paper otherwise, and escapement's band washes out to white.
   sterile-tech, long-exposure and quicksilver correct halfway (0.5): full correction darkens
@@ -730,8 +731,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   the file). Themes position visualizers
   and move the background freely (bunker insets and shakes `.sc-bg`, interference translates the
   image, pirate drops the drift), and CSS alone cannot align a layer with another element's box.
-  A clip on `.sc-bg` (escapement, patina, quicksilver) does not apply to the copy, so the shapes
-  show the art also where the theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the
+  A clip on `.sc-bg` (escapement and quicksilver, or patina's `overflow: clip` around a `.sc-art`
+  larger than its print) does not apply to the copy, so the shapes show the art also where the
+  theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the
   copy; no theme does.
 - The spectrogram is a canvas, the one visualizer that is not SVG or HTML: 120 columns of 64 bins
   is 7,680 cells a frame, too many DOM nodes. It repaints entirely in a layout effect every frame

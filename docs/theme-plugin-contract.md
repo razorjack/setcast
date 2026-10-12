@@ -143,7 +143,9 @@ flashes are not accidentally inherited as local cues.
 `dwell: 0` keeps it present; `fade: 0` cuts at the dwell endpoint. Built-in themes consume
 `--presence`, which follows `--show` in playlist mode. In DJ mode it springs in the same way,
 holds for the whole run so current credits stay readable, and eases out over the run's last
-0.6 seconds. DJ emphasis still reflects focus and dwell. A shared drop does not retrigger an
+0.6 seconds. DJ emphasis still reflects focus and dwell. passe-partout's label and patina's caption
+sit beside the art rather than over it, so they stay for the whole run in playlist mode too
+(`--since-entry`, `--until-exit`). A shared drop does not retrigger an
 entrance; themes can react to its local `--drop-flash` instead.
 
 Each panel sits in a `.sc-slot` that carries its `--presence`. In DJ mode base.css stacks the

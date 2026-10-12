@@ -1,4 +1,5 @@
-/* patina: a worn print in a dark frame, small tracked capitals, one string vibrating. */
+/* patina: a worn, hand-tinted print in a dark frame, small tracked capitals, and under the print
+   one string vibrating. */
 
 @font-face {
   font-family: 'Cinzel';
@@ -36,7 +37,7 @@
 .theme-patina {
   --black: #0b0c0a;
   --parchment: #d8d2bf;
-  --dim: #7b776a;
+  --dim: #8a8574;
   --bronze: #a8895a;
   --verdigris: #7fa393;
   --rust: #9a5a3c;
@@ -51,20 +52,43 @@
   --font-display: 'Cinzel', Georgia, serif;
   --font-italic: 'Cormorant Garamond', Georgia, serif;
   --hairline: max(1px, 0.06cqw);
-  --oscilloscope-height: 34cqh;
-  --window-top: 15cqh;
-  --window-bottom: 23cqh;
   background: var(--black);
 }
 
-/* the print: the art in a window with worn edges, the rest of the frame left dark */
-.theme-patina .sc-bg {
-  --window: var(--window-top) 5cqw var(--window-bottom) 5cqw;
-  clip-path: inset(var(--window) round 0.7cqw);
-  background: url(./stains.png) center / cover;
+/*
+ * The print takes the art's shape, cropped to show at least three quarters of its height and
+ * kept within --print-max-w by --print-max-h. In landscape its lower edge stays put; the string
+ * hangs under it and the credits under the string.
+ */
+.theme-patina :is(.sc-bg, .sc-oscilloscope, .sc-panel, .sc-contributors),
+.theme-patina::before,
+.theme-patina::after {
+  --print-max-w: 90cqw;
+  --print-max-h: 55cqh;
+  --print-aspect: clamp(1.2, var(--bg-aspect, 1.7778) / 0.75, 2.37);
+  --print-h: min(var(--print-max-h), var(--print-max-w) / var(--print-aspect));
+  --print-w: calc(var(--print-h) * var(--print-aspect));
+  --print-cy: calc(66cqh - var(--print-h) / 2);
+  --string-y: calc(var(--print-cy) + var(--print-h) / 2 + 3.6cqh);
 }
-/* olive and bronze, a little lifted by the music, flickering like projected film */
-.theme-patina .sc-bg-img {
+
+/* the print: worn at the edges, set in the dark frame */
+.theme-patina .sc-bg {
+  inset: auto;
+  left: calc(50cqw - var(--print-w) / 2);
+  top: calc(var(--print-cy) - var(--print-h) / 2);
+  width: var(--print-w);
+  height: var(--print-h);
+  overflow: clip;
+  isolation: isolate;
+  border-radius: 0.5cqw;
+  background:
+    linear-gradient(rgb(11 12 10 / 0.35) 0 0),
+    url(./stains.png) center / cover;
+}
+/* hand-tinted: sepia with a trace of the art's own color, lifted by the music, flickering like
+   projected film */
+.theme-patina :is(.sc-bg-img, .sc-art) {
   /* the mean luma this treatment shows art best at; any art is brought to it */
   --art-luma: 0.3;
   --flicker: calc(0.035 * sin(var(--set-progress, 0) * 91919));
@@ -72,13 +96,50 @@
   filter: brightness(
       pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
     )
-    grayscale(1) sepia(0.55) saturate(0.8) contrast(1.25)
+    sepia(0.6) saturate(0.45) contrast(1.15)
     brightness(
       calc(
-        0.75 * var(--mod-exposure, 1) * var(--dim-out, 1) + var(--flicker) + var(--drop-flash) *
-          0.35
+        0.8 * var(--mod-exposure, 1) * var(--dim-out, 1) + var(--flicker) + var(--drop-flash) * 0.35
       )
     );
+}
+/* a video fills the print and keeps the stage's slow zoom, without its sideways drift */
+.theme-patina .sc-bg-img {
+  transform: scale(calc(var(--bg-drift, 1) * var(--mod-bg-zoom, 1)));
+}
+/*
+ * An image is the file itself, covering the print. It moves so its focus sits a fifth of the
+ * print below the middle, where a figure's body sits when its head is in the print, as far as
+ * the art reaches past the print.
+ */
+.theme-patina[data-background='image'] .sc-bg-img {
+  display: none;
+}
+.theme-patina .sc-art {
+  --art-h: calc(var(--print-h) * max(1, var(--print-aspect) / var(--bg-aspect)));
+  --art-w: calc(var(--art-h) * var(--bg-aspect));
+  --reach-x: calc((var(--art-w) - var(--print-w)) / 2);
+  --reach-y: calc((var(--art-h) - var(--print-h)) / 2);
+  display: block;
+  left: calc(
+    -1 * var(--reach-x) +
+      clamp(-1 * var(--reach-x), (0.5 - var(--bg-focus-x)) * var(--art-w), var(--reach-x))
+  );
+  top: calc(
+    -1 * var(--reach-y) +
+      clamp(
+        -1 * var(--reach-y),
+        (0.5 - var(--bg-focus-y)) * var(--art-h) + 0.2 * var(--print-h),
+        var(--reach-y)
+      )
+  );
+  width: var(--art-w);
+  height: var(--art-h);
+  scale: var(--mod-bg-zoom, 1);
+}
+/* without art the print is blank paper, stained */
+.theme-patina[data-background='none'] .sc-bg {
+  background: url(./stains.png) center / cover;
 }
 .theme-patina .sc-bg-vignette {
   background: radial-gradient(110% 120% at 50% 45%, transparent 35%, rgb(5 6 4 / 0.85) 100%);
@@ -105,8 +166,8 @@
 .theme-patina .sc-bg::after {
   content: '';
   position: absolute;
-  inset: var(--window);
-  border-radius: 0.7cqw;
+  inset: 0;
+  border-radius: inherit;
   box-shadow:
     inset 0 0 0 0.2cqw rgb(168 137 90 / 0.25),
     inset 0 0 5cqw rgb(0 0 0 / 0.75);
@@ -116,47 +177,61 @@
   --dim-out: calc(1 - 0.7 * clamp(0, var(--section-time, 60) / 3, 1));
 }
 
-/* the emblem: a small ring at the top, its center beating with the tempo */
-.theme-patina::before {
-  --dot: calc(20% + 16% * var(--beat-pulse));
-  content: '';
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: calc(var(--margin) - 0.55cqw);
-  width: 2.4cqw;
-  aspect-ratio: 1;
-  translate: -50% 0;
-  border: var(--hairline) solid var(--parchment);
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--deck) var(--dot), transparent calc(var(--dot) + 1%));
-  opacity: 0.85;
-}
-
-/* the string: the oscilloscope as a single wire across the print */
+/*
+ * The string: the oscilloscope stretched under the print between a pin and a tuning peg. It is
+ * still near its ends and swings in the middle, as wide as the bass lets it.
+ */
 .theme-patina .sc-oscilloscope {
-  bottom: calc(
-    var(--window-bottom) +
-      (100cqh - var(--window-top) - var(--window-bottom) - var(--oscilloscope-height)) / 2
-  );
-  left: 5cqw;
-  width: 90cqw;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 0.35cqw rgb(216 210 191 / calc(0.25 + 0.5 * var(--mod-string, 0.5))));
+  --room: calc(7.5cqh * (0.15 + 0.85 * var(--mod-string, 0.5)));
+  top: calc(var(--string-y) - var(--room) / 2);
+  bottom: auto;
+  left: calc(50cqw - var(--print-w) / 2);
+  width: var(--print-w);
+  height: var(--room);
+  overflow: visible;
+  mask:
+    radial-gradient(closest-side, #000 70%, transparent),
+    linear-gradient(transparent calc(50% - 2px), #000 0 calc(50% + 2px), transparent 0);
+  filter: drop-shadow(0 0 0.3cqw rgb(216 210 191 / calc(0.2 + 0.4 * var(--mod-string, 0.5))));
 }
 .theme-patina .sc-oscilloscope-line {
   stroke: var(--parchment);
-  stroke-width: calc(0.06cqw + 0.06cqw * var(--drop-flash));
-  opacity: calc(0.55 + 0.45 * var(--mod-string, 0.5));
+  stroke-width: calc(0.07cqw + 0.05cqw * var(--drop-flash));
+  opacity: calc(0.65 + 0.35 * var(--mod-string, 0.5));
 }
 .theme-patina .sc-oscilloscope-trail {
   stroke: var(--parchment);
   stroke-width: var(--hairline);
-  opacity: calc((1 - var(--age)) * 0.18);
+  opacity: calc((1 - var(--age)) * 0.14);
 }
+/* the rest line tightens, brighter, over the seconds before a drop */
 .theme-patina .sc-oscilloscope-axis {
-  stroke: rgb(216 210 191 / 0.08);
+  stroke: rgb(216 210 191 / calc(0.45 + 0.4 * var(--tension)));
   stroke-width: var(--hairline);
+}
+/* the string's ends: a bronze pin, and the tuning peg whose center beats with the tempo */
+.theme-patina::before,
+.theme-patina::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: var(--string-y);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+.theme-patina::before {
+  left: calc(50cqw - var(--print-w) / 2);
+  width: 0.45cqw;
+  background: var(--bronze);
+}
+.theme-patina::after {
+  --dot: calc(24% + 14% * var(--beat-pulse));
+  left: calc(50cqw + var(--print-w) / 2);
+  width: 1.5cqw;
+  border: var(--hairline) solid var(--parchment);
+  background: radial-gradient(circle, var(--deck) var(--dot), var(--black) calc(var(--dot) + 1%));
+  opacity: 0.9;
 }
 
 /* the other visualizers, in the same quiet parchment */
@@ -237,7 +312,8 @@
 
 /* header: small, widely tracked capitals */
 .theme-patina .sc-header {
-  font-size: 0.85cqw;
+  top: calc(var(--margin) * 0.8);
+  font-size: 0.9cqw;
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--dim);
@@ -247,25 +323,29 @@
   color: var(--parchment);
 }
 
-/* now playing: centered under the print, as quiet as a caption */
+/* now playing: centered under the string, as quiet as a caption. It is the print's label, so it
+   stays as long as the play does instead of leaving after the panel's dwell: it sits on the
+   frame and never covers the art. */
 .theme-patina .sc-panel {
+  --hang: min(clamp(0, var(--since-entry, 60) / 1.2, 1), clamp(0, var(--until-exit, 60) / 0.6, 1));
   left: 50%;
-  bottom: calc(var(--margin) * 0.9);
+  top: calc(var(--string-y) + 4.4cqh);
+  bottom: auto;
   width: max-content;
   max-width: 76cqw;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  translate: -50% 0;
-  opacity: clamp(0, var(--presence, 1) * 1.2, 1);
+  translate: -50% calc((1 - var(--hang)) * 0.8cqh);
+  opacity: var(--hang);
 }
 .theme-patina .sc-panel-head {
   gap: 0.8cqw;
-  margin-bottom: 1cqw;
+  margin-bottom: 0.9cqw;
   font-family: var(--font-italic);
   font-style: italic;
-  font-size: 1.05cqw;
+  font-size: 1.15cqw;
   letter-spacing: 0.06em;
   color: var(--dim);
 }
@@ -294,16 +374,16 @@
 }
 .theme-patina .sc-artist {
   margin-bottom: 0.5cqw;
-  font-size: 1.15cqw;
+  font-size: 1.3cqw;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--dim);
 }
 .theme-patina .sc-title {
   font-weight: 500;
-  font-size: 2.6cqw;
+  font-size: 2.8cqw;
   line-height: 1.1;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--parchment);
   text-shadow: 0 0 calc(var(--drop-flash) * 0.6em) rgb(216 210 191 / 0.6);
@@ -313,62 +393,73 @@
   margin-top: 0.6cqw;
   font-family: var(--font-italic);
   font-style: italic;
-  font-size: 1.15cqw;
+  font-size: 1.35cqw;
   letter-spacing: 0.04em;
   color: var(--verdigris);
 }
 
-/* up next: a line of italic at the bottom right of the frame */
+/* up next: one line of italic and capitals between the set's title and the clock */
 .theme-patina .sc-next {
-  bottom: calc(var(--margin) * 0.9);
-  max-width: 22cqw;
-  gap: 0.2cqw;
+  top: calc(var(--margin) * 0.8 - 0.3cqw);
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  max-width: 44cqw;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.8cqw;
+  translate: -50% 0;
+  white-space: nowrap;
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-patina .sc-next-label {
   font-family: var(--font-italic);
   font-style: italic;
-  font-size: 0.95cqw;
+  font-size: 1.1cqw;
   color: var(--dim);
 }
 .theme-patina .sc-next-artist {
-  font-size: 0.8cqw;
+  font-size: 0.85cqw;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--dim);
 }
 .theme-patina .sc-next-title {
-  font-size: 1.2cqw;
+  font-size: 1.1cqw;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--parchment);
 }
 
-/* portrait: a taller print, the caption under it */
+/* portrait: the print in the upper middle, the string and the credits under it */
 @container (aspect-ratio < 1) {
-  .theme-patina .sc-bg,
-  .theme-patina .sc-bg::after {
-    --window: 12cqh 6cqw 30cqh 6cqw;
-  }
-  .theme-patina::before {
-    width: 4.6cqw;
-    top: calc(var(--margin) - 1cqw);
+  .theme-patina :is(.sc-bg, .sc-oscilloscope, .sc-panel, .sc-contributors),
+  .theme-patina::before,
+  .theme-patina::after {
+    --print-max-w: 88cqw;
+    --print-max-h: 46cqh;
+    --print-aspect: clamp(0.8, var(--bg-aspect, 1.7778) / 0.75, 1.25);
+    --print-cy: 40cqh;
+    --string-y: calc(var(--print-cy) + var(--print-h) / 2 + 3cqh);
   }
   .theme-patina .sc-oscilloscope {
-    bottom: calc(30cqh + (58cqh - var(--oscilloscope-height)) / 2);
-    left: 6cqw;
-    width: 88cqw;
-    height: 22cqh;
+    --room: calc(4.5cqh * (0.15 + 0.85 * var(--mod-string, 0.5)));
+  }
+  .theme-patina::before {
+    width: 1cqw;
+  }
+  .theme-patina::after {
+    width: 3.2cqw;
   }
   .theme-patina .sc-header {
-    font-size: 1.7cqw;
+    font-size: 1.8cqw;
   }
   .theme-patina .sc-panel {
-    bottom: 8cqh;
+    top: calc(var(--string-y) + 3.6cqh);
     max-width: 90cqw;
   }
   .theme-patina .sc-panel-head {
-    font-size: 2.2cqw;
+    font-size: 2.4cqw;
   }
   .theme-patina .sc-deck {
     min-width: 3.4cqw;
@@ -376,41 +467,44 @@
     font-size: 1.6cqw;
   }
   .theme-patina .sc-artist {
-    font-size: 2.3cqw;
+    font-size: 2.6cqw;
   }
   .theme-patina .sc-title {
-    font-size: 5.2cqw;
+    font-size: 5.6cqw;
   }
   .theme-patina .sc-label {
-    font-size: 2.3cqw;
+    font-size: 2.7cqw;
   }
   .theme-patina .sc-next {
-    max-width: 60cqw;
-    bottom: 2.4cqh;
+    top: auto;
+    bottom: 5cqh;
+    max-width: 88cqw;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6cqh;
+    text-align: center;
+    white-space: normal;
   }
   .theme-patina .sc-next-label {
-    font-size: 1.9cqw;
+    font-size: 2.3cqw;
   }
   .theme-patina .sc-next-artist {
-    font-size: 1.6cqw;
+    font-size: 1.8cqw;
   }
   .theme-patina .sc-next-title {
-    font-size: 2.4cqw;
+    font-size: 2.8cqw;
   }
 }
 
 /*
- * DJ: the captions stand side by side under the print like labels on a gallery wall, a bronze
+ * DJ: the captions stand side by side under the string like labels on a gallery wall, a bronze
  * hairline between them. Their lines share subgrid rows, so every title sits on one line. A slot
  * opens in width rather than height, so the row re-centers smoothly.
  */
-.theme-patina[data-presentation='dj'] {
-  --window-top: 13cqh;
-  --window-bottom: 26cqh;
-}
 .theme-patina[data-presentation='dj'] .sc-contributors {
   left: 50%;
-  bottom: calc(var(--margin) * 0.9);
+  top: calc(var(--string-y) + 4cqh);
+  bottom: auto;
   width: max-content;
   max-width: 90cqw;
   display: grid;
@@ -446,9 +540,10 @@
 }
 .theme-patina[data-presentation='dj'] .sc-panel {
   left: auto;
-  bottom: auto;
+  top: auto;
   width: max-content;
   max-width: 26cqw;
+  opacity: clamp(0, var(--presence, 1) * 1.2, 1);
 }
 .theme-patina[data-presentation='dj'] .sc-panel-head {
   grid-row: 1;
@@ -469,35 +564,35 @@
   grid-row: 4;
 }
 .theme-patina[data-presentation='dj'] .sc-panel-head {
-  min-height: 1.4cqw;
+  min-height: 1.5cqw;
   margin-bottom: 0.7cqw;
-  font-size: 0.9cqw;
+  font-size: 1cqw;
 }
 .theme-patina[data-presentation='dj'] .sc-panel[data-returning='true'] .sc-eyebrow {
   display: inline;
 }
 .theme-patina[data-presentation='dj'] .sc-deck {
-  min-width: 1.4cqw;
-  height: 1.4cqw;
-  font-size: 0.65cqw;
+  min-width: 1.5cqw;
+  height: 1.5cqw;
+  font-size: 0.7cqw;
 }
 .theme-patina[data-presentation='dj'] .sc-artist {
   margin-bottom: 0.4cqw;
-  font-size: 0.95cqw;
+  font-size: 1.05cqw;
 }
 .theme-patina[data-presentation='dj'] .sc-title {
-  font-size: 1.9cqw;
+  font-size: 2.05cqw;
   letter-spacing: 0.18em;
 }
 .theme-patina[data-presentation='dj'] .sc-label {
   margin-top: 0.5cqw;
-  font-size: 1cqw;
+  font-size: 1.1cqw;
 }
 .theme-patina .sc-credit-details {
   margin-top: 0.2cqw;
   font-family: var(--font-italic);
   font-style: italic;
-  font-size: 1cqw;
+  font-size: 1.05cqw;
   letter-spacing: 0.04em;
   color: var(--dim);
 }
@@ -513,7 +608,7 @@
   align-self: center;
   font-family: var(--font-italic);
   font-style: italic;
-  font-size: 1cqw;
+  font-size: 1.05cqw;
   letter-spacing: 0.04em;
   color: var(--dim);
 }
@@ -524,19 +619,10 @@
   max-width: 10cqw;
   margin-left: 1.8cqw;
 }
-/* up next moves to one line above the print, out of the captions' way */
-.theme-patina[data-presentation='dj'] .sc-next {
-  top: calc(var(--margin) + 3.2cqh);
-  bottom: auto;
-  max-width: 40cqw;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 0.8cqw;
-}
 
 @container (aspect-ratio < 1) {
   .theme-patina[data-presentation='dj'] .sc-contributors {
-    bottom: 3cqh;
+    top: calc(var(--string-y) + 3cqh);
     max-width: 94cqw;
     display: block;
     text-align: center;
@@ -564,32 +650,28 @@
   .theme-patina[data-presentation='dj'] .sc-panel-head {
     min-height: 0;
     margin-bottom: 0.8cqw;
-    font-size: 1.8cqw;
+    font-size: 2cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-deck {
-    min-width: 2.8cqw;
-    height: 2.8cqw;
-    font-size: 1.3cqw;
+    min-width: 3cqw;
+    height: 3cqw;
+    font-size: 1.4cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-artist {
-    font-size: 1.9cqw;
+    font-size: 2.1cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-title {
-    font-size: 3.8cqw;
+    font-size: 4.2cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-label,
   .theme-patina .sc-credit-details,
   .theme-patina .sc-contributor-count,
   .theme-patina .sc-overflow {
-    font-size: 2cqw;
+    font-size: 2.2cqw;
   }
   .theme-patina .sc-contributor-count,
   .theme-patina .sc-overflow {
     max-width: none;
     margin: 1cqh 0 0;
-  }
-  .theme-patina[data-presentation='dj'] .sc-next {
-    top: calc(var(--margin) + 2.6cqh);
-    max-width: 88cqw;
   }
 }
