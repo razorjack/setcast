@@ -453,6 +453,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   Keep preparation separate from rendering, record whether encoding overlaps capture, and compare
   longer clips as well as short samples. Remotion 4.0.513 scans prior frame/asset records per frame,
   so short-clip rates do not establish one-hour throughput. The benchmarks do not change defaults.
+- Native capture feasibility and theme comparisons are in `docs/capture-feasibility.md`.
+  Remotion 4 already supports optional HTML-in-canvas capture through its web renderer, but
+  Chromium 149 visibly corrupts several themes. The isolated Chromium 157 samples are much
+  closer. Native API availability alone is insufficient; verify the capture path and pixels.
+  The default DOM composer cannot preserve the theme contract. No exporter migration is implemented.
 - The finite mix model replaces the old tracks/events contract without compatibility aliases.
   `ResolvedProject.mix` is finalized before rendering. The renderer supplies the audio-duration
   probe to core/node, keeping core independent of Remotion and avoiding a second media probe stack.

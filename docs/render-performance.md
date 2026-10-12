@@ -308,6 +308,9 @@ ffmpeg -i reference.mp4 -i candidate.mp4 \
 
 ## Implementation and acceptance checks
 
+Follow-up research on removing the image round trip, including Remotion version and theme
+compatibility, is in [Capture without the JPEG round trip](capture-feasibility.md).
+
 `output.profile: fast` selects JPEG quality 92 and x264 `veryfast`. Explicit quality settings
 override those defaults. Standard quality remains JPEG 95, x264 `medium` and CRF 18. Hardware
 encoding uses the profile's JPEG quality without an x264 preset.
