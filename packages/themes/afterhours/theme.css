@@ -50,51 +50,130 @@
   --font-display: 'Fraunces', Georgia, serif;
   --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
   --hairline: max(1px, 0.06cqw);
-  --spectrum-height: 22cqh;
+  --spectrum-height: 12cqh;
+  /* bright art is dimmed halfway toward evening light; dark art is never brightened */
+  --art-luma: 0.2;
+  --art-gain: pow(
+    min(1, var(--art-luma) / var(--bg-luma, var(--art-luma))),
+    var(--bg-correction, 0.5)
+  );
+  /* lamps show in a dark room, hardly in daylight */
+  --lamps: clamp(0.2, (0.55 - var(--bg-luma, 0)) * 3.5, 1);
   /* how lit the room is: warmer with the music, down to candlelight in a breakdown */
   --lights: 1;
+  /* every kick ducks the room, the way a sidechain pumps the pads */
+  --room: calc(
+    (0.78 + 0.18 * var(--mod-warmth, 0.6)) * var(--lights) * (1 - var(--mod-pump, 0) * 0.22)
+  );
+  /* the card sits in the calm part of the art, below the header when that is the top */
+  --card-top: auto;
+  --card-right: auto;
+  --card-bottom: var(--margin);
+  --card-left: var(--margin);
+  --card-margin: 0;
+  --card-rise: 2.5cqh;
   background: #120a0e;
 }
 .theme-afterhours[data-section='breakdown'] {
   --lights: calc(1 - 0.45 * clamp(0, var(--section-time, 60) / 3, 1));
 }
+.theme-afterhours[data-bg-calm$='right'] {
+  --card-left: auto;
+  --card-right: var(--margin);
+}
+.theme-afterhours[data-bg-calm^='top'] {
+  --card-top: calc(var(--margin) + 4.5cqh);
+  --card-bottom: auto;
+  --card-rise: -2.5cqh;
+}
+.theme-afterhours:is([data-bg-calm='left'], [data-bg-calm='right']) {
+  --card-top: 0;
+  --card-bottom: 0;
+  --card-margin: auto 0;
+}
 
-/* background: warm and a little soft; every kick ducks it, the way a sidechain pumps the pads */
+/* background: the art in warm light, keeping its color */
 .theme-afterhours .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0.5))) sepia(0.35)
-    saturate(1.15) contrast(1.05)
-    brightness(
-      calc((0.55 + 0.25 * var(--mod-warmth, 0.6)) * var(--lights) * (1 - var(--mod-pump, 0) * 0.3))
-    );
+  filter: brightness(var(--art-gain)) sepia(0.12) saturate(1.1) contrast(1.05)
+    brightness(var(--room));
+}
+/* without art: the bar itself, out of focus, its lamps soft discs in the dark */
+.theme-afterhours[data-background='none'] .sc-bg {
+  background: radial-gradient(90% 80% at 68% 22%, #34161f, #120a0e 75%);
+}
+.theme-afterhours[data-background='none'] .sc-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle 5.5cqw at 74% 20%, rgb(255 179 107 / 0.2) 86%, transparent),
+    radial-gradient(circle 3.4cqw at 83% 31%, rgb(255 179 107 / 0.26) 84%, transparent),
+    radial-gradient(circle 2.2cqw at 64% 12%, rgb(255 200 150 / 0.24) 82%, transparent),
+    radial-gradient(circle 7cqw at 92% 12%, rgb(229 143 143 / 0.1) 88%, transparent),
+    radial-gradient(circle 4.2cqw at 56% 34%, rgb(229 143 143 / 0.12) 86%, transparent),
+    radial-gradient(circle 1.6cqw at 88% 44%, rgb(255 179 107 / 0.3) 80%, transparent),
+    radial-gradient(circle 9cqw at 40% 16%, rgb(229 143 143 / 0.06) 90%, transparent);
+  opacity: var(--room);
 }
 .theme-afterhours .sc-bg-vignette {
   background:
-    radial-gradient(100% 90% at 50% 45%, transparent 30%, rgb(18 8 13 / 0.9) 100%),
-    linear-gradient(to top, rgb(58 23 41 / 0.7), transparent 50%);
-  mask-image: radial-gradient(75% 70% at 50% 45%, transparent 35%, #000 85%);
+    radial-gradient(100% 90% at 50% 45%, transparent 40%, rgb(18 8 13 / 0.8) 100%),
+    linear-gradient(to top, rgb(40 14 28 / 0.75), transparent 38%);
 }
-/* a warm grade, so cool art still sits in amber and plum light */
+/* static grain dithers the dark gradients, which band once the video is encoded */
+.theme-afterhours .sc-bg-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url(../textures/grain.png) 0 0 / 12.5cqw;
+  mix-blend-mode: overlay;
+  opacity: 0.06;
+}
+/* a faint warm grade, so cool art sits in the same room as warm art */
 .theme-afterhours .sc-bg::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(160deg, #6e3a52, #8a4f2c 60%, #a5602e);
   mix-blend-mode: color;
-  opacity: 0.55;
+  opacity: 0.16;
 }
-/* the drop: amber light rising from the floor, fading over a couple of seconds */
+/* the drop: amber light rising from the floor and warming what it falls on, fading over a
+   couple of seconds */
 .theme-afterhours::after {
   --bloom: clamp(0, 1 - var(--since-drop, 60) / 2.2, 1);
   content: '';
   position: absolute;
   z-index: 1;
   inset: 0;
-  background: radial-gradient(80% 60% at 50% 105%, var(--amber), var(--rose) 40%, transparent 75%);
-  mix-blend-mode: screen;
-  opacity: calc(var(--bloom) * var(--bloom) * 0.5 * var(--drop-intensity, 1));
+  background: radial-gradient(90% 70% at 50% 105%, var(--amber), #e0703a 45%, transparent 80%);
+  mix-blend-mode: overlay;
+  opacity: calc(var(--bloom) * var(--bloom) * 0.9 * var(--drop-intensity, 1));
+}
+/* the art's own lamps glow with the music, in the same warm light; the glow comes from the
+   art as it is, so it takes the exposure correction too, or bright paper glows white */
+.theme-afterhours .sc-bloom-glow {
+  filter: brightness(calc(1.35 * var(--art-gain) * var(--lamps))) sepia(0.3);
 }
 
-/* spectrum: a soft contour, warm light under it */
+/* 0 where the art behind the element shows dark and calm, 1 where it shows bright or busy;
+   declared on each element because each has its own --bg-luma-behind */
+.theme-afterhours :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+  --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.16) * 4, 1);
+  --busy: clamp(0, (var(--bg-detail-behind, 0) - 0.03) * 15, 1);
+  --shade: max(var(--glare), var(--busy));
+}
+/* text without a card gets a soft plum shade over bright or busy art, and its dim ink
+   brightens; a halo alone cannot darken a sky around such thin type */
+.theme-afterhours :is(.sc-set-title, .sc-clock, .sc-next) {
+  --ink-dim: color-mix(in oklab, var(--dim), var(--cream) calc(var(--shade) * 70%));
+  border-radius: 2cqw;
+  background: rgb(26 10 18 / calc(var(--shade) * 0.5));
+  box-shadow: 0 0 1.6cqw 0.9cqw rgb(26 10 18 / calc(var(--shade) * 0.5));
+  text-shadow: 0 0 0.3cqw rgb(26 10 18 / calc(0.4 + var(--shade) * 0.6));
+}
+
+/* spectrum: a thin cream line along the floor, warm light under it */
 .theme-afterhours .sc-spectrum {
   mix-blend-mode: screen;
   filter: drop-shadow(0 0 0.8cqw color-mix(in srgb, var(--amber) 70%, transparent));
@@ -109,6 +188,10 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.theme-afterhours .sc-spectrum-line {
+  stroke: rgb(243 230 214 / 0.7);
+  stroke-width: 0.08cqw;
+}
 .theme-afterhours .sc-vectorscope-line {
   stroke-width: 2.5;
 }
@@ -117,7 +200,9 @@
   stroke: var(--amber);
   opacity: calc((1 - var(--age)) * 0.35);
 }
-.theme-afterhours .sc-spectrum-area,
+.theme-afterhours .sc-spectrum-area {
+  fill: none;
+}
 .theme-afterhours .sc-radial-area {
   fill: color-mix(in srgb, var(--amber) 22%, transparent);
 }
@@ -203,26 +288,40 @@
   box-shadow: 0 0 calc(0.4em + 0.8em * var(--beat-pulse)) var(--deck);
   opacity: calc(0.55 + 0.45 * var(--beat-pulse));
 }
+.theme-afterhours .sc-set-title {
+  color: var(--ink-dim);
+}
 .theme-afterhours .sc-clock {
   font-variant-numeric: tabular-nums;
   color: var(--cream);
 }
 .theme-afterhours .sc-clock-total {
-  color: var(--dim);
+  color: var(--ink-dim);
 }
 
-/* now playing: rounded warm glass, a soft italic title */
+/* now playing: rounded warm glass in the calm part of the art, a soft italic title; the glass
+   thickens over bright or busy art */
+.theme-afterhours[data-presentation='playlist'] .sc-panel,
+.theme-afterhours[data-presentation='dj'] .sc-contributors {
+  inset: var(--card-top) var(--card-right) var(--card-bottom) var(--card-left);
+  height: fit-content;
+  margin: var(--card-margin);
+}
+.theme-afterhours[data-presentation='playlist'] .sc-panel {
+  anchor-name: --card;
+}
 .theme-afterhours .sc-panel {
   padding: 2cqw 2.6cqw 2.2cqw;
-  background: rgb(58 23 41 / 0.38);
+  background: rgb(58 23 41 / calc(0.38 + var(--shade) * 0.34));
   border: var(--hairline) solid rgb(255 230 210 / 0.1);
   border-radius: 1.4cqw;
   backdrop-filter: blur(1.6cqw) saturate(1.3);
   box-shadow:
+    inset 0 var(--hairline) 0 rgb(255 214 170 / 0.12),
     0 1.4cqw 3.4cqw rgb(0 0 0 / 0.4),
     0 0 calc(var(--mod-warmth, 0.5) * 3cqw) color-mix(in srgb, var(--amber) 16%, transparent);
   opacity: clamp(0, var(--presence, 1) * 1.2, 1);
-  translate: 0 calc((1 - var(--presence, 1)) * 2.5cqh);
+  translate: 0 calc((1 - var(--presence, 1)) * var(--card-rise));
 }
 .theme-afterhours .sc-panel-head {
   gap: 0.9cqw;
@@ -283,10 +382,16 @@
   color: var(--amber);
 }
 
-/* up next */
+/* up next: low in the frame, across from the card */
 .theme-afterhours .sc-next {
   gap: 0.2cqw;
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
+}
+.theme-afterhours[data-bg-calm$='right'] .sc-next {
+  right: auto;
+  left: var(--margin);
+  align-items: start;
+  text-align: left;
 }
 .theme-afterhours .sc-next-label {
   font-family: var(--font-sans);
@@ -310,6 +415,22 @@
 @container (aspect-ratio < 1) {
   .theme-afterhours .sc-spectrum {
     height: 14cqh;
+  }
+  /* up next above the card, or below it when the card sits at the top */
+  .theme-afterhours .sc-next {
+    position-anchor: --card;
+    right: auto;
+    bottom: calc(anchor(top) + 4cqw);
+    left: var(--margin);
+    align-items: start;
+    text-align: left;
+  }
+  .theme-afterhours[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+  }
+  .theme-afterhours[data-bg-calm^='top'] .sc-next {
+    top: calc(anchor(bottom) + 4cqw);
+    bottom: auto;
   }
   .theme-afterhours .sc-header {
     font-size: 1.9cqw;
@@ -355,6 +476,7 @@
   --stack-gap: 0px;
   width: 34cqw;
   border-radius: 1.4cqw;
+  overflow: clip;
 }
 .theme-afterhours[data-presentation='dj'] .sc-contributors:has(.sc-slot) {
   background: rgb(58 23 41 / 0.38);
@@ -370,7 +492,7 @@
   align-items: center;
   column-gap: 0.8cqw;
   padding: 1.1cqw 2cqw 1.2cqw;
-  background: none;
+  background: rgb(58 23 41 / calc(var(--shade) * 0.34));
   border: 0;
   border-radius: 0;
   backdrop-filter: none;
@@ -380,7 +502,9 @@
   border-top: var(--hairline) solid rgb(255 230 210 / 0.1);
 }
 .theme-afterhours[data-presentation='dj'] .sc-panel[data-focused='true'] {
-  background: radial-gradient(70% 120% at 0% 50%, rgb(255 179 107 / 0.12), transparent);
+  background:
+    radial-gradient(70% 120% at 0% 50%, rgb(255 179 107 / 0.12), transparent),
+    rgb(58 23 41 / calc(var(--shade) * 0.34));
 }
 .theme-afterhours[data-presentation='dj'] .sc-panel-head {
   gap: 0.6cqw;
@@ -461,10 +585,6 @@
   .theme-afterhours[data-presentation='dj'] .sc-contributors {
     width: calc(100cqw - 2 * var(--margin));
     border-radius: 2.6cqw;
-  }
-  .theme-afterhours[data-presentation='dj'] .sc-next {
-    position-anchor: --contributors;
-    bottom: calc(anchor(top) + 4cqw);
   }
   .theme-afterhours[data-presentation='dj'] .sc-panel {
     column-gap: 1.6cqw;

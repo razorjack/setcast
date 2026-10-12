@@ -635,8 +635,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   is applied only where it fixes something visible, judged against the test images. Pirate and
   escapement correct fully toward `REFERENCE_LUMA`: pirate's `brightness(5.4) contrast(2.1)`
   turns any bright image into blank paper otherwise, and escapement's band washes out to white.
-  sterile-tech, long-exposure, afterhours and quicksilver correct halfway (0.5): full correction
-  darkens bright art until it disappears. patina, bunker, interference and vfd correct fully
+  sterile-tech, long-exposure and quicksilver correct halfway (0.5): full correction darkens
+  bright art until it disappears. afterhours only dims: it corrects halfway toward its own
+  `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
+  image turns to evening light. patina, bunker, interference and vfd correct fully
   toward their own `--art-luma` (0.3, 0.26, 0.45, 0.45), the brightness at which their blends
   show art; at the demo's 0.09 they showed dark art, the usual drum and bass art, as nothing.
   The demo background now shows faintly in those four. bristol's faint wash needs no correction.

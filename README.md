@@ -63,7 +63,7 @@ a path to your own `.css`.
 | `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
 | `interference`  | a corrupted signal: channels split with the bass, the picture tearing on the drop        |
 | `pirate`        | a photocopied rave flyer: a worn grey copy, toner dust, one fluoro color (`--fluoro`)    |
-| `afterhours`    | warm and late: amber and plum, an italic serif, the frame ducking with the kick          |
+| `afterhours`    | warm and late: your art in amber evening light, its lamps glowing, credits on rose glass |
 | `passe-partout` | your art untouched as a framed print on a wall in its colors, a museum label beside it   |
 | `masthead`      | your art full bleed, the track set in its emptiest part like a magazine's cover lines   |
 | `anamorphic`    | the set as a film: your art in a 2.39:1 band, the credits in the bars, drops open it    |
