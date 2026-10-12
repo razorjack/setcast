@@ -598,6 +598,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   they would otherwise float as white blotches. For the same reason the glow takes the art's
   correction, and `--lamps` turns it down on bright art: lamps glow in a dark scene, hardly in
   daylight. Afterhours does the same.
+- Pirate shows `.sc-art` as a picture pasted on the sheet: it fills the frame while that keeps 70%
+  of the art (the `backgroundFit: auto` threshold, computed in CSS with `round()`), else it shows
+  the picture whole on paper, because the copy filter turns the blurred fill of contained art
+  into grey smudges. It therefore ignores an explicit `backgroundFit`. Its spectrum is a strip of
+  fluoro paper torn by an SVG displacement filter, `filter: url(./torn.svg#torn)`; `loadCss`
+  keeps the fragment when it inlines the file, and Chrome applies a filter from a data URI.
 - Playlist panels leave after `panel.dwell: 14` and `panel.fade: 1.2` by default. DJ panels keep
   credits visible, with focus controlling emphasis. Every entrance/dwell uses run start.
 - `setcast chapters` preserves compiled timestamps on stdout and prints platform constraints to
@@ -733,8 +739,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   image, pirate drops the drift), and CSS alone cannot align a layer with another element's box.
   A clip on `.sc-bg` (escapement and quicksilver, or patina's `overflow: clip` around a `.sc-art`
   larger than its print) does not apply to the copy, so the shapes show the art also where the
-  theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the
-  copy; no theme does.
+  theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the copy, so pirate pads and
+  rotates its spectrum only without `fill: art` (`[data-fill='theme']`).
 - The spectrogram is a canvas, the one visualizer that is not SVG or HTML: 120 columns of 64 bins
   is 7,680 cells a frame, too many DOM nodes. It repaints entirely in a layout effect every frame
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS

@@ -62,7 +62,7 @@ a path to your own `.css`.
 | `bunker`        | stencil on concrete, hazard tape on the beat, the room shaking on the drop               |
 | `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
 | `interference`  | a corrupted signal: channels split with the bass, the picture tearing on the drop        |
-| `pirate`        | a photocopied rave flyer: a worn grey copy, toner dust, one fluoro color (`--fluoro`)    |
+| `pirate`        | a photocopied rave flyer: grey copy, taped slips, a torn fluoro strip (`--fluoro`)      |
 | `afterhours`    | warm and late: your art in amber evening light, its lamps glowing, credits on rose glass |
 | `passe-partout` | your art untouched as a framed print on a wall in its colors, a museum label beside it   |
 | `masthead`      | your art full bleed, the track set in its emptiest part like a magazine's cover lines   |

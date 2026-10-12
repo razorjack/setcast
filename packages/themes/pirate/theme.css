@@ -66,6 +66,8 @@
   --font-type: 'Courier Prime', 'Courier New', monospace;
   --hairline: max(1px, 0.06cqw);
   --spectrum-height: 20cqh;
+  /* the height of the torn strip at silence */
+  --strip-rest: 6cqh;
   /* how much the copy lifts the art: raise it for dark art, lower it for bright photos */
   --exposure: 5.4;
   --tilt: calc(-1.6deg + var(--rewind-flash) * sin(var(--since-rewind, 60) * 40) * 5deg);
@@ -86,11 +88,52 @@
   mix-blend-mode: multiply;
   opacity: 0.72;
 }
-.theme-pirate .sc-bg-img {
+.theme-pirate .sc-bg-img,
+.theme-pirate .sc-art,
+.theme-pirate :is(.sc-spectrum-art, .sc-radial-art) img {
   transform: none;
   filter: grayscale(1)
     brightness(calc(var(--exposure) * pow(var(--bg-exposure, 1), var(--bg-correction, 1))))
     contrast(2.1);
+}
+
+/*
+ * The picture pasted on the sheet: enlarged to fill it while that keeps 70% of it, else pasted
+ * whole with paper around it, the threshold of backgroundFit: auto. A square sleeve or a picture
+ * in a portrait frame then sits on paper; the blurred fill behind contained art copies as smudges.
+ * round() is the step: 0 while filling keeps 70% of the picture, --whole-w / 0.7 once it does not.
+ */
+.theme-pirate[data-background='image'] .sc-bg {
+  --fill-w: max(100cqw, 100cqh * var(--bg-aspect));
+  --whole-w: min(100cqw, 100cqh * var(--bg-aspect));
+  --cut-step: min(round(down, var(--fill-w), var(--whole-w) / 0.7), var(--whole-w) / 0.7);
+  --art-w: max(var(--whole-w), var(--fill-w) - var(--cut-step) * 1000);
+  --art-top: 50%;
+}
+.theme-pirate[data-background='image'] .sc-bg-img {
+  display: none;
+}
+.theme-pirate .sc-art,
+.theme-pirate[data-background='image'] .sc-bg::before {
+  left: 50%;
+  top: var(--art-top);
+  width: var(--art-w);
+  aspect-ratio: var(--bg-aspect);
+  translate: -50% -50%;
+}
+.theme-pirate .sc-art {
+  display: block;
+}
+/* a video shown whole sits on paper too: the renderer's blurred fill behind it sets its own
+   filter inline, so it would stay in color */
+.theme-pirate[data-background='video'] .sc-bg-img:has(+ .sc-bg-img) {
+  display: none;
+}
+/* the copier draws a dark line along the edge of anything pasted on */
+.theme-pirate[data-background='image'] .sc-bg::before {
+  content: '';
+  position: absolute;
+  outline: 0.12cqw solid rgb(20 20 20 / 0.55);
 }
 .theme-pirate .sc-bg-vignette {
   background:
@@ -131,7 +174,7 @@
   opacity: calc((1 - var(--sweep)) * 0.8 * var(--drop-intensity, 1));
 }
 
-/* spectrum: fluoro ink, with a hard toner shadow so it holds on paper and on black */
+/* visualizers: fluoro ink, with a hard toner shadow so it holds on paper and on black */
 .theme-pirate .sc-spectrum,
 .theme-pirate .sc-radial,
 .theme-pirate .sc-meters,
@@ -148,7 +191,6 @@
 .theme-pirate .sc-spectrum-peaks rect {
   fill: var(--toner);
 }
-.theme-pirate .sc-spectrum-line,
 .theme-pirate .sc-radial-line,
 .theme-pirate .sc-oscilloscope-line,
 .theme-pirate .sc-vectorscope-line {
@@ -205,6 +247,40 @@
 .theme-pirate .sc-overview-head {
   stroke: var(--toner);
   stroke-width: 0.16cqw;
+}
+
+/*
+ * The spectrum is a strip of fluoro paper torn along its top and pasted across the foot of the
+ * flyer; the music tears the edge higher. The strip rests at the height of its padding, so every
+ * level adds paper above it, and the background runs a little under the shape to hide the seam.
+ * The tear displaces the shape by fixed noise, so the edge only moves where the music does; the
+ * copier's dark line runs along it and the torn fiber shows white. With fill: art the spectrum
+ * keeps its plain box: the art copy is clipped to the shapes as measured from the box, so padding,
+ * rotation or the tear would misplace it.
+ */
+.theme-pirate .sc-spectrum[data-fill='theme'] {
+  left: -2cqw;
+  right: auto;
+  bottom: -2cqh;
+  width: 104cqw;
+  height: calc(var(--spectrum-height) + var(--strip-rest));
+  padding-bottom: var(--strip-rest);
+  background: linear-gradient(
+    to top,
+    var(--fluoro) calc(var(--strip-rest) + 0.3cqh),
+    transparent 0
+  );
+  rotate: -0.6deg;
+  filter: url(./torn.svg#torn) drop-shadow(0.1cqw -0.18cqw 0 rgb(20 20 20 / 0.9));
+}
+.theme-pirate .sc-spectrum-line {
+  stroke: var(--slip);
+  stroke-width: 0.3cqw;
+}
+/* filled with art, the shapes are the same copy run through the machine on fluoro paper */
+.theme-pirate :is(.sc-spectrum-art, .sc-radial-art) {
+  mix-blend-mode: multiply;
+  opacity: 0.72;
 }
 
 /* header: the station ident cut out of a black strip, the time typed */
@@ -354,8 +430,13 @@
 }
 
 @container (aspect-ratio < 1) {
+  /* a picture pasted whole sits a little high, clear of the slips at the foot of the sheet */
+  .theme-pirate[data-background='image'] .sc-bg {
+    --art-top: calc(50% - clamp(0px, (100cqh - var(--art-w) / var(--bg-aspect)) / 2, 6cqh));
+  }
   .theme-pirate .sc-spectrum {
-    height: 12cqh;
+    --spectrum-height: 12cqh;
+    --strip-rest: 3.5cqh;
   }
   .theme-pirate .sc-set-title {
     font-size: 3cqw;

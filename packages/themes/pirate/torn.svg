@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- the edge of torn paper: the shape pushed about by fixed noise, finer along it than across -->
+  <filter id="torn" x="0" y="-0.2" width="1" height="1.4" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.09 0.03" numOctaves="3" seed="4" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.007" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
