@@ -1,4 +1,5 @@
-/* vfd: the blue-green vacuum fluorescent display of a 90s deck. Set --phosphor for amber or green. */
+/* vfd: the blue-green vacuum fluorescent display of a 90s deck, in front of the room your art
+   shows. Set --phosphor for amber or green. */
 
 @font-face {
   font-family: 'Doto';
@@ -17,17 +18,17 @@
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Michroma';
   font-style: normal;
-  font-weight: 100 800;
-  src: url(../fonts/JetBrainsMono-100-800-latin-ext.woff2) format('woff2');
+  font-weight: 400;
+  src: url(../fonts/Michroma-400-latin-ext.woff2) format('woff2');
   unicode-range: U+0100-024F;
 }
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Michroma';
   font-style: normal;
-  font-weight: 100 800;
-  src: url(../fonts/JetBrainsMono-100-800-latin.woff2) format('woff2');
+  font-weight: 400;
+  src: url(../fonts/Michroma-400-latin.woff2) format('woff2');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -35,9 +36,10 @@
 
 .theme-vfd {
   --phosphor: #46ffd2;
-  --ghost: color-mix(in srgb, var(--phosphor) 7%, transparent);
-  --label: #7c8784;
-  --glass: #020605;
+  --ghost: color-mix(in srgb, var(--phosphor) 8%, transparent);
+  /* legends screen-printed on the glass, and the hairlines between its fields */
+  --print: oklch(0.84 0.01 200 / 0.6);
+  --rule: oklch(0.84 0.01 200 / 0.13);
   --fg: var(--phosphor);
   --fg-dim: color-mix(in srgb, var(--phosphor) 55%, #000);
   --accent: var(--phosphor);
@@ -47,116 +49,436 @@
   --deck-c: var(--phosphor);
   --deck-d: var(--phosphor);
   --font-display: 'Doto', ui-monospace, monospace;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'Michroma', 'Eurostile', sans-serif;
   --hairline: max(1px, 0.06cqw);
-  --spectrum-height: 30cqh;
-  /* the ghost cells behind the spectrum follow its bars and gap; match them to visualizer: */
-  --vfd-bars: 32;
-  --vfd-gap: 0.35;
-  --vfd-segments: 16;
-  /* lit segments burn brighter on a drop and dim right down in a breakdown, like a dimmer knob */
+
+  /* lit segments burn brighter on a drop, dim right down in a breakdown and flicker on a rewind */
   --dimmer: 1;
+  --flicker: calc(1 - var(--rewind-flash) * (0.6 + 0.4 * sin(var(--set-progress, 0) * 70001)));
   --glow: calc(var(--mod-glow, 0.8) * (1 + var(--drop-flash) * 1.4));
-  --lit: color-mix(in srgb, var(--phosphor) calc(var(--dimmer) * 100%), #0a1a16);
-  background: #010303;
+  --lit: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--phosphor) 90%, #fff) calc(var(--dimmer) * var(--flicker) * 100%),
+    transparent
+  );
+  --halo: color-mix(
+    in srgb,
+    var(--phosphor) calc(var(--dimmer) * var(--flicker) * 100%),
+    transparent
+  );
+
+  /*
+   * The window: a deck's display along the bottom of the frame. Doto's dots sit on a grid a tenth
+   * of its size, its characters six dots apart; the pitches round to whole pixels so every dot is
+   * as sharp as the next.
+   */
+  --dot-s: round(nearest, 0.105cqw, 1px);
+  --dot-m: round(nearest, 0.157cqw, 1px);
+  --dot-l: round(nearest, 0.315cqw, 1px);
+  --win-x: round(nearest, 8cqw, 1px);
+  --win-y: round(nearest, 2.8cqw, 1px);
+  --bezel: round(nearest, 0.55cqw, 1px);
+  --pad-x: round(nearest, 1.7cqw, 1px);
+  --pad-y: round(nearest, 1.1cqw, 1px);
+  --col: round(nearest, 24cqw, 1px);
+  --gutter: round(nearest, 3cqw, 1px);
+  --top-row: calc(var(--dot-s) * 17);
+  --radius: 1.1cqw;
+  /* where the right column of the display sits, from the frame's right and bottom edges */
+  --col-right: calc(var(--win-x) + var(--bezel) + var(--pad-x));
+  --col-bottom: calc(var(--win-y) + var(--bezel) + var(--pad-y));
+  background: #050606;
 }
 .theme-vfd[data-section='breakdown'] {
-  --dimmer: calc(1 - 0.5 * clamp(0, var(--section-time, 60) / 1.2, 1));
-}
-/* a rewind glitches the display for a moment */
-.theme-vfd > * {
-  opacity: calc(1 - var(--rewind-flash) * (0.5 + 0.5 * sin(var(--set-progress, 0) * 70001)));
+  --dimmer: calc(1 - 0.45 * clamp(0, var(--section-time, 60) / 1.2, 1));
 }
 
-/* background: the art seen dimly through the display's teal filter window */
+/* the room: the art in its own colors, a little quieter than the display in front of it */
 .theme-vfd .sc-bg-img {
-  /* the mean luma this treatment shows art best at; any art is brought to it */
-  --art-luma: 0.45;
+  /* the mean luma the room is shown at; bright art comes down toward it, dark art up */
+  --art-luma: 0.3;
   filter: brightness(
-      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
+      pow(
+        clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4),
+        var(--bg-correction, 0.5)
+      )
     )
-    grayscale(1) contrast(1.2) brightness(0.3);
+    saturate(0.86);
 }
 .theme-vfd .sc-bg-vignette {
   background:
-    radial-gradient(110% 100% at 50% 45%, transparent 30%, rgb(0 0 0 / 0.85) 100%),
-    color-mix(in srgb, var(--phosphor) 22%, #031412);
-  mix-blend-mode: multiply;
+    linear-gradient(to top, rgb(0 0 0 / 0.5), transparent 40%),
+    radial-gradient(130% 110% at 50% 35%, transparent 55%, rgb(0 0 0 / 0.42));
 }
-/* a dot pitch across the glass: every unlit pixel still faintly there */
-.theme-vfd .sc-bg::after {
+/* without art the room is dark, a wall lit only by the display */
+.theme-vfd[data-background='none'] .sc-bg {
+  background: radial-gradient(
+    75% 85% at 50% 100%,
+    oklch(from var(--phosphor) 0.3 0.035 h),
+    oklch(from var(--phosphor) 0.14 0.015 h) 55%,
+    oklch(from var(--phosphor) 0.08 0.006 h)
+  );
+}
+/* the display lights the room just above it, with the music */
+.theme-vfd .sc-bg-vignette::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 50cqh;
+  background: radial-gradient(
+    50% 60% at 50% 100%,
+    color-mix(in srgb, var(--phosphor) calc(var(--glow) * 10%), transparent),
+    transparent
+  );
+  mix-blend-mode: screen;
+}
+
+/*
+ * The window is the credits' box, so a long title grows it upward. Smoked glass in a bezel lit
+ * from above, a black gasket between them, the hairline between the text and the clock printed
+ * on the glass; the reflection lies over everything.
+ */
+.theme-vfd.sc-stage .sc-contributors {
+  position: absolute;
+  left: var(--win-x);
+  right: var(--win-x);
+  bottom: var(--win-y);
+  width: auto;
+  min-height: calc(var(--dot-s) * 104);
+  padding: var(--pad-y) calc(var(--pad-x) + var(--col) + var(--gutter)) var(--pad-y) var(--pad-x);
+  border: var(--bezel) solid transparent;
+  border-radius: var(--radius);
+  anchor-name: --contributors;
+  background:
+    linear-gradient(var(--rule), var(--rule)) right
+      calc(var(--pad-x) + var(--col) + var(--gutter) / 2) center / var(--hairline)
+      calc(100% - 2 * var(--pad-y)) no-repeat padding-box,
+    radial-gradient(
+        140% 130% at 30% 0%,
+        oklch(from var(--phosphor) 0.17 0.02 h),
+        oklch(from var(--phosphor) 0.105 0.012 h) 55%,
+        oklch(from var(--phosphor) 0.08 0.008 h)
+      )
+      padding-box,
+    linear-gradient(to bottom, #6e7576, #2e3436 12%, #191d1f 55%, #0e1112 88%, #2b3032) border-box;
+  box-shadow:
+    0 0 0 max(1px, 0.05cqw) rgb(0 0 0 / 0.75),
+    0 0.6cqh 1cqh rgb(0 0 0 / 0.5),
+    0 2cqh 5cqh rgb(0 0 0 / 0.5),
+    inset 0 0 0 max(1px, 0.1cqw) #000,
+    inset 0 0 1.6cqw rgb(0 0 0 / 0.85),
+    inset 0 0.5cqw 0.8cqw rgb(0 0 0 / 0.6);
+}
+.theme-vfd .sc-contributors::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, var(--ghost) 0.07cqw, transparent 0.1cqw) 0 0 / 0.4cqw 0.4cqw;
-  opacity: 0.5;
+  z-index: 2;
+  border-radius: calc(var(--radius) - var(--bezel));
+  background:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.08), transparent max(1px, 0.1cqw)),
+    linear-gradient(
+      172deg,
+      oklch(from var(--bg-color-1, #9fb) 0.92 0.03 h / 0.08),
+      oklch(from var(--bg-color-1, #9fb) 0.92 0.03 h / 0.03) 44%,
+      transparent 44.3%
+    );
+  pointer-events: none;
 }
 
-/* lit type: phosphor with its bloom */
-.theme-vfd :is(.sc-header, .sc-artist, .sc-title, .sc-next-artist, .sc-next-title, .sc-index) {
+/* lit dot matrix: the phosphor and its halation through the glass */
+.theme-vfd
+  :is(
+    .sc-artist,
+    .sc-title,
+    .sc-label,
+    .sc-index,
+    .sc-set-title,
+    .sc-clock,
+    .sc-next-artist,
+    .sc-next-title,
+    .sc-credit-details
+  ) {
   font-family: var(--font-display);
-  font-variation-settings: 'ROND' 100;
+  font-weight: 700;
+  font-variation-settings: 'ROND' 55;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
   color: var(--lit);
   text-shadow:
-    0 0 calc(0.12em * var(--glow)) color-mix(in srgb, var(--phosphor) 80%, transparent),
-    0 0 calc(0.5em * var(--glow)) color-mix(in srgb, var(--phosphor) 35%, transparent);
+    0 0 calc(0.05em + 0.05em * var(--glow)) var(--halo),
+    0 0 calc(0.45em * var(--glow)) color-mix(in srgb, var(--halo) 40%, transparent);
 }
-/* printed labels on the glass */
-.theme-vfd :is(.sc-eyebrow, .sc-next-label, .sc-meter-label, .sc-label) {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--label);
+/* the unlit cells of a field, faintly there behind the lit ones */
+.theme-vfd :is(.sc-artist, .sc-title, .sc-label) {
+  position: relative;
+}
+.theme-vfd :is(.sc-artist, .sc-title, .sc-label, .sc-clock) {
+  isolation: isolate;
+}
+.theme-vfd :is(.sc-artist, .sc-title, .sc-label, .sc-clock)::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: round(down, 100%, 0.6em);
+  z-index: -1;
+  background: var(--ghost);
+  mask: url(./cell.svg) 0 0 / 0.6em 1em;
 }
 
-/* header: the set in dot matrix, the clock as a deck's time display, a sync lamp on the beat */
-.theme-vfd .sc-header {
-  font-weight: 700;
-  font-size: 1.4cqw;
-  letter-spacing: 0.08em;
+/* legends printed on the glass */
+.theme-vfd :is(.sc-next-label, .sc-meter-label, .sc-contributor-count, .sc-overflow),
+.theme-vfd .sc-contributors::before,
+.theme-vfd .sc-header::before,
+.theme-vfd .sc-header::after,
+.theme-vfd .sc-clock::after,
+.theme-vfd .sc-clock-total::before {
+  font-family: var(--font-mono);
+  font-size: calc(var(--dot-s) * 5);
+  line-height: 1;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--print);
+  text-shadow: none;
 }
-.theme-vfd .sc-set-title::before {
+/* an annunciator: a lit triangle and its word */
+.theme-vfd .sc-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  font-family: var(--font-mono);
+  font-size: calc(var(--dot-s) * 5);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lit);
+  text-shadow: 0 0 calc(0.4em * var(--glow)) var(--halo);
+}
+.theme-vfd .sc-eyebrow::before {
   content: '';
-  display: inline-block;
-  width: 0.55em;
-  height: 0.55em;
-  margin-right: 0.8em;
-  border-radius: 50%;
-  background: color-mix(
-    in srgb,
-    var(--phosphor) calc(12% + 88% * var(--beat-pulse) * var(--dimmer)),
+  width: 0.8em;
+  height: 1em;
+  background: var(--lit);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/*
+ * The credits: the display's text area. Their segments light as the panel enters and go dark as
+ * it leaves, while the unlit cells stay; in DJ mode focus sets how bright a line burns.
+ */
+.theme-vfd .sc-panel {
+  --panel-dim: clamp(0, var(--presence, 1) * 1.5, 1);
+  --lit: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--phosphor) 90%, #fff)
+      calc(var(--dimmer) * var(--flicker) * var(--panel-dim) * 100%),
     transparent
   );
-  box-shadow: 0 0 calc(0.6em * var(--beat-pulse)) var(--phosphor);
+  --halo: color-mix(
+    in srgb,
+    var(--phosphor) calc(var(--dimmer) * var(--flicker) * var(--panel-dim) * 100%),
+    transparent
+  );
+  --glow: calc(var(--mod-glow, 0.8) * (1 + var(--drop-flash) * 1.4) * var(--panel-dim));
 }
-.theme-vfd .sc-clock {
-  font-weight: 800;
-  font-size: 1.7em;
-  font-variant-numeric: tabular-nums;
+.theme-vfd[data-presentation='playlist'] .sc-panel {
+  position: relative;
+  inset: auto;
+  max-width: none;
 }
-.theme-vfd .sc-clock-total {
-  font-size: 0.55em;
-  opacity: 0.55;
+.theme-vfd .sc-panel-head {
+  gap: calc(var(--dot-s) * 8);
+  height: calc(var(--dot-s) * 10);
+  margin-bottom: calc(var(--top-row) - var(--dot-s) * 10);
+}
+.theme-vfd .sc-index {
+  font-size: calc(var(--dot-s) * 10);
+  color: color-mix(in oklab, var(--lit) 70%, transparent);
+}
+.theme-vfd .sc-artist {
+  font-size: calc(var(--dot-m) * 10);
+  margin-bottom: calc(var(--dot-s) * 4);
+  color: color-mix(in oklab, var(--lit) 84%, transparent);
+}
+.theme-vfd .sc-title {
+  font-size: calc(var(--dot-l) * 10);
+  font-weight: 750;
+  text-wrap: balance;
+}
+.theme-vfd .sc-label {
+  margin-top: calc(var(--dot-s) * 6);
+  font-size: calc(var(--dot-s) * 10);
+  color: color-mix(in oklab, var(--lit) 64%, transparent);
 }
 
-/* spectrum: lamp cells over their unlit ghosts, a peak cell hanging above each bar */
-.theme-vfd .sc-spectrum {
-  bottom: 4cqh;
-  --slot: calc(100% / (2 * var(--vfd-bars)));
-  background: repeating-linear-gradient(
-    to right,
-    transparent 0 calc(var(--slot) * var(--vfd-gap) / 2),
-    var(--ghost) 0 calc(var(--slot) * (1 - var(--vfd-gap) / 2)),
-    transparent 0 var(--slot)
-  );
+/* the right side of the display: the set's name, the clock and its legends, the meters */
+.theme-vfd .sc-header {
+  inset: auto var(--col-right) var(--col-bottom) auto;
+  z-index: 1;
+  display: block;
+  width: var(--col);
+  height: calc(var(--dot-s) * 72);
+}
+.theme-vfd .sc-set-title {
+  display: block;
+  padding-right: calc(var(--dot-s) * 40);
+  font-size: calc(var(--dot-s) * 10);
+  color: color-mix(in oklab, var(--lit) 64%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* the time right-aligned in a field of five cells, the total beside it */
+.theme-vfd .sc-clock {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--dot-s) * 17);
+  width: max-content;
+  min-width: 3em;
+  font-size: calc(var(--dot-l) * 10);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.theme-vfd .sc-clock-total {
+  position: absolute;
+  left: calc(100% + 0.6em);
+  bottom: 0.15em;
+  font-size: 0.5em;
+  color: color-mix(in oklab, var(--lit) 64%, transparent);
+}
+.theme-vfd .sc-clock::after,
+.theme-vfd .sc-clock-total::before {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + var(--dot-s) * 4);
+}
+.theme-vfd .sc-clock::after {
+  content: 'Elapsed';
+}
+/* over the total's digits, on the legends' line */
+.theme-vfd .sc-clock-total::before {
+  content: 'Total';
+  left: calc(var(--dot-l) * 6);
+  bottom: calc(100% + var(--dot-s) * 4 + var(--dot-l) * 4.25);
+}
+
+/* annunciators beside the clock: the section the mix is in lights its word */
+.theme-vfd {
+  --lit-line: -1;
+}
+.theme-vfd[data-section='buildup'] {
+  --lit-line: 0;
+}
+.theme-vfd[data-section='drop'] {
+  --lit-line: 1;
+}
+.theme-vfd[data-section='breakdown'] {
+  --lit-line: 2;
+}
+.theme-vfd .sc-header::after {
+  content: 'Buildup\A Drop\A Breakdown';
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--dot-s) * 18);
+  line-height: 2;
+  text-align: right;
+  white-space: pre;
+  color: transparent;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent calc(var(--lit-line) * 2em),
+      var(--lit) 0 calc((var(--lit-line) + 1) * 2em),
+      transparent 0
+    ),
+    color-mix(in srgb, var(--phosphor) 15%, transparent);
+  background-clip: text;
+  filter: drop-shadow(0 0 calc(0.2cqw * var(--glow)) var(--halo));
+}
+/* a lamp that lights on the beat, at the end of the set's line */
+.theme-vfd .sc-header::before {
+  content: 'Beat';
+  position: absolute;
+  top: calc(var(--dot-s) * 3);
+  right: 0;
+  padding-left: calc(var(--dot-s) * 10);
+  background:
+    radial-gradient(
+        circle closest-side,
+        color-mix(
+            in srgb,
+            var(--lit) calc(var(--beat-pulse) * 100%),
+            color-mix(in srgb, var(--phosphor) 15%, transparent)
+          )
+          80%,
+        transparent
+      )
+      calc(var(--dot-s) * 2) 50% / calc(var(--dot-s) * 4) calc(var(--dot-s) * 4) no-repeat,
+    radial-gradient(
+        circle closest-side,
+        color-mix(in srgb, var(--halo) calc(var(--beat-pulse) * 45%), transparent),
+        transparent
+      )
+      0 50% / calc(var(--dot-s) * 8) calc(var(--dot-s) * 8) no-repeat;
+}
+
+/* the level meters: two strips of lamp cells along the bottom of the right column */
+.theme-vfd .sc-meters {
+  inset: auto var(--col-right) var(--col-bottom) auto;
+  z-index: 1;
+  width: var(--col);
+  height: auto;
+  flex-direction: column;
+  gap: calc(var(--dot-s) * 3);
+  filter: drop-shadow(0 0 calc(0.2cqw * var(--glow)) var(--halo));
+}
+.theme-vfd .sc-meter {
+  flex-direction: row;
+  height: calc(var(--dot-s) * 5);
+}
+.theme-vfd .sc-meter-label {
+  order: -1;
+  width: calc(var(--dot-s) * 30);
+}
+.theme-vfd .sc-meter-bar {
+  align-self: stretch;
+  width: auto;
+  background: var(--ghost);
+}
+.theme-vfd .sc-meter-level {
+  inset: 0 auto 0 0;
+  width: calc(var(--level, 0) * 100%);
+  height: auto;
+  background: var(--lit);
+}
+.theme-vfd .sc-meters .sc-meter-peak {
+  inset: 0 auto;
+  left: calc(var(--peak, 0) * 100% - 2%);
+  width: 2%;
+  height: auto;
+  background: var(--lit);
+}
+.theme-vfd .sc-meters[data-segmented='true'] .sc-meter-peak {
+  bottom: 0;
+  left: calc(var(--peak, 0) * 100% - 100% / var(--segments));
+  width: calc(70% / var(--segments));
+  height: auto;
+}
+.theme-vfd .sc-meters[data-segmented='true'] .sc-meter-bar {
   mask-image: repeating-linear-gradient(
-    to top,
-    #000 0 calc(70% / var(--vfd-segments)),
-    transparent 0 calc(100% / var(--vfd-segments))
+    to right,
+    #000 0 calc(70% / var(--segments)),
+    transparent 0 calc(100% / var(--segments))
   );
-  filter: drop-shadow(0 0 calc(0.25cqw * var(--glow)) var(--phosphor));
+}
+
+/* other visualizers in the same phosphor; a spectrum takes the meters' place */
+.theme-vfd .sc-spectrum {
+  inset: auto var(--col-right) var(--col-bottom) auto;
+  z-index: 1;
+  width: var(--col);
+  height: calc(var(--dot-s) * 13);
+  filter: drop-shadow(0 0 calc(0.2cqw * var(--glow)) var(--halo));
 }
 .theme-vfd .sc-spectrum rect {
   fill: var(--lit);
@@ -167,7 +489,7 @@
 .theme-vfd .sc-vectorscope-line {
   stroke: var(--lit);
   stroke-width: 0.12cqw;
-  filter: drop-shadow(0 0 calc(0.3cqw * var(--glow)) var(--phosphor));
+  filter: drop-shadow(0 0 calc(0.3cqw * var(--glow)) var(--halo));
 }
 .theme-vfd .sc-vectorscope-line {
   stroke-width: 2.5;
@@ -192,24 +514,13 @@
   stroke-width: var(--hairline);
 }
 .theme-vfd .sc-radial {
-  filter: drop-shadow(0 0 calc(0.3cqw * var(--glow)) var(--phosphor));
+  filter: drop-shadow(0 0 calc(0.3cqw * var(--glow)) var(--halo));
+}
+.theme-vfd .sc-oscilloscope {
+  bottom: 34cqh;
 }
 .theme-vfd .sc-spectrogram {
   color: var(--phosphor);
-}
-.theme-vfd .sc-meters {
-  filter: drop-shadow(0 0 calc(0.25cqw * var(--glow)) var(--phosphor));
-}
-.theme-vfd .sc-meter-bar {
-  background: var(--ghost);
-}
-.theme-vfd .sc-meter-level,
-.theme-vfd .sc-meter-peak {
-  background: var(--lit);
-}
-.theme-vfd .sc-meter-label {
-  margin-top: 1cqh;
-  font-size: 0.7cqw;
 }
 .theme-vfd .sc-overview-bass,
 .theme-vfd .sc-overview-high {
@@ -225,170 +536,62 @@
   stroke-width: 0.12cqw;
 }
 
-/* now playing: a display window with a bezel, its unlit dots showing */
-.theme-vfd .sc-panel {
-  bottom: calc(4cqh + var(--spectrum-height) + 3cqh);
-  padding: 1.4cqw 2cqw 1.5cqw;
-  background:
-    radial-gradient(circle, var(--ghost) 0.07cqw, transparent 0.1cqw) 0 0 / 0.4cqw 0.4cqw,
-    var(--glass);
-  border: 0.25cqw solid #151a19;
-  border-radius: 0.5cqw;
-  box-shadow:
-    inset 0 0 2cqw rgb(0 0 0 / 0.9),
-    0 0.6cqw 1.6cqw rgb(0 0 0 / 0.6);
-  opacity: clamp(0, var(--presence, 1) * 1.5, 1);
-}
-.theme-vfd .sc-panel-head {
-  gap: 1cqw;
-  margin-bottom: 0.9cqw;
-  font-size: 0.75cqw;
-}
-.theme-vfd .sc-deck {
-  display: inline-grid;
-  place-items: center;
-  min-width: 1.9cqw;
-  height: 1.9cqw;
-  padding-inline: 0.3em;
-  white-space: nowrap;
-  border: 0.12cqw solid var(--lit);
-  border-radius: 0.2cqw;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.1cqw;
-  color: var(--lit);
-  box-shadow: 0 0 calc(0.4cqw * var(--glow)) color-mix(in srgb, var(--phosphor) 50%, transparent);
-}
-.theme-vfd .sc-index {
-  font-weight: 700;
-  font-size: 1.3cqw;
-  letter-spacing: 0.1em;
-  margin-left: auto;
-}
-.theme-vfd .sc-index-sep {
-  margin: 0 0.3em;
-  opacity: 0.5;
-}
-.theme-vfd .sc-artist {
-  font-weight: 600;
-  font-size: 1.9cqw;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.theme-vfd .sc-title {
-  font-weight: 900;
-  font-size: 4.2cqw;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-wrap: balance;
-}
-.theme-vfd .sc-label {
-  margin-top: 0.9cqw;
-  font-size: 0.8cqw;
-}
-
-/* up next, top right under the clock */
+/* up next: lights up at the end of the top row over its last seconds, after a few blinks */
 .theme-vfd .sc-next {
+  --due: calc(8 - var(--until-next, 60));
+  position-anchor: --contributors;
+  top: calc(anchor(top) + var(--bezel) + var(--pad-y));
+  right: calc(var(--col-right) + var(--col) + var(--gutter));
   bottom: auto;
-  top: calc(var(--margin) + 5cqh);
-  gap: 0.3cqw;
-  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
+  z-index: 1;
+  max-width: 34cqw;
+  height: calc(var(--dot-s) * 10);
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--dot-s) * 6);
+  white-space: nowrap;
+  opacity: calc(
+    clamp(0, var(--due) * 30, 1) *
+      max(clamp(0, (var(--due) - 1.2) * 30, 1), clamp(0, sin(var(--due) * 15.708) * 30, 1))
+  );
 }
-.theme-vfd .sc-next-label {
-  font-size: 0.7cqw;
+.theme-vfd :is(.sc-next-artist, .sc-next-title) {
+  font-size: calc(var(--dot-s) * 10);
+  overflow: hidden;
 }
 .theme-vfd .sc-next-artist {
-  font-weight: 600;
-  font-size: 1.2cqw;
-  text-transform: uppercase;
+  color: color-mix(in oklab, var(--lit) 64%, transparent);
 }
-.theme-vfd .sc-next-title {
-  font-weight: 800;
-  font-size: 1.9cqw;
-  text-transform: uppercase;
-}
-
-@container (aspect-ratio < 1) {
-  .theme-vfd .sc-spectrum {
-    height: 18cqh;
-  }
-  .theme-vfd .sc-panel {
-    bottom: calc(4cqh + 18cqh + 3cqh);
-    max-width: 92cqw;
-  }
-  .theme-vfd .sc-header {
-    font-size: 2.4cqw;
-  }
-  .theme-vfd .sc-panel-head {
-    font-size: 1.5cqw;
-  }
-  .theme-vfd .sc-deck {
-    min-width: 3.6cqw;
-    height: 3.6cqw;
-    font-size: 2cqw;
-  }
-  .theme-vfd .sc-index {
-    font-size: 2.4cqw;
-  }
-  .theme-vfd .sc-artist {
-    font-size: 3.6cqw;
-  }
-  .theme-vfd .sc-title {
-    font-size: 7.4cqw;
-  }
-  .theme-vfd .sc-label {
-    font-size: 1.6cqw;
-  }
-  .theme-vfd .sc-next-label {
-    font-size: 1.4cqw;
-  }
-  .theme-vfd .sc-next-artist {
-    font-size: 2.4cqw;
-  }
-  .theme-vfd .sc-next-title {
-    font-size: 3.6cqw;
-  }
+.theme-vfd .sc-next-artist::after {
+  content: ' /';
 }
 
 /*
  * DJ: one display with a line per current play, like a multi-deck readout. A VFD has a single
- * color, so focus is brightness: the focused line burns, the others sit at the dimmer.
+ * color, so focus is brightness: the focused line burns, the others sit dimmer.
  */
-.theme-vfd[data-presentation='dj'] .sc-contributors {
+.theme-vfd.sc-stage[data-presentation='dj'] .sc-contributors {
   --stack-gap: 0px;
-  bottom: calc(4cqh + var(--spectrum-height) + 2.4cqh);
-  width: 46cqw;
-  padding-inline: 2cqw;
-  border-radius: 0.5cqw;
+  padding-top: calc(var(--pad-y) + var(--top-row));
 }
-.theme-vfd[data-presentation='dj'] .sc-contributors:has(.sc-slot) {
-  background:
-    radial-gradient(circle, var(--ghost) 0.07cqw, transparent 0.1cqw) 0 0 / 0.4cqw 0.4cqw,
-    var(--glass);
-  border: 0.25cqw solid #151a19;
-  box-shadow:
-    inset 0 0 2cqw rgb(0 0 0 / 0.9),
-    0 0.6cqw 1.6cqw rgb(0 0 0 / 0.6);
+.theme-vfd[data-presentation='dj'] .sc-contributors::before {
+  content: 'On air';
+  position: absolute;
+  top: calc(var(--pad-y) + var(--dot-s) * 3);
+  left: var(--pad-x);
 }
 .theme-vfd[data-presentation='dj'] .sc-panel {
   --panel-dim: 1;
-  --lit: color-mix(in srgb, var(--phosphor) calc(var(--dimmer) * var(--panel-dim) * 100%), #0a1a16);
-  --glow: calc(var(--mod-glow, 0.8) * (1 + var(--drop-flash) * 1.4) * var(--panel-dim));
   display: grid;
-  grid-template-columns: minmax(2.2cqw, auto) minmax(0, 1fr) auto auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
   grid-template-areas:
     'deck artist flag label details'
     'deck title title title title';
   align-items: baseline;
-  padding: 0.75cqw 0 0.85cqw;
-  background: none;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  padding-block: calc(var(--dot-s) * 5) calc(var(--dot-s) * 6);
 }
 .theme-vfd[data-presentation='dj'] .sc-slot + .sc-slot .sc-panel {
-  border-top: 0.15cqw dotted color-mix(in srgb, var(--phosphor) 22%, transparent);
+  border-top: var(--hairline) solid var(--rule);
 }
 .theme-vfd[data-presentation='dj'] .sc-panel[data-focused='false'] {
   --panel-dim: 0.42;
@@ -396,115 +599,119 @@
 .theme-vfd[data-presentation='dj'] .sc-panel-head {
   display: contents;
 }
-.theme-vfd[data-presentation='dj'] .sc-deck {
+/* the deck in a lit frame; an unknown deck leaves the frame unlit, so every title lines up */
+.theme-vfd[data-presentation='dj'] .sc-deck,
+.theme-vfd[data-presentation='dj'] .sc-panel:not(:has(.sc-deck))::before {
   grid-area: deck;
   align-self: center;
-  justify-self: start;
-  min-width: 2.2cqw;
-  height: 2.2cqw;
-  margin-right: 1.2cqw;
-  font-size: 1.2cqw;
+  display: grid;
+  place-items: center;
+  min-width: calc(var(--dot-s) * 24);
+  height: calc(var(--dot-s) * 24);
+  margin-right: calc(var(--dot-s) * 12);
+  padding-inline: 0.4em;
+  border: max(1px, 0.1cqw) solid var(--lit);
+  border-radius: 0.2cqw;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: 'ROND' 55;
+  font-size: calc(var(--dot-s) * 10);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--lit);
+  text-shadow: 0 0 calc(0.3em * var(--glow)) var(--halo);
+  box-shadow: 0 0 calc(0.35cqw * var(--glow)) color-mix(in srgb, var(--halo) 50%, transparent);
 }
-/* an unknown deck leaves its field unlit, so every title starts at the same place */
 .theme-vfd[data-presentation='dj'] .sc-panel:not(:has(.sc-deck))::before {
   content: '';
-  grid-area: deck;
-  align-self: center;
-  width: 2.2cqw;
-  height: 2.2cqw;
-  margin-right: 1.2cqw;
-  border: 0.12cqw solid var(--ghost);
-  border-radius: 0.2cqw;
+  border-color: color-mix(in srgb, var(--phosphor) 15%, transparent);
+  box-shadow: none;
 }
 .theme-vfd[data-presentation='dj'] .sc-eyebrow {
   grid-area: flag;
   margin-left: 1cqw;
-  font-size: 0.65cqw;
 }
 .theme-vfd[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
   display: none;
 }
 .theme-vfd[data-presentation='dj'] .sc-artist {
   grid-area: artist;
-  margin-bottom: 0.25cqw;
-  font-size: 1.3cqw;
+  margin-bottom: calc(var(--dot-s) * 4);
+  font-size: calc(var(--dot-s) * 10);
 }
 .theme-vfd[data-presentation='dj'] .sc-title {
   grid-area: title;
-  font-size: 2.6cqw;
+  font-size: calc(var(--dot-s) * 20);
 }
 .theme-vfd[data-presentation='dj'] .sc-label {
   grid-area: label;
   margin: 0 0 0 1cqw;
-  font-size: 0.65cqw;
+}
+.theme-vfd[data-presentation='dj'] .sc-label::before {
+  content: none;
 }
 .theme-vfd .sc-credit-details {
   grid-area: details;
   margin-left: 1cqw;
-  font-family: var(--font-display);
-  font-variation-settings: 'ROND' 100;
-  font-weight: 700;
-  font-size: 1cqw;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--lit);
-}
-.theme-vfd .sc-contributor-count,
-.theme-vfd .sc-overflow {
-  font-weight: 600;
-  font-size: 0.65cqw;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--label);
+  font-size: calc(var(--dot-s) * 10);
 }
 /* the count shares the overflow line, at its right end */
 .theme-vfd .sc-contributor-count {
   position: absolute;
-  right: 2cqw;
-  bottom: 0.9cqw;
+  right: calc(var(--col) + var(--gutter) + var(--pad-x));
+  bottom: calc(var(--pad-y) + var(--dot-s) * 5);
 }
 .theme-vfd .sc-overflow {
-  padding: 0.8cqw 0 0.9cqw;
-  border-top: 0.15cqw dotted color-mix(in srgb, var(--phosphor) 22%, transparent);
+  padding-block: calc(var(--dot-s) * 5);
+  border-top: var(--hairline) solid var(--rule);
 }
 
+/* portrait (9:16): the display across the bottom, the clock and meters under the text */
 @container (aspect-ratio < 1) {
-  .theme-vfd[data-presentation='dj'] .sc-contributors {
-    bottom: calc(4cqh + 18cqh + 3cqh);
-    width: calc(100cqw - 2 * var(--margin));
-    padding-inline: 3cqw;
+  .theme-vfd
+    :is(.sc-bg-vignette, .sc-contributors, .sc-header, .sc-meters, .sc-spectrum, .sc-next) {
+    --dot-s: round(nearest, 0.25cqw, 1px);
+    --dot-m: round(nearest, 0.37cqw, 1px);
+    --dot-l: round(nearest, 0.65cqw, 1px);
+    --win-x: round(nearest, 4.5cqw, 1px);
+    --win-y: round(nearest, 6cqw, 1px);
+    --bezel: round(nearest, 0.9cqw, 1px);
+    --pad-x: round(nearest, 3.4cqw, 1px);
+    --pad-y: round(nearest, 2.4cqw, 1px);
+    --col: calc(100cqw - 2 * (var(--win-x) + var(--bezel) + var(--pad-x)));
+    --gutter: round(nearest, 4cqw, 1px);
+    --radius: 2.2cqw;
+    --col-right: calc(var(--win-x) + var(--bezel) + var(--pad-x));
+    --col-bottom: calc(var(--win-y) + var(--bezel) + var(--pad-y));
+    /* the right column of a landscape display, as rows under the text */
+    --lower: calc(var(--dot-s) * 72);
+  }
+  .theme-vfd.sc-stage .sc-contributors {
+    padding: var(--pad-y) var(--pad-x) calc(var(--pad-y) + var(--lower) + var(--gutter));
+    background-position:
+      left var(--pad-x) bottom calc(var(--pad-y) + var(--lower) + var(--gutter) / 2),
+      0 0,
+      0 0;
+    background-size:
+      calc(100% - 2 * var(--pad-x)) var(--hairline),
+      auto,
+      auto;
+  }
+  .theme-vfd .sc-header {
+    height: var(--lower);
+  }
+  /* up next takes a second line of the top row, under the panel's head */
+  .theme-vfd :is(.sc-contributors, .sc-next) {
+    --top-row: calc(var(--dot-s) * 30);
+  }
+  .theme-vfd .sc-next {
+    top: calc(anchor(top) + var(--bezel) + var(--pad-y) + var(--dot-s) * 14);
+    left: var(--col-right);
+    right: var(--col-right);
+    max-width: none;
   }
   .theme-vfd .sc-contributor-count {
-    right: 3cqw;
-    bottom: 1.8cqw;
-  }
-  .theme-vfd[data-presentation='dj'] .sc-panel {
-    grid-template-columns: minmax(4.4cqw, auto) minmax(0, 1fr) auto auto auto;
-    padding: 1.8cqw 0 2cqw;
-  }
-  .theme-vfd[data-presentation='dj'] .sc-deck,
-  .theme-vfd[data-presentation='dj'] .sc-panel:not(:has(.sc-deck))::before {
-    min-width: 4.4cqw;
-    height: 4.4cqw;
-    margin-right: 2.4cqw;
-    font-size: 2.4cqw;
-  }
-  .theme-vfd[data-presentation='dj'] .sc-artist {
-    font-size: 2.8cqw;
-  }
-  .theme-vfd[data-presentation='dj'] .sc-title {
-    font-size: 5.4cqw;
-  }
-  .theme-vfd[data-presentation='dj'] .sc-label,
-  .theme-vfd[data-presentation='dj'] .sc-eyebrow,
-  .theme-vfd .sc-contributor-count,
-  .theme-vfd .sc-overflow {
-    font-size: 1.4cqw;
-  }
-  .theme-vfd .sc-overflow {
-    padding-block: 1.6cqw 1.8cqw;
-  }
-  .theme-vfd .sc-credit-details {
-    font-size: 2cqw;
+    right: var(--pad-x);
   }
 }

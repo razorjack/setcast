@@ -664,16 +664,16 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
   image turns to evening light. bunker also only dims, at 0.6 toward its own `--art-luma` (0.2);
   its lamp pool and the bloom do the rest. interference corrects halfway (0.5) toward its own
-  `--art-luma` (0.3) and keeps the art's colors; caption boxes keep its type legible. patina and
-  vfd correct fully toward their own `--art-luma` (0.3, 0.45), the brightness at which their
-  treatments show art; at the demo's 0.09 they showed dark art, the usual drum and bass art, as
-  nothing. bristol's faint wash needs no correction.
+  `--art-luma` (0.3) and keeps the art's colors; caption boxes keep its type legible. vfd also
+  corrects halfway toward 0.3: the art is the room its display sits in. patina corrects fully
+  toward its own `--art-luma` (0.3), the brightness at which its print shows art; at the demo's
+  0.09 it showed dark art, the usual drum and bass art, as nothing. bristol's faint wash needs no correction.
   Verify changes against real art, not the demo art, which is nearly black and flat; the
   gitignored `demos/backgrounds/` holds a local test set when present (never commit those images).
 - The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark
   but saturated scene still reads as its color, with a minimum share so a few stray pixels in
-  grey art give none. sterile-tech's accents, masthead's and anamorphic's ink and passe-partout's
-  wall take them, at the theme's own lightness and chroma so contrast stays as designed.
+  grey art give none. sterile-tech's accents, masthead's and anamorphic's ink, passe-partout's
+  wall and the faint tint of vfd's glass reflection take them, at the theme's own lightness and chroma so contrast stays as designed.
   interference shows the art in its own colors and keeps its RGB-split ghosts magenta and cyan,
   and themes whose palette is their identity do not take art colors.
 - `--bg-luma-behind` is measured per element, not for fixed zones of the frame: zones would bind

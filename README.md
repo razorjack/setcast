@@ -60,7 +60,7 @@ a path to your own `.css`.
 | `patina`        | a worn, hand-tinted print cropped to its subject, tracked capitals, one string under it |
 | `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |
 | `bunker`        | your art through an opening in a concrete wall, lit by a work lamp; hazard tape on drops |
-| `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
+| `vfd`           | a 90s deck's fluorescent display under your art: dot matrix, level meters (`--phosphor`) |
 | `interference`  | your art in color on a corrupted signal: channels split with the bass, tears on the drop |
 | `pirate`        | a photocopied rave flyer: grey copy, taped slips, a torn fluoro strip (`--fluoro`)      |
 | `afterhours`    | warm and late: your art in amber evening light, its lamps glowing, credits on rose glass |
