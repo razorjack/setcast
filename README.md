@@ -59,7 +59,7 @@ a path to your own `.css`.
 | `bristol`       | a flat grey field, a white contour, the set in stacked green stripes                     |
 | `patina`        | a worn, hand-tinted print cropped to its subject, tracked capitals, one string under it |
 | `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |
-| `bunker`        | stencil on concrete, hazard tape on the beat, the room shaking on the drop               |
+| `bunker`        | your art through an opening in a concrete wall, lit by a work lamp; hazard tape on drops |
 | `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
 | `interference`  | a corrupted signal: channels split with the bass, the picture tearing on the drop        |
 | `pirate`        | a photocopied rave flyer: grey copy, taped slips, a torn fluoro strip (`--fluoro`)      |

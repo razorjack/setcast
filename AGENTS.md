@@ -660,10 +660,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   band. sterile-tech, long-exposure and quicksilver correct halfway (0.5): full correction darkens
   bright art until it disappears. afterhours only dims: it corrects halfway toward its own
   `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
-  image turns to evening light. patina, bunker, interference and vfd correct fully
-  toward their own `--art-luma` (0.3, 0.26, 0.45, 0.45), the brightness at which their blends
-  show art; at the demo's 0.09 they showed dark art, the usual drum and bass art, as nothing.
-  The demo background now shows faintly in those four. bristol's faint wash needs no correction.
+  image turns to evening light. bunker also only dims, at 0.6 toward its own `--art-luma` (0.2);
+  its lamp pool and the bloom do the rest. patina, interference and vfd correct fully toward their
+  own `--art-luma` (0.3, 0.45, 0.45), the brightness at which their blends show art; at the
+  demo's 0.09 they showed dark art, the usual drum and bass art, as nothing. The demo background
+  now shows faintly in those three. bristol's faint wash needs no correction.
   Verify changes against real art, not the demo art, which is nearly black and flat; the
   gitignored `demos/backgrounds/` holds a local test set when present (never commit those images).
 - The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark

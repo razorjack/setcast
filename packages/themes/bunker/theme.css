@@ -1,4 +1,5 @@
-/* bunker: stencil on concrete, hazard tape on the beat, and the whole room shaking on the drop. */
+/* bunker: the art seen through an opening in a concrete wall, lit by a work lamp; stencil on the
+   wall, riveted plates, hazard tape on the drop, and the whole room shaking with it. */
 
 @font-face {
   font-family: 'Big Shoulders Stencil';
@@ -66,8 +67,25 @@
   --font-display: 'Big Shoulders Stencil', Impact, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --hairline: max(1px, 0.06cqw);
-  --spectrum-height: 24cqh;
-  --tape: 1.4cqh;
+
+  /* the wall around the opening, and how far the room reaches past the frame so a shake never
+     shows its edge */
+  --wall-top: 6.6cqh;
+  --wall-bottom: 9cqh;
+  --wall-side: 2.2cqw;
+  --bevel: 2cqw;
+  --bleed: 2cqw;
+  --margin: calc(var(--wall-side) + 1.6cqw);
+  --tape: 1.5cqh;
+  --spectrum-height: 9cqh;
+  --lamp: var(--mod-lamp, 0);
+  /* how much the art is darkened: bright art is brought down toward --art-luma, dark art is never
+     lifted, the lamp does that */
+  --art-luma: 0.2;
+  --art-gain: pow(
+    clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 1),
+    var(--bg-correction, 0.6)
+  );
 
   /* a hard jolt at the drop, then the bass keeps the room rattling while it lasts */
   --jolt: calc(var(--drop-flash) * 0.9cqw + var(--mod-shake, 0) * 1cqw);
@@ -75,70 +93,230 @@
   --shake-y: calc(cos(var(--set-progress, 0) * 37199 + var(--since-drop, 60) * 83) * var(--jolt));
   /* one stripe along per beat, so the tape runs like a conveyor in time */
   --conveyor: calc((var(--beat, 0) + round(down, var(--bar, 0) * 4, 1)) * 2.4cqw);
+  /* the tape is strung across the opening when a drop lands, and only while it lasts */
+  --unroll: 0;
+
+  --rivet: radial-gradient(circle, #77746c 0.2cqw, #161614 0.28cqw, transparent 0.32cqw);
+  --steel-face:
+    repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.025) 0 1px, transparent 0 3px),
+    linear-gradient(160deg, #3a3b37, var(--steel) 45%, #1b1c19);
   background: #11110f;
 }
-
+.theme-bunker[data-section='drop'] {
+  --unroll: clamp(0, var(--since-drop, 60) / 0.4, 1);
+}
 /* a breakdown switches to the red emergency light */
 .theme-bunker[data-section='breakdown'] {
   --hazard: #8a6d00;
   --emergency: 0.45;
 }
 
-/* the wall: concrete, with the art worked into it like stains */
+/* the room beyond the wall, shaking as one */
 .theme-bunker .sc-bg {
-  inset: -2cqw;
-  background: url(./concrete.png) center / cover;
+  inset: calc(-1 * var(--bleed));
   translate: var(--shake-x) var(--shake-y);
 }
-.theme-bunker .sc-bg-img {
-  /* the mean luma this treatment shows art best at; any art is brought to it */
-  --art-luma: 0.26;
-  filter: brightness(
-      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
-    )
-    grayscale(0.5) sepia(0.25) contrast(1.4)
-    brightness(calc(0.9 + var(--rewind-flash) * 0.8 + var(--drop-flash) * 0.4));
-  mix-blend-mode: soft-light;
-  opacity: 0.9;
-}
-.theme-bunker .sc-bg-vignette {
+/* without art the lamp lights the bunker's far wall */
+.theme-bunker[data-background='none'] .sc-bg {
   background:
-    radial-gradient(110% 100% at 50% 40%, transparent 30%, rgb(8 8 6 / 0.85) 100%),
-    linear-gradient(to top, rgb(8 8 6 / 0.8), transparent 40%);
+    linear-gradient(rgb(10 10 9 / 0.55) 0 0),
+    url(./concrete.png) center / cover;
 }
-/* a strobe on the drop */
+
+/* the art in its own color, a little cold and darker, as a work lamp shows it */
+.theme-bunker .sc-bg-img {
+  inset: var(--bleed);
+  width: 100cqw;
+  height: 100cqh;
+  filter: brightness(var(--art-gain)) saturate(0.85)
+    brightness(calc(0.95 + var(--rewind-flash) * 0.8 + var(--drop-flash) * 0.5));
+}
+
+/* the opening: the inner faces of the cut in the wall (the lintel in shadow, the sill lit), the
+   shadow they cast, and the lamp, a pool of light on the art's subject that swells with every hit */
+.theme-bunker .sc-bg-vignette {
+  --pool-x: calc(var(--bg-focus-x, 0.5) * 100%);
+  --pool-y: calc(var(--bg-focus-y, 0.45) * 100%);
+  inset: calc(var(--bleed) + var(--wall-top)) calc(var(--bleed) + var(--wall-side))
+    calc(var(--bleed) + var(--wall-bottom));
+  border-radius: var(--bevel);
+  corner-shape: bevel;
+  background: radial-gradient(
+    calc(58% + var(--lamp) * 16%) calc(76% + var(--lamp) * 16%) at var(--pool-x) var(--pool-y),
+    transparent 20%,
+    rgb(3 6 9 / calc(0.7 - var(--lamp) * 0.22)) 100%
+  );
+  /* Chrome draws a bevelled border with sides of different colors wrongly; inset shadows
+     without blur draw the faces instead */
+  box-shadow:
+    inset 0 1.1cqh 0 #121211,
+    inset 0 -1.5cqh 0 #4d4a43,
+    inset 0.6cqw 0 0 #2a2926,
+    inset -0.6cqw 0 0 #2a2926,
+    inset 0 0 2.4cqw 0.4cqw rgb(0 0 0 / 0.7),
+    inset 0 3.4cqh 2cqh -0.8cqh rgb(0 0 0 / 0.65);
+}
 .theme-bunker .sc-bg-vignette::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: #fffbe8;
-  opacity: calc(var(--drop-flash) * var(--drop-flash) * 0.45);
+  background: radial-gradient(
+    40% 56% at var(--pool-x) var(--pool-y),
+    rgb(255 205 140 / 0.8),
+    transparent
+  );
+  mix-blend-mode: soft-light;
+  opacity: calc(0.35 + var(--lamp) * 0.65);
 }
-/* red light: steady in a breakdown, pulsing on the beat as a drop gets close */
+/* red light: steady in a breakdown, pulsing on the beat as a drop gets close; weaker over bright
+   art, which a dodge would bleach */
 .theme-bunker .sc-bg-vignette::after {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(90% 80% at 50% 0%, var(--rust), transparent 75%);
   mix-blend-mode: color-dodge;
-  opacity: calc(var(--emergency, 0) + var(--tension) * var(--beat-pulse) * 0.6);
+  opacity: calc((var(--emergency, 0) + var(--tension) * var(--beat-pulse) * 0.6) * var(--art-gain));
 }
 
-/* hazard tape along the bottom edge, running in time */
-.theme-bunker::after {
+/* the wall: bare concrete around an opening with chamfered corners */
+.theme-bunker .sc-bg::after {
+  --hole-left: calc(var(--bleed) + var(--wall-side));
+  --hole-right: calc(100% - var(--bleed) - var(--wall-side));
+  --hole-top: calc(var(--bleed) + var(--wall-top));
+  --hole-bottom: calc(100% - var(--bleed) - var(--wall-bottom));
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 140% at 50% 50%, transparent 40%, rgb(0 0 0 / 0.45)),
+    linear-gradient(rgb(30 29 27 / 0.62) 0 0),
+    url(./concrete.png) center / cover;
+  clip-path: polygon(
+    evenodd,
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0,
+    calc(var(--hole-left) + var(--bevel)) var(--hole-top),
+    calc(var(--hole-right) - var(--bevel)) var(--hole-top),
+    var(--hole-right) calc(var(--hole-top) + var(--bevel)),
+    var(--hole-right) calc(var(--hole-bottom) - var(--bevel)),
+    calc(var(--hole-right) - var(--bevel)) var(--hole-bottom),
+    calc(var(--hole-left) + var(--bevel)) var(--hole-bottom),
+    var(--hole-left) calc(var(--hole-bottom) - var(--bevel)),
+    var(--hole-left) calc(var(--hole-top) + var(--bevel)),
+    calc(var(--hole-left) + var(--bevel)) var(--hole-top)
+  );
+}
+
+/* hazard tape strung across the sill, unrolled when a drop lands and running in time */
+.theme-bunker .sc-bg::before {
   content: '';
   position: absolute;
   z-index: 1;
-  inset: auto 0 0;
+  left: calc(var(--bleed) + var(--wall-side));
+  right: calc(var(--bleed) + var(--wall-side));
+  bottom: calc(var(--bleed) + var(--wall-bottom) - var(--tape) / 2);
   height: var(--tape);
   background: repeating-linear-gradient(-45deg, var(--hazard) 0 1.2cqw, #111 0 2.4cqw)
     var(--conveyor) 0 / 3.394cqw 100%;
-  box-shadow: 0 -0.2cqh 0.6cqh rgb(0 0 0 / 0.6);
+  box-shadow: 0 0.3cqh 0.6cqh rgb(0 0 0 / 0.6);
+  clip-path: inset(-1cqh calc((1 - var(--unroll)) * 100%) -1cqh 0);
 }
 
-/* spectrum: chunky lamp cells in hazard yellow, sitting on the tape */
+/* the art's own lights flicker with the power, inside the opening only, dimmed with the art */
+.theme-bunker .sc-bloom {
+  clip-path: inset(var(--wall-top) var(--wall-side) var(--wall-bottom));
+}
+.theme-bunker .sc-bloom-glow {
+  filter: brightness(var(--art-gain));
+}
+
+/* warning lamps set into the wall below the opening, one per band */
+.theme-bunker .sc-meters {
+  --meters-gap: 2.4cqw;
+  top: auto;
+  left: auto;
+  right: var(--margin);
+  bottom: calc(var(--wall-bottom) / 2);
+  height: auto;
+  align-items: center;
+  translate: var(--shake-x) calc(var(--shake-y) + 50%);
+}
+.theme-bunker .sc-meter {
+  --lamp-color: var(--hazard);
+  flex-direction: row;
+  gap: 0.7cqw;
+  height: auto;
+}
+.theme-bunker .sc-meter[data-band='bass'] {
+  --lamp-color: #ff5a1f;
+}
+.theme-bunker .sc-meter-bar {
+  flex: none;
+  width: 4cqh;
+  height: 4cqh;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    color-mix(in oklab, var(--lamp-color) 24%, #1c1814),
+    #0e0d0c 75%
+  );
+  box-shadow:
+    0 0 0 0.3cqh #0b0b0a,
+    0 0 0 0.65cqh #4a4842,
+    0 0.4cqh 0.8cqh 0.6cqh rgb(0 0 0 / 0.6);
+}
+/* the guard over the glass */
+.theme-bunker .sc-meter-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 31%,
+      #1a1917 31% 37%,
+      transparent 37% 63%,
+      #1a1917 63% 69%,
+      transparent 69%
+    ),
+    linear-gradient(transparent 46%, #1a1917 46% 54%, transparent 54%);
+}
+.theme-bunker .sc-meter-level {
+  inset: 0;
+  height: auto;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    #fff6d8,
+    var(--lamp-color) 45%,
+    color-mix(in oklab, var(--lamp-color) 55%, #000)
+  );
+  opacity: calc(var(--level) * var(--level));
+  box-shadow: 0 0 calc(var(--level) * 4cqh) calc(var(--level) * 0.8cqh) var(--lamp-color);
+}
+.theme-bunker .sc-meter-peak {
+  inset: 0;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.4cqh var(--lamp-color);
+  opacity: calc(var(--peak, 0) * 0.8);
+}
+.theme-bunker .sc-meter-label {
+  font-weight: 700;
+  font-size: 1.3cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* other visualizers in hazard yellow, standing on the sill */
 .theme-bunker .sc-spectrum {
-  bottom: var(--tape);
+  bottom: var(--wall-bottom);
   translate: var(--shake-x) var(--shake-y);
   filter: drop-shadow(0 0 calc(0.3cqw + var(--drop-flash) * 0.8cqw) rgb(255 204 0 / 0.5));
 }
@@ -177,10 +355,12 @@
   stroke: rgb(232 228 218 / 0.25);
   stroke-width: var(--hairline);
 }
+.theme-bunker .sc-oscilloscope {
+  --oscilloscope-bottom: calc(var(--wall-bottom) + 2cqh);
+}
 .theme-bunker .sc-radial,
 .theme-bunker .sc-oscilloscope,
 .theme-bunker .sc-vectorscope,
-.theme-bunker .sc-meters,
 .theme-bunker .sc-spectrogram {
   translate: var(--shake-x) var(--shake-y);
 }
@@ -190,27 +370,11 @@
   transform: none;
 }
 .theme-bunker .sc-spectrogram {
+  bottom: var(--wall-bottom);
   color: var(--hazard);
 }
-.theme-bunker .sc-meter-bar {
-  background: rgb(255 204 0 / 0.12);
-}
-.theme-bunker .sc-meter-level {
-  background: var(--hazard);
-}
-.theme-bunker .sc-meter[data-band='bass'] .sc-meter-level {
-  background: var(--deck);
-}
-.theme-bunker .sc-meter-peak {
-  background: var(--bone);
-}
-.theme-bunker .sc-meter-label {
-  margin-top: 1cqh;
-  font-weight: 700;
-  font-size: 1cqw;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dim);
+.theme-bunker .sc-overview {
+  --overview-top: calc(var(--wall-top) + 2cqh);
 }
 .theme-bunker .sc-overview-bass,
 .theme-bunker .sc-overview-high {
@@ -229,14 +393,18 @@
   stroke-width: 0.14cqw;
 }
 
-/* header: stenciled on the wall */
+/* header: stenciled on the wall above the opening */
 .theme-bunker .sc-header {
+  top: calc(var(--wall-top) / 2);
+  align-items: center;
   font-weight: 700;
   font-size: 1.5cqw;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--bone);
+  translate: var(--shake-x) calc(var(--shake-y) - 50%);
   opacity: 0.85;
+  text-shadow: 0 0 0.25cqw rgb(232 228 218 / 0.35);
 }
 .theme-bunker .sc-clock {
   font-family: var(--font-mono);
@@ -244,22 +412,24 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--hazard);
+  text-shadow: 0 0 0.25cqw rgb(255 204 0 / 0.35);
 }
 .theme-bunker .sc-clock-total {
   color: var(--dim);
+  text-shadow: none;
 }
 
-/* now playing: a riveted steel plate with a strip of hazard tape along the top */
+/* now playing: a riveted steel plate bolted over the sill, a strip of hazard paint along the top */
 .theme-bunker .sc-panel {
+  anchor-name: --plate;
+  bottom: calc(var(--wall-bottom) * 0.42);
   padding: 2.4cqw 2.6cqw 2cqw;
-  --rivet: radial-gradient(circle, #77746c 0.2cqw, #161614 0.28cqw, transparent 0.32cqw);
   background:
     var(--rivet) left 0.5cqw top 1.4cqw / 1cqw 1cqw no-repeat,
     var(--rivet) right 0.5cqw top 1.4cqw / 1cqw 1cqw no-repeat,
     var(--rivet) left 0.5cqw bottom 0.5cqw / 1cqw 1cqw no-repeat,
     var(--rivet) right 0.5cqw bottom 0.5cqw / 1cqw 1cqw no-repeat,
-    repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.025) 0 1px, transparent 0 3px),
-    linear-gradient(160deg, #3a3b37, var(--steel) 45%, #1b1c19);
+    var(--steel-face);
   border-radius: 1.2cqw;
   corner-shape: bevel;
   box-shadow:
@@ -268,13 +438,17 @@
   opacity: clamp(0, var(--presence, 1) * 1.5, 1);
   translate: var(--shake-x) calc(var(--shake-y) + (1 - var(--presence, 1)) * 4cqh);
 }
+/* the paint runs only while a drop lasts */
 .theme-bunker .sc-panel::before {
   content: '';
   position: absolute;
   inset: 0 1.2cqw auto;
   height: 0.8cqh;
-  background: repeating-linear-gradient(-45deg, var(--hazard) 0 0.7cqw, #111 0 1.4cqw)
-    var(--conveyor) 0 / 1.98cqw 100%;
+  background: repeating-linear-gradient(-45deg, var(--hazard) 0 0.7cqw, #111 0 1.4cqw) 0 0 / 1.98cqw
+    100%;
+}
+.theme-bunker[data-section='drop'] .sc-panel::before {
+  background-position: var(--conveyor) 0;
 }
 .theme-bunker .sc-panel-head {
   gap: 1cqw;
@@ -301,7 +475,7 @@
   letter-spacing: 0;
   color: #111;
   background: var(--deck);
-  box-shadow: 0 0 calc(0.4cqw + var(--mod-lamp, 0) * 1cqw) var(--deck);
+  box-shadow: 0 0 calc(0.4cqw + var(--lamp) * 1cqw) var(--deck);
 }
 .theme-bunker .sc-panel[data-section='drop'] .sc-deck {
   background: conic-gradient(
@@ -352,10 +526,38 @@
   rotate: -1.2deg;
 }
 
-/* up next: stenciled on the wall, right */
+/* the plate goes on the side where the art is calmer; up next and the lamps take the other */
+.theme-bunker[data-bg-calm$='right'][data-presentation='playlist'] .sc-panel,
+.theme-bunker[data-bg-calm$='right'][data-presentation='dj'] .sc-contributors {
+  left: auto;
+  right: var(--margin);
+}
+.theme-bunker[data-bg-calm$='right'] .sc-meters {
+  left: var(--margin);
+  right: auto;
+}
+.theme-bunker[data-bg-calm$='right'] .sc-next {
+  left: var(--margin);
+  right: auto;
+  align-items: start;
+  text-align: left;
+}
+
+/* up next: a smaller plate above the lamps */
 .theme-bunker .sc-next {
-  bottom: calc(var(--tape) + var(--margin) + 12cqh);
+  bottom: calc(var(--wall-bottom) + 3cqh);
   gap: 0.2cqw;
+  padding: 1.4cqw 1.8cqw 1.2cqw;
+  background:
+    var(--rivet) left 0.3cqw top 0.9cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) right 0.3cqw top 0.9cqw / 1cqw 1cqw no-repeat,
+    var(--steel-face);
+  border-radius: 0.8cqw;
+  corner-shape: bevel;
+  box-shadow:
+    0 0.8cqw 2cqw rgb(0 0 0 / 0.7),
+    inset 0 0 0 0.12cqw rgb(255 255 255 / 0.06);
+  translate: var(--shake-x) var(--shake-y);
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-bunker .sc-next-label {
@@ -380,16 +582,48 @@
   color: var(--bone);
 }
 
-/* portrait: bigger type, a shorter spectrum */
+/* portrait: a thinner wall, bigger type */
 @container (aspect-ratio < 1) {
-  .theme-bunker .sc-spectrum {
-    height: 14cqh;
+  .theme-bunker .sc-bg,
+  .theme-bunker .sc-bg-vignette,
+  .theme-bunker .sc-bg::after,
+  .theme-bunker .sc-bg::before,
+  .theme-bunker .sc-bloom,
+  .theme-bunker .sc-header,
+  .theme-bunker .sc-meters,
+  .theme-bunker .sc-panel,
+  .theme-bunker .sc-next,
+  .theme-bunker .sc-contributors {
+    --wall-top: 4.4cqh;
+    --wall-bottom: 6.4cqh;
+    --wall-side: 3cqw;
+    --bevel: 3.4cqw;
+    --margin: 6cqw;
   }
   .theme-bunker .sc-header {
     font-size: 2.8cqw;
   }
-  .theme-bunker .sc-panel {
-    max-width: 90cqw;
+  /* the plate stands above the sill, the lamps in the middle of the wall below it */
+  .theme-bunker .sc-meters {
+    --meters-gap: 5cqw;
+    left: 50%;
+    right: auto;
+    translate: calc(var(--shake-x) - 50%) calc(var(--shake-y) + 50%);
+  }
+  .theme-bunker .sc-meter {
+    gap: 1.4cqw;
+  }
+  .theme-bunker .sc-meter-bar {
+    width: 2.4cqh;
+    height: 2.4cqh;
+  }
+  .theme-bunker .sc-meter-label {
+    font-size: 2.6cqw;
+  }
+  .theme-bunker[data-presentation='playlist'] .sc-panel {
+    right: var(--margin);
+    bottom: calc(var(--wall-bottom) + 2.4cqh);
+    max-width: none;
     padding: 4.4cqw 4.6cqw 3.6cqw;
   }
   .theme-bunker .sc-panel-head {
@@ -411,7 +645,12 @@
     font-size: 1.8cqw;
   }
   .theme-bunker .sc-next {
-    bottom: calc(var(--tape) + 16cqh + var(--margin));
+    max-width: 70cqw;
+    padding: 2.8cqw 3.4cqw 2.4cqw;
+  }
+  .theme-bunker[data-presentation='playlist'] .sc-next {
+    position-anchor: --plate;
+    bottom: calc(anchor(top) + 2.4cqh);
   }
   .theme-bunker .sc-next-label {
     font-size: 1.6cqw;
@@ -425,13 +664,13 @@
 }
 
 /*
- * DJ: a rack of plates, one per current play, shaken together. Only the focused plate runs its
- * tape and lights its lamp; the others idle, their tape still and dull.
+ * DJ: a rack of plates, one per current play, shaken together. Only the focused plate lights its
+ * lamp; the others idle, their paint dull.
  */
 .theme-bunker[data-presentation='dj'] .sc-contributors {
   --stack-gap: 0.9cqw;
   --slot-bleed: 0.9cqw;
-  bottom: calc(var(--tape) + var(--margin) * 0.6);
+  bottom: calc(var(--wall-bottom) * 0.42);
   width: 34cqw;
   translate: var(--shake-x) var(--shake-y);
 }
@@ -541,8 +780,8 @@
   .theme-bunker[data-presentation='dj'] .sc-contributors {
     --stack-gap: 1.8cqw;
     --slot-bleed: 1.8cqw;
+    bottom: calc(var(--wall-bottom) + 2.4cqh);
     width: calc(100cqw - 2 * var(--margin));
-    bottom: calc(var(--tape) + var(--margin));
   }
   .theme-bunker[data-presentation='dj'] .sc-next {
     position-anchor: --contributors;

@@ -4,7 +4,7 @@ import { packaged } from './packaged.ts';
 export const bunker: Theme = {
   name: 'bunker',
   description:
-    'Stencil on concrete, hazard tape running on the beat, and the room shaking on the drop.',
+    'Your art through an opening in a concrete wall, lit by a work lamp: stencil, riveted plates, hazard tape and a shaking room on the drop.',
   cssFile: packaged('bunker/theme.css'),
   modulation: [
     { source: 'bass', target: 'shake', range: [0, 0.3], curve: 'pow3', smooth: 0.04, when: 'drop' },
@@ -18,5 +18,8 @@ export const bunker: Theme = {
       when: 'drop',
     },
   ],
-  visualizer: { name: 'spectrum', bars: 24, segments: 12, gap: 0.3, gain: 1, peak: 0.8 },
+  visualizer: [
+    { name: 'bloom', bands: ['bass', 'highs'], gain: 1.1 },
+    { name: 'meters', bands: ['bass', 'mids', 'highs'], segments: 0 },
+  ],
 };
