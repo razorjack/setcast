@@ -52,6 +52,7 @@ vp run smoke               # renders 3 s of the demo and validates the MP4 (audi
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
 vp run package-smoke       # build local tarballs; test installed CLI, all themes and video
 vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
+vp run render-bench [dir] [--help]     # compare render settings; timings and MP4s in out/bench
 vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
 cd examples/demo && vp run preview                          # Remotion Studio
@@ -447,6 +448,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Rendering performance measurements and optimization priorities are in `docs/render-performance.md`.
+  The benchmark lives inside the renderer adapter and uses its installed Remotion version.
+  Keep preparation separate from rendering, record whether encoding overlaps capture, and compare
+  longer clips as well as short samples. Remotion 4.0.513 scans prior frame/asset records per frame,
+  so short-clip rates do not establish one-hour throughput. The benchmarks do not change defaults.
 - The finite mix model replaces the old tracks/events contract without compatibility aliases.
   `ResolvedProject.mix` is finalized before rendering. The renderer supplies the audio-duration
   probe to core/node, keeping core independent of Remotion and avoiding a second media probe stack.
