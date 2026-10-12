@@ -1,4 +1,4 @@
-/* escapement: white paper, a cyan band of the art, pixel capitals, and a clock that ticks on the beat. */
+/* escapement: white paper, a band of cyan glass over the art, pixel capitals, a clock ticking on the beat. */
 
 @font-face {
   font-family: 'Silkscreen';
@@ -87,14 +87,16 @@
   --band: 30cqh;
   --rise: calc(100cqw * tan(var(--angle)));
   --band-now: calc(var(--band) * var(--mod-band, 1) * var(--squeeze) + var(--drop-flash) * 7cqh);
+  /* half the band at its widest bass swell (the band route peaks at 1.16), kept clear of the credits */
+  --swell: calc(var(--band) * 0.58);
 
-  /* the clock sits where the radial ring is; the beat dial overlaps it down and to the left */
-  --dial-y: 50cqh;
+  /* the clock sits where the radial ring is; the beat dial overlaps it up and to the left */
+  --dial-y: 47cqh;
   --dial-size: calc(var(--radial-size) * 1.22);
   --dial-x: calc(100cqw - var(--margin) - var(--radial-size) / 2);
-  --beat-size: calc(var(--radial-size) * 0.46);
-  --beat-x: calc(var(--dial-x) - var(--radial-size) * 0.66);
-  --beat-y: calc(var(--dial-y) + var(--radial-size) * 0.36);
+  --beat-size: calc(var(--radial-size) * 0.34);
+  --beat-x: calc(var(--dial-x) - var(--radial-size) * 0.5);
+  --beat-y: calc(var(--dial-y) - var(--radial-size) * 0.47);
 }
 
 /* a breakdown thins the band to a thread; the next drop throws it open again */
@@ -102,8 +104,11 @@
   --squeeze: calc(1 - 0.92 * clamp(0, var(--section-time, 60) / 2, 1));
 }
 
-/* background: the art only shows inside the band, washed into cyan with light streaks along it */
+/* background: the art only shows inside the band, in its own colors, with light streaks along it */
 .theme-escapement .sc-bg {
+  /* where the band's center line crosses the gradients drawn across it, and half its width */
+  --line: calc(50% - (var(--band-y) - var(--rise) / 2 - 50cqh) * cos(var(--angle)));
+  --half: calc(var(--band-now) / 2 * cos(var(--angle)));
   clip-path: polygon(
     0 calc(var(--band-y) - var(--band-now) / 2),
     100% calc(var(--band-y) - var(--rise) - var(--band-now) / 2),
@@ -112,30 +117,109 @@
   );
   background: linear-gradient(
     calc(90deg - var(--angle)),
-    #0f5f98,
+    var(--deep),
     var(--cyan) 40%,
     #8fd8f6 68%,
     var(--cyan)
   );
 }
-.theme-escapement .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 1))) grayscale(1)
-    brightness(calc(2.6 + var(--rewind-flash) * 2)) contrast(1.25);
-  mix-blend-mode: luminosity;
-  opacity: 0.5;
+.theme-escapement :is(.sc-bg-img, .sc-art) {
+  --art-luma: 0.3;
+  filter: brightness(
+      pow(
+        clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4),
+        var(--bg-correction, 0.5)
+      )
+    )
+    brightness(calc(1 + var(--rewind-flash)));
 }
+/*
+ * An image shows as the file itself, so art of another shape never brings the blurred copy behind
+ * it into the band. The file starts fitted whole into the frame, where the stage measured the
+ * subject of art shown whole. It is scaled about the subject and moved so the subject sits a little
+ * below the band's center line (a head above the busiest part stays in), just enough that the art
+ * covers the band where bass and a drop widen it most. The scale stops at 1.3 times the least that
+ * covers the band, so a subject far off the line moves only part of the way.
+ */
+.theme-escapement[data-background='image'] .sc-bg-img {
+  display: none;
+}
+.theme-escapement[data-background='image'] .sc-art {
+  --art-width: min(100cqw, 100cqh * var(--bg-aspect));
+  --art-height: min(100cqh, 100cqw / var(--bg-aspect));
+  --art-left: calc((100cqw - var(--art-width)) / 2);
+  --art-top: calc((100cqh - var(--art-height)) / 2);
+  --subject-x: clamp(
+    var(--art-left) + var(--art-width) * 0.1,
+    var(--bg-focus-x) * 100cqw,
+    var(--art-left) + var(--art-width) * 0.9
+  );
+  --subject-y: clamp(
+    var(--art-top) + var(--art-height) * 0.1,
+    var(--bg-focus-y) * 100cqh,
+    var(--art-top) + var(--art-height) * 0.9
+  );
+  --to-left: calc(var(--subject-x) - var(--art-left));
+  --to-top: calc(var(--subject-y) - var(--art-top));
+  --to-right: calc(var(--art-width) - var(--to-left));
+  --to-bottom: calc(var(--art-height) - var(--to-top));
+  --shift: calc(var(--band-y) - var(--subject-x) * tan(var(--angle)) - var(--subject-y) + 5cqh);
+  --band-top: calc(var(--band-y) - var(--rise) - var(--swell) - 5cqh);
+  /* the least scale that covers the band, and the scale that puts the subject on its line */
+  --cover: max(102cqw / var(--art-width), (100cqh - var(--band-top)) / var(--art-height));
+  --aim: max(
+    (var(--subject-y) + var(--shift) - var(--band-top)) / var(--to-top),
+    (100cqh - var(--subject-y) - var(--shift)) / var(--to-bottom)
+  );
+  --enlarge: clamp(var(--cover), var(--aim), var(--cover) * 1.3);
+  display: block;
+  left: var(--art-left);
+  top: var(--art-top);
+  width: var(--art-width);
+  height: var(--art-height);
+  transform-origin: var(--to-left) var(--to-top);
+  scale: var(--enlarge);
+  translate: clamp(
+      101cqw - var(--subject-x) - var(--enlarge) * var(--to-right),
+      0px,
+      var(--enlarge) * var(--to-left) - var(--subject-x) - 1cqw
+    )
+    clamp(
+      100cqh - var(--subject-y) - var(--enlarge) * var(--to-bottom),
+      var(--shift),
+      var(--band-top) - var(--subject-y) + var(--enlarge) * var(--to-top)
+    );
+  transform: translate(var(--bg-x, 0), var(--bg-y, 0))
+    scale(calc(var(--bg-drift, 1) * var(--mod-bg-zoom, 1)));
+}
+/* the band is cyan glass: clear on its center line, cyan toward its edges */
+.theme-escapement .sc-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    calc(-1 * var(--angle)),
+    rgb(15 95 152 / 0.9) calc(var(--line) - var(--half)),
+    rgb(26 155 215 / 0.35) calc(var(--line) - var(--half) * 0.55),
+    rgb(26 155 215 / 0.1) var(--line),
+    rgb(26 155 215 / 0.35) calc(var(--line) + var(--half) * 0.55),
+    rgb(26 155 215 / 0.85) calc(var(--line) + var(--half))
+  );
+  mix-blend-mode: color;
+}
+/* streaks of light along the band, kept off its center line where the subject sits */
 .theme-escapement .sc-bg-vignette {
   background: linear-gradient(
     calc(-1 * var(--angle)),
-    transparent 38%,
-    rgb(255 255 255 / 0.55) 40.5%,
-    transparent 42%,
-    transparent 47%,
-    rgb(255 255 255 / 0.9) 48.2%,
-    transparent 49.5%,
-    transparent 55%,
-    rgb(255 255 255 / 0.4) 56%,
-    transparent 58%
+    transparent calc(var(--line) - var(--half) * 0.74),
+    rgb(255 255 255 / 0.3) calc(var(--line) - var(--half) * 0.66),
+    transparent calc(var(--line) - var(--half) * 0.6),
+    transparent calc(var(--line) + var(--half) * 0.5),
+    rgb(255 255 255 / 0.7) calc(var(--line) + var(--half) * 0.6),
+    transparent calc(var(--line) + var(--half) * 0.63),
+    transparent calc(var(--line) + var(--half) * 0.71),
+    rgb(255 255 255 / 0.55) calc(var(--line) + var(--half) * 0.725),
+    transparent calc(var(--line) + var(--half) * 0.74)
   );
   mix-blend-mode: screen;
   opacity: calc(0.55 + 0.45 * var(--mod-streak, 0.5) + var(--tension) * 0.3);
@@ -315,10 +399,8 @@
 /* now playing: no box, just type set along the top edge of the band */
 .theme-escapement .sc-panel {
   left: calc(var(--margin) + 4cqw);
-  bottom: calc(
-    100cqh - var(--band-y) + var(--band) / 2 + var(--margin) * tan(var(--angle)) + 2.2cqh
-  );
-  max-width: 62cqw;
+  bottom: calc(100cqh - var(--band-y) + var(--swell) + var(--margin) * tan(var(--angle)) + 2.5cqh);
+  max-width: 50cqw;
   transform-origin: 0 100%;
   transform: rotate(calc(-1 * var(--angle))) translateX(calc((1 - var(--presence, 1)) * -5cqw));
   opacity: clamp(0, var(--presence, 1) * 1.5, 1);
@@ -361,7 +443,7 @@
 }
 .theme-escapement .sc-title {
   font-weight: 700;
-  font-size: 4.8cqw;
+  font-size: 4.4cqw;
   line-height: 0.95;
   text-transform: uppercase;
   color: var(--chartreuse);
@@ -463,9 +545,7 @@
   --stack-gap: 1.2cqw;
   --slot-bleed: 0.4cqw;
   left: calc(var(--margin) + 5cqw);
-  bottom: calc(
-    100cqh - var(--band-y) + var(--band) / 2 + var(--margin) * tan(var(--angle)) + 2.2cqh
-  );
+  bottom: calc(100cqh - var(--band-y) + var(--swell) + var(--margin) * tan(var(--angle)) + 2.5cqh);
   width: 40cqw;
   transform-origin: 0 100%;
   rotate: calc(-1 * var(--angle));

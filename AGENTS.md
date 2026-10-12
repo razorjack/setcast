@@ -598,6 +598,14 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   they would otherwise float as white blotches. For the same reason the glow takes the art's
   correction, and `--lamps` turns it down on bright art: lamps glow in a dark scene, hardly in
   daylight. Afterhours does the same.
+- Escapement shows `.sc-art`, the file itself, in its band rather than `.sc-bg-img`. The band
+  crosses the whole frame, so the blurred copy behind contained art (square sleeves in landscape,
+  landscape art in portrait) would show in it as hard edges. It fits the file whole into the
+  frame, where the stage measured the subject, scales it about the subject (at most 1.3 times the
+  least scale that covers the band) and moves the subject just below the band's center line. The
+  art keeps its colors; a `color` blend layer, clear on the center line and cyan toward the
+  edges, makes the band read as cyan glass. Tinting the band with `--bg-color-1` turned beige art
+  into mud and neon art into a flat print.
 - Pirate shows `.sc-art` as a picture pasted on the sheet: it fills the frame while that keeps 70%
   of the art (the `backgroundFit: auto` threshold, computed in CSS with `round()`), else it shows
   the picture whole on paper, because the copy filter turns the blurred fill of contained art
@@ -646,10 +654,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Each theme starts the filter of the art it shows (`.sc-bg-img`, or `.sc-art`) with an exposure
   correction whose strength is `--bg-correction`, the theme's default in the fallback so users
   can override it. The default is applied only where it fixes something visible, judged against
-  the test images. Pirate and
-  escapement correct fully toward `REFERENCE_LUMA`: pirate's `brightness(5.4) contrast(2.1)`
-  turns any bright image into blank paper otherwise, and escapement's band washes out to white.
-  sterile-tech, long-exposure and quicksilver correct halfway (0.5): full correction darkens
+  the test images. Pirate corrects fully toward `REFERENCE_LUMA`: its `brightness(5.4)
+  contrast(2.1)` turns any bright image into blank paper otherwise. escapement corrects halfway
+  (0.5) toward its own `--art-luma` (0.3), so a dark sleeve and a sunny image both read in its
+  band. sterile-tech, long-exposure and quicksilver correct halfway (0.5): full correction darkens
   bright art until it disappears. afterhours only dims: it corrects halfway toward its own
   `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
   image turns to evening light. patina, bunker, interference and vfd correct fully
