@@ -61,7 +61,7 @@ a path to your own `.css`.
 | `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |
 | `bunker`        | your art through an opening in a concrete wall, lit by a work lamp; hazard tape on drops |
 | `vfd`           | a 90s deck's fluorescent display: dot matrix, lamp cells with peak hold (`--phosphor`)   |
-| `interference`  | a corrupted signal: channels split with the bass, the picture tearing on the drop        |
+| `interference`  | your art in color on a corrupted signal: channels split with the bass, tears on the drop |
 | `pirate`        | a photocopied rave flyer: grey copy, taped slips, a torn fluoro strip (`--fluoro`)      |
 | `afterhours`    | warm and late: your art in amber evening light, its lamps glowing, credits on rose glass |
 | `passe-partout` | your art untouched as a framed print on a wall in its colors, a museum label beside it   |
@@ -299,8 +299,8 @@ also carries `--bg-luma`, the art's mean brightness, and `--bg-color-1` and `--b
 most prominent hues. Each built-in theme corrects the art's exposure by `--bg-correction`, from 0
 (the art as it is) to 1 (brought fully to the brightness the theme is designed for), so
 `.setcast { --bg-correction: 0; }` in your `css:` file shows your art untouched. sterile-tech takes
-its accents and interference its duotone from the art's hues; `.setcast { --bg-accent: initial;
---bg-accent-2: initial; }` keeps the theme's own colors. The header, the clock, each panel and up
+its accents from the art's hues; `.setcast { --bg-accent: initial; --bg-accent-2: initial; }`
+keeps its own colors. The header, the clock, each panel and up
 next also carry `--bg-luma-behind`, the brightness of the art behind that element, so a theme can
 darken a text shadow or a panel only where bright art would wash it out; sterile-tech does.
 `--bg-detail-behind` says how busy the art is there. `data-bg-calm` names the emptiest part of

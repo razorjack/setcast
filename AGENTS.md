@@ -663,17 +663,19 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   little and keeps its color. afterhours only dims: it corrects halfway toward its own
   `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
   image turns to evening light. bunker also only dims, at 0.6 toward its own `--art-luma` (0.2);
-  its lamp pool and the bloom do the rest. patina, interference and vfd correct fully toward their
-  own `--art-luma` (0.3, 0.45, 0.45), the brightness at which their blends show art; at the
-  demo's 0.09 they showed dark art, the usual drum and bass art, as nothing. The demo background
-  now shows faintly in those three. bristol's faint wash needs no correction.
+  its lamp pool and the bloom do the rest. interference corrects halfway (0.5) toward its own
+  `--art-luma` (0.3) and keeps the art's colors; caption boxes keep its type legible. patina and
+  vfd correct fully toward their own `--art-luma` (0.3, 0.45), the brightness at which their
+  treatments show art; at the demo's 0.09 they showed dark art, the usual drum and bass art, as
+  nothing. bristol's faint wash needs no correction.
   Verify changes against real art, not the demo art, which is nearly black and flat; the
   gitignored `demos/backgrounds/` holds a local test set when present (never commit those images).
 - The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark
   but saturated scene still reads as its color, with a minimum share so a few stray pixels in
-  grey art give none. Only sterile-tech's accents and interference's duotone take them, at the
-  theme's own lightness and chroma so contrast stays as designed. Interference's RGB-split ghosts
-  stay magenta and cyan, and themes whose palette is their identity do not take art colors.
+  grey art give none. sterile-tech's accents, masthead's and anamorphic's ink and passe-partout's
+  wall take them, at the theme's own lightness and chroma so contrast stays as designed.
+  interference shows the art in its own colors and keeps its RGB-split ghosts magenta and cyan,
+  and themes whose palette is their identity do not take art colors.
 - `--bg-luma-behind` is measured per element, not for fixed zones of the frame: zones would bind
   every theme to the built-in layout, while an element's box follows whatever layout its theme
   gives it. A theme cannot add elements and pseudo-elements inherit from their host, so the fixed
@@ -748,6 +750,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   the file). Themes position visualizers
   and move the background freely (bunker insets and shakes `.sc-bg`, interference translates the
   image, pirate drops the drift), and CSS alone cannot align a layer with another element's box.
+  interference shows `.sc-art` as a moving ghost, so art copies and bloom follow its offset.
   A clip on `.sc-bg` (escapement and quicksilver, or patina's `overflow: clip` around a `.sc-art`
   larger than its print) does not apply to the copy, so the shapes show the art also where the
   theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the copy, so pirate pads and
