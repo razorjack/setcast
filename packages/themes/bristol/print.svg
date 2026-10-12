@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- the art printed in the stripes' inks: its shadows deep teal, its lights the grey of the
+       field and a pale grey -->
+  <filter id="print" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0" />
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.075 0.165 0.373 0.616 0.812" />
+      <feFuncG type="table" tableValues="0.133 0.322 0.478 0.639 0.827" />
+      <feFuncB type="table" tableValues="0.118 0.278 0.443 0.627 0.816" />
+    </feComponentTransfer>
+  </filter>
+</svg>

@@ -106,6 +106,9 @@ Gotchas:
   use of it breaks without an error. Anamorphic calls its bar height `--matte` for that reason.
 - A full-frame `backdrop-filter` roughly triples render time (a 6 s slice: 43 s against 14 s
   without it). Keep backdrop blur on small elements such as the panel.
+- A visualizer's `<svg>` is a replaced element: absolutely positioned with `width: auto`, it
+  keeps its own width and ignores `right`. To span from `left` to `right`, add
+  `justify-self: stretch` (bristol's overview).
 - `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a
   positional `dir` argument).
 - Audio feature gains (`spectrumFeatures`, `logBins`) are calibrated against the demo synth. Real
@@ -613,6 +616,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   into grey smudges. It therefore ignores an explicit `backgroundFit`. Its spectrum is a strip of
   fluoro paper torn by an SVG displacement filter, `filter: url(./torn.svg#torn)`; `loadCss`
   keeps the fragment when it inlines the file, and Chrome applies a filter from a data URI.
+- Bristol prints the art in two inks the same way, through a gradient map in
+  `filter: url(./print.svg#print)`. Its stage root is a bottom-justified flex column, so its
+  stripes stack and an opening stripe lifts the contour.
 - Playlist panels leave after `panel.dwell: 14` and `panel.fade: 1.2` by default. DJ panels keep
   credits visible, with focus controlling emphasis. Every entrance/dwell uses run start.
 - `setcast chapters` preserves compiled timestamps on stdout and prints platform constraints to
@@ -667,8 +673,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `--art-luma` (0.3) and keeps the art's colors; caption boxes keep its type legible. vfd also
   corrects halfway toward 0.3: the art is the room its display sits in. patina corrects fully
   toward its own `--art-luma` (0.3), the brightness at which its print shows art; at the demo's
-  0.09 it showed dark art, the usual drum and bass art, as nothing. bristol's faint wash needs no correction.
-  Verify changes against real art, not the demo art, which is nearly black and flat; the
+  0.09 it showed dark art, the usual drum and bass art, as nothing. bristol corrects fully toward
+  its own `--art-luma` (0.42) before printing the art through its gradient map (`print.svg`), so
+  dark and bright art both use every ink. Verify changes against real art, not the demo art, which is nearly black and flat; the
   gitignored `demos/backgrounds/` holds a local test set when present (never commit those images).
 - The art's hues come from a 24-bin hue histogram weighted by chroma times saturation, so a dark
   but saturated scene still reads as its color, with a minimum share so a few stray pixels in

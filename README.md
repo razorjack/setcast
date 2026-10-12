@@ -56,7 +56,7 @@ a path to your own `.css`.
 | `sterile-tech`  | the default: steel and frosted glass around your art, one rust accent, a scan per drop  |
 | `escapement`    | white paper, your art through a band of cyan glass, pixel capitals, a beat-ticking dial |
 | `long-exposure` | a night shot of your art: its lamps flaring, one sodium-amber trail, lime lowercase     |
-| `bristol`       | a flat grey field, a white contour, the set in stacked green stripes                     |
+| `bristol`       | your art printed in teal and grey inks, a white contour, the set told in green stripes  |
 | `patina`        | a worn, hand-tinted print cropped to its subject, tracked capitals, one string under it |
 | `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |
 | `bunker`        | your art through an opening in a concrete wall, lit by a work lamp; hazard tape on drops |

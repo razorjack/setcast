@@ -1,4 +1,5 @@
-/* bristol: a flat grey field, a white contour, and the set told in stacked green stripes. */
+/* bristol: a flat grey field with the art printed on it in green inks, a white contour, and the set
+   told in stacked green stripes. */
 
 @font-face {
   font-family: 'Oxanium';
@@ -44,26 +45,36 @@
   --sage: #93b5a4;
   --pale: #b7c7be;
   --fg: var(--white);
-  --fg-dim: var(--ink);
+  --fg-dim: var(--pale);
   --accent: var(--blue);
   --accent-2: var(--teal);
   --deck-a: var(--blue);
-  --deck-b: var(--teal);
-  --deck-c: var(--green);
+  --deck-b: var(--pale);
+  --deck-c: #1d2623;
   --deck-d: var(--white);
   --font-display: 'Oxanium', system-ui, sans-serif;
   --font-italic: 'Fira Sans', system-ui, sans-serif;
+  --font-mono: var(--font-display);
   --hairline: max(1px, 0.06cqw);
-  --radial-size: 56cqh;
-  --spectrum-height: 15cqh;
+  --contour: max(2px, 0.1cqw);
+  --spectrum-height: 14cqh;
+  --overview-height: 3.2cqh;
 
-  /* the stripes: a blue rule at --stripes, then teal, green, sage and pale down to the bottom */
-  --stripes: 58cqh;
-  --rule: 0.9cqh;
-  --teal-height: 10.5cqh;
-  --green-height: 7cqh;
-  --sage-height: 7cqh;
-  background: var(--grey);
+  /* the stripes from the top: the blue rule, teal (the title), green (artist and label), sage
+     (up next) and pale (the set) */
+  --rule: 0.7cqh;
+  --teal-height: 10cqh;
+  --green-height: 6cqh;
+  --sage-height: 5cqh;
+  --pale-height: 7cqh;
+  /* what is left of a stripe with nothing in it */
+  --rest: 1cqh;
+
+  /* the stripes stack up from the bottom edge, so a stripe that opens lifts the rule and the
+     contour resting on it */
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
 }
 
 /* a drop steps the stripes a shade darker for as long as it lasts */
@@ -73,82 +84,62 @@
   --sage: #5a8f79;
   --pale: #93b5a4;
 }
-/* a breakdown drains them toward the grey */
+/* a breakdown drains the stripes toward the grey, and the print with them */
 .theme-bristol[data-section='breakdown'] {
   --teal: #56625d;
   --green: #7c8783;
   --sage: #959d99;
   --pale: #a6aca9;
   --blue: #7c9fb4;
+  --drain: clamp(0, var(--section-time, 0) / 3, 1);
 }
 
-/* background: the art as a faint grey wash on the field */
-.theme-bristol .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0))) grayscale(1) contrast(0.7)
-    brightness(calc(1.5 + var(--rewind-flash)));
-  mix-blend-mode: multiply;
-  opacity: 0.22;
-}
-.theme-bristol .sc-bg-vignette {
+/* background: the flat grey field, and the art on it as a print in the stripes' inks
+   (print.svg), at full strength. Its tones are evened out first, so dark and bright art both
+   use every ink. */
+.theme-bristol .sc-bg {
   background: var(--grey);
-  mix-blend-mode: soft-light;
-  opacity: 0.5;
 }
-/* the stripes, and the blue rule lit as far as the set has run */
-.theme-bristol .sc-bg::after {
-  content: '';
-  position: absolute;
-  inset: var(--stripes) 0 0;
-  background:
-    linear-gradient(to right, var(--blue) calc(var(--set-progress, 0) * 100%), var(--blue-dim) 0) 0
-      0 / 100% var(--rule) no-repeat,
-    linear-gradient(
-      to bottom,
-      transparent var(--rule),
-      var(--teal) 0 calc(var(--rule) + var(--teal-height)),
-      var(--green) 0 calc(var(--rule) + var(--teal-height) + var(--green-height)),
-      var(--sage) 0
-        calc(var(--rule) + var(--teal-height) + var(--green-height) + var(--sage-height)),
-      var(--pale) 0
-    );
+.theme-bristol :is(.sc-bg-img, .sc-art) {
+  --art-luma: 0.42;
+  filter: brightness(
+      pow(clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4), var(--bg-correction, 1))
+    )
+    contrast(calc(1.3 + var(--drop-flash) * 0.5)) brightness(calc(1 + var(--rewind-flash) * 0.8))
+    url(./print.svg#print);
+  opacity: calc(1 - var(--drain, 0) * 0.55);
+}
+/* the subject lifted clear of the stripes, as far as the resting stripes still cover the art's
+   lower edge */
+.theme-bristol[data-background='image'] .sc-bg-img {
+  translate: 0 calc(-1 * clamp(0cqh, (var(--bg-focus-y, 0.5) - 0.4) * 100cqh, 9cqh));
+}
+/* a video of another shape stands whole on the grey field: the blurred copy the renderer puts
+   behind it, the first of two .sc-bg-img, sets its own filter inline, so it cannot be printed */
+.theme-bristol .sc-bg-img:has(+ .sc-bg-img) {
+  display: none;
+}
+/* the paper's tooth, over the print and the field alike */
+.theme-bristol .sc-bg-vignette {
+  background: url(../textures/grain.png) 0 0 / 12.5cqw;
+  mix-blend-mode: overlay;
+  opacity: 0.12;
 }
 
-/* the radial, turned on its side and drawn out: a white contour of a pod, breathing */
-.theme-bristol .sc-radial {
-  right: auto;
-  left: 14cqw;
-  top: 31cqh;
-  transform: none;
-  translate: 0 -50%;
-  rotate: 90deg;
-  scale: 0.72 1.9;
-}
-.theme-bristol .sc-radial circle,
-.theme-bristol .sc-radial line {
-  stroke: var(--white);
-  stroke-width: 1.2;
-}
-.theme-bristol .sc-radial circle {
-  stroke-opacity: 0.35;
-}
-.theme-bristol .sc-radial-line {
-  stroke: var(--white);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-.theme-bristol .sc-radial-area {
-  fill: rgb(255 255 255 / 0.12);
-}
-/* the spectrum as a contour resting on the blue rule */
+/* the white contour: the spectrum resting on the blue rule, the flat grey field rising under it */
 .theme-bristol .sc-spectrum {
-  bottom: calc(100cqh - var(--stripes));
+  position: relative;
+  inset: auto;
+  order: 1;
+  flex: none;
+  margin-bottom: -1px;
 }
 .theme-bristol .sc-spectrum-line {
   stroke: var(--white);
-  stroke-width: var(--hairline);
+  stroke-width: var(--contour);
 }
 .theme-bristol .sc-spectrum-area {
-  fill: rgb(255 255 255 / 0.1);
+  fill: var(--grey);
 }
 .theme-bristol .sc-spectrum rect {
   fill: var(--white);
@@ -156,19 +147,24 @@
 .theme-bristol .sc-spectrum-peaks rect {
   fill: var(--teal);
 }
-.theme-bristol .sc-oscilloscope-line,
-.theme-bristol .sc-vectorscope-line {
+/* other visualizers draw in the same white line */
+.theme-bristol :is(.sc-radial circle, .sc-radial line, .sc-radial-line) {
   stroke: var(--white);
-  stroke-width: var(--hairline);
+  stroke-width: 2;
 }
-.theme-bristol .sc-oscilloscope-trail,
-.theme-bristol .sc-vectorscope-trail {
+.theme-bristol .sc-radial-area {
+  fill: rgb(255 255 255 / 0.1);
+}
+.theme-bristol :is(.sc-oscilloscope-line, .sc-vectorscope-line) {
+  stroke: var(--white);
+  stroke-width: var(--contour);
+}
+.theme-bristol :is(.sc-oscilloscope-trail, .sc-vectorscope-trail) {
   stroke: var(--white);
   stroke-width: var(--hairline);
   opacity: calc((1 - var(--age)) * 0.4);
 }
-.theme-bristol .sc-oscilloscope-axis,
-.theme-bristol .sc-vectorscope-grid {
+.theme-bristol :is(.sc-oscilloscope-axis, .sc-vectorscope-grid) {
   stroke: rgb(255 255 255 / 0.3);
   stroke-width: var(--hairline);
 }
@@ -176,15 +172,11 @@
   color: var(--white);
   opacity: 0.8;
 }
-/* meters: horizontal bars stacked like the stripes */
 .theme-bristol .sc-meter-bar {
   background: rgb(255 255 255 / 0.15);
 }
 .theme-bristol .sc-meter-level {
   background: var(--white);
-}
-.theme-bristol .sc-meter[data-band='bass'] .sc-meter-level {
-  background: var(--deck);
 }
 .theme-bristol .sc-meter-peak {
   background: var(--teal);
@@ -192,163 +184,292 @@
 .theme-bristol .sc-meter-label {
   margin-top: 1cqh;
   font-size: 0.85cqw;
-  color: var(--ink);
-}
-.theme-bristol .sc-overview-bass,
-.theme-bristol .sc-overview-high {
-  fill: rgb(255 255 255 / 0.3);
-}
-.theme-bristol .sc-overview-played .sc-overview-bass,
-.theme-bristol .sc-overview-played .sc-overview-high {
-  fill: var(--white);
-}
-.theme-bristol .sc-overview-mark[data-type='drop'] {
-  stroke: var(--teal);
-  stroke-width: 0.12cqw;
-}
-.theme-bristol .sc-overview-head {
-  stroke: var(--blue);
-  stroke-width: 0.12cqw;
+  color: var(--white);
 }
 
-/* header: small lowercase on the grey */
-.theme-bristol .sc-header {
-  font-weight: 400;
-  font-size: 1.1cqw;
-  letter-spacing: 0.08em;
-  text-transform: lowercase;
-  color: var(--ink);
-}
-.theme-bristol .sc-clock {
-  font-variant-numeric: tabular-nums;
-}
-.theme-bristol .sc-clock-total {
-  opacity: 0.6;
+/* the blue rule on top of the stripes, lit as far as the set has run */
+.theme-bristol[data-presentation] .sc-contributors {
+  position: relative;
+  inset: auto;
+  order: 2;
+  flex: none;
+  width: auto;
+  min-height: calc(var(--rule) + 2 * var(--rest));
+  padding-top: var(--rule);
+  background:
+    linear-gradient(to right, var(--blue) calc(var(--set-progress, 0) * 100%), var(--blue-dim) 0)
+      top / 100% var(--rule) no-repeat,
+    linear-gradient(to bottom, var(--teal) 50%, var(--green) 0) content-box;
 }
 
-/*
- * Now playing: right-aligned, each line in its own place. The artist sits on the grey above the
- * blue rule, the title in the teal stripe, the label in the green one.
- */
-.theme-bristol .sc-panel {
-  --head-row: 3cqh;
-  --artist-row: 5cqh;
+/* now playing: the title opens the teal stripe, the artist and the label the green one */
+.theme-bristol[data-presentation='playlist'] .sc-panel {
+  --fit: clamp(0, var(--presence, 1), 1);
+  --teal-now: calc(var(--rest) + var(--fit) * (var(--teal-height) - var(--rest)));
+  --green-now: calc(var(--rest) + var(--fit) * (var(--green-height) - var(--rest)));
+  position: relative;
+  inset: auto;
+  max-width: none;
   display: grid;
-  grid-template-rows: var(--head-row) var(--artist-row) minmax(var(--teal-height), auto) var(
-      --green-height
-    );
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-rows: var(--teal-now) var(--green-now);
   align-items: center;
-  justify-items: end;
-  top: calc(var(--stripes) + var(--rule) - var(--head-row) - var(--artist-row) - var(--rule));
-  bottom: auto;
-  left: auto;
-  right: var(--margin);
-  max-width: 70cqw;
-  text-align: right;
-  opacity: clamp(0, var(--presence, 1) * 1.4, 1);
-  translate: calc((1 - var(--presence, 1)) * 5cqw) 0;
+  padding-inline: var(--margin);
+  overflow: clip;
+  background: linear-gradient(to bottom, var(--teal) var(--teal-now), var(--green) 0);
+}
+.theme-bristol[data-presentation='playlist'] .sc-panel > * {
+  opacity: clamp(0, var(--fit) * 1.8 - 0.8, 1);
+}
+.theme-bristol[data-presentation='playlist'] .sc-title {
+  grid-area: 1 / 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.theme-bristol[data-presentation='playlist'] .sc-panel-head {
+  grid-area: 1 / 2 / 2 / 4;
+  justify-self: end;
+}
+.theme-bristol[data-presentation='playlist'] .sc-artist {
+  grid-area: 2 / 1;
+}
+.theme-bristol[data-presentation='playlist'] .sc-label {
+  grid-area: 2 / 2;
+  margin-left: 2cqw;
+}
+.theme-bristol[data-presentation='playlist'] .sc-credit-details {
+  grid-area: 2 / 3;
+  margin-left: 1.6cqw;
 }
 .theme-bristol .sc-panel-head {
   gap: 0.9cqw;
+  font-weight: 500;
   font-size: 0.85cqw;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: lowercase;
-  color: var(--ink);
+  color: var(--white);
+}
+.theme-bristol .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-bristol .sc-index {
+  font-variant-numeric: tabular-nums;
 }
 .theme-bristol .sc-deck {
   display: inline-grid;
   place-items: center;
   min-width: 1.5cqw;
   height: 1.5cqw;
-  padding-inline: 0.35em;
+  padding-inline: 0.4em;
   white-space: nowrap;
   font-weight: 600;
   font-size: 0.8cqw;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
   text-transform: lowercase;
   color: var(--white);
   background: var(--deck);
 }
-.theme-bristol .sc-panel[data-deck='D'] .sc-deck {
+.theme-bristol :is([data-deck='B'], [data-deck='D']) .sc-deck {
   color: var(--ink);
 }
-.theme-bristol .sc-index {
-  font-variant-numeric: tabular-nums;
-}
-.theme-bristol .sc-index-sep {
-  margin: 0 0.25em;
+.theme-bristol .sc-title {
+  font-weight: 300;
+  font-size: 3.6cqw;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
+  color: var(--white);
 }
 .theme-bristol .sc-artist {
   font-family: var(--font-italic);
   font-style: italic;
   font-weight: 300;
-  font-size: 2.2cqw;
-  color: var(--teal);
-}
-.theme-bristol .sc-title {
-  font-weight: 300;
-  font-size: 4cqw;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
+  font-size: 1.8cqw;
   color: var(--white);
-  text-wrap: balance;
 }
-.theme-bristol .sc-label {
-  font-size: 0.95cqw;
+.theme-bristol .sc-label,
+.theme-bristol .sc-credit-details {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.85cqw;
   letter-spacing: 0.2em;
   text-transform: lowercase;
   color: var(--white);
 }
 
-/* up next: small, in the pale stripe at the bottom */
+/* up next opens the sage stripe 20 seconds ahead and closes it in the last half second, so the
+   stack settles before the next title opens the teal stripe */
 .theme-bristol .sc-next {
-  bottom: calc(var(--margin) * 0.8);
-  gap: 0.2cqw;
-  opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
+  --opening: min(
+    clamp(0, (20 - var(--until-next, 60)) / 1.2, 1),
+    clamp(0, var(--until-next, 60) / 0.5, 1)
+  );
+  --next-in: calc(var(--opening) * var(--opening) * (3 - 2 * var(--opening)));
+  position: relative;
+  inset: auto;
+  order: 3;
+  flex: none;
+  max-width: none;
+  height: calc(var(--next-in) * (var(--sage-height) - var(--rest)));
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 1.1cqw;
+  /* centered on the sage stripe, whose last --rest the header below paints */
+  padding: var(--rest) var(--margin) 0;
+  overflow: clip;
+  white-space: nowrap;
+  text-align: left;
+  background: var(--sage);
+}
+.theme-bristol .sc-next > * {
+  opacity: clamp(0, var(--next-in) * 2 - 1, 1);
 }
 .theme-bristol .sc-next-label {
+  font-weight: 500;
   font-size: 0.8cqw;
   letter-spacing: 0.16em;
+  text-transform: lowercase;
   color: var(--ink);
 }
 .theme-bristol .sc-next-artist {
   font-family: var(--font-italic);
   font-style: italic;
   font-weight: 300;
-  font-size: 1.2cqw;
+  font-size: 1.3cqw;
   color: var(--teal);
 }
 .theme-bristol .sc-next-title {
   font-weight: 400;
-  font-size: 1.7cqw;
+  font-size: 1.6cqw;
   text-transform: lowercase;
   color: var(--ink);
 }
 
-/* portrait: the stripes lower, the pod above them */
+/* the set: its name, the whole set as a strip and the clock, in the pale stripe at the bottom */
+.theme-bristol .sc-header {
+  position: relative;
+  inset: auto;
+  order: 4;
+  flex: none;
+  height: calc(var(--rest) + var(--pale-height));
+  align-items: center;
+  gap: 2cqw;
+  padding: var(--rest) var(--margin) 0;
+  font-size: 0.9cqw;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--ink);
+  background: linear-gradient(to bottom, var(--sage) var(--rest), var(--pale) 0);
+}
+.theme-bristol .sc-set-title {
+  anchor-name: --set-title;
+  max-width: 30cqw;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.theme-bristol .sc-clock {
+  anchor-name: --clock;
+  font-variant-numeric: tabular-nums;
+}
+.theme-bristol .sc-clock-total {
+  opacity: 0.6;
+}
+.theme-bristol .sc-overview {
+  z-index: 1;
+  top: auto;
+  bottom: calc((var(--pale-height) - var(--overview-height)) / 2);
+  left: calc(anchor(--set-title right) + 2.4cqw);
+  right: calc(anchor(--clock left) + 2.4cqw);
+  width: auto;
+  justify-self: stretch;
+}
+.theme-bristol :is(.sc-overview-high, .sc-overview-bass) {
+  fill: rgb(47 52 50 / 0.16);
+}
+.theme-bristol .sc-overview-played :is(.sc-overview-high, .sc-overview-bass) {
+  fill: var(--teal);
+}
+.theme-bristol .sc-overview-mark[data-type='listing'] {
+  stroke: var(--white);
+  stroke-width: 0.1cqw;
+}
+.theme-bristol .sc-overview-mark[data-type='drop'] {
+  stroke: var(--ink);
+  stroke-width: 0.1cqw;
+}
+.theme-bristol .sc-overview-head {
+  stroke: var(--blue);
+  stroke-width: 0.14cqw;
+}
+
+/* portrait: taller stripes and larger type; the title may take two lines */
 @container (aspect-ratio < 1) {
-  .theme-bristol .sc-bg::after,
-  .theme-bristol .sc-panel,
+  .theme-bristol .sc-spectrum,
   .theme-bristol .sc-contributors,
-  .theme-bristol .sc-spectrum {
-    --stripes: 64cqh;
-    --teal-height: 8cqh;
-    --green-height: 5cqh;
-    --sage-height: 5cqh;
+  .theme-bristol .sc-panel,
+  .theme-bristol .sc-next,
+  .theme-bristol .sc-header,
+  .theme-bristol .sc-overview {
+    --spectrum-height: 9cqh;
+    --overview-height: 2.2cqh;
+    --rule: 0.45cqh;
+    --teal-height: 12cqh;
+    --green-height: 4.6cqh;
+    --sage-height: 4cqh;
+    --pale-height: 4.6cqh;
+    --rest: 0.6cqh;
   }
-  .theme-bristol .sc-radial {
-    --radial-size: 60cqw;
-    left: 20cqw;
-    top: 34cqh;
+  /* landscape art would sit in a blurred copy of itself; the print shows it on the grey field
+     instead, over the stripes at their fullest, cut to 4:3 at most around its subject */
+  .theme-bristol[data-background='image'] .sc-bg-img {
+    display: none;
   }
-  .theme-bristol .sc-header {
-    font-size: 2.1cqw;
+  .theme-bristol[data-background='image'] .sc-art {
+    --print-aspect: min(var(--bg-aspect, 1), 4 / 3);
+    --print-h: min(100cqw / var(--print-aspect), 60cqh);
+    display: block;
+    top: calc((72cqh - var(--print-h)) / 2);
+    left: 50%;
+    width: calc(var(--print-h) * var(--print-aspect));
+    height: var(--print-h);
+    translate: -50% 0;
+    object-fit: cover;
+    object-position: calc(var(--bg-focus-x, 0.5) * 100%) 50%;
   }
-  .theme-bristol .sc-panel {
-    max-width: 90cqw;
+  /* a contained video stands where the print does */
+  .theme-bristol[data-background='video'] .sc-bg-img {
+    object-position: 50% 30%;
   }
-  .theme-bristol .sc-panel-head {
+  /* the head at the top of the teal stripe, the title, up to two lines, at its foot */
+  .theme-bristol[data-presentation='playlist'] .sc-panel-head {
+    grid-area: 1 / 1 / 2 / -1;
+    align-self: start;
+    justify-self: start;
+    margin-top: 1.6cqh;
+  }
+  .theme-bristol[data-presentation='playlist'] .sc-title {
+    grid-area: 1 / 1 / 2 / -1;
+    align-self: end;
+    display: -webkit-box;
+    margin-bottom: 1.4cqh;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+    text-wrap: balance;
+  }
+  .theme-bristol .sc-title {
+    font-size: 7cqw;
+  }
+  .theme-bristol .sc-artist {
+    font-size: 3.6cqw;
+  }
+  .theme-bristol .sc-panel-head,
+  .theme-bristol .sc-label,
+  .theme-bristol .sc-credit-details,
+  .theme-bristol .sc-next-label {
     font-size: 1.7cqw;
   }
   .theme-bristol .sc-deck {
@@ -356,166 +477,138 @@
     height: 3cqw;
     font-size: 1.6cqw;
   }
-  .theme-bristol .sc-artist {
-    font-size: 4cqw;
-  }
-  .theme-bristol .sc-title {
-    font-size: 7cqw;
-  }
-  .theme-bristol .sc-label {
-    font-size: 1.8cqw;
-  }
-  .theme-bristol .sc-next-label {
-    font-size: 1.6cqw;
-  }
   .theme-bristol .sc-next-artist {
-    font-size: 2.4cqw;
+    font-size: 2.6cqw;
   }
   .theme-bristol .sc-next-title {
     font-size: 3.2cqw;
   }
+  .theme-bristol .sc-header {
+    font-size: 1.8cqw;
+  }
+  .theme-bristol .sc-set-title {
+    max-width: 34cqw;
+  }
 }
 
 /*
- * DJ: every current play takes a stripe of its own, read like a line of a tracklist. The stripes
- * share one height, so when an earlier play leaves, the rows below slide up into its stripe.
+ * DJ: every current play takes a stripe of its own, read like a line of a tracklist, teal and
+ * green in turn. The stripes are painted by the stack, so when an earlier play leaves, the rows
+ * below take over its color as they move into its place.
  */
 .theme-bristol[data-presentation='dj'] {
-  --stripe: 7.5cqh;
-}
-.theme-bristol[data-presentation='dj'] .sc-bg::after {
-  --teal-height: var(--stripe);
-  --green-height: var(--stripe);
-  --sage-height: var(--stripe);
+  --stripe: 7cqh;
 }
 .theme-bristol[data-presentation='dj'] .sc-contributors {
   --stack-gap: 0px;
-  top: calc(var(--stripes) + var(--rule));
-  bottom: auto;
-  width: calc(100cqw - 2 * var(--margin));
+  background:
+    linear-gradient(to right, var(--blue) calc(var(--set-progress, 0) * 100%), var(--blue-dim) 0)
+      top / 100% var(--rule) no-repeat,
+    repeating-linear-gradient(
+        to bottom,
+        var(--teal) 0 var(--stripe),
+        var(--green) 0 calc(2 * var(--stripe))
+      )
+      content-box;
 }
 .theme-bristol[data-presentation='dj'] .sc-panel {
   display: flex;
-  flex-wrap: wrap;
   align-items: baseline;
   align-content: center;
+  flex-wrap: wrap;
   column-gap: 1.2cqw;
   height: var(--stripe);
-  text-align: left;
-  opacity: 1;
-  translate: calc((1 - var(--presence, 1)) * 4cqw) 0;
-  --on-stripe: var(--white);
-  --on-stripe-dim: var(--pale);
-}
-/* the sage and pale stripes are light, so the type on them turns dark */
-.theme-bristol[data-presentation='dj'] .sc-slot:nth-child(n + 3 of .sc-slot) .sc-panel {
-  --on-stripe: var(--ink);
-  --on-stripe-dim: var(--teal);
+  padding-inline: var(--margin);
 }
 .theme-bristol[data-presentation='dj'] .sc-panel-head {
-  order: 0;
-  font-size: 0.8cqw;
-  color: var(--on-stripe);
-}
-.theme-bristol[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
+  align-self: center;
 }
 .theme-bristol[data-presentation='dj']
   .sc-panel[data-returning='false']
   .sc-panel-head:not(:has(.sc-deck)) {
   display: none;
 }
-.theme-bristol[data-presentation='dj'] .sc-label {
+.theme-bristol[data-presentation='dj'] .sc-title {
   order: 1;
   min-width: 0;
-  overflow: hidden;
-  font-size: 0.8cqw;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: var(--on-stripe-dim);
-}
-.theme-bristol .sc-credit-details {
-  order: 2;
-  flex: none;
-  font-family: var(--font-display);
-  font-size: 0.8cqw;
-  letter-spacing: 0.2em;
-  text-transform: lowercase;
-  color: var(--on-stripe-dim);
-}
-.theme-bristol[data-presentation='dj'] .sc-artist {
-  order: 3;
-  flex: none;
-  margin-left: auto;
-  font-size: 1.45cqw;
-  color: var(--on-stripe-dim);
-}
-.theme-bristol[data-presentation='dj'] .sc-title {
-  order: 4;
-  min-width: 0;
-  margin-left: auto;
   overflow: hidden;
   font-size: 2.5cqw;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: var(--on-stripe);
 }
-.theme-bristol[data-presentation='dj'] .sc-artist + .sc-title {
-  margin-left: 0;
+.theme-bristol[data-presentation='dj'] .sc-artist {
+  order: 2;
+  flex: none;
+  font-size: 1.4cqw;
+}
+.theme-bristol[data-presentation='dj'] .sc-label {
+  order: 3;
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.theme-bristol[data-presentation='dj'] .sc-credit-details {
+  order: 4;
+  flex: none;
+}
+/* without a label the details take its place at the right */
+.theme-bristol[data-presentation='dj'] .sc-title + .sc-credit-details {
+  margin-left: auto;
 }
 .theme-bristol[data-presentation='dj'] .sc-panel[data-focused='true'] .sc-title {
   font-weight: 500;
 }
 .theme-bristol[data-presentation='dj'] .sc-panel[data-focused='false'] :is(.sc-title, .sc-artist) {
-  opacity: 0.75;
+  opacity: 0.8;
 }
 .theme-bristol .sc-contributor-count,
 .theme-bristol .sc-overflow {
-  font-family: var(--font-display);
-  font-size: 0.8cqw;
+  font-weight: 500;
+  font-size: 0.85cqw;
   letter-spacing: 0.2em;
   text-transform: lowercase;
-  color: var(--ink);
+  color: var(--white);
 }
 .theme-bristol .sc-contributor-count {
   position: absolute;
-  bottom: calc(100% + var(--rule) + 1cqh);
+  bottom: 0;
+  left: var(--margin);
+  display: flex;
+  align-items: center;
+  height: var(--stripe);
 }
 .theme-bristol .sc-overflow {
   display: flex;
   align-items: center;
   justify-content: end;
   height: var(--stripe);
-}
-.theme-bristol[data-presentation='dj'] .sc-next {
-  position-anchor: --contributors;
-  top: calc(anchor(bottom) + 1.4cqh);
-  bottom: auto;
+  padding-inline: var(--margin);
 }
 
 /* portrait: the title gets a line of its own under the rest of the row */
 @container (aspect-ratio < 1) {
-  .theme-bristol[data-presentation='dj'] .sc-bg::after,
-  .theme-bristol[data-presentation='dj'] .sc-contributors {
-    --stripe: 9cqh;
+  .theme-bristol[data-presentation='dj'] .sc-contributors,
+  .theme-bristol[data-presentation='dj'] .sc-panel,
+  .theme-bristol[data-presentation='dj'] .sc-contributor-count,
+  .theme-bristol[data-presentation='dj'] .sc-overflow {
+    --stripe: 8.4cqh;
   }
   .theme-bristol[data-presentation='dj'] .sc-panel {
-    row-gap: 0.6cqh;
+    row-gap: 0.4cqh;
     column-gap: 2cqw;
   }
   .theme-bristol[data-presentation='dj'] .sc-title {
+    order: 5;
     flex-basis: 100%;
-    text-align: right;
     font-size: 5.4cqw;
   }
   .theme-bristol[data-presentation='dj'] .sc-artist {
     font-size: 2.8cqw;
   }
-  .theme-bristol[data-presentation='dj'] .sc-panel-head,
-  .theme-bristol[data-presentation='dj'] .sc-label,
-  .theme-bristol .sc-credit-details,
   .theme-bristol .sc-contributor-count,
   .theme-bristol .sc-overflow {
-    font-size: 1.6cqw;
+    font-size: 1.7cqw;
   }
 }
