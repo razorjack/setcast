@@ -1,4 +1,5 @@
-/* long-exposure: a night shot. Light trails in sodium amber, lime-lit lowercase, everything else black. */
+/* long-exposure: the art as a night shot, its lamps flaring with the music, one sodium-amber light
+   trail through the dark half of the frame, the credits lit in lime lowercase. */
 
 @font-face {
   font-family: 'Unbounded';
@@ -67,17 +68,95 @@
   --font-display: 'Unbounded', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --hairline: max(1px, 0.05cqw);
-  --vectorscope-size: 78cqh;
-  --oscilloscope-height: 46cqh;
+  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.5));
+  /* lamps burn in a dark scene and hardly show in daylight: 1 on dark art, 0.2 on bright art */
+  --lamps: clamp(0.2, (0.55 - var(--bg-luma, 0)) * 3.5, 1);
+  --oscilloscope-height: 16cqh;
 
-  /* how bright the trails burn: the drop blows the exposure out, the run-up to it charges it */
+  /* how bright the trail burns: the drop blows the exposure out, the run-up to it charges it */
   --burn: calc(var(--mod-trail-glow, 1) * (1 + var(--drop-flash) * 0.8 + var(--tension) * 0.4));
-  /* 1 for the length of a rewind, when the scopes run mirrored */
+  /* 1 for the length of a rewind, when the trail runs mirrored */
   --rewinding: clamp(0, (0.6 - var(--since-rewind, 60)) * 1000, 1);
+
+  /* the credits hang in the darkest, emptiest part of the shot; bottom left without art. Up next
+     takes the other end of their row. The trail runs through the half away from them, tilted
+     away from them, and recedes toward them, so it has faded before it reaches them. */
+  --credits-top: auto;
+  --credits-right: auto;
+  --credits-bottom: var(--margin);
+  --credits-left: var(--margin);
+  --credits-margin: 0;
+  --credits-align: start;
+  --slide: -6cqw;
+  --next-top: auto;
+  --next-right: var(--margin);
+  --next-bottom: var(--margin);
+  --next-left: auto;
+  --next-align: end;
+  --header-top: var(--margin);
+  --header-bottom: auto;
+  --trail-y: 36cqh;
+  --trail-tilt: 5deg;
+  --trail-turn: -38deg;
+  --trail-far: to right;
   background: var(--black);
 }
+.theme-long-exposure[data-bg-calm$='right'] {
+  --credits-left: auto;
+  --credits-right: var(--margin);
+  --credits-align: end;
+  --slide: 6cqw;
+  --next-left: var(--margin);
+  --next-right: auto;
+  --next-align: start;
+  --trail-tilt: -5deg;
+  --trail-turn: 38deg;
+  --trail-far: to left;
+}
+.theme-long-exposure:is([data-bg-calm='top'], [data-bg-calm='bottom']) {
+  --credits-left: 0;
+  --credits-right: 0;
+  --credits-margin: 0 auto;
+  --credits-align: center;
+  --slide: 0cqw;
+  --trail-tilt: 0deg;
+}
+/* credits along the top push the set's name and clock down to the bottom edge */
+.theme-long-exposure[data-bg-calm^='top'] {
+  --credits-top: var(--margin);
+  --credits-bottom: auto;
+  --next-top: var(--margin);
+  --next-bottom: auto;
+  --header-top: auto;
+  --header-bottom: var(--margin);
+  --trail-y: 62cqh;
+  --trail-tilt: -5deg;
+}
+.theme-long-exposure[data-bg-calm='top-right'] {
+  --trail-tilt: 5deg;
+}
+.theme-long-exposure:is([data-bg-calm='left'], [data-bg-calm='right']) {
+  --credits-top: 0;
+  --credits-bottom: 0;
+  --credits-margin: auto 0;
+  --next-top: calc(var(--margin) + 5cqh);
+  --next-bottom: auto;
+  --trail-y: 81cqh;
+  --trail-tilt: 2deg;
+}
+.theme-long-exposure[data-bg-calm='right'] {
+  --trail-tilt: -2deg;
+}
+.theme-long-exposure[data-bg-calm='bottom'] {
+  --next-top: calc(var(--margin) + 5cqh);
+  --next-bottom: auto;
+}
+.theme-long-exposure[data-bg-calm='top'] {
+  --next-top: auto;
+  --next-bottom: calc(var(--margin) + 5cqh);
+}
 
-/* a breakdown lets the trails cool from sodium to embers */
+/* a breakdown lets the trail cool from sodium to embers */
 .theme-long-exposure[data-section='breakdown'] {
   --core: #ffb08a;
   --amber: #ff5a1f;
@@ -85,15 +164,45 @@
   --red: #5e0a05;
 }
 
-/* background: crushed to a night photograph, where only the highlights survive */
+/* background: the art as a night photograph, its shadows deep, its colors rich */
 .theme-long-exposure .sc-bg-img {
-  filter: brightness(pow(var(--bg-exposure, 1), var(--bg-correction, 0.5))) saturate(1.5)
-    contrast(1.7) brightness(calc(0.42 + var(--mod-exposure, 0) + var(--drop-flash) * 0.5));
+  filter: brightness(var(--art-gain)) saturate(1.45) contrast(1.4)
+    brightness(calc(0.66 + var(--mod-exposure, 0) + var(--drop-flash) * 0.5));
 }
+/* the vignette is the lens, so it darkens the flaring lamps too: it sits over the bloom, and
+   everything drawn on the photograph sits over it */
 .theme-long-exposure .sc-bg-vignette {
+  z-index: 1;
   background:
-    radial-gradient(120% 100% at 60% 45%, transparent 20%, rgb(0 0 0 / 0.9) 90%),
-    linear-gradient(to top, rgb(0 0 0 / 0.7), transparent 40%);
+    radial-gradient(120% 100% at 60% 45%, transparent 35%, rgb(0 0 0 / 0.75) 95%),
+    linear-gradient(to top, rgb(0 0 0 / 0.6), transparent 35%);
+}
+.theme-long-exposure
+  :is(
+    .sc-oscilloscope,
+    .sc-vectorscope,
+    .sc-spectrum,
+    .sc-radial,
+    .sc-meters,
+    .sc-spectrogram,
+    .sc-overview,
+    .sc-header,
+    .sc-panel,
+    .sc-contributors,
+    .sc-next
+  ) {
+  z-index: 2;
+}
+/* without art: an empty night sky, the city's sodium glow low on the horizon */
+.theme-long-exposure[data-background='none'] .sc-bg {
+  background:
+    radial-gradient(70% 45% at 55% 108%, rgb(255 110 20 / 0.2), transparent),
+    radial-gradient(140% 70% at 50% 110%, rgb(120 50 10 / 0.25), transparent);
+}
+/* the art's own lamps burn with the music, the way they flare in a long exposure. The glow comes
+   from the art as it is, so it takes the art's correction too. */
+.theme-long-exposure .sc-bloom-glow {
+  filter: brightness(calc(1.9 * var(--art-gain) * var(--lamps))) saturate(1.3);
 }
 /* the moment of a drop, and every hard hit after it, flashes the whole frame warm */
 .theme-long-exposure::after {
@@ -123,38 +232,38 @@
 .theme-long-exposure .sc-oscilloscope-trail {
   stroke: color-mix(in oklab, var(--amber), var(--red) calc(var(--age) * 100%));
   stroke-linejoin: round;
-  opacity: calc(1 - var(--age) * 0.8);
+  opacity: calc((1 - var(--age)) * 0.7);
 }
 .theme-long-exposure .sc-vectorscope-grid,
 .theme-long-exposure .sc-oscilloscope-axis {
   stroke: none;
 }
-/* the knot of light low on the right, where the streak comes down to meet it */
 .theme-long-exposure .sc-vectorscope {
-  top: 70cqh;
-  right: calc(var(--vectorscope-size) * -0.08);
-  rotate: -24deg;
   scale: calc(1 - 2 * var(--rewinding)) 1;
 }
 .theme-long-exposure .sc-vectorscope-line {
-  stroke-width: 3.2;
-}
-.theme-long-exposure .sc-vectorscope-trail {
   stroke-width: 2.4;
 }
-/* the streak across the frame, climbing to the right */
+.theme-long-exposure .sc-vectorscope-trail {
+  stroke-width: 1.6;
+}
+/* one streak through the half the credits leave dark, nearest the camera at the edge away
+   from them */
 .theme-long-exposure .sc-oscilloscope {
+  top: calc(var(--trail-y) - var(--oscilloscope-height) / 2);
+  bottom: auto;
   left: -12cqw;
   width: 124cqw;
-  bottom: 30cqh;
-  rotate: -17deg;
+  rotate: var(--trail-tilt);
   scale: calc(1 - 2 * var(--rewinding)) 1;
+  transform: perspective(70cqw) rotateY(var(--trail-turn));
+  mask-image: linear-gradient(var(--trail-far), transparent 6%, #000 36%);
 }
 .theme-long-exposure .sc-oscilloscope-line {
-  stroke-width: 0.16cqw;
+  stroke-width: 0.1cqw;
 }
 .theme-long-exposure .sc-oscilloscope-trail {
-  stroke-width: 0.1cqw;
+  stroke-width: 0.06cqw;
 }
 
 /* the other visualizers burn in the same sodium light */
@@ -219,41 +328,74 @@
   stroke-width: 0.12cqw;
 }
 
+/* how bright the art is behind each piece of type once the night has darkened it; bright or busy
+   art behind it gets a dark halo, and a deeper pool under the credits */
+.theme-long-exposure :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+  --glare: clamp(
+    0,
+    (var(--bg-luma-behind, 0) * var(--art-gain) - 0.1) * 4 + var(--bg-detail-behind, 0) * 8,
+    1
+  );
+  --halo:
+    0 0 0.2em rgb(0 0 0 / calc(0.3 + var(--glare) * 0.7)),
+    0 0 0.8em rgb(0 0 0 / calc(0.2 + var(--glare) * 0.6));
+}
+
 /* header: lowercase and wide, the set lit in lime, the clock in sodium */
 .theme-long-exposure .sc-header {
+  top: var(--header-top);
+  bottom: var(--header-bottom);
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 1.05cqw;
   letter-spacing: 0.02em;
   text-transform: lowercase;
   color: var(--lime);
-  text-shadow: 0 0 0.5em color-mix(in srgb, var(--lime) 60%, transparent);
+}
+.theme-long-exposure .sc-set-title {
+  text-shadow:
+    0 0 0.5em color-mix(in srgb, var(--lime) 60%, transparent),
+    var(--halo);
 }
 .theme-long-exposure .sc-clock {
   font-variant-numeric: tabular-nums;
   color: var(--amber);
-  text-shadow: 0 0 0.5em color-mix(in srgb, var(--amber) 60%, transparent);
+  text-shadow:
+    0 0 0.5em color-mix(in srgb, var(--amber) 60%, transparent),
+    var(--halo);
 }
 .theme-long-exposure .sc-clock-total {
-  color: var(--fg-dim);
-  text-shadow: none;
+  color: color-mix(in oklab, var(--fg) 45%, var(--fg-dim));
 }
 
 /* now playing: no glass, the type floats on a pool of darkness */
-.theme-long-exposure .sc-panel {
-  isolation: isolate;
+.theme-long-exposure[data-presentation='playlist'] .sc-panel,
+.theme-long-exposure[data-presentation='dj'] .sc-contributors {
+  inset: var(--credits-top) var(--credits-right) var(--credits-bottom) var(--credits-left);
+  height: fit-content;
+  margin: var(--credits-margin);
+  text-align: var(--credits-align);
+}
+.theme-long-exposure[data-presentation='playlist'] .sc-panel {
+  anchor-name: --credits;
+  width: fit-content;
   max-width: 64cqw;
+}
+.theme-long-exposure .sc-panel {
+  --pool: calc(0.62 + var(--glare) * 0.33);
+  isolation: isolate;
   opacity: clamp(0, var(--presence, 1) * 1.4, 1);
-  transform: translateX(calc((1 - var(--presence, 1)) * -6cqw));
+  transform: translateX(calc((1 - var(--presence, 1)) * var(--slide)));
 }
 .theme-long-exposure .sc-panel::before {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -7cqw -10cqw -5cqw -8cqw;
-  background: radial-gradient(closest-side, rgb(0 0 0 / 0.8), transparent);
+  inset: -6cqw -9cqw;
+  background: radial-gradient(closest-side, rgb(0 0 0 / var(--pool)) 35%, transparent);
 }
 .theme-long-exposure .sc-panel-head {
+  justify-content: var(--credits-align);
   gap: 1cqw;
   margin-bottom: 1cqw;
   font-family: var(--font-mono);
@@ -261,6 +403,9 @@
   letter-spacing: 0.12em;
   text-transform: lowercase;
   color: var(--fg-dim);
+}
+.theme-long-exposure :is(.sc-panel-head, .sc-label, .sc-credit-details) {
+  text-shadow: var(--halo);
 }
 /* the deck in a thin boxed square, like a label mark */
 .theme-long-exposure .sc-deck {
@@ -285,7 +430,7 @@
   margin: 0 0.3em;
 }
 .theme-long-exposure .sc-artist {
-  padding-left: 0.4cqw;
+  padding-inline: 0.4cqw;
   font-weight: 500;
   font-size: 1.9cqw;
   letter-spacing: -0.01em;
@@ -313,7 +458,7 @@
 }
 .theme-long-exposure .sc-label {
   margin-top: 1cqw;
-  padding-left: 0.4cqw;
+  padding-inline: 0.4cqw;
   font-family: var(--font-mono);
   font-size: 0.9cqw;
   letter-spacing: 0.1em;
@@ -321,22 +466,29 @@
   color: var(--amber);
 }
 
-/* up next */
+/* up next: the other end of the credits' row */
 .theme-long-exposure .sc-next {
+  inset: var(--next-top) var(--next-right) var(--next-bottom) var(--next-left);
+  height: fit-content;
+  align-items: var(--next-align);
   gap: 0.3cqw;
+  text-align: var(--next-align);
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-long-exposure .sc-next-label {
   font-family: var(--font-mono);
   font-size: 0.8cqw;
   letter-spacing: 0.12em;
+  text-transform: lowercase;
   color: var(--fg-dim);
+  text-shadow: var(--halo);
 }
 .theme-long-exposure .sc-next-artist {
   font-weight: 500;
   font-size: 1.2cqw;
   text-transform: lowercase;
   color: var(--lime);
+  text-shadow: var(--halo);
 }
 .theme-long-exposure .sc-next-title {
   font-weight: 900;
@@ -348,24 +500,40 @@
   text-shadow: 0 0 0.25em var(--lime);
 }
 
-/* portrait: the streak turns steeper and the knot sits under the panel */
+/* portrait: the credits take the calm top or bottom band, left aligned; the streak crosses the
+   middle, where art of another shape sits */
 @container (aspect-ratio < 1) {
-  .theme-long-exposure .sc-vectorscope {
-    --vectorscope-size: 70cqw;
-    top: 42cqh;
-    right: 4cqw;
+  .theme-long-exposure :is(.sc-panel, .sc-contributors) {
+    --credits-left: var(--margin);
+    --credits-right: auto;
+    --credits-margin: 0;
+    --credits-align: start;
+    --slide: -6cqw;
   }
   .theme-long-exposure .sc-oscilloscope {
-    rotate: -35deg;
-    bottom: 48cqh;
-    left: -30cqw;
-    width: 160cqw;
-    height: 30cqh;
+    --oscilloscope-height: 8cqh;
+    --trail-y: 56cqh;
+    --trail-tilt: -10deg;
+    left: -20cqw;
+    width: 140cqw;
+    transform: perspective(120cqw) rotateY(var(--trail-turn));
+  }
+  .theme-long-exposure .sc-next {
+    position-anchor: --credits;
+    inset: auto auto calc(anchor(top) + 4cqw) var(--margin);
+    align-items: start;
+    text-align: start;
+  }
+  .theme-long-exposure[data-presentation='dj'] .sc-next {
+    position-anchor: --contributors;
+  }
+  .theme-long-exposure[data-bg-calm^='top'] .sc-next {
+    inset: calc(anchor(bottom) + 4cqw) auto auto var(--margin);
   }
   .theme-long-exposure .sc-header {
     font-size: 2cqw;
   }
-  .theme-long-exposure .sc-panel {
+  .theme-long-exposure[data-presentation='playlist'] .sc-panel {
     max-width: 88cqw;
   }
   .theme-long-exposure .sc-panel-head {
@@ -396,26 +564,38 @@
   }
 }
 
-/* DJ: one pool of darkness under the stack; the focused title is lit, the others are unlit signs */
+/* DJ: one pool of darkness under the stack, as deep as the calm area's brightness asks; the
+   focused title is lit, the others are unlit signs */
 .theme-long-exposure[data-presentation='dj'] .sc-contributors {
   --stack-gap: 1.3cqw;
   --slot-bleed: 1.2cqw;
+  --calm-glare: clamp(
+    0,
+    (var(--bg-calm-luma, 0) * var(--art-gain) - 0.1) * 4 + var(--bg-calm-detail, 0) * 8,
+    1
+  );
   isolation: isolate;
 }
 .theme-long-exposure[data-presentation='dj'] .sc-contributors::before {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -6cqw -12cqw -5cqw -8cqw;
-  background: radial-gradient(closest-side, rgb(0 0 0 / 0.82), transparent);
+  inset: -6cqw -10cqw;
+  background: radial-gradient(
+    closest-side,
+    rgb(0 0 0 / calc(0.66 + var(--calm-glare) * 0.3)) 35%,
+    transparent
+  );
 }
 /* deck, artist / title / label, details: each line wraps only when it has something on it */
 .theme-long-exposure[data-presentation='dj'] .sc-panel {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: var(--credits-align);
   column-gap: 0.7cqw;
-  translate: calc((1 - var(--presence, 1)) * -3cqw) 0;
+  transform: none;
+  translate: calc((1 - var(--presence, 1)) * var(--slide) / 2) 0;
 }
 .theme-long-exposure[data-presentation='dj'] .sc-title {
   flex-basis: 100%;
@@ -456,14 +636,15 @@
 }
 .theme-long-exposure .sc-credit-details {
   margin-top: 0.6cqw;
-  padding-left: 0.4cqw;
+  padding-inline: 0.4cqw;
   font-size: 0.75cqw;
   letter-spacing: 0.1em;
   color: var(--fg-dim);
 }
-/* the lights are off on everything but the focused credit */
+/* the lights are off on everything but the focused credit: pale letters, no glow */
 .theme-long-exposure[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
-  -webkit-text-stroke-color: color-mix(in srgb, var(--fg) 42%, transparent);
+  color: color-mix(in oklab, var(--fg) 54%, var(--black));
+  -webkit-text-stroke-color: var(--black);
   text-shadow: none;
 }
 .theme-long-exposure[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-artist {
@@ -492,10 +673,6 @@
   .theme-long-exposure[data-presentation='dj'] .sc-contributors {
     --stack-gap: 2.6cqw;
     --slot-bleed: 2.4cqw;
-  }
-  .theme-long-exposure[data-presentation='dj'] .sc-next {
-    position-anchor: --contributors;
-    bottom: calc(anchor(top) + 4cqw);
   }
   .theme-long-exposure[data-presentation='dj'] .sc-panel-head,
   .theme-long-exposure[data-presentation='dj'] .sc-label,

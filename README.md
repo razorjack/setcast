@@ -55,7 +55,7 @@ a path to your own `.css`.
 | --------------- | --------------------------------------------------------------------------------------- |
 | `sterile-tech`  | the default: cold steel, frosted glass, one rust accent, a scan line on every drop       |
 | `escapement`    | white paper, a cyan band of the art, pixel capitals, a dial that ticks on the beat       |
-| `long-exposure` | a night shot: the scopes as sodium-amber light trails, lime-lit lowercase                |
+| `long-exposure` | a night shot of your art: its lamps flaring, one sodium-amber trail, lime lowercase     |
 | `bristol`       | a flat grey field, a white contour, the set in stacked green stripes                     |
 | `patina`        | a worn bronze print in a dark frame, small tracked capitals, one vibrating string        |
 | `quicksilver`   | a silver field, a chrome spindle around a cobalt orb, spaced chrome capitals             |

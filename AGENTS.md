@@ -588,9 +588,16 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   ordinary rendering and `init` need no rasterizer dependency. The 2304x1296 background leaves
   room for the demo's zoom at 1080p; larger outputs can regenerate it or use the SVG directly.
   Keep geometric assets such as escapement's dial as SVG so their fine lines stay sharp.
-- Long-exposure's scopes use two chained drop shadows. Each shadow filters the preceding result,
-  so adding a third wide blur is expensive on these large SVGs. Keep all history traces and tune
-  the two radii for the light-trail halo; compare both a drop flash and sustained playback.
+- Long-exposure's light trail (the oscilloscope with all its history traces) uses two chained drop
+  shadows. Each shadow filters the preceding result, so adding a third wide blur is expensive on
+  this large SVG. Tune the two radii for the halo; compare both a drop flash and sustained
+  playback. The trail is drawn in perspective (`rotateY`), with a mask fading its far end toward
+  the credits, so it never crosses the type.
+- Long-exposure puts its vignette above the bloom (`z-index: 1`, everything drawn on the
+  photograph at 2). Bloom glows come from the unfiltered art, so over a darkened, vignetted edge
+  they would otherwise float as white blotches. For the same reason the glow takes the art's
+  correction, and `--lamps` turns it down on bright art: lamps glow in a dark scene, hardly in
+  daylight. Afterhours does the same.
 - Playlist panels leave after `panel.dwell: 14` and `panel.fade: 1.2` by default. DJ panels keep
   credits visible, with focus controlling emphasis. Every entrance/dwell uses run start.
 - `setcast chapters` preserves compiled timestamps on stdout and prints platform constraints to
