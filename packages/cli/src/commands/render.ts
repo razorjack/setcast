@@ -73,6 +73,7 @@ async function runCommand(argv: string[]): Promise<void> {
     projectDir: dir,
     out,
     crf: config.output.crf,
+    x264Preset: config.output.x264Preset,
     hardwareAcceleration: config.output.hardwareAcceleration,
     videoBitrate: config.output.videoBitrate,
     jpegQuality: config.output.jpegQuality,

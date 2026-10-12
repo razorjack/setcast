@@ -41,7 +41,6 @@ export interface RenderOptions extends EncodingOptions {
   /** Seconds; inclusive start, exclusive end. */
   range?: [number, number];
   concurrency?: number;
-  jpegQuality?: number;
   gl?: GraphicsBackend;
   onProgress?: Report;
 }
@@ -92,7 +91,6 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
       codec: 'h264',
       audioCodec: 'aac',
       ...encoding,
-      jpegQuality: options.jpegQuality ?? 95,
       outputLocation: options.out,
       inputProps: project,
       frameRange,
@@ -255,7 +253,7 @@ export async function preview(project: ResolvedProject, options: PreviewOptions)
 
 function studioArgs(propsFile: string, options: PreviewOptions): string[] {
   const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', options.projectDir];
-  args.push(...studioEncodingArgs(options), '--jpeg-quality', String(options.jpegQuality ?? 95));
+  args.push(...studioEncodingArgs(options));
   if (options.port) args.push('--port', String(options.port));
   const { gl } = graphicsOptions(options.gl);
   if (gl) args.push('--gl', gl);

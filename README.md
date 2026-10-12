@@ -201,6 +201,21 @@ Hardware encoding speeds up compression, while frame rendering still uses Chromi
 of `12M` is a starting point for 1080p/30 fps, not a quality equivalent to CRF 18. Compare a short
 slice for dark gradients, moving detail and file size before exporting a full set.
 
+For faster exports with small differences in fine texture and gradients, set:
+
+```yaml
+output:
+  profile: fast
+```
+
+The `fast` profile uses `jpegQuality: 92` and `x264Preset: veryfast`, keeping resolution,
+frame rate and CRF unchanged. The default `standard` profile uses JPEG quality 95 and
+the `medium` preset. Explicit `jpegQuality`, `x264Preset` and `crf` settings take precedence.
+These settings apply to renders, clips and Studio exports. With hardware encoding, `fast`
+changes only JPEG quality; omit `x264Preset`, which configures software encoding only.
+The [rendering benchmarks](docs/render-performance.md) measured 14–25% shorter exports
+with this combination on the tested clips. Actual gains depend on the theme and machine.
+
 The bundled procedural textures and default background are pre-rendered PNGs, so exporting
 does not repeatedly evaluate SVG noise and blur. SVG backgrounds still work; for an existing
 project, pre-render complex static artwork to a bitmap with enough pixels for the output and

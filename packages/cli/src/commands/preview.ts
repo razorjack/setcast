@@ -26,7 +26,8 @@ export async function run(argv: string[]): Promise<void> {
   const project = await withSetEnvelope(loaded);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
 
-  const { gl, crf, hardwareAcceleration, videoBitrate, jpegQuality } = loaded.config.output;
+  const { gl, crf, hardwareAcceleration, videoBitrate, jpegQuality, x264Preset } =
+    loaded.config.output;
   const studio: PreviewOptions = {
     projectDir: dir,
     watch: (update) =>
@@ -40,6 +41,7 @@ export async function run(argv: string[]): Promise<void> {
       ),
     gl,
     crf,
+    x264Preset,
     hardwareAcceleration,
     videoBitrate,
     jpegQuality,

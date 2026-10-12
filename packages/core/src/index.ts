@@ -43,11 +43,13 @@ export {
   OutputSchema,
   PanelSchema,
   ProjectConfigSchema,
+  type ExportProfile,
   type GraphicsBackend,
   type HardwareAcceleration,
   type ProjectConfig,
   type ProjectConfigInput,
   type VideoBitrate,
+  type X264Preset,
 } from './config.ts';
 export { TimeSchema } from './time-schema.ts';
 export { normalizeMix, compileMix, readMixDocument, mixWarnings } from './mix.ts';

@@ -142,6 +142,14 @@ describe('preview process', () => {
     expect(args).not.toContain('--video-bitrate');
   });
 
+  test('applies the fast profile to Studio export settings', async () => {
+    exitWith(0);
+    await preview(project, { projectDir: '/project', profile: 'fast' });
+    expect(childProcess.spawn.mock.calls[0]![1]).toEqual(
+      expect.arrayContaining(['--jpeg-quality', '92', '--x264-preset', 'veryfast']),
+    );
+  });
+
   test('reports terminating signals', async () => {
     exitWith(null, 'SIGTERM');
     await expect(preview(project, { projectDir: '/project' })).rejects.toThrow(

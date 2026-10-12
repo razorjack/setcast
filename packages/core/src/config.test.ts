@@ -8,9 +8,48 @@ describe('video encoding settings', () => {
         hardwareAcceleration: 'disable',
         crf: 18,
         jpegQuality: 95,
+        profile: 'standard',
+        x264Preset: 'medium',
       });
     }
     expect(OutputSchema.parse({ crf: 22 }).crf).toBe(22);
+  });
+
+  test('fast changes capture quality and compression effort without changing timing or CRF', () => {
+    const output = OutputSchema.parse({ profile: 'fast' });
+    expect(output).toMatchObject({
+      width: 1920,
+      height: 1080,
+      fps: 30,
+      crf: 18,
+      jpegQuality: 92,
+      x264Preset: 'veryfast',
+    });
+    expect(OutputSchema.parse(output)).toEqual(output);
+    expect(
+      OutputSchema.parse({ profile: 'fast', jpegQuality: 98, x264Preset: 'slow', crf: 20 }),
+    ).toMatchObject({ jpegQuality: 98, x264Preset: 'slow', crf: 20 });
+  });
+
+  test('hardware encoding uses fast capture quality without a software preset', () => {
+    const output = OutputSchema.parse({
+      profile: 'fast',
+      hardwareAcceleration: 'if-possible',
+      videoBitrate: '12M',
+    });
+    expect(output.jpegQuality).toBe(92);
+    expect(output.x264Preset).toBeUndefined();
+    expect(OutputSchema.parse(output)).toEqual(output);
+    expect(() => OutputSchema.parse({ ...output, x264Preset: 'veryfast' })).toThrow(
+      'Remove x264Preset',
+    );
+  });
+
+  test('reports invalid profile and software preset names', () => {
+    expect(() => OutputSchema.parse({ profile: 'draft' })).toThrow(
+      'profile must be standard or fast',
+    );
+    expect(() => OutputSchema.parse({ x264Preset: 'quick' })).toThrow('x264Preset must be');
   });
 
   test.each(['disable', 'if-possible', 'required'] as const)(

@@ -129,9 +129,31 @@ describe('render orchestration failures', () => {
     },
   );
 
+  test('resolves the fast profile for direct API renders and honors explicit quality settings', async () => {
+    await render(project, { projectDir: '.', out: 'out.mp4', profile: 'fast' });
+    expect(remotion.renderMedia).toHaveBeenLastCalledWith(
+      expect.objectContaining({ jpegQuality: 92, x264Preset: 'veryfast', crf: 18 }),
+    );
+    await render(project, {
+      projectDir: '.',
+      out: 'out.mp4',
+      profile: 'fast',
+      jpegQuality: 96,
+      x264Preset: 'slow',
+    });
+    expect(remotion.renderMedia).toHaveBeenLastCalledWith(
+      expect.objectContaining({ jpegQuality: 96, x264Preset: 'slow' }),
+    );
+  });
+
   test.each([
     { crf: 18, videoBitrate: '12M' as const },
     { hardwareAcceleration: 'required' as const },
+    {
+      hardwareAcceleration: 'required' as const,
+      videoBitrate: '12M' as const,
+      x264Preset: 'veryfast' as const,
+    },
   ])('rejects invalid encoding options before audio or browser work: %j', async (options) => {
     await expect(render(project, { projectDir: '.', out: 'out.mp4', ...options })).rejects.toThrow(
       'Invalid video encoding settings',

@@ -16,6 +16,32 @@ const GraphicsBackendSchema = z.enum(
 );
 export type GraphicsBackend = z.infer<typeof GraphicsBackendSchema>;
 
+const ExportProfileSchema = z.enum(['standard', 'fast'], {
+  error:
+    'profile must be standard or fast. Use fast for faster exports with small quality differences.',
+});
+export type ExportProfile = z.infer<typeof ExportProfileSchema>;
+
+const X264PresetSchema = z.enum(
+  [
+    'ultrafast',
+    'superfast',
+    'veryfast',
+    'faster',
+    'fast',
+    'medium',
+    'slow',
+    'slower',
+    'veryslow',
+    'placebo',
+  ],
+  {
+    error:
+      'x264Preset must be ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow or placebo. Use medium for the default compression effort.',
+  },
+);
+export type X264Preset = z.infer<typeof X264PresetSchema>;
+
 const HardwareAccelerationSchema = z.enum(['disable', 'if-possible', 'required'], {
   error: 'hardwareAcceleration must be disable, if-possible or required.',
 });
@@ -54,6 +80,8 @@ const outputShape = {
     })
     .default('out/set.mp4'),
   gl: GraphicsBackendSchema.default('auto'),
+  profile: ExportProfileSchema.default('standard'),
+  x264Preset: X264PresetSchema.optional(),
   hardwareAcceleration: HardwareAccelerationSchema.default('disable'),
   videoBitrate: VideoBitrateSchema.optional(),
   /** x264 constant rate factor: lower is better and bigger. 1-51. */
@@ -69,7 +97,7 @@ const outputShape = {
     .int({ error: 'jpegQuality must be a whole number from 1 to 100.' })
     .min(1, { error: 'jpegQuality must be a whole number from 1 to 100.' })
     .max(100, { error: 'jpegQuality must be a whole number from 1 to 100.' })
-    .default(95),
+    .optional(),
 };
 
 export const OutputSchema = z
@@ -78,6 +106,14 @@ export const OutputSchema = z
   })
   .superRefine((output, ctx) => {
     const hardware = output.hardwareAcceleration !== 'disable';
+    if (hardware && output.x264Preset !== undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['x264Preset'],
+        message:
+          'Remove x264Preset when using hardwareAcceleration. It only configures software encoding.',
+      });
+    }
     if (hardware && !output.videoBitrate) {
       ctx.addIssue({
         code: 'custom',
@@ -93,10 +129,16 @@ export const OutputSchema = z
       });
     }
   })
-  .transform((output) => ({
-    ...output,
-    crf: output.crf ?? (output.videoBitrate ? undefined : 18),
-  }));
+  .transform((output) => {
+    const fast = output.profile === 'fast';
+    const softwarePreset = output.x264Preset ?? (fast ? 'veryfast' : 'medium');
+    return {
+      ...output,
+      crf: output.crf ?? (output.videoBitrate ? undefined : 18),
+      jpegQuality: output.jpegQuality ?? (fast ? 92 : 95),
+      x264Preset: output.hardwareAcceleration === 'disable' ? softwarePreset : undefined,
+    };
+  });
 
 export const PanelSchema = z.strictObject({
   /** Seconds the now-playing panel stays up after a track change. 0 keeps it up for the whole set. */

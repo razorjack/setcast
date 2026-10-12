@@ -138,6 +138,7 @@ async function renderClip(
       out,
       range,
       crf: loaded.config.output.crf,
+      x264Preset: loaded.config.output.x264Preset,
       hardwareAcceleration: loaded.config.output.hardwareAcceleration,
       videoBitrate: loaded.config.output.videoBitrate,
       jpegQuality: loaded.config.output.jpegQuality,

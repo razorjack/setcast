@@ -582,6 +582,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Renders pass `jpegQuality: 95` (Remotion defaults to 80) and `output.crf` (default 18). The
   intermediate frames the encoder reads are JPEGs, and the default look is a dark scene full of
   smooth gradients, blur and a vignette, which bands badly below ~90. Both are `output:` keys.
+- `output.profile: fast` supplies JPEG quality 92 and x264 `veryfast`; `standard` preserves
+  JPEG 95 and `medium`. Explicit quality settings override profile defaults. Profiles do not
+  change resolution, FPS or CRF. Hardware encoding uses the profile's JPEG quality only and
+  rejects an explicit `x264Preset`, because NVENC presets differ from x264's. Configuration,
+  direct renderer calls and Studio share resolution through `OutputSchema`.
 - Hardware encoding is opt-in with `output.hardwareAcceleration` (`disable`, `if-possible`,
   `required`) and requires `output.videoBitrate` (e.g. `12M`). Explicit CRF conflicts with bitrate
   or hardware encoding; the schema adds CRF 18 only when no bitrate is present. The adapter
