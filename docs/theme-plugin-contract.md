@@ -90,13 +90,15 @@ and panels legible over bright art, in short like this:
 
 ```css
 .theme-sterile-tech {
-  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.5));
+  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.2));
 }
 .theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
   --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.2) * 4, 1);
+  --busy: clamp(0, (var(--bg-detail-behind, 0) - 0.03) * 16, 1);
+  --veil: max(var(--glare), var(--busy));
 }
-.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-next) {
-  text-shadow: 0 0 calc(var(--glare) * 0.5cqw) rgb(4 6 8 / var(--glare));
+.theme-sterile-tech .sc-panel {
+  background-color: color-mix(in srgb, var(--panel-bg), rgb(8 11 15) calc(var(--veil) * 62%));
 }
 ```
 

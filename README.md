@@ -53,7 +53,7 @@ a path to your own `.css`.
 
 | theme           | look                                                                                    |
 | --------------- | --------------------------------------------------------------------------------------- |
-| `sterile-tech`  | the default: cold steel, frosted glass, one rust accent, a scan line on every drop       |
+| `sterile-tech`  | the default: steel and frosted glass around your art, one rust accent, a scan per drop  |
 | `escapement`    | white paper, your art through a band of cyan glass, pixel capitals, a beat-ticking dial |
 | `long-exposure` | a night shot of your art: its lamps flaring, one sodium-amber trail, lime lowercase     |
 | `bristol`       | a flat grey field, a white contour, the set in stacked green stripes                     |

@@ -414,8 +414,9 @@ nearly black, flat `bg.png` breaks on such art. When you build or change a theme
   `.sc-next`: how bright the art is behind that element, every frame. Scale a text shadow or a
   plate's opacity with it, so text stays legible over a bright sky without changing the look over
   dark art. Multiply it by the theme's correction gain, declare derived variables on the measured
-  element itself, and never size or position anything with it. sterile-tech's `--art-gain` and
-  `--glare` are the reference.
+  element itself, and never size or position anything with it. sterile-tech's `--art-gain`,
+  `--glare` and `--veil` (the larger of glare and busyness from `--bg-detail-behind`) are the
+  reference.
 - `--bg-detail-behind` on the same elements: how busy the art is behind it. Brightness alone
   misses a dense pattern of moderate luma (psychedelic art), which needs a plate as much as a
   bright sky does. `--bg-detail` is the same for the whole art.
@@ -657,8 +658,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   the test images. Pirate corrects fully toward `REFERENCE_LUMA`: its `brightness(5.4)
   contrast(2.1)` turns any bright image into blank paper otherwise. escapement corrects halfway
   (0.5) toward its own `--art-luma` (0.3), so a dark sleeve and a sunny image both read in its
-  band. sterile-tech, long-exposure and quicksilver correct halfway (0.5): full correction darkens
-  bright art until it disappears. afterhours only dims: it corrects halfway toward its own
+  band. long-exposure and quicksilver correct halfway (0.5): full correction darkens bright art
+  until it disappears. sterile-tech corrects a fifth of the way (0.2), so a sunny image dims a
+  little and keeps its color. afterhours only dims: it corrects halfway toward its own
   `--art-luma` (0.2) and never brightens darker art, so a dark sleeve stays as it is and a sunny
   image turns to evening light. bunker also only dims, at 0.6 toward its own `--art-luma` (0.2);
   its lamp pool and the bloom do the rest. patina, interference and vfd correct fully toward their

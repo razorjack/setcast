@@ -1,4 +1,5 @@
-/* sterile-tech: dark, cold, clinical. One warm rust accent. */
+/* sterile-tech: cold steel, frosted glass, one rust accent. The art in its own color, framed
+   like a specimen under an instrument. */
 
 @font-face {
   font-family: 'Barlow Condensed';
@@ -77,29 +78,60 @@
   --deck-b: var(--accent-2);
   --deck-c: #9fd98a;
   --deck-d: #b18ee6;
-  /* how much the exposure correction brightens the art; halfway toward the reference by default */
-  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.5));
+  /* how far the exposure correction moves the art toward the reference; a fifth of the way by
+     default, so bright art dims a little and every image keeps its color */
+  --art-gain: pow(var(--bg-exposure, 1), var(--bg-correction, 0.2));
   --steel: #2a343d;
   --hud: rgb(159 180 196 / 0.3);
   --hairline: max(1px, 0.05cqw);
-  --panel-bg: rgb(12 16 21 / 0.52);
-  --panel-border: rgb(255 255 255 / 0.1);
-  --blur: 1.45cqw;
-  --radius: 1cqw;
+  --panel-bg: rgb(10 14 19 / 0.42);
+  --panel-border: rgb(214 228 240 / 0.16);
+  --blur: 1.2cqw;
+  --radius: 0.9cqw;
   --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --spectrum-height: 19cqh;
-  --next-bottom: calc(var(--margin) + 16cqh);
+  /* the registration marks and the spectrum's baseline sit this far in from the frame's edge */
+  --rail: calc(var(--margin) * 0.45);
+  --spectrum-height: 5.5cqh;
+  /* the credits dock in the calm part of the art: bottom left without art */
+  --dock-top: auto;
+  --dock-right: auto;
+  --dock-bottom: calc(var(--margin) + 2cqh);
+  --dock-left: var(--margin);
+  --dock-margin: 0;
+  /* a drop runs one scan down the frame */
+  --scan: clamp(0, var(--since-drop, 60) / 0.9, 1);
+  --scan-y: calc(var(--scan) * 104cqh);
+  --scan-on: calc((1 - pow(var(--scan), 3)) * var(--drop-intensity, 1));
   background: #06080b;
 }
+.theme-sterile-tech[data-bg-calm$='right'] {
+  --dock-left: auto;
+  --dock-right: var(--margin);
+}
+.theme-sterile-tech[data-bg-calm^='top'] {
+  --dock-top: calc(var(--margin) + 7cqh);
+  --dock-bottom: auto;
+}
+.theme-sterile-tech:is([data-bg-calm='left'], [data-bg-calm='right']) {
+  --dock-top: 0;
+  --dock-bottom: 0;
+  --dock-margin: auto 0;
+}
+.theme-sterile-tech:is([data-bg-calm='top'], [data-bg-calm='bottom']) {
+  --dock-left: 0;
+  --dock-right: 0;
+  --dock-margin: 0 auto;
+}
 
-/* registration marks in the corners, so any background reads as an instrument panel */
+/* registration marks in the corners and a baseline between the lower two, so any art reads as
+   the view through an instrument */
 .theme-sterile-tech::before {
   --corner: 2.1cqw;
   content: '';
   position: absolute;
   z-index: 1;
-  inset: calc(var(--margin) * 0.45);
+  inset: var(--rail);
   background:
     linear-gradient(var(--hud), var(--hud)) top left / var(--corner) var(--hairline),
     linear-gradient(var(--hud), var(--hud)) top left / var(--hairline) var(--corner),
@@ -108,61 +140,81 @@
     linear-gradient(var(--hud), var(--hud)) bottom left / var(--corner) var(--hairline),
     linear-gradient(var(--hud), var(--hud)) bottom left / var(--hairline) var(--corner),
     linear-gradient(var(--hud), var(--hud)) bottom right / var(--corner) var(--hairline),
-    linear-gradient(var(--hud), var(--hud)) bottom right / var(--hairline) var(--corner);
+    linear-gradient(var(--hud), var(--hud)) bottom right / var(--hairline) var(--corner),
+    linear-gradient(rgb(159 180 196 / 0.14), rgb(159 180 196 / 0.14)) bottom / 100% var(--hairline);
   background-repeat: no-repeat;
 }
 
-/* a drop runs one scan down the whole frame, bright at its leading edge */
+/* the scan: a hard bright edge with a cold wake, rust marks where it crosses the rails. A dark
+   hairline under the edge keeps it visible over bright art. */
 .theme-sterile-tech::after {
-  --sweep: clamp(0, var(--since-drop, 60) / 0.55, 1);
+  --wake: 22cqh;
+  --edge: max(2px, 0.1cqw);
   content: '';
   position: absolute;
   z-index: 1;
   inset: 0 0 auto;
-  height: 16cqh;
-  translate: 0 calc(var(--sweep) * 116cqh - 16cqh);
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    color-mix(in srgb, var(--accent-2) 14%, transparent) 88%,
-    color-mix(in srgb, var(--accent-2) 70%, white) 100%
-  );
-  mix-blend-mode: screen;
-  opacity: calc((1 - var(--sweep) * var(--sweep)) * var(--drop-intensity, 1));
+  height: var(--wake);
+  translate: 0 calc(var(--scan-y) - var(--wake));
+  background:
+    linear-gradient(var(--accent), var(--accent)) left var(--rail) bottom 0 / 2.1cqw
+      calc(var(--edge) * 2.5),
+    linear-gradient(var(--accent), var(--accent)) right var(--rail) bottom 0 / 2.1cqw
+      calc(var(--edge) * 2.5),
+    linear-gradient(rgb(6 9 13 / 0.5), rgb(6 9 13 / 0.5)) bottom / 100% var(--hairline),
+    linear-gradient(
+        color-mix(in srgb, var(--accent-2) 35%, white),
+        color-mix(in srgb, var(--accent-2) 35%, white)
+      )
+      left 0 bottom var(--hairline) / 100% var(--edge),
+    linear-gradient(to bottom, transparent, color-mix(in srgb, var(--accent-2) 22%, transparent));
+  background-repeat: no-repeat;
+  opacity: var(--scan-on);
 }
 
-/* background: desaturated, darkened, snapping bright for a moment on a rewind */
+/* the art in its own color; a rewind snaps it bright for a moment */
 .theme-sterile-tech .sc-bg-img {
-  filter: brightness(var(--art-gain)) saturate(calc(0.7 + var(--rewind-flash) * 1.1))
-    brightness(calc(0.9 + var(--rewind-flash) * 0.45)) contrast(1.05);
+  filter: brightness(var(--art-gain)) brightness(calc(1 + var(--rewind-flash) * 0.45))
+    saturate(calc(1 + var(--rewind-flash) * 0.6));
 }
+/* cold shadows toward the edges and a little depth under the bottom rail, more over bright art */
 .theme-sterile-tech .sc-bg-vignette {
   background:
-    radial-gradient(120% 90% at 50% 40%, transparent 35%, rgb(4 6 8 / 0.75) 100%),
-    linear-gradient(to top, rgb(4 6 8 / 0.85) 0%, transparent 45%);
-  opacity: calc(var(--mod-vignette, 0.75) - var(--drop-flash) * 0.22);
+    radial-gradient(135% 115% at 50% 42%, transparent 52%, rgb(5 10 16 / 0.62) 100%),
+    linear-gradient(
+      to top,
+      rgb(5 10 16 / calc(0.2 + var(--bg-luma, 0.1) * 0.5)),
+      transparent calc(var(--spectrum-height) + 8cqh)
+    );
+  opacity: calc(var(--mod-vignette, 0.85) - var(--drop-flash) * 0.25);
 }
-/* a cold steel grade, so warm or colorful art still sits in the palette */
-.theme-sterile-tech .sc-bg-vignette::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: #35607c;
-  mix-blend-mode: color;
-  opacity: 0.3;
-}
-/* a faint measuring grid toward the edges of the frame */
+/* a faint measuring grid toward the edges of the frame; the scan lights it up as it passes */
 .theme-sterile-tech .sc-bg-vignette::after {
   --cell: calc(100cqw / 24);
   content: '';
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, rgb(159 180 196 / 0.07) var(--hairline), transparent 0) 0 0 /
+    linear-gradient(to right, rgb(159 180 196 / 0.32) var(--hairline), transparent 0) 0 0 /
       var(--cell) var(--cell),
-    linear-gradient(to bottom, rgb(159 180 196 / 0.07) var(--hairline), transparent 0) 0 0 /
+    linear-gradient(to bottom, rgb(159 180 196 / 0.32) var(--hairline), transparent 0) 0 0 /
       var(--cell) var(--cell);
-  mask-image: radial-gradient(90% 90% at 50% 45%, transparent 30%, #000 90%);
+  mask-image:
+    var(--grid-rest, radial-gradient(90% 90% at 50% 45%, transparent 30%, rgb(0 0 0 / 0.24) 90%)),
+    linear-gradient(
+      to bottom,
+      transparent calc(var(--scan-y) - 26cqh),
+      rgb(0 0 0 / var(--scan-on)) var(--scan-y),
+      transparent 0
+    );
+  mask-composite: add;
+}
+/* without art the frame is an empty instrument screen: lit steel, the grid across all of it */
+.theme-sterile-tech[data-background='none'] .sc-bg {
+  background: radial-gradient(75% 85% at 50% 45%, #141c25, #080b0f 80%);
+}
+.theme-sterile-tech[data-background='none'] .sc-bg-vignette {
+  --grid-rest: radial-gradient(90% 90% at 50% 45%, rgb(0 0 0 / 0.22) 20%, rgb(0 0 0 / 0.4) 95%);
 }
 /* static grain dithers the dark gradients, which band once the video is encoded */
 .theme-sterile-tech .sc-bg::after {
@@ -174,26 +226,40 @@
   opacity: 0.07;
 }
 
-/* 0 where the art behind the element shows dark, 1 where it shows bright; declared on each
-   element because each has its own --bg-luma-behind */
+/* bloom: the art's own lights pulse with the music in a dark scene; in bright art, where the
+   brightest spots are paper or sky rather than lamps, it fades out */
+.theme-sterile-tech .sc-bloom {
+  opacity: clamp(0, (0.36 - var(--bg-luma, 0)) * 4, 1);
+}
+
+/* 0 where the art behind the element is dark and calm, 1 where it shows bright or busy;
+   declared on each element because each has its own --bg-luma-behind */
 .theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
   --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.2) * 4, 1);
+  --busy: clamp(0, (var(--bg-detail-behind, 0) - 0.03) * 16, 1);
+  --veil: max(var(--glare), var(--busy));
 }
-/* text without a plate gets a dark outline and halo over bright art */
-.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-next) {
-  text-shadow:
-    0 0 calc(var(--glare) * 0.15cqw) rgb(4 6 8 / var(--glare)),
-    0 0 calc(var(--glare) * 0.5cqw) rgb(4 6 8 / var(--glare)),
-    0 0 calc(var(--glare) * 1.4cqw) rgb(4 6 8 / calc(var(--glare) * 0.8));
+/* the header's readouts sit on small glass tags where the art behind them is bright or busy;
+   their small type needs a tag sooner than the card's large type, and brightens with it */
+.theme-sterile-tech :is(.sc-set-title, .sc-clock) {
+  --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.15) * 6, 1);
+  margin: -0.55em -0.8em;
+  padding: 0.55em 0.8em;
+  background: rgb(8 11 15 / calc(var(--veil) * 0.62));
+  backdrop-filter: blur(calc(var(--veil) * var(--blur)));
+  text-shadow: 0 0 0.4cqw rgb(4 6 8 / calc(var(--veil) * 0.8));
 }
 
 /* header */
 .theme-sterile-tech .sc-header {
   font-family: var(--font-mono);
-  font-size: 1.05cqw;
-  letter-spacing: 0.18em;
+  font-size: 0.95cqw;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--fg-dim);
+}
+.theme-sterile-tech .sc-set-title {
+  color: color-mix(in srgb, var(--fg) calc(var(--veil) * 70%), var(--fg-dim));
 }
 .theme-sterile-tech .sc-set-title::before {
   content: '';
@@ -201,7 +267,7 @@
   width: 0.6em;
   height: 0.6em;
   margin-right: 0.9em;
-  background: var(--deck);
+  background: var(--accent);
   transform: translateY(-0.05em) scale(calc(1 + 0.45 * var(--beat-pulse)));
 }
 .theme-sterile-tech .sc-clock {
@@ -209,19 +275,26 @@
   color: var(--fg);
 }
 .theme-sterile-tech .sc-clock-total {
-  color: var(--fg-dim);
+  color: color-mix(in srgb, var(--fg) calc(var(--veil) * 50%), var(--fg-dim));
 }
-/* how far the set has run, as a hairline under the header */
+/* the header rule is a ruler: how far the set has run, over fine ticks */
 .theme-sterile-tech .sc-header::after {
   content: '';
   position: absolute;
   inset: calc(100% + 1.2cqh) 0 auto;
-  height: var(--hairline);
-  background: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--accent) 65%, transparent) calc(var(--set-progress, 0) * 100%),
-    rgb(159 180 196 / 0.14) 0
-  );
+  height: 0.55cqh;
+  background:
+    linear-gradient(
+        to right,
+        color-mix(in srgb, var(--accent) 75%, transparent) calc(var(--set-progress, 0) * 100%),
+        rgb(159 180 196 / 0.22) 0
+      )
+      top / 100% var(--hairline) no-repeat,
+    repeating-linear-gradient(
+      to right,
+      rgb(159 180 196 / 0.28) 0 var(--hairline),
+      transparent 0 calc(100% / 48)
+    );
 }
 /* the last seconds before a drop charge a rust bar from the right; the drop discharges it */
 .theme-sterile-tech .sc-header::before {
@@ -241,19 +314,21 @@
   display: none;
 }
 
-/* spectrum: cold steel rods with a faint glow, brightest where they reach highest */
+/* spectrum: hairline rods rising from the bottom rail, the bass in the middle taking the
+   accent, a held peak above each like the hold marker of a lab analyzer */
 .theme-sterile-tech .sc-spectrum {
-  mix-blend-mode: screen;
-  opacity: calc(0.72 + 0.28 * var(--drop-flash));
-  mask-image: linear-gradient(to top, rgb(0 0 0 / 0.35), #000 70%);
-  filter: drop-shadow(0 0 0.35cqw color-mix(in srgb, var(--accent-2) 40%, transparent));
+  left: var(--rail);
+  bottom: var(--rail);
+  width: calc(100% - 2 * var(--rail));
+  opacity: calc(0.8 + 0.2 * var(--drop-flash));
+  /* a dark edge keeps the hairlines visible over bright art */
+  filter: drop-shadow(0 0 0.1cqw rgb(4 6 8 / calc(0.3 + var(--bg-luma, 0) * 0.9)));
 }
-/* bass sits in the middle and takes the deck in front; the highs at the edges stay cold */
 .theme-sterile-tech .sc-spectrum-bars rect {
   fill: color-mix(
     in oklab,
-    var(--deck) clamp(0%, 100% - 260% * sibling-index() / sibling-count(), 100%),
-    var(--accent-2)
+    var(--accent) clamp(0%, 100% - 420% * sibling-index() / sibling-count(), 100%),
+    rgb(205 220 232 / 0.75)
   );
 }
 .theme-sterile-tech .sc-spectrum-peaks rect {
@@ -267,7 +342,7 @@
   stroke-width: 0.1cqw;
 }
 .theme-sterile-tech[data-section='breakdown'] .sc-spectrum {
-  opacity: calc(0.72 - 0.4 * clamp(0, var(--section-time, 60) / 1.5, 1));
+  opacity: calc(0.8 - 0.4 * clamp(0, var(--section-time, 60) / 1.5, 1));
 }
 
 /* radial: thin steel ticks on a hairline ring */
@@ -396,37 +471,53 @@
   color: var(--fg-dim);
 }
 
-/* now playing: a chamfered plate of frosted glass; --presence follows run dwell or persistent DJ credits (spring in, dwell, leave) */
+/* now playing: a chamfered plate of frosted glass docked in the calm part of the art, denser
+   where the art behind it is bright or busy */
+.theme-sterile-tech[data-presentation='playlist'] .sc-panel {
+  inset: var(--dock-top) var(--dock-right) var(--dock-bottom) var(--dock-left);
+  width: fit-content;
+  min-width: 26cqw;
+  max-width: 42cqw;
+  height: fit-content;
+  margin: var(--dock-margin);
+}
 .theme-sterile-tech .sc-panel {
-  padding: 1.9cqw 2.3cqw 2cqw 2.2cqw;
-  /* a denser plate over bright art */
-  background-color: color-mix(in srgb, var(--panel-bg), rgb(12 16 21) calc(var(--glare) * 60%));
-  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.045), transparent 40%);
+  padding: 1.3cqw 2.1cqw 1.6cqw;
+  background-color: color-mix(in srgb, var(--panel-bg), rgb(8 11 15) calc(var(--veil) * 62%));
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.05), transparent 35%);
   border: var(--hairline) solid var(--panel-border);
   border-radius: 0 var(--radius) 0 var(--radius);
   corner-shape: bevel;
-  backdrop-filter: blur(var(--blur)) saturate(1.4);
+  backdrop-filter: blur(var(--blur)) saturate(1.3);
   box-shadow:
     inset 0 var(--hairline) 0 rgb(255 255 255 / 0.08),
-    0 1.55cqw 3.1cqw rgb(0 0 0 / 0.45),
+    0 1.2cqw 3cqw rgb(0 0 0 / calc(0.25 + var(--veil) * 0.25)),
     0 0 calc((var(--mod-panel-glow, 0) + var(--tension)) * 3.6cqw)
       color-mix(in srgb, var(--accent) 35%, transparent);
-  opacity: clamp(0, var(--presence, 1) * 1.6, 1);
+  opacity: calc(clamp(0, var(--presence, 1) * 1.6, 1) * var(--handover, 1));
   transform: translateY(calc((1 - var(--presence, 1)) * 3cqh));
 }
+/* the deck's signal light: a lit segment on the plate's top edge, drawn in first */
 .theme-sterile-tech .sc-panel::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 1.2cqw;
-  bottom: 1.2cqw;
-  width: 0.16cqw;
+  top: calc(var(--hairline) * -1);
+  left: 2.1cqw;
+  width: 3.2cqw;
+  height: 0.18cqw;
   background: var(--deck);
-  filter: brightness(calc(1 + var(--drop-flash) * 2.4));
+  filter: brightness(calc(1 + var(--drop-flash) * 1.5));
   box-shadow: 0 0 calc(var(--drop-flash) * 1.4cqw) var(--deck);
-  transform: scaleY(clamp(0, var(--presence, 1) / 0.4, 1));
+  transform-origin: left;
+  scale: clamp(0, var(--presence, 1) / 0.4, 1) 1;
 }
-/* the stripe draws first, then each line of text a moment after the one above it */
+.theme-sterile-tech .sc-panel[data-shared-drop='true']::before {
+  background: linear-gradient(to right, var(--accent) 50%, var(--accent-2) 50%);
+}
+.theme-sterile-tech[data-shared-drop='true'] .sc-set-title::before {
+  background: linear-gradient(135deg, var(--accent) 50%, var(--accent-2) 50%);
+}
+/* each line of text a moment after the one above it */
 .theme-sterile-tech .sc-panel-head {
   opacity: clamp(0, (var(--presence, 1) - 0.25) / 0.45, 1);
 }
@@ -439,18 +530,14 @@
 .theme-sterile-tech .sc-label {
   opacity: clamp(0, (var(--presence, 1) - 0.55) / 0.45, 1);
 }
-.theme-sterile-tech .sc-panel[data-shared-drop='true']::before {
-  background: linear-gradient(var(--accent) 50%, var(--accent-2) 50%);
-}
-.theme-sterile-tech[data-shared-drop='true'] .sc-set-title::before {
-  background: linear-gradient(135deg, var(--accent) 50%, var(--accent-2) 50%);
-}
 .theme-sterile-tech .sc-panel-head {
-  gap: 1.1cqw;
-  margin-bottom: 1.3cqw;
+  gap: 1cqw;
+  margin-bottom: 1.2cqw;
+  padding-bottom: 0.9cqw;
+  border-bottom: var(--hairline) solid rgb(214 228 240 / 0.12);
   font-family: var(--font-mono);
-  font-size: 0.95cqw;
-  letter-spacing: 0.22em;
+  font-size: 0.66cqw;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--fg-dim);
 }
@@ -458,11 +545,11 @@
 .theme-sterile-tech .sc-deck {
   display: inline-grid;
   place-items: center;
-  min-width: 2.1cqw;
-  height: 2.1cqw;
+  min-width: 1.5cqw;
+  height: 1.5cqw;
   padding-inline: 0.35em;
   font-weight: 600;
-  font-size: 1.1cqw;
+  font-size: 0.85cqw;
   letter-spacing: 0.04em;
   white-space: nowrap;
   color: #0a0d10;
@@ -478,55 +565,96 @@
   color: var(--steel);
 }
 .theme-sterile-tech .sc-artist {
-  margin-bottom: 0.8cqw;
+  margin-bottom: 0.9cqw;
+  font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 2cqw;
-  letter-spacing: 0.06em;
+  font-size: 0.95cqw;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--fg-dim);
+  color: color-mix(in srgb, var(--fg) 82%, var(--fg-dim));
   text-box: trim-both cap alphabetic;
 }
 .theme-sterile-tech .sc-title {
-  font-weight: 700;
-  font-size: 4.2cqw;
+  font-weight: 600;
+  font-size: 4.4cqw;
   line-height: 0.92;
-  letter-spacing: -0.005em;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   color: var(--fg);
   text-wrap: balance;
   text-box: trim-both cap alphabetic;
 }
 .theme-sterile-tech .sc-label {
-  margin-top: 1.2cqw;
+  margin-top: 1.1cqw;
   font-family: var(--font-mono);
-  font-size: 0.95cqw;
-  letter-spacing: 0.16em;
+  font-size: 0.72cqw;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--accent);
   text-box: trim-both cap alphabetic;
 }
 
-/* up next: fades in over the last seconds of a track, gone the moment the next one starts */
+/* up next: a slim glass strip over the last seconds of a track. In a playlist it takes the
+   credits' place in the calm part of the art, and a card still showing there hands over to it;
+   in DJ mode it sits beside the rack. */
 .theme-sterile-tech .sc-next {
-  gap: 0.3cqw;
+  top: auto;
+  right: auto;
+  align-items: start;
+  gap: 0.35cqw;
+  padding: 0.9cqw 1.3cqw 1cqw;
+  text-align: left;
+  background: color-mix(in srgb, var(--panel-bg), rgb(8 11 15) calc(var(--veil) * 62%));
+  border: var(--hairline) solid var(--panel-border);
+  border-radius: 0 0.6cqw 0 0.6cqw;
+  corner-shape: bevel;
+  backdrop-filter: blur(var(--blur));
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
+}
+.theme-sterile-tech[data-presentation='playlist'] .sc-next {
+  inset: var(--dock-top) var(--dock-right) var(--dock-bottom) var(--dock-left);
+  width: fit-content;
+  height: fit-content;
+  margin: var(--dock-margin);
+}
+.theme-sterile-tech[data-presentation='playlist']:has(.sc-next) .sc-panel {
+  --handover: clamp(0, (var(--until-exit, 60) - 8) / 0.8, 1);
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-next {
+  position-anchor: --contributors;
+  bottom: calc(anchor(top) + 1.6cqh);
+  left: anchor(left);
+}
+.theme-sterile-tech[data-presentation='dj'][data-bg-calm$='right'] .sc-next {
+  right: anchor(right);
+  left: auto;
+}
+.theme-sterile-tech[data-presentation='dj']:is(
+    [data-bg-calm^='top'],
+    [data-bg-calm='left'],
+    [data-bg-calm='right']
+  )
+  .sc-next {
+  top: calc(anchor(bottom) + 1.6cqh);
+  bottom: auto;
 }
 .theme-sterile-tech .sc-next-label {
   font-family: var(--font-mono);
-  font-size: 0.85cqw;
-  letter-spacing: 0.22em;
+  font-size: 0.66cqw;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
 }
 .theme-sterile-tech .sc-next-artist {
-  font-size: 1.3cqw;
-  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  font-size: 0.8cqw;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--fg-dim);
 }
 .theme-sterile-tech .sc-next-title {
   font-weight: 600;
-  font-size: 1.9cqw;
+  font-size: 1.8cqw;
   line-height: 1.05;
   letter-spacing: 0.01em;
   text-transform: uppercase;
@@ -535,55 +663,65 @@
 
 /* portrait (9:16): the stage is a size container, so the layout follows its aspect ratio */
 @container (aspect-ratio < 1) {
-  .theme-sterile-tech .sc-panel {
+  .theme-sterile-tech[data-presentation='playlist'] .sc-panel {
     --radius: 1.8cqw;
-    max-width: 88cqw;
-    padding: 3.4cqw 3.8cqw 3.6cqw 3.6cqw;
+    right: var(--margin);
+    left: var(--margin);
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 3cqw 4cqw 3.4cqw;
   }
   .theme-sterile-tech .sc-panel::before {
-    width: 0.3cqw;
-    top: 2.2cqw;
-    bottom: 2.2cqw;
+    left: 4cqw;
+    width: 7cqw;
+    height: 0.36cqw;
   }
   .theme-sterile-tech .sc-panel-head {
-    font-size: 1.8cqw;
+    font-size: 1.5cqw;
     gap: 2cqw;
-    margin-bottom: 2.3cqw;
+    margin-bottom: 2.4cqw;
+    padding-bottom: 2cqw;
   }
   .theme-sterile-tech .sc-deck {
-    min-width: 3.8cqw;
-    height: 3.8cqw;
-    font-size: 2cqw;
+    min-width: 3.2cqw;
+    height: 3.2cqw;
+    font-size: 1.8cqw;
   }
   .theme-sterile-tech .sc-artist {
-    font-size: 3.6cqw;
-    margin-bottom: 1.4cqw;
+    font-size: 2.1cqw;
+    margin-bottom: 2cqw;
   }
   .theme-sterile-tech .sc-title {
-    font-size: 7.6cqw;
+    font-size: 9.6cqw;
   }
   .theme-sterile-tech .sc-label {
-    font-size: 1.8cqw;
-    margin-top: 2.2cqw;
+    font-size: 1.6cqw;
+    margin-top: 2.4cqw;
   }
   .theme-sterile-tech .sc-header {
-    font-size: 2cqw;
+    font-size: 1.9cqw;
   }
   .theme-sterile-tech .sc-next {
     max-width: 80cqw;
-    bottom: calc(var(--margin) + 10cqh);
+    padding: 2cqw 2.8cqw 2.2cqw;
+  }
+  .theme-sterile-tech[data-presentation='playlist'] .sc-next {
+    left: var(--margin);
+    right: auto;
+    margin: 0;
   }
   .theme-sterile-tech .sc-next-label {
-    font-size: 1.6cqw;
+    font-size: 1.5cqw;
   }
   .theme-sterile-tech .sc-next-artist {
-    font-size: 2.4cqw;
+    font-size: 1.8cqw;
   }
   .theme-sterile-tech .sc-next-title {
-    font-size: 3.4cqw;
+    font-size: 3.8cqw;
   }
   .theme-sterile-tech .sc-spectrum {
-    height: 12cqh;
+    height: 3.6cqh;
   }
   .theme-sterile-tech .sc-spectrogram {
     height: 14cqh;
@@ -597,11 +735,14 @@
   }
 }
 
-/* DJ: a rack of glass modules of one width, one per current play; focus lights its stripe */
+/* DJ: a rack of glass modules of one width, one per current play; focus lights its signal */
 .theme-sterile-tech[data-presentation='dj'] .sc-contributors {
-  --stack-gap: 0.8cqw;
+  --stack-gap: 0.7cqw;
   --slot-bleed: 0.8cqw;
-  width: 33cqw;
+  inset: var(--dock-top) var(--dock-right) var(--dock-bottom) var(--dock-left);
+  width: 32cqw;
+  height: fit-content;
+  margin: var(--dock-margin);
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-panel {
   display: grid;
@@ -611,7 +752,7 @@
     'title title'
     'label details';
   align-items: baseline;
-  padding: 1.15cqw 1.4cqw 1.2cqw 1.6cqw;
+  padding: 1.15cqw 1.5cqw 1.2cqw;
   --radius: 0.7cqw;
   box-shadow:
     inset 0 var(--hairline) 0 rgb(255 255 255 / 0.08),
@@ -619,14 +760,16 @@
       color-mix(in srgb, var(--accent) 30%, transparent);
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-panel::before {
-  top: 0.9cqw;
-  bottom: 0.9cqw;
+  left: 1.5cqw;
+  width: 2.4cqw;
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-panel-head {
   grid-area: head;
   gap: 0.6cqw;
   margin: 0 0 0 1cqw;
-  font-size: 0.7cqw;
+  padding: 0;
+  border: 0;
+  font-size: 0.62cqw;
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
   display: none;
@@ -635,63 +778,82 @@
   color: var(--accent);
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-deck {
-  min-width: 1.45cqw;
-  height: 1.45cqw;
-  font-size: 0.8cqw;
+  min-width: 1.3cqw;
+  height: 1.3cqw;
+  font-size: 0.75cqw;
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-artist {
   grid-area: artist;
-  margin-bottom: 0.65cqw;
-  font-size: 1.25cqw;
+  margin-bottom: 0.75cqw;
+  font-size: 0.8cqw;
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-title {
   grid-area: title;
-  font-size: 2.7cqw;
+  font-size: 2.6cqw;
   transition: none;
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-label {
   grid-area: label;
   margin-top: 0.75cqw;
-  font-size: 0.72cqw;
+  font-size: 0.62cqw;
 }
 .theme-sterile-tech .sc-credit-details {
   grid-area: details;
   margin: 0.75cqw 0 0 1cqw;
-  font-size: 0.7cqw;
+  font-size: 0.62cqw;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-box: trim-both cap alphabetic;
   opacity: clamp(0, (var(--presence, 1) - 0.55) / 0.45, 1);
 }
-/* the rest of the rack stays readable but steps back from the focused module */
-.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] {
-  background-color: rgb(12 16 21 / 0.4);
-  --deck-glow: 0;
-}
-.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false']::before {
-  opacity: 0.4;
-}
-.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
-  color: color-mix(in srgb, var(--fg) 62%, var(--fg-dim));
-}
-.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
-  color: color-mix(in srgb, var(--accent) 55%, var(--fg-dim));
+/* the focused module is lit: a brighter edge, its signal glowing, a trace of the deck color
+   in the glass; the rest of the rack stays readable but steps back */
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='true'] {
+  border-color: rgb(214 228 240 / 0.28);
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--deck) 12%, transparent),
+    transparent 45%
+  );
 }
 .theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='true']::before {
-  box-shadow: 0 0 calc(0.5cqw + var(--drop-flash) * 1.4cqw) var(--deck);
+  box-shadow: 0 0 calc(0.6cqw + var(--drop-flash) * 1.4cqw) var(--deck);
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  background-color: color-mix(in srgb, rgb(10 14 19 / 0.3), rgb(8 11 15) calc(var(--veil) * 55%));
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false']::before {
+  opacity: 0.3;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-deck {
+  opacity: 0.6;
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-artist {
+  color: var(--fg-dim);
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-title {
+  color: color-mix(in srgb, var(--fg) 55%, var(--fg-dim));
+}
+.theme-sterile-tech[data-presentation='dj'] .sc-panel[data-focused='false'] .sc-label {
+  color: color-mix(in srgb, var(--accent) 50%, var(--fg-dim));
 }
 .theme-sterile-tech .sc-contributor-count,
 .theme-sterile-tech .sc-overflow {
-  font-size: 0.75cqw;
-  letter-spacing: 0.2em;
+  font-size: 0.66cqw;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
 }
+/* the count is not measured against the art, so it always sits on a small glass tag */
 .theme-sterile-tech .sc-contributor-count {
-  margin-bottom: 0.4cqw;
+  width: fit-content;
+  margin-bottom: 0.5cqw;
+  padding: 0.5em 0.8em;
+  background: rgb(8 11 15 / 0.55);
+  backdrop-filter: blur(var(--blur));
 }
 .theme-sterile-tech .sc-overflow {
-  margin-top: 0.8cqw;
-  padding: 0.7cqw 1.6cqw;
+  margin-top: 0.7cqw;
+  padding: 0.7cqw 1.5cqw;
   color: var(--accent);
   background: var(--panel-bg);
   border: var(--hairline) solid var(--panel-border);
@@ -702,29 +864,30 @@
   .theme-sterile-tech[data-presentation='dj'] .sc-contributors {
     --stack-gap: 1.6cqw;
     --slot-bleed: 1.6cqw;
-    width: calc(100cqw - 2 * var(--margin));
-    bottom: calc(var(--margin) + 4cqh);
-  }
-  .theme-sterile-tech[data-presentation='dj'] .sc-next {
-    position-anchor: --contributors;
-    bottom: calc(anchor(top) + 3cqw);
+    right: var(--margin);
+    left: var(--margin);
+    width: auto;
+    margin: 0;
   }
   .theme-sterile-tech .sc-overflow {
     padding: 1.4cqw 3.2cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-panel {
-    padding: 2.4cqw 2.8cqw 2.5cqw 3.2cqw;
+    padding: 2.4cqw 3cqw 2.5cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-panel::before {
-    top: 1.8cqw;
-    bottom: 1.8cqw;
+    left: 3cqw;
+    width: 5cqw;
+  }
+  .theme-sterile-tech[data-presentation='dj'] .sc-panel-head {
+    gap: 1.4cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-panel-head,
   .theme-sterile-tech .sc-credit-details,
   .theme-sterile-tech[data-presentation='dj'] .sc-label,
   .theme-sterile-tech .sc-contributor-count,
   .theme-sterile-tech .sc-overflow {
-    font-size: 1.5cqw;
+    font-size: 1.4cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-deck {
     min-width: 3cqw;
@@ -732,11 +895,11 @@
     font-size: 1.6cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-artist {
-    font-size: 2.6cqw;
-    margin-bottom: 1.3cqw;
+    font-size: 1.8cqw;
+    margin-bottom: 1.6cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-title {
-    font-size: 5.6cqw;
+    font-size: 5.8cqw;
   }
   .theme-sterile-tech[data-presentation='dj'] .sc-label {
     margin-top: 1.5cqw;
