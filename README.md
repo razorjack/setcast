@@ -307,7 +307,10 @@ The spectrogram is a canvas: its CSS `color` is the color of a full-strength cel
 ## Tracklist
 
 `tracklist: true` keeps a short tracklist on screen: the two listings before the current one,
-the current one and the two after it, gliding on at each new listing.
+the current one and the two after it, gliding on at each new listing. Every built-in theme styles
+it in its own way and places it clear of its panels. Themes that can set it outside your art show
+it without being asked: anamorphic in its letterbox bar, escapement on its paper, patina in its
+header line and passe-partout on the gallery wall; `tracklist: false` hides it there.
 `tracklist: { before: 4, after: 0 }` sets the counts. The list replaces the "next" card, so
 `after: 0` keeps upcoming tracks a surprise. A row is marked as playing while its track is
 audible, so in a DJ blend both rows light up, in their deck colors.

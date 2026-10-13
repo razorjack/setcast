@@ -690,6 +690,11 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   has no `tracklist:` key. The project's counts win key by key, and `false` turns a theme's
   default off. The tracklist replaces up next: the stage does not render `.sc-next` with it,
   rather than leaving every theme to hide it, and `after: 0` then shows nothing ahead.
+- Every built-in theme designs its tracklist, but only themes that set it outside the art show it
+  by default (`Theme.tracklist`): anamorphic in its upper bar, escapement on the paper's top left
+  corner, patina in its header line, passe-partout on the wall above the label. Switching to any
+  theme therefore never covers more of the user's art than the theme already did. The others,
+  which put the list over the art, show it when the project sets `tracklist: true`.
 - The tracklist glides by interpolating the window's anchor and both edges between the previous
   and the current listing group, so `--row-offset` and `--row-presence` change together and a
   still at any moment shows the same frame as playback. Listing groups closer together than the
