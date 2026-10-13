@@ -234,7 +234,7 @@
 
 /* 0 where the art behind the element is dark and calm, 1 where it shows bright or busy;
    declared on each element because each has its own --bg-luma-behind */
-.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+.theme-sterile-tech :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist) {
   --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.2) * 4, 1);
   --busy: clamp(0, (var(--bg-detail-behind, 0) - 0.03) * 16, 1);
   --veil: max(var(--glare), var(--busy));
@@ -661,6 +661,130 @@
   color: var(--fg);
 }
 
+/* tracklist: a slim glass log across from the credits, on the side of the frame the dock leaves
+   free. The current rows carry their deck's signal light and a hairline of how far they have run;
+   the rest step back with their distance from them. */
+.theme-sterile-tech .sc-tracklist {
+  --log-top: calc(var(--margin) + 7cqh);
+  top: var(--log-top);
+  right: var(--margin);
+  left: auto;
+  width: 25cqw;
+  padding: 1cqw 1.3cqw 0.7cqw;
+  font-family: var(--font-mono);
+  color: var(--fg-dim);
+  background-color: color-mix(in srgb, var(--panel-bg), rgb(8 11 15) calc(var(--veil) * 62%));
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.04), transparent 30%);
+  border: var(--hairline) solid var(--panel-border);
+  border-radius: var(--radius) 0 var(--radius) 0;
+  corner-shape: bevel;
+  backdrop-filter: blur(var(--blur)) saturate(1.3);
+  box-shadow:
+    inset 0 var(--hairline) 0 rgb(255 255 255 / 0.06),
+    0 1cqw 2.4cqw rgb(0 0 0 / calc(0.2 + var(--veil) * 0.25));
+}
+.theme-sterile-tech[data-bg-calm$='right'] .sc-tracklist {
+  right: auto;
+  left: var(--margin);
+}
+.theme-sterile-tech[data-bg-calm='top'] .sc-tracklist {
+  top: auto;
+  bottom: calc(var(--margin) + 2cqh);
+}
+.theme-sterile-tech .sc-tracklist-heading {
+  margin-bottom: 0.5cqw;
+  padding-bottom: 0.7cqw;
+  border-bottom: var(--hairline) solid rgb(214 228 240 / 0.12);
+  font-size: 0.62cqw;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.theme-sterile-tech .sc-tracklist-row {
+  --near: clamp(0, 1 - (abs(var(--row-offset)) - 0.5) * 0.22, 1);
+  display: grid;
+  grid-template-columns: 2.2cqw minmax(0, 1fr) auto;
+  grid-template-areas:
+    'index title time'
+    '. artist artist';
+  align-items: baseline;
+  column-gap: 0.4cqw;
+  /* padding and rule close with the row, which cannot shrink below them */
+  padding: calc(0.6cqw * var(--row-presence)) 0 calc(0.65cqw * var(--row-presence)) 0.7cqw;
+  border-bottom: calc(var(--hairline) * var(--row-presence)) solid rgb(214 228 240 / 0.06);
+  opacity: calc(var(--row-presence) * var(--near));
+}
+.theme-sterile-tech .sc-tracklist-row:last-child {
+  border-bottom: 0;
+}
+.theme-sterile-tech .sc-tracklist-index {
+  grid-area: index;
+  font-size: 0.7cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+.theme-sterile-tech .sc-tracklist-title {
+  grid-area: title;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3cqw;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--fg) 60%, var(--fg-dim));
+}
+.theme-sterile-tech .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  margin-top: 0.3cqw;
+  font-size: 0.6cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.theme-sterile-tech .sc-tracklist-time {
+  grid-area: time;
+  padding-left: 0.8cqw;
+  font-size: 0.62cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+.theme-sterile-tech .sc-tracklist-row[data-state='upcoming'] .sc-tracklist-title {
+  color: var(--fg-dim);
+}
+/* the current rows: the deck's signal light on the left edge, glowing for a moment when the list
+   moves on, and a rust hairline of the row's run along the bottom */
+.theme-sterile-tech .sc-tracklist-row[data-state='current'] {
+  position: relative;
+  background:
+    linear-gradient(var(--accent), var(--accent)) left bottom / calc(var(--row-progress) * 100%)
+      var(--hairline) no-repeat,
+    linear-gradient(to right, color-mix(in srgb, var(--deck) 12%, transparent), transparent 60%);
+}
+.theme-sterile-tech .sc-tracklist-row[data-state='current']::before {
+  --lit: clamp(0, 1 - var(--since-listing, 60) / 1.2, 1);
+  content: '';
+  position: absolute;
+  inset: 0.5cqw auto 0.5cqw 0;
+  width: 0.18cqw;
+  background: var(--deck);
+  box-shadow: 0 0 calc(var(--lit) * 1.2cqw) var(--deck);
+}
+.theme-sterile-tech .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  color: var(--fg);
+}
+.theme-sterile-tech .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: var(--deck);
+}
+.theme-sterile-tech .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: color-mix(in srgb, var(--fg) 82%, var(--fg-dim));
+}
+
 /* portrait (9:16): the stage is a size container, so the layout follows its aspect ratio */
 @container (aspect-ratio < 1) {
   .theme-sterile-tech[data-presentation='playlist'] .sc-panel {
@@ -732,6 +856,44 @@
   }
   .theme-sterile-tech .sc-meter-label {
     font-size: 1.6cqw;
+  }
+  /* the log spans the frame across from the credits: under the header when they dock at the
+     bottom, above the spectrum when they dock at the top */
+  .theme-sterile-tech .sc-tracklist {
+    --radius: 1.8cqw;
+    right: var(--margin);
+    left: var(--margin);
+    width: auto;
+    padding: 2.2cqw 3cqw 1.4cqw;
+  }
+  .theme-sterile-tech[data-bg-calm^='top'] .sc-tracklist {
+    top: auto;
+    bottom: calc(var(--margin) + 4cqh);
+  }
+  .theme-sterile-tech .sc-tracklist-heading {
+    margin-bottom: 1cqw;
+    padding-bottom: 1.5cqw;
+    font-size: 1.4cqw;
+  }
+  .theme-sterile-tech .sc-tracklist-row {
+    grid-template-columns: 5cqw minmax(0, 1fr) auto;
+    column-gap: 1cqw;
+    padding: calc(1.2cqw * var(--row-presence)) 0 calc(1.2cqw * var(--row-presence)) 1.6cqw;
+  }
+  .theme-sterile-tech .sc-tracklist-row[data-state='current']::before {
+    inset-block: 1.1cqw;
+    width: 0.4cqw;
+  }
+  .theme-sterile-tech .sc-tracklist-index,
+  .theme-sterile-tech .sc-tracklist-time {
+    font-size: 1.5cqw;
+  }
+  .theme-sterile-tech .sc-tracklist-title {
+    font-size: 3cqw;
+  }
+  .theme-sterile-tech .sc-tracklist-artist {
+    margin-top: 0.6cqw;
+    font-size: 1.35cqw;
   }
 }
 
