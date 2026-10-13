@@ -158,7 +158,7 @@
 
 /* 0 where the art behind the element shows dark and calm, 1 where it shows bright or busy;
    declared on each element because each has its own --bg-luma-behind */
-.theme-afterhours :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+.theme-afterhours :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist) {
   --glare: clamp(0, (var(--bg-luma-behind, 0) * var(--art-gain) - 0.16) * 4, 1);
   --busy: clamp(0, (var(--bg-detail-behind, 0) - 0.03) * 15, 1);
   --shade: max(var(--glare), var(--busy));
@@ -412,6 +412,165 @@
   color: var(--cream);
 }
 
+/* tracklist: tonight's list on a small menu card of the same rose glass, low in the frame across
+   from the card, set like a bar menu: italic titles, dotted leaders out to their times. A candle
+   marks what is playing, and its leader warms to amber as it runs. */
+.theme-afterhours .sc-tracklist {
+  inset: auto var(--margin) var(--margin) auto;
+  width: 25cqw;
+  padding: 1.3cqw 2cqw 1cqw;
+  font-family: var(--font-sans);
+  color: var(--dim);
+  background: rgb(58 23 41 / calc(0.38 + var(--shade) * 0.34));
+  border: var(--hairline) solid rgb(255 230 210 / 0.1);
+  border-radius: 1.4cqw;
+  backdrop-filter: blur(1.6cqw) saturate(1.3);
+  box-shadow:
+    inset 0 var(--hairline) 0 rgb(255 214 170 / 0.12),
+    0 1.4cqw 3.4cqw rgb(0 0 0 / 0.4);
+}
+.theme-afterhours[data-bg-calm$='right'] .sc-tracklist {
+  inset: auto auto var(--margin) var(--margin);
+}
+.theme-afterhours .sc-tracklist-heading {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  margin-bottom: 0.5cqw;
+  font-weight: 600;
+  font-size: 0.68cqw;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.theme-afterhours .sc-tracklist-heading::before,
+.theme-afterhours .sc-tracklist-heading::after {
+  content: '';
+  flex: 1;
+  height: var(--hairline);
+  background: rgb(255 230 210 / 0.14);
+}
+/* rows reach to the card's edges, so the candle and the light on the playing row sit in its
+   margin; the edge a row closes or opens at fades rather than slicing through the letters */
+.theme-afterhours .sc-tracklist-row {
+  --near: clamp(0.35, 1.15 - abs(var(--row-offset)) * 0.2, 1);
+  --ink: rgb(243 230 214 / 0.8);
+  --dots: rgb(243 230 214 / 0.26);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.6cqw minmax(0, max-content) minmax(1.2cqw, 1fr) auto;
+  grid-template-areas:
+    'index title leader time'
+    '. artist artist artist';
+  align-items: baseline;
+  column-gap: 0.5cqw;
+  margin-inline: -2cqw;
+  padding: calc(0.45cqw * var(--row-presence)) 2cqw calc(0.55cqw * var(--row-presence));
+  line-height: 1.2;
+  opacity: calc(var(--row-presence) * var(--near));
+  mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 3cqw), transparent);
+}
+.theme-afterhours .sc-tracklist-row::after {
+  content: '';
+  grid-area: leader;
+  height: 0.24cqw;
+  background: var(--dots);
+  mask: radial-gradient(circle, #000 0.06cqw, transparent 0.08cqw) left center / 0.42cqw 100%
+    repeat-x;
+}
+.theme-afterhours .sc-tracklist-index {
+  grid-area: index;
+  font-size: 0.68cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+/* title and artist clip a long name short; their padding keeps accents and italic overhangs inside
+   the clip */
+.theme-afterhours .sc-tracklist-title {
+  grid-area: title;
+  overflow: hidden;
+  margin-block: -0.15em;
+  padding: 0.15em 0.2em 0.15em 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.4cqw;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.theme-afterhours .sc-tracklist-time {
+  display: block;
+  grid-area: time;
+  font-size: 0.74cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+.theme-afterhours .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: hidden;
+  margin-block: calc(0.1cqw - 0.2em) -0.2em;
+  padding-block: 0.2em;
+  font-size: 0.78cqw;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--rose) 75%, transparent);
+}
+.theme-afterhours .sc-tracklist-row[data-state='played'] {
+  --ink: rgb(243 230 214 / 0.48);
+  --dots: rgb(243 230 214 / 0.16);
+}
+.theme-afterhours .sc-tracklist-row[data-state='played'] .sc-tracklist-artist {
+  color: color-mix(in srgb, var(--rose) 45%, transparent);
+}
+/* the playing row: lit from the side like the focused credit, a candle in the deck's color
+   breathing with the beat, its leader warming to amber as far as the track has run. The title
+   glows through a filter, which the clip that cuts a long title short does not cut. */
+.theme-afterhours .sc-tracklist-row[data-state='current'] {
+  --ink: var(--cream);
+  background: radial-gradient(70% 120% at 0% 50%, rgb(255 179 107 / 0.12), transparent);
+}
+.theme-afterhours .sc-tracklist-row[data-state='current']::before {
+  content: '';
+  position: absolute;
+  top: 0.95cqw;
+  left: 0.7cqw;
+  width: 0.5cqw;
+  height: 0.5cqw;
+  border-radius: 50%;
+  background: var(--deck);
+  box-shadow: 0 0 calc(0.3cqw + 0.6cqw * var(--beat-pulse)) var(--deck);
+  opacity: calc(0.6 + 0.4 * var(--beat-pulse));
+}
+.theme-afterhours .sc-tracklist-row[data-state='current']::after {
+  background: linear-gradient(
+    to right,
+    var(--amber) calc(var(--row-progress) * 100%),
+    rgb(243 230 214 / 0.3) 0
+  );
+}
+.theme-afterhours .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  filter: drop-shadow(0 0 0.6cqw rgb(255 179 107 / 0.4));
+}
+.theme-afterhours
+  .sc-tracklist-row[data-state='current']
+  :is(.sc-tracklist-index, .sc-tracklist-time) {
+  color: var(--amber);
+}
+.theme-afterhours .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: var(--rose);
+}
+/* a current row that has not got the focus keeps its candle as a ring, like an unlit deck pill */
+.theme-afterhours .sc-tracklist-row[data-state='current'][data-focused='false'] {
+  background: none;
+}
+.theme-afterhours .sc-tracklist-row[data-state='current'][data-focused='false']::before {
+  background: none;
+  box-shadow: inset 0 0 0 max(1px, 0.08cqw) var(--deck);
+  opacity: 1;
+}
+
 @container (aspect-ratio < 1) {
   .theme-afterhours .sc-spectrum {
     height: 14cqh;
@@ -465,6 +624,59 @@
   }
   .theme-afterhours .sc-next-title {
     font-size: 3.6cqw;
+  }
+  /* the menu takes the band the card leaves: under the header, or just above the spectrum when
+     the card sits at the top */
+  .theme-afterhours .sc-tracklist,
+  .theme-afterhours[data-bg-calm$='right'] .sc-tracklist {
+    inset: calc(var(--margin) + 4.5cqh) var(--margin) auto;
+    width: auto;
+    padding: 2.6cqw 4cqw 2cqw;
+    border-radius: 2.6cqw;
+  }
+  .theme-afterhours[data-bg-calm^='top'] .sc-tracklist {
+    inset: auto var(--margin) 9cqh;
+  }
+  .theme-afterhours .sc-tracklist-heading {
+    gap: 2cqw;
+    margin-bottom: 1cqw;
+    font-size: 1.4cqw;
+  }
+  .theme-afterhours .sc-tracklist-row {
+    grid-template-columns: 3.4cqw minmax(0, max-content) minmax(2.4cqw, 1fr) auto;
+    column-gap: 1cqw;
+    margin-inline: -4cqw;
+    padding: calc(0.9cqw * var(--row-presence)) 4cqw calc(1.1cqw * var(--row-presence));
+    mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 6cqw), transparent);
+  }
+  .theme-afterhours .sc-tracklist-row::after {
+    height: 0.48cqw;
+    mask-image: radial-gradient(circle, #000 0.12cqw, transparent 0.16cqw);
+    mask-size: 0.84cqw 100%;
+  }
+  .theme-afterhours .sc-tracklist-index,
+  .theme-afterhours .sc-tracklist-time {
+    font-size: 1.5cqw;
+  }
+  .theme-afterhours .sc-tracklist-title {
+    font-size: 3.1cqw;
+  }
+  .theme-afterhours .sc-tracklist-artist {
+    margin-top: calc(0.2cqw - 0.2em);
+    font-size: 1.7cqw;
+  }
+  .theme-afterhours .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+    filter: drop-shadow(0 0 1.2cqw rgb(255 179 107 / 0.4));
+  }
+  .theme-afterhours .sc-tracklist-row[data-state='current']::before {
+    top: 1.9cqw;
+    left: 1.4cqw;
+    width: 1cqw;
+    height: 1cqw;
+    box-shadow: 0 0 calc(0.6cqw + 1.2cqw * var(--beat-pulse)) var(--deck);
+  }
+  .theme-afterhours .sc-tracklist-row[data-state='current'][data-focused='false']::before {
+    box-shadow: inset 0 0 0 0.16cqw var(--deck);
   }
 }
 
