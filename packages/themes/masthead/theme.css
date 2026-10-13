@@ -365,6 +365,135 @@
   margin-top: 2cqh;
 }
 
+/* the tracklist: a strip of teasers along the masthead, the current listing in its middle, moving
+   on by one entry with each listing. Its ink comes from the art behind it, as the masthead's does,
+   and busy art gets the cover lines' band. */
+.theme-masthead .sc-tracklist {
+  --behind-bright: clamp(0, (var(--bg-luma-behind, 0) - 0.5) * 1000, 1);
+  --strip-band: clamp(0, (var(--bg-detail-behind, 0.05) - 0.03) * 200, 1);
+  --ink: oklch(from var(--tint) calc(0.96 - var(--behind-bright) * 0.79) 0.022 h);
+  --paper: oklch(from var(--tint) calc(0.13 + var(--behind-bright) * 0.84) 0.014 h);
+  --accent: oklch(from var(--tint) calc(0.8 - var(--behind-bright) * 0.32) 0.13 h);
+  --slot: 18cqw;
+  top: 10.5cqh;
+  right: var(--margin);
+  left: var(--margin);
+  width: auto;
+  padding-block: 1cqw;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: oklch(from var(--paper) l c h / calc(var(--strip-band) * 0.94));
+  text-shadow: 0 0 1.2cqw
+    oklch(
+      from var(--paper) l c h /
+        calc((1 - var(--strip-band)) * (0.35 + var(--bg-detail-behind, 0) * 5))
+    );
+}
+.theme-masthead[data-background='none'] .sc-tracklist {
+  --strip-band: 0;
+}
+.theme-masthead[data-bg-calm^='top'] .sc-tracklist {
+  top: auto;
+  bottom: 10.5cqh;
+}
+.theme-masthead .sc-tracklist-heading {
+  display: none;
+}
+.theme-masthead .sc-tracklist-rows {
+  position: relative;
+  height: 4.7cqw;
+  overflow: clip;
+}
+/* each entry has its slot by its distance from the current listing; past two the strip ends */
+.theme-masthead .sc-tracklist-row {
+  --far: clamp(0, abs(var(--row-offset)) - 2, 1);
+  --tier: 0.78;
+  position: absolute;
+  top: 0;
+  left: calc(50% + (var(--row-offset) - 0.5) * var(--slot));
+  width: var(--slot);
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    'index deck time'
+    'artist artist artist'
+    'title title title';
+  align-items: baseline;
+  column-gap: 0;
+  padding-inline: 1.3cqw;
+  border-left: var(--hairline) solid color-mix(in oklab, var(--ink) 26%, transparent);
+  overflow: clip;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: calc(var(--row-presence) * (1 - var(--far)) * var(--tier));
+}
+.theme-masthead .sc-tracklist-row[data-state='played'] {
+  --tier: 0.46;
+}
+.theme-masthead .sc-tracklist-row[data-state='current'] {
+  --tier: 1;
+}
+.theme-masthead .sc-tracklist-index {
+  grid-area: index;
+  font-family: var(--font-display);
+  font-size: 1.2cqw;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.theme-masthead .sc-tracklist-time {
+  display: block;
+  grid-area: time;
+  justify-self: end;
+  font-size: 0.62cqw;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+  color: var(--fg-dim);
+}
+.theme-masthead .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: hidden;
+  margin-top: 0.45cqw;
+  font-size: 0.66cqw;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+.theme-masthead .sc-tracklist-title {
+  grid-area: title;
+  overflow: hidden;
+  margin-top: 0.2cqw;
+  font-family: var(--font-display);
+  font-size: 1.3cqw;
+  font-style: italic;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+/* the current entry: the number in the accent, and a rule over it that runs with the listing */
+.theme-masthead .sc-tracklist-row[data-state='current'] {
+  background: linear-gradient(var(--accent), var(--accent)) left top /
+    calc(var(--row-progress) * 100%) calc(var(--hairline) * 2) no-repeat;
+}
+.theme-masthead .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: var(--accent);
+}
+.theme-masthead .sc-tracklist-row[data-state='current'][data-deck]::after {
+  content: attr(data-deck);
+  grid-area: deck;
+  margin-left: 0.6cqw;
+  padding: 0.1em 0.45em;
+  border: var(--hairline) solid currentColor;
+  font-size: 0.56cqw;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow: none;
+}
+
 /* portrait (9:16): the cover lines run across the top or the bottom third */
 @container (aspect-ratio < 1) {
   .theme-masthead .sc-header {
@@ -430,5 +559,84 @@
   }
   .theme-masthead[data-presentation='dj'] .sc-label {
     font-size: 2.3cqw;
+  }
+
+  /* the tracklist: a contents column in the third the cover lines leave, by the masthead */
+  .theme-masthead .sc-tracklist {
+    --pad: 3cqw;
+    top: calc(7.5cqh - var(--pad));
+    right: calc(7cqw - var(--pad));
+    left: calc(7cqw - var(--pad));
+    padding: var(--pad);
+  }
+  .theme-masthead[data-bg-calm^='top'] .sc-tracklist {
+    top: auto;
+    bottom: calc(7.5cqh - var(--pad));
+  }
+  .theme-masthead .sc-tracklist-heading {
+    display: block;
+    margin-bottom: 0.6cqw;
+    font-size: 1.5cqw;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .theme-masthead .sc-tracklist-rows {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  /* rows open and close in height; their rules are backgrounds, so a closed row takes no room */
+  .theme-masthead .sc-tracklist-row {
+    --far: 0;
+    position: static;
+    width: auto;
+    height: calc-size(auto, size * var(--row-presence));
+    grid-template-columns: 7cqw auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'index deck artist time'
+      'index title title title';
+    padding: 0;
+    border: 0;
+    overflow: visible clip;
+    background: linear-gradient(
+        color-mix(in oklab, var(--ink) 24%, transparent),
+        color-mix(in oklab, var(--ink) 24%, transparent)
+      )
+      left top / 100% var(--hairline) no-repeat;
+  }
+  .theme-masthead .sc-tracklist-row[data-state='current'] {
+    background:
+      linear-gradient(var(--accent), var(--accent)) left top / calc(var(--row-progress) * 100%)
+        calc(var(--hairline) * 2) no-repeat,
+      linear-gradient(
+          color-mix(in oklab, var(--ink) 24%, transparent),
+          color-mix(in oklab, var(--ink) 24%, transparent)
+        )
+        left top / 100% var(--hairline) no-repeat;
+  }
+  .theme-masthead .sc-tracklist-index {
+    align-self: center;
+    font-size: 3.4cqw;
+  }
+  .theme-masthead .sc-tracklist-time {
+    margin-top: 1.5cqw;
+    font-size: 1.35cqw;
+  }
+  .theme-masthead .sc-tracklist-artist {
+    margin-top: 1.5cqw;
+    font-size: 1.4cqw;
+  }
+  .theme-masthead .sc-tracklist-title {
+    margin-top: 0.4cqw;
+    margin-bottom: 1.4cqw;
+    font-size: 2.9cqw;
+  }
+  .theme-masthead .sc-tracklist-row[data-state='current'][data-deck]::after {
+    align-self: center;
+    margin: 1.5cqw 1.4cqw 0 0;
+    font-size: 1.2cqw;
   }
 }
