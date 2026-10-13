@@ -169,7 +169,8 @@
     inset 0 0 1.6cqw rgb(0 0 0 / 0.85),
     inset 0 0.5cqw 0.8cqw rgb(0 0 0 / 0.6);
 }
-.theme-vfd .sc-contributors::after {
+.theme-vfd .sc-contributors::after,
+.theme-vfd .sc-tracklist::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -197,7 +198,11 @@
     .sc-clock,
     .sc-next-artist,
     .sc-next-title,
-    .sc-credit-details
+    .sc-credit-details,
+    .sc-tracklist-index,
+    .sc-tracklist-time,
+    .sc-tracklist-artist,
+    .sc-tracklist-title
   ) {
   font-family: var(--font-display);
   font-weight: 700;
@@ -211,13 +216,22 @@
     0 0 calc(0.45em * var(--glow)) color-mix(in srgb, var(--halo) 40%, transparent);
 }
 /* the unlit cells of a field, faintly there behind the lit ones */
-.theme-vfd :is(.sc-artist, .sc-title, .sc-label) {
+.theme-vfd :is(.sc-artist, .sc-title, .sc-label, .sc-tracklist-artist, .sc-tracklist-title) {
   position: relative;
 }
-.theme-vfd :is(.sc-artist, .sc-title, .sc-label, .sc-clock) {
+.theme-vfd
+  :is(.sc-artist, .sc-title, .sc-label, .sc-clock, .sc-tracklist-artist, .sc-tracklist-title) {
   isolation: isolate;
 }
-.theme-vfd :is(.sc-artist, .sc-title, .sc-label, .sc-clock)::before {
+.theme-vfd
+  :is(
+    .sc-artist,
+    .sc-title,
+    .sc-label,
+    .sc-clock,
+    .sc-tracklist-artist,
+    .sc-tracklist-title
+  )::before {
   content: '';
   position: absolute;
   inset: 0 auto 0 0;
@@ -228,7 +242,8 @@
 }
 
 /* legends printed on the glass */
-.theme-vfd :is(.sc-next-label, .sc-meter-label, .sc-contributor-count, .sc-overflow),
+.theme-vfd
+  :is(.sc-next-label, .sc-meter-label, .sc-contributor-count, .sc-overflow, .sc-tracklist-heading),
 .theme-vfd .sc-contributors::before,
 .theme-vfd .sc-header::before,
 .theme-vfd .sc-header::after,
@@ -567,6 +582,165 @@
 }
 
 /*
+ * tracklist: a second display of the same make in the top corner, as wide as the right column of
+ * the one below. Two lines a listing, the artist over the title as on the main display. The
+ * listing on now burns, with a cursor and a bar of how far it has run; what is to come sits
+ * dimmer and what has played dimmest. A row lights as it enters and goes dark as it leaves, while
+ * its unlit cells stay.
+ */
+.theme-vfd .sc-tracklist {
+  top: var(--win-y);
+  right: var(--win-x);
+  width: calc(var(--col) + 2 * (var(--pad-x) + var(--bezel)));
+  /* a long list stops above the main display, cut off by the glass like rows that do not fit */
+  max-height: calc(100cqh - 2 * var(--win-y) - var(--dot-s) * 150);
+  overflow: clip;
+  padding: var(--pad-y) var(--pad-x) calc(var(--pad-y) - var(--dot-s) * 2);
+  border: var(--bezel) solid transparent;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(
+        140% 130% at 30% 0%,
+        oklch(from var(--phosphor) 0.17 0.02 h),
+        oklch(from var(--phosphor) 0.105 0.012 h) 55%,
+        oklch(from var(--phosphor) 0.08 0.008 h)
+      )
+      padding-box,
+    linear-gradient(to bottom, #6e7576, #2e3436 12%, #191d1f 55%, #0e1112 88%, #2b3032) border-box;
+  box-shadow:
+    0 0 0 max(1px, 0.05cqw) rgb(0 0 0 / 0.75),
+    0 0.6cqh 1cqh rgb(0 0 0 / 0.5),
+    0 2cqh 5cqh rgb(0 0 0 / 0.5),
+    inset 0 0 0 max(1px, 0.1cqw) #000,
+    inset 0 0 1.6cqw rgb(0 0 0 / 0.85),
+    inset 0 0.5cqw 0.8cqw rgb(0 0 0 / 0.6);
+}
+/* the legend over the rows, and over the times */
+.theme-vfd .sc-tracklist-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: calc(var(--dot-s) * 4);
+}
+.theme-vfd .sc-tracklist-heading::after {
+  content: 'Time';
+}
+.theme-vfd .sc-tracklist-row {
+  --state-dim: 0.5;
+  --row-dim: calc(var(--state-dim) * var(--row-presence));
+  --lit: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--phosphor) 90%, #fff)
+      calc(var(--dimmer) * var(--flicker) * var(--row-dim) * 100%),
+    transparent
+  );
+  --halo: color-mix(
+    in srgb,
+    var(--phosphor) calc(var(--dimmer) * var(--flicker) * var(--row-dim) * 100%),
+    transparent
+  );
+  --glow: calc(var(--mod-glow, 0.8) * (1 + var(--drop-flash) * 1.4) * var(--row-dim));
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(var(--dot-s) * 12) auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'cursor index artist time'
+    'cursor . title title';
+  align-items: baseline;
+  align-content: if(style(--row-offset < 0): unsafe end; else: normal);
+  column-gap: calc(var(--dot-s) * 6);
+  row-gap: calc(var(--dot-s) * 3);
+  padding-block: calc(var(--dot-s) * 4 * var(--row-presence));
+  line-height: 1;
+  opacity: 1;
+}
+.theme-vfd .sc-tracklist-row[data-state='current'] {
+  --state-dim: 1;
+}
+.theme-vfd .sc-tracklist-row[data-state='current'][data-focused='false'] {
+  --state-dim: 0.62;
+}
+.theme-vfd .sc-tracklist-row[data-state='played'] {
+  --state-dim: 0.2;
+}
+.theme-vfd .sc-tracklist-index {
+  grid-area: index;
+  font-size: calc(var(--dot-s) * 10);
+  font-variant-numeric: tabular-nums;
+}
+.theme-vfd .sc-tracklist-time {
+  display: block;
+  grid-area: time;
+  font-size: calc(var(--dot-s) * 10);
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--lit) 64%, transparent);
+}
+.theme-vfd .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: hidden;
+  font-size: calc(var(--dot-s) * 10);
+  text-overflow: ellipsis;
+  color: color-mix(in oklab, var(--lit) 70%, transparent);
+}
+.theme-vfd .sc-tracklist-title {
+  grid-area: title;
+  font-size: calc(var(--dot-m) * 10);
+  font-weight: 750;
+}
+/* the cursor: a lit triangle, or in DJ mode the deck in a lit frame like the credits' */
+.theme-vfd .sc-tracklist-row::before {
+  content: '';
+  grid-area: cursor;
+  align-self: center;
+}
+.theme-vfd .sc-tracklist-row[data-state='current']::before {
+  width: calc(var(--dot-s) * 5);
+  height: calc(var(--dot-s) * 8);
+  background: var(--lit);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.theme-vfd[data-presentation='dj'] .sc-tracklist-row[data-state='current'][data-deck]::before {
+  content: attr(data-deck);
+  display: grid;
+  place-items: center;
+  justify-self: start;
+  width: auto;
+  min-width: calc(var(--dot-s) * 14);
+  height: calc(var(--dot-s) * 14);
+  padding-inline: 0.3em;
+  border: max(1px, 0.1cqw) solid var(--lit);
+  border-radius: 0.2cqw;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: 'ROND' 55;
+  font-size: calc(var(--dot-s) * 10);
+  line-height: 1;
+  color: var(--lit);
+  background: none;
+  clip-path: none;
+  text-shadow: 0 0 calc(0.3em * var(--glow)) var(--halo);
+  box-shadow: 0 0 calc(0.35cqw * var(--glow)) color-mix(in srgb, var(--halo) 50%, transparent);
+}
+/* how far the listing has run: a strip of lamp cells under its title, in the row's padding */
+.theme-vfd .sc-tracklist-row[data-state='current']::after {
+  content: '';
+  position: absolute;
+  grid-column: title;
+  grid-row: 1 / -1;
+  inset: auto 0 calc(var(--dot-s) * -3);
+  height: var(--dot-s);
+  background: linear-gradient(
+    to right,
+    var(--lit) calc(var(--row-progress) * 100%),
+    var(--ghost) 0
+  );
+  mask: repeating-linear-gradient(
+    to right,
+    #000 0 calc(var(--dot-s) * 2),
+    transparent 0 calc(var(--dot-s) * 3)
+  );
+}
+
+/*
  * DJ: one display with a line per current play, like a multi-deck readout. A VFD has a single
  * color, so focus is brightness: the focused line burns, the others sit dimmer.
  */
@@ -670,7 +844,15 @@
 /* portrait (9:16): the display across the bottom, the clock and meters under the text */
 @container (aspect-ratio < 1) {
   .theme-vfd
-    :is(.sc-bg-vignette, .sc-contributors, .sc-header, .sc-meters, .sc-spectrum, .sc-next) {
+    :is(
+      .sc-bg-vignette,
+      .sc-contributors,
+      .sc-header,
+      .sc-meters,
+      .sc-spectrum,
+      .sc-next,
+      .sc-tracklist
+    ) {
     --dot-s: round(nearest, 0.25cqw, 1px);
     --dot-m: round(nearest, 0.37cqw, 1px);
     --dot-l: round(nearest, 0.65cqw, 1px);
@@ -700,6 +882,9 @@
   }
   .theme-vfd .sc-header {
     height: var(--lower);
+  }
+  .theme-vfd .sc-tracklist {
+    max-height: calc(100cqh - 2 * var(--win-y) - var(--dot-s) * 240);
   }
   /* up next takes a second line of the top row, under the panel's head */
   .theme-vfd :is(.sc-contributors, .sc-next) {
