@@ -73,7 +73,8 @@
   border-block: var(--matte) solid var(--matte-color);
   pointer-events: none;
 }
-.theme-anamorphic :is(.sc-spectrum, .sc-header, .sc-contributors, .sc-panel, .sc-next) {
+.theme-anamorphic
+  :is(.sc-spectrum, .sc-header, .sc-contributors, .sc-panel, .sc-next, .sc-tracklist) {
   z-index: 2;
 }
 
@@ -311,11 +312,119 @@
   text-transform: uppercase;
 }
 
+/* the tracklist: an end-credits roll in the upper bar, artist and title either side of a center
+   line, cue number and time at its ends. Each line sits by its distance from the current listing,
+   so the roll moves up a line with each listing, and the bar's edges fade the lines beyond. */
+.theme-anamorphic .sc-tracklist {
+  --step: 2.6cqh;
+  top: 0;
+  right: auto;
+  left: 50%;
+  width: 46cqw;
+  height: var(--matte);
+  translate: -50% 0;
+  font-family: var(--font-display);
+  color: var(--ink);
+  opacity: var(--in-matte);
+  mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent);
+}
+.theme-anamorphic .sc-tracklist-heading {
+  display: none;
+}
+.theme-anamorphic .sc-tracklist-rows {
+  position: absolute;
+  inset: 0;
+}
+.theme-anamorphic .sc-tracklist-row {
+  --distance: min(abs(var(--row-offset)), 3);
+  --tier: 0.62;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: auto;
+  display: grid;
+  grid-template-columns: 3.4em minmax(0, 1fr) 2.6em minmax(0, 1fr) 3.4em;
+  grid-template-areas: 'index artist gutter title time';
+  align-items: baseline;
+  column-gap: 0;
+  padding-block: 0.35cqw;
+  overflow: visible;
+  translate: 0 calc(-50% + var(--row-offset) * var(--step));
+  font-size: 0.62cqw;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: calc(var(--row-presence) * var(--tier) * (1 - var(--distance) * 0.24));
+}
+.theme-anamorphic .sc-tracklist-row[data-state='played'] {
+  --tier: 0.45;
+}
+.theme-anamorphic .sc-tracklist-row[data-state='current'] {
+  --tier: 1;
+}
+.theme-anamorphic :is(.sc-tracklist-index, .sc-tracklist-time) {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2em;
+  color: var(--fg-dim);
+}
+.theme-anamorphic .sc-tracklist-index {
+  grid-area: index;
+}
+.theme-anamorphic .sc-tracklist-time {
+  display: block;
+  grid-area: time;
+  justify-self: end;
+}
+.theme-anamorphic .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: hidden;
+  padding-left: 0.36em;
+  font-size: 0.68cqw;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-anamorphic .sc-tracklist-title {
+  grid-area: title;
+  overflow: hidden;
+  font-size: 1.1cqw;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+/* the current lines: a hairline under them that opens from the center as the listing runs, and
+   in DJ mode the deck on the center line */
+.theme-anamorphic .sc-tracklist-row[data-state='current'] {
+  background: linear-gradient(var(--accent), var(--accent)) center bottom /
+    calc(var(--row-progress) * 50%) var(--hairline) no-repeat;
+}
+.theme-anamorphic .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: color-mix(in oklab, var(--ink) 80%, transparent);
+}
+.theme-anamorphic .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  font-weight: 400;
+}
+.theme-anamorphic .sc-tracklist-row[data-state='current'][data-deck]::after {
+  content: attr(data-deck);
+  grid-area: gutter;
+  justify-self: center;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--deck);
+}
+
 /* portrait (9:16): the band is a window across the middle, the credits below it, and a drop
    opens it only part of the way, so the credits stay */
 @container (aspect-ratio < 1) {
   .theme-anamorphic::after,
-  .theme-anamorphic :is(.sc-spectrum, .sc-header, .sc-contributors, .sc-panel, .sc-next) {
+  .theme-anamorphic
+    :is(.sc-spectrum, .sc-header, .sc-contributors, .sc-panel, .sc-next, .sc-tracklist) {
     --matte: calc((100cqh - 100cqw / var(--band-aspect)) / 2 * (1 - var(--open) * 0.25));
     --in-matte: 1;
   }
@@ -395,5 +504,22 @@
   }
   .theme-anamorphic[data-presentation='dj'] .sc-title {
     font-size: 4.6cqw;
+  }
+  /* the roll between the header and the band */
+  .theme-anamorphic .sc-tracklist {
+    --step: 2.9cqh;
+    top: calc(var(--matte) / 2 + 2.5cqh);
+    width: 86cqw;
+    height: calc(var(--matte) / 2 - 5cqh);
+  }
+  .theme-anamorphic .sc-tracklist-row {
+    padding-block: 0.8cqw;
+    font-size: 1.35cqw;
+  }
+  .theme-anamorphic .sc-tracklist-artist {
+    font-size: 1.5cqw;
+  }
+  .theme-anamorphic .sc-tracklist-title {
+    font-size: 2.6cqw;
   }
 }

@@ -11,4 +11,5 @@ export const anamorphic: Theme = {
     { name: 'bloom', bands: ['bass', 'highs'], gain: 1.1 },
     { name: 'spectrum', style: 'line', bars: 24, gain: 0.8, floor: 0 },
   ],
+  tracklist: { before: 2, after: 2 },
 };
