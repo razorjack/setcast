@@ -11,4 +11,5 @@ export const patina: Theme = {
     { source: 'bass', target: 'string', range: [0, 1], curve: 'sqrt', smooth: 0.06 },
   ],
   visualizer: { name: 'oscilloscope', gain: 1.8, trail: 6 },
+  tracklist: { before: 1, after: 1 },
 };

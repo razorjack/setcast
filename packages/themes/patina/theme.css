@@ -60,7 +60,7 @@
  * kept within --print-max-w by --print-max-h. In landscape its lower edge stays put; the string
  * hangs under it and the credits under the string.
  */
-.theme-patina :is(.sc-bg, .sc-oscilloscope, .sc-panel, .sc-contributors),
+.theme-patina :is(.sc-bg, .sc-oscilloscope, .sc-panel, .sc-contributors, .sc-tracklist),
 .theme-patina::before,
 .theme-patina::after {
   --print-max-w: 90cqw;
@@ -433,7 +433,7 @@
 
 /* portrait: the print in the upper middle, the string and the credits under it */
 @container (aspect-ratio < 1) {
-  .theme-patina :is(.sc-bg, .sc-oscilloscope, .sc-panel, .sc-contributors),
+  .theme-patina :is(.sc-bg, .sc-oscilloscope, .sc-panel, .sc-contributors, .sc-tracklist),
   .theme-patina::before,
   .theme-patina::after {
     --print-max-w: 88cqw;
@@ -673,5 +673,183 @@
   .theme-patina .sc-overflow {
     max-width: none;
     margin: 1cqh 0 0;
+  }
+}
+
+/*
+ * Tracklist: a line of small capitals across the top of the frame, where up next would be, the
+ * neighbors of the current listing to either side of it. Each title has its artist in italic
+ * under it and a bronze hairline between them, like the captions of the DJ row. The ones already
+ * heard fade back; the current one is lit, its number in its deck's color, a string under it as
+ * long as it has run. Entries open and close in width, so the line re-centers as it moves on.
+ */
+.theme-patina .sc-tracklist {
+  top: calc(var(--margin) * 0.8 - 0.5cqw);
+  right: auto;
+  left: 50%;
+  width: 56cqw;
+  translate: -50% 0;
+  font-family: var(--font-display);
+  font-size: 1.1cqw;
+  color: var(--dim);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 4cqw,
+    #000 calc(100% - 4cqw),
+    transparent
+  );
+}
+.theme-patina .sc-tracklist-heading {
+  display: none;
+}
+.theme-patina .sc-tracklist-rows {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+/* --far is how far an entry is from the current one, toward its side of the line */
+.theme-patina .sc-tracklist-row {
+  --far: clamp(0, var(--row-offset), 1);
+  --seen: 0;
+  --lit: calc(1 - max(var(--far), var(--seen)));
+  position: relative;
+  display: grid;
+  flex: none;
+  grid-template-columns: max-content max-content;
+  grid-template-areas:
+    'index title'
+    'artist artist';
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.45em;
+  row-gap: 0.15cqw;
+  width: calc-size(max-content, size * var(--row-presence));
+  height: auto;
+  padding: 0 calc(var(--row-presence) * 1.5cqw) 0.4cqw;
+  overflow: clip visible;
+  line-height: 1.15;
+  opacity: calc(var(--row-presence) * (1 - var(--seen) * 0.45));
+  background:
+    linear-gradient(var(--parchment), var(--parchment)) 1.5cqw 100% /
+      calc(var(--row-progress) * (100% - 3cqw)) calc(var(--lit) * var(--hairline)) no-repeat,
+    linear-gradient(rgb(216 210 191 / 0.25), rgb(216 210 191 / 0.25)) 1.5cqw 100% /
+      calc(100% - 3cqw) calc(var(--lit) * var(--hairline)) no-repeat;
+}
+/* the entry leaving at the left slides out with its right edge, the one entering at the right
+   comes in with its left edge */
+.theme-patina .sc-tracklist-row[data-state='played'] {
+  --far: 0;
+  --seen: clamp(0, -1 * var(--row-offset), 1);
+  justify-content: end;
+}
+.theme-patina .sc-tracklist-row[data-state='upcoming'] {
+  justify-content: start;
+}
+.theme-patina .sc-tracklist-row + .sc-tracklist-row::before {
+  content: '';
+  position: absolute;
+  top: 0.2cqw;
+  bottom: 0.6cqw;
+  left: 0;
+  width: var(--hairline);
+  background: var(--bronze);
+  opacity: calc(var(--row-presence) * 0.45);
+}
+/* the current entry's number sits in a ring of its deck's color, like the caption's deck */
+.theme-patina .sc-tracklist-index {
+  display: inline-grid;
+  grid-area: index;
+  place-items: center;
+  min-width: 1.9em;
+  height: 1.9em;
+  padding-inline: 0.3em;
+  border: var(--hairline) solid
+    color-mix(in srgb, var(--deck), transparent calc((1 - var(--lit)) * 100%));
+  border-radius: 50%;
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: color-mix(in srgb, var(--deck), var(--dim) calc((1 - var(--lit)) * 100%));
+}
+.theme-patina .sc-tracklist-title {
+  grid-area: title;
+  max-width: 16cqw;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  color: color-mix(
+    in srgb,
+    var(--parchment),
+    var(--dim) calc((0.38 * var(--far) + var(--seen)) * 100%)
+  );
+}
+.theme-patina .sc-tracklist-artist {
+  grid-area: artist;
+  justify-self: center;
+  max-width: 100%;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: 1em;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+}
+
+/* portrait: a column of entries between the set's title and the print, centered like the
+   caption, each on one line */
+@container (aspect-ratio < 1) {
+  .theme-patina .sc-tracklist {
+    top: calc(var(--margin) * 0.8 + 2.4cqh);
+    bottom: calc(100cqh - var(--print-cy) + var(--print-h) / 2 + 1.6cqh);
+    width: 88cqw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 2.3cqw;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 2cqh,
+      #000 calc(100% - 2cqh),
+      transparent
+    );
+  }
+  .theme-patina .sc-tracklist-heading {
+    display: block;
+    margin-bottom: 0.6cqh;
+    font-family: var(--font-italic);
+    font-style: italic;
+    font-size: 1.1em;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    text-align: center;
+  }
+  .theme-patina .sc-tracklist-rows {
+    display: block;
+  }
+  .theme-patina .sc-tracklist-row {
+    grid-template-columns: auto minmax(0, max-content) minmax(0, max-content);
+    grid-template-areas: 'index title artist';
+    align-items: baseline;
+    column-gap: 0.6em;
+    width: fit-content;
+    max-width: 100%;
+    height: calc-size(auto, size * var(--row-presence));
+    margin-inline: auto;
+    padding: calc(var(--row-presence) * 0.2cqh) 1.5cqw calc(var(--row-presence) * 0.4cqh);
+    overflow: visible clip;
+  }
+  .theme-patina .sc-tracklist-index {
+    min-width: 1.7em;
+    height: 1.7em;
+  }
+  .theme-patina .sc-tracklist-title {
+    max-width: none;
+  }
+  .theme-patina .sc-tracklist-row + .sc-tracklist-row::before {
+    display: none;
   }
 }
