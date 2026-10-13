@@ -297,7 +297,7 @@
  * dark art the boxes are faint; over bright or busy art, where the art shows through the type,
  * they close up.
  */
-.theme-interference :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+.theme-interference :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist) {
   --glare: clamp(
     0,
     (var(--bg-luma-behind, 0) * var(--art-gain) - 0.1) * 2.6 + var(--bg-detail-behind, 0) * 4,
@@ -465,6 +465,153 @@
   color: var(--white);
 }
 
+/*
+ * tracklist: a running order set as caption lines in the top corner across from the credits,
+ * flush with the clock, each line on its own box. The record on now carries the live signal,
+ * split by the bass, its index on the deck's color; what has played is a weak signal and what is
+ * to come a clean one. A line tunes in with its channels apart and converges as it settles.
+ */
+.theme-interference .sc-tracklist {
+  /* its type is small and dimmer than the credits', so its boxes close up sooner */
+  --row-box: rgb(5 5 7 / calc(0.46 + var(--glare) * 0.46));
+  top: calc(var(--margin) + 5cqh);
+  right: var(--margin);
+  width: 36cqw;
+  font-family: var(--font-mono);
+  font-size: 1.1cqw;
+  color: var(--dim);
+  translate: calc(var(--noise-c) * var(--tear) * 1.5cqw) 0;
+}
+/* each box hugs its line, flush right; block flow, because Chrome ignores the rows' calc-size()
+   heights on flex items */
+.theme-interference :is(.sc-tracklist-heading, .sc-tracklist-row) {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto 0;
+}
+.theme-interference .sc-tracklist-heading {
+  margin-bottom: 0.4cqw;
+  padding: 0.3cqw 0.6cqw;
+  font-size: 0.75cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--row-box);
+}
+.theme-interference .sc-tracklist-heading::before {
+  content: '//';
+  margin-right: 0.8em;
+  color: var(--magenta);
+}
+/* the transparent border is the gap between caption lines; it and the padding close with the row,
+   because a border box cannot shrink below them */
+.theme-interference .sc-tracklist-row {
+  --tune: calc(1 - var(--row-presence));
+  --line-noise: sin(
+    var(--since-drop, 60) * 1913 + var(--set-progress, 0) * 71713 + sibling-index() * 2.3
+  );
+  display: flex;
+  align-items: baseline;
+  column-gap: 0.7cqw;
+  padding: calc(0.3cqw * var(--row-presence)) 0.6cqw;
+  border-block: calc(0.14cqw * var(--row-presence)) solid transparent;
+  line-height: 1.8cqw;
+  text-transform: uppercase;
+  background: var(--row-box) padding-box;
+  opacity: var(--row-presence);
+  translate: calc(var(--side) * var(--tune) * -1.6cqw + var(--line-noise) * var(--tear) * 2cqw) 0;
+  text-shadow:
+    calc(var(--tune) * -0.6cqw) 0 var(--magenta),
+    calc(var(--tune) * 0.6cqw) 0 var(--cyan);
+}
+.theme-interference .sc-tracklist-index {
+  order: 3;
+  display: inline-grid;
+  place-items: center;
+  align-self: center;
+  min-width: 1.8cqw;
+  height: 1.5cqw;
+  padding: 0 0.3cqw;
+  font-weight: 700;
+  font-size: 0.8cqw;
+  font-variant-numeric: tabular-nums;
+  color: var(--dim);
+  box-shadow: inset 0 0 0 var(--hairline) rgb(154 154 176 / 0.5);
+  text-shadow: none;
+}
+.theme-interference .sc-tracklist-artist {
+  order: 1;
+  flex: none;
+  max-width: 13cqw;
+  overflow: hidden;
+  font-size: 0.85cqw;
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.theme-interference .sc-tracklist-title {
+  order: 2;
+  flex: 0 1 auto;
+  min-width: 0;
+  letter-spacing: 0.04em;
+  color: inherit;
+}
+.theme-interference .sc-tracklist-row[data-state='played'] {
+  color: var(--dim);
+}
+.theme-interference .sc-tracklist-row[data-state='upcoming'] .sc-tracklist-artist {
+  color: color-mix(in srgb, var(--cyan) 60%, var(--dim));
+}
+.theme-interference .sc-tracklist-row[data-state='upcoming'] .sc-tracklist-title {
+  color: var(--white);
+}
+/* on now: the wide capitals, the index on the deck's color, and a hairline of how far the record
+   has run along the foot of its box; the focused one carries the split, like its credit */
+.theme-interference .sc-tracklist-row[data-state='current'] {
+  background:
+    linear-gradient(var(--deck), var(--deck)) left bottom / calc(var(--row-progress) * 100%) 0.14cqw
+      no-repeat padding-box,
+    rgb(5 5 7 / calc(0.58 + var(--glare) * 0.36)) padding-box;
+}
+.theme-interference .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: var(--black);
+  background: var(--deck);
+  box-shadow: none;
+}
+.theme-interference .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: var(--cyan);
+}
+.theme-interference .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  font-family: var(--font-display);
+  font-size: 1.3cqw;
+  letter-spacing: 0.02em;
+  color: var(--white);
+}
+.theme-interference
+  .sc-tracklist-row[data-state='current'][data-focused='true']
+  .sc-tracklist-title {
+  --row-split: calc(var(--split) * 0.6 + var(--tune) * 0.6cqw);
+  text-shadow:
+    calc(-1 * var(--row-split)) 0 var(--magenta),
+    var(--row-split) 0 var(--cyan);
+}
+.theme-interference
+  .sc-tracklist-row[data-state='current'][data-focused='false']
+  .sc-tracklist-title {
+  color: color-mix(in srgb, var(--white) 62%, var(--dim));
+}
+/* on the calm right the credits move there, and the list takes the left corner under the name */
+.theme-interference:is([data-bg-calm='bottom-right'], [data-bg-calm='right']) .sc-tracklist {
+  right: auto;
+  left: var(--margin);
+}
+.theme-interference:is([data-bg-calm='bottom-right'], [data-bg-calm='right'])
+  :is(.sc-tracklist-heading, .sc-tracklist-row) {
+  margin-inline: 0 auto;
+}
+.theme-interference:is([data-bg-calm='bottom-right'], [data-bg-calm='right']) .sc-tracklist-index {
+  order: 0;
+}
+
 @container (aspect-ratio < 1) {
   /* no room between the name and the clock: the signal runs under them */
   .theme-interference .sc-oscilloscope {
@@ -504,6 +651,48 @@
   }
   .theme-interference .sc-next-title {
     font-size: 3cqw;
+  }
+  /* the list runs down from under the signal, flush with the name and the credits */
+  .theme-interference .sc-tracklist {
+    top: calc(var(--margin) + 13cqw);
+    right: auto;
+    left: var(--margin);
+    width: calc(100cqw - 2 * var(--margin));
+    font-size: 2.4cqw;
+  }
+  .theme-interference :is(.sc-tracklist-heading, .sc-tracklist-row) {
+    margin-inline: 0 auto;
+  }
+  .theme-interference .sc-tracklist-heading {
+    margin-bottom: 0.8cqw;
+    padding: 0.6cqw 1.2cqw;
+    font-size: 1.5cqw;
+  }
+  .theme-interference .sc-tracklist-row {
+    column-gap: 1.4cqw;
+    padding: calc(0.6cqw * var(--row-presence)) 1.2cqw;
+    border-block-width: calc(0.3cqw * var(--row-presence));
+    line-height: 3.9cqw;
+    translate: calc(var(--tune) * -3cqw + var(--line-noise) * var(--tear) * 4cqw) 0;
+  }
+  .theme-interference .sc-tracklist-row[data-state='current'] {
+    background-size:
+      calc(var(--row-progress) * 100%) 0.3cqw,
+      auto;
+  }
+  .theme-interference .sc-tracklist-index {
+    order: 0;
+    min-width: 3.8cqw;
+    height: 3.2cqw;
+    padding: 0 0.6cqw;
+    font-size: 1.75cqw;
+  }
+  .theme-interference .sc-tracklist-artist {
+    max-width: 30cqw;
+    font-size: 1.85cqw;
+  }
+  .theme-interference .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+    font-size: 2.85cqw;
   }
 }
 
