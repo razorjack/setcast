@@ -612,3 +612,152 @@
     font-size: 1.7cqw;
   }
 }
+
+/*
+ * Tracklist: the listings as stripes hanging from the top edge, on the side the art leaves calm.
+ * The played ones sink into the grey of the field, the current one takes the title's teal under a
+ * blue rule of its run, and what is coming takes the sage of the up-next stripe it replaces. A
+ * stripe's color follows its place in the list, so the colors move on with the list.
+ */
+.theme-bristol .sc-tracklist {
+  --row-h: 4.2cqh;
+  --row-rule: 0.42cqh;
+  top: 0;
+  right: 0;
+  width: 32cqw;
+  font-family: var(--font-display);
+  font-size: 0.85cqw;
+  color: var(--ink);
+}
+.theme-bristol[data-bg-calm$='left'] .sc-tracklist {
+  right: auto;
+  left: 0;
+}
+.theme-bristol .sc-tracklist-heading {
+  display: flex;
+  align-items: center;
+  height: calc(var(--row-h) * 0.85);
+  margin: 0;
+  padding-inline: var(--margin);
+  font-weight: 500;
+  font-size: 1em;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--ink);
+  background: var(--pale);
+}
+/* --far is how far a stripe has gone from teal toward the color of its side of the list */
+.theme-bristol .sc-tracklist-row {
+  --side: var(--sage);
+  --far: clamp(0, var(--row-offset), 1);
+  display: flex;
+  align-items: if(style(--row-offset < 0): end; else: start);
+  column-gap: 1cqw;
+  height: calc(var(--row-presence) * var(--row-h));
+  padding-inline: var(--margin);
+  opacity: 1;
+  line-height: normal;
+  /* the ink turns over halfway, where white and ink read equally on the stripe */
+  color: color-mix(in oklab, var(--white), var(--ink) calc(round(var(--far)) * 100%));
+  background:
+    linear-gradient(
+        to right,
+        var(--blue) calc(var(--row-progress) * 100%),
+        color-mix(in oklab, var(--blue-dim), var(--side) calc(var(--far) * 100%)) 0
+      )
+      top / 100% calc((1 - var(--far)) * var(--row-rule)) no-repeat,
+    color-mix(in oklab, var(--teal), var(--side) calc(var(--far) * 100%));
+}
+.theme-bristol .sc-tracklist-row[data-state='played'] {
+  --side: var(--grey);
+  --far: clamp(0, -1 * var(--row-offset), 1);
+}
+/* each item is as tall as a full stripe, so a closing stripe clips it instead of squeezing it */
+.theme-bristol .sc-tracklist-row > * {
+  block-size: var(--row-h);
+  align-content: center;
+}
+.theme-bristol .sc-tracklist-index {
+  display: grid;
+  place-items: center;
+  flex: none;
+  min-width: 1.5cqw;
+  block-size: 1.5cqw;
+  margin-block: calc((var(--row-h) - 1.5cqw) / 2);
+  padding-inline: 0.3em;
+  font-weight: 600;
+  font-size: 0.8cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: inherit;
+  background: color-mix(in srgb, var(--deck), transparent calc(var(--far) * 100%));
+}
+.theme-bristol .sc-tracklist-title {
+  order: 1;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-weight: 300;
+  font-size: 1.35cqw;
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: inherit;
+}
+.theme-bristol .sc-tracklist-artist {
+  order: 2;
+  flex: none;
+  max-width: 40%;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1cqw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.theme-bristol .sc-tracklist-time {
+  display: block;
+  order: 3;
+  flex: none;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+.theme-bristol .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  font-weight: 400;
+}
+.theme-bristol .sc-tracklist-row:is([data-deck='B'], [data-deck='D']) .sc-tracklist-index {
+  color: var(--ink);
+}
+
+/* portrait: the stripes span the frame above the print */
+@container (aspect-ratio < 1) {
+  .theme-bristol .sc-tracklist,
+  .theme-bristol[data-bg-calm$='left'] .sc-tracklist {
+    --row-h: 2.5cqh;
+    --row-rule: 0.27cqh;
+    right: 0;
+    left: 0;
+    width: auto;
+    font-size: 1.7cqw;
+  }
+  .theme-bristol .sc-tracklist-row {
+    column-gap: 2cqw;
+  }
+  .theme-bristol .sc-tracklist-index {
+    min-width: 3cqw;
+    block-size: 3cqw;
+    margin-block: calc((var(--row-h) - 3cqw) / 2);
+    font-size: 1.6cqw;
+  }
+  .theme-bristol .sc-tracklist-title {
+    font-size: 3cqw;
+  }
+  .theme-bristol .sc-tracklist-artist {
+    font-size: 2.3cqw;
+  }
+}
