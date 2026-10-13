@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TimeSchema } from './time-schema.ts';
 import { MixInputShape } from './mix-schema.ts';
 import { ModRouteSchema } from './modulation.ts';
+import { TracklistSchema } from './tracklist.ts';
 
 /** A path relative to the project directory; `loadProject` checks that it stays inside it. */
 const relativePath = (what: string, required = `${what} must be a file path.`) =>
@@ -215,6 +216,8 @@ export const ProjectConfigSchema = z
        */
       visualizer: z.unknown().optional(),
       panel: PanelSchema.prefault({}),
+      /** The listings around the current one. Absent means the theme's default. */
+      tracklist: TracklistSchema.optional(),
       /** Tempo of the set; gives CSS `--beat` and `--bar`. `setcast analyze --write` fills it in. */
       bpm: z
         .number({ error: 'bpm must be a number greater than 0 and no more than 400.' })

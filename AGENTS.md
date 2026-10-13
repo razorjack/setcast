@@ -52,6 +52,7 @@ vp run smoke               # renders 3 s of the demo and validates the MP4 (audi
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
 vp run package-smoke       # build local tarballs; test installed CLI, all themes and video
 vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
+vp run tracklist-stills [--theme name]  # each theme's tracklist: playlist, DJ, glide, portrait
 vp run render-bench [dir] [--help]     # compare render settings; timings and MP4s in out/bench
 vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
@@ -62,6 +63,7 @@ cd examples/demo && vp run preview                          # Remotion Studio
 Inner loop for an agent: `vp check && vp test`.
 For theme work, `vp run theme-stills --at 1:50.4 --theme <name>` renders a moment of examples/demo
 into `examples/demo/out/themes/` in about 4 s per still; read the images before committing.
+`vp run tracklist-stills --theme <name>` does the same for the tracklist with a ten-listing mix.
 A theme must also hold up over the user's own art; read "Themes and the user's art" below first.
 
 Before you finish a larger piece of work (a feature, a refactor, a theme, any change across several
@@ -110,6 +112,16 @@ Gotchas:
 - A visualizer's `<svg>` is a replaced element: absolutely positioned with `width: auto`, it
   keeps its own width and ignores `right`. To span from `left` to `right`, add
   `justify-self: stretch` (bristol's overview).
+- base.css styles the tracklist in `@layer fallback`, so a theme that never styles it still shows
+  it in its own type. Any theme rule wins over the layer whatever its specificity, but the
+  properties a theme leaves unset still apply: rows are `display: flex` with `line-height: 1.6`,
+  `white-space: nowrap` and an opacity, and `.sc-tracklist-time` is `display: none`. A `gap` there
+  once leaked into sterile-tech's grid as `row-gap`. Set what the design depends on. A row's height
+  follows `--row-presence`, but it cannot shrink below its padding and border, so the leaving row
+  jumps out on the glide's last frame unless the theme scales those by `--row-presence`. A flex
+  container around the rows keeps leaving rows at full height (Chrome ignores `calc-size()` on
+  flex items). An ellipsis needs a clipped title: use `overflow: clip` with
+  `overflow-clip-margin`, because `overflow: hidden` also cuts the dot of Ż and a title's glow.
 - `vp run render --range 0:30-0:45` passes flags through; do not insert `--` (it becomes a
   positional `dir` argument).
 - Audio feature gains (`spectrumFeatures`, `logBins`) are calibrated against the demo synth. Real
@@ -318,8 +330,8 @@ Remotion's bundler compiles it).
 
 The stage root has class `setcast` plus `--mod-*` variables. Stable class names: `sc-stage`,
 `sc-bg`, `sc-art`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
-`sc-header`, `sc-clock`. `packages/core/css/base.css` is structural only (positions, sizes as
-variables); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
+`sc-header`, `sc-clock`, `sc-tracklist`. `packages/core/css/base.css` is structural only
+(positions, sizes as variables, and the tracklist's fallback look); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
 `--accent-2`, `--deck-a` … `--deck-d` (one signal color per deck), `--fg`, `--fg-dim`, `--blur`,
 `--radius`, `--font-display`, `--font-mono`. Users can add `css: ./overrides.css` in
 `setcast.yaml`; it is appended last.
@@ -399,6 +411,20 @@ base.css places as a hairline, or as the lit part of the top cell when segmented
 mode, labelled "Next in tracklist", "Next entry" or "Returning". Its own `--until-next` drives
 the theme's visibility. Never infer a next deck from missing hardware information.
 
+`.sc-tracklist` (with `tracklist:`) lists the listings around the current one: a
+`.sc-tracklist-heading`, then one `.sc-tracklist-row` per listing in `.sc-tracklist-rows`, holding
+`.sc-tracklist-index`, `.sc-tracklist-time` (on the display clock), `.sc-tracklist-artist` when
+known and `.sc-tracklist-title`. A row's `data-state` is `current` while its play contributes,
+otherwise `played` or `upcoming`; it also has `data-play`, `data-focused`, `data-returning` and
+the current contribution's `data-deck`. `--row-offset` is its distance in rows from the current
+listing group, fractional while the list glides to a new one (`TRACKLIST_GLIDE_SECONDS`, 0.8);
+`--row-presence` (0..1) is how far inside the window it is, and base.css sets each row's height
+to it, so the list scrolls as the leaving row closes and the entering one opens; `--row-progress`
+runs 0..1 through its listing span. The root has `--since-listing` and `--until-listing` and is
+measured like the panels. base.css positions it (`--tracklist-top`, `--tracklist-width`) and
+aligns a leaving row's content to its bottom, so it scrolls out of the top. With a tracklist, the
+stage renders it in place of `.sc-next`, after the panels, so it can anchor to `--contributors`.
+
 ### Themes and the user's art
 
 Users replace the demo art with their own: usually a dark drum and bass sleeve, often a bright,
@@ -414,10 +440,10 @@ nearly black, flat `bg.png` breaks on such art. When you build or change a theme
   `--bg-correction` fallback so users can override it.
 - `--bg-color-1` and `--bg-color-2`, the art's hues: derive the theme's own variables from them
   with `oklch(from …)` at the theme's lightness and chroma, and use `var(--bg-accent, <own color>)`.
-- `--bg-luma-behind` on `.sc-header`, `.sc-set-title`, `.sc-clock`, each `.sc-panel` and
-  `.sc-next`: how bright the art is behind that element, every frame. Scale a text shadow or a
-  plate's opacity with it, so text stays legible over a bright sky without changing the look over
-  dark art. Multiply it by the theme's correction gain, declare derived variables on the measured
+- `--bg-luma-behind` on `.sc-header`, `.sc-set-title`, `.sc-clock`, each `.sc-panel`, `.sc-next`
+  and `.sc-tracklist`: how bright the art is behind that element, every frame. Scale a text shadow
+  or a plate's opacity with it, so text stays legible over a bright sky without changing the look
+  over dark art. Multiply it by the theme's correction gain, declare derived variables on the measured
   element itself, and never size or position anything with it. sterile-tech's `--art-gain`,
   `--glare` and `--veil` (the larger of glare and busyness from `--bg-detail-behind`) are the
   reference.
@@ -652,6 +678,22 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Bristol prints the art in two inks the same way, through a gradient map in
   `filter: url(./print.svg#print)`. Its stage root is a bottom-justified flex column, so its
   stripes stack and an opening stripe lifts the contour.
+- The tracklist's rows are listings, the editorial tracklist; unlisted teases stay out of it, and
+  the panel credits them while they play. Position follows listings, state follows
+  contributions: the window is anchored on the latest listing group at or before now, and a row
+  is `current` while its play contributes, wherever the row sits. In DJ mode several rows can be
+  current, and a play that enters before its listing is current below the anchor. `played` also
+  requires that the play has been heard, so a listing earlier than its entrance stays `upcoming`
+  until then. A returning play lights its own row without pulling the window back.
+- `tracklist:` is independent of `presentation.mode`. It is off unless the project or the theme
+  turns it on; a theme names default counts in `Theme.tracklist`, which apply when `setcast.yaml`
+  has no `tracklist:` key. The project's counts win key by key, and `false` turns a theme's
+  default off. The tracklist replaces up next: the stage does not render `.sc-next` with it,
+  rather than leaving every theme to hide it, and `after: 0` then shows nothing ahead.
+- The tracklist glides by interpolating the window's anchor and both edges between the previous
+  and the current listing group, so `--row-offset` and `--row-presence` change together and a
+  still at any moment shows the same frame as playback. Listing groups closer together than the
+  glide (0.8 s) jump a fraction of a row; real tracklists do not do that.
 - Playlist panels leave after `panel.dwell: 14` and `panel.fade: 1.2` by default. DJ panels keep
   credits visible, with focus controlling emphasis. Every entrance/dwell uses run start.
 - `setcast chapters` preserves compiled timestamps on stdout and prints platform constraints to
@@ -722,7 +764,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - `--bg-luma-behind` is measured per element, not for fixed zones of the frame: zones would bind
   every theme to the built-in layout, while an element's box follows whatever layout its theme
   gives it. A theme cannot add elements and pseudo-elements inherit from their host, so the fixed
-  `MEASURED_ELEMENTS` list in `Stage.tsx` covers custom themes too. A layout effect removes the
+  `MEASURED_ELEMENTS` list in `Stage.tsx` (header, title, clock, panels, up next, tracklist)
+  covers custom themes too. A layout effect removes the
   previous values, reads every box, then sets the new values. Removing first makes every render
   tab measure the same layout whatever frame it rendered before; reading all boxes before writing
   lays the frame out once. On a 1080p slice it cost 0.57 ms a frame for four elements, against

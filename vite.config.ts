@@ -73,6 +73,7 @@ export default defineConfig({
         cache: false,
       },
       'mix-stills': { command: 'node scripts/mix-stills.ts', cache: false },
+      'tracklist-stills': { command: 'node scripts/tracklist-stills.ts', cache: false },
       'theme-stills': {
         command: 'node scripts/theme-stills.ts',
         cache: false,

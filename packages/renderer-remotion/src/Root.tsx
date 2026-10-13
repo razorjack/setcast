@@ -20,6 +20,7 @@ const placeholder: ResolvedProject = {
   visualizers: [{ name: 'spectrum' }],
   envelope: null,
   panel: { dwell: 14, fade: 1.2 },
+  tracklist: null,
   bpm: null,
   beatOffset: 0,
   clockOffset: 0,

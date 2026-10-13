@@ -11,12 +11,16 @@ import { beatVars, stageData, stageVars } from '../stage.ts';
 import { Background, useBackgroundArt } from './components/Background.tsx';
 import { Header } from './components/Header.tsx';
 import { NowPlaying } from './components/NowPlaying.tsx';
+import { Tracklist } from './components/Tracklist.tsx';
 import { UpNext } from './components/UpNext.tsx';
 import { useFrame } from './frame.tsx';
 import { useFontsReady } from './renderer.tsx';
 import { resolveVisualizer } from './visualizers.ts';
 
-/** The whole scene: theme CSS, background, visualizers, header, now-playing panel, up next. */
+/**
+ * The whole scene: theme CSS, background, visualizers, header, now-playing panel, and either the
+ * tracklist or up next.
+ */
 export function Stage() {
   const { composition, mix, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
@@ -55,13 +59,14 @@ export function Stage() {
       ))}
       <Header />
       <NowPlaying />
-      <UpNext />
+      {project.tracklist ? <Tracklist counts={project.tracklist} /> : <UpNext />}
     </div>
   );
 }
 
 /** The elements whose text a theme may need to keep legible over bright or busy parts of the art. */
-const MEASURED_ELEMENTS = '.sc-header, .sc-set-title, .sc-clock, .sc-panel, .sc-next';
+const MEASURED_ELEMENTS =
+  '.sc-header, .sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist';
 const LUMA_BEHIND = '--bg-luma-behind';
 const DETAIL_BEHIND = '--bg-detail-behind';
 

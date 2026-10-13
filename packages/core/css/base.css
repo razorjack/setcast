@@ -267,6 +267,80 @@
   text-align: right;
 }
 
+/*
+ * The tracklist: listings around the current one. A row's height follows its --row-presence, so as
+ * the list moves on, the row leaving at the top closes while the one entering at the bottom opens,
+ * and the list scrolls without a jump. The leaving row keeps its bottom edge, as if scrolled out
+ * of the top. A row cannot shrink below its padding and border, so a theme scales those by
+ * --row-presence or spaces the row's children instead; Chrome ignores calc-size() heights on flex
+ * items, so the rows' container must not be a flex container. Chrome applies overflow-clip-margin
+ * only when both axes clip, so a theme keeps a row's glow inside the row.
+ */
+.sc-tracklist {
+  position: absolute;
+  top: var(--tracklist-top, calc(var(--margin) + 7cqh));
+  right: var(--margin);
+  width: var(--tracklist-width, 30cqw);
+}
+.sc-tracklist-rows {
+  padding: 0;
+  list-style: none;
+}
+.sc-tracklist-row {
+  height: calc-size(auto, size * var(--row-presence, 1));
+  overflow: visible clip;
+  align-content: if(style(--row-offset < 0): unsafe end; else: normal);
+}
+@container (aspect-ratio < 1) {
+  .sc-tracklist {
+    width: var(--tracklist-width, calc(100cqw - 2 * var(--margin)));
+  }
+}
+/* How a theme that never styles the tracklist shows it, in its own type and colors. The layer
+   makes any theme rule win over it, whatever its specificity. */
+@layer fallback {
+  .sc-tracklist {
+    font-family: var(--font-mono, monospace);
+    font-size: 1.05cqw;
+    color: var(--fg-dim, #aaa);
+  }
+  .sc-tracklist-heading {
+    margin-bottom: 0.6em;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .sc-tracklist-row {
+    display: flex;
+    align-items: if(style(--row-offset < 0): end; else: start);
+    column-gap: 0.8em;
+    line-height: 1.6;
+    opacity: var(--row-presence, 1);
+    white-space: nowrap;
+  }
+  .sc-tracklist-time {
+    display: none;
+  }
+  /* clip rather than hidden, so the margin keeps accents above capitals and glows */
+  .sc-tracklist-title {
+    overflow: clip;
+    overflow-clip-margin: 0.3em;
+    color: var(--fg, #fff);
+    text-overflow: ellipsis;
+  }
+  .sc-tracklist-row:not([data-state='current']) {
+    opacity: calc(var(--row-presence, 1) * 0.6);
+  }
+  .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+    color: var(--deck);
+  }
+  @container (aspect-ratio < 1) {
+    .sc-tracklist {
+      font-size: 2.2cqw;
+    }
+  }
+}
+
 /* Local signals are recomputed on each panel, never inherited from the mix section. */
 .sc-panel {
   --drop-flash: calc(

@@ -374,6 +374,8 @@ requirements such as minimum chapter lengths belong to the export command, not t
 Expose explicit counts: `recordingCount`, `playCount`, `listingCount`, and `currentPlayCount`.
 There is no universal DJ “track 7 of 20” index: duplicated recordings, unlisted teases, and
 returns make that ambiguous. A playlist view may show a listing index with that label.
+A tracklist view lists listings in the same way: it positions rows by listing time and marks a
+row current while its play contributes, so it never presents an unlisted contribution as a track.
 
 ## 6. Normalized model and ownership
 

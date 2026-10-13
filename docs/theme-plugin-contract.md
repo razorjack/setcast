@@ -75,8 +75,8 @@ h)`, and uses `var(--bg-accent, <its own color>)`. A missing hue then falls back
 set `--bg-accent: initial` to keep the theme's colors. Video backgrounds are not measured, so every
 fallback applies.
 
-`.sc-header`, `.sc-set-title`, `.sc-clock`, every `.sc-panel` and `.sc-next` carry
-`--bg-luma-behind`, the mean luma (0..1) of the art under the element's box. It is measured every
+`.sc-header`, `.sc-set-title`, `.sc-clock`, every `.sc-panel`, `.sc-next` and `.sc-tracklist`
+carry `--bg-luma-behind`, the mean luma (0..1) of the art under the element's box. It is measured every
 frame, so it follows a panel as it moves. Like `--bg-luma`, it describes the art before the
 theme's filter; multiply it by the brightness the filter applies to estimate what the frame shows
 behind the element. A custom property resolves `var()` where it is declared, so declare variables
@@ -177,6 +177,75 @@ project art, with an immediate change when focus changes. It never invents a pre
 Overview marks use `data-type="listing"` for editorial listings and the annotation kind for
 cues. Shared drops are `data-type="drop"`, with their participants in the document.
 Existing visualizer classes, media wrappers, font loading and master-audio contracts remain.
+
+## Tracklist
+
+`tracklist: true` in `setcast.yaml` shows the listings around the current one, two before and two
+after; `tracklist: { before: 3, after: 1 }` sets the counts (whole numbers from 0 to 99) and
+`false` turns it off. It is off by default. A theme can name default counts in `Theme.tracklist`,
+written like the key; they apply when the project has no `tracklist:` key, and the project's
+counts win key by key. `tracklistView(document, state, counts)` in `@setcast/core` computes the
+rows for any moment, and `ResolvedProject.tracklist` holds the resolved counts or null.
+
+```html
+<section class="sc-tracklist" style="--since-listing: 5; --until-listing: 14">
+  <p class="sc-tracklist-heading">Tracklist</p>
+  <ol class="sc-tracklist-rows">
+    <li class="sc-tracklist-row" data-play="t7" data-state="current" data-focused="true"
+        data-returning="false" data-deck="A"
+        style="--row-offset: 0; --row-presence: 1; --row-progress: 0.25">
+      <span class="sc-tracklist-index">07</span>
+      <span class="sc-tracklist-time">2:01</span>
+      <span class="sc-tracklist-artist">Vex &amp; Morrow</span>
+      <span class="sc-tracklist-title">Night Shift Dub</span>
+    </li>
+  </ol>
+</section>
+```
+
+Rows are listings, so unlisted contributions such as teases never appear in the list; the panel
+credits them while they play. The window is anchored on the latest listing group at or before
+the current time and holds that whole group plus the requested counts around it. A row's state
+comes from contributions instead: `data-state="current"` while its play contributes, wherever the
+row sits, so in DJ mode several rows can be current at once and a play that enters before its
+listing is already current below the anchor. Otherwise a row is `played` once its listing time
+has passed and its play has been heard, and `upcoming` before that. A current row carries its
+contribution's `data-deck`, so `--deck` resolves on it as on a panel; `data-focused` and
+`data-returning` follow focus and the current run.
+
+The index is zero-padded to the digits of the listing count, and the time is the listing time on
+the display clock, `clockOffset` included. `.sc-tracklist-artist` is omitted when the artist is
+unknown.
+
+When a new listing group starts, the list glides to it over 0.8 seconds. `--row-offset` is a
+row's distance in rows from the first row of the current group, fractional during the glide.
+`--row-presence` (0..1) is how far inside the window the row is: the row leaving at the top fades
+from 1 to 0 while the one entering at the bottom fades in. base.css sets each row's height to
+`calc-size(auto, size * var(--row-presence))` with `overflow: visible clip`, so the list scrolls
+by one row without a jump. A row with a negative offset aligns its content to its bottom edge
+(`align-content: if(style(--row-offset < 0): unsafe end; else: normal)`), so the leaving row
+scrolls out of the top rather than losing its last line first; this works for block and grid rows.
+A row cannot shrink below its padding and border, so scale those by `--row-presence`
+(`padding-block: calc(0.6cqw * var(--row-presence))`) or space the row's children instead. Chrome
+ignores `calc-size()` heights on flex items, so the rows' container must not be a flex container.
+Keep a row's ornaments inside it for the same reason as a DJ slot's. A theme can instead place rows itself from `--row-offset`, for example
+`translate: 0 calc(var(--row-offset) * 1.4lh)`, and fade them with
+`opacity: calc(var(--row-presence) * (1 - abs(var(--row-offset)) * 0.2))`. `--row-progress` runs
+0..1 through a row's listing span, from its time to the next listing group or the mix end.
+In DJ mode an older row can still be current after its listing span has ended; its progress is 1.
+`--since-listing` and `--until-listing` on the root count seconds since the current listing group
+and until the next, capped at 60 like every other cue.
+
+base.css places the list at the top right (`--tracklist-top`, `--tracklist-width`; the full width
+in portrait) and gives it a plain look in `@layer fallback`, from `--font-mono`, `--fg`, `--fg-dim`
+and `--deck`. Any theme rule wins over the layer, whatever its specificity, but properties the
+theme leaves unset still apply: rows are `display: flex` with `column-gap`, `line-height: 1.6`,
+`white-space: nowrap` and an opacity, and `.sc-tracklist-time` is `display: none`. Titles clip
+with `overflow: clip` and `overflow-clip-margin: 0.3em` for their ellipsis; `overflow: hidden`
+would also cut accents above capitals and text glows. `.sc-tracklist` carries `--bg-luma-behind`
+and `--bg-detail-behind` like the panels. The tracklist replaces up next: with it, the stage does
+not render `.sc-next`, so `after: 0` shows nothing ahead. It renders in up next's place, after
+the panels, so it can use `position-anchor: --contributors` as `.sc-next` does.
 
 ## Scoped modulation
 

@@ -153,6 +153,7 @@ async function writeProjectConfig(
     '# annotations: {at: 0:30, kind: drop, participants: [play-id, other-id]}',
     '# modulation routes: { source: bass|mids|highs|rms|onset, target: bg-zoom, range: [1, 1.06], curve: pow2, smooth: 0.1, when: drop }',
     '# visualizer: { name: spectrum, bars: 48 } or a list; without it the theme draws its own',
+    '# tracklist: true keeps the tracks around the current one on screen; { before: 2, after: 2 }',
     '# import a tracklist:  setcast import tracklist.txt --write',
     '',
   ].join('\n');

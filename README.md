@@ -27,6 +27,8 @@ flyer to the fluorescent display of a 90s CD deck.
 
 - **A now-playing panel that follows the tracklist.** Artist, title and label change with each
   track, and the deck letter shows which deck is up. A header shows the set title and the clock.
+  Turn on `tracklist:` to keep the previous and next tracks on screen as well, the playing ones
+  marked.
 - **Visuals that react to the music.** Spectrum bars, a radial ring, level meters, an
   oscilloscope, a vectorscope, a scrolling spectrogram and a strip showing the whole set, all
   driven by the bass, mids, highs and beat of your mix. The art can join in: its lamps and signs
@@ -148,6 +150,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
 
 visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list, or leave it to the theme; see Visualizers
 panel: { dwell: 14, fade: 1.2 }   # run entrance dwell; DJ credits remain visible
+tracklist: { before: 2, after: 2 }   # listings around the current one; true, false, or the counts
 css: overrides.css           # optional, appended after the theme
 ```
 
@@ -300,6 +303,18 @@ which keeps the vectorscope centered in the ring, or `--spectrum-height`, `--met
 `.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`,
 `.sc-spectrogram` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
 The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell.
+
+## Tracklist
+
+`tracklist: true` keeps a short tracklist on screen: the two listings before the current one,
+the current one and the two after it, gliding on at each new listing.
+`tracklist: { before: 4, after: 0 }` sets the counts. The list replaces the "next" card, so
+`after: 0` keeps upcoming tracks a surprise. A row is marked as playing while its track is
+audible, so in a DJ blend both rows light up, in their deck colors.
+
+The list shows `plays:` rows that have an `at` time. A tease or a loop with only `contributions:`
+never becomes a row. Style it with `.sc-tracklist`, `.sc-tracklist-row[data-state='current']`
+and the variables in the [CSS contract](docs/theme-plugin-contract.md#tracklist).
 
 ## Customize without JavaScript
 

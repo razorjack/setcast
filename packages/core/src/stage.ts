@@ -7,6 +7,7 @@ import {
   type MixState,
   type CurrentPlay,
 } from './timeline.ts';
+import type { TracklistRow, TracklistView } from './tracklist.ts';
 
 export const SECONDS_CAP = 60;
 export const stageData = (state: MixState, background: string | null) => ({
@@ -51,6 +52,21 @@ export function playVars(state: MixState, play: CurrentPlay): Record<string, str
     '--since-entry': cssSeconds((state.time - play.run.from) / 1_000_000),
     '--until-exit': cssSeconds((play.run.until - state.time) / 1_000_000),
     '--play-order': String(play.play.order),
+  };
+}
+
+export function tracklistVars(view: TracklistView): Record<string, string> {
+  return {
+    '--since-listing': cssSeconds(view.sinceListing),
+    '--until-listing': cssSeconds(view.untilListing),
+  };
+}
+
+export function tracklistRowVars(row: TracklistRow): Record<string, string> {
+  return {
+    '--row-offset': cssNumber(row.offset),
+    '--row-presence': cssNumber(row.presence),
+    '--row-progress': cssNumber(row.progress),
   };
 }
 

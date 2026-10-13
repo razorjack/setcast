@@ -179,6 +179,41 @@ annotations: [{ kind: drop, at: 14 }]
     });
   });
 
+  test("a theme's tracklist shows unless the project turns it off; errors name the theme", async () => {
+    const listing: Theme = { ...theme, name: 'listing', tracklist: { after: 3 } };
+    const themes = { listing };
+    const shown = await load('audio: assets/mix.wav\ntheme: listing\n', 'tl', themes);
+    expect(shown.project.tracklist).toEqual({ before: 2, after: 3 });
+    const off = await load(
+      'audio: assets/mix.wav\ntheme: listing\ntracklist: false\n',
+      'tl',
+      themes,
+    );
+    expect(off.project.tracklist).toBeNull();
+
+    const broken: Theme = { ...theme, name: 'broken', tracklist: { before: -1 } };
+    await expect(
+      load('audio: assets/mix.wav\ntheme: broken\n', 'broken-tl', { broken }),
+    ).rejects.toMatchObject({
+      message: expect.stringMatching(/^Theme "broken" has an invalid default tracklist: .*before/),
+      hint: expect.stringContaining('same keys as tracklist:'),
+    });
+  });
+
+  test('tracklist errors say what the key takes', async () => {
+    const yaml = (tracklist: string) =>
+      `audio: assets/mix.wav\ntheme: test\ntracklist: ${tracklist}\n`;
+    await expect(load(yaml('yes'))).rejects.toMatchObject({
+      issues: [{ path: 'tracklist', message: expect.stringContaining('true, false or a mapping') }],
+    });
+    await expect(load(yaml('{before: 1.5}'))).rejects.toMatchObject({
+      issues: [{ message: 'before must be a whole number of listings from 0 to 99.' }],
+    });
+    await expect(load(yaml('{rows: 3}'))).rejects.toMatchObject({
+      issues: [{ message: 'tracklist takes before and after, not rows.' }],
+    });
+  });
+
   test('mode changes presentation without changing the normalized mix', async () => {
     const yaml =
       'audio: assets/mix.wav\ntheme: test\nplays: [{at: 0, until: 100, title: One}, {at: 90, title: Two}]\n';

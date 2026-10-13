@@ -2,6 +2,7 @@ import type { SetEnvelope } from './analysis.ts';
 import type { BackgroundFit } from './background.ts';
 import type { MixDocument } from './mix-schema.ts';
 import type { ModRoute } from './modulation.ts';
+import type { TracklistCounts } from './tracklist.ts';
 import type { VisualizerConfig } from './visualizers.ts';
 
 /**
@@ -37,6 +38,8 @@ export type ResolvedProject = {
   envelope: SetEnvelope | null;
   /** How long the now-playing panel stays up after a track change, and how long it takes to leave. */
   panel: { dwell: number; fade: number };
+  /** How many listings the tracklist shows around the current one, or null when it is off. */
+  tracklist: TracklistCounts | null;
   /** Tempo, or null when the project does not state one. */
   bpm: number | null;
   /** Seconds into the audio of a downbeat. */

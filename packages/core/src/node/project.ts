@@ -11,6 +11,12 @@ import { Timeline } from '../timeline.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
 import type { ResolvedProject } from '../project.ts';
 import type { Theme } from '../theme.ts';
+import {
+  TracklistCountsSchema,
+  resolveTracklist,
+  type TracklistInput,
+  type TracklistCounts,
+} from '../tracklist.ts';
 import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.ts';
 import { loadCss } from './css.ts';
 import { readImageSize } from './image-size.ts';
@@ -105,6 +111,7 @@ function resolveProject(
     visualizers: resolveVisualizers(config.visualizer, theme),
     envelope: null,
     panel: config.panel,
+    tracklist: resolveProjectTracklist(config.tracklist, theme),
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
   };
@@ -305,6 +312,20 @@ function resolveVisualizers(written: unknown, theme: Theme): VisualizerConfig[] 
       { cause: error },
     );
   }
+}
+
+/** The project's `tracklist:` over the theme's default, which is reported under the theme's name. */
+function resolveProjectTracklist(
+  written: TracklistInput | undefined,
+  theme: Theme,
+): TracklistCounts | null {
+  const parsed = TracklistCountsSchema.optional().safeParse(theme.tracklist);
+  if (parsed.success) return resolveTracklist(written, parsed.data);
+  const issue = zodIssues(parsed.error)[0]!;
+  throw new SetcastError(
+    `Theme "${theme.name}" has an invalid default tracklist: ${issue.path} ${issue.message}`,
+    "A theme's default tracklist uses the same keys as tracklist: in setcast.yaml.",
+  );
 }
 
 async function requireFile(root: string, path: string, purpose: string): Promise<string> {

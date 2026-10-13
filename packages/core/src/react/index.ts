@@ -18,6 +18,7 @@ export {
   type SpectrogramConfig,
 } from './components/Spectrogram.tsx';
 export { Spectrum, SpectrumConfigSchema, type SpectrumConfig } from './components/Spectrum.tsx';
+export { Tracklist } from './components/Tracklist.tsx';
 export { UpNext } from './components/UpNext.tsx';
 export {
   Vectorscope,

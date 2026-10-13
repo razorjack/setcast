@@ -106,7 +106,29 @@ export { ConfigError, SetcastError, zodIssues, type Issue } from './errors.ts';
 export type { ResolvedProject } from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
-export { SECONDS_CAP, beatVars, stageData, stageVars, playVars } from './stage.ts';
+export {
+  SECONDS_CAP,
+  beatVars,
+  stageData,
+  stageVars,
+  playVars,
+  tracklistRowVars,
+  tracklistVars,
+} from './stage.ts';
+export {
+  TRACKLIST_DEFAULTS,
+  TRACKLIST_GLIDE_SECONDS,
+  TracklistSchema,
+  TracklistCountsSchema,
+  resolveTracklist,
+  tracklistView,
+  type TracklistInput,
+  type TracklistRow,
+  type TracklistRowState,
+  type TracklistView,
+  type TracklistCounts,
+  type TracklistCountsInput,
+} from './tracklist.ts';
 export { lightLayers, type LightOptions } from './lights.ts';
 export {
   REFERENCE_LUMA,
