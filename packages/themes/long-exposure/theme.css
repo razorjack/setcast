@@ -187,6 +187,7 @@
     .sc-spectrogram,
     .sc-overview,
     .sc-header,
+    .sc-tracklist,
     .sc-panel,
     .sc-contributors,
     .sc-next
@@ -330,7 +331,7 @@
 
 /* how bright the art is behind each piece of type once the night has darkened it; bright or busy
    art behind it gets a dark halo, and a deeper pool under the credits */
-.theme-long-exposure :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next) {
+.theme-long-exposure :is(.sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist) {
   --glare: clamp(
     0,
     (var(--bg-luma-behind, 0) * var(--art-gain) - 0.1) * 4 + var(--bg-detail-behind, 0) * 8,
@@ -500,6 +501,158 @@
   text-shadow: 0 0 0.25em var(--lime);
 }
 
+/* tracklist: a row of signs down a night street, where up next would stand. The one playing is
+   lit and paints its own light trail as it runs; those played still glow as they cool, those to
+   come stand unlit. While the list moves on, every sign streaks like a light in a long exposure. */
+.theme-long-exposure .sc-tracklist {
+  --pool: calc(0.55 + var(--glare) * 0.4);
+  --list-align: var(--next-align);
+  inset: var(--next-top) var(--next-right) var(--next-bottom) var(--next-left);
+  width: 27cqw;
+  height: fit-content;
+  isolation: isolate;
+  font-family: var(--font-mono);
+  color: var(--fg-dim);
+  text-align: var(--list-align);
+  text-transform: lowercase;
+}
+/* credits in the middle of an edge leave the trail's near end beside them; the list stands at its
+   faded far end instead */
+.theme-long-exposure:is([data-bg-calm='top'], [data-bg-calm='bottom']) .sc-tracklist {
+  --list-align: start;
+  inset: calc(var(--margin) + 5cqh) auto auto var(--margin);
+}
+.theme-long-exposure[data-bg-calm='top'] .sc-tracklist {
+  inset: auto auto calc(var(--margin) + 5cqh) var(--margin);
+}
+.theme-long-exposure .sc-tracklist::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -4cqw -7cqw;
+  background: radial-gradient(closest-side, rgb(0 0 0 / var(--pool)) 40%, transparent);
+}
+.theme-long-exposure .sc-tracklist-heading {
+  margin-bottom: 0.4cqw;
+  font-size: 0.8cqw;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  text-shadow: var(--halo);
+}
+/* a row reaches past the list's edges so its halo is not cut, and the edge a row closes or opens
+   at fades rather than slicing through the letters */
+.theme-long-exposure .sc-tracklist-row {
+  --near: clamp(0.3, 1.15 - abs(var(--row-offset)) * 0.2, 1);
+  --moving: sin(mod(var(--row-offset), 1) * 180deg);
+  --sign: color-mix(in oklab, var(--fg) 58%, var(--black));
+  --streak: 0 calc(var(--moving) * 0.35em) calc(var(--moving) * 0.25em)
+    color-mix(in srgb, currentColor calc(var(--moving) * 45%), transparent);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: var(--list-align);
+  column-gap: 0.6cqw;
+  margin-inline: -1.5cqw;
+  padding: calc(0.4cqw * var(--row-presence)) 1.5cqw;
+  line-height: 1.25;
+  opacity: calc(var(--row-presence) * var(--near));
+  mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 3cqw), transparent);
+}
+/* artist and times on the first line, the title on its own below them, as wide as its words */
+.theme-long-exposure .sc-tracklist-row::after {
+  content: '';
+  flex-basis: 100%;
+  order: 1;
+}
+.theme-long-exposure :is(.sc-tracklist-index, .sc-tracklist-time, .sc-tracklist-artist) {
+  font-size: 0.72cqw;
+  letter-spacing: 0.1em;
+  text-shadow: var(--halo);
+}
+.theme-long-exposure .sc-tracklist-index {
+  font-variant-numeric: tabular-nums;
+}
+/* times stamped in sodium orange, like the date a camera burns into the corner of a night shot */
+.theme-long-exposure .sc-tracklist-time {
+  display: inline;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--amber) 45%, var(--fg-dim));
+}
+.theme-long-exposure .sc-tracklist-artist {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+/* padded so the clip that cuts a long title short leaves its glow whole */
+.theme-long-exposure .sc-tracklist-title {
+  order: 2;
+  position: relative;
+  min-width: 0;
+  max-width: calc(100% + 1.2cqw);
+  margin-inline: -0.6cqw;
+  padding: 0.3cqw 0.6cqw 0.45cqw;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.25cqw;
+  letter-spacing: 0.01em;
+  color: var(--sign);
+  text-shadow: var(--streak), var(--halo);
+}
+.theme-long-exposure .sc-tracklist-row[data-state='upcoming'] .sc-tracklist-artist {
+  color: color-mix(in oklab, var(--fg-dim) 80%, var(--black));
+}
+/* the afterglow cools from sodium to embers the longer ago it played */
+.theme-long-exposure .sc-tracklist-row[data-state='played'] {
+  --age: clamp(0, (-0.5 - var(--row-offset)) / 3, 1);
+  --sign: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--amber), var(--red) calc(var(--age) * 100%)) 50%,
+    var(--fg-dim)
+  );
+}
+.theme-long-exposure .sc-tracklist-row[data-state='current'] {
+  --sign: var(--lime);
+}
+.theme-long-exposure .sc-tracklist-row[data-state='current'][data-deck] {
+  --sign: var(--deck);
+}
+.theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  text-shadow:
+    var(--streak),
+    0 0 0.5em color-mix(in srgb, var(--sign) 60%, transparent),
+    var(--halo);
+}
+.theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-time {
+  color: var(--amber);
+}
+.theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: var(--fg);
+}
+/* the index in the thin boxed square of the deck mark */
+.theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  padding: 0 0.3em;
+  border: 0.08cqw solid color-mix(in srgb, var(--fg) 45%, transparent);
+  color: var(--sign);
+  text-shadow: 0 0 0.4em var(--sign);
+}
+/* the light trail the playing title paints under itself, its hot head where it has got to */
+.theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-title::after {
+  content: '';
+  position: absolute;
+  left: 0.6cqw;
+  bottom: 0.18cqw;
+  width: calc((100% - 1.2cqw) * var(--row-progress));
+  height: 0.12cqw;
+  border-radius: 0.06cqw;
+  background: linear-gradient(to right, transparent, var(--amber) 55%, var(--core));
+  box-shadow: 0 0 0.25cqw var(--orange);
+}
+.theme-long-exposure
+  .sc-tracklist-row[data-state='current'][data-focused='false']
+  .sc-tracklist-title {
+  text-shadow: var(--streak), var(--halo);
+}
+
 /* portrait: the credits take the calm top or bottom band, left aligned; the streak crosses the
    middle, where art of another shape sits */
 @container (aspect-ratio < 1) {
@@ -561,6 +714,49 @@
   }
   .theme-long-exposure .sc-next-title {
     font-size: 3.6cqw;
+  }
+  /* the list takes the band the credits leave: under the set's name, or above it when the
+     credits hang along the top */
+  .theme-long-exposure .sc-tracklist,
+  .theme-long-exposure[data-bg-calm='bottom'] .sc-tracklist {
+    --list-align: start;
+    inset: calc(var(--margin) + 6cqw) var(--margin) auto;
+    width: auto;
+  }
+  .theme-long-exposure[data-bg-calm^='top'] .sc-tracklist {
+    inset: auto var(--margin) calc(var(--margin) + 6cqw);
+  }
+  .theme-long-exposure .sc-tracklist::before {
+    inset: -8cqw -6cqw;
+  }
+  .theme-long-exposure .sc-tracklist-heading {
+    margin-bottom: 0.8cqw;
+    font-size: 1.6cqw;
+  }
+  .theme-long-exposure .sc-tracklist-row {
+    column-gap: 1.3cqw;
+    margin-inline: -3cqw;
+    padding: calc(0.8cqw * var(--row-presence)) 3cqw;
+    mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 6cqw), transparent);
+  }
+  .theme-long-exposure :is(.sc-tracklist-index, .sc-tracklist-time, .sc-tracklist-artist) {
+    font-size: 1.55cqw;
+  }
+  .theme-long-exposure .sc-tracklist-title {
+    max-width: calc(100% + 2.4cqw);
+    margin-inline: -1.2cqw;
+    padding: 0.6cqw 1.2cqw 0.9cqw;
+    font-size: 2.7cqw;
+  }
+  .theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+    border-width: 0.16cqw;
+  }
+  .theme-long-exposure .sc-tracklist-row[data-state='current'] .sc-tracklist-title::after {
+    left: 1.2cqw;
+    bottom: 0.36cqw;
+    width: calc((100% - 2.4cqw) * var(--row-progress));
+    height: 0.24cqw;
+    box-shadow: 0 0 0.5cqw var(--orange);
   }
 }
 
