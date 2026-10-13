@@ -458,6 +458,140 @@
   color: var(--sky-deep);
 }
 
+/*
+ * tracklist: the listings flank the spindle on the silver, mirrored across it. What plays and
+ * what has played stand on the left, the newest on the horizon and older ones below it; what comes
+ * next stands on the right, the nearest on the horizon and later ones above it. The rows swell as
+ * they near the horizon, so now and next are the largest. When the list moves on, the next row
+ * lifts off the right and lands on the left as both columns sink a step.
+ */
+.theme-quicksilver .sc-tracklist {
+  --horizon: 50cqh;
+  --step: 8.4cqh;
+  /* 1: older rows below the horizon; -1: above it */
+  --fall: 1;
+  /* clear of the spindle at its widest and of the radial bars around the orb */
+  --gap: calc(var(--orb) * 1.6);
+  --title-size: 1.3cqw;
+  --swell: 0.3;
+  /* rows this many steps from the horizon have faded out, so a long list stays off the credits */
+  --reach: 3.5;
+  z-index: 3;
+  inset: 0;
+  width: auto;
+  font-family: var(--font-display);
+  font-size: 0.85cqw;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--steel-dim);
+}
+.theme-quicksilver .sc-tracklist-heading {
+  display: none;
+}
+.theme-quicksilver .sc-tracklist-row {
+  --distance: abs(var(--row-offset));
+  --fade: 1;
+  --shown: calc(var(--row-presence) * var(--fade) * clamp(0, var(--reach) - var(--distance), 1));
+  position: absolute;
+  top: calc(var(--horizon) - var(--row-offset) * var(--step) * var(--fall));
+  right: calc(50% + var(--gap));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  align-items: baseline;
+  column-gap: 0.9em;
+  width: calc(50% - var(--gap) - var(--margin));
+  height: auto;
+  padding-bottom: 0.5cqw;
+  line-height: 1.15;
+  translate: 0 -100%;
+  white-space: nowrap;
+  opacity: var(--shown);
+}
+.theme-quicksilver .sc-tracklist-row[data-state='upcoming'] {
+  --distance: abs(var(--row-offset) - 1);
+  /* the next row lifts off in the last half second before its listing */
+  --fade: max(clamp(0, var(--until-listing) / 0.5, 1), clamp(0, var(--row-offset) - 1, 1));
+  top: calc(var(--horizon) - (var(--row-offset) - 1) * var(--step));
+  right: auto;
+  left: calc(50% + var(--gap));
+  justify-content: start;
+}
+/* and lands as the list moves on */
+.theme-quicksilver .sc-tracklist-row[data-state='current'] {
+  --fade: max(clamp(0, var(--since-listing) / 0.5, 1), clamp(0, 1 - var(--row-offset), 1));
+}
+.theme-quicksilver .sc-tracklist-row[data-state='played'] {
+  opacity: calc(var(--shown) * 0.75);
+}
+/* a line break before the title, so the title's box is only as wide as its text */
+.theme-quicksilver .sc-tracklist-row::before {
+  content: '';
+  flex-basis: 100%;
+  order: 2;
+}
+.theme-quicksilver .sc-tracklist-index {
+  order: 1;
+  font-family: var(--font-mono);
+  font-size: 0.7cqw;
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+}
+.theme-quicksilver .sc-tracklist-row[data-state='upcoming'] .sc-tracklist-index {
+  order: 0;
+}
+.theme-quicksilver .sc-tracklist-artist {
+  min-width: 0;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  text-overflow: ellipsis;
+}
+.theme-quicksilver .sc-tracklist-title {
+  order: 3;
+  max-width: 100%;
+  margin-top: 0.3cqw;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-size: calc(var(--title-size) * (1 + var(--swell) * clamp(0, 1 - var(--distance), 1)));
+  letter-spacing: 0.2em;
+  text-overflow: ellipsis;
+  color: var(--steel);
+}
+.theme-quicksilver .sc-tracklist-row[data-state='played'] .sc-tracklist-title {
+  color: var(--steel-dim);
+}
+/* the current rows: the index on the deck's enamel, the title in chrome, and the row standing on
+   a horizon that fills toward the spindle as it runs */
+.theme-quicksilver .sc-tracklist-row[data-state='current'] {
+  background:
+    linear-gradient(var(--deck), var(--deck)) 0 100% / calc(var(--row-progress) * 100%) 0.2cqh
+      no-repeat,
+    linear-gradient(rgb(79 90 102 / 0.25), rgb(79 90 102 / 0.25)) 0 100% / 100% var(--hairline)
+      no-repeat;
+}
+.theme-quicksilver .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5cqw;
+  height: 1.5cqw;
+  margin-block: -0.4cqw;
+  padding-inline: 0.4em;
+  border-radius: 1cqw;
+  letter-spacing: 0;
+  color: #fff;
+  background: var(--deck);
+}
+.theme-quicksilver .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: var(--steel);
+}
+.theme-quicksilver .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  background: var(--chrome-type) 0 0 / 100% 1lh repeat-y;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.01em var(--edge);
+  filter: var(--type-depth);
+}
+
 /* portrait: the spindle taller, the type larger */
 @container (aspect-ratio < 1) {
   .theme-quicksilver::before,
@@ -502,6 +636,34 @@
   }
   .theme-quicksilver .sc-next-title {
     font-size: 2.8cqw;
+  }
+  /* the spindle fills the width, so the columns stand beside its upper tip on one horizon, the
+     older rows rising on the left as the later ones do on the right */
+  .theme-quicksilver .sc-tracklist {
+    --horizon: 32cqh;
+    --step: 4.2cqh;
+    --fall: -1;
+    --gap: 13cqw;
+    --title-size: 2.45cqw;
+    --swell: 0.12;
+    --reach: 3;
+    font-size: 1.6cqw;
+  }
+  .theme-quicksilver .sc-tracklist-row {
+    padding-bottom: 0.9cqw;
+  }
+  .theme-quicksilver .sc-tracklist-index {
+    font-size: 1.4cqw;
+  }
+  .theme-quicksilver .sc-tracklist-title {
+    margin-top: 0.5cqw;
+    letter-spacing: 0.12em;
+  }
+  .theme-quicksilver .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+    min-width: 3cqw;
+    height: 3cqw;
+    margin-block: -0.8cqw;
+    border-radius: 2cqw;
   }
 }
 
