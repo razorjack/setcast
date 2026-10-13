@@ -8,4 +8,5 @@ export const passePartout: Theme = {
   cssFile: packaged('passe-partout/theme.css'),
   modulation: [{ source: 'rms', target: 'spot', range: [0, 1], curve: 'linear', smooth: 0.8 }],
   visualizer: { name: 'spectrum', fill: 'art', bars: 40, gap: 0.42, gain: 0.85, floor: 0 },
+  tracklist: { before: 2, after: 2 },
 };

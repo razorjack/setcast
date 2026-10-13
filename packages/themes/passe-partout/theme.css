@@ -461,3 +461,136 @@
     font-size: 1.7cqw;
   }
 }
+
+/*
+ * Tracklist: the exhibition's checklist, in the column between the exhibition and the label. Each
+ * entry is numbered in the margin, the artist in sans over the title in italic, the way the label
+ * sets them. The works already seen fade back, the one on show takes its deck's color and a
+ * hairline of how far it has run. The list stops above the label or the DJ stack, so when it runs
+ * long the last entries fade out instead of reaching them.
+ */
+.theme-passe-partout .sc-tracklist {
+  position-anchor: --print;
+  top: calc(anchor(top) - var(--mat) + 4.8cqw);
+  right: auto;
+  bottom: calc(anchor(--label top, calc(anchor(bottom) - var(--mat))) + 2.4cqw);
+  left: calc(anchor(right) + var(--mat) + var(--column-gap));
+  width: var(--column-w);
+  overflow: clip;
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 3cqh), transparent);
+  font-family: var(--font-sans);
+  font-size: 0.68cqw;
+  color: var(--ink-dim);
+}
+.theme-passe-partout[data-presentation='dj'] .sc-tracklist {
+  bottom: calc(anchor(--contributors top, calc(anchor(bottom) - var(--mat))) + 1.6cqw);
+}
+.theme-passe-partout .sc-tracklist-heading {
+  margin-bottom: 0.7cqw;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+/* --far is how far an entry is from the one on show, toward its side of the list */
+.theme-passe-partout .sc-tracklist-row {
+  --far: clamp(0, var(--row-offset), 1);
+  --seen: 0;
+  display: grid;
+  grid-template-columns: 2.7cqw minmax(0, 1fr) auto;
+  grid-template-areas:
+    'index artist time'
+    '. title title';
+  align-items: baseline;
+  column-gap: 0;
+  padding-block: calc(var(--row-presence) * 0.35cqw) calc(var(--row-presence) * 0.45cqw);
+  line-height: normal;
+  white-space: nowrap;
+  opacity: calc(var(--row-presence) * (1 - var(--seen) * 0.55) * (1 - var(--far) * 0.15));
+  background: linear-gradient(
+      to right,
+      var(--deck) calc(var(--row-progress) * 100%),
+      color-mix(in oklab, var(--ink) 14%, transparent) 0
+    )
+    2.7cqw 100% / calc(100% - 2.7cqw) calc((1 - max(var(--far), var(--seen))) * var(--hairline))
+    no-repeat;
+}
+.theme-passe-partout .sc-tracklist-row[data-state='played'] {
+  --far: 0;
+  --seen: clamp(0, -1 * var(--row-offset), 1);
+}
+.theme-passe-partout .sc-tracklist-index {
+  grid-area: index;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--deck), var(--ink-dim) calc(max(var(--far), var(--seen)) * 100%));
+}
+.theme-passe-partout .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-size: 0.78cqw;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+.theme-passe-partout .sc-tracklist-title {
+  grid-area: title;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  margin-top: 0.1cqw;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3cqw;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+.theme-passe-partout .sc-tracklist-time {
+  display: block;
+  grid-area: time;
+  padding-left: 0.8cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+/* an entry without an artist keeps its title on the first line */
+.theme-passe-partout .sc-tracklist-row:not(:has(.sc-tracklist-artist)) .sc-tracklist-title {
+  grid-area: artist;
+  margin-top: 0;
+}
+
+/* portrait: one line an entry, in the column under the label or the DJ stack */
+@container (aspect-ratio < 1) {
+  .theme-passe-partout .sc-tracklist {
+    top: calc(anchor(--label bottom, calc(anchor(bottom) + var(--mat) + 5cqh)) + 4cqw);
+    bottom: var(--margin);
+    left: calc(anchor(left) - var(--mat));
+    width: calc(anchor-size(width) + 2 * var(--mat));
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 2cqh), transparent);
+    font-size: 1.5cqw;
+  }
+  .theme-passe-partout[data-presentation='dj'] .sc-tracklist {
+    top: calc(anchor(--contributors bottom, calc(anchor(bottom) + var(--mat) + 5cqh)) + 4cqw);
+    bottom: var(--margin);
+  }
+  .theme-passe-partout .sc-tracklist-heading {
+    margin-bottom: 1.2cqw;
+  }
+  .theme-passe-partout .sc-tracklist-row {
+    grid-template-columns: 3.8cqw minmax(0, max-content) minmax(0, max-content) 1fr auto;
+    grid-template-areas: 'index artist title . time';
+    column-gap: 1.6cqw;
+    padding-block: calc(var(--row-presence) * 0.9cqw) calc(var(--row-presence) * 1.1cqw);
+    background-position: 5.4cqw 100%;
+    background-size: calc(100% - 5.4cqw) calc((1 - max(var(--far), var(--seen))) * var(--hairline));
+  }
+  .theme-passe-partout .sc-tracklist-artist {
+    font-size: 1.75cqw;
+  }
+  .theme-passe-partout .sc-tracklist-title {
+    grid-area: title;
+    margin-top: 0;
+    font-size: 2.9cqw;
+  }
+}
