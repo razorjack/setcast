@@ -32,6 +32,14 @@
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* the bold cut draws its ellipsis as one bar, so a truncated bold title takes the regular dots */
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/Silkscreen-400-latin.woff2) format('woff2');
+  unicode-range: U+2026;
+}
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
@@ -483,6 +491,122 @@
   color: var(--olive);
 }
 
+/*
+ * tracklist: printed on the paper under the set title, like the back of a sleeve, where the
+ * credits leave the corner free. Upcoming titles in up next's olive, played ones in grey; the
+ * current rows carry their deck's block and a scale of the dial's ticks for how far they have run.
+ */
+.theme-escapement .sc-tracklist {
+  --tick: 0.36cqw;
+  top: calc(var(--margin) + 4.6cqh);
+  right: auto;
+  left: var(--margin);
+  width: 31cqw;
+  font-family: var(--font-mono);
+  font-size: 0.72cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.theme-escapement .sc-tracklist-heading {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 0.25cqw;
+  font-size: 0.68cqw;
+  letter-spacing: 0.26em;
+}
+.theme-escapement .sc-tracklist-heading::after {
+  content: '';
+  flex: 1;
+  height: var(--hairline);
+  background: var(--ink);
+  opacity: 0.35;
+}
+/*
+ * No vertical padding, which a closing row could not shrink below: the line and a track for the
+ * ticks space the rows. The corner holds two rows either side of the current listing; rows further
+ * out close like a row leaving the window, so a longer list never reaches the credits.
+ */
+.theme-escapement .sc-tracklist-row {
+  --near: min(var(--row-presence), clamp(0, 3 - abs(var(--row-offset)), 1));
+  display: grid;
+  grid-template-columns: 2.4em 3.6em auto minmax(0, 1fr);
+  grid-template-rows: auto calc(var(--tick) + 0.36cqw);
+  align-items: baseline;
+  column-gap: 1em;
+  height: calc-size(auto, size * var(--near));
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: var(--near);
+}
+.theme-escapement .sc-tracklist-index,
+.theme-escapement .sc-tracklist-time {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+.theme-escapement .sc-tracklist-index {
+  justify-self: start;
+  padding-inline: 0.3em;
+  color: var(--ink);
+}
+.theme-escapement .sc-tracklist-time {
+  display: block;
+  grid-column: 2;
+}
+.theme-escapement .sc-tracklist-artist {
+  grid-column: 3;
+  max-width: 11cqw;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  text-overflow: ellipsis;
+}
+.theme-escapement .sc-tracklist-title {
+  grid-column: 4;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-family: var(--font-display);
+  font-size: 1.2cqw;
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  color: var(--olive);
+}
+.theme-escapement .sc-tracklist-row[data-state='played'] .sc-tracklist-title {
+  color: var(--ink-dim);
+}
+.theme-escapement .sc-tracklist-row[data-state='played'] {
+  opacity: calc(var(--near) * 0.7);
+}
+/* the current rows: the index on the deck's block, the title in bold ink, and under it the ticks
+   of the dial, lit in the deck's color as the row runs */
+.theme-escapement .sc-tracklist-row[data-state='current'] {
+  --ticks:
+    repeating-linear-gradient(to right, var(--deck) 0 0.11cqw, transparent 0 var(--tick)) 0
+      calc(100% - 0.3cqw) / round(down, calc(var(--row-progress) * 100%), var(--tick)) var(--tick)
+      no-repeat,
+    repeating-linear-gradient(
+        to right,
+        color-mix(in srgb, var(--ink) 30%, transparent) 0 var(--hairline),
+        transparent 0 var(--tick)
+      )
+      0 calc(100% - 0.3cqw) / 100% calc(var(--tick) * 0.6) no-repeat;
+  background: var(--ticks);
+}
+.theme-escapement .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+  /* ink on a light deck color, paper on a dark one */
+  color: oklch(from var(--deck) clamp(0.18, (0.58 - l) * 100, 0.95) 0.01 240);
+  background: var(--deck);
+}
+.theme-escapement .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: var(--ink);
+}
+.theme-escapement .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+  font-weight: 700;
+  color: var(--ink);
+}
+
 /* portrait: the band low down, the clock above it */
 @container (aspect-ratio < 1) {
   .theme-escapement::before,
@@ -537,6 +661,75 @@
   }
   .theme-escapement .sc-next-title {
     font-size: 3.6cqw;
+  }
+}
+
+/*
+ * portrait: the clock fills the paper above the band, so the list is printed in the dial's face,
+ * like the lines on a watch dial. The current row sits on the center line under the hands; the
+ * others step away from it, each as wide as the face is at its height, and fade before the rim.
+ */
+@container (aspect-ratio < 1) {
+  .theme-escapement .sc-tracklist {
+    --face: calc(var(--radial-size) * 0.31);
+    --step: calc(var(--face) * 0.37);
+    --tick: 0.55cqw;
+    top: var(--dial-y);
+    left: calc(var(--dial-x) - var(--face));
+    width: calc(var(--face) * 2);
+    height: 0;
+    font-size: 1.45cqw;
+  }
+  .theme-escapement .sc-tracklist-heading {
+    display: none;
+  }
+  .theme-escapement .sc-tracklist-row {
+    /* the row's height above the center line, in radii of the face */
+    --rise: calc(var(--row-offset) * var(--step) / var(--face));
+    --chord: sqrt(max(0, 1 - pow(var(--rise), 2)));
+    --rim: clamp(0, (0.95 - abs(var(--rise))) * 5, 1);
+    position: absolute;
+    top: calc(var(--row-offset) * var(--step));
+    left: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    row-gap: 0.4cqw;
+    width: calc(var(--face) * 2 * var(--chord));
+    height: auto;
+    translate: -50% -50%;
+    opacity: calc(var(--row-presence) * var(--rim));
+  }
+  .theme-escapement .sc-tracklist-row[data-state='played'] {
+    opacity: calc(var(--row-presence) * var(--rim) * 0.7);
+  }
+  /* a line break before the title, so the ticks of a current row run under its title only */
+  .theme-escapement .sc-tracklist-row::before {
+    content: '';
+    flex-basis: 100%;
+    order: 1;
+  }
+  .theme-escapement .sc-tracklist-title {
+    order: 2;
+    min-width: 0;
+    padding-bottom: calc(var(--tick) + 0.45cqw);
+    font-size: 2.6cqw;
+  }
+  .theme-escapement .sc-tracklist-row[data-state='current'] {
+    background: none;
+  }
+  .theme-escapement .sc-tracklist-row[data-state='current'] .sc-tracklist-title {
+    background: var(--ticks);
+  }
+  .theme-escapement .sc-tracklist-time {
+    display: none;
+  }
+  .theme-escapement .sc-tracklist-index {
+    margin-right: 0.8em;
+  }
+  .theme-escapement .sc-tracklist-artist {
+    max-width: 75%;
   }
 }
 
@@ -668,5 +861,12 @@
   .theme-escapement[data-presentation='dj'] .sc-label,
   .theme-escapement .sc-credit-details {
     margin-top: 1.2cqw;
+  }
+  /* the smaller dial's face takes slightly smaller type */
+  .theme-escapement[data-presentation='dj'] .sc-tracklist {
+    font-size: 1.3cqw;
+  }
+  .theme-escapement[data-presentation='dj'] .sc-tracklist-title {
+    font-size: 2.25cqw;
   }
 }

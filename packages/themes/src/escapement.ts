@@ -12,4 +12,5 @@ export const escapement: Theme = {
     { source: 'bass', target: 'bg-zoom', range: [1, 1.03], curve: 'pow2', smooth: 0.08 },
   ],
   visualizer: { name: 'radial', bars: 25, radius: 0.34, length: 0.12, spin: 6 },
+  tracklist: { before: 2, after: 2 },
 };
