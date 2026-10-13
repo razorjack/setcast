@@ -429,6 +429,113 @@
   color: var(--toner);
 }
 
+/*
+ * tracklist: the running order typed on a long slip taped up under the clock, the way a flyer
+ * lists its records. What has played is struck out, the record on now is run over with the
+ * highlighter, what is still to come is plain type. Every row keeps its height whatever its
+ * state, so the slip only grows or shrinks as rows enter and leave.
+ */
+.theme-pirate .sc-tracklist {
+  top: calc(var(--margin) + 5.4cqw);
+  right: calc(var(--margin) + 0.4cqw);
+  width: 27cqw;
+  padding: 2.3cqw 1.6cqw 1.3cqw 1.4cqw;
+  font-family: var(--font-type);
+  font-size: 1.15cqw;
+  color: var(--toner);
+  background: var(--slip);
+  box-shadow: 0.3cqw 0.5cqw 0 rgb(0 0 0 / 0.25);
+  rotate: 0.9deg;
+}
+.theme-pirate .sc-tracklist::before,
+.theme-pirate .sc-tracklist::after {
+  content: '';
+  position: absolute;
+  width: 5cqw;
+  height: 1.5cqw;
+  background: rgb(222 214 190 / 0.72);
+  box-shadow: 0 0.1cqw 0.2cqw rgb(0 0 0 / 0.1);
+}
+.theme-pirate .sc-tracklist::before {
+  top: -0.6cqw;
+  right: -1.4cqw;
+  rotate: 34deg;
+}
+.theme-pirate .sc-tracklist::after {
+  bottom: -0.5cqw;
+  left: -1.3cqw;
+  rotate: 30deg;
+}
+/* the heading cut out of a black strip like the station ident, stuck over the slip's top edge */
+.theme-pirate .sc-tracklist-heading {
+  position: absolute;
+  top: -0.9cqw;
+  left: 1cqw;
+  margin: 0;
+  padding: 0.25cqw 0.7cqw 0.15cqw;
+  font-family: var(--font-display);
+  font-size: 1.15cqw;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--toner);
+  rotate: -2deg;
+}
+/*
+ * The index hangs in the margin, so a long title wraps under its own first word. A row leaving
+ * at the top keeps its last line and loses its first, so the list reads as one sheet moving up;
+ * its padding closes with it, because a border box cannot shrink below its padding.
+ */
+.theme-pirate .sc-tracklist-row {
+  display: block;
+  position: relative;
+  align-content: if(style(--row-offset < 0): unsafe end; else: normal);
+  padding-block: calc(0.2cqw * var(--row-presence));
+  padding-left: 2.6em;
+  line-height: 1.45;
+  white-space: normal;
+  opacity: var(--row-presence);
+}
+.theme-pirate .sc-tracklist-index {
+  float: left;
+  width: 2.6em;
+  margin-left: -2.6em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.theme-pirate .sc-tracklist-index::after {
+  content: '.';
+}
+.theme-pirate .sc-tracklist-artist {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.theme-pirate .sc-tracklist-artist::after {
+  content: ' – ';
+  font-weight: 400;
+}
+.theme-pirate .sc-tracklist-title {
+  color: inherit;
+}
+/* struck out with a pen once it has played */
+.theme-pirate .sc-tracklist-row[data-state='played'] {
+  color: var(--fg-dim);
+  text-decoration: line-through 0.12em rgb(20 20 20 / 0.85);
+}
+/* the record on now, run over with the highlighter line by line */
+.theme-pirate .sc-tracklist-row[data-state='current'] {
+  --marker: color-mix(in srgb, var(--fluoro) 85%, transparent);
+}
+.theme-pirate .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: var(--toner);
+}
+.theme-pirate
+  .sc-tracklist-row[data-state='current']
+  :is(.sc-tracklist-artist, .sc-tracklist-title) {
+  background: linear-gradient(transparent 12%, var(--marker) 16% 86%, transparent 90%);
+  box-decoration-break: clone;
+}
+
 @container (aspect-ratio < 1) {
   /* a picture pasted whole sits a little high, clear of the slips at the foot of the sheet */
   .theme-pirate[data-background='image'] .sc-bg {
@@ -477,6 +584,35 @@
   }
   .theme-pirate .sc-next-title {
     font-size: 4cqw;
+  }
+  .theme-pirate .sc-tracklist {
+    top: calc(var(--margin) + 9.6cqw);
+    right: calc(var(--margin) + 0.6cqw);
+    width: 76cqw;
+    padding: 4.6cqw 3.2cqw 2.6cqw 3cqw;
+    font-size: 2.5cqw;
+  }
+  .theme-pirate .sc-tracklist::before,
+  .theme-pirate .sc-tracklist::after {
+    width: 10cqw;
+    height: 3cqw;
+  }
+  .theme-pirate .sc-tracklist::before {
+    top: -1.2cqw;
+    right: -2.6cqw;
+  }
+  .theme-pirate .sc-tracklist::after {
+    bottom: -1cqw;
+    left: -2.6cqw;
+  }
+  .theme-pirate .sc-tracklist-heading {
+    top: -1.8cqw;
+    left: 2.2cqw;
+    padding: 0.5cqw 1.4cqw 0.3cqw;
+    font-size: 2.6cqw;
+  }
+  .theme-pirate .sc-tracklist-row {
+    padding-block: calc(0.4cqw * var(--row-presence));
   }
 }
 
@@ -601,6 +737,36 @@
   box-shadow: 0.2cqw 0.3cqw 0 rgb(0 0 0 / 0.2);
   rotate: 1.2deg;
 }
+/* on the running order, the focused record gets the fluoro and the others a grey marker, each
+   with its deck stamped in the margin */
+.theme-pirate[data-presentation='dj'] .sc-tracklist {
+  width: 30cqw;
+}
+.theme-pirate[data-presentation='dj'] .sc-tracklist-row {
+  padding-right: 2.4cqw;
+}
+.theme-pirate .sc-tracklist-row[data-state='current'][data-focused='false'] {
+  --marker: rgb(20 20 20 / 0.16);
+}
+.theme-pirate[data-presentation='dj'] .sc-tracklist-row[data-deck]::after {
+  content: attr(data-deck);
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: 1.7cqw;
+  height: 1.7cqw;
+  padding-inline: 0.3em;
+  border: 0.14cqw solid var(--deck);
+  border-radius: 1cqw;
+  font-family: var(--font-display);
+  font-size: 0.95cqw;
+  line-height: 1;
+  color: var(--deck);
+  translate: 0 -50%;
+  rotate: -12deg;
+}
 
 @container (aspect-ratio < 1) {
   .theme-pirate[data-presentation='dj'] .sc-contributors {
@@ -650,5 +816,18 @@
   .theme-pirate[data-presentation='dj'] .sc-label,
   .theme-pirate .sc-credit-details {
     margin-top: 1cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-tracklist {
+    width: 76cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-tracklist-row {
+    padding-right: 5cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-tracklist-row[data-deck]::after {
+    min-width: 3.6cqw;
+    height: 3.6cqw;
+    border-width: 0.28cqw;
+    border-radius: 2cqw;
+    font-size: 2cqw;
   }
 }
