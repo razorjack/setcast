@@ -582,6 +582,169 @@
   color: var(--bone);
 }
 
+/* tracklist: a riveted manifest plate bolted under the lintel, across from the credits, its name on
+   embossing tape. Each row has an indicator lamp; a playing row lights it in its deck's color and
+   runs a strip of hazard paint under itself as far as the track has got. */
+.theme-bunker .sc-tracklist {
+  inset: calc(var(--wall-top) + 2.4cqh) var(--margin) auto auto;
+  width: 27cqw;
+  padding: 1.5cqw 1.8cqw 1cqw;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--dim);
+  background:
+    var(--rivet) left 0.3cqw top 0.3cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) right 0.3cqw top 0.3cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) left 0.3cqw bottom 0.3cqw / 1cqw 1cqw no-repeat,
+    var(--rivet) right 0.3cqw bottom 0.3cqw / 1cqw 1cqw no-repeat,
+    var(--steel-face);
+  border-radius: 0.8cqw;
+  corner-shape: bevel;
+  box-shadow:
+    0 0.8cqw 2cqw rgb(0 0 0 / 0.7),
+    inset 0 0 0 0.12cqw rgb(255 255 255 / 0.06);
+  translate: var(--shake-x) var(--shake-y);
+}
+.theme-bunker[data-bg-calm$='right'] .sc-tracklist {
+  inset: calc(var(--wall-top) + 2.4cqh) auto auto var(--margin);
+}
+.theme-bunker .sc-tracklist-heading {
+  width: fit-content;
+  margin-bottom: 0.7cqw;
+  padding: 0.3cqw 0.7cqw;
+  font-size: 0.75cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #f4f4f0;
+  text-shadow: 0 -0.05em 0 rgb(0 0 0 / 0.8);
+  background: #0c0c0c;
+  border-radius: 0.2cqw;
+  rotate: -1.2deg;
+}
+/* rows are divided by grooves cut into the plate; the edge a row closes or opens at fades rather
+   than slicing through the letters */
+.theme-bunker .sc-tracklist-row {
+  --near: clamp(0.35, 1.15 - abs(var(--row-offset)) * 0.2, 1);
+  --groove: max(1px, 0.07cqw);
+  --ink: color-mix(in srgb, var(--bone) 72%, var(--dim));
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'lamp title time'
+    'lamp artist artist';
+  align-items: center;
+  column-gap: 0.9cqw;
+  padding-block: calc(0.55cqw * var(--row-presence)) calc(0.6cqw * var(--row-presence));
+  line-height: 1.1;
+  background:
+    linear-gradient(rgb(0 0 0 / 0.55) 0 0) top / 100% var(--groove) no-repeat,
+    linear-gradient(rgb(255 255 255 / 0.06) 0 0) 0 var(--groove) / 100% var(--groove) no-repeat;
+  opacity: calc(var(--row-presence) * var(--near));
+  mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 3cqw), transparent);
+}
+/* the index on an unlit lamp: dark glass, its number dim behind it */
+.theme-bunker .sc-tracklist-index {
+  display: inline-grid;
+  grid-area: lamp;
+  place-items: center;
+  min-width: 1.7cqw;
+  height: 1.7cqw;
+  padding-inline: 0.3em;
+  border-radius: 0.85cqw;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.95cqw;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--dim) 80%, transparent);
+  background: #1a1b18;
+  box-shadow:
+    inset 0 0 0 0.1cqw rgb(232 228 218 / 0.12),
+    inset 0 0 0.4cqw rgb(0 0 0 / 0.9);
+}
+/* title and artist clip a long name short; their padding keeps accents on capitals inside the clip */
+.theme-bunker .sc-tracklist-title {
+  grid-area: title;
+  overflow: hidden;
+  margin-block: -0.2em;
+  padding-block: 0.2em;
+  font-family: var(--font-display);
+  font-size: 1.5cqw;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.theme-bunker .sc-tracklist-time {
+  display: block;
+  grid-area: time;
+  padding-left: 0.6cqw;
+  font-size: 0.68cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+.theme-bunker .sc-tracklist-artist {
+  grid-area: artist;
+  overflow: hidden;
+  margin-block: calc(0.2cqw - 0.3em) -0.3em;
+  padding-block: 0.3em;
+  font-size: 0.62cqw;
+  letter-spacing: 0.2em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.theme-bunker .sc-tracklist-row[data-state='played'] {
+  --ink: color-mix(in srgb, var(--bone) 40%, var(--dim));
+}
+.theme-bunker .sc-tracklist-row[data-state='played'] :is(.sc-tracklist-artist, .sc-tracklist-time) {
+  color: color-mix(in srgb, var(--dim) 75%, transparent);
+}
+.theme-bunker .sc-tracklist-row[data-state='current'] {
+  --ink: var(--bone);
+  padding-bottom: calc(0.95cqw * var(--row-presence));
+}
+.theme-bunker .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: #111;
+  background: var(--deck);
+  box-shadow: 0 0 calc(0.3cqw + var(--lamp) * 0.8cqw) var(--deck);
+}
+/* the focused lamp turns into a rotating beacon while a drop lasts, as on the plate */
+.theme-bunker[data-section='drop']
+  .sc-tracklist-row[data-state='current'][data-focused='true']
+  .sc-tracklist-index {
+  background: conic-gradient(
+    from calc(var(--bar, 0) * 360deg),
+    var(--deck) 0 25%,
+    #3a2c00 0 50%,
+    var(--deck) 0 75%,
+    #3a2c00 0
+  );
+}
+.theme-bunker .sc-tracklist-row[data-state='current'][data-focused='false'] .sc-tracklist-index {
+  box-shadow: inset 0 0 0.3cqw rgb(0 0 0 / 0.5);
+}
+.theme-bunker .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
+  color: var(--hazard);
+}
+.theme-bunker .sc-tracklist-row[data-state='current'] .sc-tracklist-time {
+  color: var(--bone);
+}
+.theme-bunker .sc-tracklist-row[data-state='current']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0.3cqw;
+  width: calc(var(--row-progress) * 100%);
+  height: 0.32cqw;
+  background: repeating-linear-gradient(-45deg, var(--hazard) 0 0.4cqw, #111 0 0.8cqw) 0 0 /
+    1.131cqw 100%;
+}
+.theme-bunker[data-section='drop'] .sc-tracklist-row[data-state='current']::after {
+  background-position: var(--conveyor) 0;
+}
+
 /* portrait: a thinner wall, bigger type */
 @container (aspect-ratio < 1) {
   .theme-bunker .sc-bg,
@@ -591,6 +754,7 @@
   .theme-bunker .sc-bloom,
   .theme-bunker .sc-header,
   .theme-bunker .sc-meters,
+  .theme-bunker .sc-tracklist,
   .theme-bunker .sc-panel,
   .theme-bunker .sc-next,
   .theme-bunker .sc-contributors {
@@ -660,6 +824,51 @@
   }
   .theme-bunker .sc-next-title {
     font-size: 4.4cqw;
+  }
+  /* the manifest spans the top of the opening, clear of the plate or the rack standing on the sill */
+  .theme-bunker .sc-tracklist,
+  .theme-bunker[data-bg-calm$='right'] .sc-tracklist {
+    inset: calc(var(--wall-top) + 1.8cqh) var(--margin) auto;
+    width: auto;
+    padding: 3.2cqw 3.6cqw 2.2cqw;
+    border-radius: 1.6cqw;
+  }
+  .theme-bunker .sc-tracklist-heading {
+    margin-bottom: 1.4cqw;
+    padding: 0.6cqw 1.4cqw;
+    font-size: 1.5cqw;
+    border-radius: 0.4cqw;
+  }
+  .theme-bunker .sc-tracklist-row {
+    column-gap: 1.8cqw;
+    padding-block: calc(1.1cqw * var(--row-presence)) calc(1.2cqw * var(--row-presence));
+    mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 6cqw), transparent);
+  }
+  .theme-bunker .sc-tracklist-row[data-state='current'] {
+    padding-bottom: calc(1.9cqw * var(--row-presence));
+  }
+  .theme-bunker .sc-tracklist-index {
+    min-width: 3.4cqw;
+    height: 3.4cqw;
+    border-radius: 1.7cqw;
+    font-size: 1.9cqw;
+  }
+  .theme-bunker .sc-tracklist-title {
+    font-size: 3.2cqw;
+  }
+  .theme-bunker .sc-tracklist-time {
+    padding-left: 1.2cqw;
+    font-size: 1.45cqw;
+  }
+  .theme-bunker .sc-tracklist-artist {
+    margin-top: calc(0.4cqw - 0.3em);
+    font-size: 1.35cqw;
+  }
+  .theme-bunker .sc-tracklist-row[data-state='current']::after {
+    bottom: 0.6cqw;
+    height: 0.64cqw;
+    background: repeating-linear-gradient(-45deg, var(--hazard) 0 0.8cqw, #111 0 1.6cqw) 0 0 /
+      2.263cqw 100%;
   }
 }
 
