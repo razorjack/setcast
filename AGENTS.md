@@ -523,6 +523,15 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Built-in themes design their DJ layout explicitly (`[data-presentation='dj']` rules) instead
   of inheriting a shared grid. Focus changes emphasis (brightness, accent), never size, because
   automatic focus moves on every entrance and a size change there would jump.
+- A credit has at most one line of small, widely tracked capitals. Built-in themes hide the
+  "Now playing" eyebrow (they show "Returning") and hide an empty `.sc-panel-head`. They set the
+  label and details in mixed case, quieter than the artist, and track small capitals at 0.3em or
+  less (quicksilver's chrome display lettering is not small type).
+  The gaps above and below the title are about two thirds of its cap height. List rows are
+  separated by padding, not a hairline each; only the current row keeps its progress rule.
+  A designer's review found these problems in every theme: stacked eyebrows, wide tracking and
+  too little room around the title. Bunker's label tape and vfd's annunciator keep their
+  capitals because they imitate hardware that prints them.
 - Archived research under `docs/research/` is excluded from formatting. Preserve its bytes.
 - `vp run mix-stills` renders tease, shared-drop, overlap, portrait and overflow acceptance images.
 - Composition frame counts exclude any final frame whose time rounds to mix end in microseconds.
