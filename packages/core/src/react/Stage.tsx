@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef, type CSSProperties, type RefObject } 
 import { modulationVars } from '../modulation.ts';
 import {
   artBehind,
+  backgroundKind,
   backgroundVars,
   currentBackground,
   type ArtGrid,
@@ -27,6 +28,10 @@ export function Stage() {
   useFontsReady();
   const background = currentBackground(mix, project.background);
   const backgroundArt = useBackgroundArt(background);
+  // Themes lay the stage out by the art (data-bg-calm, --bg-*). Chrome does not repaint text in a
+  // composited element that moves by a fraction of a pixel, so text painted before the art is
+  // measured could stay a pixel off; the stage stays hidden, and unpainted, until then.
+  const measuringArt = backgroundKind(background) === 'image' && backgroundArt === null;
   const stageRef = useRef<HTMLDivElement>(null);
   useArtBehind(stageRef, backgroundArt?.stats.grid ?? null);
   const visualizers = useMemo(
@@ -37,6 +42,7 @@ export function Stage() {
   const style: CSSProperties = {
     width,
     height,
+    visibility: measuringArt ? 'hidden' : undefined,
     ...stageVars(mix, timeSeconds, composition.durationSeconds),
     ...beatVars(timeSeconds, project.bpm, project.beatOffset),
     ...modulationVars(modulation),

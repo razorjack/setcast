@@ -107,6 +107,15 @@ Gotchas:
 - A theme variable must not reuse the name of a variable the stage sets inline (`--bar`, `--beat`,
   `--since-*`, `--bg-*`, …): the inline value overrides the theme's rule on the root, and every
   use of it breaks without an error. Anamorphic calls its bar height `--matte` for that reason.
+- Chrome does not repaint the contents of a composited element (one with `backdrop-filter`, for
+  example) when layout moves it by a fraction of a pixel (crbug.com/833083). Its text stays where
+  it was last painted, and glyphs snap to whole pixels, so the text can sit 1 px off. Each render
+  tab has its own paint history, so the text jumps 1 px on the frames of one tab: sterile-tech's
+  credits jumped about every fifth frame. base.css therefore moves DJ slots in whole pixels, and
+  the stage stays hidden until its art is measured, because `data-bg-calm` moves the layout and
+  fonts may load before or after it. A theme that moves a composited element through layout moves
+  it in whole pixels. A still renders in one tab and cannot show this; compare a slice at the
+  default `--concurrency` with `--concurrency 1`, frame by frame.
 - A full-frame `backdrop-filter` roughly triples render time (a 6 s slice: 43 s against 14 s
   without it). Keep backdrop blur on small elements such as the panel.
 - A visualizer's `<svg>` is a replaced element: absolutely positioned with `width: auto`, it
@@ -492,7 +501,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Background selection follows the first focused play and changes immediately. There is no
   fabricated "previous track" during an overlap. DJ panels retain credits after dwell;
   `--presence` separates this layout policy from the deterministic per-run `--show` signal.
-- A DJ slot's height is `calc-size(auto, size * var(--fit))` in block flow. Chrome ignores
+- A DJ slot's height is `calc-size(auto, size - round(down, size * var(--closed), 1px))` in block
+  flow, and its `margin-top` closes the gap the same way, so the slot moves panels only by whole
+  pixels (see Gotchas: composited elements). A closed slot keeps the leftover fraction of a pixel
+  of its height and gap; at `--fit: 1` both are exact. Chrome ignores
   `calc-size()` heights on flex items, and `overflow-clip-margin` rejects `calc()`, so the bleed
   is a constant. The clip is on the slot rather than a `clip-path`, because a `clip-path`
   ancestor becomes the backdrop root and empties every panel's `backdrop-filter`. Chrome applies

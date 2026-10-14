@@ -364,6 +364,11 @@
  * sinks out of it. The vertical clip keeps a moving panel off its neighbors. Chrome applies
  * overflow-clip-margin only when both axes clip, so --slot-bleed does not reach past it: a theme
  * keeps shadows and ornaments above or below a panel inside the panel's padding.
+ *
+ * The slot opens and closes in whole pixels from its full size, so its panel and those around it
+ * only ever move by whole pixels. Chrome does not repaint the contents of a composited panel (one
+ * with a backdrop-filter, say) that moves by a fraction of a pixel, so its text stays where it was
+ * last painted, and each render tab last painted it on a different frame of the entrance.
  */
 /* the anchor lets a theme keep up next clear of the stack, however tall it is */
 .sc-stage[data-presentation='dj'] .sc-contributors {
@@ -376,8 +381,11 @@
 /* block flow, not flex: Chrome ignores calc-size() heights on flex items */
 .sc-stage[data-presentation='dj'] .sc-slot {
   --fit: clamp(0, var(--presence), 1);
-  height: calc-size(auto, size * var(--fit));
-  margin-top: calc(var(--fit) * var(--stack-gap, 1cqw));
+  --closed: calc(1 - var(--fit));
+  height: calc-size(auto, size - round(down, size * var(--closed), 1px));
+  margin-top: calc(
+    var(--stack-gap, 1cqw) - round(down, var(--stack-gap, 1cqw) * var(--closed), 1px)
+  );
   overflow: visible clip;
   overflow-clip-margin: var(--slot-bleed, 0px);
 }
