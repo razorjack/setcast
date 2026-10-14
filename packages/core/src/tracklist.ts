@@ -57,6 +57,8 @@ export interface TracklistRow {
   state: TracklistRowState;
   focused: boolean;
   returning: boolean;
+  /** The listing time is still to come; a current row that is ahead plays early, like a tease. */
+  ahead: boolean;
   /** The deck of the current contribution, when it has one. */
   deck?: string;
   /** The play's current run and contribution while it contributes. */
@@ -169,6 +171,7 @@ function rowDescriber(document: MixDocument, state: MixState, groups: ListingGro
       state: stateOf(listing),
       focused: focused.has(listing.play),
       returning: entry?.run.returning ?? false,
+      ahead: listing.at > state.time,
       deck: entry?.deck,
       current: entry,
       progress: clamp((state.time - listing.at) / length, 0, 1),

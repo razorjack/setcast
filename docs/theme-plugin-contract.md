@@ -205,7 +205,7 @@ rows for any moment, and `ResolvedProject.tracklist` holds the resolved counts o
   <p class="sc-tracklist-heading">Tracklist</p>
   <ol class="sc-tracklist-rows">
     <li class="sc-tracklist-row" data-play="t7" data-state="current" data-focused="true"
-        data-returning="false" data-deck="A"
+        data-returning="false" data-ahead="false" data-deck="A"
         style="--row-offset: 0; --row-presence: 1; --row-progress: 0.25; --since-entry: 5; --until-exit: 18">
       <span class="sc-tracklist-index">07</span>
       <span class="sc-tracklist-time">2:01</span>
@@ -223,7 +223,10 @@ the current time and holds that whole group plus the requested counts around it.
 comes from contributions instead: `data-state="current"` while its play contributes, wherever the
 row sits, so in DJ mode several rows can be current at once and a play that enters before its
 listing is already current below the anchor. Otherwise a row is `played` once its listing time
-has passed and its play has been heard, and `upcoming` before that. A current row carries its
+has passed and its play has been heard, and `upcoming` before that. `data-ahead` is `true` while
+the row's listing time is still to come, so `[data-state='current'][data-ahead='true']` is a play
+heard before its listing: a tease or an early entrance. Unlike `--row-offset`, it tells the
+second of two tied listings, or a row starting its glide, from the next listing. A current row carries its
 contribution's `data-deck`, so `--deck` resolves on it as on a panel; `data-focused` and
 `data-returning` follow focus and the current run.
 

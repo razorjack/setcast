@@ -41,6 +41,7 @@ function Row({
       data-state={row.state}
       data-focused={row.focused}
       data-returning={row.returning}
+      data-ahead={row.ahead}
       data-deck={row.deck}
       data-tail={current?.contribution.tail}
       data-tags={current?.contribution.tags?.join(' ')}

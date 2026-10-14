@@ -69,10 +69,12 @@ describe('tracklistView', () => {
         { id: 'b', at: 120, title: 'B', contributions: [{ from: 110, until: 300 }] },
       ],
     };
-    expect(summary(viewAt(early, 115, { before: 1, after: 1 }))).toEqual([
+    const view = viewAt(early, 115, { before: 1, after: 1 });
+    expect(summary(view)).toEqual([
       ['a', 'current', 0, 1],
       ['b', 'current', 1, 1],
     ]);
+    expect(view.rows.map((row) => row.ahead)).toEqual([false, true]);
   });
 
   test('a listed play not heard yet stays upcoming after its listing time', () => {
@@ -97,11 +99,13 @@ describe('tracklistView', () => {
         { id: 'd', at: 120, title: 'D' },
       ],
     };
-    expect(summary(viewAt(tied, 70, { before: 0, after: 1 }))).toEqual([
+    const view = viewAt(tied, 70, { before: 0, after: 1 });
+    expect(summary(view)).toEqual([
       ['b', 'current', 0, 1],
       ['c', 'current', 1, 1],
       ['d', 'upcoming', 2, 1],
     ]);
+    expect(view.rows.map((row) => row.ahead)).toEqual([false, false, true]);
   });
 
   test('times the current listing group and the row spans', () => {
