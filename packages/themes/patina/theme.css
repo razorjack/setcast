@@ -314,7 +314,7 @@
 .theme-patina .sc-header {
   top: calc(var(--margin) * 0.8);
   font-size: 0.9cqw;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--dim);
 }
@@ -350,7 +350,7 @@
 }
 .theme-patina .sc-panel-head {
   gap: 0.8cqw;
-  margin-bottom: 0.9cqw;
+  margin-bottom: 1.2cqw;
   font-family: var(--font-italic);
   font-style: italic;
   font-size: 1.15cqw;
@@ -381,9 +381,9 @@
   margin: 0 0.3em;
 }
 .theme-patina .sc-artist {
-  margin-bottom: 0.5cqw;
+  margin-bottom: 1cqw;
   font-size: 1.3cqw;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--dim);
 }
@@ -398,7 +398,7 @@
   text-wrap: balance;
 }
 .theme-patina .sc-label {
-  margin-top: 0.6cqw;
+  margin-top: 1.1cqw;
   font-family: var(--font-italic);
   font-style: italic;
   font-size: 1.35cqw;
@@ -428,7 +428,7 @@
 }
 .theme-patina .sc-next-artist {
   font-size: 0.85cqw;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--dim);
 }
@@ -467,6 +467,7 @@
     max-width: 90cqw;
   }
   .theme-patina .sc-panel-head {
+    margin-bottom: 2.4cqw;
     font-size: 2.4cqw;
   }
   .theme-patina .sc-deck {
@@ -475,12 +476,14 @@
     font-size: 1.6cqw;
   }
   .theme-patina .sc-artist {
+    margin-bottom: 2cqw;
     font-size: 2.6cqw;
   }
   .theme-patina .sc-title {
     font-size: 5.6cqw;
   }
   .theme-patina .sc-label {
+    margin-top: 2.2cqw;
     font-size: 2.7cqw;
   }
   .theme-patina .sc-next {
@@ -573,7 +576,7 @@
 }
 .theme-patina[data-presentation='dj'] .sc-panel-head {
   min-height: 1.5cqw;
-  margin-bottom: 0.7cqw;
+  margin-bottom: 0.9cqw;
   font-size: 1cqw;
 }
 .theme-patina[data-presentation='dj'] .sc-panel[data-returning='true'] .sc-eyebrow {
@@ -585,7 +588,7 @@
   font-size: 0.7cqw;
 }
 .theme-patina[data-presentation='dj'] .sc-artist {
-  margin-bottom: 0.4cqw;
+  margin-bottom: 0.8cqw;
   font-size: 1.05cqw;
 }
 .theme-patina[data-presentation='dj'] .sc-title {
@@ -593,7 +596,7 @@
   letter-spacing: 0.18em;
 }
 .theme-patina[data-presentation='dj'] .sc-label {
-  margin-top: 0.5cqw;
+  margin-top: 0.9cqw;
   font-size: 1.1cqw;
 }
 .theme-patina .sc-credit-details {
@@ -657,7 +660,7 @@
   }
   .theme-patina[data-presentation='dj'] .sc-panel-head {
     min-height: 0;
-    margin-bottom: 0.8cqw;
+    margin-bottom: 1.6cqw;
     font-size: 2cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-deck {
@@ -666,6 +669,7 @@
     font-size: 1.4cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-artist {
+    margin-bottom: 1.6cqw;
     font-size: 2.1cqw;
   }
   .theme-patina[data-presentation='dj'] .sc-title {
@@ -676,6 +680,9 @@
   .theme-patina .sc-contributor-count,
   .theme-patina .sc-overflow {
     font-size: 2.2cqw;
+  }
+  .theme-patina[data-presentation='dj'] .sc-label {
+    margin-top: 1.8cqw;
   }
   .theme-patina .sc-contributor-count,
   .theme-patina .sc-overflow {
