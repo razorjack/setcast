@@ -130,7 +130,7 @@
   padding-bottom: 1cqh;
   font-size: 0.82cqw;
   font-weight: 600;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--header-ink);
   text-shadow: 0 0 1cqw
@@ -142,7 +142,7 @@
 }
 .theme-masthead .sc-clock {
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
 }
 .theme-masthead .sc-clock-total {
   opacity: 0.6;
@@ -183,29 +183,40 @@
   opacity: clamp(0, (var(--presence, 1) - 0.2) * 1.8, 1);
   transform: translateY(calc((1 - var(--presence, 1)) * 1.4cqh));
 }
+/* the artist is the cover line's one line of capitals; the head is a dek in italic, and says only
+   that a play returns */
 .theme-masthead .sc-panel-head {
   justify-content: var(--cover-justify);
   gap: 0.9cqw;
-  margin-bottom: 1.5cqw;
-  font-size: 0.78cqw;
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  margin-bottom: 1.4cqw;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2cqw;
   color: var(--accent);
+}
+.theme-masthead .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-masthead .sc-panel[data-returning='false'] .sc-panel-head:not(:has(.sc-deck, .sc-index)) {
+  display: none;
 }
 .theme-masthead .sc-deck {
   padding: 0.1em 0.45em;
   border: var(--hairline) solid currentColor;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.66cqw;
+  font-weight: 600;
   letter-spacing: 0.08em;
 }
 .theme-masthead .sc-index {
   color: var(--fg-dim);
 }
 .theme-masthead .sc-artist {
-  margin-bottom: 1cqw;
+  margin-bottom: 1.5cqw;
   font-size: 1.25cqw;
   font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 .theme-masthead .sc-title {
@@ -218,7 +229,7 @@
   text-box: trim-both cap alphabetic;
 }
 .theme-masthead .sc-label {
-  margin-top: 1cqw;
+  margin-top: 1.3cqw;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.45cqw;
@@ -227,9 +238,8 @@
 .theme-masthead .sc-credit-details {
   margin-top: 0.8cqw;
   font-family: var(--font-sans);
-  font-size: 0.75cqw;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  font-size: 0.8cqw;
+  letter-spacing: 0.04em;
   color: var(--fg-dim);
 }
 
@@ -277,7 +287,7 @@
   max-width: none;
   margin: var(--cover-margin);
   align-items: var(--cover-justify);
-  gap: 0.35cqw;
+  gap: 0.45cqw;
   text-align: var(--cover-align);
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
   text-shadow: 0 0 1.4cqw oklch(from var(--paper) l c h / 0.6);
@@ -296,17 +306,16 @@
   bottom: auto;
 }
 .theme-masthead .sc-next-label {
-  margin-bottom: 0.3cqw;
-  font-size: 0.72cqw;
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  margin-bottom: 0.2cqw;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05cqw;
   color: var(--accent);
 }
 .theme-masthead .sc-next-artist {
   font-size: 0.85cqw;
   font-weight: 600;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 .theme-masthead .sc-next-title {
@@ -318,21 +327,18 @@
 
 /* DJ: every current play is a cover line of one size; focus sets the ink */
 .theme-masthead[data-presentation='dj'] .sc-contributors {
-  --stack-gap: 2.4cqh;
+  --stack-gap: 3.4cqh;
   --slot-bleed: 1cqw;
 }
 .theme-masthead[data-presentation='dj'] .sc-panel {
   text-align: var(--cover-align);
 }
 .theme-masthead[data-presentation='dj'] .sc-panel-head {
-  margin-bottom: 0.8cqw;
-  font-size: 0.66cqw;
-}
-.theme-masthead[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
+  margin-bottom: 0.9cqw;
+  font-size: 1cqw;
 }
 .theme-masthead[data-presentation='dj'] .sc-artist {
-  margin-bottom: 0.7cqw;
+  margin-bottom: 1cqw;
   font-size: 0.95cqw;
 }
 .theme-masthead[data-presentation='dj'] .sc-title {
@@ -343,7 +349,7 @@
   width: calc(var(--focused, 1) * (3.5cqw + var(--sweep) * 100cqw));
 }
 .theme-masthead[data-presentation='dj'] .sc-label {
-  margin-top: 0.6cqw;
+  margin-top: 0.8cqw;
   font-size: 1.05cqw;
 }
 .theme-masthead[data-presentation='dj'] .sc-panel[data-focused='false'] {
@@ -354,7 +360,7 @@
 .theme-masthead .sc-overflow {
   font-size: 0.68cqw;
   font-weight: 600;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
 }
@@ -401,7 +407,7 @@
 }
 .theme-masthead .sc-tracklist-rows {
   position: relative;
-  height: 4.7cqw;
+  height: 5cqw;
   overflow: clip;
 }
 /* each entry has its slot by its distance from the current listing; past two the strip ends */
@@ -449,18 +455,16 @@
   font-size: 0.62cqw;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   color: var(--fg-dim);
 }
 .theme-masthead .sc-tracklist-artist {
   grid-area: artist;
   overflow: hidden;
   margin-top: 0.45cqw;
-  font-size: 0.66cqw;
+  font-size: 0.8cqw;
   font-weight: 600;
-  letter-spacing: 0.24em;
   text-overflow: ellipsis;
-  text-transform: uppercase;
 }
 .theme-masthead .sc-tracklist-title {
   grid-area: title;
@@ -522,22 +526,25 @@
   }
   .theme-masthead .sc-panel-head {
     gap: 2cqw;
-    font-size: 1.7cqw;
+    font-size: 2.6cqw;
     margin-bottom: 3cqw;
+  }
+  .theme-masthead .sc-deck {
+    font-size: 1.5cqw;
   }
   .theme-masthead .sc-artist {
     font-size: 2.6cqw;
-    margin-bottom: 2.2cqw;
+    margin-bottom: 3cqw;
   }
   .theme-masthead .sc-label {
-    margin-top: 2cqw;
+    margin-top: 2.6cqw;
     font-size: 3cqw;
   }
   .theme-masthead .sc-next {
     padding: 0;
   }
   .theme-masthead .sc-next-label {
-    font-size: 1.6cqw;
+    font-size: 2.3cqw;
   }
   .theme-masthead .sc-next-artist {
     font-size: 1.9cqw;
@@ -545,12 +552,16 @@
   .theme-masthead .sc-next-title {
     font-size: 4.4cqw;
   }
-  .theme-masthead[data-presentation='dj'] .sc-panel-head,
+  .theme-masthead[data-presentation='dj'] .sc-panel-head {
+    margin-bottom: 1.8cqw;
+    font-size: 2.2cqw;
+  }
   .theme-masthead .sc-contributor-count,
   .theme-masthead .sc-overflow {
     font-size: 1.5cqw;
   }
   .theme-masthead[data-presentation='dj'] .sc-artist {
+    margin-bottom: 1.8cqw;
     font-size: 2cqw;
   }
   .theme-masthead[data-presentation='dj'] .sc-title {
@@ -558,6 +569,7 @@
     font-size: 7cqw;
   }
   .theme-masthead[data-presentation='dj'] .sc-label {
+    margin-top: 1.6cqw;
     font-size: 2.3cqw;
   }
 
@@ -578,7 +590,7 @@
     margin-bottom: 0.6cqw;
     font-size: 1.5cqw;
     font-weight: 600;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--accent);
   }
@@ -587,7 +599,8 @@
     height: auto;
     overflow: visible;
   }
-  /* rows open and close in height; their rules are backgrounds, so a closed row takes no room */
+  /* rows open and close in height; the current row's rule is a background, so a closed row takes
+     no room */
   .theme-masthead .sc-tracklist-row {
     --far: 0;
     position: static;
@@ -601,21 +614,6 @@
     padding: 0;
     border: 0;
     overflow: visible clip;
-    background: linear-gradient(
-        color-mix(in oklab, var(--ink) 24%, transparent),
-        color-mix(in oklab, var(--ink) 24%, transparent)
-      )
-      left top / 100% var(--hairline) no-repeat;
-  }
-  .theme-masthead .sc-tracklist-row[data-state='current'] {
-    background:
-      linear-gradient(var(--accent), var(--accent)) left top / calc(var(--row-progress) * 100%)
-        calc(var(--hairline) * 2) no-repeat,
-      linear-gradient(
-          color-mix(in oklab, var(--ink) 24%, transparent),
-          color-mix(in oklab, var(--ink) 24%, transparent)
-        )
-        left top / 100% var(--hairline) no-repeat;
   }
   .theme-masthead .sc-tracklist-index {
     align-self: center;
@@ -627,7 +625,7 @@
   }
   .theme-masthead .sc-tracklist-artist {
     margin-top: 1.5cqw;
-    font-size: 1.4cqw;
+    font-size: 1.75cqw;
   }
   .theme-masthead .sc-tracklist-title {
     margin-top: 0.4cqw;
