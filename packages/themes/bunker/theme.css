@@ -452,13 +452,21 @@
 }
 .theme-bunker .sc-panel-head {
   gap: 1cqw;
-  margin-bottom: 1cqw;
+  margin-bottom: 1.5cqw;
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.85cqw;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--dim);
+}
+/* the head shows the deck and where the credit is in the list; it says "now playing" only for
+   a return, and leaves no gap when it has nothing to show */
+.theme-bunker .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-bunker .sc-panel[data-returning='false'] .sc-panel-head:not(:has(.sc-deck, .sc-index)) {
+  display: none;
 }
 /* the deck as a warning lamp; in a drop it turns into a rotating beacon */
 .theme-bunker .sc-deck {
@@ -493,6 +501,7 @@
   margin: 0 0.3em;
 }
 .theme-bunker .sc-artist {
+  margin-bottom: 0.8cqw;
   font-weight: 700;
   font-size: 2.3cqw;
   line-height: 1;
@@ -512,12 +521,12 @@
 /* the label on a strip of embossing tape */
 .theme-bunker .sc-label {
   display: inline-block;
-  margin-top: 1.2cqw;
+  margin-top: 1.6cqw;
   padding: 0.35cqw 0.8cqw;
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.95cqw;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #f4f4f0;
   text-shadow: 0 -0.05em 0 rgb(0 0 0 / 0.8);
@@ -546,7 +555,7 @@
 /* up next: a smaller plate above the lamps */
 .theme-bunker .sc-next {
   bottom: calc(var(--wall-bottom) + 3cqh);
-  gap: 0.2cqw;
+  gap: 0.45cqw;
   padding: 1.4cqw 1.8cqw 1.2cqw;
   background:
     var(--rivet) left 0.3cqw top 0.9cqw / 1cqw 1cqw no-repeat,
@@ -564,7 +573,7 @@
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.8cqw;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--hazard);
 }
@@ -613,7 +622,7 @@
   margin-bottom: 0.7cqw;
   padding: 0.3cqw 0.7cqw;
   font-size: 0.75cqw;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #f4f4f0;
   text-shadow: 0 -0.05em 0 rgb(0 0 0 / 0.8);
@@ -621,11 +630,9 @@
   border-radius: 0.2cqw;
   rotate: -1.2deg;
 }
-/* rows are divided by grooves cut into the plate; the edge a row closes or opens at fades rather
-   than slicing through the letters */
+/* the edge a row closes or opens at fades rather than slicing through the letters */
 .theme-bunker .sc-tracklist-row {
   --near: clamp(0.35, 1.15 - abs(var(--row-offset)) * 0.2, 1);
-  --groove: max(1px, 0.07cqw);
   --ink: color-mix(in srgb, var(--bone) 72%, var(--dim));
   position: relative;
   display: grid;
@@ -635,11 +642,8 @@
     'lamp artist artist';
   align-items: center;
   column-gap: 0.9cqw;
-  padding-block: calc(0.55cqw * var(--row-presence)) calc(0.6cqw * var(--row-presence));
+  padding-block: calc(0.6cqw * var(--row-presence)) calc(0.65cqw * var(--row-presence));
   line-height: 1.1;
-  background:
-    linear-gradient(rgb(0 0 0 / 0.55) 0 0) top / 100% var(--groove) no-repeat,
-    linear-gradient(rgb(255 255 255 / 0.06) 0 0) 0 var(--groove) / 100% var(--groove) no-repeat;
   opacity: calc(var(--row-presence) * var(--near));
   mask-image: linear-gradient(#000 calc(100% - (1 - var(--row-presence)) * 3cqw), transparent);
 }
@@ -687,12 +691,11 @@
 .theme-bunker .sc-tracklist-artist {
   grid-area: artist;
   overflow: hidden;
-  margin-block: calc(0.2cqw - 0.3em) -0.3em;
+  margin-block: calc(0.3cqw - 0.3em) -0.3em;
   padding-block: 0.3em;
-  font-size: 0.62cqw;
-  letter-spacing: 0.2em;
+  font-size: 0.78cqw;
+  letter-spacing: 0.01em;
   text-overflow: ellipsis;
-  text-transform: uppercase;
   white-space: nowrap;
 }
 .theme-bunker .sc-tracklist-row[data-state='played'] {
@@ -791,6 +794,7 @@
     padding: 4.4cqw 4.6cqw 3.6cqw;
   }
   .theme-bunker .sc-panel-head {
+    margin-bottom: 2.8cqw;
     font-size: 1.7cqw;
   }
   .theme-bunker .sc-deck {
@@ -800,12 +804,14 @@
     font-size: 2.4cqw;
   }
   .theme-bunker .sc-artist {
+    margin-bottom: 1.5cqw;
     font-size: 4.4cqw;
   }
   .theme-bunker .sc-title {
     font-size: 10cqw;
   }
   .theme-bunker .sc-label {
+    margin-top: 3cqw;
     font-size: 1.8cqw;
   }
   .theme-bunker .sc-next {
@@ -861,8 +867,8 @@
     font-size: 1.45cqw;
   }
   .theme-bunker .sc-tracklist-artist {
-    margin-top: calc(0.4cqw - 0.3em);
-    font-size: 1.35cqw;
+    margin-top: calc(0.5cqw - 0.3em);
+    font-size: 1.7cqw;
   }
   .theme-bunker .sc-tracklist-row[data-state='current']::after {
     bottom: 0.6cqw;
@@ -912,9 +918,6 @@
   margin: 0 0 0 1cqw;
   font-size: 0.7cqw;
 }
-.theme-bunker[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
-}
 .theme-bunker[data-presentation='dj'] .sc-eyebrow {
   color: var(--hazard);
 }
@@ -934,7 +937,7 @@
 }
 .theme-bunker[data-presentation='dj'] .sc-artist {
   grid-area: artist;
-  margin-bottom: 0.4cqw;
+  margin-bottom: 0.6cqw;
   font-size: 1.45cqw;
 }
 .theme-bunker[data-presentation='dj'] .sc-title {
@@ -944,16 +947,16 @@
 .theme-bunker[data-presentation='dj'] .sc-label {
   grid-area: label;
   justify-self: start;
-  margin-top: 0.8cqw;
+  margin-top: 1.1cqw;
   padding: 0.25cqw 0.6cqw;
   font-size: 0.7cqw;
 }
 .theme-bunker .sc-credit-details {
   grid-area: details;
-  margin: 0.8cqw 0 0 1cqw;
+  margin: 1.1cqw 0 0 1cqw;
   font-weight: 700;
   font-size: 0.7cqw;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--dim);
 }
@@ -967,7 +970,7 @@
 .theme-bunker .sc-overflow {
   font-weight: 700;
   font-size: 0.75cqw;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .theme-bunker .sc-contributor-count {
@@ -1014,13 +1017,13 @@
   }
   .theme-bunker[data-presentation='dj'] .sc-artist {
     font-size: 2.9cqw;
-    margin-bottom: 0.8cqw;
+    margin-bottom: 1.2cqw;
   }
   .theme-bunker[data-presentation='dj'] .sc-title {
     font-size: 6.4cqw;
   }
   .theme-bunker[data-presentation='dj'] .sc-label,
   .theme-bunker .sc-credit-details {
-    margin-top: 1.6cqw;
+    margin-top: 2.2cqw;
   }
 }
