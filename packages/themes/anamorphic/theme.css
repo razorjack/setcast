@@ -359,8 +359,13 @@
 .theme-anamorphic .sc-tracklist-row[data-state='played'] {
   --tier: 0.45;
 }
+/* a current line brightens over a second as its play comes in and dims over the last second of
+   its run, so the roll changes light the way end credits do, never in a cut */
 .theme-anamorphic .sc-tracklist-row[data-state='current'] {
-  --tier: 1;
+  --tier: min(
+    0.62 + 0.38 * clamp(0, var(--since-entry, 60), 1),
+    0.45 + 0.55 * clamp(0, var(--until-exit, 60), 1)
+  );
 }
 .theme-anamorphic :is(.sc-tracklist-index, .sc-tracklist-time) {
   font-weight: 500;
