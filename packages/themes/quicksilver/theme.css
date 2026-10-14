@@ -342,13 +342,13 @@
 /* header: small spaced capitals in steel */
 .theme-quicksilver .sc-header {
   font-size: 0.9cqw;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--steel);
 }
 .theme-quicksilver .sc-clock {
   font-family: var(--font-mono);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   font-variant-numeric: tabular-nums;
 }
 .theme-quicksilver .sc-clock-total {
@@ -379,9 +379,14 @@
   gap: 1cqw;
   font-family: var(--font-mono);
   font-size: 0.8cqw;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--steel-dim);
+}
+/* the head shows the deck and where the credit is in the list; it says "now playing" only for
+   a return */
+.theme-quicksilver .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
 }
 .theme-quicksilver .sc-deck {
   display: inline-grid;
@@ -412,42 +417,41 @@
 .theme-quicksilver .sc-artist {
   top: 9cqh;
   font-size: 2.8cqw;
-  letter-spacing: 0.5em;
-  margin-right: -0.5em;
+  letter-spacing: 0.38em;
+  margin-right: -0.38em;
 }
 .theme-quicksilver .sc-title {
   bottom: 10cqh;
   font-size: 3.4cqw;
   line-height: 1.3;
-  letter-spacing: 0.42em;
-  margin-right: -0.42em;
+  letter-spacing: 0.32em;
+  margin-right: -0.32em;
   text-wrap: balance;
 }
+/* the label and details in plain lowercase, so the chrome lines are the only spaced capitals */
 .theme-quicksilver .sc-label {
-  bottom: 5.6cqh;
-  font-family: var(--font-mono);
-  font-size: 0.8cqw;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
+  bottom: 4.6cqh;
+  font-size: 1.15cqw;
+  letter-spacing: 0.06em;
   color: var(--sky-deep);
 }
 
 /* up next: small, bottom right */
 .theme-quicksilver .sc-next {
   z-index: 3;
-  gap: 0.25cqw;
+  gap: 0.5cqw;
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-quicksilver .sc-next-label {
   font-family: var(--font-mono);
   font-size: 0.75cqw;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--steel-dim);
 }
 .theme-quicksilver .sc-next-artist {
   font-size: 1cqw;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--steel);
 }
@@ -482,7 +486,6 @@
   width: auto;
   font-family: var(--font-display);
   font-size: 0.85cqw;
-  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--steel-dim);
 }
@@ -532,7 +535,7 @@
   order: 1;
   font-family: var(--font-mono);
   font-size: 0.7cqw;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
   font-variant-numeric: tabular-nums;
 }
 .theme-quicksilver .sc-tracklist-row[data-ahead='true'] .sc-tracklist-index {
@@ -542,7 +545,10 @@
   min-width: 0;
   overflow: clip;
   overflow-clip-margin: 0.3em;
+  font-size: 1.15em;
+  letter-spacing: 0.04em;
   text-overflow: ellipsis;
+  text-transform: none;
 }
 .theme-quicksilver .sc-tracklist-title {
   order: 3;
@@ -620,8 +626,8 @@
     font-size: 6cqw;
   }
   .theme-quicksilver .sc-label {
-    bottom: 6.5cqh;
-    font-size: 1.7cqw;
+    bottom: 5.6cqh;
+    font-size: 2.3cqw;
   }
   .theme-quicksilver .sc-next {
     bottom: 1.5cqh;
@@ -680,7 +686,7 @@
   justify-content: center;
   --top: 9cqh;
   --bottom: 4cqh;
-  --meta-row: 5.4cqh;
+  --meta-row: 6.4cqh;
   --details-row: 2.2cqh;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-slot {
@@ -714,14 +720,14 @@
 .theme-quicksilver[data-presentation='dj'] .sc-artist {
   grid-row: 1;
   font-size: 1.9cqw;
-  letter-spacing: 0.42em;
-  padding-left: 0.42em;
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-title {
   grid-row: 3;
   font-size: 2.5cqw;
-  letter-spacing: 0.3em;
-  padding-left: 0.3em;
+  letter-spacing: 0.24em;
+  padding-left: 0.24em;
 }
 .theme-quicksilver[data-presentation='dj'] :is(.sc-panel-head, .sc-label) {
   grid-row: 4;
@@ -734,18 +740,14 @@
 }
 .theme-quicksilver[data-presentation='dj'] .sc-label {
   grid-column: 3;
-  padding-left: 0.4em;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.75cqw;
+  font-size: 1cqw;
 }
 .theme-quicksilver[data-presentation='dj']
   .sc-panel:is(:has(.sc-deck), [data-returning='true'])
   .sc-panel-head {
   margin-right: 1cqw;
-}
-.theme-quicksilver[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
 }
 .theme-quicksilver[data-presentation='dj'] .sc-deck {
   min-width: 1.4cqw;
@@ -757,10 +759,9 @@
   align-self: end;
 }
 .theme-quicksilver .sc-credit-details {
-  bottom: 3.6cqh;
-  font-size: 0.7cqw;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  bottom: 3.4cqh;
+  font-size: 0.95cqw;
+  letter-spacing: 0.06em;
   color: var(--steel-dim);
 }
 /* a play out of focus keeps its chrome but not the art's colors */
@@ -778,7 +779,7 @@
   position: absolute;
   bottom: 1.6cqh;
   font-size: 0.7cqw;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--steel-dim);
 }
@@ -805,7 +806,7 @@
   .theme-quicksilver[data-presentation='dj'] .sc-contributors {
     --top: 12cqh;
     --bottom: 4cqh;
-    --meta-row: 3.4cqh;
+    --meta-row: 4.6cqh;
     --details-row: 2cqh;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-slot {
@@ -816,23 +817,25 @@
   }
   .theme-quicksilver[data-presentation='dj'] .sc-artist {
     font-size: 3.6cqw;
-    letter-spacing: 0.3em;
-    padding-left: 0.3em;
+    letter-spacing: 0.24em;
+    padding-left: 0.24em;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-title {
     font-size: 4cqw;
-    letter-spacing: 0.22em;
-    padding-left: 0.22em;
+    letter-spacing: 0.18em;
+    padding-left: 0.18em;
   }
   .theme-quicksilver .sc-credit-details {
     bottom: 4.6cqh;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-panel-head,
-  .theme-quicksilver[data-presentation='dj'] .sc-label,
-  .theme-quicksilver .sc-credit-details,
   .theme-quicksilver .sc-contributor-count,
   .theme-quicksilver .sc-overflow {
     font-size: 1.4cqw;
+  }
+  .theme-quicksilver[data-presentation='dj'] .sc-label,
+  .theme-quicksilver .sc-credit-details {
+    font-size: 1.9cqw;
   }
   .theme-quicksilver[data-presentation='dj'] .sc-deck {
     min-width: 2.6cqw;
