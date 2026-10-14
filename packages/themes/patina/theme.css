@@ -340,6 +340,14 @@
   translate: -50% calc((1 - var(--hang)) * 0.8cqh);
   opacity: var(--hang);
 }
+/* beside the tracklist, the caption announces a listed play and the line then carries it */
+.theme-patina .sc-panel[data-listed='true'] {
+  --hang: min(
+    clamp(0, var(--since-entry, 60) / 1.2, 1),
+    clamp(0, var(--until-exit, 60) / 0.6, 1),
+    var(--show)
+  );
+}
 .theme-patina .sc-panel-head {
   gap: 0.8cqw;
   margin-bottom: 0.9cqw;
@@ -746,6 +754,11 @@
 .theme-patina .sc-tracklist-row[data-state='upcoming'] {
   justify-content: start;
 }
+/* a play still mixing out behind the current listing dims into its played look over the last
+   second of its run, so the change of state does not show */
+.theme-patina .sc-tracklist-row[data-state='current'] {
+  --seen: calc(clamp(0, -1 * var(--row-offset), 1) * (1 - clamp(0, var(--until-exit, 60), 1)));
+}
 .theme-patina .sc-tracklist-row + .sc-tracklist-row::before {
   content: '';
   position: absolute;
@@ -770,6 +783,11 @@
   font-size: 0.75em;
   font-variant-numeric: tabular-nums lining-nums;
   color: color-mix(in srgb, var(--deck), var(--dim) calc((1 - var(--lit)) * 100%));
+}
+/* a play heard before its listing, a tease or an early entrance, lights only its ring */
+.theme-patina .sc-tracklist-row[data-state='current'][data-ahead='true'] .sc-tracklist-index {
+  border-color: var(--deck);
+  color: var(--deck);
 }
 .theme-patina .sc-tracklist-title {
   grid-area: title;
