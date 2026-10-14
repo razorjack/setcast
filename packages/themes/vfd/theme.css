@@ -144,7 +144,7 @@
   right: var(--win-x);
   bottom: var(--win-y);
   width: auto;
-  min-height: calc(var(--dot-s) * 104);
+  min-height: calc(var(--dot-s) * 110);
   padding: var(--pad-y) calc(var(--pad-x) + var(--col) + var(--gutter)) var(--pad-y) var(--pad-x);
   border: var(--bezel) solid transparent;
   border-radius: var(--radius);
@@ -252,7 +252,7 @@
   font-family: var(--font-mono);
   font-size: calc(var(--dot-s) * 5);
   line-height: 1;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--print);
   text-shadow: none;
@@ -264,7 +264,7 @@
   gap: 0.8em;
   font-family: var(--font-mono);
   font-size: calc(var(--dot-s) * 5);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--lit);
   text-shadow: 0 0 calc(0.4em * var(--glow)) var(--halo);
@@ -312,7 +312,7 @@
 }
 .theme-vfd .sc-artist {
   font-size: calc(var(--dot-m) * 10);
-  margin-bottom: calc(var(--dot-s) * 4);
+  margin-bottom: calc(var(--dot-s) * 7);
   color: color-mix(in oklab, var(--lit) 84%, transparent);
 }
 .theme-vfd .sc-title {
@@ -321,7 +321,7 @@
   text-wrap: balance;
 }
 .theme-vfd .sc-label {
-  margin-top: calc(var(--dot-s) * 6);
+  margin-top: calc(var(--dot-s) * 9);
   font-size: calc(var(--dot-s) * 10);
   color: color-mix(in oklab, var(--lit) 64%, transparent);
 }
@@ -762,7 +762,7 @@
     'deck artist flag label details'
     'deck title title title title';
   align-items: baseline;
-  padding-block: calc(var(--dot-s) * 5) calc(var(--dot-s) * 6);
+  padding-block: calc(var(--dot-s) * 6) calc(var(--dot-s) * 7);
 }
 .theme-vfd[data-presentation='dj'] .sc-slot + .sc-slot .sc-panel {
   border-top: var(--hairline) solid var(--rule);
@@ -811,7 +811,7 @@
 }
 .theme-vfd[data-presentation='dj'] .sc-artist {
   grid-area: artist;
-  margin-bottom: calc(var(--dot-s) * 4);
+  margin-bottom: calc(var(--dot-s) * 6);
   font-size: calc(var(--dot-s) * 10);
 }
 .theme-vfd[data-presentation='dj'] .sc-title {
