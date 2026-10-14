@@ -784,6 +784,16 @@
   margin-top: 0.6cqw;
   font-size: 0.65cqw;
 }
+/* under the tracklist the stack has less paper, so the credits set tighter and three still clear
+   the list */
+@container (aspect-ratio >= 1) {
+  .theme-escapement[data-presentation='dj']:has(> .sc-tracklist) .sc-contributors {
+    --stack-gap: 0.8cqw;
+  }
+  .theme-escapement[data-presentation='dj']:has(> .sc-tracklist) .sc-title {
+    font-size: 2.1cqw;
+  }
+}
 .theme-escapement .sc-credit-details {
   margin-top: 0.6cqw;
   font-size: 0.65cqw;
