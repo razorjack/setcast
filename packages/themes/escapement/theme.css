@@ -415,12 +415,20 @@
 }
 .theme-escapement .sc-panel-head {
   gap: 1cqw;
-  margin-bottom: 1.2cqw;
+  margin-bottom: 1.7cqw;
   font-family: var(--font-mono);
   font-size: 0.85cqw;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-dim);
+}
+/* the head shows the deck and where the credit is in the list; it says "now playing" only for
+   a return, and leaves no gap when it has nothing to show */
+.theme-escapement .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-escapement .sc-panel[data-returning='false'] .sc-panel-head:not(:has(.sc-deck, .sc-index)) {
+  display: none;
 }
 .theme-escapement .sc-deck {
   display: inline-grid;
@@ -443,7 +451,7 @@
   margin: 0 0.3em;
 }
 .theme-escapement .sc-artist {
-  margin-bottom: 0.6cqw;
+  margin-bottom: 1.1cqw;
   font-size: 2.1cqw;
   line-height: 1;
   text-transform: uppercase;
@@ -459,23 +467,22 @@
   text-wrap: balance;
 }
 .theme-escapement .sc-label {
-  margin-top: 1cqw;
+  margin-top: 1.5cqw;
   font-family: var(--font-mono);
-  font-size: 0.85cqw;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  font-size: 1cqw;
   color: var(--olive);
 }
 
 /* up next: bottom right, on the paper under the band */
 .theme-escapement .sc-next {
-  gap: 0.35cqw;
+  gap: 0.6cqw;
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-escapement .sc-next-label {
+  margin-bottom: 0.2cqw;
   font-family: var(--font-mono);
   font-size: 0.8cqw;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-dim);
 }
@@ -504,7 +511,7 @@
   width: 31cqw;
   font-family: var(--font-mono);
   font-size: 0.72cqw;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-dim);
 }
@@ -514,7 +521,7 @@
   gap: 1em;
   margin-bottom: 0.25cqw;
   font-size: 0.68cqw;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
 }
 .theme-escapement .sc-tracklist-heading::after {
   content: '';
@@ -559,7 +566,10 @@
   max-width: 11cqw;
   overflow: clip;
   overflow-clip-margin: 0.3em;
+  font-size: 1.1em;
+  letter-spacing: 0.01em;
   text-overflow: ellipsis;
+  text-transform: none;
 }
 .theme-escapement .sc-tracklist-title {
   grid-column: 4;
@@ -641,6 +651,7 @@
     max-width: 80cqw;
   }
   .theme-escapement .sc-panel-head {
+    margin-bottom: 3.2cqw;
     font-size: 1.7cqw;
   }
   .theme-escapement .sc-deck {
@@ -649,13 +660,15 @@
     font-size: 1.9cqw;
   }
   .theme-escapement .sc-artist {
+    margin-bottom: 2cqw;
     font-size: 3.8cqw;
   }
   .theme-escapement .sc-title {
     font-size: 8cqw;
   }
   .theme-escapement .sc-label {
-    font-size: 1.7cqw;
+    margin-top: 2.8cqw;
+    font-size: 2cqw;
   }
   .theme-escapement .sc-next {
     bottom: calc(var(--margin) + 4cqh);
@@ -765,14 +778,6 @@
   margin: 0;
   font-size: 0.7cqw;
 }
-.theme-escapement[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
-}
-.theme-escapement[data-presentation='dj']
-  .sc-panel[data-returning='false']
-  .sc-panel-head:not(:has(.sc-deck)) {
-  display: none;
-}
 .theme-escapement[data-presentation='dj'] .sc-deck {
   min-width: 1.3cqw;
   height: 1.3cqw;
@@ -780,7 +785,7 @@
   translate: 0 0.15cqw;
 }
 .theme-escapement[data-presentation='dj'] .sc-artist {
-  margin-bottom: 0.45cqw;
+  margin-bottom: 0.8cqw;
   font-size: 1.2cqw;
 }
 .theme-escapement[data-presentation='dj'] .sc-title {
@@ -788,8 +793,8 @@
   font-size: 2.5cqw;
 }
 .theme-escapement[data-presentation='dj'] .sc-label {
-  margin-top: 0.6cqw;
-  font-size: 0.65cqw;
+  margin-top: 0.9cqw;
+  font-size: 0.8cqw;
 }
 /* under the tracklist the stack has less paper, so the credits set tighter and three still clear
    the list */
@@ -802,10 +807,9 @@
   }
 }
 .theme-escapement .sc-credit-details {
-  margin-top: 0.6cqw;
-  font-size: 0.65cqw;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  margin-top: 0.9cqw;
+  font-family: var(--font-mono);
+  font-size: 0.8cqw;
   color: var(--ink-dim);
 }
 .theme-escapement .sc-label + .sc-credit-details::before {
@@ -824,7 +828,7 @@
 .theme-escapement .sc-contributor-count,
 .theme-escapement .sc-overflow {
   font-size: 0.65cqw;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
 }
@@ -856,11 +860,13 @@
     padding-bottom: 1.8cqw;
   }
   .theme-escapement[data-presentation='dj'] .sc-panel-head,
-  .theme-escapement .sc-credit-details,
-  .theme-escapement[data-presentation='dj'] .sc-label,
   .theme-escapement .sc-contributor-count,
   .theme-escapement .sc-overflow {
     font-size: 1.3cqw;
+  }
+  .theme-escapement .sc-credit-details,
+  .theme-escapement[data-presentation='dj'] .sc-label {
+    font-size: 1.6cqw;
   }
   .theme-escapement[data-presentation='dj'] .sc-deck {
     min-width: 2.6cqw;
@@ -870,14 +876,14 @@
   }
   .theme-escapement[data-presentation='dj'] .sc-artist {
     font-size: 2.3cqw;
-    margin-bottom: 0.8cqw;
+    margin-bottom: 1.5cqw;
   }
   .theme-escapement[data-presentation='dj'] .sc-title {
     font-size: 4.6cqw;
   }
   .theme-escapement[data-presentation='dj'] .sc-label,
   .theme-escapement .sc-credit-details {
-    margin-top: 1.2cqw;
+    margin-top: 1.8cqw;
   }
   /* the smaller dial's face takes slightly smaller type */
   .theme-escapement[data-presentation='dj'] .sc-tracklist {
