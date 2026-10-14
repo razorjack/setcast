@@ -139,16 +139,26 @@ from the uninterrupted run. Metadata changes between adjacent intervals do not r
 `--play-order` is the play's input position and never changes for a play, so themes can derive
 stable per-play variety from it, such as a tilt of `calc(sin(var(--play-order)) * 2deg)`.
 `--drop-flash`, `--rewind-flash`, and `--tension` are recomputed on panels, so mix-level
-flashes are not accidentally inherited as local cues.
+flashes are not accidentally inherited as local cues. With a tracklist, a panel also has
+`data-listed`: `true` while the list shows a row for its play, `false` for a play without a
+listing or one whose row has left the list's window.
 
 `--show` springs in at run start, holds for `panel.dwell`, and fades over `panel.fade`.
 `dwell: 0` keeps it present; `fade: 0` cuts at the dwell endpoint. Built-in themes consume
 `--presence`, which follows `--show` in playlist mode. In DJ mode it springs in the same way,
 holds for the whole run so current credits stay readable, and eases out over the run's last
-0.6 seconds. DJ emphasis still reflects focus and dwell. passe-partout's label and patina's caption
+0.6 seconds. With a tracklist, a DJ panel whose play has a row in the list announces its entrance
+instead: once the dwell and fade are up, the row carries the credit and the panel closes, and it
+opens again if the row leaves the list. A panel the list has fully taken over is not rendered and
+takes no room in the stack, so `.sc-contributors` can be empty while plays contribute; a play
+without a row keeps its panel for the run. `panel: { dwell: 0 }` keeps every panel up.
+DJ emphasis still reflects focus and dwell. passe-partout's label and patina's caption
 sit beside the art rather than over it, so they stay for the whole run in playlist mode too
-(`--since-entry`, `--until-exit`). A shared drop does not retrigger an
-entrance; themes can react to its local `--drop-flash` instead.
+(`--since-entry`, `--until-exit`), unless the tracklist lists their play. A shared drop does not
+retrigger an entrance; themes can react to its local `--drop-flash` instead.
+
+`panel: false` renders no panels at all. `.sc-contributors` stays, empty, so a layout anchored to
+`--contributors` keeps its place; without a tracklist, nothing credits the plays.
 
 Each panel sits in a `.sc-slot` that carries its `--presence`. In DJ mode base.css stacks the
 slots in play order, anchored at the bottom of `.sc-contributors`, and sets each slot's height
@@ -257,7 +267,12 @@ with `overflow: clip` and `overflow-clip-margin: 0.3em` for their ellipsis; `ove
 would also cut accents above capitals and text glows. `.sc-tracklist` carries `--bg-luma-behind`
 and `--bg-detail-behind` like the panels. The tracklist replaces up next: with it, the stage does
 not render `.sc-next`, so `after: 0` shows nothing ahead. It renders in up next's place, after
-the panels, so it can use `position-anchor: --contributors` as `.sc-next` does.
+the panels, so it can use `position-anchor: --contributors` as `.sc-next` does. The DJ stack is
+usually short next to a list, since listed plays leave their panels after the dwell, but a tease,
+an unlisted loop and a new entrance can still stack up three panels; keep the list clear of them,
+or let the oldest rows give way first, because the current rows matter most. With `panel: false`
+the list is the only credit, and loading warns about plays without a listing, which it cannot
+show.
 
 ## Scoped modulation
 

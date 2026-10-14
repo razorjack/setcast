@@ -1,17 +1,35 @@
 import { evaluateModulation, modulationVars } from '../../modulation.ts';
 import { ease, interpolate, spring } from '../../motion.ts';
+import type { ResolvedProject } from '../../project.ts';
 import { playVars } from '../../stage.ts';
-import type { CurrentPlay } from '../../timeline.ts';
+import type { CurrentPlay, MixState } from '../../timeline.ts';
+import { tracklistView } from '../../tracklist.ts';
 import { useFrame } from '../frame.tsx';
+import { labelLine } from './credit.ts';
+
+type PanelTiming = NonNullable<ResolvedProject['panel']>;
+type PanelMotion = { show: number; presence: number; handedOver: number };
+type Credit = { current: CurrentPlay; listed: number | null; motion: PanelMotion };
 
 export function NowPlaying() {
-  const { mix, composition } = useFrame();
-  const dj = composition.project.presentation === 'dj';
+  const { mix, composition, timeSeconds } = useFrame();
+  const { project } = composition;
+  const { panel } = project;
+  // the empty stack stays, so a layout anchored to it keeps its place
+  if (!panel) return <div className="sc-contributors" />;
+
+  const dj = project.presentation === 'dj';
   const plays = dj ? mix.currentPlays : mix.focusPlays.slice(0, 1);
+  const listing = listingOf(project, mix);
+  const credits = plays.map((current): Credit => {
+    const listed = listing(current.play.id);
+    const motion = panelMotion(current.run, { timeSeconds, timing: panel, dj, listed });
+    return { current, listed, motion };
+  });
+  // a play the tracklist has taken over needs neither a panel nor room in the stack
+  const open = credits.filter((credit) => credit.motion.handedOver < 1);
   const capacity = composition.width < composition.height ? 3 : 4;
-  const priority = [...mix.focusPlays, ...plays.filter((play) => !mix.focusPlays.includes(play))];
-  const visible = new Set(priority.slice(0, capacity));
-  const shown = plays.filter((play) => visible.has(play));
+  const shown = withinCapacity(open, mix.focusPlays, capacity);
   return (
     <div className="sc-contributors" data-count={plays.length}>
       {dj && plays.length > 0 && (
@@ -19,43 +37,62 @@ export function NowPlaying() {
           {plays.length} contributing {plays.length === 1 ? 'play' : 'plays'}
         </p>
       )}
-      {shown.map((play) => (
-        <PlayPanel key={play.run.id} current={play} />
+      {shown.map((credit) => (
+        <PlayPanel key={credit.current.run.id} {...credit} />
       ))}
-      {plays.length > capacity && (
-        <div className="sc-overflow" aria-label="All contributors">
-          <p>+{plays.length - capacity} more contributing plays</p>
-          <ul>
-            {plays.map((play) => (
-              <li key={play.play.id}>
-                {play.recording.artist && `${play.recording.artist} - `}
-                {play.recording.title}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {open.length > capacity && <Overflow hidden={open.length - capacity} plays={plays} />}
     </div>
   );
 }
 
-const EXIT_SECONDS = 0.6;
+/** Focused plays first, in focus order, then the rest; the panels shown keep play order. */
+function withinCapacity(
+  credits: Credit[],
+  focus: readonly CurrentPlay[],
+  capacity: number,
+): Credit[] {
+  const rank = (credit: Credit) => {
+    const index = focus.indexOf(credit.current);
+    return index < 0 ? focus.length : index;
+  };
+  const visible = new Set(credits.toSorted((a, b) => rank(a) - rank(b)).slice(0, capacity));
+  return credits.filter((credit) => visible.has(credit));
+}
+
+function Overflow({ hidden, plays }: { hidden: number; plays: readonly CurrentPlay[] }) {
+  return (
+    <div className="sc-overflow" aria-label="All contributors">
+      <p>+{hidden} more contributing plays</p>
+      <ul>
+        {plays.map((play) => (
+          <li key={play.play.id}>
+            {play.recording.artist && `${play.recording.artist} - `}
+            {play.recording.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 /**
- * `--show` springs in at run start, holds for `panel.dwell` and fades over `panel.fade`.
- * `--presence`, which themes animate, follows it in playlist mode; in DJ mode it holds for the
- * whole run and eases out at its end. It sits on the slot, whose height follows it.
+ * How far inside the tracklist's window a play's row is, 0..1: 0 when the list does not show the
+ * play, null when there is no tracklist.
  */
-function PlayPanel({ current }: { current: CurrentPlay }) {
+function listingOf(project: ResolvedProject, mix: MixState): (play: string) => number | null {
+  if (!project.tracklist) return () => null;
+  const { rows } = tracklistView(project.mix, mix, project.tracklist);
+  return (play) => rows.find((row) => row.listing.play === play)?.presence ?? 0;
+}
+
+const EXIT_SECONDS = 0.6;
+
+function PlayPanel({ current, listed, motion }: Credit) {
   const frame = useFrame();
   const { mix, timeSeconds, composition, fps, analyzer } = frame;
   const { project } = composition;
   const { contribution, run, play } = current;
-  const age = timeSeconds - run.from / 1_000_000;
-  const entrance = spring(age, { stiffness: 110, damping: 15 });
-  const show = entrance * stay(age, project.panel.dwell, project.panel.fade);
-  const exit = leave(run.until / 1_000_000 - timeSeconds);
-  const presence = project.presentation === 'dj' ? entrance * exit : show;
+  const { show, presence } = motion;
   const modulation = evaluateModulation(project.modulation, {
     time: timeSeconds,
     fps,
@@ -76,6 +113,7 @@ function PlayPanel({ current }: { current: CurrentPlay }) {
           current.section?.kind === 'drop' && Number(cues['--drop-participants']) > 1
         }
         data-deck={contribution.deck}
+        data-listed={listed === null ? undefined : listed > 0}
         data-section={current.section?.kind}
         data-focused={focused}
         data-returning={run.returning}
@@ -88,6 +126,29 @@ function PlayPanel({ current }: { current: CurrentPlay }) {
       </section>
     </div>
   );
+}
+
+/**
+ * `--show` springs in at run start, holds for `panel.dwell` and fades over `panel.fade`.
+ * `--presence`, which themes animate, follows it in playlist mode. In DJ mode it holds for the
+ * whole run and eases out at its end, unless the tracklist shows the play: the list then takes
+ * over the credit once the dwell is up (`handedOver` reaches 1), and hands it back if the play's
+ * row leaves the list. It sits on the slot, whose height follows it.
+ */
+export function panelMotion(
+  run: Pick<CurrentPlay['run'], 'from' | 'until'>,
+  options: { timeSeconds: number; timing: PanelTiming; dj: boolean; listed: number | null },
+): PanelMotion {
+  const { timeSeconds, timing, dj, listed } = options;
+  const age = timeSeconds - run.from / 1_000_000;
+  const entrance = spring(age, { stiffness: 110, damping: 15 });
+  const stays = stay(age, timing.dwell, timing.fade);
+  const show = entrance * stays;
+  if (!dj) return { show, presence: show, handedOver: 0 };
+
+  const exit = leave(run.until / 1_000_000 - timeSeconds);
+  const handedOver = (listed ?? 0) * (1 - stays);
+  return { show, presence: entrance * exit * (1 - handedOver), handedOver };
 }
 
 const stay = (age: number, dwell: number, fade: number): number => {
@@ -118,15 +179,12 @@ function PanelHead({ current }: { current: CurrentPlay }) {
 
 function Credit({ current }: { current: CurrentPlay }) {
   const { recording, contribution } = current;
+  const label = labelLine(recording);
   return (
     <>
       {recording.artist && <p className="sc-artist">{recording.artist}</p>}
       <h1 className="sc-title">{recording.title}</h1>
-      {(recording.label || recording.version) && (
-        <p className="sc-label">
-          {[recording.label, recording.version].filter(Boolean).join(' · ')}
-        </p>
-      )}
+      {label && <p className="sc-label">{label}</p>}
       {(contribution.tags?.length || contribution.parts?.length || contribution.tail) && (
         <p className="sc-credit-details">
           {[

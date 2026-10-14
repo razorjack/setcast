@@ -36,8 +36,11 @@ export type ResolvedProject = {
    * it null; commands that render read the audio and fill it in.
    */
   envelope: SetEnvelope | null;
-  /** How long the now-playing panel stays up after a track change, and how long it takes to leave. */
-  panel: { dwell: number; fade: number };
+  /**
+   * How long the now-playing panel stays up after a track change, and how long it takes to leave;
+   * null when the project shows no panels.
+   */
+  panel: { dwell: number; fade: number } | null;
   /** How many listings the tracklist shows around the current one, or null when it is off. */
   tracklist: TracklistCounts | null;
   /** Tempo, or null when the project does not state one. */

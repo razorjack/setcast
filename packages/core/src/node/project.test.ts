@@ -314,6 +314,39 @@ annotations: [{ kind: drop, at: 14 }]
     });
   });
 
+  test('panel: false shows no panels; true and a mapping keep them', async () => {
+    const yaml = (panel: string) => `audio: assets/mix.wav\ntheme: test\npanel: ${panel}\n`;
+    expect((await load(yaml('false'))).project.panel).toBeNull();
+    expect((await load(yaml('true'))).project.panel).toEqual({ dwell: 14, fade: 1.2 });
+    expect((await load(yaml('{ dwell: 6 }'))).project.panel).toEqual({ dwell: 6, fade: 1.2 });
+  });
+
+  test('panel errors say what the key takes', async () => {
+    const yaml = (panel: string) => `audio: assets/mix.wav\ntheme: test\npanel: ${panel}\n`;
+    await expect(load(yaml('off'))).rejects.toMatchObject({
+      issues: [{ path: 'panel', message: expect.stringContaining('true, false or a mapping') }],
+    });
+    await expect(load(yaml('{ dwel: 6 }'))).rejects.toMatchObject({
+      issues: [{ message: 'panel takes dwell and fade, not dwel.' }],
+    });
+    await expect(load(yaml('{ dwell: -1 }'))).rejects.toMatchObject({
+      issues: [{ message: 'dwell must be from 0 to 3600 seconds.' }],
+    });
+  });
+
+  test('panel: false warns about plays that nothing credits', async () => {
+    const plays =
+      'plays: [{at: 0, title: Listed}, {title: Loop, contributions: [{from: 10, until: 20}]}]\n';
+    const yaml = (tracklist: string) =>
+      `audio: assets/mix.wav\ntheme: test\npanel: false\ntracklist: ${tracklist}\n${plays}`;
+    expect((await load(yaml('false'))).warnings).toContain(
+      'panel is false and the tracklist is off, so the video credits no plays. Set tracklist: true to list them.',
+    );
+    expect((await load(yaml('true'))).warnings).toContain(
+      'panel is false, so plays without an at time are not credited: plays[1] Loop. Give them at: to list them.',
+    );
+  });
+
   test.each([
     ['{ dwell: 0 }', false],
     ['{ dwell: 0, fade: 1.2 }', true],

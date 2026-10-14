@@ -153,20 +153,43 @@ export const OutputSchema = z
     };
   });
 
-export const PanelSchema = z.strictObject({
-  /** Seconds the now-playing panel stays up after a track change. 0 keeps it up for the whole set. */
-  dwell: z
-    .number({ error: 'dwell must be from 0 to 3600 seconds.' })
-    .min(0, { error: 'dwell must be from 0 to 3600 seconds.' })
-    .max(3600, { error: 'dwell must be from 0 to 3600 seconds.' })
-    .default(14),
-  /** Seconds it takes to leave once `dwell` is up. */
-  fade: z
-    .number({ error: 'fade must be from 0 to 60 seconds.' })
-    .min(0, { error: 'fade must be from 0 to 60 seconds.' })
-    .max(60, { error: 'fade must be from 0 to 60 seconds.' })
-    .default(1.2),
-});
+const panelError = 'panel must be true, false or a mapping such as { dwell: 14, fade: 1.2 }.';
+
+const PanelTimingSchema = z.strictObject(
+  {
+    /** Seconds the now-playing panel stays up after a track change. 0 keeps it up for the whole set. */
+    dwell: z
+      .number({ error: 'dwell must be from 0 to 3600 seconds.' })
+      .min(0, { error: 'dwell must be from 0 to 3600 seconds.' })
+      .max(3600, { error: 'dwell must be from 0 to 3600 seconds.' })
+      .default(14),
+    /** Seconds it takes to leave once `dwell` is up. */
+    fade: z
+      .number({ error: 'fade must be from 0 to 60 seconds.' })
+      .min(0, { error: 'fade must be from 0 to 60 seconds.' })
+      .max(60, { error: 'fade must be from 0 to 60 seconds.' })
+      .default(1.2),
+  },
+  {
+    error: (issue) =>
+      issue.code === 'unrecognized_keys'
+        ? `panel takes dwell and fade, not ${issue.keys.join(', ')}.`
+        : panelError,
+  },
+);
+
+const isMapping = (input: unknown) =>
+  typeof input === 'object' && input !== null && !Array.isArray(input);
+
+/** `false` shows no panels; `true` is the default timing. A broken mapping says what is wrong. */
+export const PanelSchema = z
+  .union([z.boolean(), PanelTimingSchema], {
+    error: (issue) => {
+      if (issue.code !== 'invalid_union' || !isMapping(issue.input)) return panelError;
+      return issue.errors[1]?.[0]?.message ?? panelError;
+    },
+  })
+  .transform((panel) => (panel === true ? PanelTimingSchema.parse({}) : panel));
 
 export const ProjectConfigSchema = z
   .object(

@@ -355,7 +355,8 @@ without any). For an image it also has `--bg-luma`, `--bg-exposure`, `--bg-color
 and `--bg-calm-detail` (see Decisions). Its section and cue variables describe the mix.
 
 Each `.sc-panel` has `data-play`, `data-focused`, `data-returning`, optional `data-deck`, local
-`data-section`, `data-tail`, and `data-tags`. `--since-entry` and `--until-exit` describe its uninterrupted run;
+`data-section`, `data-tail`, and `data-tags`, and with a tracklist `data-listed` (whether the list
+shows a row for its play). `--since-entry` and `--until-exit` describe its uninterrupted run;
 `--play-order` is the play's input position, a stable seed for per-play variety.
 Both stage and panels have scoped `--since-*`/`--until-*` for drop, breakdown, buildup and rewind,
 `--drop-intensity`, `--drop-participants` and `--section-time`. Seconds cap at 60. Shaped
@@ -365,6 +366,10 @@ The stage also has `--set-progress`, `--current-plays`, and optional `--beat`/`-
 `--show` springs in at run start and follows `panel.dwell`/`panel.fade`; metadata changes do not
 reset it. Themes use `--presence`, which follows show in playlist mode; in DJ mode it springs in,
 holds for the run and eases out over its last 0.6 s, so DJ credits remain legible after dwell.
+With a tracklist, a DJ panel whose play has a row in the list follows the dwell instead and hands
+the credit to the row (`panelMotion` in `NowPlaying.tsx`); a fully handed-over panel is not
+rendered and takes no stack capacity. `panel: false` (`ResolvedProject.panel` null) renders an
+empty `.sc-contributors`, so anchors to `--contributors` keep working.
 `--presence` sits on the panel's `.sc-slot`. In DJ mode base.css stacks the slots in play order,
 anchored at the bottom, each as tall as `--presence` times its panel, so the stack opens and
 closes smoothly (`--stack-gap`). The DJ stack is the CSS anchor `--contributors`,
@@ -715,6 +720,14 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   glide (0.8 s) jump a fraction of a row; real tracklists do not do that.
 - Playlist panels leave after `panel.dwell: 14` and `panel.fade: 1.2` by default. DJ panels keep
   credits visible, with focus controlling emphasis. Every entrance/dwell uses run start.
+- With a tracklist, a DJ panel whose play the list shows follows the dwell too, so the screen never
+  carries the same credit twice for a whole run. The handover happens in `--presence`, not in each
+  theme's CSS: hiding a panel with CSS would make it jump, and a play whose row leaves the window
+  (or that has none) must keep a panel. Its weight follows the row's `--row-presence`, so the
+  panel reopens smoothly when the window glides past its row. `data-listed` lets a theme treat
+  listed credits differently in playlist mode too (passe-partout and patina keep unlisted labels up
+  for the run). `panel: false` removes panels entirely; loading warns when nothing then credits a
+  play.
 - `setcast chapters` preserves compiled timestamps on stdout and prints platform constraints to
   stderr, including the first timestamp, minimum chapter count and final chapter duration.
 - `setcast render --bundle` writes the thumbnail and the description next to the MP4 (same base

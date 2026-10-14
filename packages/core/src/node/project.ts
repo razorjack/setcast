@@ -77,7 +77,7 @@ export async function loadProject(
     config,
     project,
     warnings: [
-      ...projectWarnings(config, project.modulation, input),
+      ...projectWarnings(config, project, input),
       ...mixWarnings(mix),
       ...(await artWarnings(root, config)),
     ],
@@ -110,7 +110,7 @@ function resolveProject(
     modulation,
     visualizers: resolveVisualizers(config.visualizer, theme),
     envelope: null,
-    panel: config.panel,
+    panel: config.panel === false ? null : config.panel,
     tracklist: resolveProjectTracklist(config.tracklist, theme),
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
@@ -131,14 +131,36 @@ function trackDependencies(
 
 function projectWarnings(
   config: ProjectConfig,
-  routes: readonly ModRoute[],
+  project: ResolvedProject,
   input: ProjectConfigInput,
 ): string[] {
+  return [...modulationWarnings(config, project.modulation), ...panelWarnings(project, input)];
+}
+
+function panelWarnings(project: ResolvedProject, input: ProjectConfigInput): string[] {
+  if (!project.panel) return uncreditedWarnings(project);
+  const fadeWritten = typeof input.panel === 'object' && input.panel.fade !== undefined;
+  if (project.panel.dwell === 0 && project.panel.fade > 0 && fadeWritten)
+    return ['panel.fade has no effect when panel.dwell is 0.'];
+  return [];
+}
+
+/** Without panels only the tracklist credits plays, and it lists only plays with an `at` time. */
+function uncreditedWarnings({ tracklist, mix }: ResolvedProject): string[] {
+  if (!tracklist)
+    return [
+      'panel is false and the tracklist is off, so the video credits no plays. Set tracklist: true to list them.',
+    ];
+  const listed = new Set(mix.listings.map((listing) => listing.play));
+  const unlisted = mix.plays.filter((play) => !listed.has(play.id));
+  if (unlisted.length === 0) return [];
+
+  const recordings = new Map(mix.recordings.map((recording) => [recording.id, recording]));
+  const titles = unlisted.map(
+    (play) => `plays[${play.order}] ${recordings.get(play.recording)!.title}`,
+  );
   return [
-    ...modulationWarnings(config, routes),
-    ...(config.panel.dwell === 0 && config.panel.fade > 0 && input.panel?.fade !== undefined
-      ? ['panel.fade has no effect when panel.dwell is 0.']
-      : []),
+    `panel is false, so plays without an at time are not credited: ${titles.join(', ')}. Give them at: to list them.`,
   ];
 }
 

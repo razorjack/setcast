@@ -149,7 +149,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
   - { source: beat, target: kick, curve: pow3, when: drop }   # 1 on every beat, needs bpm:
 
 visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list, or leave it to the theme; see Visualizers
-panel: { dwell: 14, fade: 1.2 }   # run entrance dwell; DJ credits remain visible
+panel: { dwell: 14, fade: 1.2 }   # entrance dwell; false shows no panels, only the tracklist
 tracklist: { before: 2, after: 2 }   # listings around the current one; true, false, or the counts
 css: overrides.css           # optional, appended after the theme
 ```
@@ -318,6 +318,12 @@ audible, so in a DJ blend both rows light up, in their deck colors.
 The list shows `plays:` rows that have an `at` time. A tease or a loop with only `contributions:`
 never becomes a row. Style it with `.sc-tracklist`, `.sc-tracklist-row[data-state='current']`
 and the variables in the [CSS contract](docs/theme-plugin-contract.md#tracklist).
+
+With the list on screen, the now-playing panel does not repeat it. A panel announces each track
+as it comes in, for `panel.dwell` seconds, and then leaves the credit to the list, in DJ mode too.
+A tease or a loop that the list does not show keeps its panel while it plays. `panel: { dwell: 0 }`
+keeps the panels up the whole time, and `panel: false` shows no panels at all, so the list is the
+only credit; Setcast then warns about plays without an `at` time, which nothing would credit.
 
 ## Customize without JavaScript
 
