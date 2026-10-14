@@ -26,6 +26,7 @@
   --accent: oklch(from var(--tint) 0.8 0.07 h);
   --fg: var(--ink);
   --fg-dim: color-mix(in oklab, var(--ink) 56%, transparent);
+  --fg-faint: color-mix(in oklab, var(--ink) 40%, transparent);
   --deck-a: var(--accent);
   --font-display: 'Jost', 'Futura', 'Century Gothic', sans-serif;
   --font-mono: var(--font-display);
@@ -130,14 +131,14 @@
   translate: 0 -50%;
   font-size: 0.74cqw;
   font-weight: 500;
-  letter-spacing: 0.42em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--fg-dim);
   opacity: var(--in-matte);
 }
 .theme-anamorphic .sc-clock {
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.14em;
 }
 .theme-anamorphic .sc-clock-total {
   opacity: 0.55;
@@ -158,15 +159,13 @@
 .theme-anamorphic .sc-next-label {
   font-size: 0.66cqw;
   font-weight: 500;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--accent);
 }
 .theme-anamorphic .sc-next-artist {
-  font-size: 0.74cqw;
-  font-weight: 500;
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
+  font-size: 0.9cqw;
+  letter-spacing: 0.03em;
   color: var(--fg-dim);
 }
 .theme-anamorphic .sc-next-title {
@@ -175,9 +174,11 @@
   letter-spacing: 0.06em;
 }
 
-/* the credits: centered in the lower bar like an opening title, fading in as they space out */
+/* the credits: centered in the lower bar like an opening title, fading in as they space out.
+   The artist is the one line in capitals; the label below the title is quieter than it. */
 .theme-anamorphic .sc-panel {
   --entering: clamp(0, 1 - var(--presence, 1), 1);
+  --title-gap: 1.1cqw;
   opacity: calc(clamp(0, var(--presence, 1) * 1.3 - 0.15, 1) * var(--in-matte));
   text-align: center;
 }
@@ -192,11 +193,11 @@
   display: none;
 }
 .theme-anamorphic .sc-artist {
-  margin-bottom: 0.55cqw;
-  padding-left: 0.46em;
+  margin-bottom: var(--title-gap);
+  padding-left: 0.26em;
   font-size: 0.8cqw;
   font-weight: 500;
-  letter-spacing: calc(0.46em + var(--entering) * 0.3em);
+  letter-spacing: calc(0.26em + var(--entering) * 0.24em);
   text-transform: uppercase;
   color: var(--fg-dim);
   text-box: trim-both cap alphabetic;
@@ -210,17 +211,14 @@
 }
 .theme-anamorphic .sc-label,
 .theme-anamorphic .sc-credit-details {
-  margin-top: 0.6cqw;
-  padding-left: 0.34em;
-  font-size: 0.6cqw;
-  font-weight: 500;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--fg-dim);
+  margin-top: var(--title-gap);
+  font-size: 0.78cqw;
+  letter-spacing: 0.03em;
+  color: var(--fg-faint);
   text-box: trim-both cap alphabetic;
 }
 .theme-anamorphic .sc-label + .sc-credit-details {
-  margin-top: 0.4cqw;
+  margin-top: 0.6cqw;
 }
 
 /* DJ: the current plays as co-credits side by side, a hairline between them. Their lines share
@@ -262,6 +260,7 @@
   opacity: calc(var(--fit) * 0.5 * var(--in-matte));
 }
 .theme-anamorphic[data-presentation='dj'] .sc-panel {
+  --title-gap: 0.9cqw;
   width: max-content;
   max-width: 28cqw;
 }
@@ -308,7 +307,7 @@
   padding-left: 2.4cqw;
   font-size: 0.6cqw;
   font-weight: 500;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
 }
 
@@ -316,7 +315,7 @@
    line, cue number and time at its ends. Each line sits by its distance from the current listing,
    so the roll moves up a line with each listing, and the bar's edges fade the lines beyond. */
 .theme-anamorphic .sc-tracklist {
-  --step: 2.6cqh;
+  --step: 3.1cqh;
   top: 0;
   right: auto;
   left: 50%;
@@ -370,7 +369,7 @@
 .theme-anamorphic :is(.sc-tracklist-index, .sc-tracklist-time) {
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   color: var(--fg-dim);
 }
 .theme-anamorphic .sc-tracklist-index {
@@ -384,13 +383,10 @@
 .theme-anamorphic .sc-tracklist-artist {
   grid-area: artist;
   overflow: hidden;
-  padding-left: 0.36em;
-  font-size: 0.68cqw;
-  font-weight: 500;
-  letter-spacing: 0.36em;
+  font-size: 0.86cqw;
+  letter-spacing: 0.03em;
   text-align: right;
   text-overflow: ellipsis;
-  text-transform: uppercase;
   color: var(--fg-dim);
 }
 .theme-anamorphic .sc-tracklist-title {
@@ -454,7 +450,7 @@
     font-size: 1.5cqw;
   }
   .theme-anamorphic .sc-next-artist {
-    font-size: 1.7cqw;
+    font-size: 2.1cqw;
   }
   .theme-anamorphic .sc-next-title {
     font-size: 3.4cqw;
@@ -464,16 +460,17 @@
     right: 7cqw;
     text-wrap: balance;
   }
+  .theme-anamorphic .sc-panel {
+    --title-gap: 3.6cqw;
+  }
   .theme-anamorphic .sc-artist {
-    margin-bottom: 1.6cqw;
     font-size: 2.1cqw;
   }
   .theme-anamorphic .sc-title {
     font-size: 6.4cqw;
   }
   .theme-anamorphic :is(.sc-label, .sc-credit-details) {
-    margin-top: 2cqw;
-    font-size: 1.5cqw;
+    font-size: 2cqw;
   }
   .theme-anamorphic[data-presentation='dj'] .sc-contributors {
     width: 86cqw;
@@ -500,19 +497,22 @@
     height: var(--hairline);
     translate: -50% 0;
   }
+  /* the slot clips its height, so the panel keeps room for the label's descenders */
   .theme-anamorphic[data-presentation='dj'] .sc-panel {
+    --title-gap: 2.8cqw;
     max-width: none;
+    padding-bottom: 1cqw;
   }
   .theme-anamorphic[data-presentation='dj'] .sc-panel-head {
     font-size: 1.3cqw;
-    margin-bottom: 1.2cqw;
+    margin-bottom: 2cqw;
   }
   .theme-anamorphic[data-presentation='dj'] .sc-title {
     font-size: 4.6cqw;
   }
   /* the roll between the header and the band */
   .theme-anamorphic .sc-tracklist {
-    --step: 2.9cqh;
+    --step: 3.3cqh;
     top: calc(var(--matte) / 2 + 2.5cqh);
     width: 86cqw;
     height: calc(var(--matte) / 2 - 5cqh);
@@ -522,7 +522,7 @@
     font-size: 1.35cqw;
   }
   .theme-anamorphic .sc-tracklist-artist {
-    font-size: 1.5cqw;
+    font-size: 1.9cqw;
   }
   .theme-anamorphic .sc-tracklist-title {
     font-size: 2.6cqw;
