@@ -212,6 +212,7 @@
 }
 .theme-passe-partout .sc-clock {
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
 }
 /* how far the set has run, as a hairline under the exhibition */
 .theme-passe-partout .sc-header::after {
@@ -257,23 +258,33 @@
 }
 .theme-passe-partout .sc-panel-head {
   gap: 0.7cqw;
-  margin-bottom: 1.1cqw;
+  margin-bottom: 1.3cqw;
   font-size: 0.7cqw;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-dim);
 }
+/* the label names a work, not what is happening to it: the head says only that a play returns,
+   and leaves no gap when it has nothing to show */
+.theme-passe-partout .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-passe-partout
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck, .sc-index)) {
+  display: none;
+}
 .theme-passe-partout .sc-deck {
   font-weight: 700;
   color: var(--deck);
 }
-.theme-passe-partout .sc-index::before {
+.theme-passe-partout .sc-panel[data-returning='true'] .sc-index::before {
   content: '·';
   margin-right: 0.7cqw;
 }
 .theme-passe-partout .sc-artist {
-  margin-bottom: 0.5cqw;
+  margin-bottom: 0.8cqw;
   font-size: 1.2cqw;
   font-weight: 600;
   line-height: 1.2;
@@ -287,13 +298,13 @@
   text-wrap: balance;
 }
 .theme-passe-partout .sc-label {
-  margin-top: 1cqw;
+  margin-top: 1.3cqw;
   font-size: 0.9cqw;
   line-height: 1.35;
   color: var(--ink-dim);
 }
 .theme-passe-partout .sc-credit-details {
-  margin-top: 0.5cqw;
+  margin-top: 0.6cqw;
   font-family: var(--font-sans);
   font-size: 0.8cqw;
   color: var(--ink-dim);
@@ -303,7 +314,7 @@
 .theme-passe-partout .sc-next {
   bottom: auto;
   align-items: start;
-  gap: 0.35cqw;
+  gap: 0.45cqw;
   text-align: left;
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
@@ -349,21 +360,18 @@
   margin-bottom: 0.8cqw;
 }
 .theme-passe-partout[data-presentation='dj'] .sc-panel-head {
-  margin-bottom: 0.6cqw;
+  margin-bottom: 0.7cqw;
   font-size: 0.62cqw;
 }
-.theme-passe-partout[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
-}
 .theme-passe-partout[data-presentation='dj'] .sc-artist {
-  margin-bottom: 0.3cqw;
+  margin-bottom: 0.5cqw;
   font-size: 1.05cqw;
 }
 .theme-passe-partout[data-presentation='dj'] .sc-title {
   font-size: 2.15cqw;
 }
 .theme-passe-partout[data-presentation='dj'] .sc-label {
-  margin-top: 0.5cqw;
+  margin-top: 0.8cqw;
   font-size: 0.8cqw;
 }
 /* beside the checklist the labels are announcements, set smaller so the list keeps its rows */
@@ -436,13 +444,13 @@
   }
   .theme-passe-partout .sc-artist {
     font-size: 2.8cqw;
-    margin-bottom: 1cqw;
+    margin-bottom: 1.6cqw;
   }
   .theme-passe-partout .sc-title {
     font-size: 6.4cqw;
   }
   .theme-passe-partout .sc-label {
-    margin-top: 2cqw;
+    margin-top: 2.6cqw;
     font-size: 2cqw;
   }
   .theme-passe-partout[data-presentation='playlist'] .sc-next {
@@ -469,12 +477,14 @@
     font-size: 1.4cqw;
   }
   .theme-passe-partout[data-presentation='dj'] .sc-artist {
+    margin-bottom: 1.1cqw;
     font-size: 2.2cqw;
   }
   .theme-passe-partout[data-presentation='dj'] .sc-title {
     font-size: 4.2cqw;
   }
   .theme-passe-partout[data-presentation='dj'] .sc-label {
+    margin-top: 1.6cqw;
     font-size: 1.7cqw;
   }
 }
@@ -521,7 +531,7 @@
     '. title title title';
   align-items: baseline;
   column-gap: 0;
-  padding-block: calc(var(--row-presence) * 0.35cqw) calc(var(--row-presence) * 0.45cqw);
+  padding-block: calc(var(--row-presence) * 0.45cqw) calc(var(--row-presence) * 0.6cqw);
   line-height: normal;
   white-space: nowrap;
   opacity: calc(var(--row-presence) * (1 - var(--seen) * 0.55) * (1 - var(--far) * 0.15));
@@ -557,7 +567,7 @@
   grid-area: title;
   overflow: clip;
   overflow-clip-margin: 0.3em;
-  margin-top: 0.1cqw;
+  margin-top: 0.2cqw;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.3cqw;
