@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { clamp, ease, lerp } from './motion.ts';
 import type { Listing, MixDocument, Recording } from './mix-schema.ts';
-import type { MixState } from './timeline.ts';
+import type { CurrentPlay, MixState } from './timeline.ts';
 
 /** How many listings the tracklist shows before and after the current listing group. */
 export type TracklistCounts = { before: number; after: number };
@@ -59,6 +59,8 @@ export interface TracklistRow {
   returning: boolean;
   /** The deck of the current contribution, when it has one. */
   deck?: string;
+  /** The play's current run and contribution while it contributes. */
+  current?: CurrentPlay;
   /** Rows from the first row of the current listing group, fractional while the list moves on. */
   offset: number;
   /** 0..1: how far inside the window the row is. Rows enter and leave the list through it. */
@@ -168,6 +170,7 @@ function rowDescriber(document: MixDocument, state: MixState, groups: ListingGro
       focused: focused.has(listing.play),
       returning: entry?.run.returning ?? false,
       deck: entry?.deck,
+      current: entry,
       progress: clamp((state.time - listing.at) / length, 0, 1),
     };
   };

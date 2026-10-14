@@ -2,6 +2,7 @@ import { tracklistRowVars, tracklistVars } from '../../stage.ts';
 import { formatTime } from '../../time.ts';
 import { tracklistView, type TracklistRow, type TracklistCounts } from '../../tracklist.ts';
 import { useFrame } from '../frame.tsx';
+import { labelLine } from './credit.ts';
 
 /** The listings around the current one; rows enter and leave through `--row-presence`. */
 export function Tracklist({ counts }: { counts: TracklistCounts }) {
@@ -30,7 +31,9 @@ function Row({
   digits: number;
   clockOffset: number;
 }) {
-  const { recording, listing } = row;
+  const { mix } = useFrame();
+  const { recording, listing, current } = row;
+  const label = labelLine(recording);
   return (
     <li
       className="sc-tracklist-row"
@@ -39,12 +42,15 @@ function Row({
       data-focused={row.focused}
       data-returning={row.returning}
       data-deck={row.deck}
-      style={tracklistRowVars(row)}
+      data-tail={current?.contribution.tail}
+      data-tags={current?.contribution.tags?.join(' ')}
+      style={tracklistRowVars(mix, row)}
     >
       <span className="sc-tracklist-index">{String(row.index + 1).padStart(digits, '0')}</span>
       <span className="sc-tracklist-time">{formatTime(clockOffset + listing.at / 1_000_000)}</span>
       {recording.artist && <span className="sc-tracklist-artist">{recording.artist}</span>}
       <span className="sc-tracklist-title">{recording.title}</span>
+      {label && <span className="sc-tracklist-label">{label}</span>}
     </li>
   );
 }

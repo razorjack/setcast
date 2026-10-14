@@ -429,7 +429,9 @@ the current contribution's `data-deck`. `--row-offset` is its distance in rows f
 listing group, fractional while the list glides to a new one (`TRACKLIST_GLIDE_SECONDS`, 0.8);
 `--row-presence` (0..1) is how far inside the window it is, and base.css sets each row's height
 to it, so the list scrolls as the leaving row closes and the entering one opens; `--row-progress`
-runs 0..1 through its listing span. The root has `--since-listing` and `--until-listing` and is
+runs 0..1 through its listing span. A current row also has its contribution's `data-tail` and
+`data-tags` and its run's `--since-entry` and `--until-exit`; every row has a
+`.sc-tracklist-label` (label and version) when known, hidden by base.css like the time. The root has `--since-listing` and `--until-listing` and is
 measured like the panels. base.css positions it (`--tracklist-top`, `--tracklist-width`) and
 aligns a leaving row's content to its bottom, so it scrolls out of the top. With a tracklist, the
 stage renders it in place of `.sc-next`, after the panels, so it can anchor to `--contributors`.

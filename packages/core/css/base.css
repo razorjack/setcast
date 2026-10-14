@@ -318,7 +318,8 @@
     opacity: var(--row-presence, 1);
     white-space: nowrap;
   }
-  .sc-tracklist-time {
+  .sc-tracklist-time,
+  .sc-tracklist-label {
     display: none;
   }
   /* clip rather than hidden, so the margin keeps accents above capitals and glows */

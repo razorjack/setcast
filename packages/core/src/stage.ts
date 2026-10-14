@@ -49,11 +49,15 @@ export function stageVars(state: MixState, time: number, duration: number): Reco
 export function playVars(state: MixState, play: CurrentPlay): Record<string, string> {
   return {
     ...cueVars(state, play),
-    '--since-entry': cssSeconds((state.time - play.run.from) / 1_000_000),
-    '--until-exit': cssSeconds((play.run.until - state.time) / 1_000_000),
+    ...runVars(state, play),
     '--play-order': String(play.play.order),
   };
 }
+
+const runVars = (state: MixState, play: CurrentPlay): Record<string, string> => ({
+  '--since-entry': cssSeconds((state.time - play.run.from) / 1_000_000),
+  '--until-exit': cssSeconds((play.run.until - state.time) / 1_000_000),
+});
 
 export function tracklistVars(view: TracklistView): Record<string, string> {
   return {
@@ -62,12 +66,15 @@ export function tracklistVars(view: TracklistView): Record<string, string> {
   };
 }
 
-export function tracklistRowVars(row: TracklistRow): Record<string, string> {
-  return {
+/** A current row also times its play's run, as its panel does. */
+export function tracklistRowVars(state: MixState, row: TracklistRow): Record<string, string> {
+  const vars = {
     '--row-offset': cssNumber(row.offset),
     '--row-presence': cssNumber(row.presence),
     '--row-progress': cssNumber(row.progress),
   };
+  if (!row.current) return vars;
+  return { ...vars, ...runVars(state, row.current) };
 }
 
 /**

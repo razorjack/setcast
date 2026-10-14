@@ -196,11 +196,12 @@ rows for any moment, and `ResolvedProject.tracklist` holds the resolved counts o
   <ol class="sc-tracklist-rows">
     <li class="sc-tracklist-row" data-play="t7" data-state="current" data-focused="true"
         data-returning="false" data-deck="A"
-        style="--row-offset: 0; --row-presence: 1; --row-progress: 0.25">
+        style="--row-offset: 0; --row-presence: 1; --row-progress: 0.25; --since-entry: 5; --until-exit: 18">
       <span class="sc-tracklist-index">07</span>
       <span class="sc-tracklist-time">2:01</span>
       <span class="sc-tracklist-artist">Vex &amp; Morrow</span>
       <span class="sc-tracklist-title">Night Shift Dub</span>
+      <span class="sc-tracklist-label">Ferrite Audio</span>
     </li>
   </ol>
 </section>
@@ -218,7 +219,15 @@ contribution's `data-deck`, so `--deck` resolves on it as on a panel; `data-focu
 
 The index is zero-padded to the digits of the listing count, and the time is the listing time on
 the display clock, `clockOffset` included. `.sc-tracklist-artist` is omitted when the artist is
-unknown.
+unknown. `.sc-tracklist-label` holds the recording's label and version, as the panel's
+`.sc-label` does, and is omitted when the recording has neither; base.css hides it like the time,
+so a theme shows it by setting `display`.
+
+A current row also carries what its panel knows about the run: the contribution's `data-tail` and
+`data-tags`, and the run's `--since-entry` and `--until-exit`. A theme can ease a row's highlight
+in and out with them instead of switching it with `data-state`, or set apart a row that a tease
+lights up early (`[data-tags~='tease']`). Mix cues such as `--drop-flash` reach rows from the
+stage, as they reach the rest of the list.
 
 When a new listing group starts, the list glides to it over 0.8 seconds. `--row-offset` is a
 row's distance in rows from the first row of the current group, fractional during the glide.
