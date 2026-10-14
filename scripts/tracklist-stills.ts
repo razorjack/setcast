@@ -1,5 +1,6 @@
 // Renders the tracklist of each built-in theme over examples/demo with a ten-listing mix, in
-// playlist and DJ mode, landscape and portrait, and mid-glide, then tiles each theme's stills.
+// playlist and DJ mode, landscape and portrait, mid-glide and with panel: false, then tiles each
+// theme's stills. In DJ mode an unlisted loop and a tease play over the blend.
 // Run: vp run tracklist-stills [--theme bristol]   (writes examples/demo/out/tracklist/<theme>/)
 import { spawnSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
@@ -15,26 +16,28 @@ import { still, withRenderSession } from '../packages/renderer-remotion/src/inde
 import { themes } from '../packages/themes/src/index.ts';
 
 const LISTING_SECONDS = 15;
-const CREDITS: [string | undefined, string][] = [
-  ['Null Vector', 'Sterile Room'],
-  ['Oxide Array', 'Rust Protocol'],
-  ['Halogen', 'Subterranean Frequencies (Phase Memory Remix)'],
-  ['Łukasz Żółw', 'Źródło Ciszy'],
+const CREDITS: [string | undefined, string, string?][] = [
+  ['Null Vector', 'Sterile Room', 'Setcast Recordings'],
+  ['Oxide Array', 'Rust Protocol', 'Ferrite Audio'],
+  ['Halogen', 'Subterranean Frequencies (Phase Memory Remix)', 'Coldroom'],
+  ['Łukasz Żółw', 'Źródło Ciszy', 'Ferrite Audio'],
   [undefined, 'ID'],
-  ['Cold Fusion Unit', 'Ballast'],
-  ['Vex & Morrow', 'Night Shift Dub'],
+  ['Cold Fusion Unit', 'Ballast', 'Halflife'],
+  ['Vex & Morrow', 'Night Shift Dub', 'Setcast Recordings'],
   ['Tessellate', 'Ferrous'],
   ['ID', 'ID'],
-  ['Saltmarsh', 'Weeping Steel'],
+  ['Saltmarsh', 'Weeping Steel', 'Coldroom'],
 ];
 
 type Mode = 'playlist' | 'dj';
-type Shot = { name: string; mode: Mode; at: number; portrait?: boolean };
+type Shot = { name: string; mode: Mode; at: number; portrait?: boolean; panel?: false };
 const SHOTS: Shot[] = [
   { name: 'playlist', mode: 'playlist', at: 64 },
   { name: 'glide', mode: 'playlist', at: 60.4 },
   { name: 'alone', mode: 'playlist', at: 72 },
   { name: 'dj', mode: 'dj', at: 64 },
+  { name: 'no-panel', mode: 'playlist', at: 64, panel: false },
+  { name: 'no-panel-dj', mode: 'dj', at: 64, panel: false },
   { name: 'portrait', mode: 'playlist', at: 64, portrait: true },
   { name: 'portrait-dj', mode: 'dj', at: 64, portrait: true },
 ];
@@ -68,7 +71,7 @@ async function grab(project: ResolvedProject, shot: Shot, outDir: string): Promi
     ...size,
     mix: normalizeMix(fixtureMix(shot.mode), durationSeconds),
     presentation: shot.mode,
-    panel: { dwell: 6, fade: 1 },
+    panel: shot.panel === false ? null : { dwell: 6, fade: 1 },
     tracklist: { before: 2, after: 2 },
   };
   const out = join(outDir, `${shot.name}.jpg`);
@@ -76,17 +79,29 @@ async function grab(project: ResolvedProject, shot: Shot, outDir: string): Promi
   return out;
 }
 
-/** Ten listings; in DJ mode each play also overlaps the next for eight seconds, on decks A and B. */
+/**
+ * Ten listings. In DJ mode each play also overlaps the next for eight seconds, on decks A and B,
+ * while an unlisted loop plays on deck C and the seventh play is teased.
+ */
 function fixtureMix(mode: Mode): MixAuthoring {
-  const plays = CREDITS.map(([artist, title], index) => {
+  const plays = CREDITS.map(([artist, title, label], index) => {
     const at = index * LISTING_SECONDS;
-    const credit = { id: `t${index + 1}`, at, artist, title };
+    const credit = { id: `t${index + 1}`, at, artist, title, label };
     if (mode === 'playlist') return credit;
     const isLast = index === CREDITS.length - 1;
     const until = isLast ? ('end' as const) : at + LISTING_SECONDS + 8;
-    return { ...credit, contributions: [{ from: at, until, deck: index % 2 ? 'B' : 'A' }] };
+    const run = { from: at, until, deck: index % 2 ? 'B' : 'A' };
+    const tease = { from: 62, until: 67, tags: ['tease'] };
+    return { ...credit, contributions: index === 6 ? [tease, run] : [run] };
   });
-  return { plays };
+  if (mode === 'playlist') return { plays };
+  const loop = {
+    id: 'loop',
+    artist: 'Phase Memory',
+    title: 'Broken Signal',
+    contributions: [{ from: 56, until: 80, deck: 'C', tags: ['loop'] }],
+  };
+  return { plays: [...plays, loop] };
 }
 
 function tile(files: string[], scale: string, out: string): void {
