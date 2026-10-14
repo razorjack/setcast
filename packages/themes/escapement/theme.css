@@ -599,6 +599,13 @@
   color: oklch(from var(--deck) clamp(0.18, (0.58 - l) * 100, 0.95) 0.01 240);
   background: var(--deck);
 }
+/* a play heard before its listing, a tease or an early entrance, has its block only outlined: it
+   is in the mix, its turn still to come */
+.theme-escapement .sc-tracklist-row[data-state='current'][data-ahead='true'] .sc-tracklist-index {
+  color: var(--deck);
+  background: none;
+  box-shadow: inset 0 0 0 max(1px, 0.08cqw) var(--deck);
+}
 .theme-escapement .sc-tracklist-row[data-state='current'] .sc-tracklist-artist {
   color: var(--ink);
 }
