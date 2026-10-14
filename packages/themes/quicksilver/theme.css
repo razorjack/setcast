@@ -459,11 +459,12 @@
 }
 
 /*
- * tracklist: the listings flank the spindle on the silver, mirrored across it. What plays and
- * what has played stand on the left, the newest on the horizon and older ones below it; what comes
- * next stands on the right, the nearest on the horizon and later ones above it. The rows swell as
+ * tracklist: the listings flank the spindle on the silver, mirrored across it. The listings that
+ * have come stand on the left, the newest on the horizon and older ones below it; those still to
+ * come stand on the right, the nearest on the horizon and later ones above it. The rows swell as
  * they near the horizon, so now and next are the largest. When the list moves on, the next row
- * lifts off the right and lands on the left as both columns sink a step.
+ * lifts off the right and lands on the left as both columns sink a step. A play heard before its
+ * listing, a tease or an early entrance, lights its row where it stands on the right.
  */
 .theme-quicksilver .sc-tracklist {
   --horizon: 50cqh;
@@ -490,7 +491,8 @@
 }
 .theme-quicksilver .sc-tracklist-row {
   --distance: abs(var(--row-offset));
-  --fade: 1;
+  /* the row lands as the list moves on */
+  --fade: max(clamp(0, var(--since-listing) / 0.5, 1), clamp(0, 1 - var(--row-offset), 1));
   --shown: calc(var(--row-presence) * var(--fade) * clamp(0, var(--reach) - var(--distance), 1));
   position: absolute;
   top: calc(var(--horizon) - var(--row-offset) * var(--step) * var(--fall));
@@ -508,7 +510,7 @@
   white-space: nowrap;
   opacity: var(--shown);
 }
-.theme-quicksilver .sc-tracklist-row[data-state='upcoming'] {
+.theme-quicksilver .sc-tracklist-row[data-ahead='true'] {
   --distance: abs(var(--row-offset) - 1);
   /* the next row lifts off in the last half second before its listing */
   --fade: max(clamp(0, var(--until-listing) / 0.5, 1), clamp(0, var(--row-offset) - 1, 1));
@@ -516,10 +518,6 @@
   right: auto;
   left: calc(50% + var(--gap));
   justify-content: start;
-}
-/* and lands as the list moves on */
-.theme-quicksilver .sc-tracklist-row[data-state='current'] {
-  --fade: max(clamp(0, var(--since-listing) / 0.5, 1), clamp(0, 1 - var(--row-offset), 1));
 }
 .theme-quicksilver .sc-tracklist-row[data-state='played'] {
   opacity: calc(var(--shown) * 0.75);
@@ -537,7 +535,7 @@
   letter-spacing: 0.2em;
   font-variant-numeric: tabular-nums;
 }
-.theme-quicksilver .sc-tracklist-row[data-state='upcoming'] .sc-tracklist-index {
+.theme-quicksilver .sc-tracklist-row[data-ahead='true'] .sc-tracklist-index {
   order: 0;
 }
 .theme-quicksilver .sc-tracklist-artist {
