@@ -338,12 +338,20 @@
 }
 .theme-pirate .sc-panel-head {
   gap: 1cqw;
-  margin-bottom: 0.8cqw;
+  margin-bottom: 1.3cqw;
   font-family: var(--font-type);
   font-weight: 700;
   font-size: 0.95cqw;
   text-transform: uppercase;
   color: var(--fg-dim);
+}
+/* the head shows the deck and where the credit is in the list; it says "now playing" only for
+   a return, and leaves no gap when it has nothing to show */
+.theme-pirate .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-pirate .sc-panel[data-returning='false'] .sc-panel-head:not(:has(.sc-deck, .sc-index)) {
+  display: none;
 }
 /* the deck as a rubber stamp */
 .theme-pirate .sc-deck {
@@ -368,6 +376,7 @@
   margin: 0 0.3em;
 }
 .theme-pirate .sc-artist {
+  margin-bottom: 0.4cqw;
   font-family: var(--font-type);
   font-weight: 700;
   font-size: 1.8cqw;
@@ -381,15 +390,14 @@
   color: var(--toner);
   text-wrap: balance;
 }
-/* the label run over with a highlighter */
+/* the label run over with a highlighter, typed in lowercase under the capitals above it */
 .theme-pirate .sc-label {
   display: inline-block;
-  margin-top: 0.8cqw;
+  margin-top: 1.4cqw;
   padding: 0 0.3em;
   font-family: var(--font-type);
   font-weight: 700;
-  font-size: 1.2cqw;
-  text-transform: uppercase;
+  font-size: 1.3cqw;
   color: var(--toner);
   background: linear-gradient(
     176deg,
@@ -403,7 +411,7 @@
 .theme-pirate .sc-next {
   bottom: calc(var(--margin) + 3cqh);
   padding: 1cqw 1.4cqw;
-  gap: 0.2cqw;
+  gap: 0.4cqw;
   background: var(--slip);
   box-shadow: 0.3cqw 0.5cqw 0 rgb(0 0 0 / 0.25);
   rotate: 1.4deg;
@@ -556,6 +564,7 @@
     padding: 4cqw 4.4cqw 3.4cqw;
   }
   .theme-pirate .sc-panel-head {
+    margin-bottom: 2.4cqw;
     font-size: 1.8cqw;
   }
   .theme-pirate .sc-deck {
@@ -565,13 +574,15 @@
     font-size: 2.4cqw;
   }
   .theme-pirate .sc-artist {
+    margin-bottom: 0.8cqw;
     font-size: 3.4cqw;
   }
   .theme-pirate .sc-title {
     font-size: 9.6cqw;
   }
   .theme-pirate .sc-label {
-    font-size: 2.2cqw;
+    margin-top: 2.6cqw;
+    font-size: 2.4cqw;
   }
   .theme-pirate .sc-next {
     bottom: calc(var(--margin) + 14cqh);
@@ -659,14 +670,6 @@
   vertical-align: middle;
   font-size: 0.8cqw;
 }
-.theme-pirate[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
-}
-.theme-pirate[data-presentation='dj']
-  .sc-panel[data-returning='false']
-  .sc-panel-head:not(:has(.sc-deck)) {
-  display: none;
-}
 .theme-pirate[data-presentation='dj'] .sc-deck {
   min-width: 1.8cqw;
   height: 1.8cqw;
@@ -676,23 +679,23 @@
 }
 .theme-pirate[data-presentation='dj'] .sc-artist {
   display: inline-block;
+  margin-bottom: 0;
   vertical-align: middle;
   font-size: 1.2cqw;
 }
 .theme-pirate[data-presentation='dj'] .sc-title {
-  margin-top: 0.2cqw;
+  margin-top: 0.5cqw;
   font-size: 3cqw;
 }
 .theme-pirate[data-presentation='dj'] .sc-label {
-  margin-top: 0.5cqw;
-  font-size: 0.85cqw;
+  margin-top: 0.9cqw;
+  font-size: 0.95cqw;
 }
 .theme-pirate .sc-credit-details {
   display: inline-block;
-  margin-top: 0.5cqw;
+  margin-top: 0.9cqw;
   font-family: var(--font-type);
-  font-size: 0.85cqw;
-  text-transform: uppercase;
+  font-size: 0.95cqw;
   color: var(--fg-dim);
 }
 .theme-pirate .sc-label + .sc-credit-details {
@@ -795,11 +798,13 @@
     margin-left: 1.6cqw;
   }
   .theme-pirate[data-presentation='dj'] .sc-panel-head,
-  .theme-pirate[data-presentation='dj'] .sc-label,
-  .theme-pirate .sc-credit-details,
   .theme-pirate .sc-contributor-count,
   .theme-pirate .sc-overflow {
     font-size: 1.7cqw;
+  }
+  .theme-pirate[data-presentation='dj'] .sc-label,
+  .theme-pirate .sc-credit-details {
+    font-size: 1.9cqw;
   }
   .theme-pirate[data-presentation='dj'] .sc-deck {
     min-width: 3.6cqw;
@@ -811,11 +816,12 @@
     font-size: 2.4cqw;
   }
   .theme-pirate[data-presentation='dj'] .sc-title {
+    margin-top: 1cqw;
     font-size: 6cqw;
   }
   .theme-pirate[data-presentation='dj'] .sc-label,
   .theme-pirate .sc-credit-details {
-    margin-top: 1cqw;
+    margin-top: 1.8cqw;
   }
   .theme-pirate[data-presentation='dj'] .sc-tracklist {
     width: 76cqw;
