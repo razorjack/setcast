@@ -235,6 +235,14 @@
 .theme-passe-partout[data-presentation='playlist'] .sc-panel {
   anchor-name: --label;
 }
+/* beside the checklist, the label announces a listed work and the checklist then carries it */
+.theme-passe-partout[data-presentation='playlist'] .sc-panel[data-listed='true'] {
+  --hang: min(
+    clamp(0, var(--since-entry, 60) / 1.4, 1),
+    clamp(0, var(--until-exit, 60) / 0.6, 1),
+    var(--show)
+  );
+}
 .theme-passe-partout .sc-panel > * {
   opacity: var(--hang);
   translate: 0 calc((1 - var(--hang)) * 0.8cqh);
@@ -357,6 +365,15 @@
 .theme-passe-partout[data-presentation='dj'] .sc-label {
   margin-top: 0.5cqw;
   font-size: 0.8cqw;
+}
+/* beside the checklist the labels are announcements, set smaller so the list keeps its rows */
+@container (aspect-ratio >= 1) {
+  .theme-passe-partout[data-presentation='dj']:has(> .sc-tracklist) .sc-artist {
+    font-size: 0.9cqw;
+  }
+  .theme-passe-partout[data-presentation='dj']:has(> .sc-tracklist) .sc-title {
+    font-size: 1.7cqw;
+  }
 }
 .theme-passe-partout[data-presentation='dj'] .sc-panel[data-focused='false'] {
   color: var(--ink-dim);
@@ -492,15 +509,16 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
-/* --far is how far an entry is from the one on show, toward its side of the list */
+/* --far is how far an entry is from the one on show, toward its side of the list. The artist
+   comes first on its line; the record label takes what room is left after it. */
 .theme-passe-partout .sc-tracklist-row {
   --far: clamp(0, var(--row-offset), 1);
   --seen: 0;
   display: grid;
-  grid-template-columns: 2.7cqw minmax(0, 1fr) auto;
+  grid-template-columns: 2.7cqw minmax(0, max-content) minmax(0, 1fr) auto;
   grid-template-areas:
-    'index artist time'
-    '. title title';
+    'index artist label time'
+    '. title title title';
   align-items: baseline;
   column-gap: 0;
   padding-block: calc(var(--row-presence) * 0.35cqw) calc(var(--row-presence) * 0.45cqw);
@@ -547,6 +565,18 @@
   text-overflow: ellipsis;
   color: var(--ink);
 }
+.theme-passe-partout .sc-tracklist-label {
+  display: block;
+  grid-area: label;
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-size: 0.68cqw;
+  text-overflow: ellipsis;
+}
+.theme-passe-partout .sc-tracklist-label::before {
+  content: '·';
+  margin-inline: 0.6em;
+}
 .theme-passe-partout .sc-tracklist-time {
   display: block;
   grid-area: time;
@@ -592,5 +622,8 @@
     grid-area: title;
     margin-top: 0;
     font-size: 2.9cqw;
+  }
+  .theme-passe-partout .sc-tracklist-label {
+    display: none;
   }
 }
