@@ -52,7 +52,7 @@ vp run smoke               # renders 3 s of the demo and validates the MP4 (audi
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
 vp run package-smoke       # build local tarballs; test installed CLI, all themes and video
 vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
-vp run tracklist-stills [--theme name]  # each theme's tracklist: playlist, DJ, glide, portrait
+vp run tracklist-stills [--theme name]  # each theme's tracklist: playlist, DJ, glide, portrait, no panels
 vp run render-bench [dir] [--help]     # compare render settings; timings and MP4s in out/bench
 vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
@@ -63,7 +63,8 @@ cd examples/demo && vp run preview                          # Remotion Studio
 Inner loop for an agent: `vp check && vp test`.
 For theme work, `vp run theme-stills --at 1:50.4 --theme <name>` renders a moment of examples/demo
 into `examples/demo/out/themes/` in about 4 s per still; read the images before committing.
-`vp run tracklist-stills --theme <name>` does the same for the tracklist with a ten-listing mix.
+`vp run tracklist-stills --theme <name>` does the same for the tracklist with a ten-listing mix,
+including a DJ blend with a tease and an unlisted loop, and `panel: false`.
 A theme must also hold up over the user's own art; read "Themes and the user's art" below first.
 
 Before you finish a larger piece of work (a feature, a refactor, a theme, any change across several
