@@ -398,12 +398,22 @@
 .theme-long-exposure .sc-panel-head {
   justify-content: var(--credits-align);
   gap: 1cqw;
-  margin-bottom: 1cqw;
+  margin-bottom: 1.5cqw;
   font-family: var(--font-mono);
   font-size: 0.85cqw;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: lowercase;
   color: var(--fg-dim);
+}
+/* the head shows the deck and where the credit is in the list; it says "now playing" only for
+   a return, and leaves no gap when it has nothing to show */
+.theme-long-exposure .sc-panel[data-returning='false'] .sc-eyebrow {
+  display: none;
+}
+.theme-long-exposure
+  .sc-panel[data-returning='false']
+  .sc-panel-head:not(:has(.sc-deck, .sc-index)) {
+  display: none;
 }
 .theme-long-exposure :is(.sc-panel-head, .sc-label, .sc-credit-details) {
   text-shadow: var(--halo);
@@ -431,6 +441,7 @@
   margin: 0 0.3em;
 }
 .theme-long-exposure .sc-artist {
+  margin-bottom: 0.5cqw;
   padding-inline: 0.4cqw;
   font-weight: 500;
   font-size: 1.9cqw;
@@ -458,11 +469,11 @@
   text-wrap: balance;
 }
 .theme-long-exposure .sc-label {
-  margin-top: 1cqw;
+  margin-top: 1.5cqw;
   padding-inline: 0.4cqw;
   font-family: var(--font-mono);
   font-size: 0.9cqw;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: lowercase;
   color: var(--amber);
 }
@@ -472,14 +483,14 @@
   inset: var(--next-top) var(--next-right) var(--next-bottom) var(--next-left);
   height: fit-content;
   align-items: var(--next-align);
-  gap: 0.3cqw;
+  gap: 0.55cqw;
   text-align: var(--next-align);
   opacity: clamp(0, (8 - var(--until-next, 60)) / 1.5, 1);
 }
 .theme-long-exposure .sc-next-label {
   font-family: var(--font-mono);
   font-size: 0.8cqw;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: lowercase;
   color: var(--fg-dim);
   text-shadow: var(--halo);
@@ -535,7 +546,7 @@
 .theme-long-exposure .sc-tracklist-heading {
   margin-bottom: 0.4cqw;
   font-size: 0.8cqw;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: lowercase;
   text-shadow: var(--halo);
 }
@@ -566,7 +577,7 @@
 }
 .theme-long-exposure :is(.sc-tracklist-index, .sc-tracklist-time, .sc-tracklist-artist) {
   font-size: 0.72cqw;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-shadow: var(--halo);
 }
 .theme-long-exposure .sc-tracklist-index {
@@ -690,6 +701,7 @@
     max-width: 88cqw;
   }
   .theme-long-exposure .sc-panel-head {
+    margin-bottom: 2.8cqw;
     font-size: 1.7cqw;
   }
   .theme-long-exposure .sc-deck {
@@ -698,13 +710,15 @@
     font-size: 2cqw;
   }
   .theme-long-exposure .sc-artist {
+    margin-bottom: 1cqw;
     font-size: 3.6cqw;
   }
   .theme-long-exposure .sc-title {
     font-size: 8.4cqw;
   }
   .theme-long-exposure .sc-label {
-    font-size: 1.7cqw;
+    margin-top: 2.8cqw;
+    font-size: 1.8cqw;
   }
   .theme-long-exposure .sc-next-label {
     font-size: 1.6cqw;
@@ -804,14 +818,6 @@
   margin: 0;
   font-size: 0.75cqw;
 }
-.theme-long-exposure[data-presentation='dj'] .sc-panel[data-returning='false'] .sc-eyebrow {
-  display: none;
-}
-.theme-long-exposure[data-presentation='dj']
-  .sc-panel[data-returning='false']
-  .sc-panel-head:not(:has(.sc-deck)) {
-  display: none;
-}
 .theme-long-exposure[data-presentation='dj'] .sc-eyebrow {
   color: var(--amber);
 }
@@ -821,20 +827,21 @@
   font-size: 0.85cqw;
 }
 .theme-long-exposure[data-presentation='dj'] .sc-artist {
+  margin-bottom: 0.4cqw;
   font-size: 1.3cqw;
 }
 .theme-long-exposure[data-presentation='dj'] .sc-title {
   font-size: 3cqw;
 }
 .theme-long-exposure[data-presentation='dj'] .sc-label {
-  margin-top: 0.6cqw;
-  font-size: 0.75cqw;
+  margin-top: 1cqw;
+  font-size: 0.8cqw;
 }
 .theme-long-exposure .sc-credit-details {
-  margin-top: 0.6cqw;
+  margin-top: 1cqw;
   padding-inline: 0.4cqw;
-  font-size: 0.75cqw;
-  letter-spacing: 0.1em;
+  font-size: 0.8cqw;
+  letter-spacing: 0.04em;
   color: var(--fg-dim);
 }
 /* the lights are off on everything but the focused credit: pale letters, no glow */
@@ -855,7 +862,7 @@
 .theme-long-exposure .sc-contributor-count,
 .theme-long-exposure .sc-overflow {
   font-size: 0.75cqw;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
 }
 .theme-long-exposure .sc-contributor-count {
   margin-bottom: 0.3cqw;
@@ -886,6 +893,7 @@
     font-size: 1.7cqw;
   }
   .theme-long-exposure[data-presentation='dj'] .sc-artist {
+    margin-bottom: 0.8cqw;
     font-size: 2.8cqw;
   }
   .theme-long-exposure[data-presentation='dj'] .sc-title {
@@ -893,6 +901,6 @@
   }
   .theme-long-exposure[data-presentation='dj'] .sc-label,
   .theme-long-exposure .sc-credit-details {
-    margin-top: 1.2cqw;
+    margin-top: 2cqw;
   }
 }
