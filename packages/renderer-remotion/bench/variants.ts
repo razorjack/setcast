@@ -9,6 +9,7 @@ export interface Variant {
 
 export const variants: Variant[] = [
   { name: 'baseline' },
+  { name: 'serial', render: { disallowParallelEncoding: true } },
   { name: 'concurrency-1', render: { concurrency: 1 } },
   { name: 'concurrency-2', render: { concurrency: 2 } },
   { name: 'concurrency-8', render: { concurrency: 8 } },
