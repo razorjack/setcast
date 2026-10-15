@@ -12,6 +12,7 @@ import { Meters, MetersConfigSchema } from './components/Meters.tsx';
 import { Oscilloscope, OscilloscopeConfigSchema } from './components/Oscilloscope.tsx';
 import { Overview, OverviewConfigSchema } from './components/Overview.tsx';
 import { Radial, RadialConfigSchema } from './components/Radial.tsx';
+import { Ridgeline, RidgelineConfigSchema } from './components/Ridgeline.tsx';
 import { Spectrogram, SpectrogramConfigSchema } from './components/Spectrogram.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
 import { Vectorscope, VectorscopeConfigSchema } from './components/Vectorscope.tsx';
@@ -61,5 +62,6 @@ defineVisualizer({
 });
 defineVisualizer({ name: 'vectorscope', schema: VectorscopeConfigSchema, component: Vectorscope });
 defineVisualizer({ name: 'spectrogram', schema: SpectrogramConfigSchema, component: Spectrogram });
+defineVisualizer({ name: 'ridgeline', schema: RidgelineConfigSchema, component: Ridgeline });
 defineVisualizer({ name: 'overview', schema: OverviewConfigSchema, component: Overview });
 defineVisualizer({ name: 'bloom', schema: BloomConfigSchema, component: Bloom });

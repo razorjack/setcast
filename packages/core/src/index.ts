@@ -131,6 +131,14 @@ export {
 } from './tracklist.ts';
 export { lightLayers, type LightOptions } from './lights.ts';
 export {
+  heightAt,
+  reliefField,
+  spectrumBand,
+  spectrumLift,
+  type ReliefField,
+  type SpectrumBand,
+} from './ridgeline.ts';
+export {
   REFERENCE_LUMA,
   artBehind,
   backgroundVars,
@@ -178,6 +186,7 @@ export {
   OscilloscopeConfigSchema,
   OverviewConfigSchema,
   RadialConfigSchema,
+  RidgelineConfigSchema,
   SpectrogramConfigSchema,
   SpectrumConfigSchema,
   VectorscopeConfigSchema,
@@ -190,6 +199,7 @@ export {
   type OscilloscopeConfig,
   type OverviewConfig,
   type RadialConfig,
+  type RidgelineConfig,
   type SpectrogramConfig,
   type SpectrumConfig,
   type VectorscopeConfig,

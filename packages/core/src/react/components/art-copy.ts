@@ -16,7 +16,7 @@ export interface StageView {
 }
 
 /** The stage that holds `element`, which must be one of its children. */
-export function stageView(element: HTMLElement, stageWidth: number): StageView | null {
+export function stageView(element: Element, stageWidth: number): StageView | null {
   const stage = element.parentElement;
   if (!stage) return null;
   const rect = stage.getBoundingClientRect();

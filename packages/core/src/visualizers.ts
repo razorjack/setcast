@@ -122,6 +122,22 @@ export const SpectrogramConfigSchema = visualizerSchema('spectrogram', {
 });
 export type SpectrogramConfig = z.infer<typeof SpectrogramConfigSchema>;
 
+/** The recent spectrum as stacked lines over the art's relief. */
+export const RidgelineConfigSchema = visualizerSchema('ridgeline', {
+  /** Lines from the bottom of the box up, the newest at the bottom. */
+  lines: wholeNumberSetting('lines', 8, 96).default(44),
+  /** How far back the top line is. */
+  seconds: numberSetting('seconds', 1, HISTORY_SECONDS).default(6),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+  /** How far the art's bright parts raise the lines; 0 draws the spectrum alone. */
+  relief: numberSetting('relief', 0, 1).default(0.5),
+  /** Share of the width the spectrum spans, bass at the art's subject. */
+  spread: numberSetting('spread', 0.2, 1).default(0.7),
+  /** The theme strokes the lines, or each line takes the art's colors along its row. */
+  fill: FillSchema.default('theme'),
+});
+export type RidgelineConfig = z.infer<typeof RidgelineConfigSchema>;
+
 const bloomBandsError = `bands must be one or two audio features: ${FEATURE_SOURCES.join(', ')}.`;
 
 /** The art's own lights, glowing with the music. */
@@ -188,6 +204,7 @@ visualizers.add({ name: 'meters', schema: MetersConfigSchema });
 visualizers.add({ name: 'oscilloscope', schema: OscilloscopeConfigSchema });
 visualizers.add({ name: 'vectorscope', schema: VectorscopeConfigSchema });
 visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
+visualizers.add({ name: 'ridgeline', schema: RidgelineConfigSchema });
 visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true, audio: false });
 visualizers.add({ name: 'bloom', schema: BloomConfigSchema });
 

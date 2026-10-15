@@ -294,7 +294,7 @@ Each plugin kind is a small interface plus a Zod schema for its config. Extensio
 list; implemented today: visualizer, theme, tracklist importer):
 
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
-  vectorscope ✓, spectrogram ✓, overview ✓, bloom ✓); `visualizer:` takes one block
+  vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
   (14 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
@@ -401,6 +401,15 @@ the vectorscope on the radial ring (`--vectorscope-size`), so the two nest. `.sc
 `<canvas>` (`--spectrogram-height`): its CSS `color` paints a full-strength cell and each cell's
 alpha is its level, so a theme colors it with `color` and shapes it with opacity, masks, blend
 modes and filters.
+
+`.sc-ridgeline` (`--ridgeline-height`, the whole frame by default) is a ridgeline plot of the last
+`seconds`: one `.sc-ridgeline-line` path per moment, oldest first, each with `--age` (0 for this
+frame's line at the bottom, rising to 1 as a line leaves at the top). Each path is closed below
+the box, so a `fill` in the ground's color hides the lines behind it; base.css leaves it
+`fill: none` with `stroke: currentColor`. The art raises the lines where it is bright, read where
+each point sits in the frame, and the spectrum spans `spread` of the width with the bass under
+`--bg-focus-x`. With `fill: art` each path's stroke is an inline gradient of the art's colors
+along it, so a theme's `stroke` rule does not apply to it; width and opacity still do.
 
 `.sc-overview` is the whole set as a strip under the header (`--overview-top`, `--overview-height`):
 `.sc-overview-high` above the middle line and `.sc-overview-bass` below it, the same two again
@@ -890,6 +899,15 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
   `color` so appearance stays in the theme. Columns are placed by age, not index, so it scrolls
   smoothly between the 1/30 s grid moments.
+- A ridgeline line keeps its moment and rises with its age, like a spectrogram column scrolls.
+  Lines fixed in place that cross-fade between moments made peaks flicker from line to line; a
+  rising line carries a peak up the stack in one piece, and the art's relief, read at the line's
+  current height, changes smoothly under it. The relief is the art's luma stretched between its
+  2nd and 98th percentiles, so a dark sleeve raises as much relief as a bright photo and every
+  set gets its own terrain. `fill: art` colors a line with one horizontal gradient of the art
+  along its row rather than an SVG pattern of the image: an `<image>` inside a pattern loads on
+  its own, with no way to hold the frame until it has. The colors are brightened to at least
+  luma 0.3, so lines stay visible over the dark parts of the art.
 - `peak` and `trail` read the audio history (`audioHistory`, the non-hook form of
   `useAudioHistory`) instead of remembering earlier frames, so every frame still renders on its
   own. A peak holds for `peak` seconds, then falls at `PEAK_FALL_SECONDS` (0.6) per full scale.

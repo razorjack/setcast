@@ -142,6 +142,22 @@
   display: block;
 }
 
+.sc-ridgeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--ridgeline-height, 100cqh);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+}
+
+.sc-ridgeline path {
+  vector-effect: non-scaling-stroke;
+}
+
 .sc-oscilloscope {
   position: absolute;
   left: 0;

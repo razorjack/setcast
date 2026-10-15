@@ -53,7 +53,8 @@ export function lightLayers(
   return layers;
 }
 
-function lumaOf(rgba: ArrayLike<number>, size: Size): Float32Array {
+/** Rec. 709 luma of every pixel of RGBA `rgba`, 0..1. */
+export function lumaOf(rgba: ArrayLike<number>, size: Size): Float32Array {
   const luma = new Float32Array(size.width * size.height);
   for (let pixel = 0; pixel < luma.length; pixel++) {
     const offset = pixel * 4;
@@ -64,7 +65,7 @@ function lumaOf(rgba: ArrayLike<number>, size: Size): Float32Array {
 }
 
 /** The value below which `fraction` of the values lie. */
-function quantile(values: Float32Array, fraction: number): number {
+export function quantile(values: Float32Array, fraction: number): number {
   if (values.length === 0) return 1;
   const sorted = values.toSorted();
   const index = Math.min(sorted.length - 1, Math.max(0, Math.floor(fraction * sorted.length)));

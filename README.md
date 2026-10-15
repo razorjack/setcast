@@ -279,6 +279,7 @@ visualizer:
 | `oscilloscope` | the waveform as one trace near the bottom                                           | `gain: 1`, `trail: 0`                                                                                      |
 | `vectorscope`  | left against right in a circle, inside the radial ring                              | `gain: 1`, `trail: 0`                                                                                      |
 | `spectrogram`  | the last seconds of spectrum scrolling left, bass at the bottom                     | `seconds: 4` (at most 8), `gain: 1`                                                                        |
+| `ridgeline`    | the last seconds of spectrum as stacked lines rising up the frame, over the art's relief | `lines: 44`, `seconds: 6` (at most 8), `gain: 1`, `relief: 0.5` (0 to 1), `spread: 0.7`, `fill: theme` (or `art`) |
 | `overview`     | the whole set as a strip under the header, with track and drop marks and a playhead | none                                                                                                       |
 | `bloom`        | the art's own lamps, signs and suns glowing with the music                          | `bands: [bass, highs]` (one or two), `gain: 1`, `lights: 0.05` (share of the art), `radius: 0.015`, `smooth: 0.1` |
 
@@ -290,6 +291,11 @@ current trace, for the theme to fade into an afterimage (at most 12). `fill: art
 background art through the bars, the area under the line or the band around the ring, so the
 music opens windows onto the picture; the theme decides how the art looks there, typically
 brighter and more colorful than the background around it.
+The ridgeline stacks the spectrum of the last seconds as lines, the newest at the bottom, each
+rising as it ages, like a ridgeline plot. Your art raises the lines where it is bright
+(`relief`), so in silence they draw a relief of the art, and every set gets its own terrain.
+`spread` is the share of the width the spectrum spans, the bass under the art's subject, and
+`fill: art` draws each line in the art's colors along it.
 The vectorscope shows stereo width, so a mono mix draws a vertical line; so does the demo, which
 has the same audio in both channels. The overview reads the whole audio file before rendering,
 which takes a few seconds for a long set. Bloom finds the lights of an image background, the
@@ -299,9 +305,9 @@ video background or a set without art has nothing for it to light.
 
 Placement and appearance are CSS. Set `--radial-size` and `--vectorscope-size` on `.setcast`,
 which keeps the vectorscope centered in the ring, or `--spectrum-height`, `--meters-top`,
-`--oscilloscope-height`, `--spectrogram-height` and `--overview-height`, or restyle
+`--oscilloscope-height`, `--spectrogram-height`, `--ridgeline-height` and `--overview-height`, or restyle
 `.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`,
-`.sc-spectrogram` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
+`.sc-spectrogram`, `.sc-ridgeline` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
 The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell.
 
 ## Tracklist
