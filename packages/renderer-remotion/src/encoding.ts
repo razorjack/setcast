@@ -8,6 +8,7 @@ import {
 } from '@setcast/core';
 
 export interface EncodingOptions {
+  parallelEncoding?: boolean;
   profile?: ExportProfile;
   jpegQuality?: number;
   x264Preset?: X264Preset;
@@ -18,6 +19,7 @@ export interface EncodingOptions {
 
 export function encodingOptions(options: EncodingOptions) {
   const parsed = OutputSchema.safeParse({
+    parallelEncoding: options.parallelEncoding,
     profile: options.profile,
     jpegQuality: options.jpegQuality,
     x264Preset: options.x264Preset,
@@ -34,6 +36,7 @@ export function encodingOptions(options: EncodingOptions) {
   }
   const { crf, hardwareAcceleration, videoBitrate, jpegQuality, x264Preset } = parsed.data;
   return {
+    disallowParallelEncoding: !parsed.data.parallelEncoding,
     crf: crf ?? null,
     hardwareAcceleration,
     videoBitrate,
@@ -43,14 +46,21 @@ export function encodingOptions(options: EncodingOptions) {
 }
 
 export function studioEncodingArgs(options: EncodingOptions): string[] {
-  const { crf, hardwareAcceleration, videoBitrate, jpegQuality, x264Preset } =
-    encodingOptions(options);
+  const {
+    crf,
+    hardwareAcceleration,
+    videoBitrate,
+    jpegQuality,
+    x264Preset,
+    disallowParallelEncoding,
+  } = encodingOptions(options);
   const args = [
     '--hardware-acceleration',
     hardwareAcceleration,
     '--jpeg-quality',
     String(jpegQuality),
   ];
+  if (disallowParallelEncoding) args.push('--disallow-parallel-encoding');
   if (crf !== null) args.push('--crf', String(crf));
   if (videoBitrate) args.push('--video-bitrate', videoBitrate);
   if (x264Preset) args.push('--x264-preset', x264Preset);

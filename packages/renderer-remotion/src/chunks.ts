@@ -9,6 +9,7 @@ import {
 import { OutputSchema, SetcastError } from '@setcast/core';
 import type { RenderProgress } from './index.ts';
 import { encodeMasterAudio, muxChunks } from './mux.ts';
+import { canPipeline, renderChunkPipeline } from './chunk-pipeline.ts';
 
 type FrameRange = [number, number];
 type VideoJob = RenderMediaOptions & { outputLocation: string };
@@ -122,28 +123,44 @@ async function renderChunks(
     ...job.composition,
     props: { ...job.composition.props, renderAudio: false },
   };
-  for (const [index, frameRange] of ranges.entries()) {
-    const completed = frameRange[0] - ranges[0]![0];
+  const reportFrames = (index: number, renderedFrames: number) => {
+    const rendered = ranges[index]![0] - ranges[0]![0] + renderedFrames;
+    report({
+      stage: 'frames',
+      progress: rendered / totalFrames,
+      renderedFrames: rendered,
+      totalFrames,
+    });
+  };
+  const jobs = ranges.map((frameRange, index) => ({
+    ...job,
+    composition,
+    inputProps,
+    frameRange,
+    muted: true,
+    outputLocation: join(dir, `chunk-${index}.mp4`),
+  }));
+  for (const [index, chunk] of jobs.entries()) {
+    let parallelEncoding = true;
     await renderCancellable(
       {
-        ...job,
-        composition,
-        inputProps,
-        frameRange,
-        muted: true,
-        outputLocation: join(dir, `chunk-${index}.mp4`),
-        onProgress: ({ renderedFrames }) => {
-          const rendered = completed + renderedFrames;
-          report({
-            stage: 'frames',
-            progress: rendered / totalFrames,
-            renderedFrames: rendered,
-            totalFrames,
-          });
+        ...chunk,
+        onStart: (info) => {
+          parallelEncoding = info.parallelEncoding;
+          job.onStart?.(info);
         },
+        onProgress: ({ renderedFrames }) => reportFrames(index, renderedFrames),
       },
       signal,
     );
+    // Keep Remotion's faster streaming path when it is available. If its memory
+    // check chose serial encoding, overlap the remaining batches without forcing it.
+    if (!parallelEncoding && canPipeline(job) && jobs.length - index > 2) {
+      await renderChunkPipeline(jobs.slice(index + 1), signal, (offset, frames) =>
+        reportFrames(index + 1 + offset, frames),
+      );
+      return;
+    }
   }
 }
 

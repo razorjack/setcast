@@ -654,8 +654,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   getting a `.remotion/`. Serialization prevents concurrent calls from restoring the process-wide
   working directory in the wrong order. Render input/output paths resolve before changing cwd.
 - `render()` and CLI clips split ranges longer than `output.chunkSeconds` (default 60, whole
-  seconds 0–60; 0 disables) into sequential video-only batches in one shared session. Short
-  exports keep the original path. Frame ranges stay absolute, and the composition duration is
+  seconds 0–60; 0 disables) into video-only batches in one shared session. Capture is sequential.
+  Short exports keep the original path. Frame ranges stay absolute, and the composition duration is
   unchanged. The adapter sets `renderAudio: false` in both input and resolved composition props;
   Remotion reads the latter independently. Audio analysis and its readiness holds still run.
 - Chunked exports encode the master once as stereo 48 kHz AAC at 320 kbit/s while rendering
@@ -667,9 +667,20 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   library paths work without a system install.
 - Chunk files and the assembled output live in a temporary directory beside the destination.
   Only the final rename replaces an existing export. A failed audio or video worker cancels the
-  other; both settle before temporary files are removed. Temporary JPEGs and asset history are
-  limited to one chunk, but encoded files grow with set length until assembly. This is not a
-  resumable export cache. Studio uses Remotion's own pipeline and does not apply chunking.
+  other; both settle before temporary files are removed. Asset history is limited to one capture
+  batch, but encoded files grow with set length until assembly. This is not a resumable export cache. Studio uses Remotion's own pipeline and does not apply chunking.
+- If Remotion reports serial encoding and at least two chunks remain, software H.264 exports
+  overlap the next JPEG capture with the previous chunk's encoding. The public `renderFrames`
+  API writes images; the existing bundled-FFmpeg wrapper encodes them. Only one capture and one
+  encoder run at a time, with at most two JPEG sequences on disk. Failure cancels both and waits
+  for them before cleanup. Cancel a rejected `renderFrames` call before removing its abort
+  listener: upstream may still have pages rendering and otherwise retry a browser during cleanup.
+  Remotion's existing parallel path is retained when available.
+  Hardware and specialized encoding settings stay on `renderMedia`.
+  `output.parallelEncoding: false` disables both kinds of overlap. JPEG quality, frame times and the continuous master
+  soundtrack are unchanged. Keep Remotion 4.0.513: the tested 4.0.534 upgrade removed its memory
+  check but crashed Node with an unhandled encoder `EPIPE` before cleanup. Do not override the
+  private memory heuristic or install a process-wide rejection handler. See the performance report.
 - Audio duration comes from `mediabunny` (`Input` + `UrlSource`, `getDurationFromMetadata()` with
   `computeDuration()` fallback) during project loading; Remotion's `getAudioDurationInSeconds`
   is deprecated in favor of it. mediabunny is MPL-2.0 and a plain dependency of the adapter.

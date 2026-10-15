@@ -42,6 +42,7 @@ export async function run(argv: string[]): Promise<void> {
     gl,
     crf,
     x264Preset,
+    parallelEncoding: loaded.config.output.parallelEncoding,
     hardwareAcceleration,
     videoBitrate,
     jpegQuality,

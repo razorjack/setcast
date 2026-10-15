@@ -9,10 +9,18 @@ describe('video encoding settings', () => {
         crf: 18,
         jpegQuality: 95,
         profile: 'standard',
+        parallelEncoding: true,
         x264Preset: 'medium',
       });
     }
     expect(OutputSchema.parse({ crf: 22 }).crf).toBe(22);
+  });
+
+  test('accepts an explicit serial encoder without coercing invalid values', () => {
+    expect(OutputSchema.parse({ parallelEncoding: false }).parallelEncoding).toBe(false);
+    expect(() => OutputSchema.parse({ parallelEncoding: 'false' })).toThrow(
+      'parallelEncoding must be true or false. Use false to encode after capture.',
+    );
   });
 
   test('fast changes capture quality and compression effort without changing timing or CRF', () => {

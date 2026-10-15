@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   renderMedia: vi.fn(),
   muxChunks: vi.fn(),
   encodeMasterAudio: vi.fn(),
+  renderChunkPipeline: vi.fn(),
 }));
 vi.mock('@remotion/renderer', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@remotion/renderer')>()),
@@ -17,6 +18,10 @@ vi.mock('@remotion/renderer', async (importOriginal) => ({
 vi.mock('./mux.ts', () => ({
   muxChunks: mocks.muxChunks,
   encodeMasterAudio: mocks.encodeMasterAudio,
+}));
+vi.mock('./chunk-pipeline.ts', async (original) => ({
+  ...(await original<typeof import('./chunk-pipeline.ts')>()),
+  renderChunkPipeline: mocks.renderChunkPipeline,
 }));
 const { renderVideo, splitFrameRange, resolveChunkSeconds } = await import('./chunks.ts');
 
@@ -71,6 +76,7 @@ describe('chunk orchestration', () => {
       jpegQuality: 92,
       x264Preset: 'veryfast',
       concurrency: 2,
+      disallowParallelEncoding: true,
     };
     mocks.renderMedia.mockReset().mockImplementation(async (options) => {
       const frames = options.frameRange[1] - options.frameRange[0] + 1;
@@ -88,6 +94,7 @@ describe('chunk orchestration', () => {
       await writeFile(output, 'assembled');
     });
     mocks.encodeMasterAudio.mockReset().mockResolvedValue(undefined);
+    mocks.renderChunkPipeline.mockReset().mockResolvedValue(undefined);
   });
 
   afterEach(async () => {
@@ -102,6 +109,36 @@ describe('chunk orchestration', () => {
       progress.push(event);
     },
   });
+
+  test.each([true, false])(
+    'uses the observed parallel decision (%s) before choosing chunk overlap',
+    async (parallelEncoding) => {
+      job.disallowParallelEncoding = false;
+      mocks.renderMedia.mockImplementation(async (chunk) => {
+        chunk.onStart({
+          parallelEncoding,
+          frameCount: chunk.frameRange[1] - chunk.frameRange[0] + 1,
+          resolvedConcurrency: 2,
+        });
+        await writeFile(chunk.outputLocation, 'video');
+      });
+      await renderVideo(job, options());
+      expect(mocks.renderMedia).toHaveBeenCalledTimes(parallelEncoding ? 3 : 1);
+      if (parallelEncoding) {
+        expect(mocks.renderChunkPipeline).not.toHaveBeenCalled();
+      } else {
+        expect(
+          mocks.renderChunkPipeline.mock.calls[0]![0].map(
+            (chunk: { frameRange: number[] }) => chunk.frameRange,
+          ),
+        ).toEqual([
+          [4321, 6120],
+          [6121, 6211],
+        ]);
+      }
+      expect(await readFile(job.outputLocation, 'utf8')).toBe('assembled');
+    },
+  );
 
   test('renders bounded silent chunks at absolute times and muxes the master once', async () => {
     await renderVideo(job, options());

@@ -82,6 +82,11 @@ const outputShape = {
     .default('out/set.mp4'),
   gl: GraphicsBackendSchema.default('auto'),
   profile: ExportProfileSchema.default('standard'),
+  parallelEncoding: z
+    .boolean({
+      error: 'parallelEncoding must be true or false. Use false to encode after capture.',
+    })
+    .default(true),
   x264Preset: X264PresetSchema.optional(),
   chunkSeconds: z
     .number({

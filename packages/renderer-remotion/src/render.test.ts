@@ -116,6 +116,13 @@ describe('render orchestration failures', () => {
     );
   });
 
+  test('forwards the serial encoding opt-out', async () => {
+    await render(project, { projectDir: '.', out: 'out.mp4', parallelEncoding: false });
+    expect(remotion.renderMedia).toHaveBeenCalledWith(
+      expect.objectContaining({ disallowParallelEncoding: true }),
+    );
+  });
+
   test.each(['disable', 'if-possible', 'required'] as const)(
     'forwards bitrate encoding with %s hardware acceleration and no CRF',
     async (hardwareAcceleration) => {

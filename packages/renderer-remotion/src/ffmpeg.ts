@@ -42,7 +42,7 @@ export async function runFfmpeg(args: string[], options: FfmpegOptions): Promise
     if (!(cause instanceof Error) || !('exitCode' in cause)) throw cause;
     throw new SetcastError(
       `Cannot ${options.description}`,
-      `${diagnostic.trim()}\nCheck the audio file and available disk space, then retry. Set output.chunkSeconds: 0 to use an unchunked export.`,
+      `${diagnostic.trim()}\nCheck the input files and available disk space, then retry. Set output.chunkSeconds: 0 to use an unchunked export.`,
       { cause, exitCode: 1 },
     );
   } finally {

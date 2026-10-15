@@ -221,6 +221,12 @@ changes only JPEG quality; omit `x264Preset`, which configures software encoding
 The [rendering benchmarks](docs/render-performance.md) measured 14–25% shorter exports
 with this combination on the tested clips. Actual gains depend on the theme and machine.
 
+For long software exports, if Remotion selects serial encoding and at least two chunks remain,
+Setcast captures the next chunk while encoding the preceding one. This retains at most two
+JPEG sequences. Set `output.parallelEncoding: false` to serialize these stages when memory or
+temporary disk space is limited. This also disables Remotion's optional parallel encoder for
+short exports and Studio exports.
+
 CLI renders and clips longer than 60 seconds use 60-second chunks by default. This bounds
 the frame bookkeeping and temporary JPEG files held by each render batch. Timeline positions,
 audio-reactive motion and background video loops keep their original timing. The master

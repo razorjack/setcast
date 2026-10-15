@@ -56,6 +56,12 @@ describe('preview process', () => {
     childProcess.spawn.mockReset();
   });
 
+  test('forwards serial encoding to Studio', async () => {
+    exitWith(0);
+    await preview(project, { projectDir: '/project', parallelEncoding: false });
+    expect(childProcess.spawn.mock.calls[0]![1]).toContain('--disallow-parallel-encoding');
+  });
+
   test('resolves on a clean exit and removes temporary props', async () => {
     exitWith(0);
     await expect(preview(project, { projectDir: '/project' })).resolves.toBeUndefined();
