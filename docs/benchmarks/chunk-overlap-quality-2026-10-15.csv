@@ -1,0 +1,17 @@
+group,file,audioPayloadEqual,videoPayloadEqual,ssimMean,ssimMin,comparedFrames
+pipeline-final-long,sterile-tech-fast-master.mp4,True,False,0.9994231084142395,0.981543,1236
+pipeline-final-matrix,darkroom-master.mp4,True,True,,,
+pipeline-final-matrix,masthead-master.mp4,True,False,0.997651477948718,0.973876,1950
+pipeline-final-matrix,pirate-master.mp4,True,False,0.9996935128205128,0.976271,1950
+pipeline-final-matrix,sterile-tech-master.mp4,True,False,0.9899065712820513,0.979263,1950
+pipeline-focused,changes-master.mp4,True,False,0.9831657333333333,0.0063,180
+pipeline-focused,dj-master.mp4,True,False,0.9935939958333333,0.986913,240
+pipeline-focused,playlist-master.mp4,True,False,0.9946532208333333,0.988087,240
+pipeline-focused,standard-180-master.mp4,True,False,0.996816709074074,0.981682,5400
+pipeline-focused,theme-darkroom-master.mp4,True,True,,,
+pipeline-focused,theme-masthead-master.mp4,True,False,0.9966197222222222,0.985167,180
+pipeline-focused,theme-pirate-master.mp4,True,False,0.9986867777777778,0.957264,180
+pipeline-focused,theme-sterile-tech-master.mp4,True,False,0.9879189333333334,0.972544,180
+pipeline-focused,travel-master.mp4,True,False,0.9883934055555555,0.981988,180
+pipeline-focused,video-cover-60fps-master.mp4,True,False,0.9850578,0.969177,360
+pipeline-focused,video-master.mp4,True,False,0.9904087444444445,0.969727,180
