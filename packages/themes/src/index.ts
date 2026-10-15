@@ -11,6 +11,7 @@ import { passePartout } from './passe-partout.ts';
 import { patina } from './patina.ts';
 import { pirate } from './pirate.ts';
 import { quicksilver } from './quicksilver.ts';
+import { relief } from './relief.ts';
 import { sterileTech } from './sterile-tech.ts';
 import { vfd } from './vfd.ts';
 
@@ -27,6 +28,7 @@ export {
   patina,
   pirate,
   quicksilver,
+  relief,
   sterileTech,
   vfd,
 };
@@ -48,5 +50,6 @@ export const themes: Record<string, Theme> = Object.fromEntries(
     passePartout,
     masthead,
     anamorphic,
+    relief,
   ].map((theme) => [theme.name, theme]),
 );

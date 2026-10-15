@@ -1,0 +1,378 @@
+/* relief: the music as a ridgeline plot, engraved over your art. The art raises the lines where
+   it is bright, so in silence they draw it; each moment of the spectrum climbs up through it. */
+
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/HankenGrotesk-100-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(../fonts/HankenGrotesk-100-900-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  src: url(../fonts/JetBrainsMono-100-800-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-relief {
+  /* the ground and the type take the art's hue; the lines take its colors */
+  --tint: var(--bg-color-1, oklch(0.6 0.02 80));
+  --ground: oklch(from var(--tint) 0.12 0.012 h);
+  --ink: oklch(from var(--tint) 0.94 0.025 h);
+  --accent: oklch(from var(--bg-color-2, var(--tint)) 0.8 0.11 h);
+  --fg: var(--ink);
+  --fg-dim: color-mix(in oklab, var(--ink) 60%, transparent);
+  --fg-faint: color-mix(in oklab, var(--ink) 42%, transparent);
+  --deck-a: var(--accent);
+  --deck-b: oklch(from var(--tint) 0.8 0.11 h);
+  --font-display: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --hairline: max(1px, 0.07cqw);
+  /* the plot fills the frame above a band for the credits */
+  --edge-x: 5cqw;
+  --plot-top: 9cqh;
+  --plot-bottom: 22cqh;
+  --credit-bottom: 6cqh;
+  /* a drop lights the whole plot for a moment, the older lines included */
+  --drop-flash-seconds: 1.6;
+
+  font-family: var(--font-display);
+  color: var(--ink);
+  background: var(--ground);
+}
+
+/* the art is never shown: the lines read it */
+.theme-relief .sc-bg {
+  display: none;
+}
+
+/* the plot: each line hides the ones behind it and fades out as it rises to the top */
+.theme-relief .sc-ridgeline {
+  left: var(--edge-x);
+  bottom: var(--plot-bottom);
+  width: calc(100cqw - 2 * var(--edge-x));
+  height: calc(100cqh - var(--plot-top) - var(--plot-bottom));
+  fill: var(--ground);
+  stroke: var(--ink);
+  stroke-width: calc(var(--hairline) * 1.3);
+  stroke-linejoin: round;
+}
+.theme-relief .sc-ridgeline-line {
+  stroke-opacity: calc(1 - var(--age) * var(--age) * (1 - var(--drop-flash) * 0.6));
+}
+
+/* the set's name and the clock above the plot */
+.theme-relief .sc-header {
+  top: 4.2cqh;
+  left: var(--edge-x);
+  right: var(--edge-x);
+  font-size: 0.84cqw;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg-dim);
+}
+.theme-relief .sc-clock {
+  font-family: var(--font-mono);
+  font-size: 0.8cqw;
+  font-variant-numeric: tabular-nums;
+}
+.theme-relief .sc-clock-total {
+  color: var(--fg-faint);
+}
+
+/* the credit under the plot: the artist is its one line of capitals, the label quieter than the
+   title */
+.theme-relief .sc-panel {
+  --title-gap: 1.1cqw;
+  left: var(--edge-x);
+  bottom: var(--credit-bottom);
+  max-width: 52cqw;
+  opacity: clamp(0, var(--presence, 1) * 1.4 - 0.2, 1);
+  translate: 0 calc((1 - var(--presence, 1)) * 1.2cqh);
+}
+.theme-relief .sc-panel-head {
+  gap: 0.8cqw;
+  margin-bottom: var(--title-gap);
+  font-size: 0.82cqw;
+  font-weight: 500;
+  color: var(--accent);
+}
+.theme-relief .sc-panel[data-returning='false'] .sc-eyebrow,
+.theme-relief .sc-index {
+  display: none;
+}
+.theme-relief .sc-panel[data-returning='false'] .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-relief .sc-deck {
+  font-family: var(--font-mono);
+  font-size: 0.74cqw;
+  font-weight: 600;
+  color: var(--deck);
+}
+.theme-relief .sc-artist {
+  margin-bottom: var(--title-gap);
+  font-size: 0.78cqw;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  text-box: trim-both cap alphabetic;
+}
+.theme-relief .sc-title {
+  font-size: 2.5cqw;
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  text-box: trim-both cap alphabetic;
+}
+.theme-relief .sc-label,
+.theme-relief .sc-credit-details {
+  margin-top: var(--title-gap);
+  font-family: var(--font-display);
+  font-size: 0.92cqw;
+  color: var(--fg-faint);
+  text-box: trim-both cap alphabetic;
+}
+.theme-relief .sc-label + .sc-credit-details {
+  margin-top: 0.6cqw;
+}
+
+/* up next: the far corner of the band, over its last seconds */
+.theme-relief .sc-next {
+  right: var(--edge-x);
+  bottom: var(--credit-bottom);
+  max-width: 30cqw;
+  gap: 0.55cqw;
+  opacity: clamp(0, (12 - var(--until-next, 60)) / 1.5, 1);
+}
+.theme-relief .sc-next-label {
+  margin-bottom: 0.3cqw;
+  font-size: 0.78cqw;
+  font-weight: 500;
+  color: var(--accent);
+}
+.theme-relief .sc-next-artist {
+  font-size: 0.7cqw;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-relief .sc-next-title {
+  font-size: 1.3cqw;
+  font-weight: 300;
+}
+
+/* DJ: the current plays side by side along the band; a slot opens in width, focus sets the ink */
+.theme-relief[data-presentation='dj'] .sc-contributors {
+  left: var(--edge-x);
+  bottom: var(--credit-bottom);
+  width: max-content;
+  max-width: 62cqw;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: end;
+}
+.theme-relief[data-presentation='dj'] .sc-slot {
+  width: calc-size(max-content, size * var(--fit));
+  height: auto;
+  margin: 0;
+  overflow: clip visible;
+}
+.theme-relief[data-presentation='dj'] .sc-panel {
+  --title-gap: 0.9cqw;
+  width: max-content;
+  max-width: 24cqw;
+  padding-right: 3.2cqw;
+  opacity: 1;
+  translate: none;
+}
+.theme-relief[data-presentation='dj'] .sc-title {
+  font-size: 1.8cqw;
+}
+.theme-relief[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  color: var(--fg-dim);
+}
+.theme-relief .sc-contributor-count {
+  display: none;
+}
+.theme-relief .sc-overflow {
+  align-self: center;
+  font-size: 0.74cqw;
+  font-weight: 500;
+  color: var(--fg-dim);
+}
+
+/* the tracklist: the band's far corner, current rows in ink with a rule that runs with them */
+.theme-relief .sc-tracklist {
+  top: auto;
+  right: var(--edge-x);
+  bottom: var(--credit-bottom);
+  width: 30cqw;
+  font-family: var(--font-display);
+  font-size: 0.86cqw;
+  color: var(--fg-dim);
+}
+.theme-relief .sc-tracklist-heading {
+  display: none;
+}
+.theme-relief .sc-tracklist-row {
+  display: flex;
+  align-items: baseline;
+  column-gap: 0.9em;
+  padding-block: calc(var(--row-presence) * 0.22em);
+  line-height: 1.3;
+  white-space: nowrap;
+  opacity: calc(var(--row-presence) * 0.62);
+}
+.theme-relief .sc-tracklist-row[data-state='played'] {
+  opacity: calc(var(--row-presence) * 0.4);
+}
+.theme-relief .sc-tracklist-row[data-state='current'] {
+  opacity: var(--row-presence);
+  background: linear-gradient(var(--accent), var(--accent)) left bottom /
+    calc(var(--row-progress) * 100%) var(--hairline) no-repeat;
+}
+.theme-relief .sc-tracklist-index {
+  flex: none;
+  width: 1.8em;
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-faint);
+}
+.theme-relief .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: var(--deck);
+}
+.theme-relief .sc-tracklist-artist {
+  flex: none;
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.theme-relief .sc-tracklist-title {
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-weight: 300;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+
+/* portrait (9:16): the plot in the upper two thirds, the credits under it */
+@container (aspect-ratio < 1) {
+  .theme-relief .sc-ridgeline,
+  .theme-relief .sc-header,
+  .theme-relief .sc-panel,
+  .theme-relief .sc-contributors,
+  .theme-relief .sc-next,
+  .theme-relief .sc-tracklist {
+    --edge-x: 7cqw;
+    --plot-top: 13cqh;
+    --plot-bottom: 30cqh;
+    --credit-bottom: 6cqh;
+  }
+  /* the tracklist hangs under the plot, the credits that remain stand at the bottom */
+  .theme-relief:has(.sc-tracklist) :is(.sc-ridgeline, .sc-tracklist) {
+    --plot-bottom: 40cqh;
+  }
+  .theme-relief .sc-header {
+    top: 3.6cqh;
+    font-size: 1.9cqw;
+  }
+  .theme-relief .sc-clock {
+    font-size: 1.8cqw;
+  }
+  .theme-relief .sc-panel {
+    --title-gap: 2.4cqw;
+    max-width: none;
+    right: var(--edge-x);
+  }
+  .theme-relief .sc-panel-head {
+    font-size: 1.9cqw;
+  }
+  .theme-relief .sc-deck {
+    font-size: 1.7cqw;
+  }
+  .theme-relief .sc-artist {
+    font-size: 1.8cqw;
+  }
+  .theme-relief .sc-title {
+    font-size: 6cqw;
+  }
+  .theme-relief :is(.sc-label, .sc-credit-details) {
+    font-size: 2.1cqw;
+  }
+  /* up next under the header, where the credits cannot reach it */
+  .theme-relief .sc-next {
+    top: 7cqh;
+    left: var(--edge-x);
+    right: auto;
+    bottom: auto;
+    max-width: none;
+    align-items: start;
+    text-align: left;
+  }
+  .theme-relief .sc-next-label {
+    font-size: 1.8cqw;
+  }
+  .theme-relief .sc-next-artist {
+    font-size: 1.6cqw;
+  }
+  .theme-relief .sc-next-title {
+    font-size: 3cqw;
+  }
+  .theme-relief[data-presentation='dj'] .sc-contributors {
+    width: auto;
+    right: var(--edge-x);
+    max-width: none;
+    display: block;
+  }
+  .theme-relief[data-presentation='dj'] .sc-slot {
+    width: auto;
+    height: calc-size(auto, size * var(--fit));
+    margin-top: calc(var(--fit) * 2.4cqh);
+    overflow: visible clip;
+  }
+  .theme-relief[data-presentation='dj'] .sc-panel {
+    max-width: none;
+    padding-right: 0;
+  }
+  .theme-relief[data-presentation='dj'] .sc-title {
+    font-size: 4.6cqw;
+  }
+  .theme-relief .sc-overflow {
+    margin-top: 2cqh;
+    font-size: 1.7cqw;
+  }
+  .theme-relief .sc-tracklist {
+    top: calc(100cqh - var(--plot-bottom) + 2.5cqh);
+    left: var(--edge-x);
+    right: var(--edge-x);
+    bottom: auto;
+    width: auto;
+    font-size: 2.1cqw;
+  }
+}

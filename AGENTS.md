@@ -297,7 +297,7 @@ list; implemented today: visualizer, theme, tracklist importer):
   vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
-  (14 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
+  (15 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft mix annotations without automatic snapping
@@ -700,6 +700,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   they would otherwise float as white blotches. For the same reason the glow takes the art's
   correction, and `--lamps` turns it down on bright art: lamps glow in a dark scene, hardly in
   daylight. Afterhours does the same.
+- Relief never shows the art; its ridgeline reads it. The lines take the art's colors
+  (`fill: art`) and its terrain (`relief: 0.8`), so sets with different art look different
+  although no image is on screen, and a set without art becomes a plain ridgeline plot in warm
+  grey. The plot fills the frame above a band for the credits, so no type sits on the lines; in
+  DJ mode the credits stand side by side in the band. A drop lights the older lines for 1.6 s
+  instead of flashing the frame.
 - Escapement shows `.sc-art`, the file itself, in its band rather than `.sc-bg-img`. The band
   crosses the whole frame, so the blurred copy behind contained art (square sleeves in landscape,
   landscape art in portrait) would show in it as hard edges. It fits the file whole into the
