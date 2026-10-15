@@ -11,7 +11,7 @@ import {
   rangeWithinAudio,
   timeWithinAudio,
 } from '../args.ts';
-import { load, withSetEnvelope } from '../project.ts';
+import { load, withWholeSet } from '../project.ts';
 import { bold, dim, intro, log, outro, RenderUi, shown } from '../ui.ts';
 import { rangeName } from './render.ts';
 import { stem } from '../paths.ts';
@@ -54,7 +54,7 @@ async function runCommand(argv: string[]): Promise<void> {
     return;
   }
 
-  const renderable = { ...loaded, project: await withSetEnvelope(loaded) };
+  const renderable = { ...loaded, project: await withWholeSet(loaded) };
   const files: string[] = [];
   for (const center of centers) {
     files.push(await renderClip(renderable, center, duration, options));

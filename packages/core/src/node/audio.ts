@@ -1,14 +1,17 @@
 import { spawn } from 'node:child_process';
 import { open, type FileHandle } from 'node:fs/promises';
-import { basename } from 'node:path';
+import { basename, join } from 'node:path';
 import {
   EnvelopeReader,
   HOP_SECONDS,
   summarizeEnvelope,
+  travelOf,
   type Envelope,
-  type SetEnvelope,
 } from '../analysis.ts';
 import type { Pcm } from '../audio.ts';
+import type { ResolvedProject } from '../project.ts';
+import { readsTravel } from '../stage.ts';
+import { drawsWholeSet } from '../visualizers.ts';
 import { Resampler } from './resampler.ts';
 import { SetcastError } from '../errors.ts';
 
@@ -56,13 +59,31 @@ export async function readEnvelope(
   return reader.done();
 }
 
-/** A rate that holds the bass and low mids, which is all an envelope drawn seconds per point needs. */
-const ENVELOPE_RATE = 4000;
-const ENVELOPE_HOP_SECONDS = 0.05;
+/**
+ * A rate that holds the bass and low mids, which is all the set's envelope (drawn seconds per
+ * point) and its travel (averaged over half a second) need.
+ */
+const SET_ENERGY_RATE = 4000;
+const SET_ENERGY_HOP_SECONDS = 0.05;
 
-/** The whole set's energy, summarized for drawing (`ResolvedProject.envelope`). */
-export async function readSetEnvelope(file: string): Promise<SetEnvelope> {
-  return summarizeEnvelope(await readEnvelope(file, ENVELOPE_RATE, ENVELOPE_HOP_SECONDS));
+/** Whether rendering `project` needs the whole set's audio read first (`readWholeSet`). */
+export const readsWholeSet = (project: ResolvedProject): boolean =>
+  drawsWholeSet(project) || readsTravel(project);
+
+/**
+ * `project` with what it reads from the whole set filled in: `envelope` when a visualizer draws
+ * the whole set, `travel` when its CSS reads `--travel-*`. One coarse pass over the audio serves
+ * both.
+ */
+export async function readWholeSet(
+  project: ResolvedProject,
+  projectDir: string,
+): Promise<ResolvedProject> {
+  const file = join(projectDir, project.audio);
+  const energy = await readEnvelope(file, SET_ENERGY_RATE, SET_ENERGY_HOP_SECONDS);
+  const envelope = drawsWholeSet(project) ? summarizeEnvelope(energy) : null;
+  const travel = readsTravel(project) ? travelOf(energy) : null;
+  return { ...project, envelope, travel };
 }
 
 /** False when ffmpeg is not installed. Anything else it reports is an error worth showing. */

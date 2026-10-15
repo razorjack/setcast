@@ -1,6 +1,6 @@
-import { join, resolve } from 'node:path';
-import { drawsWholeSet, type ResolvedProject } from '@setcast/core';
-import { loadProject, readSetEnvelope, type LoadedProject } from '@setcast/core/node';
+import { resolve } from 'node:path';
+import type { ResolvedProject } from '@setcast/core';
+import { loadProject, readWholeSet, readsWholeSet, type LoadedProject } from '@setcast/core/node';
 import { probeAudio } from '@setcast/renderer-remotion';
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
@@ -31,15 +31,16 @@ export async function load(
 }
 
 /**
- * The project with `envelope` filled in when a visualizer draws the whole set. Reading a long set
- * takes seconds, so commands call this after everything they can validate first.
+ * The project with what it reads from the whole set filled in: the envelope a visualizer draws,
+ * the travel its CSS reads. Reading a long set takes seconds, so commands call this after
+ * everything they can validate first.
  */
-export async function withSetEnvelope({ dir, project }: LoadedProject): Promise<ResolvedProject> {
-  if (!drawsWholeSet(project)) return project;
+export async function withWholeSet({ dir, project }: LoadedProject): Promise<ResolvedProject> {
+  if (!readsWholeSet(project)) return project;
 
   const spin = spinner();
   spin.start(`Reading all of ${project.audio}`);
-  const envelope = await clearSpinnerOnError(spin, () => readSetEnvelope(join(dir, project.audio)));
+  const whole = await clearSpinnerOnError(spin, () => readWholeSet(project, dir));
   spin.stop('Read the whole set');
-  return { ...project, envelope };
+  return whole;
 }

@@ -355,6 +355,13 @@ a flash on a mix drop, `width: calc(var(--set-progress) * 100%)` is a progress b
 `bpm:` set, `--beat` and `--bar` run 0..1 on the grid so
 `scale(calc(1 + 0.4 * (1 - var(--beat))))` pulses in time.
 
+`--travel-bass` and `--travel-high` are how far the music has carried the set: each grows by its
+band's energy, by up to one a second through a drop and hardly at all in a breakdown. A `--mod-*`
+value rises and falls back with every kick; these only grow, so
+`rotate: calc(var(--travel-bass) * 1deg)` turns the art faster when the bass is heavy and stops it
+in a breakdown, without swinging back. The stage sets them only when your CSS reads them, because
+they need the whole set read before rendering (a few seconds for a two-hour MP3).
+
 Each play panel has its own `data-play`, optional `data-deck`, local `data-section`, and
 `--since-entry`. A route with `scope: play` reads that panel's local cues and writes its own
 `--mod-*` values. Shared drops reach every named participant; master audio features remain

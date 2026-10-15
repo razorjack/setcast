@@ -1,6 +1,6 @@
 import { preview, type PreviewOptions } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber } from '../args.ts';
-import { load, withSetEnvelope } from '../project.ts';
+import { load, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
 import { dim, intro, log, printError } from '../ui.ts';
 
@@ -23,7 +23,7 @@ export async function run(argv: string[]): Promise<void> {
   const dependencies = new Set<string>();
   const loaded = await load(options.dir, options.theme, dependencies);
   const { dir } = loaded;
-  const project = await withSetEnvelope(loaded);
+  const project = await withWholeSet(loaded);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
 
   const { gl, crf, hardwareAcceleration, videoBitrate, jpegQuality, x264Preset } =
@@ -35,7 +35,7 @@ export async function run(argv: string[]): Promise<void> {
         dependencies,
         async (files) => {
           const next = await load(dir, options.theme, files);
-          await update(await withSetEnvelope(next));
+          await update(await withWholeSet(next));
         },
         printError,
       ),

@@ -106,7 +106,7 @@ Gotchas:
   it sits where visual strain peaks. Give textures an irregular structure, low contrast or low
   coverage (pirate's toner dust, not a dot grid).
 - A theme variable must not reuse the name of a variable the stage sets inline (`--bar`, `--beat`,
-  `--since-*`, `--bg-*`, …): the inline value overrides the theme's rule on the root, and every
+  `--since-*`, `--travel-*`, `--bg-*`, …): the inline value overrides the theme's rule on the root, and every
   use of it breaks without an error. Anamorphic calls its bar height `--matte` for that reason.
 - Chrome does not repaint the contents of a composited element (one with `backdrop-filter`, for
   example) when layout moves it by a fraction of a pixel (crbug.com/833083). Its text stays where
@@ -324,11 +324,12 @@ Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setc
 relative to the project dir, merged modulation, theme CSS with fonts inlined as data URIs, base CSS,
 visualizer config) and non-fatal configuration warnings. The CLI prints those warnings to stderr.
 The renderer-owned audio probe runs during loading, before finite timeline normalization.
-`ResolvedProject.envelope` is null after loading. A visualizer registered with `wholeSet: true`
-draws the whole set from it, so the commands that render (`render`, `still`, `clip`, `preview`)
-call `withSetEnvelope` after validating their flags: when `drawsWholeSet(project)`,
-`readSetEnvelope` decodes the audio and `summarizeEnvelope` reduces it to at most 1200 points of
-bass and high energy. The renderer adapter receives `ResolvedProject` as input props and nothing
+`ResolvedProject.envelope` and `ResolvedProject.travel` are null after loading. A visualizer
+registered with `wholeSet: true` draws the whole set from the envelope, and CSS that reads
+`--travel-*` needs the travel, so the commands that render (`render`, `still`, `clip`, `preview`)
+call `withWholeSet` after validating their flags: when `readsWholeSet(project)`, `readWholeSet`
+decodes the audio once, `summarizeEnvelope` reduces it to at most 1200 points of bass and high
+energy, and `travelOf` sums it into a point every 0.25 s. The renderer adapter receives `ResolvedProject` as input props and nothing
 else. Assets referenced
 by `setcast.yaml` must live inside the project directory (the adapter serves it as the public dir).
 
@@ -363,7 +364,8 @@ shows a row for its play). `--since-entry` and `--until-exit` describe its unint
 Both stage and panels have scoped `--since-*`/`--until-*` for drop, breakdown, buildup and rewind,
 `--drop-intensity`, `--drop-participants` and `--section-time`. Seconds cap at 60. Shaped
 `--drop-flash`, `--rewind-flash`, `--tension` recompute locally, avoiding inherited mix cues.
-The stage also has `--set-progress`, `--current-plays`, and optional `--beat`/`--bar`.
+The stage also has `--set-progress`, `--current-plays`, optional `--beat`/`--bar`, and
+`--travel-bass`/`--travel-high` when the CSS reads them (`readsTravel`).
 
 `--show` springs in at run start and follows `panel.dwell`/`panel.fade`; metadata changes do not
 reset it. Themes use `--presence`, which follows show in playlist mode; in DJ mode it springs in,
@@ -945,6 +947,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   hops, which is enough for points that each cover seconds and keeps a two-hour set to about
   230 MB of samples; a two-hour MP3 reads in about 6.5 s. Only projects whose visualizers ask for
   it pay that, and `chapters`, `analyze` and `import` never do.
+- `--travel-bass` and `--travel-high` integrate the set's band energy (each hop capped at full,
+  then averaged over 0.5 s), from the same pass as the envelope, as a point every 0.25 s: about
+  420 KB of props for two hours. A `--mod-*` level can drive a speed, but CSS cannot integrate it,
+  and a rotation by a level swings back with every kick, so motion that follows the music needs
+  the sum. The stage sets them only when the CSS contains `var(--travel-`, so other projects skip
+  the decode. No built-in theme uses them yet.
 
 ## Not yet decided
 

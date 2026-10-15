@@ -7,8 +7,8 @@ import {
   type RenderMediaOnProgress,
   type RenderMediaOptions,
 } from '@remotion/renderer';
-import { drawsWholeSet, type ResolvedProject } from '@setcast/core';
-import { loadProject, readSetEnvelope } from '@setcast/core/node';
+import type { ResolvedProject } from '@setcast/core';
+import { loadProject, readWholeSet, readsWholeSet } from '@setcast/core/node';
 import { themes } from '../../themes/src/index.ts';
 import { encodingOptions } from '../src/encoding.ts';
 import { graphicsOptions } from '../src/graphics.ts';
@@ -75,11 +75,11 @@ const loaded = await loadProject(request.projectDir, {
   theme: request.theme,
   probeDuration: (audio, dir) => probeAudio({ audio }, dir),
 });
-const project = loaded.project;
-if (request.from + request.seconds > project.mix.duration / 1_000_000)
+if (request.from + request.seconds > loaded.project.mix.duration / 1_000_000)
   throw new Error('The benchmark range exceeds the mix. Reduce --from or --seconds.');
-if (drawsWholeSet(project))
-  project.envelope = await readSetEnvelope(join(request.projectDir, project.audio));
+const project = readsWholeSet(loaded.project)
+  ? await readWholeSet(loaded.project, request.projectDir)
+  : loaded.project;
 await mkdir(request.out, { recursive: true });
 const resultsFile = join(request.out, 'results.jsonl');
 await record({

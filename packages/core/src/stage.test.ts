@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vite-plus/test';
 import { normalizeMix } from './mix.ts';
-import { beatVars, stageData, stageVars } from './stage.ts';
+import { beatVars, stageData, stageVars, travelVars } from './stage.ts';
 import { Timeline } from './timeline.ts';
 
 const timeline = new Timeline(
@@ -71,6 +71,12 @@ describe('beatVars', () => {
     expect(beatVars(0, 120, 0.25)['--beat']).toBe('0.5');
     expect(beatVars(5, null)).toEqual({});
   });
+});
+
+test('travelVars sets how far each band has travelled, and nothing without travel', () => {
+  const travel = { step: 0.5, bass: [0, 0.5, 0.5], high: [0, 0.25, 1] };
+  expect(travelVars(travel, 0.75)).toEqual({ '--travel-bass': '0.5', '--travel-high': '0.625' });
+  expect(travelVars(null, 0.75)).toEqual({});
 });
 
 test('the stage carries mix section and explicit count, never a global deck', () => {

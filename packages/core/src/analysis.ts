@@ -1,5 +1,5 @@
 import type { Pcm } from './audio.ts';
-import { clamp } from './motion.ts';
+import { clamp, lerp } from './motion.ts';
 export type DraftAnnotation =
   | { kind: 'drop'; at: number; intensity: number }
   | { kind: 'breakdown'; at: number };
@@ -95,6 +95,51 @@ export function summarizeEnvelope(energy: Envelope, points = 1200): SetEnvelope 
     bass: summarize(energy.bass),
     high: summarize(energy.high),
   };
+}
+
+/** Seconds between the points of `SetTravel`; the renderer interpolates between them. */
+export const TRAVEL_STEP = 0.25;
+/** Energy is averaged over this long first, so travel eases between speeds instead of lurching. */
+const TRAVEL_SMOOTH_SECONDS = 0.5;
+
+/**
+ * How far the music has carried the set: for each band, the running sum of its energy at every
+ * `step` seconds, in seconds at full energy. Energy is capped at full, so it grows by at most one
+ * a second: by nearly that through a drop and hardly at all in a breakdown.
+ */
+export interface SetTravel {
+  step: number;
+  bass: number[];
+  high: number[];
+}
+
+export function travelOf(energy: Envelope, step = TRAVEL_STEP): SetTravel {
+  const hopsPerStep = Math.max(1, Math.round(step / energy.hop));
+  const smoothing = Math.round(TRAVEL_SMOOTH_SECONDS / energy.hop);
+  const travelled = (values: number[]) => {
+    const speeds = values.map((value) => Math.min(value, 1));
+    const distances = [0];
+    let distance = 0;
+    for (const [hop, speed] of movingAverage(speeds, smoothing).entries()) {
+      distance += speed * energy.hop;
+      if ((hop + 1) % hopsPerStep === 0) distances.push(Math.round(distance * 1000) / 1000);
+    }
+    return distances;
+  };
+  return {
+    step: hopsPerStep * energy.hop,
+    bass: travelled(energy.bass),
+    high: travelled(energy.high),
+  };
+}
+
+/** How far the music has carried the set at `time`; past either end it holds the end's value. */
+export function travelAt(travel: SetTravel, time: number): { bass: number; high: number } {
+  const position = clamp(time / travel.step, 0, travel.bass.length - 1);
+  const before = Math.floor(position);
+  const after = Math.min(before + 1, travel.bass.length - 1);
+  const between = (values: number[]) => lerp(values[before]!, values[after]!, position - before);
+  return { bass: between(travel.bass), high: between(travel.high) };
 }
 
 /** Tempi outside this are either a different art form or an octave error. */

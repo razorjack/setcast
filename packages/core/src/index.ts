@@ -34,10 +34,14 @@ export {
   nearestBeat,
   snapToBeats,
   summarizeEnvelope,
+  travelAt,
+  travelOf,
+  TRAVEL_STEP,
   type DraftAnnotation,
   type Envelope,
   type SectionOptions,
   type SetEnvelope,
+  type SetTravel,
 } from './analysis.ts';
 export {
   OutputSchema,
@@ -109,11 +113,13 @@ export { Registry } from './registry.ts';
 export {
   SECONDS_CAP,
   beatVars,
+  readsTravel,
   stageData,
   stageVars,
   playVars,
   tracklistRowVars,
   tracklistVars,
+  travelVars,
 } from './stage.ts';
 export {
   TRACKLIST_DEFAULTS,

@@ -11,7 +11,7 @@ import {
   type MixAuthoring,
   type ResolvedProject,
 } from '../packages/core/src/index.ts';
-import { load, withSetEnvelope } from '../packages/cli/src/project.ts';
+import { load, withWholeSet } from '../packages/cli/src/project.ts';
 import { still, withRenderSession } from '../packages/renderer-remotion/src/index.ts';
 import { themes } from '../packages/themes/src/index.ts';
 
@@ -51,7 +51,7 @@ await withRenderSession(async () => {
     const outDir = join(projectDir, 'out/tracklist', theme);
     await mkdir(outDir, { recursive: true });
     const loaded = await load(projectDir, theme);
-    const project = await withSetEnvelope(loaded);
+    const project = await withWholeSet(loaded);
     const files: string[] = [];
     for (const shot of SHOTS) files.push(await grab(project, shot, outDir));
     tile(

@@ -15,7 +15,7 @@ import {
 import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load, withSetEnvelope } from '../project.ts';
+import { load, withWholeSet } from '../project.ts';
 import {
   bold,
   dim,
@@ -65,7 +65,7 @@ async function runCommand(argv: string[]): Promise<void> {
   const out = outputPath(options, dir, config.output.file);
   await mkdir(dirname(out), { recursive: true });
   showProject(loaded.project, options.range);
-  const project = await withSetEnvelope(loaded);
+  const project = await withWholeSet(loaded);
 
   const started = Date.now();
   const ui = new RenderUi();

@@ -19,6 +19,7 @@ const placeholder: ResolvedProject = {
   modulation: [],
   visualizers: [{ name: 'spectrum' }],
   envelope: null,
+  travel: null,
   panel: { dwell: 14, fade: 1.2 },
   tracklist: null,
   bpm: null,

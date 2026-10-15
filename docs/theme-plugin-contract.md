@@ -131,6 +131,11 @@ Stage variables include `--current-plays`, `--set-progress`, `--section-time`,
 `--since-buildup`, `--until-buildup`, `--since-rewind`, `--until-rewind`,
 `--drop-intensity`, and `--drop-participants`. Seconds cap at 60, including absent cues.
 `--beat` and `--bar` remain optional tempo phases, not inferred hardware state.
+`--travel-bass` and `--travel-high` are the running sum of each band's energy since the start of
+the set, in seconds at full energy, so they grow by at most 1 a second and never decrease. Motion
+driven by them speeds up with the music and stops in silence without jumping back. The stage sets
+them only when the theme or project CSS contains `var(--travel-`, because computing them reads the
+whole set before rendering.
 
 Every `.sc-panel` has `data-play`, `data-focused`, `data-returning`, its own optional
 `data-deck`, `data-section`, `data-tail`, and space-separated `data-tags`. Its cue variables are

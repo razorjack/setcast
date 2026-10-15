@@ -8,7 +8,7 @@ import {
   type ArtGrid,
   type FrameArea,
 } from '../background.ts';
-import { beatVars, stageData, stageVars } from '../stage.ts';
+import { beatVars, stageData, stageVars, travelVars } from '../stage.ts';
 import { Background, useBackgroundArt } from './components/Background.tsx';
 import { Header } from './components/Header.tsx';
 import { NowPlaying } from './components/NowPlaying.tsx';
@@ -45,6 +45,7 @@ export function Stage() {
     visibility: measuringArt ? 'hidden' : undefined,
     ...stageVars(mix, timeSeconds, composition.durationSeconds),
     ...beatVars(timeSeconds, project.bpm, project.beatOffset),
+    ...travelVars(project.travel, timeSeconds),
     ...modulationVars(modulation),
     ...backgroundVars(backgroundArt),
   };

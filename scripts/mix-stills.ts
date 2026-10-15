@@ -2,11 +2,11 @@
 import { mkdir } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { normalizeMix } from '../packages/core/src/index.ts';
-import { load, withSetEnvelope } from '../packages/cli/src/project.ts';
+import { load, withWholeSet } from '../packages/cli/src/project.ts';
 import { still } from '../packages/renderer-remotion/src/index.ts';
 
 const loaded = await load(resolve('examples/demo'));
-const project = await withSetEnvelope(loaded);
+const project = await withWholeSet(loaded);
 const out = join(loaded.dir, 'out/mix');
 await mkdir(out, { recursive: true });
 for (const [name, at] of [

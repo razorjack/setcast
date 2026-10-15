@@ -110,6 +110,7 @@ function resolveProject(
     modulation,
     visualizers: resolveVisualizers(config.visualizer, theme),
     envelope: null,
+    travel: null,
     panel: config.panel === false ? null : config.panel,
     tracklist: resolveProjectTracklist(config.tracklist, theme),
     bpm: config.bpm ?? null,

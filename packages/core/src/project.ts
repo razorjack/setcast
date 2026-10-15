@@ -1,4 +1,4 @@
-import type { SetEnvelope } from './analysis.ts';
+import type { SetEnvelope, SetTravel } from './analysis.ts';
 import type { BackgroundFit } from './background.ts';
 import type { MixDocument } from './mix-schema.ts';
 import type { ModRoute } from './modulation.ts';
@@ -36,6 +36,11 @@ export type ResolvedProject = {
    * it null; commands that render read the audio and fill it in.
    */
   envelope: SetEnvelope | null;
+  /**
+   * How far the music has carried the set, when the CSS reads `--travel-*` (`readsTravel`).
+   * Loading a project leaves it null; commands that render read the audio and fill it in.
+   */
+  travel: SetTravel | null;
   /**
    * How long the now-playing panel stays up after a track change, and how long it takes to leave;
    * null when the project shows no panels.

@@ -8,6 +8,8 @@ import {
   estimateBpm,
   nearestBeat,
   summarizeEnvelope,
+  travelAt,
+  travelOf,
   type Envelope,
 } from './analysis.ts';
 
@@ -96,6 +98,26 @@ describe('summarizeEnvelope', () => {
     expect(summary.step).toBe(5);
     expect(summary.bass).toEqual([1, 1, 0.05, 0.05]);
     expect(summary.high).toEqual([1, 1, 1, 1]);
+  });
+});
+
+describe('travelOf', () => {
+  // 10 s of bass louder than full, then 10 s of none, at 20 hops a second; steady highs at half.
+  const bass = Array.from({ length: 400 }, (_, hop) => (hop < 200 ? 2 : 0));
+  const travel = travelOf({ hop: 0.05, bass, high: bass.map(() => 0.5), flux: [] });
+
+  test('grows by the energy, at most one a second, and stands still in silence', () => {
+    expect(travel.step).toBe(0.25);
+    expect(travelAt(travel, 5).bass).toBe(5);
+    expect(travelAt(travel, 15).bass).toBe(10);
+    expect(travelAt(travel, 20).bass).toBe(10);
+    expect(travelAt(travel, 20).high).toBe(10);
+  });
+
+  test('interpolates between points and holds the ends outside the set', () => {
+    expect(travelAt(travel, 2.6).bass).toBeCloseTo(2.6);
+    expect(travelAt(travel, -1)).toEqual({ bass: 0, high: 0 });
+    expect(travelAt(travel, 99)).toEqual({ bass: 10, high: 10 });
   });
 });
 

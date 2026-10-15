@@ -7,7 +7,7 @@ import { still, type StillOptions, type StillResult } from '@setcast/renderer-re
 import { themes } from '@setcast/themes';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load, withSetEnvelope } from '../project.ts';
+import { load, withWholeSet } from '../project.ts';
 import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme name|all]
@@ -42,7 +42,7 @@ async function runCommand(argv: string[]): Promise<void> {
 
   const loaded = await load(options.dir, options.theme);
   const plan = planStill(loaded, options);
-  const project = await withSetEnvelope(loaded);
+  const project = await withWholeSet(loaded);
   const result = await grabStill(
     project,
     plan,
@@ -64,7 +64,7 @@ async function grabEveryTheme(options: StillCommandOptions): Promise<void> {
     const plan = planStill(loaded, options);
     const project: ResolvedProject = envelope
       ? { ...loaded.project, envelope }
-      : await withSetEnvelope(loaded);
+      : await withWholeSet(loaded);
     envelope = project.envelope;
     const themedPlan = { ...plan, out: themedFile(plan.out, theme) };
     const result = await grabStill(

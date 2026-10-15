@@ -1,5 +1,7 @@
+import { travelAt, type SetTravel } from './analysis.ts';
 import { backgroundKind } from './background.ts';
 import { clamp } from './motion.ts';
+import type { ResolvedProject } from './project.ts';
 import {
   lastAnnotations,
   sinceAnnotation,
@@ -91,6 +93,20 @@ export function beatVars(time: number, bpm: number | null, offset = 0): Record<s
 export function beatPhase(time: number, bpm: number, offset = 0): { beat: number; bar: number } {
   const beats = ((time - offset) * bpm) / 60;
   return { beat: phase(beats), bar: phase(beats / 4) };
+}
+
+/** Whether the project's CSS reads `--travel-*`, which needs the whole set read before rendering. */
+export const readsTravel = (project: ResolvedProject): boolean =>
+  /var\(\s*--travel-/.test(project.css);
+
+/**
+ * How far the music has carried the set, as `--travel-bass` and `--travel-high`, so a theme can
+ * move things by it without JS. Nothing when the project has no travel.
+ */
+export function travelVars(travel: SetTravel | null, time: number): Record<string, string> {
+  if (!travel) return {};
+  const { bass, high } = travelAt(travel, time);
+  return { '--travel-bass': cssNumber(bass), '--travel-high': cssNumber(high) };
 }
 
 /** How far through the current turn `elapsed` sits, 0..1, for a negative count too. */
