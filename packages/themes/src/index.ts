@@ -3,6 +3,7 @@ import { afterhours } from './afterhours.ts';
 import { anamorphic } from './anamorphic.ts';
 import { bristol } from './bristol.ts';
 import { bunker } from './bunker.ts';
+import { darkroom } from './darkroom.ts';
 import { escapement } from './escapement.ts';
 import { interference } from './interference.ts';
 import { longExposure } from './long-exposure.ts';
@@ -20,6 +21,7 @@ export {
   anamorphic,
   bristol,
   bunker,
+  darkroom,
   escapement,
   interference,
   longExposure,
@@ -51,5 +53,6 @@ export const themes: Record<string, Theme> = Object.fromEntries(
     masthead,
     anamorphic,
     relief,
+    darkroom,
   ].map((theme) => [theme.name, theme]),
 );

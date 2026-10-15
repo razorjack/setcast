@@ -14,7 +14,7 @@ track, a clock runs through the set, and the visuals move with the music.
 
 It is made for DJs who publish their mixes on YouTube and want more than a still image over the
 audio, without spending an evening in a video editor for every set. You describe the set in one
-YAML file and pick one of 15 themes. Themes are plain CSS, so if you can edit a stylesheet you can
+YAML file and pick one of 16 themes. Themes are plain CSS, so if you can edit a stylesheet you can
 change anything on screen, and you never need JavaScript. The default look is dark, sterile
 sci-fi, made for neurofunk, techstep and jungle; the other themes range from a photocopied rave
 flyer to the fluorescent display of a 90s CD deck.
@@ -70,6 +70,7 @@ a path to your own `.css`.
 | `masthead`      | your art full bleed, the track set in its emptiest part like a magazine's cover lines    |
 | `anamorphic`    | the set as a film: your art in a 2.39:1 band, the credits in the bars, drops open it     |
 | `relief`        | the music as a ridgeline plot: lines in your art's colors, raised into its terrain       |
+| `darkroom`      | the music exposes your art: a spectrogram prints it where the set is loud, black between |
 
 ## Get started
 
@@ -320,7 +321,8 @@ Like an SVG, a canvas keeps its own height when only `top` and `bottom` are set,
 the current one and the two after it, gliding on at each new listing. Every built-in theme styles
 it in its own way and places it clear of its panels. Themes that can set it outside your art show
 it without being asked: anamorphic in its letterbox bar, escapement on its paper, patina in its
-header line and passe-partout on the gallery wall; `tracklist: false` hides it there.
+header line, passe-partout on the gallery wall and darkroom along its film edge; `tracklist: false`
+hides it there.
 `tracklist: { before: 4, after: 0 }` sets the counts. The list replaces the "next" card, so
 `after: 0` keeps upcoming tracks a surprise. A row is marked as playing while its track is
 audible, so in a DJ blend both rows light up, in their deck colors.

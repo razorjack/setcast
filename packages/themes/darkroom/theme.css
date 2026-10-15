@@ -1,0 +1,403 @@
+/* darkroom: the music exposes your art. A spectrogram fills the frame between two film rebates
+   and shows the art where the set is loud; the rest stays black, and a faint print of the whole
+   art develops over the course of the set. The tracklist runs along the upper rebate like edge
+   printing and moves on a frame with each listing. */
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../fonts/BarlowCondensed-500-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../fonts/BarlowCondensed-500-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 600;
+  src: url(../fonts/BarlowCondensed-600-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-024F;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 600;
+  src: url(../fonts/BarlowCondensed-600-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.theme-darkroom {
+  /* paper for the titles, the safelight's amber for the edge printing */
+  --paper: oklch(0.93 0.014 80);
+  --safelight: oklch(0.72 0.15 52);
+  --accent: var(--safelight);
+  --fg: var(--paper);
+  --fg-dim: color-mix(in oklab, var(--paper) 58%, transparent);
+  --fg-faint: color-mix(in oklab, var(--paper) 38%, transparent);
+  --deck-a: var(--safelight);
+  --deck-b: oklch(0.8 0.1 85);
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-mono: var(--font-display);
+  --hairline: max(1px, 0.07cqw);
+  /* the frame between the rebates */
+  --edge-x: 3.4cqw;
+  --rebate-top: 7cqh;
+  --rebate-bottom: 15cqh;
+  /* the art shows at this brightness wherever the music is loudest */
+  --art-luma: 0.42;
+  --exposure: pow(
+    clamp(0.1, var(--art-luma) / var(--bg-luma, var(--art-luma)), 4),
+    var(--bg-correction, 0.8)
+  );
+
+  font-family: var(--font-display);
+  color: var(--paper);
+  background: #000;
+}
+
+/* the print: the art cropped to the frame, too faint to see at first, developing through the
+   set to a quarter of its brightness */
+.theme-darkroom .sc-bg {
+  inset: var(--rebate-top) 0 var(--rebate-bottom);
+  overflow: clip;
+}
+.theme-darkroom .sc-bg-img {
+  opacity: calc(0.04 + var(--set-progress, 0) * 0.22);
+  filter: brightness(var(--exposure)) grayscale(0.3);
+}
+.theme-darkroom .sc-bg-vignette {
+  background: radial-gradient(120% 110% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55));
+}
+
+/* the exposure: the last 8 s of the spectrum across the frame, the art where it is loud */
+.theme-darkroom .sc-spectrogram {
+  top: var(--rebate-top);
+  height: calc(100cqh - var(--rebate-top) - var(--rebate-bottom));
+  color: var(--paper);
+  filter: url(./paper.svg#grade) brightness(var(--exposure));
+}
+/* without art the music exposes plain paper */
+.theme-darkroom[data-background='none'] .sc-spectrogram {
+  filter: url(./paper.svg#grade);
+}
+
+/* the lower rebate: the credit on the left, the set and its clock on the right */
+.theme-darkroom .sc-header {
+  top: auto;
+  left: auto;
+  right: var(--edge-x);
+  bottom: calc(var(--rebate-bottom) / 2);
+  flex-direction: column;
+  align-items: end;
+  gap: 0.5cqw;
+  translate: 0 50%;
+  font-size: 0.9cqw;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--safelight);
+}
+.theme-darkroom .sc-clock {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+}
+.theme-darkroom .sc-clock-total {
+  color: var(--fg-faint);
+}
+
+/* the credit: the artist in edge printing, the title in paper, the label quieter */
+.theme-darkroom .sc-panel {
+  --title-gap: 1cqw;
+  left: var(--edge-x);
+  bottom: calc(var(--rebate-bottom) / 2);
+  max-width: 56cqw;
+  translate: 0 calc(50% + (1 - var(--presence, 1)) * 1cqh);
+  opacity: clamp(0, var(--presence, 1) * 1.4 - 0.2, 1);
+}
+.theme-darkroom .sc-panel-head {
+  gap: 0.7cqw;
+  margin-bottom: var(--title-gap);
+  font-size: 0.86cqw;
+  font-weight: 600;
+  color: var(--safelight);
+}
+.theme-darkroom .sc-panel[data-returning='false'] .sc-eyebrow,
+.theme-darkroom .sc-index {
+  display: none;
+}
+.theme-darkroom .sc-panel[data-returning='false'] .sc-panel-head:not(:has(.sc-deck)) {
+  display: none;
+}
+.theme-darkroom .sc-deck {
+  letter-spacing: 0.08em;
+  color: var(--deck);
+}
+.theme-darkroom .sc-artist {
+  margin-bottom: var(--title-gap);
+  font-size: 0.9cqw;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--safelight);
+  text-box: trim-both cap alphabetic;
+}
+.theme-darkroom .sc-title {
+  font-size: 2.6cqw;
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: 0.01em;
+  text-box: trim-both cap alphabetic;
+}
+.theme-darkroom .sc-label,
+.theme-darkroom .sc-credit-details {
+  margin-top: var(--title-gap);
+  font-size: 1cqw;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg-dim);
+  text-box: trim-both cap alphabetic;
+}
+.theme-darkroom .sc-label + .sc-credit-details {
+  margin-top: 0.6cqw;
+}
+
+/* DJ: the current plays side by side along the rebate; focus sets the ink */
+.theme-darkroom[data-presentation='dj'] .sc-contributors {
+  left: var(--edge-x);
+  bottom: calc(var(--rebate-bottom) / 2);
+  width: max-content;
+  max-width: 70cqw;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  translate: 0 50%;
+}
+.theme-darkroom[data-presentation='dj'] .sc-slot {
+  width: calc-size(max-content, size * var(--fit));
+  height: auto;
+  margin: 0;
+  overflow: clip visible;
+}
+.theme-darkroom[data-presentation='dj'] .sc-panel {
+  --title-gap: 0.8cqw;
+  width: max-content;
+  max-width: 24cqw;
+  padding-right: 3cqw;
+  opacity: 1;
+  translate: none;
+}
+.theme-darkroom[data-presentation='dj'] .sc-title {
+  font-size: 2cqw;
+}
+.theme-darkroom[data-presentation='dj'] .sc-panel[data-focused='false'] {
+  color: var(--fg-dim);
+}
+.theme-darkroom .sc-contributor-count {
+  display: none;
+}
+.theme-darkroom .sc-overflow {
+  align-self: center;
+  font-size: 0.86cqw;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+}
+
+/* up next, without a tracklist: edge printing in the upper rebate over its last seconds */
+.theme-darkroom .sc-next {
+  top: calc(var(--rebate-top) / 2);
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  max-width: 80cqw;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.9cqw;
+  translate: -50% -50%;
+  white-space: nowrap;
+  opacity: clamp(0, (12 - var(--until-next, 60)) / 1.5, 1);
+}
+.theme-darkroom .sc-next-label {
+  font-size: 0.86cqw;
+  font-weight: 600;
+  color: var(--safelight);
+}
+.theme-darkroom .sc-next-label::after {
+  content: ' \25B8';
+}
+.theme-darkroom .sc-next-artist {
+  font-size: 0.86cqw;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.theme-darkroom .sc-next-title {
+  font-size: 1.15cqw;
+}
+
+/* the tracklist: edge printing along the upper rebate, one frame per listing, the current one in
+   the middle; it moves on by a frame with each listing, as film does through the camera */
+.theme-darkroom .sc-tracklist {
+  --frame: 22cqw;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: auto;
+  height: var(--rebate-top);
+  font-family: var(--font-display);
+  font-size: 0.9cqw;
+  color: var(--fg-dim);
+  mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+}
+.theme-darkroom .sc-tracklist-heading {
+  display: none;
+}
+.theme-darkroom .sc-tracklist-rows {
+  position: absolute;
+  inset: 0;
+}
+.theme-darkroom .sc-tracklist-row {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--frame);
+  height: auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  column-gap: 0.7em;
+  padding-bottom: 0.45em;
+  overflow: visible;
+  translate: calc(-50% + var(--row-offset) * var(--frame)) -50%;
+  white-space: nowrap;
+  opacity: calc(var(--row-presence) * 0.6);
+}
+.theme-darkroom .sc-tracklist-row[data-state='played'] {
+  opacity: calc(var(--row-presence) * 0.38);
+}
+.theme-darkroom .sc-tracklist-row[data-state='current'] {
+  opacity: var(--row-presence);
+  background: linear-gradient(var(--safelight), var(--safelight)) left bottom /
+    calc(var(--row-progress) * 100%) var(--hairline) no-repeat;
+}
+.theme-darkroom .sc-tracklist-index {
+  flex: none;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--safelight);
+}
+.theme-darkroom .sc-tracklist-index::after {
+  content: ' \25B8';
+}
+.theme-darkroom .sc-tracklist-artist {
+  flex: none;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.theme-darkroom .sc-tracklist-title {
+  overflow: clip;
+  overflow-clip-margin: 0.3em;
+  font-size: 1.15em;
+  text-overflow: ellipsis;
+  color: var(--paper);
+}
+.theme-darkroom .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+  color: var(--deck);
+}
+
+/* portrait (9:16): taller rebates; the credits stack in the lower one */
+@container (aspect-ratio < 1) {
+  .theme-darkroom,
+  .theme-darkroom .sc-bg,
+  .theme-darkroom .sc-spectrogram,
+  .theme-darkroom .sc-header,
+  .theme-darkroom .sc-panel,
+  .theme-darkroom .sc-contributors,
+  .theme-darkroom .sc-next,
+  .theme-darkroom .sc-tracklist {
+    --edge-x: 6cqw;
+    --rebate-top: 8cqh;
+    --rebate-bottom: 26cqh;
+  }
+  .theme-darkroom .sc-header {
+    top: auto;
+    left: var(--edge-x);
+    right: var(--edge-x);
+    bottom: 3cqh;
+    flex-direction: row;
+    align-items: baseline;
+    translate: none;
+    font-size: 1.9cqw;
+  }
+  .theme-darkroom .sc-panel {
+    --title-gap: 2.2cqw;
+    left: var(--edge-x);
+    right: var(--edge-x);
+    bottom: 9cqh;
+    max-width: none;
+    translate: 0 calc((1 - var(--presence, 1)) * 1cqh);
+  }
+  .theme-darkroom .sc-panel-head,
+  .theme-darkroom .sc-artist {
+    font-size: 2cqw;
+  }
+  .theme-darkroom .sc-title {
+    font-size: 6.4cqw;
+  }
+  .theme-darkroom :is(.sc-label, .sc-credit-details) {
+    font-size: 2.3cqw;
+  }
+  .theme-darkroom[data-presentation='dj'] .sc-contributors {
+    right: var(--edge-x);
+    bottom: 9cqh;
+    width: auto;
+    max-width: none;
+    display: block;
+    translate: none;
+  }
+  .theme-darkroom[data-presentation='dj'] .sc-slot {
+    width: auto;
+    height: calc-size(auto, size * var(--fit));
+    margin-top: calc(var(--fit) * 2.2cqh);
+    overflow: visible clip;
+  }
+  .theme-darkroom[data-presentation='dj'] .sc-panel {
+    max-width: none;
+    padding-right: 0;
+  }
+  .theme-darkroom[data-presentation='dj'] .sc-title {
+    font-size: 4.8cqw;
+  }
+  .theme-darkroom .sc-overflow {
+    margin-top: 2cqh;
+    font-size: 2cqw;
+  }
+  .theme-darkroom .sc-next {
+    font-size: 1.6cqw;
+  }
+  .theme-darkroom :is(.sc-next-label, .sc-next-artist) {
+    font-size: 1.9cqw;
+  }
+  .theme-darkroom .sc-next-title {
+    font-size: 2.6cqw;
+  }
+  .theme-darkroom .sc-tracklist {
+    --frame: 46cqw;
+    font-size: 2.1cqw;
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+}

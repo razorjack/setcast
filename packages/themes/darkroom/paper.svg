@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- a hard paper grade: faint exposure leaves the paper black, strong exposure prints fully -->
+  <filter id="grade" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <feFuncA type="linear" slope="2.6" intercept="-0.7"/>
+    </feComponentTransfer>
+  </filter>
+</svg>

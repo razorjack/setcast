@@ -298,7 +298,7 @@ list; implemented today: visualizer, theme, tracklist importer):
   vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
-  (15 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
+  (16 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
 - tracklist importers: plain "MM:SS Artist - Title" ✓ (`ID - ID` dubs ✓), `.cue` ✓,
   Rekordbox/Serato/Traktor history
 - analysis: BPM and drop / breakdown detection → draft mix annotations without automatic snapping
@@ -711,6 +711,17 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   grey. The plot fills the frame above a band for the credits, so no type sits on the lines; in
   DJ mode the credits stand side by side in the band. A drop lights the older lines for 1.6 s
   instead of flashing the frame.
+- Darkroom shows the art only where the music exposes it: a full-frame spectrogram with
+  `fill: art` between two black film rebates. An SVG `feFuncA` in `paper.svg` is its paper grade,
+  a contrast curve on the cells' opacity, so quiet cells stay black and loud ones print the art;
+  without it, music that is loud across the spectrum exposed the whole frame and the theme read as
+  the art behind a filter. The grade is CSS, so a user can soften or replace it. It is tuned on
+  real drum and bass (the Stakka & Skynet excerpt); the demo synth is loud in nearly every bin and
+  prints far more of the frame. The art behind the cells, `.sc-bg-img`, develops from 4% to 26%
+  opacity with `--set-progress`, so the set opens on black and ends over a faint print. Both share
+  one `--exposure`, a correction toward luma 0.42, because the cells are the only place the art
+  is seen at full strength. The tracklist runs along the upper rebate like edge printing and
+  moves on a frame with each listing (`--row-offset` along x).
 - Escapement shows `.sc-art`, the file itself, in its band rather than `.sc-bg-img`. The band
   crosses the whole frame, so the blurred copy behind contained art (square sleeves in landscape,
   landscape art in portrait) would show in it as hard edges. It fits the file whole into the
@@ -742,7 +753,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   rather than leaving every theme to hide it, and `after: 0` then shows nothing ahead.
 - Every built-in theme designs its tracklist, but only themes that set it outside the art show it
   by default (`Theme.tracklist`): anamorphic in its upper bar, escapement on the paper's top left
-  corner, patina in its header line, passe-partout on the wall above the label. Switching to any
+  corner, patina in its header line, passe-partout on the wall above the label, darkroom along
+  its upper film rebate. Switching to any
   theme therefore never covers more of the user's art than the theme already did. The others,
   which put the list over the art, show it when the project sets `tracklist: true`.
 - The tracklist glides by interpolating the window's anchor and both edges between the previous
