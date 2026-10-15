@@ -121,7 +121,8 @@ Gotchas:
   without it). Keep backdrop blur on small elements such as the panel.
 - A visualizer's `<svg>` is a replaced element: absolutely positioned with `width: auto`, it
   keeps its own width and ignores `right`. To span from `left` to `right`, add
-  `justify-self: stretch` (bristol's overview).
+  `justify-self: stretch` (bristol's overview). The spectrogram's `<canvas>` is one too: with
+  `height: auto` between `top` and `bottom` it stays 150 px tall, so give it a `height`.
 - base.css styles the tracklist in `@layer fallback`, so a theme that never styles it still shows
   it in its own type. Any theme rule wins over the layer whatever its specificity, but the
   properties a theme leaves unset still apply: rows are `display: flex` with `line-height: 1.6`,
@@ -400,7 +401,11 @@ base.css centers
 the vectorscope on the radial ring (`--vectorscope-size`), so the two nest. `.sc-spectrogram` is a
 `<canvas>` (`--spectrogram-height`): its CSS `color` paints a full-strength cell and each cell's
 alpha is its level, so a theme colors it with `color` and shapes it with opacity, masks, blend
-modes and filters.
+modes and filters. With `fill: art` (`data-fill`) the cells show the art the theme shows instead,
+drawn where and how it is drawn (`object-fit`, `object-position`, transforms), or covering the
+frame when the theme hides the art; video and a stage without art fall back to `color`. A filter
+on the canvas applies to the art too, so a theme corrects its exposure there, and an SVG
+`feFuncA` filter reshapes the levels (darkroom's paper grade).
 
 `.sc-ridgeline` (`--ridgeline-height`, the whole frame by default) is a ridgeline plot of the last
 `seconds`: one `.sc-ridgeline-line` path per moment, oldest first, each with `--age` (0 for this
@@ -904,7 +909,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   is 7,680 cells a frame, too many DOM nodes. It repaints entirely in a layout effect every frame
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
   `color` so appearance stays in the theme. Columns are placed by age, not index, so it scrolls
-  smoothly between the 1/30 s grid moments.
+  smoothly between the 1/30 s grid moments. It writes one pixel per moment and bin and stretches
+  that image over a canvas of its box's size with smoothing, so a full-frame spectrogram has no
+  17 px rows (the strain range of the regular-pattern gotcha). `fill: art` then draws the art
+  into the canvas with `source-in`, from images decoded once per file, rather than masking a DOM
+  copy of the art: a mask image made from the canvas would decode asynchronously and could miss
+  the frame.
 - A ridgeline line keeps its moment and rises with its age, like a spectrogram column scrolls.
   Lines fixed in place that cross-fade between moments made peaks flicker from line to line; a
   rising line carries a peak up the stack in one piece, and the art's relief, read at the line's

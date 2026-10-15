@@ -102,3 +102,44 @@ export function viewBoxToStage(
   const top = box.top + (box.height - viewBox.height * scale) / 2;
   return ({ x, y }) => ({ x: left + x * scale, y: top + y * scale });
 }
+
+/**
+ * Where an image of `size` is drawn in `box` by CSS `object-fit` and `object-position`, as their
+ * computed values read; a position other than percentages and pixels centers it.
+ */
+export function objectRect(
+  size: { width: number; height: number },
+  box: StageBox,
+  objectFit: string,
+  objectPosition: string,
+): StageBox {
+  const { width, height } = fittedSize(size, box, objectFit);
+  const [x, y] = objectPosition.split(' ');
+  return {
+    left: box.left + positionOffset(x, box.width - width),
+    top: box.top + positionOffset(y, box.height - height),
+    width,
+    height,
+  };
+}
+
+function fittedSize(size: { width: number; height: number }, box: StageBox, objectFit: string) {
+  if (objectFit === 'fill') return { width: box.width, height: box.height };
+  const widthScale = box.width / size.width;
+  const heightScale = box.height / size.height;
+  const scales: Record<string, number> = {
+    cover: Math.max(widthScale, heightScale),
+    contain: Math.min(widthScale, heightScale),
+    none: 1,
+    'scale-down': Math.min(1, widthScale, heightScale),
+  };
+  const scale = scales[objectFit] ?? 1;
+  return { width: size.width * scale, height: size.height * scale };
+}
+
+/** How far a position such as `30%` or `12px` moves the image into the room it has left. */
+function positionOffset(position: string | undefined, room: number): number {
+  if (position?.endsWith('%')) return (room * Number.parseFloat(position)) / 100;
+  if (position?.endsWith('px')) return Number.parseFloat(position);
+  return room / 2;
+}

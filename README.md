@@ -279,7 +279,7 @@ visualizer:
 | `meters`       | level meters on the left                                                            | `bands: [bass, mids, highs, rms]` (also `onset`), `gain: 1`, `floor: 0`, `segments: 16`, `peak: 0`          |
 | `oscilloscope` | the waveform as one trace near the bottom                                           | `gain: 1`, `trail: 0`                                                                                      |
 | `vectorscope`  | left against right in a circle, inside the radial ring                              | `gain: 1`, `trail: 0`                                                                                      |
-| `spectrogram`  | the last seconds of spectrum scrolling left, bass at the bottom                     | `seconds: 4` (at most 8), `gain: 1`                                                                        |
+| `spectrogram`  | the last seconds of spectrum scrolling left, bass at the bottom                     | `seconds: 4` (at most 8), `gain: 1`, `fill: theme` (or `art`)                                              |
 | `ridgeline`    | the last seconds of spectrum as stacked lines rising up the frame, over the art's relief | `lines: 44`, `seconds: 6` (at most 8), `gain: 1`, `relief: 0.5` (0 to 1), `spread: 0.7`, `fill: theme` (or `art`) |
 | `overview`     | the whole set as a strip under the header, with track and drop marks and a playhead | none                                                                                                       |
 | `bloom`        | the art's own lamps, signs and suns glowing with the music                          | `bands: [bass, highs]` (one or two), `gain: 1`, `lights: 0.05` (share of the art), `radius: 0.015`, `smooth: 0.1` |
@@ -289,9 +289,9 @@ baseline in silence, and `spin` is degrees per second. `peak` is the seconds a m
 bar's highest level before it falls, as on a hi-fi analyzer (`0` draws none, at most 4). The
 scopes draw the last 1/30 s of audio; `trail: 6` also draws the six 1/30 s before it behind the
 current trace, for the theme to fade into an afterimage (at most 12). `fill: art` shows your
-background art through the bars, the area under the line or the band around the ring, so the
-music opens windows onto the picture; the theme decides how the art looks there, typically
-brighter and more colorful than the background around it.
+background art through the bars, the area under the line, the band around the ring or the
+spectrogram's cells, so the music opens windows onto the picture; the theme decides how the art
+looks there, typically brighter and more colorful than the background around it.
 The ridgeline stacks the spectrum of the last seconds as lines, the newest at the bottom, each
 rising as it ages, like a ridgeline plot. Your art raises the lines where it is bright
 (`relief`), so in silence they draw a relief of the art, and every set gets its own terrain.
@@ -309,7 +309,10 @@ which keeps the vectorscope centered in the ring, or `--spectrum-height`, `--met
 `--oscilloscope-height`, `--spectrogram-height`, `--ridgeline-height` and `--overview-height`, or restyle
 `.sc-spectrum`, `.sc-radial`, `.sc-meters`, `.sc-oscilloscope`, `.sc-vectorscope`,
 `.sc-spectrogram`, `.sc-ridgeline` and `.sc-overview` (see [AGENTS.md](AGENTS.md#css-contract) for their elements).
-The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell.
+The spectrogram is a canvas: its CSS `color` is the color of a full-strength cell, or with
+`fill: art` the art is. Its cells blend into each other, so a full-frame spectrogram shows no grid.
+Like an SVG, a canvas keeps its own height when only `top` and `bottom` are set, so give it a
+`height`.
 
 ## Tracklist
 

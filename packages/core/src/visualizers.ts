@@ -119,6 +119,8 @@ export const SpectrogramConfigSchema = visualizerSchema('spectrogram', {
   /** How much of the past scrolls across, newest at the right. */
   seconds: numberSetting('seconds', 1, HISTORY_SECONDS).default(4),
   gain: numberSetting('gain', 0.1, 4).default(1),
+  /** The cells take the theme's `color`, or show the art where the music is loud. */
+  fill: FillSchema.default('theme'),
 });
 export type SpectrogramConfig = z.infer<typeof SpectrogramConfigSchema>;
 
