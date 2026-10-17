@@ -19,9 +19,9 @@ change anything on screen, and you never need JavaScript. The default look is da
 sci-fi, made for neurofunk, techstep and jungle; the other themes range from a photocopied rave
 flyer to the fluorescent display of a 90s CD deck.
 
-[![One DJ set shown in each of Setcast's 11 built-in themes. Click to watch the video on YouTube.](docs/assets/setcast-themes-video.jpg)](https://www.youtube.com/watch?v=-emCbgmZilo)
+[![One DJ set shown in each of Setcast's 16 built-in themes. Click to watch the video on YouTube.](docs/assets/setcast-themes-video.jpg)](https://youtu.be/Sm0AdiVEKpo)
 
-▶ [Watch one set in all 11 themes on YouTube](https://www.youtube.com/watch?v=-emCbgmZilo) (5:31)
+▶ [Watch one set in all 16 themes on YouTube](https://youtu.be/Sm0AdiVEKpo) (5:31)
 
 ## What you get
 
