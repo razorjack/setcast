@@ -136,6 +136,12 @@
   color: var(--fg-dim);
   opacity: var(--in-matte);
 }
+/* a long title wraps into two lines short of the tracklist's first column and up next */
+.theme-anamorphic .sc-set-title {
+  max-width: 22cqw;
+  line-height: 1.7;
+  text-wrap: balance;
+}
 .theme-anamorphic .sc-clock {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.14em;
@@ -434,6 +440,9 @@
   }
   .theme-anamorphic .sc-header {
     font-size: 1.6cqw;
+  }
+  .theme-anamorphic .sc-set-title {
+    max-width: none;
   }
   .theme-anamorphic .sc-next {
     top: auto;
