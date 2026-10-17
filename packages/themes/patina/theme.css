@@ -310,13 +310,20 @@
   stroke-width: 0.1cqw;
 }
 
-/* header: small, widely tracked capitals */
+/* header: small, widely tracked capitals. The set's title keeps clear of the line between it
+   and the clock, where the tracklist and up next sit: a long title wraps into a two-line label,
+   its lines level with a tracklist entry's title and artist. */
 .theme-patina .sc-header {
-  top: calc(var(--margin) * 0.8);
+  top: calc(var(--margin) * 0.8 - 0.5cqw);
   font-size: 0.9cqw;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--dim);
+}
+.theme-patina .sc-set-title {
+  max-width: 19cqw;
+  line-height: 1.75;
+  text-wrap: balance;
 }
 .theme-patina .sc-clock {
   font-variant-numeric: tabular-nums;
@@ -461,6 +468,9 @@
   }
   .theme-patina .sc-header {
     font-size: 1.8cqw;
+  }
+  .theme-patina .sc-set-title {
+    max-width: none;
   }
   .theme-patina .sc-panel {
     top: calc(var(--string-y) + 3.6cqh);
@@ -702,7 +712,7 @@
   top: calc(var(--margin) * 0.8 - 0.5cqw);
   right: auto;
   left: 50%;
-  width: 56cqw;
+  width: 52cqw;
   translate: -50% 0;
   font-family: var(--font-display);
   font-size: 1.1cqw;
