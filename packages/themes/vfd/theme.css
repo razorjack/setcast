@@ -334,13 +334,15 @@
   width: var(--col);
   height: calc(var(--dot-s) * 72);
 }
+/* the set's name fills its field up to the beat lamp; a longer one ends in an ellipsis there */
 .theme-vfd .sc-set-title {
   display: block;
-  padding-right: calc(var(--dot-s) * 40);
+  margin-right: calc(var(--dot-s) * 40);
   font-size: calc(var(--dot-s) * 10);
   color: color-mix(in oklab, var(--lit) 64%, transparent);
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* the time right-aligned in a field of five cells, the total beside it */
 .theme-vfd .sc-clock {
