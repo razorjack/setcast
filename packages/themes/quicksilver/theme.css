@@ -346,6 +346,12 @@
   text-transform: uppercase;
   color: var(--steel);
 }
+/* a long title wraps into two lines, clear of the artist's chrome line under the middle */
+.theme-quicksilver .sc-set-title {
+  max-width: 22cqw;
+  line-height: 1.7;
+  text-wrap: balance;
+}
 .theme-quicksilver .sc-clock {
   font-family: var(--font-mono);
   letter-spacing: 0.1em;
@@ -607,6 +613,9 @@
   }
   .theme-quicksilver .sc-header {
     font-size: 1.8cqw;
+  }
+  .theme-quicksilver .sc-set-title {
+    max-width: none;
   }
   .theme-quicksilver .sc-panel-head {
     top: calc(var(--margin) + 4cqh);
