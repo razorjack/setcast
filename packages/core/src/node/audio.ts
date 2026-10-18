@@ -44,7 +44,7 @@ async function streamMono(file: string, rate: number, consume: Consume): Promise
   }
   throw new SetcastError(
     `Cannot decode ${basename(file)}`,
-    'Install ffmpeg so Setcast can read this format (brew install ffmpeg). Without ffmpeg only PCM WAV (16/24/32-bit or float) works.',
+    'Install ffmpeg so Setcast can read this format (brew install ffmpeg on macOS, or the ffmpeg package of your Linux distribution). Without ffmpeg only PCM WAV (16/24/32-bit or float) works.',
   );
 }
 

@@ -38,7 +38,7 @@ function rasterize(source: string, width: number, height: number): void {
     rmSync(temporary, { force: true });
     if (conversion.error && 'code' in conversion.error && conversion.error.code === 'ENOENT') {
       throw new Error(
-        'Cannot run rsvg-convert. Install librsvg (brew install librsvg on macOS), then run vp run rasterize-assets again.',
+        'Cannot run rsvg-convert. Install librsvg (brew install librsvg on macOS, librsvg2-tools on Fedora, librsvg2-bin on Debian and Ubuntu), then run vp run rasterize-assets again.',
         { cause: conversion.error },
       );
     }
