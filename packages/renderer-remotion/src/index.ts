@@ -274,6 +274,12 @@ function studioArgs(propsFile: string, options: PreviewOptions): string[] {
   return args;
 }
 
+/**
+ * Signals that stop `setcast preview`. Without a handler Node exits at once, which leaves Studio
+ * running when only this process is signaled and skips removing the props on Ctrl+C.
+ */
+const STOP_SIGNALS: NodeJS.Signals[] = ['SIGINT', 'SIGTERM', 'SIGHUP'];
+
 /** Studio has no programmatic API, so it runs as its own process until the user stops it. */
 function runStudio(args: string[]): Promise<void> {
   const cliPackage = fileURLToPath(import.meta.resolve('@remotion/cli/package.json'));
@@ -284,33 +290,41 @@ function runStudio(args: string[]): Promise<void> {
       cwd: PACKAGE_ROOT,
       stdio: 'inherit',
     });
+    let stopped = false;
+    const stop = (signal: NodeJS.Signals) => {
+      stopped = true;
+      studio.kill(signal);
+    };
+    const release = () => STOP_SIGNALS.forEach((signal) => process.off(signal, stop));
+    STOP_SIGNALS.forEach((signal) => process.on(signal, stop));
+
     studio.on('exit', (code, signal) => {
-      if (code === 0) resolve();
-      else {
-        const cause = new Error(
-          signal
-            ? `Remotion Studio terminated by ${signal}`
-            : `Remotion Studio exited with code ${code}`,
-        );
-        reject(
-          new SetcastError(
-            signal
-              ? `Remotion Studio stopped after ${signal}`
-              : `Remotion Studio stopped with exit code ${code}`,
-            'Check the Studio output above for the underlying error.',
-            { cause, exitCode: 1 },
-          ),
-        );
-      }
+      release();
+      if (code === 0 || stopped) resolve();
+      else reject(studioStopped(code, signal));
     });
-    studio.on('error', (cause) =>
+    studio.on('error', (cause) => {
+      release();
       reject(
         new SetcastError(
           'Cannot start Remotion Studio',
           'Check that the project dependencies are installed, then retry.',
           { cause, exitCode: 1 },
         ),
-      ),
-    );
+      );
+    });
   });
+}
+
+function studioStopped(code: number | null, signal: NodeJS.Signals | null): SetcastError {
+  const cause = new Error(
+    signal ? `Remotion Studio terminated by ${signal}` : `Remotion Studio exited with code ${code}`,
+  );
+  return new SetcastError(
+    signal
+      ? `Remotion Studio stopped after ${signal}`
+      : `Remotion Studio stopped with exit code ${code}`,
+    'Check the Studio output above for the underlying error.',
+    { cause, exitCode: 1 },
+  );
 }

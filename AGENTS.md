@@ -587,7 +587,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Preview: Remotion Studio spawned via `@remotion/cli` (`remotion studio <entry> --props ...
 --public-dir <projectDir>`). The CLI watches resolved project inputs, reloads them on edits, and
   atomically replaces the props JSON that Studio watches. Invalid edits keep the last valid props.
-  There is no public programmatic Studio API.
+  There is no public programmatic Studio API. `setcast preview` forwards SIGINT, SIGTERM and SIGHUP
+  to Studio and waits for it to exit, so a signal to either process stops both and the props are
+  removed; a stop that the user requested is a normal exit, not a failure.
 - TypeScript 7.0.2 (tsgo). `erasableSyntaxOnly` is on so Node can strip types: no enums,
   namespaces, or parameter properties. Imports use explicit `.ts` extensions.
 - Zod 4.4.3 for every schema. `yaml` 2.9.0 for YAML (maintained, spec-complete, no deps).

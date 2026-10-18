@@ -105,6 +105,23 @@ describe('preview process', () => {
     expect(stop.mock.invocationCallOrder[0]).toBeLessThan(fs.rm.mock.invocationCallOrder[0]!);
   });
 
+  test('stops Studio on a stop signal and still removes temporary props', async () => {
+    const child = Object.assign(new EventEmitter(), {
+      kill: vi.fn((signal: NodeJS.Signals) => child.emit('exit', null, signal)),
+    });
+    childProcess.spawn.mockReturnValue(child);
+    const handlers = process.listeners('SIGTERM').length;
+    const running = preview(project, { projectDir: '/project' });
+    await vi.waitFor(() => expect(process.listeners('SIGTERM')).toHaveLength(handlers + 1));
+
+    const stop = process.listeners('SIGTERM').at(-1) as (signal: NodeJS.Signals) => void;
+    stop('SIGTERM');
+    await expect(running).resolves.toBeUndefined();
+    expect(child.kill).toHaveBeenCalledWith('SIGTERM');
+    expect(fs.rm).toHaveBeenCalledOnce();
+    expect(process.listeners('SIGTERM')).toHaveLength(handlers);
+  });
+
   test('reports non-zero exits', async () => {
     exitWith(2);
     await expect(preview(project, { projectDir: '/project' })).rejects.toThrow(
