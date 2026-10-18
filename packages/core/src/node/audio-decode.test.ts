@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events';
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vite-plus/test';
@@ -25,12 +25,18 @@ test('names an unsupported WAV format when ffmpeg is unavailable', async () => {
 
   const dir = await mkdtemp(join(tmpdir(), 'setcast-decode-'));
   const file = join(dir, 'mix.wav');
-  await writeFile(file, pcm8Wav());
+  try {
+    await writeFile(file, pcm8Wav());
 
-  await expect(decodeMono(file)).rejects.toMatchObject({
-    message: 'mix.wav is 8-bit PCM',
-    hint: expect.stringContaining('Without ffmpeg only 16/24/32-bit PCM or 32-bit float WAV works'),
-  });
+    await expect(decodeMono(file)).rejects.toMatchObject({
+      message: 'mix.wav is 8-bit PCM',
+      hint: expect.stringContaining(
+        'Without ffmpeg only 16/24/32-bit PCM or 32-bit float WAV works',
+      ),
+    });
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });
 
 function pcm8Wav(): Buffer {

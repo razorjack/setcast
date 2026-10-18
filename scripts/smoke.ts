@@ -1,8 +1,7 @@
 // Renders 3 s of examples/demo and fails loudly unless the MP4 has an H.264 video track, an AAC
 // audio track, and (when ffmpeg is available) visibly different frames. Run: vp run smoke
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, statSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -61,28 +60,17 @@ function checkFramesMove(): void {
     return;
   }
 
-  const dir = mkdtempSync(join(tmpdir(), 'setcast-smoke-'));
-  const early = grabFrame(dir, '0.3', 'a.png');
-  const late = grabFrame(dir, '2.4', 'b.png');
+  const early = grabFrame('0.3');
+  const late = grabFrame('2.4');
   if (early.equals(late)) fail('frames at 0.3 s and 2.4 s are identical; visuals are not moving');
   console.log('smoke: frames differ over time (visuals are moving)');
 }
 
-function grabFrame(dir: string, at: string, name: string): Buffer {
-  const file = join(dir, name);
-  execFileSync('ffmpeg', [
-    '-loglevel',
-    'error',
-    '-y',
-    '-ss',
-    at,
-    '-i',
-    out,
-    '-frames:v',
-    '1',
-    file,
-  ]);
-  return readFileSync(file);
+function grabFrame(at: string): Buffer {
+  const args = ['-loglevel', 'error', '-ss', at, '-i', out, '-frames:v', '1'];
+  return execFileSync('ffmpeg', [...args, '-f', 'image2pipe', '-c:v', 'png', '-'], {
+    maxBuffer: 32 * 1024 * 1024,
+  });
 }
 
 function fail(problem: string): never {

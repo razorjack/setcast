@@ -1,7 +1,7 @@
-import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { beforeAll, describe, expect, test } from 'vite-plus/test';
+import { afterAll, beforeAll, describe, expect, test } from 'vite-plus/test';
 import { ConfigError, SetcastError } from '../errors.ts';
 import type { Theme } from '../theme.ts';
 import { loadProject } from './project.ts';
@@ -33,6 +33,10 @@ beforeAll(async () => {
       },
     ],
   };
+});
+
+afterAll(async () => {
+  await rm(dir, { recursive: true, force: true });
 });
 
 const load = async (yaml: string, sub = 'p', themes: Record<string, Theme> = { test: theme }) => {

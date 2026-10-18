@@ -1,11 +1,20 @@
-import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { expect, test } from 'vite-plus/test';
+import { afterEach, beforeEach, expect, test } from 'vite-plus/test';
 import { loadCss } from './css.ts';
 
+let dir: string;
+
+beforeEach(async () => {
+  dir = await mkdtemp(join(tmpdir(), 'setcast-css-'));
+});
+
+afterEach(async () => {
+  await rm(dir, { recursive: true, force: true });
+});
+
 test('inlines file URLs without resolving comments, fragments, or schemes', async () => {
-  const dir = await mkdtemp(join(tmpdir(), 'setcast-css-'));
   await mkdir(join(dir, 'fonts'));
   await writeFile(join(dir, 'fonts/x.woff2'), 'font');
   await writeFile(join(dir, 'fonts/cover (final).png'), 'image');
@@ -34,7 +43,6 @@ test('inlines file URLs without resolving comments, fragments, or schemes', asyn
 });
 
 test('names a missing file referenced by the stylesheet', async () => {
-  const dir = await mkdtemp(join(tmpdir(), 'setcast-css-'));
   const file = join(dir, 't.css');
   await writeFile(file, '@font-face { src: url(nope.woff2) }');
 

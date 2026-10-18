@@ -1,7 +1,7 @@
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { beforeAll, expect, test } from 'vite-plus/test';
+import { afterAll, beforeAll, expect, test } from 'vite-plus/test';
 import { envelope } from '../analysis.ts';
 import { readWav, readEnvelope, decodeMono } from './audio.ts';
 
@@ -82,6 +82,10 @@ function chunk(id: string, body: Buffer): Buffer {
 let dir: string;
 beforeAll(async () => {
   dir = await mkdtemp(join(tmpdir(), 'setcast-wav-'));
+});
+
+afterAll(async () => {
+  await rm(dir, { recursive: true, force: true });
 });
 
 const variants: [string, Variant][] = [
