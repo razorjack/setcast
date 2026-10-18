@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFile } from 'node:child_process';
+import { execFile, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, realpath, rm, stat, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -10,6 +10,7 @@ import { promisify } from 'node:util';
 const execute = promisify(execFile);
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const names = ['core', 'themes', 'renderer-remotion', 'cli'];
+await requirePnpm();
 const temporary = await mkdtemp(join(tmpdir(), 'setcast-packages-'));
 const modules = join(temporary, 'node_modules');
 
@@ -21,6 +22,17 @@ try {
   console.log('package-smoke: PASS (packed CLI, project loading, all themes, H.264 + AAC)');
 } finally {
   await rm(temporary, { recursive: true, force: true });
+}
+
+/** `vp` installs with pnpm but cannot run `pnpm pack`, so pnpm itself must be on PATH. */
+async function requirePnpm(): Promise<void> {
+  if (spawnSync('pnpm', ['--version'], { stdio: 'ignore' }).status === 0) return;
+  const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+  const { version } = manifest.devEngines.packageManager;
+  console.error(
+    `package-smoke: FAIL – pnpm is not on PATH. It packs the workspace packages. Install pnpm ${version} (for example \`mise use -g pnpm@${version}\` or \`npm install -g pnpm@${version}\`), then run vp run package-smoke again.`,
+  );
+  process.exit(1);
 }
 
 async function command(file: string, args: string[], cwd = root) {
