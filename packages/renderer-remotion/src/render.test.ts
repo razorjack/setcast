@@ -12,6 +12,7 @@ const remotion = vi.hoisted(() => ({
 }));
 
 const audio = vi.hoisted(() => ({ probe: vi.fn() }));
+const hardware = vi.hoisted(() => ({ encoding: vi.fn() }));
 const localServer = vi.hoisted(() => ({ check: vi.fn() }));
 
 vi.mock('@remotion/bundler', () => ({ bundle: remotion.bundle }));
@@ -22,6 +23,7 @@ vi.mock('@remotion/renderer', () => ({
   selectComposition: remotion.selectComposition,
 }));
 vi.mock('./probe.ts', () => ({ probeAudio: audio.probe }));
+vi.mock('./hardware.ts', () => ({ hardwareEncoding: hardware.encoding }));
 vi.mock('./local-server.ts', () => ({ checkLocalServer: localServer.check }));
 
 const { render, withRenderSession } = await import('./index.ts');
@@ -57,6 +59,9 @@ describe('render orchestration failures', () => {
     remotion.closeBrowser.mockReset().mockResolvedValue(undefined);
     remotion.openBrowser.mockReset().mockResolvedValue({ close: remotion.closeBrowser });
     audio.probe.mockReset().mockResolvedValue(10);
+    hardware.encoding
+      .mockReset()
+      .mockImplementation(async (hardwareAcceleration) => ({ hardwareAcceleration }));
     localServer.check.mockReset().mockResolvedValue(undefined);
     remotion.bundle.mockReset().mockResolvedValue('http://localhost:3000');
     remotion.ensureBrowser.mockReset().mockResolvedValue({
@@ -137,6 +142,33 @@ describe('render orchestration failures', () => {
       );
     },
   );
+
+  test('renders in software when the hardware encoder cannot start', async () => {
+    hardware.encoding.mockResolvedValue({ hardwareAcceleration: 'disable', fallback: 'no device' });
+    await render(project, {
+      projectDir: '.',
+      out: 'out.mp4',
+      hardwareAcceleration: 'if-possible',
+      videoBitrate: '12M',
+    });
+    expect(remotion.renderMedia).toHaveBeenCalledWith(
+      expect.objectContaining({ hardwareAcceleration: 'disable', videoBitrate: '12M', crf: null }),
+    );
+  });
+
+  test('checks the hardware encoder before audio or browser work', async () => {
+    hardware.encoding.mockRejectedValue(new Error('Cannot encode with h264_nvenc'));
+    await expect(
+      render(project, {
+        projectDir: '.',
+        out: 'out.mp4',
+        hardwareAcceleration: 'required',
+        videoBitrate: '12M',
+      }),
+    ).rejects.toThrow('Cannot encode with h264_nvenc');
+    expect(audio.probe).not.toHaveBeenCalled();
+    expect(remotion.ensureBrowser).not.toHaveBeenCalled();
+  });
 
   test('resolves the fast profile for direct API renders and honors explicit quality settings', async () => {
     await render(project, { projectDir: '.', out: 'out.mp4', profile: 'fast' });

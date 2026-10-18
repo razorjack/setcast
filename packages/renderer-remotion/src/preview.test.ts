@@ -13,6 +13,9 @@ const fs = vi.hoisted(() => ({
 
 vi.mock('node:child_process', () => ({ spawn: childProcess.spawn }));
 vi.mock('node:fs/promises', () => fs);
+vi.mock('./hardware.ts', () => ({
+  hardwareEncoding: async (hardwareAcceleration: string) => ({ hardwareAcceleration }),
+}));
 
 const { preview } = await import('./index.ts');
 

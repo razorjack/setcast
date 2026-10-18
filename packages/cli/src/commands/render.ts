@@ -15,7 +15,7 @@ import {
 import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
-import { load, withWholeSet } from '../project.ts';
+import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import {
   bold,
   dim,
@@ -56,15 +56,16 @@ async function runCommand(argv: string[]): Promise<void> {
   intro('render');
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
-  const { dir, config } = loaded;
+  const { dir } = loaded;
   const duration = loaded.project.mix.duration / 1_000_000;
   if (options.range) {
     options = { ...options, range: rangeWithinAudio(options.range, duration, 'Render range') };
   }
 
-  const out = outputPath(options, dir, config.output.file);
+  const out = outputPath(options, dir, loaded.config.output.file);
   await mkdir(dirname(out), { recursive: true });
   showProject(loaded.project, options.range);
+  const { config } = await withHardwareEncoding(loaded);
   const project = await withWholeSet(loaded);
 
   const started = Date.now();

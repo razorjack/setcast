@@ -697,8 +697,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   or hardware encoding; the schema adds CRF 18 only when no bitrate is present. The adapter
   validates the same rules for direct API calls before browser work and passes `crf: null` for
   bitrate encoding. Studio receives the same encoding and JPEG quality settings as CLI renders.
-  Remotion's `if-possible` fallback checks the encoder in its bundled FFmpeg; it does not recover
-  from a device or driver failure after encoding starts.
+  Remotion's own `if-possible` check only looks for the encoder in its bundled FFmpeg, which always
+  contains `h264_nvenc`; without an NVIDIA device FFmpeg exits and Remotion crashes on an unhandled
+  `EPIPE`. `hardwareEncoding` therefore encodes one frame with the encoder before `render()` and
+  `preview()` start the browser or Studio: `if-possible` falls back to `disable`, `required`
+  throws. The CLI calls it before its progress UI, so the fallback warning prints on its own line.
+  A driver failure after encoding starts is still not recovered.
 - `output.gl` defaults to `auto`: ANGLE on macOS and Linux, Chromium's default elsewhere. `default`
   restores Chromium's own choice on any platform; explicit backend names pass through the adapter.
   The same setting applies to metadata, renders, stills, bundled thumbnails and Studio render

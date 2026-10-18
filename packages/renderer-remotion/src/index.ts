@@ -15,8 +15,10 @@ import { resolveFrameRange } from './range.ts';
 import { graphicsOptions } from './graphics.ts';
 import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './encoding.ts';
 import { renderVideo, resolveChunkSeconds } from './chunks.ts';
+import { hardwareEncoding } from './hardware.ts';
 
 export { probeAudio } from './probe.ts';
+export { hardwareEncoding, type HardwareEncoding } from './hardware.ts';
 
 export { ENTRY } from './paths.ts';
 import { ENTRY, PACKAGE_ROOT } from './paths.ts';
@@ -84,6 +86,7 @@ async function prepare(
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   validateVideoFile(options.out);
   const encoding = encodingOptions(options);
+  const { hardwareAcceleration } = await hardwareEncoding(encoding.hardwareAcceleration);
   const chunkSeconds = resolveChunkSeconds(options.chunkSeconds);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
@@ -103,6 +106,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
         codec: 'h264',
         audioCodec: 'aac',
         ...encoding,
+        hardwareAcceleration,
         outputLocation: options.out,
         inputProps: project,
         concurrency: options.concurrency ?? null,
@@ -240,6 +244,9 @@ export interface PreviewOptions extends EncodingOptions {
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
 export async function preview(project: ResolvedProject, options: PreviewOptions): Promise<void> {
   readMixDocument(project.mix);
+  const { hardwareAcceleration } = await hardwareEncoding(
+    encodingOptions(options).hardwareAcceleration,
+  );
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));
   let stop: (() => Promise<void>) | undefined;
   try {
@@ -251,7 +258,7 @@ export async function preview(project: ResolvedProject, options: PreviewOptions)
       await writeFile(`${propsFile}.tmp`, JSON.stringify({ ...next, previewRevision: ++revision }));
       await rename(`${propsFile}.tmp`, propsFile);
     });
-    await runStudio(studioArgs(propsFile, options));
+    await runStudio(studioArgs(propsFile, { ...options, hardwareAcceleration }));
   } finally {
     await stop?.();
     await rm(dir, { recursive: true, force: true });

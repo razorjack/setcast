@@ -200,10 +200,12 @@ output:
 
 Remove any explicit `crf` from that output block. `videoBitrate` accepts positive values in
 megabits/s (`12M`) or kilobits/s (`12000k`); it also works with software encoding.
-`hardwareAcceleration` accepts `disable` (default), `if-possible` or `required`. With
-`if-possible`, Remotion falls back to software if its FFmpeg build lacks the hardware encoder;
-`required` fails instead. Device or driver failures can still stop an encode in either mode.
-These settings apply to renders, clips and Studio's render settings.
+`hardwareAcceleration` accepts `disable` (default), `if-possible` or `required`. Before
+rendering, Setcast encodes one test frame with the hardware encoder. If it cannot start,
+`if-possible` warns and encodes in software at the same bitrate; `required` stops with an error.
+On Linux and Windows the hardware encoder is NVENC, which needs an NVIDIA GPU and its driver.
+A driver failure after encoding has started can still stop an export. These settings apply to
+renders, clips and Studio's render settings.
 
 Hardware encoding speeds up compression, while frame rendering still uses Chromium. A bitrate
 of `12M` is a starting point for 1080p/30 fps, not a quality equivalent to CRF 18. Compare a short
