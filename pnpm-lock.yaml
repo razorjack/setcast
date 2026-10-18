@@ -375,6 +375,9 @@ importers:
       '@remotion/renderer':
         specifier: 'catalog:'
         version: 4.0.513(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@setcast/themes':
+        specifier: workspace:*
+        version: link:../themes
       '@types/node':
         specifier: 'catalog:'
         version: 26.2.0

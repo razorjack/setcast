@@ -9,7 +9,7 @@ import {
 } from '@remotion/renderer';
 import type { ResolvedProject } from '@setcast/core';
 import { loadProject, readWholeSet, readsWholeSet } from '@setcast/core/node';
-import { themes } from '../../themes/src/index.ts';
+import { themes } from '@setcast/themes';
 import { encodingOptions } from '../src/encoding.ts';
 import { renderVideo, resolveChunkSeconds } from '../src/chunks.ts';
 import { graphicsOptions } from '../src/graphics.ts';
