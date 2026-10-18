@@ -91,7 +91,9 @@ cd examples/demo && vp run render
 ```
 
 That renders `examples/demo/out/demo.mp4` (2:34, 1080p30, h264 + aac). The first render
-downloads Chrome Headless Shell (about 100 MB) once.
+downloads Chrome Headless Shell (about 100 MB) once. On Linux it needs the usual browser
+libraries, which desktop installs already have; on a minimal server or container, install the
+packages listed in Remotion's [Linux dependencies](https://www.remotion.dev/docs/miscellaneous/linux-dependencies).
 
 Then start your own project:
 
