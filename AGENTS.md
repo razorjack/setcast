@@ -82,7 +82,7 @@ Gotchas:
   for `vp` points at `npm:vite-plus`, which is the wrong one). The standalone binary delegates to
   the project's local `vite-plus`; a globally installed npm copy runs its own Vitest instead. Test
   files import `describe`/`test` from `vite-plus/test`, which always resolves through the project's
-  `node_modules`, so the two copies split Vitest's runner state and all 19 test files fail at the
+  `node_modules`, so the two copies split Vitest's runner state and every test file fails at the
   first `describe` with `TypeError: Cannot read properties of undefined (reading 'config')`.
   `vp check` still passes, which makes it look like a code problem rather than a toolchain one.
   No repo change fixes this (a `vitest` override in `pnpm-workspace.yaml` does not help).
@@ -93,9 +93,11 @@ Gotchas:
 - Remotion Studio's visual mode rejects unknown `<img>` attributes on `<Img>` (it throws
   `No "src" prop was passed to <Img>`). The adapter passes `src`, `className`, `style` explicitly;
   keep `MediaProps` that small.
-- To debug the scene in Studio headlessly: start `vp run preview --port 3111` in examples/demo, then
-  drive `openBrowser('chrome')` from `@remotion/renderer` at `http://localhost:3111/setcast` and log
-  `onBrowserLog`. (A script doing exactly that lived in the scratchpad of the bootstrap session.)
+- To debug the scene in Studio headlessly: start `BROWSER=none vp run preview --port 3111` in
+  examples/demo, then drive `openBrowser('chrome')` from `@remotion/renderer` at
+  `http://localhost:3111/setcast` and log `onBrowserLog`. Without `BROWSER=none`, Studio opens a
+  window in the user's own browser. Stop it with SIGINT or SIGTERM to the `setcast` process;
+  Studio stops with it.
 - A theme's `@container (aspect-ratio < 1)` block cannot restyle the stage root, because an
   element never matches its own container query. The root's `::before`/`::after` and every
   descendant do match, so portrait overrides go there. A custom property derived from another
