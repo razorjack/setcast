@@ -699,10 +699,16 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   bitrate encoding. Studio receives the same encoding and JPEG quality settings as CLI renders.
   Remotion's `if-possible` fallback checks the encoder in its bundled FFmpeg; it does not recover
   from a device or driver failure after encoding starts.
-- `output.gl` defaults to `auto`: ANGLE on macOS, Chromium's default elsewhere. `default` restores
-  Chromium's own choice on any platform; explicit backend names pass through the adapter. The same
-  setting applies to metadata, renders, stills, bundled thumbnails and Studio render settings.
-  The backend stays out of `ResolvedProject`: it configures the renderer, not the scene.
+- `output.gl` defaults to `auto`: ANGLE on macOS and Linux, Chromium's default elsewhere. `default`
+  restores Chromium's own choice on any platform; explicit backend names pass through the adapter.
+  The same setting applies to metadata, renders, stills, bundled thumbnails and Studio render
+  settings. The backend stays out of `ResolvedProject`: it configures the renderer, not the scene.
+  On Linux, Chromium's own choice in the headless shell is SwiftShader, a software renderer, even
+  when a GPU is present: a 6 s demo slice rendered at 3.9 frames/s against 12 with ANGLE on an
+  RTX 3070 Ti. The GPU output differs slightly only in some SVG filters (Bristol, Pirate). In a
+  container without a GPU, ANGLE falls back to software and matched the default at 9 frames/s.
+  `egl` and `angle-egl` get no WebGL context in the headless shell there. See
+  `docs/render-performance.md`.
 - Procedural theme textures and the scaffold/demo background ship as pre-rendered PNGs, generated
   by `vp run rasterize-assets` with librsvg's `rsvg-convert`. SVGs remain the editable sources;
   ordinary rendering and `init` need no rasterizer dependency. The 2304x1296 background leaves

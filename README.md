@@ -180,8 +180,9 @@ validation and evidence. [Theme and plugin APIs](docs/theme-plugin-contract.md) 
 renderer and CSS contracts. `setcast inspect --at 4:20` explains the resolved credits and
 boundary origins; `--json` exports the finite document with IDs.
 
-`output.gl: auto` uses ANGLE on macOS and lets Chromium choose its backend elsewhere.
-Set `gl: default` to use Chromium's choice on macOS too, or select `angle`, `egl`,
+`output.gl: auto` uses ANGLE on macOS and Linux and lets Chromium choose its backend elsewhere.
+ANGLE renders on the GPU where one is available and falls back to software rendering otherwise.
+Set `gl: default` to use Chromium's choice on any platform, or select `angle`, `egl`,
 `swiftshader`, `swangle`, `vulkan` or `angle-egl` explicitly. This applies to renders,
 clips, stills and Studio's render settings. Software backends can be useful on machines
 without a GPU, but can make glows and other effects slower.

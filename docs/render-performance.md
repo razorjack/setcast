@@ -648,3 +648,37 @@ directly, preserving earlier benchmark behavior. Its elapsed time excludes prepa
 reports separately. Per-chunk start records expose Remotion's reported decision; `renderFrames`
 always reports serial because its own call only captures frames, even when Setcast concurrently
 encodes a previous chunk. That flag alone does not measure Setcast's overlap.
+
+## Linux graphics backend, 18 October 2026
+
+Measured against revision `1d55139` on Fedora 44 (KDE Plasma, Wayland session): AMD Ryzen 9
+5950X, 32 threads, 62 GiB RAM, NVIDIA GeForce RTX 3070 Ti with the proprietary 610.57 driver.
+Node 26.7.0, Remotion 4.0.513, Chrome Headless Shell 149.0.7790.0. Each run rendered the demo
+from 108 to 114 seconds with `setcast render`, at Remotion's default concurrency of eight tabs.
+The rates are the CLI's reported frames per second; one run per backend.
+
+| `output.gl`                       | WebGL renderer reported by Chromium | frames/s |
+| --------------------------------- | ----------------------------------- | -------: |
+| `default` (former `auto`)         | SwiftShader on Vulkan               |      3.9 |
+| `angle`                           | NVIDIA on Vulkan, through ANGLE     |       12 |
+| `vulkan`                          | NVIDIA on Vulkan, through ANGLE     |      9.9 |
+| `egl`, `angle-egl`                | none                                |        – |
+
+Without a `--use-gl` flag, the headless shell uses SwiftShader, a software renderer, although
+the GPU is available. `auto` now selects ANGLE on Linux as on macOS. The ANGLE and default clips
+differ by SSIM 0.988 and PSNR 47 dB; at 2× zoom, crops of the panels and gradients are
+indistinguishable. Theme stills show the largest differences in Bristol and Pirate, whose SVG
+filters (gradient map, grain) render slightly differently on the GPU than in software. macOS also
+renders through ANGLE on the GPU, so the Linux GPU path is expected to be closer to the look the
+themes were tuned on; no macOS pixel reference was available to confirm it.
+
+In a rootless podman container (Ubuntu 24.04, four CPUs, no `/dev/dri`), `default` and `angle`
+both rendered at 9.0 frames/s and produced the same pixels. ANGLE therefore falls back to software
+rendering on machines without a GPU, such as CI runners, without a speed penalty. Single stills
+take about 2.7 seconds with either backend. Windows remains untested and keeps Chromium's choice.
+
+With ANGLE, the slice rendered with `--concurrency 1` produced an MP4 byte-identical to the
+eight-tab render, so frames stay independent of each tab's paint history (see the composited
+element gotcha in `AGENTS.md`). The full 2:34 demo rendered in 3 minutes 40 seconds through three
+chunks, at 22 frames/s overall. NVENC (`hardwareAcceleration: required`, `videoBitrate: 12M`)
+encoded the slice through Remotion's bundled FFmpeg.
