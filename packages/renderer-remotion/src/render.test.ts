@@ -7,7 +7,7 @@ const remotion = vi.hoisted(() => ({
   openBrowser: vi.fn(),
   closeBrowser: vi.fn(),
   ensureBrowser: vi.fn(),
-  renderMedia: vi.fn(),
+  renderVideo: vi.fn(),
   selectComposition: vi.fn(),
 }));
 
@@ -19,8 +19,11 @@ vi.mock('@remotion/bundler', () => ({ bundle: remotion.bundle }));
 vi.mock('@remotion/renderer', () => ({
   ensureBrowser: remotion.ensureBrowser,
   openBrowser: remotion.openBrowser,
-  renderMedia: remotion.renderMedia,
   selectComposition: remotion.selectComposition,
+}));
+vi.mock('./chunks.ts', async () => ({
+  resolveChunkSeconds: (await import('@setcast/core')).resolveChunkSeconds,
+  renderVideo: (job: unknown) => remotion.renderVideo(job),
 }));
 vi.mock('./probe.ts', () => ({ probeAudio: audio.probe }));
 vi.mock('./hardware.ts', () => ({ hardwareEncoding: hardware.encoding }));
@@ -69,14 +72,14 @@ describe('render orchestration failures', () => {
       path: '/browser',
     });
     remotion.selectComposition.mockReset().mockResolvedValue({ fps: 30, durationInFrames: 300 });
-    remotion.renderMedia.mockReset().mockResolvedValue(undefined);
+    remotion.renderVideo.mockReset().mockResolvedValue(undefined);
   });
 
   test('shares browser, bundle, and metadata within a batch and cleans up on failure', async () => {
     await expect(
       withRenderSession(async () => {
         await run();
-        remotion.renderMedia.mockRejectedValueOnce(new Error('second failed'));
+        remotion.renderVideo.mockRejectedValueOnce(new Error('second failed'));
         await run();
       }),
     ).rejects.toThrow('second failed');
@@ -96,7 +99,7 @@ describe('render orchestration failures', () => {
     });
     expect(remotion.bundle).toHaveBeenCalledOnce();
     expect(remotion.selectComposition).toHaveBeenCalledTimes(2);
-    expect(remotion.renderMedia).toHaveBeenLastCalledWith(
+    expect(remotion.renderVideo).toHaveBeenLastCalledWith(
       expect.objectContaining({ inputProps: expect.objectContaining({ theme: 'other' }) }),
     );
   });
@@ -111,19 +114,19 @@ describe('render orchestration failures', () => {
     await render(project, { projectDir: '.', out: 'out.mp4', gl: 'swangle' });
     const graphics = { chromiumOptions: { gl: 'swangle' } };
     expect(remotion.selectComposition).toHaveBeenCalledWith(expect.objectContaining(graphics));
-    expect(remotion.renderMedia).toHaveBeenCalledWith(expect.objectContaining(graphics));
+    expect(remotion.renderVideo).toHaveBeenCalledWith(expect.objectContaining(graphics));
   });
 
   test('defaults to software CRF 18 and JPEG quality 95', async () => {
     await run();
-    expect(remotion.renderMedia).toHaveBeenCalledWith(
+    expect(remotion.renderVideo).toHaveBeenCalledWith(
       expect.objectContaining({ crf: 18, hardwareAcceleration: 'disable', jpegQuality: 95 }),
     );
   });
 
   test('forwards the serial encoding opt-out', async () => {
     await render(project, { projectDir: '.', out: 'out.mp4', parallelEncoding: false });
-    expect(remotion.renderMedia).toHaveBeenCalledWith(
+    expect(remotion.renderVideo).toHaveBeenCalledWith(
       expect.objectContaining({ disallowParallelEncoding: true }),
     );
   });
@@ -137,7 +140,7 @@ describe('render orchestration failures', () => {
         hardwareAcceleration,
         videoBitrate: '12M',
       });
-      expect(remotion.renderMedia).toHaveBeenCalledWith(
+      expect(remotion.renderVideo).toHaveBeenCalledWith(
         expect.objectContaining({ hardwareAcceleration, videoBitrate: '12M', crf: null }),
       );
     },
@@ -151,7 +154,7 @@ describe('render orchestration failures', () => {
       hardwareAcceleration: 'if-possible',
       videoBitrate: '12M',
     });
-    expect(remotion.renderMedia).toHaveBeenCalledWith(
+    expect(remotion.renderVideo).toHaveBeenCalledWith(
       expect.objectContaining({ hardwareAcceleration: 'disable', videoBitrate: '12M', crf: null }),
     );
   });
@@ -172,7 +175,7 @@ describe('render orchestration failures', () => {
 
   test('resolves the fast profile for direct API renders and honors explicit quality settings', async () => {
     await render(project, { projectDir: '.', out: 'out.mp4', profile: 'fast' });
-    expect(remotion.renderMedia).toHaveBeenLastCalledWith(
+    expect(remotion.renderVideo).toHaveBeenLastCalledWith(
       expect.objectContaining({ jpegQuality: 92, x264Preset: 'veryfast', crf: 18 }),
     );
     await render(project, {
@@ -182,7 +185,7 @@ describe('render orchestration failures', () => {
       jpegQuality: 96,
       x264Preset: 'slow',
     });
-    expect(remotion.renderMedia).toHaveBeenLastCalledWith(
+    expect(remotion.renderVideo).toHaveBeenLastCalledWith(
       expect.objectContaining({ jpegQuality: 96, x264Preset: 'slow' }),
     );
   });
@@ -244,7 +247,7 @@ describe('render orchestration failures', () => {
   test('stops when composition selection fails', async () => {
     remotion.selectComposition.mockRejectedValue(new Error('selection failed'));
     await expect(run()).rejects.toThrow('selection failed');
-    expect(remotion.renderMedia).not.toHaveBeenCalled();
+    expect(remotion.renderVideo).not.toHaveBeenCalled();
   });
 
   test('explains local server failures during composition selection', async () => {
@@ -255,22 +258,22 @@ describe('render orchestration failures', () => {
       exitCode: 1,
       cause: expect.objectContaining({ message: 'No available ports found' }),
     });
-    expect(remotion.renderMedia).not.toHaveBeenCalled();
+    expect(remotion.renderVideo).not.toHaveBeenCalled();
   });
 
   test('propagates encoding failures', async () => {
-    remotion.renderMedia.mockRejectedValue(new Error('encode failed'));
+    remotion.renderVideo.mockRejectedValue(new Error('encode failed'));
     await expect(run()).rejects.toThrow('encode failed');
   });
 
   test('translates image failures and delayRender timeouts', async () => {
-    remotion.renderMedia.mockRejectedValueOnce(new Error('Failed to load http://x/bg.png'));
+    remotion.renderVideo.mockRejectedValueOnce(new Error('Failed to load http://x/bg.png'));
     await expect(run()).rejects.toMatchObject({
       message: 'Cannot read http://x/bg.png as an image',
       cause: expect.any(Error),
     });
 
-    remotion.renderMedia.mockRejectedValueOnce(
+    remotion.renderVideo.mockRejectedValueOnce(
       new Error(
         'A delayRender() "asset:http://x/bg.png" was called but not cleared after 28000ms.',
       ),

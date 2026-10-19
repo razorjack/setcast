@@ -513,6 +513,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Every audible offline export encodes the master file once and muxes it with silent video,
+  including a single batch and `chunkSeconds: 0`. The previous single-batch browser audio path
+  delayed the acceptance fixture by about 43 ms; the file path aligns its pulses within 5 ms.
+  Studio retains its audio component. Single-batch exports now also preserve existing output
+  and remove temporary files on failure. FFmpeg still comes from the Remotion adapter.
+
 - Core/node owns local audio probing; core/media owns URL duration, channel and video probes.
   Their Mediabunny 1.50.8 metadata-first and compute-duration fallback behavior is unchanged.
   Keep the media subpath separate from the pure main entry, and file sources separate from

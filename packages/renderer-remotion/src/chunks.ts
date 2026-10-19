@@ -25,7 +25,7 @@ export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise
   const { fps } = job.composition;
   const ranges = splitFrameRange(options.frameRange, options.chunkSeconds * fps);
   const totalFrames = options.frameRange[1] - options.frameRange[0] + 1;
-  if (ranges.length === 1) {
+  if (ranges.length === 1 && !options.audio) {
     await renderMedia({
       ...job,
       frameRange: options.frameRange,
@@ -33,6 +33,8 @@ export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise
     });
     return;
   }
+  // Encode the master once for every audible export, including a single batch. The browser
+  // audio path delays the encoded pulses; the file encoder preserves the source clock.
   // Keep the destination intact on failure, and rename atomically on its own filesystem.
   await mkdir(dirname(job.outputLocation), { recursive: true });
   const dir = await mkdtemp(join(dirname(job.outputLocation), '.setcast-render-'));

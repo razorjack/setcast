@@ -161,17 +161,43 @@ describe('chunk orchestration', () => {
   });
 
   test.each([0, 60])(
-    'keeps short exports on the original audio path with chunkSeconds %s',
+    'encodes short exports from the exact master range with chunkSeconds %s',
     async (chunkSeconds) => {
       await renderVideo(job, { ...options(), frameRange: [300, 2099], chunkSeconds });
       expect(mocks.renderMedia).toHaveBeenCalledOnce();
       const call = mocks.renderMedia.mock.calls[0]![0];
-      expect(call.muted).toBeUndefined();
-      expect(call.inputProps.renderAudio).toBeUndefined();
-      expect(mocks.muxChunks).not.toHaveBeenCalled();
-      expect(mocks.encodeMasterAudio).not.toHaveBeenCalled();
+      expect(call.muted).toBe(true);
+      expect(call.inputProps.renderAudio).toBe(false);
+      expect(call.frameRange).toEqual([300, 2099]);
+      expect(mocks.muxChunks).toHaveBeenCalledOnce();
+      expect(mocks.encodeMasterAudio).toHaveBeenCalledWith(
+        expect.objectContaining({
+          start: 10,
+          duration: 60,
+          audio: '/project/master.wav',
+        }),
+      );
+      expect(await readFile(job.outputLocation, 'utf8')).toBe('assembled');
+      expect(await readdir(dir)).toEqual(['out.mp4']);
     },
   );
+
+  test('keeps a silent single batch on the direct video path', async () => {
+    await renderVideo(job, { ...options(), frameRange: [0, 29], audio: null });
+    expect(mocks.renderMedia).toHaveBeenCalledOnce();
+    expect(mocks.encodeMasterAudio).not.toHaveBeenCalled();
+    expect(mocks.muxChunks).not.toHaveBeenCalled();
+  });
+
+  test('preserves short-export output when the master encode fails', async () => {
+    await writeFile(job.outputLocation, 'previous export');
+    mocks.encodeMasterAudio.mockRejectedValueOnce(new Error('audio failed'));
+    await expect(renderVideo(job, { ...options(), frameRange: [0, 29] })).rejects.toThrow(
+      'audio failed',
+    );
+    expect(await readFile(job.outputLocation, 'utf8')).toBe('previous export');
+    expect(await readdir(dir)).toEqual(['out.mp4']);
+  });
 
   test.each(['render', 'mux'])(
     'keeps existing output and removes temporary files after a %s failure',
