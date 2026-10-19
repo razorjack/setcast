@@ -78,9 +78,78 @@ this checks completeness, not synchronization.
 The tests exposed two small defects: invalid history requests were not rejected, and
 a prepared-resource release called twice could decrement another consumer's reference.
 Both have regression tests and separate fixes. SSR context tests do not exercise mounted
-browser effects. Frame construction, transport and browser integration remain the next stage.
+browser effects; those require the browser checks below.
 
 Shared PCM analysis, FFT, frame assembly and finite frame counts now live in core.
 The extraction passes 356 tests in 47 files and `vp run ready`. The demo still at 33 s
 is byte-identical before and after the extraction. This verifies one offline reference,
 not all themes or continuous playback.
+
+## Running the prototype
+
+From the checkout:
+
+```sh
+node packages/cli/bin/setcast.js play examples/demo
+node packages/cli/bin/setcast.js play path/to/project --theme darkroom --port 3211
+```
+
+From an installed CLI, use `setcast play path/to/project`. Open the printed URL in current
+Chrome. Play/pause, seeking, volume, fullscreen and hidden controls are available. Space
+toggles playback when focus is outside a control; Escape restores hidden controls.
+Restart the command after editing the project. Ctrl+C closes the server.
+
+`@setcast/renderer-browser` supplies the existing `Stage` with `RendererBindings` and the
+shared `resolveFrame`. HTML audio supplies time; visual frames are quantized to project FPS.
+Mediabunny decodes bounded PCM windows for the shared analyzer, including historical audio
+and FFT lookahead. Ten-second windows prefetch five seconds ahead. The cache retains two
+windows and serializes decoders, cancelling obsolete seek requests. This avoids retaining
+the full decoded set. The decoder's byte cache is separately limited to 16 MiB.
+
+Images and fonts use the existing readiness contract. A hold pauses audio and resumes only
+if the user still wants playback. Seeking to an uncached region also pauses for preparation.
+Native video follows the master clock, correcting drift above 120 ms while running and
+seeking on paused frames. Video background timing is approximate. All browser audio is
+mono or stereo; unsupported codecs produce an actionable error.
+
+The new package does not depend on Remotion. The CLI still uses its existing Remotion-owned
+duration probe while loading a project. No finite timeline or theme model was changed.
+
+## Playback checks
+
+The completed prototype passes 372 tests in 51 files, up from 324 tests in 44 files.
+`vp run ready` passes formatting, lint, types, tests, the dependency ban and the offline
+render smoke. `vp run package-smoke` passes against all five packed packages.
+
+Automated coverage includes transport intent, readiness holds, dropped callbacks, seeks,
+end/replay, native codec duration clamping, stale play completion, decode failures,
+serial decoding, cancellation, cache eviction after backward seeks, bounded retention,
+PCM packet placement, byte ranges, path containment, HTTP responses and server cleanup.
+The retention test visits 360 synthetic windows; it is not an hour-long browser run.
+
+The real-browser checks use the generated demo and a temporary MP3 conversion with a
+four-second H.264 background, the darkroom spectrogram and a project CSS override:
+
+- The WAV demo ran from start to its 154.48 s endpoint. A 250 ms sampler observed 610
+  playing samples, no preparation status during that interval, and at most two windows.
+  The sampled audio advance differed from elapsed wall time by about 10 ms over 152 s.
+  That measures sustained clock progression, not audible or physical display latency.
+- Forward, backward and rapid replacement seeks exercised annotation boundaries and
+  ten-second analysis boundaries. Paused time remained fixed. At one playing sample,
+  the rendered frame trailed the native audio clock by 27 ms at 30 fps.
+- MP3 playback and seeking rendered the history-based spectrogram. A paused seek to
+  110.3 s placed the looping four-second background at 2.3 s. Uncached MP3 preparation
+  took seconds on this machine. Fullscreen and hiding/restoring controls were exercised.
+- Replay after an explicit end seek works even when MP3 decoding clamps the native clock
+  slightly before the probed duration. CSS overrides were checked on the rendered header.
+  A missing audio request stops playback and shows a reloadable error.
+- The packed-package smoke bundles and serves the browser player without workspace
+  sources, and checks partial audio responses. The dependency ban includes the new package.
+
+This is a playback prototype, not an OBS or Twitch qualification. It has no live input,
+hardware events, stream encoder, event log, remote control, automatic start or project
+watcher. There is no full-hour endurance result, cross-browser qualification or exhaustive
+visual parity comparison. Native compressed-audio clocks can differ slightly from the
+loader's probed duration because of codec padding. Background tabs can throttle visual
+callbacks. Smooth, uninterrupted broadcasting and frame-exact video synchronization remain
+separate work.

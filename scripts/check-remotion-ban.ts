@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const PLUGIN_FACING = ['packages/core', 'packages/themes'];
+const PLUGIN_FACING = ['packages/core', 'packages/themes', 'packages/renderer-browser'];
 
 const isRemotion = (name: string) => name === 'remotion' || name.startsWith('@remotion/');
 

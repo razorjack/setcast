@@ -19,6 +19,7 @@ packages/core               @setcast/core – event timeline, schemas, RenderFra
                             hooks, interpolate/spring, media wrappers, modulation, analysis,
                             registry, importers, project loading (node entry), built-in components
 packages/renderer-remotion  @setcast/renderer-remotion – the ONLY package that imports Remotion
+packages/renderer-browser   @setcast/renderer-browser – local recorded-project playback prototype
 packages/cli                @setcast/cli – the `setcast` binary; thin; owns terminal UX
 packages/themes             @setcast/themes – built-in themes, their shared fonts/ and textures/
 examples/demo               runnable demo project (setcast.yaml, generated audio, background)
@@ -57,6 +58,7 @@ vp run render-bench [dir] [--help]     # compare render settings; timings and MP
 vp run ready               # check + test + ban-check + smoke (what CI runs)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
 cd examples/demo && vp run preview                          # Remotion Studio
+node packages/cli/bin/setcast.js play examples/demo          # browser playback prototype
 ```
 
 `vp <name>` runs a built-in; `vp run <name>` runs a package script or `vite.config.ts` task.
@@ -519,7 +521,20 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   Renderer FPS and dimensions can override project defaults; display-clock offsets stay cosmetic.
   Core owns `pcmAnalyzer`, `PcmWindow`, the FFT and `framesWithinMix`. Remotion translates its
   decoded windows into those PCM inputs; their calculations and window readiness are shared.
-
+- `setcast play` loads a finite recorded project and serves it on loopback through
+  `@setcast/renderer-browser`. Its browser graph has no Remotion, enforced by ban-check.
+  The CLI currently shares the Remotion-owned duration probe with other commands.
+  HTML audio is the master clock; animation callbacks sample it and may skip visual frames.
+  Missing analysis, artwork or fonts pause audio while preserving the user's play intent.
+  Mediabunny decodes ten-second windows with eight seconds of history and FFT padding;
+  only two windows are retained, with one decoder running at a time. Cache reads refresh
+  recency so prefetch after a backward seek cannot evict the current window. MP3 codec
+  padding can make native and probed duration differ; an explicit end seek remembers replay
+  intent independently of the native clock. Native video follows master time with a 120 ms
+  correction threshold while running, and seeks precisely when paused. This is approximate
+  background synchronization, not frame-exact offline rendering or a broadcast guarantee.
+  The player is bundled in memory on startup, using source exports in development and
+  published exports in tarballs. There is no manual dev build or configuration watcher.
 - Rendering performance measurements and optimization priorities are in `docs/render-performance.md`.
   The benchmark lives inside the renderer adapter and uses its installed Remotion version.
   Keep preparation separate from rendering, record whether encoding overlaps capture, and compare
@@ -649,8 +664,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `dist/main.mjs`; its templates resolve from a shared module at the same depth in `src` and `dist`.
   The renderer ships a compiled `Root.mjs`; its source bundle entry resolves the `./composition`
   package export, which points to source in the workspace and compiled JS in tarballs.
-  `vp run package-smoke` builds and extracts all four tarballs into an isolated temporary directory,
-  reuses installed third-party dependencies, and exercises init, inspect, every theme and video.
+  `vp run package-smoke` builds and extracts all five tarballs into an isolated temporary directory,
+  reuses installed third-party dependencies, and exercises init, inspect, every theme, video,
+  browser-player bundling and ranged asset serving.
   It requires pnpm and publishes nothing. Run it before a release or changing package layouts.
 - Package `exports` → `src/*.ts`, `publishConfig.exports` → `dist/*.js`. Workspace development runs
   TypeScript sources directly on Node 26.

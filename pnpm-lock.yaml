@@ -297,6 +297,9 @@ importers:
       '@setcast/core':
         specifier: workspace:*
         version: link:../core
+      '@setcast/renderer-browser':
+        specifier: workspace:*
+        version: link:../renderer-browser
       '@setcast/renderer-remotion':
         specifier: workspace:*
         version: link:../renderer-remotion
@@ -353,6 +356,40 @@ importers:
       vite:
         specifier: npm:@voidzero-dev/vite-plus-core@0.2.9
         version: '@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(esbuild@0.28.1)(terser@5.50.0)(typescript@7.0.2)(yaml@2.9.0)'
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.2.9(@types/node@26.2.0)(@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(esbuild@0.28.1)(terser@5.50.0)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(terser@5.50.0)(typescript@7.0.2)(yaml@2.9.0)
+
+  packages/renderer-browser:
+    dependencies:
+      '@setcast/core':
+        specifier: workspace:*
+        version: link:../core
+      mediabunny:
+        specifier: 'catalog:'
+        version: 1.50.8
+      vite:
+        specifier: npm:@voidzero-dev/vite-plus-core@0.2.9
+        version: '@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(esbuild@0.28.1)(terser@5.50.0)(typescript@7.0.2)(yaml@2.9.0)'
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.2.0
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
       vite-plus:
         specifier: 'catalog:'
         version: 0.2.9(@types/node@26.2.0)(@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(esbuild@0.28.1)(terser@5.50.0)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(terser@5.50.0)(typescript@7.0.2)(yaml@2.9.0)

@@ -11,6 +11,7 @@ const commands: Record<string, () => Promise<Command>> = {
   import: () => import('./commands/import.ts'),
   analyze: () => import('./commands/analyze.ts'),
   preview: () => import('./commands/preview.ts'),
+  play: () => import('./commands/play.ts'),
   render: () => import('./commands/render.ts'),
   clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
@@ -28,6 +29,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('import')}    turn a tracklist file into plays: for setcast.yaml
   ${steel('analyze')}   read the audio and draft drop / breakdown annotations
   ${steel('preview')}   open the project in Remotion Studio
+  ${steel('play')}      play a recorded project in the browser (prototype)
   ${steel('render')}    render the MP4 (--range for a slice, --bundle adds thumbnail + description)
   ${steel('clip')}      cut a promo clip around a drop (--all for every drop)
   ${steel('still')}     grab one frame as an image, for the thumbnail

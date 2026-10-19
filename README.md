@@ -261,6 +261,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast import`   | turns a tracklist file (plain text or `.cue`) into `plays:` with source evidence; `--write` replaces that list after validation |
 | `setcast analyze`  | reads the audio and drafts mix drop and breakdown annotations plus tempo, without snapping; `--write` accepts and merges them |
 | `setcast preview`  | opens the set in Remotion Studio                                                                 |
+| `setcast play`     | prototype: plays a recorded project in a local browser, with seeking, volume and fullscreen |
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
@@ -268,9 +269,15 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |
 | `setcast live`     | planned: live overlay mode                                                                       |
 
-`preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without editing
+`play`, `preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without editing
 `setcast.yaml`, e.g. `setcast still --theme bristol --out bristol.jpg`. Run
 `setcast <command> --help` for every option.
+
+Try `setcast play path/to/project`, then open the printed localhost URL in current Chrome.
+Space plays or pauses; Escape restores hidden controls. The player uses the project's audio,
+artwork, theme, CSS overrides and visualizers. It pauses while uncached audio or assets prepare,
+and configuration changes require a restart. Live inputs and broadcasting are not implemented.
+See [the playback prototype notes](docs/browser-playback.md) for its design and verification limits.
 
 ## Visualizers
 

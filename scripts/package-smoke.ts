@@ -9,7 +9,7 @@ import { promisify } from 'node:util';
 
 const execute = promisify(execFile);
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const names = ['core', 'themes', 'renderer-remotion', 'cli'];
+const names = ['core', 'themes', 'renderer-remotion', 'renderer-browser', 'cli'];
 await requirePnpm();
 const temporary = await mkdtemp(join(tmpdir(), 'setcast-packages-'));
 const modules = join(temporary, 'node_modules');
@@ -19,7 +19,7 @@ try {
   await extractPackages();
   await reuseBrowser();
   await exerciseCli();
-  console.log('package-smoke: PASS (packed CLI, project loading, all themes, H.264 + AAC)');
+  console.log('package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)');
 } finally {
   await rm(temporary, { recursive: true, force: true });
 }
@@ -121,4 +121,39 @@ async function exerciseCli(): Promise<void> {
   await run('render', project, '--range', '0-0.2', '--out', video, '--concurrency', '1');
   const bytes = (await readFile(video)).toString('latin1');
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
+  assert((await run('play', '--help')).stdout.includes('setcast play'));
+  await exercisePlayer(project);
+}
+
+async function exercisePlayer(projectDir: string): Promise<void> {
+  const script = join(temporary, 'player-smoke.mjs');
+  await writeFile(
+    script,
+    `import assert from 'node:assert/strict';
+import { play } from '@setcast/renderer-browser';
+import { loadProject } from '@setcast/core/node';
+import { themes } from '@setcast/themes';
+import { probeAudio } from '@setcast/renderer-remotion';
+const projectDir = process.argv[2];
+const { project } = await loadProject(projectDir, {
+  themes, probeDuration: (audio, root) => probeAudio({ audio }, root)
+});
+const server = await play(project, { projectDir, port: 0 });
+try {
+  for (const path of ['', 'player.js', 'player.css', 'project.json']) {
+    const response = await fetch(new URL(path, server.url));
+    assert.equal(response.status, 200, path);
+    assert((await response.text()).length > 0, path);
+  }
+  const audio = await fetch(new URL('assets/' + project.audio, server.url), {
+    headers: { Range: 'bytes=0-15' }
+  });
+  assert.equal(audio.status, 206);
+  assert.equal((await audio.arrayBuffer()).byteLength, 16);
+} finally {
+  await server.close();
+}
+`,
+  );
+  await command(process.execPath, [script, projectDir], temporary);
 }

@@ -23,6 +23,7 @@
   "dependencies": {
     "@clack/prompts": "catalog:",
     "@setcast/core": "workspace:*",
+    "@setcast/renderer-browser": "workspace:*",
     "@setcast/renderer-remotion": "workspace:*",
     "@setcast/themes": "workspace:*",
     "picocolors": "catalog:",

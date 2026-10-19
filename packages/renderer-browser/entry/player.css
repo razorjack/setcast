@@ -1,0 +1,144 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  background: #080b0e;
+  color: #e5e9ec;
+}
+body {
+  margin: 0;
+}
+.sc-player {
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sc-player-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+}
+.sc-player-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+}
+.sc-player-controls {
+  padding: 15px 24px 12px;
+  border-top: 1px solid #252c32;
+  background: #10151a;
+}
+.sc-player-transport {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 38px;
+}
+.sc-player-brand {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #a4b0bb;
+}
+.sc-player button {
+  font: inherit;
+  font-size: 12px;
+  color: #dbe2e7;
+  background: transparent;
+  border: 1px solid #36414a;
+  border-radius: 4px;
+  padding: 8px 13px;
+  cursor: pointer;
+  transition:
+    background 120ms,
+    border-color 120ms;
+}
+.sc-player button:hover {
+  background: #28313a;
+  border-color: #6b7c89;
+}
+.sc-player button:focus-visible,
+.sc-player input:focus-visible {
+  outline: 2px solid #f57236;
+  outline-offset: 3px;
+}
+.sc-player button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.sc-player .sc-player-play {
+  color: #0a0d10;
+  background: #e9edef;
+  border-color: transparent;
+  min-width: 70px;
+}
+.sc-player-time {
+  font:
+    12px ui-monospace,
+    monospace;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.sc-player-time span,
+.sc-player-status {
+  color: #8a99a5;
+}
+.sc-player-status {
+  margin-right: auto;
+  font-size: 12px;
+}
+.sc-player-volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #8a99a5;
+}
+.sc-player-volume input {
+  width: 75px;
+}
+.sc-player input {
+  accent-color: #f57236;
+  cursor: pointer;
+}
+.sc-player-seek {
+  display: block;
+  width: 100%;
+  height: 16px;
+  margin: 10px 0 0;
+}
+.sc-player-message {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  padding: 24px;
+  background: #10151af5;
+  line-height: 1.5;
+  font-size: 14px;
+}
+@media (width < 700px) {
+  .sc-player-controls {
+    padding: 10px;
+  }
+  .sc-player-transport {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sc-player-brand,
+  .sc-player-volume,
+  .sc-player-status {
+    display: none;
+  }
+  .sc-player-time {
+    margin-right: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-player button {
+    transition: none;
+  }
+}
