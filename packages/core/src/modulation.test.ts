@@ -97,6 +97,53 @@ describe('evaluateModulation', () => {
     expect(smooth['bg-zoom']).toBeLessThan(1);
   });
 
+  test('smoothing uses a recency-weighted window and never queries negative audio time', () => {
+    const requested: number[] = [];
+    const analyzer: AudioAnalyzer = {
+      featuresAt: (time) => {
+        requested.push(time);
+        return { ...SILENCE, bass: time >= 1 ? 1 : 0 };
+      },
+    };
+    const patch = [route({ smooth: 0.1 })];
+    expect(evaluateModulation(patch, at(1.05, analyzer))['bg-zoom']).toBeCloseTo(5 / 6);
+    expect(requested).toHaveLength(3);
+    for (const [index, time] of [1.05, 1, 0.95].entries()) {
+      expect(requested[index]).toBeCloseTo(time, 12);
+    }
+    requested.length = 0;
+    expect(evaluateModulation(patch, at(0.025, analyzer))['bg-zoom']).toBe(0);
+    expect(requested).toEqual([0.025, 0, 0]);
+  });
+
+  test('audio smoothing, event ramps and tempo return the same values after arbitrary seeks', () => {
+    const analyzer: AudioAnalyzer = {
+      featuresAt: (time) => ({ ...SILENCE, bass: time >= 10 ? 1 : 0 }),
+    };
+    const patch = [
+      route({ target: 'audio', smooth: 0.1 }),
+      route({ target: 'since', source: 'since:drop', window: 4 }),
+      route({ target: 'until', source: 'until:drop', window: 4 }),
+      route({ target: 'beat', source: 'beat' }),
+      route({ target: 'bar', source: 'bar' }),
+    ];
+    const expected = new Map([
+      [9, { audio: 0, since: 0, until: 0.75, beat: 1, bar: 0.5 }],
+      [10, { audio: 0.5, since: 1, until: 0, beat: 1, bar: 1 }],
+      [11, { audio: 1, since: 0.75, until: 0, beat: 1, bar: 0.5 }],
+      [19, { audio: 1, since: 0, until: 0.75, beat: 1, bar: 0.5 }],
+      [20, { audio: 1, since: 1, until: 0, beat: 1, bar: 1 }],
+      [21, { audio: 1, since: 0.75, until: 0, beat: 1, bar: 0.5 }],
+    ]);
+    for (const fps of [24, 30, 60]) {
+      for (const time of [21, 9, 20, 10, 19, 11, 9, 21]) {
+        expect(evaluateModulation(patch, { ...at(time, analyzer), fps, bpm: 120 })).toEqual(
+          expected.get(time),
+        );
+      }
+    }
+  });
+
   test('schema rejects non-kebab targets and unknown sources', () => {
     expect(() => route({ target: 'bgZoom' })).toThrow(/kebab-case/);
     expect(() => route({ source: 'kick' })).toThrow();

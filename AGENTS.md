@@ -510,6 +510,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Browser playback work and its staged regression plan are in `docs/browser-playback.md`.
+  `historyTimes` requires a positive finite duration and positive safe-integer count;
+  callers needing no history use current-frame audio. Prepared-cache releases are idempotent.
+  The smoke checks real codecs, frame count and duration with ffprobe and non-silent decoded
+  audio with ffmpeg when installed. Its AAC-tail tolerance is not a synchronization guarantee.
+
 - Rendering performance measurements and optimization priorities are in `docs/render-performance.md`.
   The benchmark lives inside the renderer adapter and uses its installed Remotion version.
   Keep preparation separate from rendering, record whether encoding overlaps capture, and compare
