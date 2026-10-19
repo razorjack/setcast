@@ -53,10 +53,11 @@ vp run demo-assets         # synthesize examples/demo audio (gitignored, determi
 vp run smoke               # renders 3 s of the demo and validates the MP4 (audio + motion)
 vp run ban-check           # proves no Remotion in plugin-facing dependency graphs
 vp run package-smoke       # build local tarballs; test installed CLI, all themes and video
+vp run export-acceptance   # requires ffmpeg + ffprobe; export timing, assets, themes, recovery
 vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
 vp run tracklist-stills [--theme name]  # each theme's tracklist: playlist, DJ, glide, portrait, no panels
 vp run render-bench [dir] [--help]     # compare render settings; timings and MP4s in out/bench
-vp run ready               # check + test + ban-check + smoke (what CI runs)
+vp run ready               # check + test + ban-check + smoke (baseline CI checks)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
 cd examples/demo && vp run preview                          # Remotion Studio
 node packages/cli/bin/setcast.js play examples/demo          # browser playback prototype
@@ -74,8 +75,9 @@ Before you finish a larger piece of work (a feature, a refactor, a theme, any ch
 files) or commit it, run `vp run ready` and read the result. It runs check, tests, ban-check and the
 smoke render in about a minute; run `vp run demo-assets` first on a fresh checkout. If it fails, fix
 the failure or report it with its output. Do not call the work done while it fails. `vp run ready`
-is what CI runs (`.github/workflows/ci.yml`), minus asset generation, but do not rely on CI to catch
-a failure: nobody noticed CI failing on every push for a month.
+runs CI's baseline checks (`.github/workflows/ci.yml`), minus asset generation. CI also runs
+`vp run export-acceptance`; run it for exporter or media/readiness changes. Do not rely on CI to
+catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
@@ -513,6 +515,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- `scripts/export-acceptance/` checks the core `Exporter` interface with generated media.
+  Its runner selects Remotion by default and accepts a local adapter module and reference
+  image directory. The checks require ffmpeg/ffprobe, compare decoded A/V pulse times,
+  fractional ranges, delayed fonts, local images, video loops, repeated theme captures and
+  failed-export recovery. See its README for commands, tolerances and coverage limits.
+
 - Every audible offline export encodes the master file once and muxes it with silent video,
   including a single batch and `chunkSeconds: 0`. The previous single-batch browser audio path
   delayed the acceptance fixture by about 43 ms; the file path aligns its pulses within 5 ms.
@@ -709,10 +717,10 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   working directory in the wrong order. Render input/output paths resolve before changing cwd.
 - `render()` and CLI clips split ranges longer than `output.chunkSeconds` (default 60, whole
   seconds 0–60; 0 disables) into video-only batches in one shared session. Capture is sequential.
-  Short exports keep the original path. Frame ranges stay absolute, and the composition duration is
+  Short exports use one video-only batch. Frame ranges stay absolute, and the composition duration is
   unchanged. The adapter sets `renderAudio: false` in both input and resolved composition props;
   Remotion reads the latter independently. Audio analysis and its readiness holds still run.
-- Chunked exports encode the master once as stereo 48 kHz AAC at 320 kbit/s while rendering
+- Audible exports encode the master once as stereo 48 kHz AAC at 320 kbit/s while rendering
   video. Final assembly copies both streams. This implements the existing master-only soundtrack;
   future audible plugin media needs a compatible mixing policy. Source audio starts at the
   rounded first frame, and pads a fractional final frame with silence. MP4/MOV use a 90 kHz

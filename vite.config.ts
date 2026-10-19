@@ -54,11 +54,12 @@ export default defineConfig({
     ],
   },
   test: {
-    include: ['packages/*/src/**/*.test.{ts,tsx}'],
+    include: ['packages/*/src/**/*.test.{ts,tsx}', 'scripts/export-acceptance/*.test.ts'],
   },
   run: {
     tasks: {
       'package-smoke': { command: 'node scripts/package-smoke.ts', cache: false },
+      'export-acceptance': { command: 'node scripts/export-acceptance.ts', cache: false },
       'render-bench': { command: 'node packages/renderer-remotion/bench/render.ts', cache: false },
       smoke: {
         command: 'node scripts/smoke.ts',

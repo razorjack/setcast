@@ -324,6 +324,11 @@ the video, then the final mux copies the encoded streams. MP4/MOV use a 90 kHz m
 so the final audio edit is not rounded to whole milliseconds. This uses Remotion's bundled
 FFmpeg subprocess and requires no system FFmpeg installation.
 
+Update 2026-10-19: the [exporter acceptance suite](../scripts/export-acceptance/README.md)
+found a roughly 43 ms audio delay in the previous short-export path. Short and unchunked
+exports now use the same master-file encoder as chunked exports. Both paths align the suite's
+decoded audio pulses and visual markers within 5 ms. The measurements below predate that change.
+
 A 65-second 1080p30 demo export (84–149 seconds) with the fast profile took **43 seconds** with
 60-second chunks and **43 seconds** without chunks. Encoding audio only after video rendering
 had taken 51 seconds; overlapping it removed that avoidable serial work. These are single

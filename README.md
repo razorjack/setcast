@@ -239,11 +239,12 @@ soundtrack is encoded once alongside the video; the final file joins the encoded
 without another encode or separate audio segments at chunk boundaries.
 
 Set `output.chunkSeconds: 30` for smaller batches, or `0` to disable chunking. Accepted values
-are whole seconds from 0 to 60. Exports that fit in one chunk use the original rendering path.
+are whole seconds from 0 to 60. Short and unchunked exports also encode the master soundtrack
+separately, so their audio uses the same clock as a chunked export.
 Chunks can change compression slightly near joins and add startup overhead; their main benefit
 is keeping resource use predictable on long sets. Encoded chunks and the soundtrack stay beside
 the destination in a temporary directory until assembly completes, then are removed. A failed
-chunked export preserves an existing output file. Studio exports use Remotion's own rendering
+export preserves an existing output file. Studio exports use Remotion's own rendering
 pipeline and do not use this chunk setting.
 
 The bundled procedural textures and default background are pre-rendered PNGs, so exporting

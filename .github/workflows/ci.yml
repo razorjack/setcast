@@ -25,3 +25,5 @@ jobs:
           sudo apt-get install -y -qq ffmpeg > /dev/null
           vp run demo-assets
           vp run smoke
+      - name: Exporter acceptance (timing, readiness, themes, failure recovery)
+        run: vp run export-acceptance
