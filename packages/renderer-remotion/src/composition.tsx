@@ -1,5 +1,4 @@
 import {
-  evaluateModulation,
   FEATURE_SOURCES,
   visualizers,
   silentAnalyzer,
@@ -14,7 +13,7 @@ import {
   useHoldUntil,
   useAssetUrl,
   useHoldWhile,
-  type RenderFrame,
+  resolveFrame,
 } from '@setcast/core/react';
 import { Audio } from '@remotion/media';
 import { useWindowedAudioData } from '@remotion/media-utils';
@@ -154,27 +153,7 @@ function Scene({ project, analyzer }: { project: ResolvedProject; analyzer: Audi
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeline = useMemo(() => new Timeline(project.mix), [project.mix]);
-  const timeSeconds = frame / fps;
-  const mix = timeline.at(timeSeconds);
-  const modulation = evaluateModulation(project.modulation, {
-    time: timeSeconds,
-    fps,
-    mix,
-    analyzer,
-    bpm: project.bpm,
-    beatOffset: project.beatOffset,
-  });
-
-  const renderFrame: RenderFrame = {
-    frame,
-    fps,
-    timeSeconds,
-    audio: analyzer.featuresAt(timeSeconds),
-    analyzer,
-    mix,
-    composition: { width, height, durationSeconds: project.mix.duration / 1_000_000, project },
-    modulation,
-  };
+  const renderFrame = resolveFrame({ project, timeline, analyzer, frame, fps, width, height });
 
   return (
     <FrameProvider frame={renderFrame}>

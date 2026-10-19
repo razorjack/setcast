@@ -2,7 +2,7 @@ import { HISTORY_SECONDS, WAVE_POINTS, type AudioFeatures } from '@setcast/core'
 import type { MediaUtilsAudioData } from '@remotion/media-utils';
 import { describe, expect, test } from 'vite-plus/test';
 import { coversLookback, windowedAnalyzer, type ChannelWindow } from './analyzer.ts';
-import { FFT_SIZE } from './spectrum.ts';
+import { FFT_SIZE } from '@setcast/core';
 
 const audioData = (samples: number, level = 1): MediaUtilsAudioData => ({
   channelWaveforms: [

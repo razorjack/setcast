@@ -213,3 +213,7 @@ export {
   type VisualizerInput,
   type VisualizerSpec,
 } from './visualizers.ts';
+
+export { pcmAnalyzer, coversPcmLookback, type PcmWindow } from './pcm.ts';
+export { FFT_SIZE } from './spectrum.ts';
+export { framesWithinMix } from './frame-time.ts';

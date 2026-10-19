@@ -515,6 +515,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   callers needing no history use current-frame audio. Prepared-cache releases are idempotent.
   The smoke checks real codecs, frame count and duration with ffprobe and non-silent decoded
   audio with ffmpeg when installed. Its AAC-tail tolerance is not a synchronization guarantee.
+- `resolveFrame` in core/react assembles timeline, audio and modulation at one absolute frame.
+  Renderer FPS and dimensions can override project defaults; display-clock offsets stay cosmetic.
+  Core owns `pcmAnalyzer`, `PcmWindow`, the FFT and `framesWithinMix`. Remotion translates its
+  decoded windows into those PCM inputs; their calculations and window readiness are shared.
 
 - Rendering performance measurements and optimization priorities are in `docs/render-performance.md`.
   The benchmark lives inside the renderer adapter and uses its installed Remotion version.

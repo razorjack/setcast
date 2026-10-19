@@ -79,3 +79,8 @@ The tests exposed two small defects: invalid history requests were not rejected,
 a prepared-resource release called twice could decrement another consumer's reference.
 Both have regression tests and separate fixes. SSR context tests do not exercise mounted
 browser effects. Frame construction, transport and browser integration remain the next stage.
+
+Shared PCM analysis, FFT, frame assembly and finite frame counts now live in core.
+The extraction passes 356 tests in 47 files and `vp run ready`. The demo still at 33 s
+is byte-identical before and after the extraction. This verifies one offline reference,
+not all themes or continuous playback.
