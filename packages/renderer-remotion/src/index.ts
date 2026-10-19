@@ -8,6 +8,11 @@ import {
   readMixDocument,
   SetcastError,
   type GraphicsBackend,
+  type RenderOptions,
+  type RenderResult,
+  type RenderReport,
+  type StillOptions,
+  type StillResult,
   type ResolvedProject,
 } from '@setcast/core';
 import { serializeInDirectory } from './cwd.ts';
@@ -17,6 +22,15 @@ import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './enc
 import { renderVideo, resolveChunkSeconds } from './chunks.ts';
 import { hardwareEncoding } from './hardware.ts';
 
+export type {
+  RenderStage,
+  RenderProgress,
+  RenderOptions,
+  RenderResult,
+  StillOptions,
+  StillResult,
+} from '@setcast/core';
+
 export { probeAudio } from './probe.ts';
 export { hardwareEncoding, type HardwareEncoding } from './hardware.ts';
 
@@ -24,37 +38,6 @@ export { ENTRY } from './paths.ts';
 import { ENTRY, PACKAGE_ROOT } from './paths.ts';
 import { currentSession, withRenderSession } from './session.ts';
 export { withRenderSession } from './session.ts';
-
-export type RenderStage = 'browser' | 'bundle' | 'frames' | 'encode';
-
-export interface RenderProgress {
-  /** `browser` is reported only while Chrome Headless Shell is being downloaded. */
-  stage: RenderStage;
-  /** 0..1 within the stage. */
-  progress: number;
-  renderedFrames?: number;
-  totalFrames?: number;
-}
-
-type Report = (progress: RenderProgress) => void;
-
-export interface RenderOptions extends EncodingOptions {
-  projectDir: string;
-  out: string;
-  /** Seconds; inclusive start, exclusive end. */
-  range?: [number, number];
-  concurrency?: number;
-  /** Maximum seconds per render batch. Defaults to 60; 0 disables chunking. */
-  chunkSeconds?: number;
-  gl?: GraphicsBackend;
-  onProgress?: Report;
-}
-
-export interface RenderResult {
-  file: string;
-  frames: number;
-  durationSeconds: number;
-}
 
 const renderInPackage = serializeInDirectory(PACKAGE_ROOT);
 
@@ -74,7 +57,7 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
 async function prepare(
   project: ResolvedProject,
   options: { projectDir: string; gl?: GraphicsBackend },
-  report: Report,
+  report: RenderReport,
 ) {
   return currentSession()
     .prepare(project, options, report)
@@ -124,22 +107,6 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
   }
 
   return { file: options.out, frames: totalFrames, durationSeconds: totalFrames / fps };
-}
-
-export interface StillOptions {
-  projectDir: string;
-  out: string;
-  /** Seconds into the set. Defaults to a quarter of the way in. */
-  at?: number;
-  jpegQuality?: number;
-  gl?: GraphicsBackend;
-  onProgress?: Report;
-}
-
-export interface StillResult {
-  file: string;
-  /** The moment actually grabbed, after rounding to a frame and clamping to the set. */
-  timeSeconds: number;
 }
 
 const STILL_FORMATS: Record<string, 'png' | 'jpeg' | 'webp'> = {

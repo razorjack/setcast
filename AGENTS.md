@@ -512,6 +512,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Export requests, results and progress belong to core (`export.ts`). Remotion re-exports
+  its previous public type names for compatibility and keeps its option translation local.
+  CLI runtime renderer imports are centralized in `renderer.ts`; this still selects Remotion,
+  with no registry or behavior change. Studio preview options remain adapter-specific.
+
 - Core owns export range rounding and chunk partitioning (`render-range.ts`). Ranges are
   inclusive absolute frame indices after converting the requested half-open seconds range.
   The Remotion adapter delegates to these functions without changing rounding or defaults;

@@ -1,9 +1,10 @@
-import { withRenderSession } from '@setcast/renderer-remotion';
+import type { StillOptions, StillResult } from '@setcast/core';
+import { withRenderSession } from '../renderer.ts';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { formatTime, type Annotation, type ResolvedProject, type SetEnvelope } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { still, type StillOptions, type StillResult } from '@setcast/renderer-remotion';
+import { still } from '../renderer.ts';
 import { themes } from '@setcast/themes';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';

@@ -1,4 +1,4 @@
-import { preview, type PreviewOptions } from '@setcast/renderer-remotion';
+import { preview, type PreviewOptions } from '../renderer.ts';
 import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';

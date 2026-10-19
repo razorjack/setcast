@@ -224,3 +224,15 @@ export {
   resolveChunkSeconds,
   type FrameRange,
 } from './render-range.ts';
+
+export type {
+  EncodingOptions,
+  Exporter,
+  RenderStage,
+  RenderReport,
+  RenderProgress,
+  RenderOptions,
+  RenderResult,
+  StillOptions,
+  StillResult,
+} from './export.ts';

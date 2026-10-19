@@ -1,9 +1,9 @@
-import { withRenderSession } from '@setcast/renderer-remotion';
+import { withRenderSession } from '../renderer.ts';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { formatTime, SetcastError, type Annotation } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { render } from '@setcast/renderer-remotion';
+import { render } from '../renderer.ts';
 import {
   parseAt,
   parseCommandArgs,

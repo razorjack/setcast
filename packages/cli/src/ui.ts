@@ -2,7 +2,7 @@ import { homedir } from 'node:os';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import * as p from '@clack/prompts';
 import { clamp, ConfigError, hms, SetcastError } from '@setcast/core';
-import type { RenderProgress } from '@setcast/renderer-remotion';
+import type { RenderProgress } from '@setcast/core';
 import pc from 'picocolors';
 import { clearTabProgress, linkToFile, showTabBusy, showTabProgress } from './terminal.ts';
 

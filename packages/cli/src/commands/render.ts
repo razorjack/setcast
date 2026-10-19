@@ -1,4 +1,5 @@
-import { withRenderSession } from '@setcast/renderer-remotion';
+import type { RenderOptions, StillOptions } from '@setcast/core';
+import { withRenderSession } from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
@@ -12,7 +13,7 @@ import {
   type ProjectConfig,
   type ResolvedProject,
 } from '@setcast/core';
-import { render, still, type RenderOptions, type StillOptions } from '@setcast/renderer-remotion';
+import { render, still } from '../renderer.ts';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';

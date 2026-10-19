@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 import type { ResolvedProject } from '@setcast/core';
 import { loadProject, readWholeSet, readsWholeSet, type LoadedProject } from '@setcast/core/node';
-import { hardwareEncoding, probeAudio } from '@setcast/renderer-remotion';
+import { hardwareEncoding, probeAudio } from './renderer.ts';
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
 

@@ -1,21 +1,5 @@
-import {
-  OutputSchema,
-  SetcastError,
-  type ExportProfile,
-  type HardwareAcceleration,
-  type VideoBitrate,
-  type X264Preset,
-} from '@setcast/core';
-
-export interface EncodingOptions {
-  parallelEncoding?: boolean;
-  profile?: ExportProfile;
-  jpegQuality?: number;
-  x264Preset?: X264Preset;
-  crf?: number;
-  hardwareAcceleration?: HardwareAcceleration;
-  videoBitrate?: VideoBitrate;
-}
+import { OutputSchema, SetcastError, type EncodingOptions } from '@setcast/core';
+export type { EncodingOptions } from '@setcast/core';
 
 export function encodingOptions(options: EncodingOptions) {
   const parsed = OutputSchema.safeParse({
