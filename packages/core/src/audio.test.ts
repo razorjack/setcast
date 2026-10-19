@@ -86,6 +86,20 @@ test('historyTimes sit on a grid that the next frame shares', () => {
   expect(() => historyTimes(0, 30, 10)).toThrow(/HISTORY_SECONDS/);
 });
 
+test('historyTimes rejects durations and counts that cannot define a history grid', () => {
+  for (const seconds of [0, -1, NaN, Infinity, -Infinity]) {
+    expect(() => historyTimes(1, seconds, 4)).toThrow(
+      `historyTimes() received seconds=${seconds}; ask for a positive finite duration up to 8 s (HISTORY_SECONDS).`,
+    );
+  }
+  for (const count of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    expect(() => historyTimes(1, 2, count)).toThrow(
+      `historyTimes() received count=${count}; ask for a positive safe integer number of moments.`,
+    );
+  }
+  expect(historyTimes(8, 8, 1)).toEqual([8]);
+});
+
 describe('peakHold', () => {
   test('holds the highest level for the hold time, then falls at a steady rate', () => {
     const loud = { age: 0.5, levels: [0.9] };

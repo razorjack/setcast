@@ -44,12 +44,23 @@ export const HISTORY_SECONDS = 8;
 /**
  * `count` moments spread over the `seconds` up to `time`, oldest first. They sit on a fixed grid
  * of `seconds / count`, so the next frame shares every moment but the newest and a cached
- * analyzer measures only that one.
+ * analyzer measures only that one. `seconds` must be positive and finite, and `count` a positive
+ * safe integer. Use the current frame's audio directly when no history is needed.
  */
 export function historyTimes(time: number, seconds: number, count: number): number[] {
+  if (!Number.isFinite(seconds) || seconds <= 0) {
+    throw new RangeError(
+      `historyTimes() received seconds=${seconds}; ask for a positive finite duration up to ${HISTORY_SECONDS} s (HISTORY_SECONDS).`,
+    );
+  }
   if (seconds > HISTORY_SECONDS) {
     throw new RangeError(
       `historyTimes() asked for ${seconds} s of history; renderers keep ${HISTORY_SECONDS} s (HISTORY_SECONDS). Ask for less.`,
+    );
+  }
+  if (!Number.isSafeInteger(count) || count <= 0) {
+    throw new RangeError(
+      `historyTimes() received count=${count}; ask for a positive safe integer number of moments.`,
     );
   }
   const step = seconds / count;
