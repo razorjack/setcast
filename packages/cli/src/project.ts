@@ -1,7 +1,12 @@
 import { resolve } from 'node:path';
 import type { ResolvedProject } from '@setcast/core';
-import { loadProject, readWholeSet, readsWholeSet, type LoadedProject } from '@setcast/core/node';
-import { hardwareEncoding, probeAudio } from './renderer.ts';
+import {
+  loadProject,
+  probeAudio,
+  readWholeSet,
+  readsWholeSet,
+  type LoadedProject,
+} from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
 
@@ -35,6 +40,7 @@ export async function load(
  * cannot start. Commands call this before their progress UI, so the warning prints on its own line.
  */
 export async function withHardwareEncoding(loaded: LoadedProject): Promise<LoadedProject> {
+  const { hardwareEncoding } = await import('./renderer.ts');
   const { output } = loaded.config;
   const { hardwareAcceleration, fallback } = await hardwareEncoding(output.hardwareAcceleration);
   if (fallback) warn(fallback);

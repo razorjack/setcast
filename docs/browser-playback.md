@@ -112,8 +112,8 @@ Native video follows the master clock, correcting drift above 120 ms while runni
 seeking on paused frames. Video background timing is approximate. All browser audio is
 mono or stereo; unsupported codecs produce an actionable error.
 
-The new package does not depend on Remotion. The CLI still uses its existing Remotion-owned
-duration probe while loading a project. No finite timeline or theme model was changed.
+The new package does not depend on Remotion. The CLI uses the shared duration probe from
+core/node while loading a project. No finite timeline or theme model was changed.
 
 ## Playback checks
 

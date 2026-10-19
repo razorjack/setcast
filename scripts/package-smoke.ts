@@ -131,9 +131,8 @@ async function exercisePlayer(projectDir: string): Promise<void> {
     script,
     `import assert from 'node:assert/strict';
 import { play } from '@setcast/renderer-browser';
-import { loadProject } from '@setcast/core/node';
+import { loadProject, probeAudio } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
-import { probeAudio } from '@setcast/renderer-remotion';
 const projectDir = process.argv[2];
 const { project } = await loadProject(projectDir, {
   themes, probeDuration: (audio, root) => probeAudio({ audio }, root)

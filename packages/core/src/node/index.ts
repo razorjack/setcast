@@ -7,3 +7,4 @@ export {
   type LoadOptions,
   type LoadedProject,
 } from './project.ts';
+export { audioDuration, probeAudio } from './media.ts';

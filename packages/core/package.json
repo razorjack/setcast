@@ -12,14 +12,16 @@
     ".": "./src/index.ts",
     "./react": "./src/react/index.ts",
     "./node": "./src/node/index.ts",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./media": "./src/media.ts"
   },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
       "./react": "./dist/react/index.mjs",
       "./node": "./dist/node/index.mjs",
-      "./package.json": "./package.json"
+      "./package.json": "./package.json",
+      "./media": "./dist/media.mjs"
     },
     "access": "public"
   },
@@ -27,6 +29,7 @@
     "build": "vp pack"
   },
   "dependencies": {
+    "mediabunny": "catalog:",
     "yaml": "catalog:",
     "zod": "catalog:"
   },

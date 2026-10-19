@@ -328,6 +328,9 @@ importers:
 
   packages/core:
     dependencies:
+      mediabunny:
+        specifier: 'catalog:'
+        version: 1.50.8
       yaml:
         specifier: 'catalog:'
         version: 2.9.0

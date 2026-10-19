@@ -5,6 +5,5 @@ export {
   withRenderSession,
   preview,
   hardwareEncoding,
-  probeAudio,
 } from '@setcast/renderer-remotion';
 export type { PreviewOptions } from '@setcast/renderer-remotion';

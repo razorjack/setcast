@@ -32,6 +32,7 @@ Entry points of `@setcast/core`:
   config schema, importers, registry. No `node:*` imports, no React.
 - `@setcast/core/react` – React: `RenderFrame` context + hooks, `Img`/`Video`/`useAsset`,
   built-in components (`Stage`, `Background`, `NowPlaying`, `Spectrum`), visualizer registry.
+- `@setcast/core/media` – Mediabunny URL probes for browser or Node; no React or `node:*` imports.
 - `@setcast/core/node` – Node only: `loadProject(dir)`, theme/CSS resolution, audio decoding,
   error formatting.
 
@@ -327,7 +328,7 @@ Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setc
 `@setcast/core/node` → `LoadedProject` with the `ResolvedProject` (plain JSON: absolute-free paths
 relative to the project dir, merged modulation, theme CSS with fonts inlined as data URIs, base CSS,
 visualizer config) and non-fatal configuration warnings. The CLI prints those warnings to stderr.
-The renderer-owned audio probe runs during loading, before finite timeline normalization.
+The core/node audio probe runs during loading, before finite timeline normalization.
 `ResolvedProject.envelope` and `ResolvedProject.travel` are null after loading. A visualizer
 registered with `wholeSet: true` draws the whole set from the envelope, and CSS that reads
 `--travel-*` needs the travel, so the commands that render (`render`, `still`, `clip`, `preview`)
@@ -512,6 +513,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Core/node owns local audio probing; core/media owns URL duration, channel and video probes.
+  Their Mediabunny 1.50.8 metadata-first and compute-duration fallback behavior is unchanged.
+  Keep the media subpath separate from the pure main entry, and file sources separate from
+  browser code. CLI project loading must work when importing Remotion is forbidden; hardware
+  preflight imports the selected renderer only when an encoding command requests it.
+
 - Export requests, results and progress belong to core (`export.ts`). Remotion re-exports
   its previous public type names for compatibility and keeps its option translation local.
   CLI runtime renderer imports are centralized in `renderer.ts`; this still selects Remotion,
@@ -533,7 +540,8 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   decoded windows into those PCM inputs; their calculations and window readiness are shared.
 - `setcast play` loads a finite recorded project and serves it on loopback through
   `@setcast/renderer-browser`. Its browser graph has no Remotion, enforced by ban-check.
-  The CLI currently shares the Remotion-owned duration probe with other commands.
+  The CLI loads projects through core/node media probes; only encoding commands load the
+  renderer for hardware preflight.
   HTML audio is the master clock; animation callbacks sample it and may skip visual frames.
   Missing analysis, artwork or fonts pause audio while preserving the user's play intent.
   Mediabunny decodes ten-second windows with eight seconds of history and FFT padding;
@@ -556,8 +564,8 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   closer. Native API availability alone is insufficient; verify the capture path and pixels.
   The default DOM composer cannot preserve the theme contract. No exporter migration is implemented.
 - The finite mix model replaces the old tracks/events contract without compatibility aliases.
-  `ResolvedProject.mix` is finalized before rendering. The renderer supplies the audio-duration
-  probe to core/node, keeping core independent of Remotion and avoiding a second media probe stack.
+  `ResolvedProject.mix` is finalized before rendering. The caller supplies the audio-duration
+  probe to `loadProject`; the CLI uses core/node's shared Mediabunny probe.
 - `setcast inspect --json` materializes all IDs in a normalized document; `--at` exports a query.
   Normalized JSON uses integer microseconds and is read with `readMixDocument`, not YAML parsing.
 - Background selection follows the first focused play and changes immediately. There is no
