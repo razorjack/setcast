@@ -6,12 +6,12 @@ import {
   type RenderMediaOptions,
   type RenderMediaOnProgress,
 } from '@remotion/renderer';
-import { OutputSchema, SetcastError } from '@setcast/core';
+import { splitFrameRange, type FrameRange } from '@setcast/core';
+export { splitFrameRange, resolveChunkSeconds } from '@setcast/core';
 import type { RenderProgress } from './index.ts';
 import { encodeMasterAudio, muxChunks } from './mux.ts';
 import { canPipeline, renderChunkPipeline } from './chunk-pipeline.ts';
 
-type FrameRange = [number, number];
 type VideoJob = RenderMediaOptions & { outputLocation: string };
 type Report = (progress: RenderProgress) => void;
 interface ChunkOptions {
@@ -19,28 +19,6 @@ interface ChunkOptions {
   chunkSeconds: number;
   audio: string | null;
   report: Report;
-}
-
-export function resolveChunkSeconds(chunkSeconds: number | undefined): number {
-  const parsed = OutputSchema.safeParse({ chunkSeconds });
-  if (!parsed.success) {
-    throw new SetcastError(
-      `Invalid render chunkSeconds: ${chunkSeconds}`,
-      parsed.error.issues.map((issue) => issue.message).join(' '),
-      { cause: parsed.error },
-    );
-  }
-  return parsed.data.chunkSeconds;
-}
-
-/** Inclusive absolute ranges; only the final chunk may be shorter than the chosen size. */
-export function splitFrameRange(range: FrameRange, framesPerChunk: number): FrameRange[] {
-  if (framesPerChunk === 0) return [range];
-  const ranges: FrameRange[] = [];
-  for (let start = range[0]; start <= range[1]; start += framesPerChunk) {
-    ranges.push([start, Math.min(range[1], start + framesPerChunk - 1)]);
-  }
-  return ranges;
 }
 
 export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise<void> {

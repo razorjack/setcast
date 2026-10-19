@@ -512,6 +512,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Core owns export range rounding and chunk partitioning (`render-range.ts`). Ranges are
+  inclusive absolute frame indices after converting the requested half-open seconds range.
+  The Remotion adapter delegates to these functions without changing rounding or defaults;
+  future exporters must use the same planning rules.
+
 - Browser playback work and its staged regression plan are in `docs/browser-playback.md`.
   `historyTimes` requires a positive finite duration and positive safe-integer count;
   callers needing no history use current-frame audio. Prepared-cache releases are idempotent.

@@ -217,3 +217,10 @@ export {
 export { pcmAnalyzer, coversPcmLookback, type PcmWindow } from './pcm.ts';
 export { FFT_SIZE } from './spectrum.ts';
 export { framesWithinMix } from './frame-time.ts';
+
+export {
+  resolveFrameRange,
+  splitFrameRange,
+  resolveChunkSeconds,
+  type FrameRange,
+} from './render-range.ts';

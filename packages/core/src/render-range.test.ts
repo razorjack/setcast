@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'vite-plus/test';
 import { microseconds, normalizeMix, SetcastError, Timeline } from '@setcast/core';
-import { framesWithinMix, resolveFrameRange } from './range.ts';
+import {
+  framesWithinMix,
+  resolveFrameRange,
+  splitFrameRange,
+  resolveChunkSeconds,
+} from './index.ts';
 
 test('every selected frame queries inside the finite mix after microsecond rounding', () => {
   for (const fps of [24, 25, 30, 60]) {
@@ -66,4 +71,24 @@ describe('resolveFrameRange', () => {
     expect(resolveFrameRange([9.96, 100], 30, 300)).toEqual([299, 299]);
     expect(() => resolveFrameRange([9.99, 10], 30, 300)).toThrow(/starts at 9.99 s/);
   });
+});
+
+test.each([24, 25, 30, 50, 60])('partitions absolute ranges without gaps at %s fps', (fps) => {
+  const first = 84 * fps + 1;
+  const last = first + 120 * fps;
+  expect(splitFrameRange([first, last], 60 * fps)).toEqual([
+    [first, first + 60 * fps - 1],
+    [first + 60 * fps, last - 1],
+    [last, last],
+  ]);
+  expect(splitFrameRange([first, last], 0)).toEqual([[first, last]]);
+  expect(splitFrameRange([first, first], 60 * fps)).toEqual([[first, first]]);
+});
+
+test('validates bounded chunk sizes and defaults to one minute', () => {
+  expect(resolveChunkSeconds(undefined)).toBe(60);
+  expect(resolveChunkSeconds(0)).toBe(0);
+  for (const value of [-1, 61, 1.5, NaN, Infinity]) {
+    expect(() => resolveChunkSeconds(value)).toThrow('Invalid render chunkSeconds');
+  }
 });

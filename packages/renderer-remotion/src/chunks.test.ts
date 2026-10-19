@@ -23,27 +23,7 @@ vi.mock('./chunk-pipeline.ts', async (original) => ({
   ...(await original<typeof import('./chunk-pipeline.ts')>()),
   renderChunkPipeline: mocks.renderChunkPipeline,
 }));
-const { renderVideo, splitFrameRange, resolveChunkSeconds } = await import('./chunks.ts');
-
-test.each([24, 25, 30, 50, 60])('partitions absolute ranges without gaps at %s fps', (fps) => {
-  const first = 84 * fps + 1;
-  const last = first + 120 * fps;
-  expect(splitFrameRange([first, last], 60 * fps)).toEqual([
-    [first, first + 60 * fps - 1],
-    [first + 60 * fps, last - 1],
-    [last, last],
-  ]);
-  expect(splitFrameRange([first, last], 0)).toEqual([[first, last]]);
-  expect(splitFrameRange([first, first], 60 * fps)).toEqual([[first, first]]);
-});
-
-test('validates bounded chunk sizes and defaults to one minute', () => {
-  expect(resolveChunkSeconds(undefined)).toBe(60);
-  expect(resolveChunkSeconds(0)).toBe(0);
-  for (const value of [-1, 61, 1.5, NaN, Infinity]) {
-    expect(() => resolveChunkSeconds(value)).toThrow('Invalid render chunkSeconds');
-  }
-});
+const { renderVideo } = await import('./chunks.ts');
 
 describe('chunk orchestration', () => {
   let dir: string;
