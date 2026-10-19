@@ -19,7 +19,10 @@ export class PreparedCache<T> {
 
   retain(key: string): () => void {
     this.users.set(key, (this.users.get(key) ?? 0) + 1);
+    let retained = true;
     return () => {
+      if (!retained) return;
+      retained = false;
       const count = (this.users.get(key) ?? 1) - 1;
       if (count) this.users.set(key, count);
       else this.users.delete(key);
