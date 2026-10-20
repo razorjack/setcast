@@ -1,0 +1,111 @@
+import { afterEach, expect, test, vi } from 'vite-plus/test';
+import { LiveCapture } from './capture.ts';
+
+afterEach(() => vi.unstubAllGlobals());
+
+function captureEnvironment() {
+  const track = { label: 'Interface', stop: vi.fn(), onended: null, onmute: null, onunmute: null };
+  const stream = { getTracks: () => [track], getAudioTracks: () => [track] };
+  const media = {
+    getUserMedia: vi.fn(async () => stream),
+    enumerateDevices: vi.fn(async () => [
+      { kind: 'audioinput', deviceId: 'interface', label: 'Interface' },
+    ]),
+  };
+  const context = {
+    state: 'running',
+    sampleRate: 48000,
+    destination: {},
+    onstatechange: null,
+    resume: vi.fn(async () => {}),
+    close: vi.fn(async () => {
+      context.state = 'closed';
+    }),
+    audioWorklet: { addModule: vi.fn(async () => {}) },
+    createMediaStreamSource: vi.fn(() => ({ connect: vi.fn() })),
+  };
+  const node = {
+    port: { onmessage: (_event: { data: unknown }) => {}, postMessage: vi.fn(), close: vi.fn() },
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    onprocessorerror: null,
+  };
+  vi.stubGlobal('navigator', { mediaDevices: media });
+  vi.stubGlobal(
+    'AudioContext',
+    class {
+      constructor() {
+        return context;
+      }
+    },
+  );
+  vi.stubGlobal(
+    'AudioWorkletNode',
+    class {
+      constructor() {
+        return node;
+      }
+    },
+  );
+  return { track, stream, media, context, node };
+}
+
+test('capture uses the requested device with speech processing disabled and releases resources', async () => {
+  const environment = captureEnvironment();
+  const capture = new LiveCapture();
+  await capture.start({ device: 'Interface', channels: [3, 4], gain: 1 });
+  expect(environment.media.getUserMedia).toHaveBeenCalledWith({
+    audio: {
+      deviceId: { exact: 'interface' },
+      channelCount: { ideal: 32 },
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+    },
+    video: false,
+  });
+  environment.node.port.onmessage({
+    data: {
+      start: 0,
+      left: new Float32Array(1024),
+      right: new Float32Array(1024),
+      count: 4,
+      peaks: [0, 0, 0.2, 0.3],
+      revision: 0,
+      dropped: 0,
+    },
+  });
+  expect(capture.status).toMatchObject({ phase: 'running', selected: [3, 4], channels: 4 });
+  capture.stop();
+  expect(environment.track.stop).toHaveBeenCalledOnce();
+  expect(environment.context.close).toHaveBeenCalledOnce();
+  expect(environment.node.port.close).toHaveBeenCalledOnce();
+  expect(capture.audio).toBeNull();
+});
+
+test('cancelling while permission is pending stops the eventual stream', async () => {
+  const environment = captureEnvironment();
+  const permission = Promise.withResolvers<typeof environment.stream>();
+  environment.media.getUserMedia.mockReturnValue(permission.promise);
+  const capture = new LiveCapture();
+  const starting = capture.start({ channels: null, gain: 1 });
+  await vi.waitFor(() => expect(environment.media.getUserMedia).toHaveBeenCalledOnce());
+  capture.stop();
+  permission.resolve(environment.stream);
+  await starting;
+  expect(environment.track.stop).toHaveBeenCalledOnce();
+  expect(environment.context.audioWorklet.addModule).not.toHaveBeenCalled();
+  expect(capture.status.phase).toBe('stopped');
+});
+
+test('failed worklet startup releases the device and reports the original failure', async () => {
+  const environment = captureEnvironment();
+  environment.context.audioWorklet.addModule.mockRejectedValue(
+    new Error('Cannot load capture module'),
+  );
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  expect(capture.status).toMatchObject({ phase: 'error', message: 'Cannot load capture module' });
+  expect(environment.track.stop).toHaveBeenCalledOnce();
+  expect(environment.context.close).toHaveBeenCalledOnce();
+});

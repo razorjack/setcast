@@ -515,6 +515,13 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Browser live capture uses an AudioWorklet with discrete input channels and a silent output.
+  Only one 1024-sample stereo packet may be unacknowledged; dropped packets retain their absolute
+  sample positions and become silence in the bounded 11-second PCM ring. Analysis uses core's
+  PCM calculations with FFT lookahead, caches at most 2048 materialized moments, and never
+  retains scratch PCM through lazy feature getters. Routing changes clear history without
+  resetting session time. Channel selection refers to channels the browser actually exposes,
+  which may differ from the interface's physical inputs.
 - Live scenes use `ResolvedLiveProject` with `audio: null` and `mix: null`; recorded projects
   retain their finite `MixDocument` and mandatory audio file. `loadLiveProject` reads optional
   `live.yaml` and shares theme/CSS resolution without probing audio. `resolveLiveFrame` supplies
