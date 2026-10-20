@@ -39,11 +39,11 @@ function worklet() {
   return { tick, send, packets };
 }
 
-test('worklet routes arbitrary exposed channels and allows only one unacknowledged packet', () => {
+test('worklet routes exposed channels and bounds the queue across stalls and recovery', () => {
   const capture = worklet();
   capture.send({ type: 'route', channels: [3, 4], gain: 2, revision: 1 });
-  for (let block = 0; block < 24; block++) capture.tick([0.1, 0.2, 0.3, 0.4]);
-  expect(capture.packets).toHaveLength(1);
+  for (let block = 0; block < 80; block++) capture.tick([0.1, 0.2, 0.3, 0.4]);
+  expect(capture.packets).toHaveLength(8);
   const first = capture.packets[0]!;
   expect(first.start).toBe(0);
   expect(first.count).toBe(4);
@@ -52,8 +52,8 @@ test('worklet routes arbitrary exposed channels and allows only one unacknowledg
   expect(first.peaks[3]).toBeCloseTo(0.4);
   capture.send({ type: 'ack' });
   for (let block = 0; block < 8; block++) capture.tick([0.1, 0.2, 0.3, 0.4]);
-  expect(capture.packets).toHaveLength(2);
-  expect(capture.packets[1]).toMatchObject({ start: 3072, dropped: 2048, revision: 1 });
+  expect(capture.packets).toHaveLength(9);
+  expect(capture.packets[8]).toMatchObject({ start: 10240, dropped: 2048, revision: 1 });
 });
 
 test('worklet defaults to duplicated mono and discards a partially routed packet on change', () => {
@@ -66,4 +66,13 @@ test('worklet defaults to duplicated mono and discards a partially routed packet
   for (let block = 0; block < 8; block++) capture.tick([0.2, 0.5]);
   expect(capture.packets[1]).toMatchObject({ start: 1152, revision: 2 });
   expect([...capture.packets[1]!.left]).toEqual(new Array(1024).fill(0.5));
+});
+
+test('worklet clamps sensitivity without hiding raw input meter levels', () => {
+  const capture = worklet();
+  capture.send({ type: 'route', channels: [1, 2], gain: 10, revision: 1 });
+  for (let block = 0; block < 8; block++) capture.tick([0.3, -0.4]);
+  expect(capture.packets[0]!.left[0]).toBe(1);
+  expect(capture.packets[0]!.right[0]).toBe(-1);
+  expect(capture.packets[0]!.peaks[1]).toBeCloseTo(0.4);
 });

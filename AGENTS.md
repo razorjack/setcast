@@ -7,7 +7,7 @@ visualization. Default aesthetic: dark, sterile sci-fi / rusty tech (neurofunk, 
 Credited intervals and musical annotations share a finite mix timeline. A future live mode can use the same
 components rendering as an OBS browser-source overlay during Twitch streams, driven by real-time
 events from DJ hardware, recording an event log that regenerates the polished VOD afterward
-("stream once, publish twice"). Live mode is not built yet; the architecture anticipates it.
+("stream once, publish twice"). Live audio visualization is available through `setcast live`; hardware events and event-log recording are not built yet.
 
 This project is engineered agentically. This file is the map. Read it fully before changing
 anything; update it when you make a non-obvious choice (Decisions) or discover a gotcha.
@@ -19,7 +19,7 @@ packages/core               @setcast/core – event timeline, schemas, RenderFra
                             hooks, interpolate/spring, media wrappers, modulation, analysis,
                             registry, importers, project loading (node entry), built-in components
 packages/renderer-remotion  @setcast/renderer-remotion – the ONLY package that imports Remotion
-packages/renderer-browser   @setcast/renderer-browser – local recorded-project playback prototype
+packages/renderer-browser   @setcast/renderer-browser – recorded playback and live audio input
 packages/cli                @setcast/cli – the `setcast` binary; thin; owns terminal UX
 packages/themes             @setcast/themes – built-in themes, their shared fonts/ and textures/
 examples/demo               runnable demo project (setcast.yaml, generated audio, background)
@@ -61,6 +61,7 @@ vp run ready               # check + test + ban-check + smoke (baseline CI check
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
 cd examples/demo && vp run preview                          # Remotion Studio
 node packages/cli/bin/setcast.js play examples/demo          # browser playback prototype
+node packages/cli/bin/setcast.js live examples/live          # live audio visualization
 ```
 
 `vp <name>` runs a built-in; `vp run <name>` runs a package script or `vite.config.ts` task.
@@ -509,14 +510,25 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - FOSS renderer `@setcast/renderer-browser`: Playwright + pinned Chromium renders frames from the
   same `RenderFrame`; FFmpeg subprocess muxes video + audio. Requires the AudioFeatures sidecar.
 - AudioFeatures sidecar (FFmpeg → PCM → fft.js → per-frame bins), shared by both renderers.
-- Live mode: `setcast live` (OBS browser source, hardware adapters, event log → VOD).
+- Live hardware adapters, OBS browser-source qualification and event log → VOD; live audio visualization is implemented.
 - Everything in the plugin registry list above.
 - Generated per-project bundle entry so `plugins:` in `setcast.yaml` can pull npm plugins in.
 
 ## Decisions
 
+- `setcast live [dir]` loads optional `live.yaml`, never `setcast.yaml`, and serves the shared
+  browser player. Live controls select exposed input channels, sensitivity and visual delay;
+  title, elapsed clock, theme and art are session overrides. H hides all controls without edge
+  reveal; F enters fullscreen. OBS uses window capture and receives mixer audio separately.
+  There is no second control window or native capture backend. See `docs/live-input.md`.
+- Live scene replacements mount hidden until readiness holds settle, retaining the previous
+  ready scene. Capture never waits for those holds. Background video plays muted and loops;
+  unlike recorded playback it does not seek against the audio clock. Theme, title and artwork
+  changes never replace the capture owner. `capture-worklet.js` is shipped in the browser
+  package's entry directory and served locally, including from packed installations.
+
 - Browser live capture uses an AudioWorklet with discrete input channels and a silent output.
-  Only one 1024-sample stereo packet may be unacknowledged; dropped packets retain their absolute
+  At most eight 1024-sample stereo packets may be unacknowledged (64 KiB of PCM); dropped packets retain their absolute
   sample positions and become silence in the bounded 11-second PCM ring. Analysis uses core's
   PCM calculations with FFT lookahead, caches at most 2048 materialized moments, and never
   retains scratch PCM through lazy feature getters. Routing changes clear history without
@@ -1065,8 +1077,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - Sidecar format for precomputed AudioFeatures (JSON first; binary layout later). `wave` is
   1024 floats per frame, far more than the rest; a renderer that has the PCM anyway should slice
   it at render time instead of storing it.
-- Whether live mode renders via the same `Stage` in a browser source with a `RenderFrame` driven by
-  `requestAnimationFrame` (likely yes) and how event-delay offset is configured.
+- Native multichannel capture and OBS browser-source integration beyond the current browser-window
+  capture workflow. Live audio already drives the shared Stage; hardware event timing remains undecided.
 - Plugin loading for npm plugins (generated bundle entry vs. config-time import map).
 
 ## Code values (binding)

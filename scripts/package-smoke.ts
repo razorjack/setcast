@@ -14,6 +14,46 @@ await requirePnpm();
 const temporary = await mkdtemp(join(tmpdir(), 'setcast-packages-'));
 const modules = join(temporary, 'node_modules');
 
+const playerSmokeSource = `import assert from 'node:assert/strict';
+import { play } from '@setcast/renderer-browser';
+import { loadProject, loadLiveProject, probeAudio } from '@setcast/core/node';
+import { themes } from '@setcast/themes';
+const projectDir = process.argv[2];
+const { project } = await loadProject(projectDir, {
+  themes, probeDuration: (audio, root) => probeAudio({ audio }, root)
+});
+const server = await play(project, { projectDir, port: 0 });
+try {
+  for (const path of ['', 'player.js', 'player.css', 'project.json', 'capture-worklet.js']) {
+    const response = await fetch(new URL(path, server.url));
+    assert.equal(response.status, 200, path);
+    assert((await response.text()).length > 0, path);
+  }
+  const audio = await fetch(new URL('assets/' + project.audio, server.url), {
+    headers: { Range: 'bytes=0-15' }
+  });
+  assert.equal(audio.status, 206);
+  assert.equal((await audio.arrayBuffer()).byteLength, 16);
+} finally {
+  await server.close();
+}
+const live = await loadLiveProject(projectDir, { themes, theme: 'relief' });
+const liveServer = await play(live.project, { projectDir, port: 0 });
+try {
+  const response = await fetch(new URL('project.json', liveServer.url));
+  const project = await response.json();
+  assert.equal(project.mix, null);
+  assert.equal(project.audio, null);
+  assert.equal(project.panel, null);
+  assert.equal(project.live.clock, false);
+  const worklet = await fetch(new URL('capture-worklet.js', liveServer.url));
+  assert.equal(worklet.status, 200);
+  assert((await worklet.text()).includes('setcast-capture'));
+} finally {
+  await liveServer.close();
+}
+`;
+
 try {
   await buildAndPack();
   await extractPackages();
@@ -127,32 +167,6 @@ async function exerciseCli(): Promise<void> {
 
 async function exercisePlayer(projectDir: string): Promise<void> {
   const script = join(temporary, 'player-smoke.mjs');
-  await writeFile(
-    script,
-    `import assert from 'node:assert/strict';
-import { play } from '@setcast/renderer-browser';
-import { loadProject, probeAudio } from '@setcast/core/node';
-import { themes } from '@setcast/themes';
-const projectDir = process.argv[2];
-const { project } = await loadProject(projectDir, {
-  themes, probeDuration: (audio, root) => probeAudio({ audio }, root)
-});
-const server = await play(project, { projectDir, port: 0 });
-try {
-  for (const path of ['', 'player.js', 'player.css', 'project.json']) {
-    const response = await fetch(new URL(path, server.url));
-    assert.equal(response.status, 200, path);
-    assert((await response.text()).length > 0, path);
-  }
-  const audio = await fetch(new URL('assets/' + project.audio, server.url), {
-    headers: { Range: 'bytes=0-15' }
-  });
-  assert.equal(audio.status, 206);
-  assert.equal((await audio.arrayBuffer()).byteLength, 16);
-} finally {
-  await server.close();
-}
-`,
-  );
+  await writeFile(script, playerSmokeSource);
   await command(process.execPath, [script, projectDir], temporary);
 }

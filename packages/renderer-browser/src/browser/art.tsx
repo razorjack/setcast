@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { backgroundKind, type ResolvedProject } from '@setcast/core';
+import { backgroundKind, type SceneProject } from '@setcast/core';
 import type { Art } from './overrides.ts';
 import { assetUrl } from './url.ts';
 import { UploadIcon } from './icons.tsx';
@@ -79,7 +79,7 @@ export function ArtMenu({
   setArt,
   choose,
 }: {
-  project: ResolvedProject;
+  project: SceneProject;
   art: Art;
   setArt: (art: Art) => void;
   choose: (file: File) => void;
@@ -118,7 +118,7 @@ export function ArtMenu({
   );
 }
 
-function ArtPreview({ project, art }: { project: ResolvedProject; art: Art }) {
+function ArtPreview({ project, art }: { project: SceneProject; art: Art }) {
   const shown = shownArt(project, art);
   const kind = backgroundKind(shown?.name ?? null);
   let note = 'Drop an image or a video anywhere to try it.';
@@ -136,7 +136,7 @@ function ArtPreview({ project, art }: { project: ResolvedProject; art: Art }) {
   );
 }
 
-function shownArt(project: ResolvedProject, art: Art) {
+function shownArt(project: SceneProject, art: Art) {
   if (art.kind === 'file') return { src: art.url, name: art.name };
   if (art.kind === 'none' || !project.background) return null;
   return { src: assetUrl(project.background), name: project.background };

@@ -1,6 +1,7 @@
+import { LivePlayer } from '../live/player.tsx';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { clamp, type ResolvedProject } from '@setcast/core';
+import { clamp, type ResolvedProject, type SceneProject } from '@setcast/core';
 import type { Transport } from '../transport.ts';
 import { DropOverlay, useArt } from './art.tsx';
 import { useAutoHide } from './autohide.ts';
@@ -17,7 +18,11 @@ export function mountPlayer(element: HTMLElement) {
   void loadInitialProject()
     .then(({ project, notice }) => {
       document.title = `${project.title || 'Setcast'} / Player`;
-      root.render(<Player initial={project} startupNotice={notice} />);
+      if (project.mix === null) {
+        root.render(<LivePlayer initial={project} startupNotice={notice} />);
+      } else {
+        root.render(<Player initial={project} startupNotice={notice} />);
+      }
     })
     .catch((error: unknown) => {
       root.render(
@@ -31,13 +36,16 @@ export function mountPlayer(element: HTMLElement) {
 /** The theme in the URL, or the project's own when the URL names none or one that fails. */
 async function loadInitialProject() {
   const requested = requestedTheme();
-  if (!requested) return { project: await fetchProject(null), notice: null };
+  if (!requested) return { project: await fetchProject<SceneProject>(null), notice: null };
   try {
-    return { project: await fetchProject(requested), notice: null };
+    return { project: await fetchProject<SceneProject>(requested), notice: null };
   } catch (error) {
     history.replaceState(null, '', location.pathname);
     const reason = error instanceof Error ? error.message : String(error);
-    return { project: await fetchProject(null), notice: `Cannot show ${requested}: ${reason}` };
+    return {
+      project: await fetchProject<SceneProject>(null),
+      notice: `Cannot show ${requested}: ${reason}`,
+    };
   }
 }
 

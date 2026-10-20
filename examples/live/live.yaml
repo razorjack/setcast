@@ -1,0 +1,10 @@
+title: Vinyl session
+theme: relief
+clock: false
+output: { width: 1920, height: 1080, fps: 30 }
+input:
+  gain: 1
+  delay: 0
+# Choose the device and its exposed channels in the browser, or set them here:
+# input: {device: My Audio Interface, channels: [3, 4], gain: 1, delay: 0}
+# background: assets/art.jpg

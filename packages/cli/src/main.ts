@@ -17,8 +17,7 @@ const commands: Record<string, () => Promise<Command>> = {
   still: () => import('./commands/still.ts'),
   inspect: () => import('./commands/inspect.ts'),
   chapters: () => import('./commands/chapters.ts'),
-  live: () =>
-    import('./commands/stubs.ts').then((stubs) => ({ help: stubs.liveHelp, run: stubs.live })),
+  live: () => import('./commands/live.ts'),
 };
 
 const usage = `${bold(accent('setcast'))} ${dim(`v${version}`)}  event-driven visuals for DJ sets
@@ -35,7 +34,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document
   ${steel('chapters')}  print YouTube chapters + description
-  ${steel('live')}      (planned) live overlay mode
+  ${steel('live')}      visualize a live audio input in the browser
 
 Run ${bold('setcast <command> --help')} for details.
 `;

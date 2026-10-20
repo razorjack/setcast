@@ -1,8 +1,8 @@
 # Browser playback prototype
 
 The first target is real-time playback of a finalized Setcast project: recorded audio,
-artwork, theme, overrides, credits, annotations and visualizers. Live audio inputs,
-hardware events and direct streaming to a platform are separate work.
+artwork, theme, overrides, credits, annotations and visualizers. Live audio inputs are now a separate `setcast live` mode, documented in [live audio input](live-input.md).
+Hardware events and direct streaming to a platform remain separate work.
 
 ## Test plan
 
@@ -149,9 +149,8 @@ four-second H.264 background, the darkroom spectrogram and a project CSS overrid
 - The packed-package smoke bundles and serves the browser player without workspace
   sources, and checks partial audio responses. The dependency ban includes the new package.
 
-This is a playback prototype, not an OBS or Twitch qualification. It has no live input,
-hardware events, stream encoder, event log, remote control, automatic start or project
-watcher. There is no full-hour endurance result, cross-browser qualification or exhaustive
+This is a playback prototype, not an OBS or Twitch qualification. Recorded playback has no hardware events, stream encoder, event log, remote control, automatic
+start or project watcher. Live input is available separately through `setcast live`. There is no full-hour endurance result, cross-browser qualification or exhaustive
 visual parity comparison. Native compressed-audio clocks can differ slightly from the
 loader's probed duration because of codec padding. Background tabs can throttle visual
 callbacks. Smooth, uninterrupted broadcasting and frame-exact video synchronization remain

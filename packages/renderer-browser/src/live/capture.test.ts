@@ -109,3 +109,20 @@ test('failed worklet startup releases the device and reports the original failur
   expect(environment.track.stop).toHaveBeenCalledOnce();
   expect(environment.context.close).toHaveBeenCalledOnce();
 });
+
+test('named inputs request permission before resolving labels hidden by the browser', async () => {
+  const environment = captureEnvironment();
+  environment.media.enumerateDevices.mockResolvedValueOnce([
+    { kind: 'audioinput', deviceId: '', label: '' },
+  ]);
+  const capture = new LiveCapture();
+  await capture.start({ device: 'Interface', channels: null, gain: 1 });
+  expect(environment.media.getUserMedia).toHaveBeenCalledTimes(2);
+  expect(environment.media.getUserMedia).toHaveBeenLastCalledWith(
+    expect.objectContaining({
+      audio: expect.objectContaining({ deviceId: { exact: 'interface' } }),
+    }),
+  );
+  expect(environment.track.stop).toHaveBeenCalledOnce();
+  capture.stop();
+});

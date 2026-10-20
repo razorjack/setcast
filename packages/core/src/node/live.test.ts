@@ -69,4 +69,8 @@ test('live assets retain project path containment', async () => {
     message: 'background path leaves the project directory: ../outside.png',
     hint: expect.stringContaining('Use a path inside'),
   });
+  await expect(loadLiveProject(join(dir, 'missing'), { themes })).rejects.toMatchObject({
+    message: expect.stringContaining('Live project directory does not exist'),
+    hint: expect.stringContaining('Choose an existing directory'),
+  });
 });

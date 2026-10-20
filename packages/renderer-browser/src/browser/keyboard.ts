@@ -15,6 +15,13 @@ export function useShortcuts(shortcuts: Shortcuts) {
     const keydown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
       const target = event.target as HTMLElement;
+      if (
+        target.isContentEditable ||
+        target.matches(
+          'textarea, input:not([type="range"]):not([type="checkbox"]):not([type="file"]):not([type="button"])',
+        )
+      )
+        return;
       if (CONTROL_KEYS.has(event.key) && target.matches('input, button, select, textarea')) return;
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       const action = latest.current[key];

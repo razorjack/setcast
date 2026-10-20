@@ -1,6 +1,6 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { ConfigError, zodIssues } from '../errors.ts';
+import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { LiveConfigSchema, type LiveConfig } from '../live.ts';
 import type { Theme } from '../theme.ts';
 import type { ResolvedLiveProject } from '../project.ts';
@@ -29,10 +29,16 @@ export async function loadLiveProject(
   options: Pick<LoadOptions, 'themes' | 'theme'> = {},
 ): Promise<LoadedLiveProject> {
   const root = resolve(dir);
+  await requireDirectory(root);
   const config = await readLiveConfig(root);
-  const theme = await resolveTheme(options.theme ?? config.theme, root, options.themes ?? {});
-  if (config.background) await requireFile(root, config.background, 'background');
-  const css = config.css ? await requireFile(root, config.css, 'css') : null;
+  const theme = await resolveTheme(
+    options.theme ?? config.theme,
+    root,
+    options.themes ?? {},
+    LIVE_CONFIG,
+  );
+  if (config.background) await requireFile(root, config.background, 'background', LIVE_CONFIG);
+  const css = config.css ? await requireFile(root, config.css, 'css', LIVE_CONFIG) : null;
   const selected = resolveLiveVisualizers(config, theme);
   const warnings: string[] = [];
   const available = selected.filter((entry) => !visualizers.get(entry.name).wholeSet);
@@ -123,4 +129,16 @@ async function readLiveConfig(root: string): Promise<LiveConfig> {
   const parsed = LiveConfigSchema.safeParse(parseConfigYaml(text, LIVE_CONFIG) ?? {});
   if (!parsed.success) throw new ConfigError(LIVE_CONFIG, zodIssues(parsed.error));
   return parsed.data;
+}
+
+async function requireDirectory(root: string) {
+  try {
+    if ((await stat(root)).isDirectory()) return;
+  } catch (error) {
+    if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) throw error;
+  }
+  throw new SetcastError(
+    `Live project directory does not exist or is not a directory: ${root}`,
+    'Choose an existing directory for live.yaml and your artwork, or omit dir to use the current directory.',
+  );
 }

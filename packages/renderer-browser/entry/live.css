@@ -1,0 +1,231 @@
+.sc-live[data-clean='true'] {
+  cursor: none;
+}
+.sc-live-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  translate: -50% 0;
+  width: min(1100px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  overflow: auto;
+}
+.sc-live-dock {
+  padding: 16px 20px 12px;
+  background: rgb(17 19 23 / 0.95);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  box-shadow: 0 16px 60px rgb(0 0 0 / 0.45);
+}
+.sc-live-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sc-live-brand {
+  display: grid;
+  gap: 2px;
+  margin-right: 8px;
+}
+.sc-live-brand strong {
+  font-size: 14px;
+  letter-spacing: 0.15em;
+}
+.sc-live-brand span {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+.sc-live-brand span[data-active='true'] {
+  color: var(--cue);
+}
+.sc-live-status {
+  flex: 1;
+  min-width: 120px;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sc-live-settings {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 32px;
+  margin: 18px 0 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  animation: sc-live-reveal 160ms ease-out;
+}
+.sc-live h2 {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.sc-live-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.sc-live-heading button {
+  font-size: 11px;
+}
+.sc-live label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.sc-live select,
+.sc-live input[type='text'] {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: #24262b;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+.sc-live-channels,
+.sc-live-sliders,
+.sc-live-scene-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.sc-live-sliders label {
+  grid-template-columns: 1fr auto;
+}
+.sc-live-sliders input {
+  grid-column: 1 / -1;
+  width: 100%;
+  accent-color: var(--cue);
+}
+.sc-live output {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sc-live .sc-live-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+.sc-live-check input {
+  accent-color: var(--cue);
+}
+.sc-live-input-meters {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.sc-live-input-meter {
+  display: flex;
+  align-items: center;
+  flex: 1 0 55px;
+  gap: 5px;
+  color: var(--ink-3);
+  font-size: 10px;
+}
+.sc-live-input-meter meter {
+  width: 100%;
+  height: 8px;
+}
+.sc-live-input-meter meter::-webkit-meter-bar {
+  background: #303238;
+  border: 0;
+}
+.sc-live-input-meter meter::-webkit-meter-optimum-value {
+  background: var(--cue);
+}
+.sc-live-input-meter[data-clipping='true'] meter::-webkit-meter-optimum-value {
+  background: #ff5f52;
+}
+.sc-live-footnote {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--ink-3);
+}
+.sc-live-footnote [role='alert'] {
+  color: var(--cue);
+}
+.sc-live-art {
+  margin-top: 14px;
+}
+.sc-live-art summary {
+  color: var(--ink-2);
+  font-size: 12px;
+  cursor: pointer;
+}
+.sc-live-art .sc-art-menu {
+  margin-top: 12px;
+}
+.sc-live-art .sc-art-preview {
+  display: none;
+}
+.sc-live-notice {
+  margin: 8px 0 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #28231b;
+  color: var(--cue);
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+.sc-live-scene {
+  position: absolute;
+  inset: 0;
+}
+.sc-live-scene[data-ready='false'] {
+  visibility: hidden;
+}
+.sc-live-scene[data-ready='false'] .sc-stage {
+  visibility: hidden !important;
+}
+.sc-live kbd {
+  margin-left: 5px;
+  font: inherit;
+  font-size: 10px;
+  opacity: 0.45;
+}
+@keyframes sc-live-reveal {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@media (width < 740px) {
+  .sc-live-settings {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .sc-live-status {
+    display: none;
+  }
+  .sc-live-footnote {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sc-live-dock {
+    padding: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-live-settings {
+    animation: none;
+  }
+}

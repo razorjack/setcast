@@ -1,7 +1,7 @@
 {
   "name": "@setcast/renderer-browser",
   "version": "0.1.0",
-  "description": "Browser playback adapter for recorded Setcast projects.",
+  "description": "Browser playback and live audio visualization for Setcast.",
   "license": "MIT",
   "files": [
     "dist",

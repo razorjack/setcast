@@ -268,7 +268,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
 | `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |
-| `setcast live`     | planned: live overlay mode                                                                       |
+| `setcast live`     | visualizes a selected live audio input, with themes, channel routing and clean fullscreen output                                                                       |
 
 `play`, `preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without editing
 `setcast.yaml`, e.g. `setcast still --theme bristol --out bristol.jpg`. Run
@@ -280,8 +280,16 @@ switches to any built-in theme, credits tracks with panels, the tracklist or bot
 image or video as art (choose a file or drop it on the page) without changing the project.
 Press `H` to hide the dock; it returns when the pointer reaches the bottom edge. Press `?` for
 every shortcut. Playback pauses while uncached audio or assets prepare. Restart the player after
-editing the project. Live inputs and broadcasting are not implemented.
+editing the project. For live audio inputs, use `setcast live`; direct broadcasting is not implemented.
 See [the playback prototype notes](docs/browser-playback.md) for its design and verification limits.
+
+For vinyl sets and other live sources, run `setcast live --theme relief`. Choose the audio
+interface and its exposed left/right channels, then start input. No recording or tracklist
+is required. Press **H** for clean output and **F** for fullscreen; use OBS window capture
+for streaming video and add mixer audio separately. Optional `live.yaml` configures the
+scene, input and output size. See [live audio input](docs/live-input.md) for routing,
+configuration and browser limitations.
+
 
 ## Visualizers
 

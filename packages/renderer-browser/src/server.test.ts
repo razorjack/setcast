@@ -41,6 +41,9 @@ test('player serves project, bundles and seekable assets, then releases its port
     expect(await (await fetch(server.url)).text()).toContain('/player.js');
     const script = await fetch(server.url + '/player.js');
     expect(script.headers.get('content-type')).toBe('text/javascript');
+    const worklet = await fetch(server.url + '/capture-worklet.js');
+    expect(worklet.headers.get('content-type')).toBe('text/javascript');
+    expect(await worklet.text()).toContain("registerProcessor('setcast-capture'");
     const ranged = await fetch(server.url + '/assets/set.mp3', { headers: { Range: 'bytes=2-5' } });
     expect(ranged.status).toBe(206);
     expect(ranged.headers.get('content-range')).toBe('bytes 2-5/10');

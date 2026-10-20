@@ -290,9 +290,10 @@ export async function resolveTheme(
   name: string,
   root: string,
   themes: Record<string, Theme>,
+  configFile = CONFIG_FILE,
 ): Promise<Theme> {
   if (name.endsWith('.css')) {
-    const cssFile = await requireFile(root, name, 'theme');
+    const cssFile = await requireFile(root, name, 'theme', configFile);
     return { name: themeName(name), cssFile, modulation: [] };
   }
   const theme = themes[name];
@@ -351,7 +352,12 @@ function resolveProjectTracklist(
   );
 }
 
-export async function requireFile(root: string, path: string, purpose: string): Promise<string> {
+export async function requireFile(
+  root: string,
+  path: string,
+  purpose: string,
+  configFile = CONFIG_FILE,
+): Promise<string> {
   const absolute = resolve(root, path);
   if (escapesRoot(root, absolute)) {
     throw new SetcastError(
@@ -362,7 +368,7 @@ export async function requireFile(root: string, path: string, purpose: string): 
   if (isAbsolute(path)) {
     throw new SetcastError(
       `${purpose} requires a project-relative path: ${path}`,
-      `Use ${JSON.stringify(relative(root, absolute))} in ${CONFIG_FILE}.`,
+      `Use ${JSON.stringify(relative(root, absolute))} in ${configFile}.`,
     );
   }
   try {
@@ -371,7 +377,7 @@ export async function requireFile(root: string, path: string, purpose: string): 
     if (!isEnoent(cause)) throw cause;
     throw new SetcastError(
       `${purpose} file not found: ${path}`,
-      `Expected it at ${absolute}. Paths in ${CONFIG_FILE} are relative to the project directory and must stay inside it.`,
+      `Expected it at ${absolute}. Paths in ${configFile} are relative to the project directory and must stay inside it.`,
       { cause },
     );
   }

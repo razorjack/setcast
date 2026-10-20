@@ -1,4 +1,4 @@
-import { SetcastError, type ResolvedProject } from '@setcast/core';
+import { SetcastError, type SceneProject } from '@setcast/core';
 
 export interface ThemeChoice {
   name: string;
@@ -8,7 +8,7 @@ export interface ThemeChoice {
 /** The themes the player offers, and how to resolve the project with one of them. */
 export interface ThemeCatalog {
   choices: ThemeChoice[];
-  load: (name: string) => Promise<ResolvedProject>;
+  load: (name: string) => Promise<SceneProject>;
 }
 
 export interface ThemeListing extends ThemeChoice {
@@ -20,7 +20,7 @@ export interface ThemeListing extends ThemeChoice {
  * Serialized projects by theme, each resolved on its first request. The project's own theme is
  * listed first, so a `.css` theme the catalog does not know stays selectable.
  */
-export function projectCatalog(project: ResolvedProject, catalog?: ThemeCatalog) {
+export function projectCatalog(project: SceneProject, catalog?: ThemeCatalog) {
   const others = (catalog?.choices ?? []).filter((choice) => choice.name !== project.theme);
   const own = catalog?.choices.find((choice) => choice.name === project.theme);
   const listings: ThemeListing[] = [
@@ -47,4 +47,4 @@ export function projectCatalog(project: ResolvedProject, catalog?: ThemeCatalog)
   return { listings, load, theme: project.theme };
 }
 
-const serialize = (project: ResolvedProject) => Buffer.from(JSON.stringify(project));
+const serialize = (project: SceneProject) => Buffer.from(JSON.stringify(project));

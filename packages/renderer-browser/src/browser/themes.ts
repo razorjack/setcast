@@ -1,22 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
-import type { ResolvedProject } from '@setcast/core';
+import type { ResolvedProject, SceneProject } from '@setcast/core';
 import type { ThemeListing } from '../catalog.ts';
 
-export async function fetchProject(theme: string | null): Promise<ResolvedProject> {
+export async function fetchProject<Project extends SceneProject = ResolvedProject>(
+  theme: string | null,
+): Promise<Project> {
   const query = theme ? `?theme=${encodeURIComponent(theme)}` : '';
   const response = await fetch(`/project.json${query}`);
-  if (response.ok) return (await response.json()) as ResolvedProject;
+  if (response.ok) return (await response.json()) as Project;
   const failure = (await response.json().catch(() => null)) as {
     message?: string;
     hint?: string;
   } | null;
   if (!failure?.message)
-    throw new Error('Cannot load the project. Restart setcast play and reload this page.');
+    throw new Error('Cannot load the project. Restart Setcast and reload this page.');
   throw new Error([failure.message, failure.hint].filter(Boolean).join('. '));
 }
 
 /** The project with the selected theme. The URL keeps the choice, so a reload shows it again. */
-export function useThemes(initial: ResolvedProject, report: (message: string) => void) {
+export function useThemes<Project extends SceneProject>(
+  initial: Project,
+  report: (message: string) => void,
+) {
   const [project, setProject] = useState(initial);
   const [listings, setListings] = useState<ThemeListing[]>([]);
   const [loading, setLoading] = useState<string | null>(null);
@@ -25,14 +30,14 @@ export function useThemes(initial: ResolvedProject, report: (message: string) =>
   useEffect(() => {
     void fetch('/themes.json')
       .then((response) => response.json() as Promise<ThemeListing[]>)
-      .then(setListings, () => report('Cannot list the themes. Restart setcast play to switch.'));
+      .then(setListings, () => report('Cannot list the themes. Restart Setcast to switch.'));
   }, [report]);
 
   const select = (theme: string) => {
     if (theme === project.theme && !loading) return;
     const request = ++latest.current;
     setLoading(theme);
-    fetchProject(theme).then(
+    fetchProject<Project>(theme).then(
       (themed) => {
         if (request !== latest.current) return;
         setProject(themed);

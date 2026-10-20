@@ -192,15 +192,23 @@ function requireCapture() {
 
 async function resolveDevice(device?: string): Promise<string | undefined> {
   if (!device) return undefined;
-  const devices = await navigator.mediaDevices.enumerateDevices();
+  let devices = await navigator.mediaDevices.enumerateDevices();
+  if (devices.every((entry) => !entry.label)) {
+    const permission = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    try {
+      devices = await navigator.mediaDevices.enumerateDevices();
+    } finally {
+      permission.getTracks().forEach((track) => track.stop());
+    }
+  }
   const matching = devices.find(
     (entry) => entry.kind === 'audioinput' && (entry.deviceId === device || entry.label === device),
   );
-  // Labels may be hidden until permission is granted. The caller can choose again afterwards.
-  if (!matching)
+  if (!matching) {
     throw new Error(
-      `Audio input "${device}" is unavailable. Allow input access, then choose an available device.`,
+      `Audio input "${device}" is unavailable. Refresh the device list, then choose an available device.`,
     );
+  }
   return matching.deviceId;
 }
 

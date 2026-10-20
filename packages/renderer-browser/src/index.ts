@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
-import { realpath } from 'node:fs/promises';
-import { SetcastError, type ResolvedProject } from '@setcast/core';
+import { realpath, readFile } from 'node:fs/promises';
+import { SetcastError, type SceneProject } from '@setcast/core';
 import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
 import { projectCatalog, type ThemeCatalog } from './catalog.ts';
@@ -20,10 +20,7 @@ export interface PlayerServer {
   close: () => Promise<void>;
 }
 
-export async function play(
-  project: ResolvedProject,
-  options: PlayerOptions,
-): Promise<PlayerServer> {
+export async function play(project: SceneProject, options: PlayerOptions): Promise<PlayerServer> {
   const port = options.port ?? 3210;
   if (!Number.isInteger(port) || port < 0 || port > 65535) {
     throw new SetcastError(
@@ -34,6 +31,10 @@ export async function play(
   const root = await realpath(options.projectDir);
   const files = await bundlePlayer();
   files.set('/', Buffer.from(html));
+  files.set(
+    '/capture-worklet.js',
+    await readFile(new URL('../entry/capture-worklet.js', import.meta.url)),
+  );
   const site = { root, files, catalog: projectCatalog(project, options.themes) };
   const server = createServer((request, response) => {
     void respond(site, request, response).catch((error: unknown) => {
