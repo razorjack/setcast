@@ -1,70 +1,219 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import type { ResolvedProject } from '@setcast/core';
+import { clamp, type ResolvedProject } from '@setcast/core';
 import type { Transport } from '../transport.ts';
-import { Controls } from './controls.tsx';
+import { DropOverlay, useArt } from './art.tsx';
+import { useAutoHide } from './autohide.ts';
+import { Dock } from './dock.tsx';
+import { useShortcuts } from './keyboard.ts';
+import { creditsOf, withArt, withCredits, type Credits } from './overrides.ts';
 import { usePlayback, type PlaybackSnapshot } from './playback.ts';
 import { Scene, SceneBoundary } from './scene.tsx';
+import { fetchProject, requestedTheme, useThemes } from './themes.ts';
+import { useVolume } from './volume.ts';
 
 export function mountPlayer(element: HTMLElement) {
   const root = createRoot(element);
-  void fetch('/project.json')
-    .then(async (response) => {
-      if (!response.ok)
-        throw new Error('Cannot load the project. Restart setcast play and reload this page.');
-      const project = (await response.json()) as ResolvedProject;
+  void loadInitialProject()
+    .then(({ project, notice }) => {
       document.title = `${project.title || 'Setcast'} / Player`;
-      root.render(<Player project={project} />);
+      root.render(<Player initial={project} startupNotice={notice} />);
     })
     .catch((error: unknown) => {
-      root.render(<p role="alert">{String(error)}</p>);
+      root.render(
+        <p className="sc-player-message" role="alert">
+          {error instanceof Error ? error.message : String(error)}
+        </p>,
+      );
     });
 }
 
-function Player({ project }: { project: ResolvedProject }) {
-  const { audio, transport, snapshot } = usePlayback(project);
-  const [clean, setClean] = useState(false);
-  useKeyboard(transport, () => setClean(false));
-  const fullscreen = () => {
-    const pending = document.fullscreenElement
-      ? document.exitFullscreen()
-      : document.documentElement.requestFullscreen();
-    void pending.catch((error: unknown) => transport.fail(error));
+/** The theme in the URL, or the project's own when the URL names none or one that fails. */
+async function loadInitialProject() {
+  const requested = requestedTheme();
+  if (!requested) return { project: await fetchProject(null), notice: null };
+  try {
+    return { project: await fetchProject(requested), notice: null };
+  } catch (error) {
+    history.replaceState(null, '', location.pathname);
+    const reason = error instanceof Error ? error.message : String(error);
+    return { project: await fetchProject(null), notice: `Cannot show ${requested}: ${reason}` };
+  }
+}
+
+interface Notice {
+  message: string;
+  tone: 'info' | 'error';
+  id: number;
+}
+
+function Player({
+  initial,
+  startupNotice,
+}: {
+  initial: ResolvedProject;
+  startupNotice: string | null;
+}) {
+  const notices = useNotices(startupNotice);
+  const adjusted = useAdjustedProject(initial, notices.report);
+  const { audio, transport, snapshot } = usePlayback(adjusted.project);
+  const dock = useRef<HTMLElement>(null);
+  const dockHeight = useHeight(dock);
+  const autoHide = useAutoHide(dock);
+  const controls = {
+    ...adjusted,
+    transport,
+    volume: useVolume(audio),
+    autoHide,
+    fullscreen: useFullscreen(notices.report),
   };
+  usePlayerShortcuts(controls, notices.inform);
+
   return (
     <main
       className="sc-player"
       data-frame={snapshot.frame}
       data-windows={snapshot.windows}
-      data-clean={clean}
+      data-dock={autoHide.enabled ? 'auto' : 'pinned'}
+      data-idle={autoHide.idle}
+      style={{ '--dock-height': `${dockHeight}px` }}
     >
       <Viewport
-        project={project}
+        project={adjusted.project}
         snapshot={snapshot}
         transport={transport}
-        toggleControls={() => setClean(!clean)}
+        onDoubleClick={autoHide.toggle}
       />
-      {!clean && (
-        <Controls
-          snapshot={snapshot}
-          transport={transport}
-          audio={audio}
-          fullscreen={fullscreen}
-          clean={() => setClean(true)}
-        />
+      <Dock dock={dock} snapshot={snapshot} {...controls} />
+      {adjusted.art.dragging && <DropOverlay />}
+      {notices.notice && (
+        <NoticeBar key={notices.notice.id} notice={notices.notice} dismiss={notices.dismiss} />
       )}
     </main>
   );
+}
+
+/** The project as the viewer adjusted it in the player: its theme, credits and art. */
+function useAdjustedProject(initial: ResolvedProject, report: (message: string) => void) {
+  const themes = useThemes(initial, report);
+  const art = useArt(report);
+  const [credits, setCredits] = useState<Credits | null>(null);
+  const project = useMemo(
+    () => withArt(withCredits(themes.project, credits), art.art),
+    [themes.project, credits, art.art],
+  );
+  return { project, themes, art, credits: { value: creditsOf(project), set: setCredits } };
+}
+
+function useNotices(startup: string | null) {
+  const [notice, setNotice] = useState<Notice | null>(
+    startup ? { message: startup, tone: 'error', id: 0 } : null,
+  );
+  const report = useCallback((message: string) => {
+    setNotice({ message, tone: 'error', id: performance.now() });
+  }, []);
+  const inform = useCallback((message: string) => {
+    setNotice({ message, tone: 'info', id: performance.now() });
+  }, []);
+  const dismiss = useCallback(() => setNotice(null), []);
+  return { notice, report, inform, dismiss };
+}
+
+const CREDIT_ORDER: Credits[] = ['panels', 'tracklist', 'both'];
+const CREDIT_NAMES: Record<Credits, string> = {
+  panels: 'Panels',
+  tracklist: 'Tracklist',
+  both: 'Panels and tracklist',
+};
+
+interface ShortcutTargets {
+  transport: Transport;
+  themes: { step: (offset: number) => string | null };
+  credits: { value: Credits | null; set: (credits: Credits) => void };
+  volume: { toggleMute: () => void };
+  autoHide: { shown: boolean; toggle: () => void; reveal: () => void };
+  fullscreen: { toggle: () => void };
+}
+
+/** `inform` names a change made from the keyboard while the dock that would show it is hidden. */
+function usePlayerShortcuts(targets: ShortcutTargets, inform: (message: string) => void) {
+  const { transport, themes, credits, volume, autoHide, fullscreen } = targets;
+  const announce = (message: string) => {
+    if (!autoHide.shown) inform(message);
+  };
+  const cycleCredits = () => {
+    const current = CREDIT_ORDER.indexOf(credits.value ?? 'both');
+    const next = CREDIT_ORDER[(current + 1) % CREDIT_ORDER.length]!;
+    credits.set(next);
+    announce(CREDIT_NAMES[next]);
+  };
+  const stepTheme = (offset: number) => {
+    const theme = themes.step(offset);
+    if (theme) announce(theme);
+  };
+  const openShortcuts = () => {
+    autoHide.reveal();
+    document.getElementById('sc-shortcuts')?.togglePopover();
+  };
+  useShortcuts({
+    ' ': () => togglePlayback(transport),
+    ArrowLeft: (event) => seekBy(transport, event.shiftKey ? -30 : -5),
+    ArrowRight: (event) => seekBy(transport, event.shiftKey ? 30 : 5),
+    '[': () => stepTheme(-1),
+    ']': () => stepTheme(1),
+    c: cycleCredits,
+    m: volume.toggleMute,
+    h: autoHide.toggle,
+    f: fullscreen.toggle,
+    '?': openShortcuts,
+  });
+}
+
+const togglePlayback = (transport: Transport) =>
+  transport.wanted ? transport.pause() : transport.play();
+
+function seekBy(transport: Transport, seconds: number) {
+  transport.seek(clamp(transport.media.currentTime + seconds, 0, transport.duration));
+}
+
+function useHeight(element: React.RefObject<HTMLElement | null>) {
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setHeight(entry.borderBoxSize[0]?.blockSize ?? 0);
+    });
+    observer.observe(element.current!);
+    return () => observer.disconnect();
+  }, [element]);
+  return height;
+}
+
+function useFullscreen(report: (message: string) => void) {
+  const [active, setActive] = useState(Boolean(document.fullscreenElement));
+  useEffect(() => {
+    const change = () => setActive(Boolean(document.fullscreenElement));
+    document.addEventListener('fullscreenchange', change);
+    return () => document.removeEventListener('fullscreenchange', change);
+  }, []);
+  const toggle = () => {
+    const pending = document.fullscreenElement
+      ? document.exitFullscreen()
+      : document.documentElement.requestFullscreen();
+    void pending.catch(() =>
+      report('The browser refused full screen. Use its own full screen command.'),
+    );
+  };
+  return { active, toggle };
 }
 
 interface ViewportProps {
   project: ResolvedProject;
   snapshot: PlaybackSnapshot;
   transport: Transport;
-  toggleControls: () => void;
+  onDoubleClick: () => void;
 }
 
-function Viewport({ project, snapshot, transport, toggleControls }: ViewportProps) {
+function Viewport({ project, snapshot, transport, onDoubleClick }: ViewportProps) {
   const viewport = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   useEffect(() => {
@@ -79,9 +228,9 @@ function Viewport({ project, snapshot, transport, toggleControls }: ViewportProp
     });
     observer.observe(viewport.current!);
     return () => observer.disconnect();
-  }, [project]);
+  }, [project.width, project.height]);
   return (
-    <div ref={viewport} className="sc-player-viewport" onDoubleClick={toggleControls}>
+    <div ref={viewport} className="sc-player-viewport" onDoubleClick={onDoubleClick}>
       <div
         className="sc-player-canvas"
         style={{
@@ -113,29 +262,40 @@ function PlaybackMessage({ snapshot }: { snapshot: PlaybackSnapshot }) {
       <div className="sc-player-message" role="alert">
         <strong>Playback stopped</strong>
         <p>{snapshot.error}</p>
-        <button onClick={() => location.reload()}>Reload player</button>
+        <button className="sc-button sc-button-primary" onClick={() => location.reload()}>
+          Reload player
+        </button>
       </div>
     );
   if (!snapshot.analyzer)
     return (
       <div className="sc-player-message" role="status">
-        Preparing the set…
+        <span className="sc-spinner" />
+        Preparing the set
       </div>
     );
   return null;
 }
 
-function useKeyboard(transport: Transport, restoreControls: () => void) {
+const NOTICE_MS = { info: 1400, error: 9000 };
+
+function NoticeBar({ notice, dismiss }: { notice: Notice; dismiss: () => void }) {
   useEffect(() => {
-    const keydown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') restoreControls();
-      if ((event.target as HTMLElement).matches('input,button')) return;
-      if (event.code !== 'Space') return;
-      event.preventDefault();
-      if (transport.wanted) transport.pause();
-      else transport.play();
-    };
-    window.addEventListener('keydown', keydown);
-    return () => window.removeEventListener('keydown', keydown);
-  }, [transport, restoreControls]);
+    const timer = setTimeout(dismiss, NOTICE_MS[notice.tone]);
+    return () => clearTimeout(timer);
+  }, [notice, dismiss]);
+  return (
+    <div
+      className="sc-notice"
+      data-tone={notice.tone}
+      role={notice.tone === 'error' ? 'alert' : 'status'}
+    >
+      <span>{notice.message}</span>
+      {notice.tone === 'error' && (
+        <button className="sc-notice-close" aria-label="Dismiss" onClick={dismiss}>
+          ×
+        </button>
+      )}
+    </div>
+  );
 }

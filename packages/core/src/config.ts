@@ -158,6 +158,9 @@ export const OutputSchema = z
     };
   });
 
+/** Panel timing when `panel:` is true or left out. */
+export const PANEL_DEFAULTS = { dwell: 14, fade: 1.2 };
+
 const panelError = 'panel must be true, false or a mapping such as { dwell: 14, fade: 1.2 }.';
 
 const PanelTimingSchema = z.strictObject(
@@ -167,13 +170,13 @@ const PanelTimingSchema = z.strictObject(
       .number({ error: 'dwell must be from 0 to 3600 seconds.' })
       .min(0, { error: 'dwell must be from 0 to 3600 seconds.' })
       .max(3600, { error: 'dwell must be from 0 to 3600 seconds.' })
-      .default(14),
+      .default(PANEL_DEFAULTS.dwell),
     /** Seconds it takes to leave once `dwell` is up. */
     fade: z
       .number({ error: 'fade must be from 0 to 60 seconds.' })
       .min(0, { error: 'fade must be from 0 to 60 seconds.' })
       .max(60, { error: 'fade must be from 0 to 60 seconds.' })
-      .default(1.2),
+      .default(PANEL_DEFAULTS.fade),
   },
   {
     error: (issue) =>

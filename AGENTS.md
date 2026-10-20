@@ -567,6 +567,15 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   background synchronization, not frame-exact offline rendering or a broadcast guarantee.
   The player is bundled in memory on startup, using source exports in development and
   published exports in tarballs. There is no manual dev build or configuration watcher.
+- The player's adjustments never write to the project. `play()` takes a `ThemeCatalog`, and the
+  server resolves `/project.json?theme=<name>` on first request through the CLI's `loadProject`
+  (plus the whole-set read when the theme needs it) and caches the JSON. The project's own theme
+  is listed first, so a `.css` theme stays selectable. Credits and art are client-side overrides
+  of `ResolvedProject` (`overrides.ts`): `panel`/`tracklist` keep their timing and counts, and a
+  chosen file replaces the project's and every play's background as a blob URL with `#<name>`
+  appended, which the browser ignores when loading and `backgroundKind` reads as the extension.
+  The theme choice lives in the URL's `?theme=`; dock auto-hide and volume in `localStorage`.
+  Menus are native popovers placed with CSS anchor positioning above the dock (`--sc-dock`).
 - Rendering performance measurements and optimization priorities are in `docs/render-performance.md`.
   The benchmark lives inside the renderer adapter and uses its installed Remotion version.
   Keep preparation separate from rendering, record whether encoding overlaps capture, and compare

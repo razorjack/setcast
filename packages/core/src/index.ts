@@ -45,6 +45,7 @@ export {
 } from './analysis.ts';
 export {
   OutputSchema,
+  PANEL_DEFAULTS,
   PanelSchema,
   ProjectConfigSchema,
   type ExportProfile,
@@ -147,6 +148,7 @@ export {
 export {
   REFERENCE_LUMA,
   artBehind,
+  backgroundKind,
   backgroundVars,
   backgroundWarnings,
   coverCrop,

@@ -95,8 +95,11 @@ node packages/cli/bin/setcast.js play path/to/project --theme darkroom --port 32
 ```
 
 From an installed CLI, use `setcast play path/to/project`. Open the printed URL in current
-Chrome. Play/pause, seeking, volume, fullscreen and hidden controls are available. Space
-toggles playback when focus is outside a control; Escape restores hidden controls.
+Chrome. The dock has play/pause, a chapter scrubber with the mix's drops, volume and full
+screen. It also switches among the built-in themes, credits with panels, the tracklist or both,
+and replaces the art with a chosen or dropped image or video for the whole set. None of these
+write to the project. `H` hides the dock, which then returns while the pointer touches the
+bottom edge, and `?` lists every shortcut.
 Restart the command after editing the project. Ctrl+C closes the server.
 
 `@setcast/renderer-browser` supplies the existing `Stage` with `RendererBindings` and the

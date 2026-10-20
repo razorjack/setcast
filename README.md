@@ -262,7 +262,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast import`   | turns a tracklist file (plain text or `.cue`) into `plays:` with source evidence; `--write` replaces that list after validation |
 | `setcast analyze`  | reads the audio and drafts mix drop and breakdown annotations plus tempo, without snapping; `--write` accepts and merges them |
 | `setcast preview`  | opens the set in Remotion Studio                                                                 |
-| `setcast play`     | prototype: plays a recorded project in a local browser, with seeking, volume and fullscreen |
+| `setcast play`     | prototype: plays a recorded project in a local browser and switches themes, credits and art while it plays |
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
@@ -275,9 +275,12 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 `setcast <command> --help` for every option.
 
 Try `setcast play path/to/project`, then open the printed localhost URL in current Chrome.
-Space plays or pauses; Escape restores hidden controls. The player uses the project's audio,
-artwork, theme, CSS overrides and visualizers. It pauses while uncached audio or assets prepare,
-and configuration changes require a restart. Live inputs and broadcasting are not implemented.
+The player uses the project's audio, artwork, theme, CSS overrides and visualizers. Its dock
+switches to any built-in theme, credits tracks with panels, the tracklist or both, and tries an
+image or video as art (choose a file or drop it on the page) without changing the project.
+Press `H` to hide the dock; it returns when the pointer reaches the bottom edge. Press `?` for
+every shortcut. Playback pauses while uncached audio or assets prepare. Restart the player after
+editing the project. Live inputs and broadcasting are not implemented.
 See [the playback prototype notes](docs/browser-playback.md) for its design and verification limits.
 
 ## Visualizers

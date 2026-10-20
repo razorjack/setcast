@@ -3,12 +3,17 @@ import { realpath } from 'node:fs/promises';
 import { SetcastError, type ResolvedProject } from '@setcast/core';
 import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
+import { projectCatalog, type ThemeCatalog } from './catalog.ts';
+
+export type { ThemeCatalog, ThemeChoice, ThemeListing } from './catalog.ts';
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Setcast Player</title><link rel="stylesheet" href="/player.css"></head><body><div id="player"></div><script type="module" src="/player.js"></script></body></html>`;
 
 export interface PlayerOptions {
   projectDir: string;
   port?: number;
+  /** Themes the player offers besides the project's own. */
+  themes?: ThemeCatalog;
 }
 export interface PlayerServer {
   url: string;
@@ -29,9 +34,9 @@ export async function play(
   const root = await realpath(options.projectDir);
   const files = await bundlePlayer();
   files.set('/', Buffer.from(html));
-  files.set('/project.json', Buffer.from(JSON.stringify(project)));
+  const site = { root, files, catalog: projectCatalog(project, options.themes) };
   const server = createServer((request, response) => {
-    void respond(root, files, request, response).catch((error: unknown) => {
+    void respond(site, request, response).catch((error: unknown) => {
       if (response.headersSent) {
         response.destroy(error instanceof Error ? error : undefined);
         return;
@@ -64,9 +69,14 @@ export async function play(
   };
 }
 
+interface Site {
+  root: string;
+  files: Map<string, Buffer>;
+  catalog: ReturnType<typeof projectCatalog>;
+}
+
 async function respond(
-  root: string,
-  files: Map<string, Buffer>,
+  { root, files, catalog }: Site,
   request: IncomingMessage,
   response: ServerResponse,
 ) {
@@ -80,20 +90,26 @@ async function respond(
   }
   response.setHeader('Cache-Control', 'no-store');
   response.setHeader('X-Content-Type-Options', 'nosniff');
+  let url: URL;
   let path: string;
   try {
-    path = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname);
+    url = new URL(request.url ?? '/', 'http://localhost');
+    path = decodeURIComponent(url.pathname);
   } catch {
     response.writeHead(400).end();
     return;
   }
+  if (path === '/themes.json') {
+    send(request, response, Buffer.from(JSON.stringify(catalog.listings)), 'application/json');
+    return;
+  }
+  if (path === '/project.json') {
+    await sendProject(catalog, url.searchParams.get('theme'), request, response);
+    return;
+  }
   const file = files.get(path);
   if (file) {
-    let type = mediaType(path);
-    if (path === '/') type = 'text/html';
-    if (path === '/project.json') type = 'application/json';
-    response.writeHead(200, { 'Content-Type': type, 'Content-Length': file.length });
-    response.end(request.method === 'HEAD' ? undefined : file);
+    send(request, response, file, path === '/' ? 'text/html' : mediaType(path));
     return;
   }
   if (path.startsWith('/assets/')) {
@@ -104,4 +120,31 @@ async function respond(
     }
   }
   response.writeHead(404).end();
+}
+
+function send(request: IncomingMessage, response: ServerResponse, body: Buffer, type: string) {
+  response.writeHead(200, { 'Content-Type': type, 'Content-Length': body.length });
+  response.end(request.method === 'HEAD' ? undefined : body);
+}
+
+/** Theme failures reach the player as `{ message, hint }`, which it shows next to the picker. */
+async function sendProject(
+  catalog: Site['catalog'],
+  theme: string | null,
+  request: IncomingMessage,
+  response: ServerResponse,
+) {
+  let project: Buffer;
+  try {
+    project = await catalog.load(theme ?? catalog.theme);
+  } catch (error) {
+    const unknown = !catalog.listings.some((listing) => listing.name === theme);
+    const message = error instanceof Error ? error.message : String(error);
+    const hint = error instanceof SetcastError ? error.hint : undefined;
+    response
+      .writeHead(unknown ? 404 : 500, { 'Content-Type': 'application/json' })
+      .end(JSON.stringify({ message, hint }));
+    return;
+  }
+  send(request, response, project, 'application/json');
 }

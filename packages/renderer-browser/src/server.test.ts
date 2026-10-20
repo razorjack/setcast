@@ -1,7 +1,7 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { normalizeMix, type ResolvedProject } from '@setcast/core';
+import { normalizeMix, SetcastError, type ResolvedProject } from '@setcast/core';
 import { expect, test, vi } from 'vite-plus/test';
 
 vi.mock('./bundle.ts', () => ({
@@ -59,6 +59,45 @@ test('player serves project, bundles and seekable assets, then releases its port
     await rm(root, { recursive: true, force: true });
   }
   await expect(fetch(server.url)).rejects.toThrow();
+});
+
+test('player resolves each offered theme once, lists the project theme first and reports failures', async () => {
+  const load = vi.fn(async (theme: string) => {
+    if (theme === 'broken') throw new SetcastError('Theme CSS is missing', 'Reinstall the theme.');
+    return { ...project, theme };
+  });
+  const choices = [{ name: 'pirate', description: 'Paper' }, { name: 'broken' }, { name: 'test' }];
+  const server = await play(project, { projectDir: '.', port: 0, themes: { choices, load } });
+  try {
+    expect(await (await fetch(server.url + '/themes.json')).json()).toEqual([
+      { name: 'test', project: true },
+      { name: 'pirate', description: 'Paper', project: false },
+      { name: 'broken', project: false },
+    ]);
+    for (let request = 0; request < 2; request++) {
+      const themed = await fetch(server.url + '/project.json?theme=pirate');
+      expect(await themed.json()).toMatchObject({ theme: 'pirate' });
+    }
+    expect(load).toHaveBeenCalledTimes(1);
+    expect(await (await fetch(server.url + '/project.json?theme=test')).json()).toEqual(project);
+
+    const unknown = await fetch(server.url + '/project.json?theme=nope');
+    expect(unknown.status).toBe(404);
+    expect(await unknown.json()).toEqual({
+      message: 'Unknown theme "nope"',
+      hint: 'Choose one of: test, pirate, broken.',
+    });
+    const broken = await fetch(server.url + '/project.json?theme=broken');
+    expect(broken.status).toBe(500);
+    expect(await broken.json()).toEqual({
+      message: 'Theme CSS is missing',
+      hint: 'Reinstall the theme.',
+    });
+    await fetch(server.url + '/project.json?theme=broken');
+    expect(load).toHaveBeenCalledTimes(3);
+  } finally {
+    await server.close();
+  }
 });
 
 test('invalid ports fail before bundling or opening files', async () => {
