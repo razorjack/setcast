@@ -53,3 +53,22 @@ export type ResolvedProject = {
   /** Seconds into the audio of a downbeat. */
   beatOffset: number;
 };
+
+/** An open-ended performance. A live session has no recorded file or finite mix document. */
+export type ResolvedLiveProject = Omit<ResolvedProject, 'audio' | 'mix' | 'panel' | 'tracklist'> & {
+  audio: null;
+  mix: null;
+  panel: null;
+  tracklist: null;
+  live: {
+    clock: boolean;
+    input: {
+      device?: string;
+      channels: [number, number] | null;
+      gain: number;
+      delay: number;
+    };
+  };
+};
+
+export type SceneProject = ResolvedProject | ResolvedLiveProject;

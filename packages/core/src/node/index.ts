@@ -8,3 +8,5 @@ export {
   type LoadedProject,
 } from './project.ts';
 export { audioDuration, probeAudio } from './media.ts';
+
+export { loadLiveProject, type LoadedLiveProject } from './live.ts';

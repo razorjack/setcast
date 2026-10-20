@@ -8,6 +8,7 @@ import { labelLine } from './credit.ts';
 export function Tracklist({ counts }: { counts: TracklistCounts }) {
   const { mix, composition } = useFrame();
   const { project } = composition;
+  if (!project.mix) return null;
   const view = tracklistView(project.mix, mix, counts);
   const digits = String(mix.listingCount).length;
   return (

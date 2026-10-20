@@ -16,7 +16,7 @@ export function NowPlaying() {
   const { project } = composition;
   const { panel } = project;
   // the empty stack stays, so a layout anchored to it keeps its place
-  if (!panel) return <div className="sc-contributors" />;
+  if (!panel || !project.mix) return <div className="sc-contributors" />;
 
   const dj = project.presentation === 'dj';
   const plays = dj ? mix.currentPlays : mix.focusPlays.slice(0, 1);

@@ -108,7 +108,7 @@ export {
   type SpringConfig,
 } from './motion.ts';
 export { ConfigError, SetcastError, zodIssues, type Issue } from './errors.ts';
-export type { ResolvedProject } from './project.ts';
+export type { ResolvedProject, ResolvedLiveProject, SceneProject } from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export {
@@ -238,3 +238,5 @@ export type {
   StillOptions,
   StillResult,
 } from './export.ts';
+
+export { LiveConfigSchema, type LiveConfig } from './live.ts';

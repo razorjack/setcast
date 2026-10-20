@@ -21,14 +21,18 @@ export function Overview() {
   const { timeSeconds, composition } = useFrame();
   const { project, durationSeconds } = composition;
   const playedId = useId();
-  const xAt = (time: number) => (time / durationSeconds) * WIDTH;
+  const xAt = (time: number) => (time / (durationSeconds ?? 1)) * WIDTH;
   const head = xAt(timeSeconds);
   const energy = useMemo(
     () =>
-      project.envelope && <Energy envelope={project.envelope} durationSeconds={durationSeconds} />,
+      project.envelope &&
+      durationSeconds !== null && (
+        <Energy envelope={project.envelope} durationSeconds={durationSeconds} />
+      ),
     [project.envelope, durationSeconds],
   );
 
+  if (!project.mix || durationSeconds === null) return null;
   return (
     <svg className="sc-overview" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none">
       <defs>

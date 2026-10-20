@@ -55,6 +55,7 @@ export function Stage() {
       ref={stageRef}
       className={`setcast sc-stage theme-${project.theme}`}
       {...stageData(mix, background)}
+      data-mode={project.mix === null ? 'live' : 'recorded'}
       data-bg-calm={backgroundArt?.stats.calm.anchor}
       data-presentation={project.presentation}
       style={style}

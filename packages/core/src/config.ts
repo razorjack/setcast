@@ -118,6 +118,12 @@ const outputShape = {
     .optional(),
 };
 
+export const DisplaySchema = z.strictObject({
+  width: outputShape.width,
+  height: outputShape.height,
+  fps: outputShape.fps,
+});
+
 export const OutputSchema = z
   .strictObject(outputShape, {
     error: (issue) => unknownOutputKey(issue, Object.keys(outputShape)),

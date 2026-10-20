@@ -231,7 +231,7 @@ function backgroundPaths(config: ProjectConfig): Map<string, string> {
 }
 
 /** Base CSS, then the theme with its fonts inlined, then the user's overrides, in that order. */
-async function composeCss(
+export async function composeCss(
   theme: Theme,
   userCssFile: string | null,
   dependencies?: Set<string>,
@@ -270,12 +270,12 @@ async function readConfigFile(file: string, root: string): Promise<string> {
   }
 }
 
-function parseConfigYaml(text: string): unknown {
+export function parseConfigYaml(text: string, file = CONFIG_FILE): unknown {
   try {
     return parseYaml(text, { version: '1.2' });
   } catch (error) {
     throw new SetcastError(
-      `${CONFIG_FILE} is not valid YAML${yamlLine(error)}: ${firstLine(error)}`,
+      `${file} is not valid YAML${yamlLine(error)}: ${firstLine(error)}`,
       'Check indentation and quoting; YAML keys need a space after the colon.',
     );
   }
@@ -286,7 +286,7 @@ const yamlLine = (error: unknown) =>
 
 const firstLine = (error: unknown) => (error as Error).message.split('\n')[0];
 
-async function resolveTheme(
+export async function resolveTheme(
   name: string,
   root: string,
   themes: Record<string, Theme>,
@@ -311,7 +311,7 @@ const themeName = (file: string) =>
     .replace(/[^\w-]+/g, '-');
 
 /** A theme is a plugin: its default patch goes through the same schema as the project's routes. */
-function themeRoutes({ name, modulation }: Theme): ModRoute[] {
+export function themeRoutes({ name, modulation }: Theme): ModRoute[] {
   const parsed = ModPatchSchema.safeParse(modulation);
   if (parsed.success) return parsed.data;
   const issue = zodIssues(parsed.error)[0]!;
@@ -322,7 +322,7 @@ function themeRoutes({ name, modulation }: Theme): ModRoute[] {
 }
 
 /** The project's `visualizer:` when it has one, otherwise the theme's default, otherwise a spectrum. */
-function resolveVisualizers(written: unknown, theme: Theme): VisualizerConfig[] {
+export function resolveVisualizers(written: unknown, theme: Theme): VisualizerConfig[] {
   if (written !== undefined) return resolveVisualizerConfigs(written);
   try {
     return resolveVisualizerConfigs(theme.visualizer ?? {});
@@ -351,7 +351,7 @@ function resolveProjectTracklist(
   );
 }
 
-async function requireFile(root: string, path: string, purpose: string): Promise<string> {
+export async function requireFile(root: string, path: string, purpose: string): Promise<string> {
   const absolute = resolve(root, path);
   if (escapesRoot(root, absolute)) {
     throw new SetcastError(

@@ -40,10 +40,16 @@ export function cueVars(state: MixState, play?: CurrentPlay): Record<string, str
   return vars;
 }
 
-export function stageVars(state: MixState, time: number, duration: number): Record<string, string> {
+export function stageVars(
+  state: MixState,
+  time: number,
+  duration: number | null,
+): Record<string, string> {
   return {
     ...cueVars(state),
-    '--set-progress': cssNumber(duration > 0 ? clamp(time / duration, 0, 1) : 0),
+    '--set-progress': cssNumber(
+      duration !== null && duration > 0 ? clamp(time / duration, 0, 1) : 0,
+    ),
     '--current-plays': String(state.currentPlayCount),
   };
 }

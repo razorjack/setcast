@@ -1,13 +1,13 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { historyTimes, SILENCE, type AudioAnalyzer, type AudioFeatures } from '../audio.ts';
-import type { ResolvedProject } from '../project.ts';
+import type { SceneProject } from '../project.ts';
 import type { MixState } from '../timeline.ts';
 
 export interface CompositionState {
   width: number;
   height: number;
-  durationSeconds: number;
-  project: ResolvedProject;
+  durationSeconds: number | null;
+  project: SceneProject;
 }
 
 /** The contract between a renderer and every Setcast component. Renderer-agnostic by design. */

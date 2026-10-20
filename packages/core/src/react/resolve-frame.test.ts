@@ -2,10 +2,10 @@ import { expect, test } from 'vite-plus/test';
 import { SILENCE, type AudioAnalyzer } from '../audio.ts';
 import { normalizeMix } from '../mix.ts';
 import { ModPatchSchema } from '../modulation.ts';
-import type { ResolvedProject } from '../project.ts';
+import type { ResolvedProject, ResolvedLiveProject } from '../project.ts';
 import { Timeline } from '../timeline.ts';
 import { framesWithinMix } from '../frame-time.ts';
-import { resolveFrame } from './resolve-frame.ts';
+import { resolveFrame, resolveLiveFrame } from './resolve-frame.ts';
 
 const project: ResolvedProject = {
   title: 'Frame assembly',
@@ -46,6 +46,28 @@ const project: ResolvedProject = {
 const timeline = new Timeline(project.mix);
 const audio = { ...SILENCE, bass: 0.25 };
 const analyzer: AudioAnalyzer = { featuresAt: () => audio };
+
+test('live frames remain open-ended with audio modulation and neutral absent cues', () => {
+  const live: ResolvedLiveProject = {
+    ...project,
+    audio: null,
+    mix: null,
+    panel: null,
+    tracklist: null,
+    bpm: null,
+    live: { clock: false, input: { channels: null, gain: 1, delay: 0 } },
+  };
+  const resolved = resolveLiveFrame({ project: live, analyzer, frame: 30 * 60 * 60 * 12 });
+  expect(resolved.timeSeconds).toBe(43200);
+  expect(resolved.composition.durationSeconds).toBeNull();
+  expect(resolved.composition.project.mix).toBeNull();
+  expect(resolved.mix.currentPlays).toEqual([]);
+  expect(resolved.mix.annotations.mix).toEqual({ last: {}, next: {} });
+  expect(resolved.modulation).toEqual({ audio: 0.25, cue: 0, beat: 0 });
+  expect(() => resolveLiveFrame({ project: live, analyzer, frame: -1 })).toThrow(
+    'use a nonnegative safe integer',
+  );
+});
 
 test('frame assembly respects renderer settings and preserves supplied identities', () => {
   const frame = resolveFrame({

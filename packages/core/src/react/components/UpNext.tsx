@@ -4,6 +4,7 @@ import { useFrame } from '../frame.tsx';
 export function UpNext() {
   const { mix, composition } = useFrame();
   const { project } = composition;
+  if (!project.mix) return null;
   const dj = project.presentation === 'dj';
   const next = dj ? mix.nextEntries : mix.nextListings;
   if (!next.length) return null;

@@ -1,7 +1,7 @@
 import type { AudioAnalyzer } from '../audio.ts';
 import { evaluateModulation } from '../modulation.ts';
-import type { ResolvedProject } from '../project.ts';
-import type { Timeline } from '../timeline.ts';
+import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
+import type { Timeline, MixState } from '../timeline.ts';
 import type { RenderFrame } from './frame.tsx';
 
 export interface FrameRequest {
@@ -26,6 +26,77 @@ export function resolveFrame({
 }: FrameRequest): RenderFrame {
   const timeSeconds = frame / fps;
   const mix = timeline.at(timeSeconds);
+  return assembleFrame(
+    { project, analyzer, mix, frame, fps, width, height },
+    project.mix.duration / 1_000_000,
+  );
+}
+
+export function resolveLiveFrame({
+  project,
+  analyzer,
+  frame,
+}: {
+  project: ResolvedLiveProject;
+  analyzer: AudioAnalyzer;
+  frame: number;
+}): RenderFrame {
+  if (!Number.isSafeInteger(frame) || frame < 0) {
+    throw new RangeError(
+      `resolveLiveFrame() received frame=${frame}; use a nonnegative safe integer.`,
+    );
+  }
+  const time = Math.round((frame / project.fps) * 1_000_000);
+  const mix: MixState = {
+    time,
+    currentPlays: [],
+    focusPlays: [],
+    mixSection: null,
+    activeAnnotations: [],
+    annotations: { mix: { last: {}, next: {} }, plays: {} },
+    nextEntries: [],
+    nextListings: [],
+    listings: [],
+    recordingCount: 0,
+    playCount: 0,
+    listingCount: 0,
+    currentPlayCount: 0,
+  };
+  return assembleFrame(
+    {
+      project,
+      analyzer,
+      mix,
+      frame,
+      fps: project.fps,
+      width: project.width,
+      height: project.height,
+    },
+    null,
+  );
+}
+
+function assembleFrame(
+  {
+    project,
+    analyzer,
+    mix,
+    frame,
+    fps,
+    width,
+    height,
+  }: {
+    project: SceneProject;
+    analyzer: AudioAnalyzer;
+    mix: MixState;
+    frame: number;
+    fps: number;
+    width: number;
+    height: number;
+  },
+  durationSeconds: number | null,
+): RenderFrame {
+  const timeSeconds = frame / fps;
   const modulation = evaluateModulation(project.modulation, {
     time: timeSeconds,
     fps,
@@ -41,7 +112,7 @@ export function resolveFrame({
     audio: analyzer.featuresAt(timeSeconds),
     analyzer,
     mix,
-    composition: { width, height, durationSeconds: project.mix.duration / 1_000_000, project },
+    composition: { width, height, durationSeconds, project },
     modulation,
   };
 }

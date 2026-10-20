@@ -515,6 +515,13 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Live scenes use `ResolvedLiveProject` with `audio: null` and `mix: null`; recorded projects
+  retain their finite `MixDocument` and mandatory audio file. `loadLiveProject` reads optional
+  `live.yaml` and shares theme/CSS resolution without probing audio. `resolveLiveFrame` supplies
+  empty credit/cue state and a null composition duration. Whole-set visualizers are omitted with
+  a warning; clock totals and progress do not imply an endpoint. `data-mode="live"` identifies
+  these scenes for CSS. A live session does not fabricate a recording or a finite timeline.
+
 - `scripts/export-acceptance/` checks the core `Exporter` interface with generated media.
   Its runner selects Remotion by default and accepts a local adapter module and reference
   image directory. The checks require ffmpeg/ffprobe, compare decoded A/V pulse times,
