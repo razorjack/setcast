@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { AnnouncementSchema, endAnnouncement, type Announcement } from './branding.ts';
 import { PerformanceRampSchema, rampAt, type PerformanceEvent } from './performance.ts';
 
 const sampleError =
@@ -60,10 +61,23 @@ export const SessionEventSchema = z.discriminatedUnion(
       entryError,
     ),
     z.strictObject({ type: eventType('scene'), sample, preset: text }, entryError),
+    z.strictObject(
+      {
+        type: eventType('announcement'),
+        sample,
+        text: AnnouncementSchema.shape.text,
+        seconds: AnnouncementSchema.shape.seconds.removeDefault(),
+      },
+      entryError,
+    ),
+    z.strictObject({ type: eventType('announcement_end'), sample }, entryError),
     z.strictObject({ type: eventType('end'), sample }, entryError),
     PerformanceRampSchema.extend({ type: eventType('performance'), sample }),
   ],
-  { error: 'Journal event type must be credit, cue, scene, performance or end.' },
+  {
+    error:
+      'Journal event type must be credit, cue, scene, performance, announcement, announcement_end or end.',
+  },
 );
 export type SessionHeader = z.infer<typeof SessionHeaderSchema>;
 export type SessionEvent = z.infer<typeof SessionEventSchema>;
@@ -115,6 +129,7 @@ export function replayEvents(
   const annotations: { at: number; kind: string }[] = [];
   const scenes: { at: number; preset: string }[] = [];
   const automation: PerformanceEvent[] = [];
+  let announcements: Announcement[] = [];
   for (const event of events) {
     const at = event.sample / header.sampleRate + offset;
     if (at >= duration) continue;
@@ -133,8 +148,20 @@ export function replayEvents(
       );
     }
     if (event.type === 'cue' && at >= 0) annotations.push({ at, kind: event.kind });
+    if (event.type === 'announcement')
+      announcements.push({ at, text: event.text, seconds: event.seconds });
+    if (event.type === 'announcement_end') announcements = endAnnouncement(announcements, at);
   }
-  return { plays, annotations, scenes, automation };
+  return { plays, annotations, scenes, automation, announcements: clipStart(announcements) };
+}
+
+/** An announcement made before the master starts keeps only the part inside it. */
+function clipStart(announcements: Announcement[]): Announcement[] {
+  return announcements
+    .map((entry) =>
+      entry.at >= 0 ? entry : { ...entry, at: 0, seconds: entry.seconds + entry.at },
+    )
+    .filter((entry, index, all) => entry.seconds >= 0.5 && all[index + 1]?.at !== entry.at);
 }
 
 function replaceAt(entries: { at: number }[], at: number) {

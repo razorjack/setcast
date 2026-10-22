@@ -573,6 +573,13 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   ending one early (`endAnnouncement`) shortens it to fade out from that moment, so live output
   and replay agree. The logo goes through `Img`, so every renderer holds the frame for it, and
   the browser resume fingerprint tracks it. See `docs/branding.md`.
+- Live branding edits reuse the scene path: they change the live project, prepare off screen,
+  enter the journal as scene snapshots and hold a running sequence, like title edits. Identity
+  text applies with one button so typing never reaches the output or the journal. Recall
+  restores the scene's branding. Live announcements are session state on the capture clock,
+  like performance ramps: `resolveLiveFrame({ announcements })` keeps them out of the project, so
+  announcing does not remount the scene. Journal `announcement`/`announcement_end` events replay
+  into `announcements:`. MIDI notes 45/46 toggle identity/messages; saved mappings need Reset.
 - `setcast render --resume` is browser-only and opt-in. Completed chunks live in
   `<output>.setcast-resume`; a content/runtime fingerprint invalidates stale jobs, and checksum
   validation rejects missing/corrupt chunks. Source metadata is rechecked during capture and

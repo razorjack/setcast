@@ -107,3 +107,13 @@ announcements:                   # setcast.yaml only
   `--brand-plate`. Both export acceptance suites pass with a new delayed-logo readiness check;
   a branded browser `--resume` export rendered and reused its checkpoints. `vp run ready`: 503
   tests passed. Journal events and live controls are next.
+- Step 6 (journal) and 7 (live operator) implemented: Branding controls, MIDI notes 45/46,
+  announcements with Clear on the capture clock, journal `announcement`/`announcement_end`
+  events and replay. `bench/branding.ts` passes in Chromium (logo readiness, edits, toggles,
+  MIDI, announcements, saved-scene recall, blackout pixels, projected iframe, journal replay,
+  portrait); performance, sequence, projection, output and energy checks still pass. A CLI
+  replay of a branded journal snapshot rendered its logo and shortened announcement through
+  Remotion. The filmed-backdrop example moved branding to the top corners after its screenshot
+  showed the bottom-center identity under the ring, where a booth would also hide it.
+  `vp run ready`: 506 tests passed.
+

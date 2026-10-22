@@ -28,8 +28,8 @@ export function SessionJournal({
     <details className="sc-live-journal">
       <summary>Session journal{journal.active ? ' · Recording events' : ''}</summary>
       <p>
-        Records credits, cues and scene settings. Record mixer audio separately. Starting a new
-        input ends this journal.
+        Records credits, cues, announcements and scene settings. Record mixer audio separately.
+        Starting a new input ends this journal.
       </p>
       <button
         className="sc-button"

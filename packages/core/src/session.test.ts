@@ -55,3 +55,26 @@ test('manual updates at one sample keep the final scene and credit', () => {
   expect(replay.scenes).toEqual([{ at: 0, preset: 'final' }]);
   expect(replay.plays).toEqual([{ at: 0, title: 'Corrected', artist: undefined }]);
 });
+
+test('announcements replay on the master, end early and keep their part inside it', () => {
+  const replay = replayEvents(
+    header,
+    [
+      { type: 'announcement', sample: 0, text: 'Started early', seconds: 3 },
+      { type: 'announcement', sample: 240000, text: 'Last track', seconds: 30 },
+      { type: 'announcement_end', sample: 336000 },
+      { type: 'announcement', sample: 480000, text: 'Too late', seconds: 5 },
+    ],
+    -1,
+    9,
+  );
+  expect(replay.announcements).toEqual([
+    { at: 0, text: 'Started early', seconds: 2 },
+    { at: 4, text: 'Last track', seconds: expect.closeTo(2.6) },
+  ]);
+  const encode = (event: unknown) =>
+    [header, event].map((entry) => JSON.stringify(entry)).join('\n');
+  expect(() =>
+    readSession(encode({ type: 'announcement', sample: 0, text: '', seconds: 5 })),
+  ).toThrow('line 2');
+});

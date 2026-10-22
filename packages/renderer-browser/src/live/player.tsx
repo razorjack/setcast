@@ -17,6 +17,8 @@ import { SessionJournal } from './journal.tsx';
 import { useProjection } from './projection-settings.ts';
 import { ProjectionControls } from './projection-controls.tsx';
 import { OutputControls, useOutput } from './output.tsx';
+import { useLiveBranding } from './branding.ts';
+import { BrandingControls } from './branding-controls.tsx';
 
 export function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
   const themes = useThemes(initial, report);
@@ -25,39 +27,32 @@ export function useLiveScene(initial: ResolvedLiveProject, report: (message: str
   const [preset, setPreset] = useState<string | null>(null);
   const [clock, setClock] = useState(initial.live.clock);
   const [tempo, setTempo] = useState<Tempo>({ bpm: initial.bpm, beatOffset: initial.beatOffset });
-  const project = useMemo(() => {
-    const background = selectedBackground(themes.project.background, art.art);
-    return {
+  const branding = useLiveBranding(initial.branding, report);
+  const project = useMemo(
+    () => ({
       ...themes.project,
       ...tempo,
-      background,
+      background: selectedBackground(themes.project.background, art.art),
       title,
+      branding: branding.value,
       live: { ...themes.project.live, clock },
-    };
-  }, [themes.project, art.art, title, clock, tempo]);
+    }),
+    [themes.project, art.art, title, clock, tempo, branding.value],
+  );
   const recall = (saved: ResolvedLiveProject, directory: string) => {
     themes.adopt({ ...saved, width: initial.width, height: initial.height, fps: initial.fps });
     art.setArt({ kind: 'project' });
     setTitle(saved.title);
+    branding.set(saved.branding);
     setClock(saved.live.clock);
     setPreset(directory);
   };
-  const selectedThemes = {
-    ...themes,
-    step: (offset: number) => {
-      setPreset(null);
-      return themes.step(offset);
-    },
-    select: (name: string) => {
-      setPreset(null);
-      themes.select(name);
-    },
-  };
   return {
-    themes: selectedThemes,
+    themes: manualThemes(themes, () => setPreset(null)),
     art,
     title,
     setTitle,
+    branding,
     clock,
     setClock,
     project,
@@ -65,6 +60,24 @@ export function useLiveScene(initial: ResolvedLiveProject, report: (message: str
     setTempo,
     preset,
     recall,
+  };
+}
+
+/** Choosing a theme by hand leaves the recalled scene preset behind. */
+function manualThemes(
+  themes: ReturnType<typeof useThemes<ResolvedLiveProject>>,
+  leave: () => void,
+) {
+  return {
+    ...themes,
+    step: (offset: number) => {
+      leave();
+      return themes.step(offset);
+    },
+    select: (name: string) => {
+      leave();
+      themes.select(name);
+    },
   };
 }
 
@@ -98,6 +111,7 @@ export function LivePlayer({
         project={project}
         analyzer={input.snapshot.analyzer}
         frame={input.snapshot.frame}
+        announcements={controller.announcements.list}
         report={report}
         performance={controller.performance.value()}
         renderScale={controller.output.renderScale}
@@ -171,6 +185,7 @@ function LiveControls({
   midi,
   activePreset,
   sequence,
+  announcements,
   ...settings
 }: ReturnType<typeof useLivePlayer>) {
   return (
@@ -189,6 +204,7 @@ function LiveControls({
       <section className="sc-live-session">
         <OperatorButton operator={operator} setClean={setClean} />
         <LiveTempo input={input} tempo={scene.tempo} setTempo={scene.setTempo} />
+        <BrandingControls branding={scene.branding} announcements={announcements} />
         <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
         <OutputControls output={settings.output} />
         <ProjectionControls projection={settings.projection} />

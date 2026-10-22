@@ -108,6 +108,8 @@ MIDI is input-only and does not request SysEx. Defaults use channel 1:
 | CC 7 | Brightness, 0–100% |
 | Notes 36–43 | First eight scene slots |
 | Note 44 | Toggle blackout |
+| Note 45 | Show or hide the branding identity |
+| Note 46 | Show or hide branding messages |
 
 Choose a control and click **Learn MIDI**, then move or press the hardware control. Learning
 replaces that action's previous assignment. A CC assigned to a button triggers on its rising
@@ -120,6 +122,9 @@ Use a stable bank for a performance. Browser support, device permissions and phy
 remain equipment-specific; the automated check uses a synthetic MIDI input.
 
 ## Journal and deterministic export
+
+Saved mappings from earlier versions keep their assignments; **Reset MIDI mappings** adds notes 45
+and 46. Branding controls and announcements are described in [branding.md](branding.md#live-operator).
 
 The journal records effective performance ramps on the capture sample clock, including blackout
 and transition fades. Only scenes that reach ready output enter the journal. Start the journal

@@ -47,3 +47,5 @@ jobs:
         run: node packages/renderer-browser/bench/energy.ts
       - name: Confidence-aware live beat tracking
         run: node packages/renderer-browser/bench/beats.ts
+      - name: Live branding, announcements and journal replay
+        run: node packages/renderer-browser/bench/branding.ts

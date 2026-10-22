@@ -18,3 +18,9 @@ visualizer:
   - { name: vectorscope, gain: 1.5, trail: 4 }
 modulation:
   - { source: bass, target: ring-scale, range: [1, 1.12], smooth: 0.12 }
+branding:
+  logo: logo.svg
+  name: Null Vector
+  position: bottom-left
+  size: 1.5
+  messages: { position: bottom-right, size: 1.6 }

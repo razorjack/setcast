@@ -6,7 +6,13 @@ export interface MidiMessage {
   number: number;
   value: number;
 }
-export type MidiAction = 'intensity' | 'brightness' | 'blackout' | `scene-${number}`;
+export type MidiAction =
+  | 'intensity'
+  | 'brightness'
+  | 'blackout'
+  | 'branding'
+  | 'messages'
+  | `scene-${number}`;
 export type MidiMapping = Record<string, MidiAction>;
 
 export function midiMessage(bytes: ArrayLike<number>): MidiMessage | null {
@@ -28,6 +34,8 @@ export const DEFAULT_MIDI: MidiMapping = Object.fromEntries([
   ['cc:1:1', 'intensity'],
   ['cc:1:7', 'brightness'],
   ['note:1:44', 'blackout'],
+  ['note:1:45', 'branding'],
+  ['note:1:46', 'messages'],
   ...Array.from({ length: 8 }, (_, index) => [`note:1:${36 + index}`, `scene-${index + 1}`]),
 ]);
 const storageKey = 'setcast-midi-v1';
@@ -40,7 +48,7 @@ function readMapping(): MidiMapping {
       Object.entries(saved).every(
         ([key, action]) =>
           /^(note|cc):(?:[1-9]|1[0-6]):\d{1,3}$/.test(key) &&
-          /^(intensity|brightness|blackout|scene-[1-8])$/.test(String(action)),
+          /^(intensity|brightness|blackout|branding|messages|scene-[1-8])$/.test(String(action)),
       )
     )
       return saved;

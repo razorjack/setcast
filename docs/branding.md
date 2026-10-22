@@ -50,7 +50,7 @@ Suggested settings:
 | Use | Settings |
 | --- | --- |
 | YouTube video | the defaults: identity top right, messages bottom center |
-| Filmed DJ backdrop | `position: bottom` or `top`, `size: 1.5`–`2`; keep the center free for the performer |
+| Filmed DJ backdrop | `position: top-left` or `top-right`, `size: 1.5`–`2`; the booth and performer cover the bottom and center |
 | Rave projection ident | a saved scene with `logo:` only, `position: center`, `size: 3`–`4` |
 | Quiet watermark | `logo:` only, `size: 0.6`, `opacity: 0.6` |
 
@@ -114,3 +114,65 @@ fingerprint includes logo files.
 The logo goes through Setcast's `Img` media wrapper, so both exporters and live output wait for
 it before a frame counts as ready. A logo that fails to load fails the export, or keeps the
 previous live scene on screen.
+
+## Live operator
+
+`setcast live` reads `branding:` from live.yaml. Open **Branding** in the operator controls:
+
+- **Show identity** and **Show messages** hide or show the identity block and the rotating
+  messages without losing their settings. MIDI note 45 and note 46 (channel 1) do the same, and
+  both can be learned like other MIDI actions.
+- **Position** and **Size** apply immediately.
+- **Name**, **Event** and **Episode** apply together with **Apply identity**, so the audience
+  never sees a name being typed. An empty field removes that line. Without `branding:` in
+  live.yaml, typing a name creates it.
+- **Announcement** shows a line for 5 to 60 seconds in the message line. **Clear announcement**
+  fades it out from that moment. Announcing again replaces the current one.
+
+The logo and the message lines come from live.yaml; the operator UI does not upload a logo.
+Branding changes go through the same path as a theme or title change: the new look is prepared
+off screen and replaces the old one once its logo has loaded. A logo that fails to load keeps the
+previous output and reports the problem. A running automatic sequence holds on a branding change,
+as it does for other appearance edits.
+
+Branding belongs to the scene. **Save scene** stores it with the scene and copies the logo.
+Recalling a scene, by pad, MIDI or an automatic sequence, restores the branding it was saved
+with, including hidden identity or messages. Keep the identity consistent across a bank by
+setting it before saving the scenes.
+
+Announcements belong to the session, not the scene. They are timed on the capture clock like
+performance ramps and appear after the visual delay with the rest of the output. A new capture
+clears them. Brightness, blackout, the input-loss fallback and projector correction cover
+branding like the rest of the scene.
+
+## Journal and replay
+
+The session journal records branding changes as scene snapshots, like theme and title changes,
+and announcements as `announcement` and `announcement_end` events:
+
+```json
+{"type":"announcement","sample":2880000,"text":"Last track","seconds":10}
+{"type":"announcement_end","sample":3120000}
+```
+
+`setcast replay` writes them into `announcements:`. An early end shortens the entry so it fades
+out at the same moment it did live; an announcement made before the master starts keeps only the
+part inside the recording. Replayed scene snapshots switch branding at the recorded times.
+
+## Validation
+
+- `vp run branding-stills [--theme name]` renders each built-in theme with the identity in
+  several positions and sizes, a rotating message, an announcement, a centered ident and
+  portrait frames into `examples/demo/out/branding/<theme>/`.
+- `node packages/renderer-browser/bench/branding.ts` drives the live player in Chromium: logo
+  readiness, edits, toggles, MIDI notes 45 and 46, announcements and Clear, saving and
+  recalling a branded scene, blackout (the identity's pixels capture black), projector
+  correction (the logo loads inside the projected iframe), journal events and replay, and a
+  portrait session. Screenshots go to `examples/demo/out/branding-check/`.
+- Both export acceptance suites check that a logo served 900 ms late renders the same pixels as
+  a prompt one.
+
+Limits: physical displays, cameras and projectors have not been checked for branding legibility
+at distance. Built-in themes were tuned on the demo art; a custom position can still meet a
+theme's own furniture, especially in portrait. SVG logos with text need outlined fonts.
+

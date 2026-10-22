@@ -12,3 +12,7 @@ CC 7 brightness, notes 36–43 scene slots and note 44 blackout. Learn MIDI repl
 Open **Projector setup** to align four corners, crop the source and mask fixed output areas.
 Use the calibration pattern before the show, then save and export a named venue profile.
 See [one-projector setup](../../docs/projector-setup.md). Multi-projector output remains future work.
+
+The logo and name sit bottom left. For an ident between sets, set `position: center` and
+`size: 3` in Branding controls, save the scene, and recall it from a scene pad or MIDI note.
+Announcements typed in the operator controls appear bottom right.

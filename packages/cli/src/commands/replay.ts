@@ -19,7 +19,7 @@ export const help = `setcast replay <journal.jsonl> --audio <master.wav> --offse
 Create a recorded project from one live journal and a separately recorded master.
 --offset is the master-file time corresponding to journal time zero. It may be negative.
 The new replay-* directory is placed next to the journal. Originals are unchanged.
-Credits, cues and saved scene changes are restored. Capture is not an audio recording.
+Credits, cues, announcements and saved scene changes are restored. Capture is not an audio recording.
 Nondefault input gain/delay requires manual reconciliation and is rejected.`;
 
 export async function run(argv: string[]) {
@@ -53,6 +53,7 @@ export async function run(argv: string[]) {
       annotations: replay.annotations,
       scenes: replay.scenes,
       automation: replay.automation,
+      announcements: replay.announcements,
       panel: { dwell: 0 },
     };
     await writeFile(join(output, 'setcast.yaml'), stringify(config));

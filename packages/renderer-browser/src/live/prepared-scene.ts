@@ -21,6 +21,7 @@ export function usePreparedScene(
         theme: project.theme,
         preset: preset ?? undefined,
         title: project.title,
+        branding: project.branding,
         clock: project.live.clock,
         bpm: project.bpm,
         beatOffset: project.beatOffset,

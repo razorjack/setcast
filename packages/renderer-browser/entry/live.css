@@ -300,6 +300,36 @@
   border-radius: 4px;
 }
 
+.sc-live-branding {
+  padding-top: 12px;
+}
+.sc-live-branding p {
+  color: #aab4c1;
+}
+.sc-live-branding-visibility,
+.sc-live-branding-identity,
+.sc-live-branding-announcement {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: end;
+  padding-top: 10px;
+}
+.sc-live-branding label:not(.sc-live-check) {
+  display: grid;
+  gap: 4px;
+}
+.sc-live-branding :is(input:not([type='checkbox']), select) {
+  padding: 6px;
+  color: inherit;
+  background: #24262b;
+  border: 1px solid #ffffff24;
+  border-radius: 4px;
+}
+.sc-live-branding-announcement input {
+  width: 260px;
+}
+
 .sc-performance {
   padding: 16px 20px;
   background: #14181e;

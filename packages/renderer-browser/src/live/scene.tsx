@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
+  Announcement,
   PerformanceState,
   AudioAnalyzer,
   ResolvedLiveProject,
@@ -21,6 +22,7 @@ import { LiveVideo } from './video.tsx';
 interface SceneProps {
   project: ResolvedLiveProject;
   performance?: PerformanceState;
+  announcements?: readonly Announcement[];
   onReady?: (project: ResolvedLiveProject) => void;
   onFailure?: () => void;
   analyzer: AudioAnalyzer;
@@ -93,6 +95,7 @@ function SceneLayers({
           <SceneBoundary onError={(cause) => error(project, cause)}>
             <LiveScene
               performance={props.performance}
+              announcements={props.announcements}
               renderScale={props.renderScale}
               project={project}
               analyzer={props.analyzer}
@@ -136,6 +139,7 @@ const LiveScene = memo(function LiveScene({
   frame,
   ready,
   performance,
+  announcements,
   renderScale,
   document,
 }: Omit<SceneProps, 'report'> & { ready?: () => void }) {
@@ -153,7 +157,7 @@ const LiveScene = memo(function LiveScene({
     [readiness, renderScale, document],
   );
   useReady(readiness, ready);
-  const resolved = resolveLiveFrame({ project, analyzer, frame, performance });
+  const resolved = resolveLiveFrame({ project, analyzer, frame, performance, announcements });
   return (
     <RendererProvider bindings={bindings}>
       <FrameProvider frame={resolved}>

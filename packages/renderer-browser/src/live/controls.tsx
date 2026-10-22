@@ -89,6 +89,7 @@ function SaveLiveScene(props: DockProps) {
     preset: props.preset ?? undefined,
     performance: props.performance,
     title: props.title,
+    branding: props.project.branding,
     clock: props.clock,
     input: props.input.settings,
     bpm: props.project.bpm,

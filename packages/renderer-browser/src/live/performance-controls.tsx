@@ -110,8 +110,9 @@ function MidiControls({ midi }: { midi: ReturnType<typeof useMidi> }) {
           : ''}
       </summary>
       <p>
-        Default channel 1: CC 1 intensity, CC 7 brightness, notes 36–43 scenes, note 44 blackout.
-        Learn replaces a mapping. Audio stays in the output window.
+        Default channel 1: CC 1 intensity, CC 7 brightness, notes 36–43 scenes, note 44 blackout,
+        note 45 branding, note 46 messages. Learn replaces a mapping; Reset adds new defaults to
+        saved mappings. Audio stays in the output window.
       </p>
       {!midi.connected && (
         <button
@@ -134,6 +135,8 @@ function MidiMappingControls({ midi }: { midi: ReturnType<typeof useMidi> }) {
     'intensity',
     'brightness',
     'blackout',
+    'branding',
+    'messages',
     ...Array.from({ length: 8 }, (_, index) => `scene-${index + 1}` as const),
   ];
   return (

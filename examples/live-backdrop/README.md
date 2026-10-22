@@ -9,3 +9,7 @@ The preset starts at 65% visual intensity and brightness. Use Save scene to add 
 the scene bank. Capture sensitivity stays at 1 so performance changes can replay against the
 unaltered master. This is a starting composition; camera exposure, display brightness and
 refresh/shutter interaction still need a physical setup check.
+
+The logo and name sit in the top-left corner and a social line appears top right every minute,
+where the booth and performer do not cover them. Replace `logo.svg` and the `branding:` block in
+live.yaml with your own; see [docs/branding.md](../../docs/branding.md).

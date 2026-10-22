@@ -13,3 +13,12 @@ visualizer:
   gain: 0.8
   floor: 0.02
   spin: 0
+branding:
+  logo: logo.svg
+  name: Null Vector
+  event: Neurofunk Sessions
+  position: top-left
+  size: 1.5
+  opacity: 0.85
+  messages:
+    { lines: [instagram.com/nullvector], position: top-right, size: 1.4, seconds: 10, gap: 50 }

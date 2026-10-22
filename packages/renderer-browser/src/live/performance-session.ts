@@ -7,6 +7,7 @@ import { useSessionJournal } from './journal.tsx';
 import { useMidi, type MidiAction } from './midi.ts';
 import type { useLiveScene } from './player.tsx';
 import type { LiveInput } from './input.ts';
+import { useAnnouncements } from './announcements.ts';
 
 export function useLivePerformance(
   initial: ResolvedLiveProject,
@@ -41,8 +42,13 @@ export function useLivePerformance(
     project: scene.project,
     report,
   });
-  const midi = useMidi(performanceMidi(input, performance, bank, manualRecall), report);
+  const announcements = useAnnouncements(input, journal);
+  const midi = useMidi(
+    performanceMidi({ input, scene, performance, bank, recall: manualRecall }),
+    report,
+  );
   return {
+    announcements,
     performance,
     bank,
     recall: manualRecall,
@@ -54,19 +60,28 @@ export function useLivePerformance(
   };
 }
 
-function performanceMidi(
-  input: LiveInput,
-  performance: ReturnType<typeof usePerformance>,
-  bank: ReturnType<typeof useSceneBank>,
-  manualRecall: ReturnType<typeof useSceneRecall>,
-) {
+function performanceMidi({
+  input,
+  scene,
+  performance,
+  bank,
+  recall,
+}: {
+  input: LiveInput;
+  scene: ReturnType<typeof useLiveScene>;
+  performance: ReturnType<typeof usePerformance>;
+  bank: ReturnType<typeof useSceneBank>;
+  recall: ReturnType<typeof useSceneRecall>;
+}) {
   const dispatch = (action: MidiAction, value: number) => {
     if (action === 'intensity') performance.change({ intensity: value * 2 });
     else if (action === 'brightness') performance.change({ brightness: value });
     else if (action === 'blackout') performance.toggleBlackout();
+    else if (action === 'branding') scene.branding.toggle('visible');
+    else if (action === 'messages') scene.branding.toggle('messages');
     else if (input.snapshot.status.phase === 'running') {
       const selected = bank.scenes[Number(action.slice(6)) - 1];
-      if (selected) void manualRecall.recall(selected.preset);
+      if (selected) void recall.recall(selected.preset);
     }
   };
   return dispatch;
