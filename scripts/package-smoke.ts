@@ -8,6 +8,16 @@ import { fileURLToPath } from 'node:url';
 import { promisify, parseArgs } from 'node:util';
 const { values } = parseArgs({ options: { browser: { type: 'boolean', default: false } } });
 
+const BRANDING_LOGO =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="200" height="200"><circle cx="5" cy="5" r="4" fill="#fff"/></svg>';
+const BRANDING = `branding:
+  logo: logo.svg
+  name: Package Smoke
+  messages: { lines: [instagram.com/setcast], gap: 0.5, seconds: 3 }
+announcements:
+  - { at: 0.1, text: Installed, seconds: 2 }
+`;
+
 const execute = promisify(execFile);
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const names = ['core', 'themes', 'renderer-remotion', 'renderer-browser', 'cli'];
@@ -20,6 +30,7 @@ import { play } from '@setcast/renderer-browser';
 import { preview } from '@setcast/renderer-browser/preview';
 import { loadProject, loadLiveProject, probeAudio } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
+
 const projectDir = process.argv[2];
 const { project } = await loadProject(projectDir, {
   themes, probeDuration: (audio, root) => probeAudio({ audio }, root)
@@ -162,7 +173,8 @@ async function exerciseCli(): Promise<void> {
   const config = (await readFile(configFile, 'utf8'))
     .replace('width: 1920', 'width: 640')
     .replace('height: 1080', 'height: 360');
-  await writeFile(configFile, config);
+  await writeFile(join(project, 'logo.svg'), BRANDING_LOGO);
+  await writeFile(configFile, `${config}\n${BRANDING}`);
   const inspected = JSON.parse((await run('inspect', project, '--json')).stdout);
   assert(inspected.plays.length > 0);
   await run('still', project, '--theme', 'all', '--at', '1', '--out', join(temporary, 'theme.jpg'));

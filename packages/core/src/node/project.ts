@@ -246,7 +246,7 @@ export async function brandingWarnings(
   const { logo, name, event, episode, messages } = branding;
   if (!logo && !name && !event && !episode && !messages?.lines.length)
     return [
-      `branding in ${configFile} has no logo, name, event, episode or messages.lines, so it shows nothing until the live operator adds some.`,
+      `branding in ${configFile} has no logo, name, event, episode or messages.lines, so it shows nothing. Add a logo or name, or remove branding.`,
     ];
   if (!logo) return [];
   const image = await readImageSize(join(root, logo));

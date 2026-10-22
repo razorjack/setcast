@@ -48,3 +48,6 @@ mixers, cameras, projectors and cross-platform drivers require separate qualific
 - Next: launch Claude Opus 5.5 high in a new root/master T3 thread for branding and overlays.
   Its completion must notify parent thread dc4b96a0-aa4d-4b0b-857b-d8c534cb0b55. The parent must
   then read the handoff and implement/validate/commit measured renderer optimization.
+- Branding and overlays completed in this root checkout (plan: docs/branding-plan.md). Parent
+  resumes with step 4, further renderer optimization.
+

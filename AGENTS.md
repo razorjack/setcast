@@ -893,8 +893,9 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   The renderer ships a compiled `Root.mjs`; its source bundle entry resolves the `./composition`
   package export, which points to source in the workspace and compiled JS in tarballs.
   `vp run package-smoke` builds and extracts all five tarballs into an isolated temporary directory,
-  reuses installed third-party dependencies, and exercises init, inspect, every theme, video,
-  browser-player bundling and ranged asset serving.
+  reuses installed third-party dependencies, and exercises init, inspect, every theme with
+  branding (a logo, messages and an announcement), video, browser-player bundling and ranged
+  asset serving.
   It requires pnpm and publishes nothing. Run it before a release or changing package layouts.
 - Package `exports` → `src/*.ts`, `publishConfig.exports` → `dist/*.js`. Workspace development runs
   TypeScript sources directly on Node 26.

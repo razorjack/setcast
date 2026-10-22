@@ -225,9 +225,9 @@ projector alignment and sustained performance remain unqualified.
 
 ### Next milestones
 
-1. Branding and overlays, followed by measured renderer optimization. Energy-aware scene
-   selection and assisted beat tracking are complete. Continuous beat following needs a
-   stronger onset detector and broader real-recording qualification.
+1. Measured renderer optimization. Branding and overlays, energy-aware scene selection and
+   assisted beat tracking are complete. Continuous beat following needs a stronger onset
+   detector and broader real-recording qualification.
 2. GPU hardware qualification. Measure sustained live GPU load on real machines and drivers;
    particles with accumulated state require deterministic replay or checkpoints. The stateless
    field, tunnel and constellation are complete.
@@ -364,3 +364,27 @@ remain unqualified.
 Validation: `vp run ready` passed 484 tests, lint/types, dependency checks and smoke render.
 Chromium beat capture/adoption/journal/restart and existing performance/MIDI/scene/replay
 checks passed. The final operator screenshot was inspected.
+
+## Completed branding and overlays
+
+Starting revision: ac48ad6. `branding:` (setcast.yaml and live.yaml) adds a logo, name, event
+and episode label in one of nine frame areas, with size, opacity and visibility, and rotating
+messages. `announcements:` adds timed lines; the live operator announces and clears them, and
+the journal replays them. Branding belongs to the scene: saved scenes copy the logo, recall and
+recorded scenes restore it. Presentation is fade-only and a pure function of frame time. The
+logo uses the `Img` wrapper, so both exporters and live output hold frames until it loads. Each
+built-in theme sets edge insets so the defaults clear its furniture in landscape and portrait.
+Plan and progress: [branding-plan.md](branding-plan.md); usage: [branding.md](branding.md).
+
+Validation: `vp run ready` passed 506 tests, lint/types, dependency checks and smoke render.
+Both export acceptance suites passed with a delayed-logo readiness check. The new Chromium
+branding check passed operator edits, MIDI, announcements, scene recall, blackout pixels,
+projected iframe loading, journal replay and portrait; performance, sequence, projection,
+output and energy checks still pass. Installed-package smoke with browser export renders
+branding in every theme and in a resumable export. Stills of all 16 themes and live screenshots
+were inspected. Physical displays, cameras and projectors remain unqualified for legibility.
+
+A 10-second 1080p demo slice took 10.3/11.4 s without and 11.4/12.4 s with branding through
+Remotion, and 17.5/17.6 s against 17.2/17.6 s through the browser exporter, including setup.
+The Remotion difference was not investigated; the browser difference is within run-to-run noise.
+
