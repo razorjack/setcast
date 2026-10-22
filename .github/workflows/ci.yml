@@ -33,3 +33,5 @@ jobs:
         run: |
           vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/browser-acceptance
           node packages/renderer-browser/bench/resume.ts
+      - name: GPU field determinism, failures and synthetic live input
+        run: node packages/renderer-browser/bench/field.ts
