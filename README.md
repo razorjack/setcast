@@ -268,6 +268,8 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
 | `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |
+| `setcast replay`   | create a recorded project from a live journal and separately recorded master |
+| `setcast browser-install` | install pinned Chromium for the experimental browser exporter |
 | `setcast live`     | visualizes a selected live audio input, with themes, channel routing and clean fullscreen output                                                                       |
 
 `play`, `preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without editing
@@ -434,15 +436,17 @@ participation. Audio features drive CSS through a modulation matrix.
 
 Every frame derives from the finalized document and original mix time, including render slices.
 The renderer owns frame delivery; Setcast owns the timeline, motion and component contract.
-Live capture remains future work. Reproducing a historical live display would also require
-observation times and corrections, beyond the finalized offline document.
+Live input has a separate sample clock. Its optional session journal records manual credits,
+cues and saved scene changes; `setcast replay` maps them onto a separately recorded master.
 
 ## Renderer
 
 Setcast v1 renders with [Remotion](https://www.remotion.dev), isolated in one adapter package.
 Nothing else in the project imports Remotion (the linter and a dependency-graph check enforce
-it), so the renderer can be replaced; a Playwright + FFmpeg renderer is planned. Remotion has its
-own [license terms](https://www.remotion.dev/license); check whether they apply to you.
+it). An experimental Playwright + pinned Chromium + FFmpeg exporter is selectable with
+`renderer: browser` or `--renderer browser`; Remotion remains the default. See the
+[browser exporter guide](docs/browser-renderer.md) for installation, supported options and
+verification limits. Remotion has its own [license terms](https://www.remotion.dev/license); check whether they apply to you.
 
 ## Develop
 

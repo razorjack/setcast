@@ -7,7 +7,7 @@ visualization. Default aesthetic: dark, sterile sci-fi / rusty tech (neurofunk, 
 Credited intervals and musical annotations share a finite mix timeline. A future live mode can use the same
 components rendering as an OBS browser-source overlay during Twitch streams, driven by real-time
 events from DJ hardware, recording an event log that regenerates the polished VOD afterward
-("stream once, publish twice"). Live audio visualization is available through `setcast live`; hardware events and event-log recording are not built yet.
+("stream once, publish twice"). Live audio visualization is available through `setcast live`; hardware events are not built yet. A manual session journal can regenerate a finite replay from a separately recorded master.
 
 This project is engineered agentically. This file is the map. Read it fully before changing
 anything; update it when you make a non-obvious choice (Decisions) or discover a gotcha.
@@ -19,7 +19,7 @@ packages/core               @setcast/core – event timeline, schemas, RenderFra
                             hooks, interpolate/spring, media wrappers, modulation, analysis,
                             registry, importers, project loading (node entry), built-in components
 packages/renderer-remotion  @setcast/renderer-remotion – the ONLY package that imports Remotion
-packages/renderer-browser   @setcast/renderer-browser – recorded playback and live audio input
+packages/renderer-browser   @setcast/renderer-browser – recorded/live players and opt-in offline export
 packages/cli                @setcast/cli – the `setcast` binary; thin; owns terminal UX
 packages/themes             @setcast/themes – built-in themes, their shared fonts/ and textures/
 examples/demo               runnable demo project (setcast.yaml, generated audio, background)
@@ -148,6 +148,10 @@ Gotchas:
   user-facing correction. Re-calibrate with a script like the bootstrap session's `calib.ts`
   (read the WAV, call Remotion's `getVisualization`, print band energies).
 
+The browser exporter prototype now implements the planned alternative below. `renderer: browser`
+and offline-command `--renderer browser` opt in; Remotion remains the default. The historical
+v1-only selection wording below is superseded by this explicit choice. See `docs/browser-renderer.md`.
+
 ## Renderer independence (in force, verbatim)
 
 Setcast v1.0 renders with Remotion and is architected so that Remotion is entirely replaceable. A
@@ -262,10 +266,10 @@ The adapter loads the left and right channel with two `useWindowedAudioData` cal
 channel per call; mono loads once and shares the channel) and holds the first frame until mediabunny has
 read the channel count. `AudioAnalyzer =
 { featuresAt(time) }` is what the adapter provides; `featuresFromSpectrum()` turns a linear
-magnitude spectrum into features and is pure (tested). v1 implementation lives inside the Remotion
-adapter (`useWindowedAudioData` + a fixed-reference 2048-point FFT). Successor (roadmap): FFmpeg subprocess →
-streamed PCM → fft.js → precomputed sidecar per frame (JSON first, binary later). Live mode later:
-Web Audio `AnalyserNode` feeding the same interface. FFmpeg policy: **subprocess only, never
+magnitude spectrum into features and is pure (tested). Core owns the fixed-reference 2048-point
+FFT and PCM analyzer. Remotion translates its decoded windows into that analyzer. Browser playback
+and export decode bounded Mediabunny PCM windows; live mode supplies a bounded AudioWorklet ring.
+A precomputed sidecar remains an optional optimization after profiling. FFmpeg policy: **subprocess only, never
 linked**; keeps MIT Setcast cleanly separate from (L)GPL FFmpeg builds.
 
 ### Offline analysis
@@ -285,8 +289,8 @@ a draft `annotations:` block plus `bpm:` and `beatOffset:`, or merges them into 
 `readEnvelope()` in `@setcast/core/node` streams PCM into energy hops without retaining the set's
 full decoded audio. `decodeMono()` remains available when a caller explicitly needs all PCM. Both use ffmpeg subprocess when it is on PATH
 (every format, streamed), and a built-in PCM WAV reader (16/24/32-bit, float) with windowed-sinc resampling otherwise, so a freshly scaffolded
-project analyzes without any install. This is the first half of the AudioFeatures sidecar on the
-roadmap.
+project analyzes without any install. Streaming PCM can support a future AudioFeatures sidecar,
+but browser export already works with bounded decoded windows.
 
 ### Media wrappers and readiness
 
@@ -507,20 +511,48 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Roadmap (beyond v1)
 
-- FOSS renderer `@setcast/renderer-browser`: Playwright + pinned Chromium renders frames from the
-  same `RenderFrame`; FFmpeg subprocess muxes video + audio. Requires the AudioFeatures sidecar.
-- AudioFeatures sidecar (FFmpeg → PCM → fft.js → per-frame bins), shared by both renderers.
-- Live hardware adapters, OBS browser-source qualification and event log → VOD; live audio visualization is implemented.
+- Qualify and optimize the opt-in browser exporter across platforms and real projects. It uses
+  bounded PCM windows; a full AudioFeatures sidecar is not a prerequisite.
+- Optional AudioFeatures sidecar/cache, justified by measured decode cost and reuse.
+- Live hardware adapters, physical latency/OBS qualification, drift correction and live cue
+  presentation. Manual journal → finite replay and live audio visualization are implemented.
 - Everything in the plugin registry list above.
 - Generated per-project bundle entry so `plugins:` in `setcast.yaml` can pull npm plugins in.
 
 ## Decisions
 
+- Offline selection is `renderer: remotion | browser`, defaulting to Remotion, with `--renderer`
+  overrides on render/still/clip. The CLI imports only the chosen adapter at runtime and scopes
+  jobs to its session. Studio stays Remotion-specific. No silent exporter fallback occurs.
+- Browser export uses pinned Playwright Chromium and system FFmpeg subprocesses. Frame requests
+  are absolute and acknowledged after React/asset readiness. Mediabunny decodes background video
+  frames explicitly; real-time native-video synchronization is not used for export. Bounded PCM
+  windows supply the shared analyzer. One continuous master AAC stream spans video chunks.
+- Browser export streams ordered JPEG frames with backpressure, defaults to one capture worker,
+  and supports up to eight. Software H.264 only; parallelEncoding must be true. Existing output
+  survives failure/cancellation. AbortSignal and CLI stop signals clean up active jobs in both
+  adapters. `vp run package-smoke --browser` checks packed browser export too.
+- Player Save scene writes a self-contained saved-scene-* directory, preserving source YAML.
+  Local POSTs require an exact Origin and custom header. Copied assets stay inside the project;
+  scene tree copies reject symlinks and recursive destinations. Export servers reject writes.
+- The operator popup receives a React portal. The output window owns capture, diagnostics and
+  journal state, so moving or closing controls does not start another input. Manual BPM and
+  tap/downbeat controls provide a tempo grid; they do not infer beats from audio.
+- Session journals are versioned JSONL with capture-sample timestamps, serialized/fsynced writes,
+  manual credits/cues and saved scene references. Replay requires a separate master and explicit
+  offset. Scene times are finite seconds; core resolveFrame selects appearance at that time while
+  keeping the finite timeline. The first scene supplies initial appearance and output dimensions.
+  --theme replaces the scene sequence with one theme. Nondefault gain/delay replay is rejected.
+- Stage font readiness is invalidated by CSS changes, including scene changes within an export.
+  Shared acceptance now verifies cancellation as well as failure recovery. Cross-exporter pixel
+  identity is not assumed across Chromium versions; see docs/browser-renderer.md for measured
+  differences. Both implementation plans live in docs and include remaining qualification work.
+
 - `setcast live [dir]` loads optional `live.yaml`, never `setcast.yaml`, and serves the shared
   browser player. Live controls select exposed input channels, sensitivity and visual delay;
   title, elapsed clock, theme and art are session overrides. H hides all controls without edge
   reveal; F enters fullscreen. OBS uses window capture and receives mixer audio separately.
-  There is no second control window or native capture backend. See `docs/live-input.md`.
+  The operator popup shares capture with the output window. There is no native capture backend. See `docs/live-input.md`.
 - Live scene replacements mount hidden until readiness holds settle, retaining the previous
   ready scene. Capture never waits for those holds. Background video plays muted and loops;
   unlike recorded playback it does not seek against the audio clock. Theme, title and artwork
@@ -551,7 +583,7 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   including a single batch and `chunkSeconds: 0`. The previous single-batch browser audio path
   delayed the acceptance fixture by about 43 ms; the file path aligns its pulses within 5 ms.
   Studio retains its audio component. Single-batch exports now also preserve existing output
-  and remove temporary files on failure. FFmpeg still comes from the Remotion adapter.
+  and remove temporary files on failure. Remotion uses its packaged FFmpeg; browser export uses system FFmpeg.
 
 - Core/node owns local audio probing; core/media owns URL duration, channel and video probes.
   Their Mediabunny 1.50.8 metadata-first and compute-duration fallback behavior is unchanged.
@@ -561,8 +593,8 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 - Export requests, results and progress belong to core (`export.ts`). Remotion re-exports
   its previous public type names for compatibility and keeps its option translation local.
-  CLI runtime renderer imports are centralized in `renderer.ts`; this still selects Remotion,
-  with no registry or behavior change. Studio preview options remain adapter-specific.
+  CLI runtime renderer imports are centralized in `renderer.ts`, which selects Remotion or the
+  opt-in browser exporter without a plugin registry. Studio preview options remain adapter-specific.
 
 - Core owns export range rounding and chunk partitioning (`render-range.ts`). Ranges are
   inclusive absolute frame indices after converting the requested half-open seconds range.
