@@ -201,6 +201,16 @@ async function checkQuality(page: Page, operator: Page) {
   await page.waitForFunction(
     () => document.querySelector('main')?.getAttribute('data-render-scale') === '1',
   );
+  await operator.locator('input[type=file]').setInputFiles({
+    name: 'art.svg',
+    mimeType: 'image/svg+xml',
+    buffer: Buffer.from(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" fill="#123456"/></svg>',
+    ),
+  });
+  const art = page.locator('.sc-live-scene[data-ready="true"] img').first();
+  await art.waitFor({ state: 'attached' });
+  const originalArt = await art.elementHandle();
   await operator.getByLabel('Adaptive GPU resolution').check();
   const frame = Number(await page.locator('main').getAttribute('data-frame'));
   await page.evaluate(() => {
@@ -219,6 +229,10 @@ async function checkQuality(page: Page, operator: Page) {
       scale < 1 && document.querySelector<HTMLCanvasElement>('.sc-field')?.width === 960 * scale
     );
   });
+  assert(
+    await originalArt!.evaluate((node) => node.isConnected),
+    'Quality change remounted artwork',
+  );
   await operator.getByLabel('Adaptive GPU resolution').uncheck();
   await page.waitForFunction(
     () => document.querySelector('main')?.getAttribute('data-render-scale') === '1',

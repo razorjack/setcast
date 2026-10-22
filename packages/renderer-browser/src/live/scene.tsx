@@ -82,6 +82,8 @@ function sceneKey(project: ResolvedLiveProject) {
   return sceneIds.get(project)!;
 }
 
+const LiveImage: RendererBindings['Img'] = (props) => <img {...props} />;
+
 const LiveScene = memo(function LiveScene({
   project,
   analyzer,
@@ -97,7 +99,7 @@ const LiveScene = memo(function LiveScene({
       renderScale,
       asset: assetUrl,
       hold: readiness.hold,
-      Img: (props) => <img {...props} />,
+      Img: LiveImage,
       Video: LiveVideo,
     }),
     [readiness, renderScale],
