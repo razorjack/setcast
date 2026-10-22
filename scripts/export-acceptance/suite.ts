@@ -8,7 +8,7 @@ import { checkSync, checkTracks, pixels } from './measure.ts';
 import { checkReadiness, type AcceptanceContext } from './readiness.ts';
 import { checkPerformance } from './performance.ts';
 import { checkVideo } from './video.ts';
-import { checkField } from './field.ts';
+import { checkGpuVisualizers } from './gpu.ts';
 
 export async function runAcceptance(
   exporter: Exporter,
@@ -33,7 +33,7 @@ export async function runAcceptance(
       await checkVideo(context);
       await checkPerformance(context);
       await checkThemes(context, reference);
-      await checkField(context);
+      await checkGpuVisualizers(context);
       await checkFailure(context);
       await checkCancellation(context);
     });

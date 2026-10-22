@@ -9,116 +9,129 @@ import { play } from '../src/index.ts';
 import { bundlePlayer } from '../src/bundle.ts';
 import { prepareFrame, withCapture, withRenderSession } from '../src/export/session.ts';
 
-const directory = await mkdtemp(join(tmpdir(), 'setcast-field-'));
-const artifacts = resolve('examples/demo/out/field-check');
+const directory = await mkdtemp(join(tmpdir(), 'setcast-gpu-'));
+const artifacts = resolve('examples/demo/out/gpu-check');
 await mkdir(artifacts, { recursive: true });
 const baseCss = await readFile(new URL('../../core/css/base.css', import.meta.url), 'utf8');
 const css = `${baseCss}
 
 .setcast { background: #03080b; --accent: #68dcc9; }
 .sc-bg, .sc-header, .sc-contributors, .sc-next, .sc-tracklist { display: none; }
-.sc-field { color: var(--accent); }
 .sc-spectrum rect { fill: var(--accent); }
 .sc-radial { color: var(--accent); }
 .sc-radial line, .sc-radial circle { stroke: currentColor; stroke-width: 2; }
 `;
 
+/** Each GPU visualizer, with the settings that stop its motion while audio still drives it. */
+const VISUALIZERS = [{ name: 'field', still: { speed: 0 } }];
+const only = process.argv[2];
+let exportBundle: ReturnType<typeof bundlePlayer> | undefined;
+
 try {
   await createFixture(directory);
   const loaded = await fixtureProject(directory);
-  const project = {
-    ...loaded,
-    css,
-    background: null,
-    panel: null,
-    tracklist: null,
-    visualizers: resolveVisualizerConfigs({ name: 'field', seed: 42 }),
-  };
+  const fixture = { ...loaded, css, background: null, panel: null, tracklist: null };
   await withRenderSession(async () => {
-    const reference = await checkFrames(project);
-    await checkFreshCapture(project, reference);
-    await checkVariants(project, reference);
-    await checkScenes(project);
-    await checkUnavailable(project);
-    await checkContextLoss(project);
-    await checkLive(project);
-    await checkSoftware(project);
-    await benchmark(project);
+    for (const visualizer of VISUALIZERS) {
+      if (only && visualizer.name !== only) continue;
+      const project = {
+        ...fixture,
+        visualizers: resolveVisualizerConfigs({ name: visualizer.name, seed: 42 }),
+      };
+      const reference = await checkFrames(project, visualizer.name);
+      await checkFreshCapture(project, visualizer.name, reference);
+      await checkVariants(project, visualizer, reference);
+      await checkScenes(project, visualizer.name);
+      await checkUnavailable(project);
+      await checkContextLoss(project, visualizer.name);
+      await checkSoftware(project, visualizer.name);
+      process.stdout.write(`${visualizer.name}: deterministic frames, failures and software\n`);
+    }
+    await checkLive(fixture);
+    await benchmark(fixture);
+    await softwareBenchmark(fixture);
   });
-  process.stdout.write(`field: PASS (artifacts: ${artifacts})\n`);
+  process.stdout.write(`gpu: PASS (artifacts: ${artifacts})\n`);
 } finally {
   await rm(directory, { recursive: true, force: true });
 }
 
-async function pixels(page: Page) {
-  return page.evaluate(() => {
-    const canvas = document.querySelector<HTMLCanvasElement>('.sc-field')!;
+async function pixels(page: Page, name: string) {
+  return page.evaluate((name) => {
+    const canvas = document.querySelector<HTMLCanvasElement>(`.sc-${name}`)!;
     const gl = canvas.getContext('webgl2')!;
     const rgba = new Uint8Array(canvas.width * canvas.height * 4);
     gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, rgba);
-    assertPixels(gl, rgba);
+    if (gl.getError() !== gl.NO_ERROR) throw new Error(`${name} draw produced a GL error`);
+    if (!rgba.some((byte, index) => index % 4 === 3 && byte > 0))
+      throw new Error(`${name} drew no pixels`);
     return canvas.toDataURL();
-    function assertPixels(context: WebGL2RenderingContext, bytes: Uint8Array) {
-      if (context.getError() !== context.NO_ERROR)
-        throw new Error('Field draw produced a GL error');
-      if (!bytes.some((byte, index) => index % 4 === 3 && byte > 0))
-        throw new Error('Field drew no pixels');
-    }
-  });
+  }, name);
 }
 
-async function checkFrames(project: ResolvedProject) {
+function everyPixel(page: Page) {
+  return Promise.all(VISUALIZERS.map(({ name }) => pixels(page, name)));
+}
+
+async function checkFrames(project: ResolvedProject, name: string) {
   return withCapture(project, { projectDir: directory }, async (page) => {
     await prepareFrame(page, 51);
-    const reference = await pixels(page);
-    await page.screenshot({ path: join(artifacts, 'field.png') });
+    const reference = await pixels(page, name);
+    await page.screenshot({ path: join(artifacts, `${name}.png`) });
     for (const frame of [0, 70, 12, 51]) await prepareFrame(page, frame);
-    assert((await pixels(page)) === reference, 'Backward/random seeks changed field pixels');
+    assert((await pixels(page, name)) === reference, `Backward/random seeks changed ${name}`);
     await page.evaluate(async () => {
       await new Promise(requestAnimationFrame);
       await new Promise(requestAnimationFrame);
     });
-    assert((await pixels(page)) === reference, 'Drawing buffer disappeared after presentation');
+    assert(
+      (await pixels(page, name)) === reference,
+      `${name} drawing buffer disappeared after presentation`,
+    );
     await prepareFrame(page, 50);
-    assert((await pixels(page)) !== reference, 'Time does not move the field');
+    assert((await pixels(page, name)) !== reference, `Time does not move ${name}`);
     return reference;
   });
 }
 
-async function checkFreshCapture(project: ResolvedProject, reference: string) {
+async function checkFreshCapture(project: ResolvedProject, name: string, reference: string) {
   await Promise.all(
     [0, 1].map(() =>
       withCapture(project, { projectDir: directory }, async (page) => {
         await prepareFrame(page, 51);
-        assert((await pixels(page)) === reference, 'Fresh capture worker differs');
+        assert((await pixels(page, name)) === reference, `Fresh capture worker differs (${name})`);
       }),
     ),
   );
 }
 
-async function checkVariants(project: ResolvedProject, reference: string) {
-  const visualizers = resolveVisualizerConfigs({ name: 'field', seed: 43 });
+async function checkVariants(
+  project: ResolvedProject,
+  { name, still }: (typeof VISUALIZERS)[number],
+  reference: string,
+) {
+  const visualizers = resolveVisualizerConfigs({ name, seed: 43 });
   await withCapture({ ...project, visualizers }, { projectDir: directory }, async (page) => {
     await prepareFrame(page, 51);
-    assert((await pixels(page)) !== reference, 'Seed does not change the field');
+    assert((await pixels(page, name)) !== reference, `Seed does not change ${name}`);
   });
-  const frozen = resolveVisualizerConfigs({ name: 'field', speed: 0 });
+  const frozen = resolveVisualizerConfigs({ name, ...still });
   await withCapture(
     { ...project, visualizers: frozen },
     { projectDir: directory },
     async (page) => {
       await prepareFrame(page, 12);
-      const silent = await pixels(page);
+      const silent = await pixels(page, name);
       await prepareFrame(page, 30);
-      assert((await pixels(page)) === silent, 'speed: 0 moved during silence');
+      assert((await pixels(page, name)) === silent, `Stopped ${name} moved during silence`);
       await prepareFrame(page, 46);
-      assert((await pixels(page)) !== silent, 'Audio does not affect the field');
+      assert((await pixels(page, name)) !== silent, `Audio does not affect ${name}`);
       await page.addStyleTag({
-        content: '.setcast .sc-field { color: oklch(70% 0.2 30 / 0.5); width: 50%; }',
+        content: `.setcast .sc-${name} { color: oklch(70% 0.2 30 / 0.5); width: 50%; }`,
       });
       await prepareFrame(page, 12);
-      assert((await pixels(page)) !== silent, 'CSS color/size did not update');
-      assert.equal(await page.locator('.sc-field').getAttribute('width'), '160');
+      assert((await pixels(page, name)) !== silent, `CSS color/size did not update ${name}`);
+      assert.equal(await page.locator(`.sc-${name}`).getAttribute('width'), '160');
     },
   );
   await withCapture(
@@ -126,13 +139,13 @@ async function checkVariants(project: ResolvedProject, reference: string) {
     { projectDir: directory },
     async (page) => {
       await prepareFrame(page, 51);
-      await pixels(page);
-      await page.screenshot({ path: join(artifacts, 'portrait.png') });
+      await pixels(page, name);
+      await page.screenshot({ path: join(artifacts, `${name}-portrait.png`) });
     },
   );
 }
 
-async function checkScenes(project: ResolvedProject) {
+async function checkScenes(project: ResolvedProject, name: string) {
   const scene = {
     ...project,
     audio: null,
@@ -148,12 +161,12 @@ async function checkScenes(project: ResolvedProject) {
     { projectDir: directory },
     async (page) => {
       await prepareFrame(page, 12);
-      const reference = await pixels(page);
+      const reference = await pixels(page, name);
       for (let index = 0; index < 10; index++) {
         await prepareFrame(page, 51);
-        assert.equal(await page.locator('.sc-field').count(), 0);
+        assert.equal(await page.locator(`.sc-${name}`).count(), 0);
         await prepareFrame(page, 12);
-        assert((await pixels(page)) === reference, 'Scene remount changed field pixels');
+        assert((await pixels(page, name)) === reference, `Scene remount changed ${name}`);
       }
     },
   );
@@ -176,14 +189,14 @@ async function checkUnavailable(project: ResolvedProject) {
   });
 }
 
-async function checkContextLoss(project: ResolvedProject) {
+async function checkContextLoss(project: ResolvedProject, name: string) {
   await withCapture(project, { projectDir: directory }, async (page) => {
     await prepareFrame(page, 12);
-    await page.evaluate(() => {
-      const canvas = document.querySelector<HTMLCanvasElement>('.sc-field')!;
+    await page.evaluate((name) => {
+      const canvas = document.querySelector<HTMLCanvasElement>(`.sc-${name}`)!;
       canvas.getContext('webgl2')!.getExtension('WEBGL_lose_context')!.loseContext();
-    });
-    await assert.rejects(prepareFrame(page, 13), /lost its WebGL context/);
+    }, name);
+    await assert.rejects(prepareFrame(page, 13), new RegExp(`"${name}" lost its WebGL context`));
   });
 }
 
@@ -241,6 +254,7 @@ async function checkLive(project: ResolvedProject) {
     mix: null,
     panel: null,
     tracklist: null,
+    visualizers: resolveVisualizerConfigs(VISUALIZERS.map(({ name }) => ({ name, seed: 42 }))),
     live: { clock: false, input: { channels: null, gain: 1, delay: 0 } },
   };
   const server = await play(live, { projectDir: directory, port: 0 });
@@ -262,19 +276,21 @@ async function checkLive(project: ResolvedProject) {
     await page.locator('[data-capture="running"]').waitFor();
     await page.locator('.sc-live-scene[data-ready="true"] .sc-field').waitFor();
     const firstFrame = Number(await page.locator('main').getAttribute('data-frame'));
-    const first = await pixels(page);
+    const first = await everyPixel(page);
     await page.waitForFunction(
       (first) => Number(document.querySelector('main')?.getAttribute('data-frame')) > first + 90,
       firstFrame,
     );
-    assert((await pixels(page)) !== first, 'Live field did not advance');
+    const later = await everyPixel(page);
+    for (const [index, { name }] of VISUALIZERS.entries())
+      assert(later[index] !== first[index], `Live ${name} did not advance`);
     assert.equal(await page.locator('main').getAttribute('data-dropped'), '0');
     await page.screenshot({ path: join(artifacts, 'live.png') });
     await page.getByRole('button', { name: 'Stop input', exact: true }).click();
     await page.getByRole('button', { name: 'Start input', exact: true }).click();
     await page.locator('[data-capture="running"]').waitFor();
-    await pixels(page);
-    assert.deepEqual(errors, [], 'Live field raised browser errors');
+    await everyPixel(page);
+    assert.deepEqual(errors, [], 'Live GPU visualizers raised browser errors');
   } finally {
     await browser?.close();
     await server.close();
@@ -294,8 +310,45 @@ async function gpuRenderer(page: Page) {
   });
 }
 
-async function checkSoftware(project: ResolvedProject) {
-  const captureFiles = await bundlePlayer('export.tsx');
+async function checkSoftware(project: ResolvedProject, name: string) {
+  await withSoftwarePage(project, async (page) => {
+    assert.match(await gpuRenderer(page), /SwiftShader/i);
+    await prepareFrame(page, 51);
+    const first = await pixels(page, name);
+    await prepareFrame(page, 12);
+    assert((await pixels(page, name)) !== first, `Software ${name} did not move`);
+    await prepareFrame(page, 51);
+    assert((await pixels(page, name)) === first, `Software ${name} depends on request order`);
+    await page.screenshot({ path: join(artifacts, `${name}-software.png`) });
+  });
+}
+
+/** SwiftShader draws on the CPU, so its frame time shows each shader's cost without a GPU. */
+async function softwareBenchmark(project: ResolvedProject) {
+  const reports = [];
+  for (const config of [{ name: 'field', resolution: 0.5 }, { name: 'spectrum' }]) {
+    const scene = {
+      ...project,
+      width: 1920,
+      height: 1080,
+      visualizers: resolveVisualizerConfigs(config),
+    };
+    const prepareMs = await withSoftwarePage(scene, async (page) => {
+      await prepareFrame(page, 0);
+      const started = performance.now();
+      for (let frame = 1; frame <= 20; frame++) await prepareFrame(page, frame);
+      return (performance.now() - started) / 20;
+    });
+    const report = { config, backend: 'SwiftShader', width: 1920, height: 1080, prepareMs };
+    reports.push(report);
+    process.stdout.write(`${JSON.stringify(report)}\n`);
+  }
+  await writeFile(join(artifacts, 'software-benchmark.json'), JSON.stringify(reports, null, 2));
+}
+
+async function withSoftwarePage<T>(project: ResolvedProject, task: (page: Page) => Promise<T>) {
+  exportBundle ??= bundlePlayer('export.tsx');
+  const captureFiles = await exportBundle;
   const server = await play(project, { projectDir: directory, port: 0, captureFiles });
   try {
     const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader'] });
@@ -305,14 +358,7 @@ async function checkSoftware(project: ResolvedProject) {
       });
       await page.goto(server.url);
       await page.waitForFunction(() => Boolean(window.setcastExport));
-      assert.match(await gpuRenderer(page), /SwiftShader/i);
-      await prepareFrame(page, 51);
-      const first = await pixels(page);
-      await prepareFrame(page, 12);
-      assert((await pixels(page)) !== first, 'Software field did not move');
-      await prepareFrame(page, 51);
-      assert((await pixels(page)) === first, 'Software field depends on request order');
-      await page.screenshot({ path: join(artifacts, 'software.png') });
+      return await task(page);
     } finally {
       await browser.close();
     }

@@ -1,10 +1,3 @@
-export const fieldVertex = `#version 300 es
-void main() {
-  vec2 point = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
-  gl_Position = vec4(point * 2.0 - 1.0, 0.0, 1.0);
-}
-`;
-
 export const fieldFragment = `#version 300 es
 precision highp float;
 uniform vec2 u_size;

@@ -77,7 +77,7 @@ implementations can differ. Preserve the renderer environment when comparing exa
 ## Qualification
 
 ```sh
-node packages/renderer-browser/bench/field.ts
+node packages/renderer-browser/bench/gpu.ts
 vp run export-acceptance
 vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/browser-acceptance
 ```
@@ -87,7 +87,7 @@ pages, seed changes, audio response with frozen motion, CSS colors and resizing,
 repeated scene remounts, unavailable WebGL and forced context loss. An explicit SwiftShader check
 verifies request-order independence on the software backend too. It also starts synthetic live
 input, checks advancing frames and restarts capture. It saves images and capture timings under
-`examples/demo/out/field-check/`.
+`examples/demo/out/gpu-check/`.
 
 Both exporter acceptance suites check repeated stills and compare every decoded frame from
 one-worker and two-worker exports with one-second chunks. Those comparisons stay within each

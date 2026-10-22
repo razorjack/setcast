@@ -280,3 +280,32 @@ project. Remotion remains the default. See [independent preview](independent-pre
 The browser bench covers export-frame agreement, backward seeks, video loops, reference import,
 reload and recovery. The CLI is exercised with Remotion imports forbidden. Wider platform and
 physical hardware qualification remain open; this completes the preview portion of milestone 6.
+
+## Implementation plan: tunnel and constellation
+
+Starting revision: ab73cac. Adds two opt-in WebGL 2 visualizers next to `field`, with the same
+frame contract: every draw is a pure function of absolute time, current audio features, seed,
+configuration and CSS color. No visualizer keeps simulation state between frames.
+
+- Shared shader canvas. Move context creation, program linking, CSS color readback, bounded
+  drawing-buffer size, context-loss errors, disposal and live `renderScale` into one component.
+  `field`, `tunnel` and `constellation` supply a fragment shader and their uniforms. Field
+  pixels and error wording stay unchanged.
+- `tunnel`: a large perspective tunnel of polygon or round rings and wall spokes, for rave
+  projection. Bass breathes depth and widens rings, mids light seeded wall panels, highs add
+  intermediate detail rings. Travel and spin are reduced on the CPU to bounded phases; ring and
+  panel identities use integer hashes with a fixed period, so long sessions keep precision.
+- `constellation`: drifting points linked by fading lines in three parallax layers that fly
+  toward the viewer, for a filmed backdrop or projection. Points move on bounded orbits of
+  integer multiples of CPU-reduced phases. Layer cycles and drift come from absolute time;
+  integer hashes (no `sin` hash) choose positions. Bass swells points, mids lengthen links and
+  highs twinkle points. An exact 3x3 neighbor search draws every link that crosses a pixel.
+- Configuration through `visualizerSchema` with written errors, registration in both registries,
+  `.sc-tunnel`/`.sc-constellation` placement in base.css, live presets under `examples/`,
+  README and `docs/gpu-visualizer.md`. No theme default changes.
+- Verification: motion/schema unit tests; the browser GPU check generalized to all three
+  visualizers (random and backward seeks, fresh workers, seed and audio response, CSS
+  color/size, portrait, scene remounts, unavailable WebGL, context loss, live input, adaptive
+  scale, SwiftShader); export acceptance stills and worker/chunk frame identity for both new
+  visualizers in both exporters; capture benchmark; inspected stills under
+  `examples/demo/out/gpu-check/`. Physical projectors and cross-driver identity stay unqualified.

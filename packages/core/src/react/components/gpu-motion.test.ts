@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vite-plus/test';
 import { FieldConfigSchema } from '../../visualizers.ts';
-import { fieldPhases, fieldSize } from './field-motion.ts';
+import { fieldPhases } from './gpu-motion.ts';
+import { drawingSize } from './shader-gl.ts';
 
 describe('field motion', () => {
   test('phase depends only on seed, absolute time and speed, including long sessions', () => {
@@ -14,10 +15,10 @@ describe('field motion', () => {
   });
 
   test('resolution is bounded, aspect preserving and supports hidden boxes', () => {
-    expect(fieldSize(1920, 1080, 0.5, 4096)).toEqual({ width: 960, height: 540 });
-    expect(fieldSize(1080, 1920, 0.5, 4096)).toEqual({ width: 540, height: 960 });
-    expect(fieldSize(15360, 8640, 1, 4096)).toEqual({ width: 4096, height: 2304 });
-    expect(fieldSize(0, 0, 0.5, 4096)).toEqual({ width: 1, height: 1 });
+    expect(drawingSize(1920, 1080, 0.5, 4096)).toEqual({ width: 960, height: 540 });
+    expect(drawingSize(1080, 1920, 0.5, 4096)).toEqual({ width: 540, height: 960 });
+    expect(drawingSize(15360, 8640, 1, 4096)).toEqual({ width: 4096, height: 2304 });
+    expect(drawingSize(0, 0, 0.5, 4096)).toEqual({ width: 1, height: 1 });
   });
 
   test('invalid seed and resolution describe the allowed values', () => {
