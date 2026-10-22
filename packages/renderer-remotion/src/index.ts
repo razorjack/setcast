@@ -43,6 +43,11 @@ export { withRenderSession } from './session.ts';
 const renderInPackage = serializeInDirectory(PACKAGE_ROOT);
 
 export function render(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+  if (options.resume)
+    throw new SetcastError(
+      'Remotion does not support resumable exports.',
+      'Use the browser renderer with resume, or omit the resume option.',
+    );
   // Remotion keeps its browser download and webpack cache under the nearest package.json of
   // process.cwd(). Run from this package so every project shares one cache instead of each
   // project directory growing a 100 MB .remotion folder. Renders are serialized because cwd is

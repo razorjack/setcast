@@ -17,7 +17,7 @@ export interface EncodingOptions {
   videoBitrate?: VideoBitrate;
 }
 
-export type RenderStage = 'browser' | 'bundle' | 'frames' | 'encode';
+export type RenderStage = 'browser' | 'bundle' | 'checkpoint' | 'frames' | 'encode';
 
 export interface RenderProgress {
   /** `browser` reports preparation of the browser runtime. */
@@ -26,11 +26,14 @@ export interface RenderProgress {
   progress: number;
   renderedFrames?: number;
   totalFrames?: number;
+  reusedFrames?: number;
 }
 
 export type RenderReport = (progress: RenderProgress) => void;
 
 export interface RenderOptions extends EncodingOptions {
+  /** Browser exporter only: retain and validate completed chunks across interrupted jobs. */
+  resume?: boolean;
   signal?: AbortSignal;
   projectDir: string;
   out: string;

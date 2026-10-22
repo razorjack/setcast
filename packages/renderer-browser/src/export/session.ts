@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { createHash } from 'node:crypto';
 import { chromium, type Browser, type Page } from 'playwright';
 import {
   SetcastError,
@@ -9,6 +10,7 @@ import {
 import { bundlePlayer } from '../bundle.ts';
 import { graphicsArgs } from './graphics.ts';
 import { play } from '../index.ts';
+import { restrictResources, assertResources } from './resources.ts';
 import type {} from './scene.tsx';
 
 interface Session {
@@ -16,6 +18,41 @@ interface Session {
   files: Promise<Map<string, Buffer>> | null;
 }
 const sessions = new AsyncLocalStorage<Session>();
+
+type CaptureOptions = Pick<StillOptions, 'projectDir' | 'gl' | 'signal' | 'onProgress'> & {
+  assetPaths?: readonly string[];
+};
+
+async function captureFiles(options: CaptureOptions) {
+  const session = sessions.getStore()!;
+  options.onProgress?.({ stage: 'bundle', progress: 0 });
+  session.files ??= bundlePlayer('export.tsx');
+  const files = await session.files;
+  options.onProgress?.({ stage: 'bundle', progress: 1 });
+  return files;
+}
+
+async function captureBrowser(options: CaptureOptions) {
+  options.signal?.throwIfAborted();
+  const session = sessions.getStore()!;
+  const backend = options.gl ?? 'auto';
+  if (!session.browsers.has(backend)) session.browsers.set(backend, launch(backend));
+  options.onProgress?.({ stage: 'browser', progress: 0 });
+  const browser = await session.browsers.get(backend)!;
+  options.onProgress?.({ stage: 'browser', progress: 1 });
+  return browser;
+}
+
+export async function exportRuntime(options: CaptureOptions) {
+  const files = await captureFiles(options);
+  const hash = createHash('sha256');
+  for (const [path, bytes] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
+    hash.update(path);
+    hash.update(bytes);
+  }
+  const browser = await captureBrowser(options);
+  return { bundle: hash.digest('hex'), chromium: browser.version() };
+}
 
 export async function withRenderSession<T>(task: () => Promise<T>): Promise<T> {
   if (sessions.getStore()) return task();
@@ -32,15 +69,11 @@ export async function withRenderSession<T>(task: () => Promise<T>): Promise<T> {
 
 export async function withCapture<T>(
   project: ResolvedProject,
-  options: Pick<StillOptions, 'projectDir' | 'gl' | 'signal' | 'onProgress'>,
+  options: CaptureOptions,
   task: (page: Page) => Promise<T>,
 ) {
   options.signal?.throwIfAborted();
-  const session = sessions.getStore()!;
-  options.onProgress?.({ stage: 'bundle', progress: 0 });
-  session.files ??= bundlePlayer('export.tsx');
-  const files = await session.files;
-  options.onProgress?.({ stage: 'bundle', progress: 1 });
+  const files = await captureFiles(options);
   const server = await play(project, {
     projectDir: options.projectDir,
     port: 0,
@@ -51,22 +84,22 @@ export async function withCapture<T>(
     void page?.close().catch(() => {});
   };
   try {
-    const backend = options.gl ?? 'auto';
-    if (!session.browsers.has(backend)) session.browsers.set(backend, launch(backend));
-    options.onProgress?.({ stage: 'browser', progress: 0 });
-    const browser = await session.browsers.get(backend)!;
-    options.onProgress?.({ stage: 'browser', progress: 1 });
+    const browser = await captureBrowser(options);
     page = await browser.newPage({
       viewport: { width: project.width, height: project.height },
       deviceScaleFactor: 1,
     });
     options.signal?.addEventListener('abort', abort, { once: true });
     options.signal?.throwIfAborted();
+    if (options.assetPaths) await restrictResources(page, server.url, options.assetPaths, files);
     await page.goto(server.url);
     await page.waitForFunction(() => Boolean(window.setcastExport));
-    return await task(page);
+    const result = await task(page);
+    assertResources(page);
+    return result;
   } catch (error) {
     options.signal?.throwIfAborted();
+    if (page) assertResources(page);
     throw error;
   } finally {
     options.signal?.removeEventListener('abort', abort);
@@ -121,6 +154,7 @@ export async function prepareFrame(page: Page, frame: number) {
     ]);
     if (captured.frame !== frame)
       throw new Error(`Requested frame ${frame}, received ${captured.frame}.`);
+    assertResources(page);
     return captured.timings!;
   } finally {
     clearTimeout(timer);

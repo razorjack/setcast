@@ -39,6 +39,7 @@ Renders the project in <dir> (default: current directory) to an MP4.
   --out          output file; defaults to output.file in setcast.yaml
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
   --concurrency  parallel browser tabs (default: Remotion chooses; browser uses 1)
+  --resume       browser only: retain completed chunks and reuse valid checkpoints after interruption
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
 interface RenderCommandOptions {
@@ -49,6 +50,7 @@ interface RenderCommandOptions {
   renderer: string | undefined;
   concurrency: number | undefined;
   bundle: boolean;
+  resume: boolean;
 }
 
 export async function run(argv: string[]) {
@@ -56,10 +58,13 @@ export async function run(argv: string[]) {
   intro('render');
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
-  await withRenderSession(
-    () => runCommand(options, loaded),
-    rendererName(options.renderer, loaded.config.renderer),
-  );
+  const renderer = rendererName(options.renderer, loaded.config.renderer);
+  if (options.resume && renderer !== 'browser')
+    throw new SetcastError(
+      '--resume requires the browser renderer.',
+      'Use --renderer browser --resume, or omit --resume for Remotion.',
+    );
+  await withRenderSession(() => runCommand(options, loaded), renderer);
 }
 
 async function runCommand(
@@ -75,6 +80,7 @@ async function runCommand(
   }
 
   const out = outputPath(options, dir, loaded.config.output.file);
+  if (options.resume) log.info(`Resume checkpoints: ${out}.setcast-resume`);
   await mkdir(dirname(out), { recursive: true });
   showProject(loaded.project, options.range);
   const { config } = await withHardwareEncoding(loaded);
@@ -120,6 +126,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
       renderer: { type: 'string' },
       concurrency: { type: 'string' },
       bundle: { type: 'boolean' },
+      resume: { type: 'boolean' },
     },
     help,
   );
@@ -139,6 +146,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
     renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
     concurrency,
     bundle: values.bundle ?? false,
+    resume: values.resume ?? false,
   };
 }
 
@@ -174,6 +182,7 @@ function renderOptions(command: RenderCommandOptions, base: RenderOptions): Rend
   const options = { ...base };
   if (command.range) options.range = command.range;
   if (command.concurrency) options.concurrency = command.concurrency;
+  if (command.resume) options.resume = true;
   return options;
 }
 

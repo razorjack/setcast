@@ -253,6 +253,7 @@ export class RenderUi {
   readonly #start = Date.now();
   #frames: ProgressLine | undefined;
   #encode: ProgressLine | undefined;
+  #reused = 0;
 
   constructor() {
     this.#spin.start('Preparing browser');
@@ -264,8 +265,13 @@ export class RenderUi {
     progress,
     renderedFrames = 0,
     totalFrames = 0,
+    reusedFrames = 0,
   }: RenderProgress): void => {
     const percent = Math.round(progress * 100);
+    if (stage === 'checkpoint') {
+      this.#spin.message('Validating resume inputs and checkpoints');
+      return;
+    }
     if (stage === 'browser') {
       const message = progress < 1 ? `Preparing browser ${percent}%` : 'Browser ready';
       this.#spin.message(message);
@@ -276,8 +282,13 @@ export class RenderUi {
       return;
     }
     if (stage === 'frames') {
+      this.#reused = reusedFrames;
       const frames = this.#framesLine();
-      frames.update(progress, framesDetail(renderedFrames, totalFrames, frames.elapsedSeconds));
+      const detail =
+        reusedFrames > 0
+          ? `${renderedFrames}/${totalFrames}  ${reusedFrames} reused`
+          : framesDetail(renderedFrames, totalFrames, frames.elapsedSeconds);
+      frames.update(progress, detail);
       showTabProgress(progress);
       return;
     }
@@ -305,7 +316,10 @@ export class RenderUi {
 
   #closeFrames(totalFrames: number): void {
     if (!this.#frames) return;
-    const rate = frameRate(totalFrames, this.#frames.elapsedSeconds);
+    const rate =
+      this.#reused > 0
+        ? `${this.#reused} reused, ${totalFrames - this.#reused} newly rendered`
+        : frameRate(totalFrames, this.#frames.elapsedSeconds);
     this.#frames.update(1, `${totalFrames}/${totalFrames}`);
     this.#frames.done(`Rendered ${totalFrames} frames  ${dim('·')}  ${rate}`);
   }

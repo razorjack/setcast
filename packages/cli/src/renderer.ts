@@ -33,7 +33,7 @@ export async function withRenderSession<T>(task: () => Promise<T>, name: Rendere
     controller.abort(
       new SetcastError(
         'Export interrupted.',
-        'Temporary export files were removed. Completed outputs remain available.',
+        'Completed outputs remain available. With --resume, completed browser chunks remain beside the output; rerun the same command.',
         { exitCode: 1 },
       ),
     );

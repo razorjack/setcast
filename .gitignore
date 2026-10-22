@@ -9,6 +9,8 @@ dist
 # render artifacts
 examples/demo/out
 **/out/*.mp4
+*.setcast-resume/
+*.setcast-resume.completed-*/
 
 # Local demo projects, downloaded audio, and renders
 /demos/
