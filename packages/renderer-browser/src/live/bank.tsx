@@ -27,8 +27,8 @@ export function useSceneBank(report: (message: string) => void) {
   return { scenes, refresh };
 }
 
-async function sceneRequest<T>(path: string): Promise<T> {
-  const response = await fetch(path);
+async function sceneRequest<T>(path: string, signal?: AbortSignal): Promise<T> {
+  const response = await fetch(path, { signal });
   const result = await response.json();
   if (!response.ok)
     throw new Error(result.message ?? 'Cannot recall scenes. Check the saved scene directories.');
@@ -43,28 +43,58 @@ export function useSceneRecall(options: {
 }) {
   const [duration, setDuration] = useState(1);
   const [quantized, setQuantized] = useState(true);
-  const [loading, setLoading] = useState<string | null>(null);
-  const latest = useRef(0);
-  useEffect(() => {
-    latest.current++;
-    setLoading(null);
-  }, [options.capture]);
+  const request = useSceneRequest(options.capture, options.report);
+  const cancelPending = () => {
+    request.cancel();
+    if (options.performance.transition?.phase === 'queued') options.performance.cancel();
+  };
   const recall = async (preset: string) => {
-    const request = ++latest.current;
+    const project = await request.load(preset);
+    if (!project) return false;
+    return options.performance.queue(preset, project, { ...options.tempo, duration, quantized });
+  };
+  return {
+    duration,
+    setDuration,
+    quantized,
+    setQuantized,
+    loading: request.loading,
+    recall,
+    cancelPending,
+  };
+}
+
+function useSceneRequest(capture: object | null, report: (message: string) => void) {
+  const [loading, setLoading] = useState<string | null>(null);
+  const controller = useRef<AbortController | null>(null);
+  const cancel = () => {
+    controller.current?.abort();
+    setLoading(null);
+  };
+  useEffect(() => {
+    setLoading(null);
+    return () => controller.current?.abort();
+  }, [capture]);
+  const load = async (preset: string) => {
+    cancel();
+    const current = new AbortController();
+    controller.current = current;
     setLoading(preset);
     try {
       const project = await sceneRequest<ResolvedLiveProject>(
         `/scene.json?preset=${encodeURIComponent(preset)}`,
+        AbortSignal.any([current.signal, AbortSignal.timeout(15_000)]),
       );
-      if (request === latest.current)
-        options.performance.queue(preset, project, { ...options.tempo, duration, quantized });
+      return current.signal.aborted ? null : project;
     } catch (error) {
-      if (request === latest.current) options.report(String(error));
+      if (!current.signal.aborted)
+        report(`Cannot load scene ${preset}: ${String(error)}. Check the saved scene and retry.`);
+      return null;
     } finally {
-      if (request === latest.current) setLoading(null);
+      if (controller.current === current) setLoading(null);
     }
   };
-  return { duration, setDuration, quantized, setQuantized, loading, recall };
+  return { loading, load, cancel };
 }
 
 export function SceneBank({

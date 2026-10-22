@@ -74,3 +74,11 @@ test('live assets retain project path containment', async () => {
     hint: expect.stringContaining('Choose an existing directory'),
   });
 });
+
+test('missing sequence scenes fail before starting the player', async () => {
+  await writeFile(join(dir, 'live.yaml'), 'sequence: {scenes: [{preset: saved-scene-missing}]}');
+  await expect(loadLiveProject(dir, { themes })).rejects.toMatchObject({
+    message: expect.stringContaining('sequence.scenes[0].preset'),
+    hint: expect.stringContaining('live.yaml'),
+  });
+});

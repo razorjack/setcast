@@ -57,6 +57,46 @@ transition; blackout remains available. A queued transition can be replaced or c
 failure restores the previous scene and brightness, reports the problem and excludes the failed
 scene from the journal. Preparation times out after 30 seconds.
 
+## Automatic scene progression
+
+Open **Automatic sequence**, add saved scenes, arrange them with the up buttons and choose a
+minimum dwell of 5–3600 seconds per entry. **Run sequence** starts from the active scene when
+it appears in the list, otherwise recalls the first entry. Dwell begins after fade-in completes.
+Transitions use the scene bank's fade duration and manual next-bar setting. This does not detect
+beats or musical phrases from audio.
+
+**Hold sequence** preserves dwell and cancels a fetch or queued transition. A fade already in
+progress finishes. **Next scene** skips dwell and works while held; it does not enable automatic
+progression. A non-looping sequence holds at the end; Run starts it again. A one-entry sequence
+holds that scene instead of repeatedly fading it into itself.
+
+Input loss and blackout pause dwell. A failed recall holds the sequence and reports the problem;
+it never retries indefinitely. Manual scene pads and MIDI scene recall take control. Editing the
+list holds it, and restarting input requires an explicit Run. Theme/appearance edits also hold a
+running sequence when it is not transitioning. Capture continues independently of scene loading.
+
+A project can supply the list in `live.yaml`:
+
+```yaml
+sequence:
+  loop: true
+  scenes:
+    - {preset: saved-scene-intro, seconds: 60}
+    - {preset: saved-scene-main, seconds: 120}
+```
+
+Preset names refer to existing saved scene directories beside live.yaml. Missing YAML references
+fail at startup. **Export sequence** downloads a JSON object whose `sequence` value can be copied
+into live.yaml (JSON is valid YAML). Browser edits are session-only. Lists contain at most 64
+entries and may revisit a preset. Saving a scene omits the parent project's sequence.
+
+Automatic recalls and their effective fades enter the journal through the same readiness path as
+manual recall. Failed scenes do not enter it. Replay uses those recorded actions, so it does not
+need to rerun the scheduler or copy the live sequence configuration.
+
+Run `node packages/renderer-browser/bench/sequence.ts` for dwell, looping, hold/skip, manual
+control, failed scene recovery, journal replay and capture restart checks.
+
 ## MIDI
 
 Open **MIDI controls**, click **Connect MIDI**, grant the browser permission and choose an input.

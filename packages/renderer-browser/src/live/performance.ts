@@ -30,6 +30,7 @@ export class LivePerformance {
   transition: Recall | null = null;
   options: PerformanceOptions;
   changed: () => void;
+  private completion: ((success: boolean) => void) | null = null;
   constructor(initial: PerformanceState, options: PerformanceOptions, changed: () => void) {
     this.target = initial;
     this.ramp = { at: 0, from: initial, to: initial, duration: 0 };
@@ -54,7 +55,7 @@ export class LivePerformance {
   };
   toggleBlackout = () => {
     this.blackout = !this.blackout;
-    if (this.transition?.phase !== 'loading') this.transition = null;
+    if (this.transition?.phase !== 'loading') this.finish(false);
     this.fade({ ...this.target, brightness: this.blackout ? 0 : this.target.brightness }, 0);
   };
   queue(
@@ -62,11 +63,15 @@ export class LivePerformance {
     project: ResolvedLiveProject,
     timing: { bpm: number | null; beatOffset: number; duration: number; quantized: boolean },
   ) {
-    if (this.transition && this.transition.phase !== 'queued') return;
+    if (this.transition && this.transition.phase !== 'queued') return Promise.resolve(false);
+    this.finish(false);
+    const completion = Promise.withResolvers<boolean>();
+    this.completion = completion.resolve;
     const time = this.options.time();
     const at = timing.quantized ? nextBar(time, timing.bpm, timing.beatOffset) : time;
     this.transition = { preset, project, at, duration: timing.duration, phase: 'queued' };
     this.changed();
+    return completion.promise;
   }
   tick = () => {
     const transition = this.transition;
@@ -82,7 +87,7 @@ export class LivePerformance {
       this.changed();
     }
     if (transition.phase === 'in' && time >= this.ramp.at + this.ramp.duration) {
-      this.transition = null;
+      this.finish(true);
       this.changed();
     }
   };
@@ -94,12 +99,17 @@ export class LivePerformance {
       this.transition.duration / 2,
     );
   };
-  cancel = () => {
+  private finish(success: boolean) {
     this.transition = null;
+    this.completion?.(success);
+    this.completion = null;
+  }
+  cancel = () => {
+    this.finish(false);
     this.fade({ ...this.target, brightness: this.blackout ? 0 : this.target.brightness }, 0.15);
   };
   reset = () => {
-    this.transition = null;
+    this.finish(false);
     const state = { ...this.target, brightness: this.blackout ? 0 : this.target.brightness };
     this.ramp = { at: 0, from: state, to: state, duration: 0 };
     this.changed();

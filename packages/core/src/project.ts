@@ -66,6 +66,7 @@ export type ResolvedLiveProject = Omit<ResolvedProject, 'audio' | 'mix' | 'panel
   panel: null;
   tracklist: null;
   live: {
+    sequence?: import('./sequence.ts').SceneSequence;
     clock: boolean;
     input: {
       device?: string;

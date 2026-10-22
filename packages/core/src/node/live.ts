@@ -31,6 +31,13 @@ export async function loadLiveProject(
   const root = resolve(dir);
   await requireDirectory(root);
   const config = await readLiveConfig(root);
+  for (const [index, scene] of (config.sequence?.scenes ?? []).entries())
+    await requireFile(
+      root,
+      `${scene.preset}/live.yaml`,
+      `sequence.scenes[${index}].preset`,
+      LIVE_CONFIG,
+    );
   const theme = await resolveTheme(
     options.theme ?? config.theme,
     root,
@@ -79,7 +86,7 @@ function resolveLiveProject(
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
     performance: config.performance,
-    live: { input: config.input, clock: config.clock },
+    live: { input: config.input, clock: config.clock, sequence: config.sequence },
   };
 }
 

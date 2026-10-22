@@ -7,7 +7,7 @@ import {
 import { LivePerformance } from './performance.ts';
 import { midiMessage, midiKey } from './midi.ts';
 
-test('scene recall waits for its bar, fades to black and waits for readiness', () => {
+test('scene recall waits for its bar, fades to black and waits for readiness', async () => {
   let time = 1;
   let recalled = '';
   const events: PerformanceEvent[] = [];
@@ -22,7 +22,7 @@ test('scene recall waits for its bar, fades to black and waits for readiness', (
     },
     () => {},
   );
-  controls.queue('saved', {} as ResolvedLiveProject, {
+  const completed = controls.queue('saved', {} as ResolvedLiveProject, {
     bpm: 120,
     beatOffset: 0,
     duration: 2,
@@ -48,6 +48,7 @@ test('scene recall waits for its bar, fades to black and waits for readiness', (
   time = 7;
   controls.tick();
   expect(controls.transition).toBeNull();
+  expect(await completed).toBe(true);
   controls.toggleBlackout();
   expect(controls.value().brightness).toBe(0);
   controls.toggleBlackout();
@@ -64,4 +65,27 @@ test('MIDI ignores releases and clock messages, preserving channel and control i
   const message = midiMessage([0xb2, 7, 127])!;
   expect(message).toEqual({ kind: 'cc', channel: 3, number: 7, value: 1 });
   expect(midiKey(message)).toBe('cc:3:7');
+});
+
+test('replaced and cancelled recalls settle their completion promises', async () => {
+  const controls = new LivePerformance(
+    DEFAULT_PERFORMANCE,
+    {
+      time: () => 0,
+      record: () => {},
+      recall: () => {},
+    },
+    () => {},
+  );
+  const timing = { bpm: 120, beatOffset: 0, duration: 1, quantized: true };
+  const first = controls.queue('a', {} as ResolvedLiveProject, timing);
+  const second = controls.queue('b', {} as ResolvedLiveProject, timing);
+  expect(await first).toBe(false);
+  controls.cancel();
+  expect(await second).toBe(false);
+  for (const cancel of [controls.reset, controls.toggleBlackout]) {
+    const pending = controls.queue('a', {} as ResolvedLiveProject, timing);
+    cancel();
+    expect(await pending).toBe(false);
+  }
 });

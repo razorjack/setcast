@@ -265,3 +265,5 @@ export {
   type PerformanceState,
   type PerformanceEvent,
 } from './performance.ts';
+
+export { SequenceSchema, type SceneSequence } from './sequence.ts';

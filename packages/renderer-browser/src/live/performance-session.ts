@@ -1,4 +1,5 @@
 import type { ResolvedLiveProject } from '@setcast/core';
+import { useSequence } from './sequence-session.ts';
 import { usePreparedScene } from './prepared-scene.ts';
 import { usePerformance } from './performance.ts';
 import { useSceneBank, useSceneRecall } from './bank.tsx';
@@ -34,23 +35,39 @@ export function useLivePerformance(
     performance: () => performance.ramp,
     selection: { ...prepared.selection, input: input.settings },
   });
+  const { sequence, manualRecall } = useSequence(initial, input, {
+    recall,
+    performance,
+    project: scene.project,
+    report,
+  });
+  const midi = useMidi(performanceMidi(input, performance, bank, manualRecall), report);
+  return {
+    performance,
+    bank,
+    recall: manualRecall,
+    sequence,
+    journal,
+    midi,
+    ready,
+    activePreset: prepared.selection.preset ?? null,
+  };
+}
+
+function performanceMidi(
+  input: LiveInput,
+  performance: ReturnType<typeof usePerformance>,
+  bank: ReturnType<typeof useSceneBank>,
+  manualRecall: ReturnType<typeof useSceneRecall>,
+) {
   const dispatch = (action: MidiAction, value: number) => {
     if (action === 'intensity') performance.change({ intensity: value * 2 });
     else if (action === 'brightness') performance.change({ brightness: value });
     else if (action === 'blackout') performance.toggleBlackout();
     else if (input.snapshot.status.phase === 'running') {
       const selected = bank.scenes[Number(action.slice(6)) - 1];
-      if (selected) void recall.recall(selected.preset);
+      if (selected) void manualRecall.recall(selected.preset);
     }
   };
-  const midi = useMidi(dispatch, report);
-  return {
-    performance,
-    bank,
-    recall,
-    journal,
-    midi,
-    ready,
-    activePreset: prepared.selection.preset ?? null,
-  };
+  return dispatch;
 }

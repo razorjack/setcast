@@ -54,6 +54,7 @@ function selectedConfig(
 ) {
   const copy = { ...config };
   delete copy.css;
+  delete copy.sequence;
   if (!project.scenes) delete copy.scenes;
   copy.theme = `./${project.theme}.css`;
   copy.title = selected.title ?? project.title;

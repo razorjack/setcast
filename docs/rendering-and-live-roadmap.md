@@ -188,12 +188,26 @@ Validation: `vp run ready` passed all 450 tests, lint/types, dependency checks a
 Both exporter acceptance suites, resume recovery and installed-package smoke with browser
 export passed. The live output check also verifies that quality changes keep artwork mounted.
 
+### Completed automatic sequence milestone
+
+Implemented ordered saved-scene lists, per-entry dwell, loop, hold/resume and skip. Lists can be
+provided in live.yaml, edited in the operator UI and exported. Dwell uses available capture time
+after fade-in; input loss and blackout pause it. Manual scene recall takes control. Failed or
+cancelled recalls settle explicitly and hold progression; capture restart requires Run again.
+Effective scenes and ramps use the existing journal path. Saved snapshots omit sequence settings.
+
+Validation: all 456 tests and `vp run ready` passed. The Chromium sequence check passed dwell,
+loop, hold/skip, manual takeover, failed artwork recovery, usable journal snapshots and capture
+restart. The existing performance/MIDI/journal check passed and operator screenshots were
+inspected. CI now includes the sequence check. Automatic beat tracking and energy-based scene
+selection remain follow-ups.
+
 ### Next milestones
 
 1. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.
    Keep output geometry separate from scene appearance and recorded scene events.
-2. Curated automatic scene progression with minimum dwell and manual hold. Add confidence-aware
-   beat tracking only after the manual tempo path is qualified with real mixer recordings.
+2. Sustained-energy influence on the completed scene sequencer. Add confidence-aware beat
+   tracking only after the manual tempo path is qualified with real mixer recordings.
 3. Further GPU effects and hardware qualification. Measure sustained live GPU load and software
    backends before adding complexity; particles with accumulated state require deterministic
    replay or checkpoints. The first stateless field is complete.
@@ -206,3 +220,30 @@ remain in the delivery order above. No background task or recurring automation i
 - [WebCodecs specification](https://www.w3.org/TR/webcodecs/)
 - [Chrome Window Management API](https://developer.chrome.com/docs/capabilities/web-apis/window-management)
 - [Resolume projection transformation](https://resolume.com/support/en/output-transformation)
+
+## Active implementation: sequence and one-projector setup
+
+Delivery order: automatic scene progression, then projector geometry. Each feature receives
+its own validation and commit. Remotion remains the default exporter.
+
+- Sequence: an explicitly started, ordered list of saved scenes with per-scene minimum dwell,
+  looping, hold/resume and skip. Dwell uses available capture time and starts after a transition
+  completes. Reuse manual bar alignment, fade/readiness and journal paths. Manual scene recall
+  takes control; failed recall holds progression. Capture restart requires explicit restart.
+  YAML supplies the curated list; the operator can reorder/edit it and export settings.
+- Projector: normalized four-corner homography, source crop, rectangular output masks, an explicit
+  calibration pattern and named venue profiles with JSON import/export. Geometry belongs to the
+  live output session and is excluded from saved scenes/journal replay. Invalid or crossed corners
+  are rejected before changing the working output. Brightness, blackout and input-loss fallback
+  must cover the test pattern as well as the scene.
+- Projected scenes render inside an iframe so theme layout measurements stay in composition
+  coordinates while the iframe itself is warped. Font readiness must use that document. Keep the
+  existing direct scene path when projection is disabled. Capture stays in the parent window.
+- Visual thesis: retain the dark, compact operator workspace and one accent. Content: sequence
+  actions and ordered rows beside the bank; projection editor and venue controls in Output setup.
+  Interaction: existing frame-driven fades, direct corner adjustment, explicit pattern toggle;
+  no decorative animation or calibration controls on the projected image.
+- Verification: state-machine and geometry/schema tests, real Chromium operator workflows,
+  journal replay, failure/restart behavior, scene/readiness regression, both exporter acceptance
+  suites for the document binding, installed packages and `vp run ready`. Physical projector
+  alignment and camera behavior remain hardware qualification work.

@@ -163,6 +163,7 @@ function LiveControls({
   recall,
   midi,
   activePreset,
+  sequence,
   output,
 }: ReturnType<typeof useLivePlayer>) {
   return (
@@ -173,7 +174,8 @@ function LiveControls({
         clean={() => setClean(true)}
       />
       <PerformanceControls
-        {...{ performance, bank, recall, report, midi }}
+        {...{ performance, bank, recall, report, midi, sequence }}
+        available={input.snapshot.status.available}
         running={input.snapshot.status.phase === 'running'}
         active={activePreset}
       />

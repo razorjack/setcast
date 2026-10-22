@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { SequenceSchema } from './sequence.ts';
 import { DisplaySchema, ProjectConfigSchema } from './config.ts';
 
 const channel = z
@@ -20,6 +21,7 @@ export const LiveConfigSchema = ProjectConfigSchema.pick({
   performance: true,
 }).extend({
   output: DisplaySchema.prefault({}),
+  sequence: SequenceSchema.optional(),
   clock: z.boolean({ error: 'clock must be true or false.' }).default(false),
   input: z
     .strictObject({

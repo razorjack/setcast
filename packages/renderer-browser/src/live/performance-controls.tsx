@@ -1,9 +1,13 @@
+import { SequenceControls } from './sequence-controls.tsx';
+import type { LiveSequence } from './sequence.ts';
 import { useEffect, useRef, useState } from 'react';
 import { SceneBank, type useSceneBank, type useSceneRecall } from './bank.tsx';
 import type { LivePerformance } from './performance.ts';
 import type { useMidi, MidiAction } from './midi.ts';
 
 interface Props {
+  sequence: LiveSequence;
+  available: boolean;
   performance: LivePerformance;
   midi: ReturnType<typeof useMidi>;
   bank: ReturnType<typeof useSceneBank>;
@@ -41,6 +45,7 @@ export function PerformanceControls(props: Props) {
         </button>
       </div>
       <SceneBank {...props} />
+      <SequenceControls {...props} />
       <MidiControls midi={midi} />
     </section>
   );

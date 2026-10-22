@@ -551,6 +551,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   not input PCM; brightness uses a black overlay outside the theme's `.setcast` element, inside
   an isolated `.sc-output` wrapper. This covers theme pseudo-elements and survives rules that
   hide stage children. Both exporters evaluate ramps at absolute frame time.
+- Live automatic sequences are explicitly started lists of saved scene presets and dwell seconds.
+  Dwell starts after fade-in and pauses without available input or during blackout. Hold cancels
+  pending fetch/queued recall and lets a transition already fading finish. Manual pads/MIDI take
+  control; capture restart leaves the sequence held. Effective scenes and ramps use the existing
+  journal path. Sequence settings belong to the parent live project and are omitted from snapshots.
 - Live scene pads recall self-contained `saved-scene-*` projects without changing input routing,
   dimensions, tempo or current performance levels. Transitions fade through black, start on the
   manual bar grid and wait for readiness. Failed scenes retain the previous output and do not
