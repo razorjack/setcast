@@ -229,3 +229,73 @@
     animation: none;
   }
 }
+
+.sc-live-session {
+  padding: 12px 20px;
+  background: #101318;
+  color: #dce1e7;
+  font:
+    13px system-ui,
+    sans-serif;
+  border-top: 1px solid #ffffff14;
+}
+
+.sc-live-tempo {
+  display: inline-flex;
+  align-items: end;
+  gap: 8px;
+  margin: 8px 12px;
+}
+
+.sc-live-tempo label {
+  display: grid;
+  gap: 4px;
+}
+
+.sc-live-tempo input {
+  width: 100px;
+  padding: 6px;
+  color: inherit;
+  background: #1b2028;
+  border: 1px solid #ffffff24;
+  border-radius: 4px;
+}
+
+.sc-live-diagnostics {
+  padding-top: 8px;
+  color: #aab4c1;
+}
+
+.sc-operator {
+  position: static;
+  overflow: auto;
+  margin: 0;
+  background: #101318;
+}
+
+.sc-operator .sc-live-controls {
+  position: static;
+  translate: none;
+  width: auto;
+  max-height: none;
+  padding: 16px;
+}
+
+.sc-live-journal {
+  padding-top: 12px;
+}
+.sc-live-journal fieldset {
+  border: 0;
+  padding: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: end;
+}
+.sc-live-journal input {
+  padding: 6px;
+  color: inherit;
+  background: #24262b;
+  border: 1px solid #ffffff24;
+  border-radius: 4px;
+}

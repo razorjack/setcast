@@ -35,6 +35,10 @@ export class LiveAudio implements AudioAnalyzer {
     return Math.max(0, (this.end - FFT_SIZE / 2 - 1) / this.sampleRate);
   }
 
+  get capturedTime(): number {
+    return this.end / this.sampleRate;
+  }
+
   get cachedMoments(): number {
     return this.cache.size;
   }

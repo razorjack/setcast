@@ -32,7 +32,10 @@ publish the stream. Direct device capture inside an OBS browser source is not qu
 **H** toggles clean output, hiding every control and notice. **H** or **Esc** restores the
 controls. **F** toggles fullscreen. Move the browser to the desired display before entering
 fullscreen. **[** and **]** switch themes. There is one capture owner in this window;
-opening another player window starts an independent session, not a remote control.
+the **Operator window** button moves controls into a separate window using the same capture
+owner. Capture the original output window in OBS. Closing the operator window, or choosing
+**Return controls to output**, returns the controls. Opening another localhost player tab
+starts an independent session. Closing the output window ends capture and closes its operator.
 
 ## Configuration
 
@@ -47,6 +50,9 @@ theme: relief
 background: assets/art.jpg
 backgroundFit: auto
 clock: false
+# Optional manual tempo, with a downbeat at this capture time.
+# bpm: 174
+# beatOffset: 0
 output: {width: 1920, height: 1080, fps: 30}
 
 input:
@@ -65,12 +71,15 @@ input:
 ```
 
 The supported keys are `title`, `theme`, `background`, `backgroundFit`, `css`, `clock`,
-`output`, `input`, `visualizer` and `modulation`. Live `output` accepts only `width`,
+`output`, `input`, `visualizer`, `modulation`, `bpm` and `beatOffset`. Live `output` accepts only `width`,
 `height` and `fps`; it has no encoding settings or output file. Asset paths must stay
 inside the project directory. Restart the command after editing the YAML or CSS.
 
 The dock can change the theme, title, elapsed clock, artwork, channels, sensitivity and
-delay. These adjustments do not write files. Artwork can also be dropped onto the player.
+delay. Artwork can also be dropped onto the player. **Save scene** writes a new
+`saved-scene-*` directory containing live.yaml, the resolved theme CSS and copies of the
+chosen assets. It leaves the source configuration unchanged. Open that directory with
+`setcast live` to restore it. While a journal is active, changes also save scene snapshots.
 `clock: true` shows elapsed session time with no endpoint. There are never track panels,
 a tracklist or upcoming-track text. Starting input again begins a new session at zero.
 
@@ -92,13 +101,15 @@ change; a missing configured device must be reselected. No automatic fallback to
 input occurs.
 
 Whole-set visualizers such as `overview` are omitted with a warning. Audio routes work;
-there are no live track identities, annotations or tempo grid. Cue and tempo routes rest
-at their baseline, and play-scoped routes have no panels to affect. `--set-progress` stays
+there are no live track identities or annotations. **Tempo (BPM)**, **Tap tempo** and
+**Downbeat now** drive the beat/bar variables and modulation. Clear BPM to disable the
+manual grid. This is not automatic beat tracking. Cue routes rest at their baseline, and
+play-scoped routes have no panels to affect. `--set-progress` stays
 at zero; CSS that derives motion exclusively from progress will not advance. Precomputed
 `--travel-*` variables are unavailable. Background drift still follows elapsed time.
 
-Automatic BPM/drop detection, DJ hardware events, audio recording, event logs and direct
-streaming are separate features.
+Automatic BPM/drop detection, DJ hardware events, audio recording and direct streaming
+are separate features. The session journal below records manual metadata for replay.
 
 ## Timing and readiness
 
@@ -127,3 +138,71 @@ playback of a recorded performance.
 Keep the output window visible. Browser background throttling, GPU cost and power-saving
 behavior can affect smoothness. Choose a resolution, frame rate and theme that the
 machine can sustain before using it for a performance.
+
+
+## Session journal and replay
+
+**Start journal** writes a version 1 `session-*.jsonl` file beside live.yaml. The journal
+records credits entered with **Log track now**, cue buttons, and scene changes. These manual
+entries are replay metadata; they do not add live track panels or trigger live cue effects.
+**Finish journal** writes an end marker. Starting or stopping the input ends the current
+journal; reconnect with a new journal. Completed lines are flushed to disk. An abrupt window
+close may omit pending writes or the end marker; complete earlier lines remain usable.
+
+The journal stores capture sample positions, sample rate, its origin in the capture clock,
+and references to self-contained saved scenes. Visual delay does not shift journal timestamps. Manual actions use the most recently delivered
+PCM sample position, so their time resolution follows packet delivery (about 23 ms at 44.1 kHz).
+Scene writes are serialized and bounded. If saving falls behind or fails, journaling stops
+with a notice while input capture continues. Keep the journal and its saved-scene directories
+together. It does not contain audio.
+
+Record the mixer master separately, then align journal time zero explicitly:
+
+```sh
+setcast replay path/to/session-....jsonl --audio path/to/master.wav --offset 2.35
+setcast play path/to/replay-...
+setcast render path/to/replay-... --renderer browser
+```
+
+`--offset` is the master-file time corresponding to journal time zero. It can be negative
+(use `--offset=-2.35`). It is required; zero is never guessed. Replay creates a new directory
+beside the journal, copies the master and scenes, and writes a finite setcast.yaml. Initial
+scene dimensions/FPS determine output dimensions/FPS. Manual tempo phase is shifted with the
+capture clock. Scene changes alter theme, title, art, visualizers, modulation and tempo.
+`--theme` replaces the recorded scene sequence with one theme for the whole export.
+
+Credits and the last scene before a trimmed start carry forward to time zero. Events beyond
+the master duration are omitted; cues before zero are omitted. The first retained scene also
+fills any recording prefix before the journal. Same-sample credit or scene corrections keep
+the final value. The resulting project shows normal finite credits and clock behavior, so it
+is a polished replay rather than an exact record of every live-screen pixel.
+
+The prototype rejects nondefault capture sensitivity or visual delay because it cannot yet
+reproduce those settings from the master without an explicit policy. Channel routing and the
+master recording must describe the same stereo mix. There is no automatic clock-drift
+correction, waveform alignment or reconciliation of missing events. Edit the generated
+project when the recorded master differs from the monitored signal.
+
+## Diagnostics and qualification
+
+**Session diagnostics** records frame updates, skipped analysis samples, cache use, visibility,
+and JavaScript heap use when the browser exposes it. **Download diagnostics** saves the latest
+two hours. Moving controls to the operator window retains the samples. Heap values are browser
+estimates, not total process or GPU memory. FPS measures delivered frame updates, not physical
+display latency.
+
+The automated synthetic-input check is:
+
+```sh
+node packages/renderer-browser/bench/player.ts --seconds 120 --out examples/demo/out/player-check
+```
+
+It checks theme changes, operator transfer, journal continuity, tempo controls, capture restart,
+bounded feature caching and capture status. A 120-second Chromium run passed with zero dropped
+analysis samples and all 16 theme selections. A one-hour synthetic run kept capture running
+with fixed PCM capacity and at most 1707 cached features (limit 2048). It skipped one
+1024-sample analysis packet near the start under concurrent load, with no further skips.
+That run preceded final UI polish; a final 30-second check covers the updated controls.
+Physical interface routing, end-to-end latency, OBS integration and long-session hardware
+stability remain unqualified. Use the checklist in
+[player-development-plan.md](player-development-plan.md) with the intended hardware.
