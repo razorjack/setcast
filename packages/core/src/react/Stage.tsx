@@ -8,8 +8,10 @@ import {
   type ArtGrid,
   type FrameArea,
 } from '../background.ts';
+import { showsIdentity } from '../branding.ts';
 import { beatVars, stageData, stageVars, travelVars } from '../stage.ts';
 import { Background, useBackgroundArt } from './components/Background.tsx';
+import { Branding } from './components/Branding.tsx';
 import { Header } from './components/Header.tsx';
 import { NowPlaying } from './components/NowPlaying.tsx';
 import { Tracklist } from './components/Tracklist.tsx';
@@ -19,8 +21,8 @@ import { useFontsReady } from './renderer.tsx';
 import { resolveVisualizer } from './visualizers.ts';
 
 /**
- * The whole scene: theme CSS, background, visualizers, header, now-playing panel, and either the
- * tracklist or up next.
+ * The whole scene: theme CSS, background, visualizers, header, now-playing panel, either the
+ * tracklist or up next, and branding.
  */
 export function Stage() {
   const { composition } = useFrame();
@@ -80,6 +82,7 @@ function SceneStage() {
       data-mode={project.mix === null ? 'live' : 'recorded'}
       data-bg-calm={backgroundArt?.stats.calm.anchor}
       data-presentation={project.presentation}
+      data-brand-position={showsIdentity(project.branding) ? project.branding.position : undefined}
       style={style}
     >
       <style>{project.css}</style>
@@ -90,13 +93,14 @@ function SceneStage() {
       <Header />
       <NowPlaying />
       {project.tracklist ? <Tracklist counts={project.tracklist} /> : <UpNext />}
+      <Branding />
     </div>
   );
 }
 
 /** The elements whose text a theme may need to keep legible over bright or busy parts of the art. */
 const MEASURED_ELEMENTS =
-  '.sc-header, .sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist';
+  '.sc-header, .sc-set-title, .sc-clock, .sc-panel, .sc-next, .sc-tracklist, .sc-brand-identity, .sc-brand-message';
 const LUMA_BEHIND = '--bg-luma-behind';
 const DETAIL_BEHIND = '--bg-detail-behind';
 

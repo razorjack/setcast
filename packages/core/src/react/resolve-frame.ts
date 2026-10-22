@@ -5,6 +5,7 @@ import {
   type PerformanceState,
 } from '../performance.ts';
 import type { AudioAnalyzer } from '../audio.ts';
+import type { Announcement } from '../branding.ts';
 import { evaluateModulation } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
 import type { Timeline, MixState } from '../timeline.ts';
@@ -35,7 +36,7 @@ export function resolveFrame({
   if (selected) project = sceneAt(project, selected);
   const mix = timeline.at(timeSeconds);
   return assembleFrame(
-    { project, analyzer, mix, frame, fps, width, height },
+    { project, analyzer, mix, frame, fps, width, height, announcements: project.announcements },
     project.mix.duration / 1_000_000,
   );
 }
@@ -52,6 +53,7 @@ function sceneAt(project: ResolvedProject, scene: ResolvedLiveProject): Resolved
     modulation: scene.modulation,
     bpm: scene.bpm,
     beatOffset: scene.beatOffset,
+    branding: scene.branding,
   };
 }
 
@@ -60,11 +62,14 @@ export function resolveLiveFrame({
   analyzer,
   frame,
   performance,
+  announcements = [],
 }: {
   project: ResolvedLiveProject;
   analyzer: AudioAnalyzer;
   frame: number;
   performance?: PerformanceState;
+  /** The session's announcements, timed on the capture clock. */
+  announcements?: readonly Announcement[];
 }): RenderFrame {
   if (!Number.isSafeInteger(frame) || frame < 0) {
     throw new RangeError(
@@ -97,6 +102,7 @@ export function resolveLiveFrame({
       width: project.width,
       height: project.height,
       performance,
+      announcements,
     },
     null,
   );
@@ -111,10 +117,21 @@ interface AssemblyRequest {
   width: number;
   height: number;
   performance?: PerformanceState;
+  announcements: readonly Announcement[];
 }
 
 function assembleFrame(
-  { project, analyzer, mix, frame, fps, width, height, performance }: AssemblyRequest,
+  {
+    project,
+    analyzer,
+    mix,
+    frame,
+    fps,
+    width,
+    height,
+    performance,
+    announcements,
+  }: AssemblyRequest,
   durationSeconds: number | null,
 ): RenderFrame {
   const timeSeconds = frame / fps;
@@ -144,6 +161,7 @@ function assembleFrame(
       height,
       durationSeconds,
       project,
+      announcements,
       ...performanceComposition(project, performance),
     },
     modulation,

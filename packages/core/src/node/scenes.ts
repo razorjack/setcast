@@ -28,7 +28,12 @@ export async function loadScenes(
   return scenes;
 }
 
-function rebaseScene(scene: ResolvedLiveProject, preset: string): ResolvedLiveProject {
-  const background = scene.background ? join(preset, scene.background).split(sep).join('/') : null;
-  return { ...scene, background };
+/** A scene's media paths, relative to the directory that contains the scene's directory. */
+export function rebaseScene(scene: ResolvedLiveProject, preset: string): ResolvedLiveProject {
+  const rebase = (path: string) => join(preset, path).split(sep).join('/');
+  const background = scene.background ? rebase(scene.background) : null;
+  const logo = scene.branding?.logo;
+  const branding =
+    scene.branding && logo ? { ...scene.branding, logo: rebase(logo) } : scene.branding;
+  return { ...scene, background, branding };
 }

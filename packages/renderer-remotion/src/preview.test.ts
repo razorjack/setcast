@@ -35,6 +35,8 @@ const project: ResolvedProject = {
   visualizers: [{ name: 'spectrum' }],
   envelope: null,
   travel: null,
+  branding: null,
+  announcements: [],
   panel: { dwell: 14, fade: 1.2 },
   tracklist: null,
   bpm: null,

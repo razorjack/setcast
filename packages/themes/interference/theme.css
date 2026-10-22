@@ -847,3 +847,8 @@
     font-size: 5cqw;
   }
 }
+
+/* Branding insets clear this theme's own furniture; .setcast outranks base.css's header rule. */
+.setcast.theme-interference {
+  --brand-top: calc(var(--margin) + 19cqh);
+}

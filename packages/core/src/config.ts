@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { AnnouncementsSchema, BrandingSchema } from './branding.ts';
 import { PerformanceSchema, AutomationSchema } from './performance.ts';
 import { TimeSchema } from './time-schema.ts';
 import { MixInputShape } from './mix-schema.ts';
@@ -264,6 +265,10 @@ export const ProjectConfigSchema = z
         .optional(),
       /** Seconds into the audio of a downbeat, so `--bar` lines up with the music. */
       beatOffset: TimeSchema.default(0),
+      /** Logo, identity and rotating messages drawn over the scene. */
+      branding: BrandingSchema.optional(),
+      /** Timed one-off lines in the message line, such as a replayed live announcement. */
+      announcements: AnnouncementsSchema.default([]),
       performance: PerformanceSchema.optional(),
       automation: AutomationSchema.optional(),
       scenes: z

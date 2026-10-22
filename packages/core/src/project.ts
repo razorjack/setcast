@@ -1,6 +1,7 @@
 import type { PerformanceState, PerformanceEvent } from './performance.ts';
 import type { SetEnvelope, SetTravel } from './analysis.ts';
 import type { BackgroundFit } from './background.ts';
+import type { Announcement, Branding } from './branding.ts';
 import type { MixDocument } from './mix-schema.ts';
 import type { ModRoute } from './modulation.ts';
 import type { TracklistCounts } from './tracklist.ts';
@@ -53,6 +54,10 @@ export type ResolvedProject = {
   bpm: number | null;
   /** Seconds into the audio of a downbeat. */
   beatOffset: number;
+  /** Logo, identity and rotating messages, or null when the project shows no branding. */
+  branding: Branding | null;
+  /** Timed lines in the message line, ordered by `at`. */
+  announcements: Announcement[];
   /** Finite replay changes, resolved from saved live scene directories. */
   performance?: PerformanceState;
   automation?: PerformanceEvent[];
@@ -60,7 +65,10 @@ export type ResolvedProject = {
 };
 
 /** An open-ended performance. A live session has no recorded file or finite mix document. */
-export type ResolvedLiveProject = Omit<ResolvedProject, 'audio' | 'mix' | 'panel' | 'tracklist'> & {
+export type ResolvedLiveProject = Omit<
+  ResolvedProject,
+  'audio' | 'mix' | 'panel' | 'tracklist' | 'announcements'
+> & {
   audio: null;
   mix: null;
   panel: null;

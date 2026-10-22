@@ -136,6 +136,25 @@ export {
   type TracklistCounts,
   type TracklistCountsInput,
 } from './tracklist.ts';
+export {
+  AnnouncementSchema,
+  AnnouncementsSchema,
+  BRAND_POSITIONS,
+  BrandingSchema,
+  LOGO_HEIGHT,
+  LOGO_WIDTH,
+  MESSAGE_FADE_SECONDS,
+  endAnnouncement,
+  logoEnlargement,
+  messageAt,
+  messageLayout,
+  showsIdentity,
+  type Announcement,
+  type BrandMessage,
+  type BrandPosition,
+  type Branding,
+  type BrandingInput,
+} from './branding.ts';
 export { lightLayers, type LightOptions } from './lights.ts';
 export {
   heightAt,

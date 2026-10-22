@@ -637,3 +637,8 @@
     display: none;
   }
 }
+
+/* Branding insets clear this theme's own furniture; .setcast outranks base.css's header rule. */
+.setcast.theme-passe-partout {
+  --brand-top: var(--margin);
+}

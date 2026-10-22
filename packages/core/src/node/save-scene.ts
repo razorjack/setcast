@@ -66,6 +66,8 @@ function selectedConfig(
   copy.background = project.background ?? undefined;
   copy.bpm = (selected.bpm === undefined ? project.bpm : selected.bpm) ?? undefined;
   copy.beatOffset = selected.beatOffset ?? project.beatOffset;
+  copy.branding =
+    (selected.branding === undefined ? project.branding : selected.branding) ?? undefined;
   copy.output = {
     ...(config.output as object),
     width: project.width,
@@ -133,6 +135,8 @@ async function copyMedia(root: string, output: string, config: Record<string, un
   };
   config.audio = await copy(config.audio);
   config.background = await copy(config.background);
+  const branding = config.branding as { logo?: string } | undefined;
+  if (branding?.logo) config.branding = { ...branding, logo: await copy(branding.logo) };
   if (Array.isArray(config.plays)) {
     for (const play of config.plays) play.background = await copy(play.background);
   }

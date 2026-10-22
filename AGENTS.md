@@ -56,6 +56,7 @@ vp run package-smoke       # build local tarballs; test installed CLI, all theme
 vp run export-acceptance   # requires ffmpeg + ffprobe; export timing, assets, themes, recovery
 vp run theme-stills [dir] [--at 1:51]   # one still per built-in theme + a contact sheet
 vp run tracklist-stills [--theme name]  # each theme's tracklist: playlist, DJ, glide, portrait, no panels
+vp run branding-stills [--theme name]   # each theme's branding: corners, backdrop, ident, portrait
 vp run render-bench [dir] [--help]     # compare render settings; timings and MP4s in out/bench
 vp run ready               # check + test + ban-check + smoke (baseline CI checks)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
@@ -324,7 +325,8 @@ list; implemented today: visualizer, theme, tracklist importer):
 - layout profiles / output targets: 16:9 ✓, 9:16 vertical ✓ (`@container (aspect-ratio < 1)` in the
   theme; the stage root is a size container), promo clips cut around `drop` events
   (`setcast clip` ✓)
-- branding: logo, socials ticker, episode numbering, intro/outro
+- branding: logo ✓, identity and episode label ✓, rotating messages ✓, timed announcements ✓
+  (`branding:`, `announcements:`; `docs/branding.md`); intro/outro cards are saved scenes
 - side outputs: YouTube chapters + description from the timeline (`setcast chapters` ✓),
   thumbnail stills (`setcast still` ✓)
 - live adapters: Pro DJ Link (prolink-connect), Denon StagelinQ, VirtualDJ OS2L, Serato session
@@ -358,8 +360,9 @@ Remotion's bundler compiles it).
 
 The stage root has class `setcast` plus `--mod-*` variables. Stable class names: `sc-stage`,
 `sc-bg`, `sc-art`, `sc-panel`, `sc-deck`, `sc-artist`, `sc-title`, `sc-label`, `sc-next`, `sc-spectrum`,
-`sc-header`, `sc-clock`, `sc-tracklist`. `packages/core/css/base.css` is structural only
-(positions, sizes as variables, and the tracklist's fallback look); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
+`sc-header`, `sc-clock`, `sc-tracklist`, `sc-brand-identity`, `sc-brand-message`.
+`packages/core/css/base.css` is structural only (positions, sizes as variables, and the
+tracklist's and branding's fallback looks); themes own appearance. Theme variables: `--panel-bg`, `--panel-border`, `--accent`,
 `--accent-2`, `--deck-a` … `--deck-d` (one signal color per deck), `--fg`, `--fg-dim`, `--blur`,
 `--radius`, `--font-display`, `--font-mono`. Users can add `css: ./overrides.css` in
 `setcast.yaml`; it is appended last.
@@ -475,6 +478,14 @@ measured like the panels. base.css positions it (`--tracklist-top`, `--tracklist
 aligns a leaving row's content to its bottom, so it scrolls out of the top. With a tracklist, the
 stage renders it in place of `.sc-next`, after the panels, so it can anchor to `--contributors`.
 
+`.sc-brand-identity` (logo, name, event, episode) and `.sc-brand-message` (rotating messages or
+an announcement, `data-kind`, `--message-presence`) take `data-position`, one of nine frame
+areas, and sit at `z-index: 4`, inset by `--brand-top`/`-right`/`-bottom`/`-left`. Each built-in
+theme sets those insets so the defaults (identity top right, messages bottom center) clear its
+furniture; set them on `.setcast.theme-<name>` (base.css's `:has(> .sc-header)` rule otherwise
+wins) and portrait values on the branding elements. Light-ground themes set `--brand-halo` and
+`--brand-plate`. Details: `docs/theme-plugin-contract.md#branding`.
+
 ### Themes and the user's art
 
 Users replace the demo art with their own: usually a dark drum and bass sleeve, often a bright,
@@ -551,6 +562,17 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   half-resolution 1080p frame on SwiftShader against 33 ms. The browser check is
   `node packages/renderer-browser/bench/gpu.ts [name]`; CI runs it.
 
+- Branding (`branding:` in setcast.yaml and live.yaml) is scene-level appearance: saved scenes
+  copy the logo and record it, recall restores it like the title, and recorded `scenes:` switch
+  it. It is a fixed set of nine frame areas, one size multiplier per element and CSS insets per
+  theme edge, not a layout editor. Sizes follow `cqmin`, so portrait keeps the proportions.
+  Messages and announcements only fade (`--message-presence`); no slide, scroll or CSS
+  animation, because fractional-pixel motion paints differently across render tabs. The rotation
+  and announcements are pure functions of absolute frame time (`messageAt`). Announcements are
+  mix-timeline events (`announcements:`), not scene state: `seconds` includes both fades, and
+  ending one early (`endAnnouncement`) shortens it to fade out from that moment, so live output
+  and replay agree. The logo goes through `Img`, so every renderer holds the frame for it, and
+  the browser resume fingerprint tracks it. See `docs/branding.md`.
 - `setcast render --resume` is browser-only and opt-in. Completed chunks live in
   `<output>.setcast-resume`; a content/runtime fingerprint invalidates stale jobs, and checksum
   validation rejects missing/corrupt chunks. Source metadata is rechecked during capture and
@@ -1091,7 +1113,8 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
 - `--bg-luma-behind` is measured per element, not for fixed zones of the frame: zones would bind
   every theme to the built-in layout, while an element's box follows whatever layout its theme
   gives it. A theme cannot add elements and pseudo-elements inherit from their host, so the fixed
-  `MEASURED_ELEMENTS` list in `Stage.tsx` (header, title, clock, panels, up next, tracklist)
+  `MEASURED_ELEMENTS` list in `Stage.tsx` (header, title, clock, panels, up next, tracklist,
+  branding)
   covers custom themes too. A layout effect removes the
   previous values, reads every box, then sets the new values. Removing first makes every render
   tab measure the same layout whatever frame it rendered before; reading all boxes before writing

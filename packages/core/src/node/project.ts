@@ -5,6 +5,7 @@ import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig, type ProjectConfigInput } from '../config.ts';
 import { FEATURE_SOURCES } from '../audio.ts';
 import { backgroundWarnings, isVideoFile } from '../background.ts';
+import { logoEnlargement, type Announcement, type Branding } from '../branding.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { compileMix, mixWarnings } from '../mix.ts';
 import { Timeline } from '../timeline.ts';
@@ -65,6 +66,7 @@ export async function loadProject(
       'loadProject requires options.probeDuration(audio, root) to finalize finite mix intervals.',
     );
   const mix = compileMix(config, await probeDuration(config.audio, root));
+  requireAnnouncements(config.announcements, mix.duration / 1_000_000);
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
 
   const project = resolveProject(
@@ -86,6 +88,7 @@ export async function loadProject(
       ...projectWarnings(config, project, input),
       ...mixWarnings(mix),
       ...(await artWarnings(root, config)),
+      ...(await brandingWarnings(root, config.branding, config.output)),
     ],
   };
 }
@@ -121,6 +124,8 @@ function resolveProject(
     tracklist: resolveProjectTracklist(config.tracklist, theme),
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
+    branding: config.branding ?? null,
+    announcements: config.announcements,
     performance: config.performance,
     automation: config.automation,
   };
@@ -132,7 +137,13 @@ function trackDependencies(
   theme: string,
   dependencies: Set<string>,
 ) {
-  for (const path of [config.audio, config.css, ...backgroundPaths(config).keys()]) {
+  const paths = [
+    config.audio,
+    config.css,
+    config.branding?.logo,
+    ...backgroundPaths(config).keys(),
+  ];
+  for (const path of paths) {
     if (path) dependencies.add(resolve(root, path));
   }
   if (theme.endsWith('.css')) dependencies.add(resolve(root, theme));
@@ -211,6 +222,40 @@ async function requireAssets(root: string, config: ProjectConfig): Promise<void>
   for (const [index, play] of config.plays.entries()) {
     if (play.background) await requireFile(root, play.background, `plays[${index}].background`);
   }
+  if (config.branding?.logo) await requireFile(root, config.branding.logo, 'branding.logo');
+}
+
+/** An announcement after the recording ends would never show. */
+function requireAnnouncements(announcements: readonly Announcement[], duration: number): void {
+  const index = announcements.findIndex((announcement) => announcement.at >= duration);
+  if (index === -1) return;
+  throw new SetcastError(
+    `announcements[${index}].at is ${announcements[index]!.at} s, but the recording ends at ${duration.toFixed(3)} s.`,
+    'Use a time inside the recording or remove the announcement.',
+  );
+}
+
+/** Branding that shows nothing, and a logo the frame enlarges until it looks soft. */
+export async function brandingWarnings(
+  root: string,
+  branding: Branding | undefined,
+  frame: { width: number; height: number },
+  configFile = CONFIG_FILE,
+): Promise<string[]> {
+  if (!branding) return [];
+  const { logo, name, event, episode, messages } = branding;
+  if (!logo && !name && !event && !episode && !messages?.lines.length)
+    return [
+      `branding in ${configFile} has no logo, name, event, episode or messages.lines, so it shows nothing until the live operator adds some.`,
+    ];
+  if (!logo) return [];
+  const image = await readImageSize(join(root, logo));
+  if (!image) return [];
+  const scale = logoEnlargement(image, frame, branding.size);
+  if (scale <= 1.5) return [];
+  return [
+    `branding.logo ${logo} is ${image.width}×${image.height}, so size ${branding.size} enlarges it ${scale.toFixed(1)}× and it will look soft. Use a larger image or an SVG.`,
+  ];
 }
 
 /** Art that will look soft, or that `backgroundFit: auto` shows whole, before anything renders. */

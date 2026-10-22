@@ -383,4 +383,49 @@ modulation:
     expect(warnings.join('\n')).toMatch(/uses when: drop, but the set has no drop annotations/);
     expect(warnings).toContain('panel.fade has no effect when panel.dwell is 0.');
   });
+
+  test('branding resolves, validates its logo and warns about a soft logo', async () => {
+    const png = Buffer.alloc(33);
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(png);
+    png.writeUInt32BE(13, 8);
+    png.write('IHDR', 12);
+    png.writeUInt32BE(40, 16);
+    png.writeUInt32BE(20, 20);
+    await write('branding/assets/logo.png', png);
+    const { project, warnings } = await load(
+      `audio: assets/mix.wav
+theme: test
+branding: { logo: assets/logo.png, name: Null Vector, size: 2 }
+announcements: [{ at: 30, text: Last hour }]
+`,
+      'branding',
+    );
+    expect(project.branding).toMatchObject({ logo: 'assets/logo.png', name: 'Null Vector' });
+    expect(project.announcements).toEqual([{ at: 30, text: 'Last hour', seconds: 10 }]);
+    expect(warnings.join('\n')).toMatch(/branding.logo assets\/logo.png is 40×20, so size 2/);
+
+    const plain = await load('audio: assets/mix.wav\ntheme: test\n', 'no-branding');
+    expect(plain.project.branding).toBeNull();
+    expect(plain.project.announcements).toEqual([]);
+  });
+
+  test('branding problems are reported with their keys', async () => {
+    await expect(
+      load('audio: assets/mix.wav\ntheme: test\nbranding: { logo: assets/x.png }\n', 'no-logo'),
+    ).rejects.toThrow(/branding.logo file not found: assets\/x.png/);
+    await expect(
+      load('audio: assets/mix.wav\ntheme: test\nbranding: { logo: ../logo.png }\n', 'outside-logo'),
+    ).rejects.toThrow(/branding.logo path leaves the project directory/);
+    await expect(
+      load(
+        'audio: assets/mix.wav\ntheme: test\nannouncements: [{ at: 600, text: Late }]\n',
+        'late-announcement',
+      ),
+    ).rejects.toThrow(/announcements\[0\].at is 600 s, but the recording ends at 600.000 s/);
+    const { warnings } = await load(
+      'audio: assets/mix.wav\ntheme: test\nbranding: {}\n',
+      'empty-branding',
+    );
+    expect(warnings.join('\n')).toMatch(/branding in setcast.yaml has no logo/);
+  });
 });

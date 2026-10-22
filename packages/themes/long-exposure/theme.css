@@ -904,3 +904,13 @@
     margin-top: 2cqw;
   }
 }
+
+/* Branding insets clear this theme's own furniture; .setcast outranks base.css's header rule. */
+.setcast.theme-long-exposure {
+  --brand-top: calc(var(--margin) + 19cqh);
+}
+@container (aspect-ratio < 1) {
+  .theme-long-exposure :is(.sc-brand-identity, .sc-brand-message) {
+    --brand-bottom: 24cqh;
+  }
+}

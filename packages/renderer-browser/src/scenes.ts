@@ -1,6 +1,6 @@
 import { readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
-import { loadLiveProject, sceneDirectory } from '@setcast/core/node';
+import { loadLiveProject, rebaseScene, sceneDirectory } from '@setcast/core/node';
 
 export async function savedScenes(root: string) {
   const entries = await readdir(root, { withFileTypes: true });
@@ -32,5 +32,5 @@ export async function savedScenes(root: string) {
 export async function savedScene(root: string, preset: string) {
   const directory = await sceneDirectory(root, preset);
   const { project } = await loadLiveProject(directory);
-  return { ...project, background: project.background ? `${preset}/${project.background}` : null };
+  return rebaseScene(project, preset);
 }

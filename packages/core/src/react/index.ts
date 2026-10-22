@@ -10,6 +10,7 @@ export {
 export { Field, FieldConfigSchema, type FieldConfig } from './components/Field.tsx';
 export { Header } from './components/Header.tsx';
 export { Meters, MetersConfigSchema, type MetersConfig } from './components/Meters.tsx';
+export { Branding } from './components/Branding.tsx';
 export { NowPlaying } from './components/NowPlaying.tsx';
 export {
   Oscilloscope,

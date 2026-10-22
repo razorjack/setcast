@@ -24,6 +24,8 @@ const project: ResolvedProject = {
   modulation: [],
   envelope: null,
   travel: null,
+  branding: null,
+  announcements: [],
   panel: null,
   tracklist: null,
   bpm: null,

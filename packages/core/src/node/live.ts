@@ -6,6 +6,7 @@ import type { Theme } from '../theme.ts';
 import type { ResolvedLiveProject } from '../project.ts';
 import { visualizers } from '../visualizers.ts';
 import {
+  brandingWarnings,
   composeCss,
   parseConfigYaml,
   requireFile,
@@ -45,6 +46,8 @@ export async function loadLiveProject(
     LIVE_CONFIG,
   );
   if (config.background) await requireFile(root, config.background, 'background', LIVE_CONFIG);
+  if (config.branding?.logo)
+    await requireFile(root, config.branding.logo, 'branding.logo', LIVE_CONFIG);
   const css = config.css ? await requireFile(root, config.css, 'css', LIVE_CONFIG) : null;
   const selected = resolveLiveVisualizers(config, theme);
   const warnings: string[] = [];
@@ -56,6 +59,7 @@ export async function loadLiveProject(
   }
   const project = resolveLiveProject(config, theme, await composeCss(theme, css), available);
   warnings.push(...liveWarnings(project, config));
+  warnings.push(...(await brandingWarnings(root, config.branding, config.output, LIVE_CONFIG)));
   return { dir: root, project, warnings };
 }
 
@@ -85,6 +89,7 @@ function resolveLiveProject(
     tracklist: null,
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
+    branding: config.branding ?? null,
     performance: config.performance,
     live: {
       input: config.input,

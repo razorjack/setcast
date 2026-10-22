@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="480" height="480">
+  <!-- A fictional mark for the demo: a ring cut by a vector. Shapes only, so no font is needed. -->
+  <g fill="none" stroke="#fff" stroke-width="8" stroke-linecap="square">
+    <circle cx="60" cy="60" r="42" />
+    <path d="M30 90 L90 30" />
+    <path d="M68 30 H90 V52" />
+  </g>
+  <circle cx="60" cy="60" r="9" fill="#fff" />
+</svg>

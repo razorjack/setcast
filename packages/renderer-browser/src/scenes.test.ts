@@ -13,7 +13,7 @@ test('scene bank lists manual saves, rebases assets, and rejects root and escape
     await writeFile(join(root, 'art.svg'), '<svg xmlns="http://www.w3.org/2000/svg"/>');
     await writeFile(
       join(root, 'live.yaml'),
-      'theme: ./own.css\nbackground: art.svg\ntitle: Booth\n',
+      'theme: ./own.css\nbackground: art.svg\ntitle: Booth\nbranding: {logo: art.svg, name: Booth}\n',
     );
     const { project } = await loadLiveProject(root);
     const selection = {
@@ -27,10 +27,22 @@ test('scene bank lists manual saves, rebases assets, and rejects root and escape
     const recalled = await savedScene(root, saved.directory);
     expect(recalled.background).toBe(`${saved.directory}/assets/0.svg`);
     expect(recalled.performance).toEqual(selection.performance);
+    expect(recalled.branding?.logo).toBe(`${saved.directory}/assets/0.svg`);
+    const renamed = await saveScene(root, project, {
+      ...selection,
+      branding: { ...project.branding!, name: 'Stage', position: 'center' },
+    });
+    expect((await savedScene(root, renamed.directory)).branding).toMatchObject({
+      name: 'Stage',
+      position: 'center',
+      logo: `${renamed.directory}/assets/0.svg`,
+    });
+    const unbranded = await saveScene(root, project, { ...selection, branding: null });
+    expect((await savedScene(root, unbranded.directory)).branding).toBeNull();
     await expect(savedScene(root, '.')).rejects.toThrow('names its root');
     await symlink(outside, join(root, 'saved-scene-escape'));
     await expect(savedScene(root, 'saved-scene-escape')).rejects.toThrow('leaves the project');
-    expect(await savedScenes(root)).toHaveLength(1);
+    expect(await savedScenes(root)).toHaveLength(3);
   } finally {
     await rm(root, { recursive: true, force: true });
     await rm(outside, { recursive: true, force: true });

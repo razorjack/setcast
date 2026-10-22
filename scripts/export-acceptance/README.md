@@ -36,6 +36,8 @@ for inspection; the temporary project is removed even after failure.
   Both font requests are verified. Fallback-font and no-image captures must differ, preventing
   false passes where both renders omit their assets. Images are project-local, as required by
   the project asset contract. Image preparation and hold failures also have core unit tests.
+- A branding logo served with a 900 ms delay must produce the same pixels as a prompt one, and
+  differ from a capture without branding. The `Img` wrapper holds the frame until it loads.
 - A generated red/blue video must seek to the requested frame and loop after one second.
 - Sterile-tech, darkroom, and relief cover DOM/SVG, canvas, filters, embedded fonts, background
   measurement, overlap, and portrait layout. Capturing 1.7 s, 0.4 s, then 1.7 s must repeat the

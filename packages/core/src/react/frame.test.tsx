@@ -37,6 +37,8 @@ const project: ResolvedProject = {
   visualizers: [],
   envelope: null,
   travel: null,
+  branding: null,
+  announcements: [],
   panel: null,
   tracklist: null,
   bpm: null,
@@ -51,7 +53,7 @@ function frameAt(timeSeconds: number, analyzer: AudioAnalyzer): RenderFrame {
     audio: { ...SILENCE, bass: 0.75 },
     analyzer,
     mix: timeline.at(timeSeconds),
-    composition: { width: 1920, height: 1080, durationSeconds: 30, project },
+    composition: { width: 1920, height: 1080, durationSeconds: 30, project, announcements: [] },
     modulation: { glow: 0.4 },
   };
 }

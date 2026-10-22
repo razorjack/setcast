@@ -20,6 +20,7 @@ export const LiveConfigSchema = ProjectConfigSchema.pick({
   bpm: true,
   beatOffset: true,
   performance: true,
+  branding: true,
 }).extend({
   output: DisplaySchema.prefault({}),
   sequence: SequenceSchema.optional(),

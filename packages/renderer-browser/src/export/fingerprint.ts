@@ -49,7 +49,8 @@ export function projectAssets(project: ResolvedProject): string[] {
   const scenes = [project, ...(project.scenes ?? []).map(({ scene }) => scene)];
   for (const scene of scenes) validateCss(scene.css);
   const backgrounds = project.mix.plays.map((play) => play.background);
-  return [...new Set([project.audio, ...backgrounds, ...scenes.map((scene) => scene.background)])]
+  const sceneAssets = scenes.flatMap((scene) => [scene.background, scene.branding?.logo]);
+  return [...new Set([project.audio, ...backgrounds, ...sceneAssets])]
     .filter((path): path is string => Boolean(path))
     .sort();
 }

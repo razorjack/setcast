@@ -441,3 +441,163 @@
     width: calc(100cqw - 2 * var(--margin));
   }
 }
+
+/*
+ * Branding: the identity block (logo, name, event, episode) and the message line. Both sit above
+ * every theme layer in one of nine frame areas (data-position), inset from each edge by
+ * --brand-top, --brand-right, --brand-bottom and --brand-left. Top positions clear the header when
+ * there is one; a theme sets the insets to clear its own furniture. Sizes follow the short side
+ * (cqmin), so portrait keeps the proportions of landscape. The logo box at size 1 is
+ * LOGO_HEIGHT by LOGO_WIDTH of the short side (branding.ts). Messages only fade: a line moved by a
+ * fraction of a pixel can paint a pixel off in some render tabs.
+ */
+.sc-stage {
+  --brand-top: var(--margin);
+  --brand-right: var(--margin);
+  --brand-bottom: var(--margin);
+  --brand-left: var(--margin);
+}
+.sc-stage:has(> .sc-header) {
+  --brand-top: calc(var(--margin) + 5cqh);
+}
+.sc-brand-identity,
+.sc-brand-message {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  pointer-events: none;
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position$='left']) {
+  left: var(--brand-left);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position$='right']) {
+  right: var(--brand-right);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position^='top']) {
+  top: var(--brand-top);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position^='bottom']) {
+  bottom: var(--brand-bottom);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position='top'], [data-position='bottom']) {
+  left: 50%;
+  translate: -50% 0;
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position='left'], [data-position='right']) {
+  top: 50%;
+  translate: 0 -50%;
+}
+:is(.sc-brand-identity, .sc-brand-message)[data-position='center'] {
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+}
+
+.sc-brand-identity {
+  align-items: center;
+  gap: calc(var(--brand-size, 1) * 1.6cqmin);
+  opacity: var(--brand-opacity, 1);
+}
+.sc-brand-identity:is([data-position$='right']) {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.sc-brand-identity:is([data-position='top'], [data-position='bottom'], [data-position='center']) {
+  flex-direction: column;
+  text-align: center;
+}
+.sc-brand-logo {
+  display: block;
+  flex: none;
+  height: calc(var(--brand-size, 1) * 8cqmin);
+  width: auto;
+  max-width: calc(var(--brand-size, 1) * 24cqmin);
+  object-fit: contain;
+}
+.sc-brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.sc-brand-identity[data-position$='right'] .sc-brand-text {
+  align-items: end;
+}
+.sc-brand-identity:is([data-position='top'], [data-position='bottom'], [data-position='center'])
+  .sc-brand-text {
+  align-items: center;
+}
+
+.sc-brand-message {
+  max-width: calc(50cqw - var(--brand-left));
+  opacity: var(--message-presence, 1);
+}
+.sc-brand-message:is([data-position='top'], [data-position='bottom'], [data-position='center']) {
+  max-width: calc(100cqw - var(--brand-left) - var(--brand-right));
+  justify-content: center;
+  text-align: center;
+}
+.sc-brand-message[data-position$='right'] {
+  justify-content: end;
+  text-align: right;
+}
+
+/* How branding looks in a theme that never styles it: the theme's own type and colors, with a
+   halo that deepens over bright art behind it. A theme with dark type on a light ground sets
+   --brand-halo and --brand-plate (the announcement's ground) to its paper. */
+@layer fallback {
+  .sc-brand-identity,
+  .sc-brand-message {
+    --brand-glare: clamp(0, (var(--bg-luma-behind, 0) - 0.25) * 3, 1);
+    --brand-halo-strong: color-mix(
+      in srgb,
+      var(--brand-halo, #000) calc(35% + 45% * var(--brand-glare)),
+      transparent
+    );
+    --brand-halo-wide: color-mix(
+      in srgb,
+      var(--brand-halo, #000) calc(20% + 40% * var(--brand-glare)),
+      transparent
+    );
+    color: var(--fg, #fff);
+    text-shadow:
+      0 0 0.35em var(--brand-halo-strong),
+      0 0 1.2em var(--brand-halo-wide);
+  }
+  .sc-brand-logo {
+    filter: drop-shadow(0 0 0.6cqmin var(--brand-halo-strong));
+  }
+  .sc-brand-name {
+    font-family: var(--font-display, system-ui, sans-serif);
+    font-size: calc(var(--brand-size, 1) * 3cqmin);
+    line-height: 1.1;
+  }
+  .sc-brand-event {
+    margin-top: 0.4em;
+    font-family: var(--font-mono, monospace);
+    font-size: calc(var(--brand-size, 1) * 1.7cqmin);
+    line-height: 1.3;
+    color: var(--fg-dim, #aaa);
+  }
+  .sc-brand-episode {
+    margin-top: 0.6em;
+    font-family: var(--font-mono, monospace);
+    font-size: calc(var(--brand-size, 1) * 1.3cqmin);
+    line-height: 1.3;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent, #fff);
+  }
+  .sc-brand-message {
+    font-family: var(--font-mono, monospace);
+    font-size: calc(var(--message-size, 1) * 1.9cqmin);
+    line-height: 1.35;
+  }
+  .sc-brand-message[data-kind='announcement'] {
+    padding: 0.45em 0.9em;
+    border-radius: var(--radius, 0);
+    background: var(--brand-plate, rgb(0 0 0 / 0.55));
+    font-family: var(--font-display, system-ui, sans-serif);
+    font-size: calc(var(--message-size, 1) * 2.6cqmin);
+    line-height: 1.2;
+  }
+}

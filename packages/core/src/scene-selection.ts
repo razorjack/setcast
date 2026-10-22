@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BrandingSchema } from './branding.ts';
 import { PerformanceSchema } from './performance.ts';
 import { LiveConfigSchema } from './live.ts';
 import { ProjectConfigSchema } from './config.ts';
@@ -28,6 +29,8 @@ export const SceneSelectionSchema = z.strictObject(
       .max(500, { error: 'selection.title exceeds 500 characters. Shorten the title.' })
       .optional(),
     clock: z.boolean({ error: 'selection.clock must be true or false.' }).optional(),
+    /** The effective branding, or null for none; absent keeps the project's. */
+    branding: BrandingSchema.nullable().optional(),
     input: LiveConfigSchema.shape.input.optional(),
     bpm: ProjectConfigSchema.shape.bpm.unwrap().nullable().optional(),
     beatOffset: ProjectConfigSchema.shape.beatOffset.removeDefault().optional(),

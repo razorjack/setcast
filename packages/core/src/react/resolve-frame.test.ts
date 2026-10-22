@@ -5,6 +5,7 @@ import { ModPatchSchema } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject } from '../project.ts';
 import { Timeline } from '../timeline.ts';
 import { framesWithinMix } from '../frame-time.ts';
+import { BrandingSchema } from '../branding.ts';
 import { resolveFrame, resolveLiveFrame } from './resolve-frame.ts';
 
 const project: ResolvedProject = {
@@ -31,6 +32,8 @@ const project: ResolvedProject = {
   visualizers: [],
   envelope: null,
   travel: null,
+  branding: null,
+  announcements: [],
   panel: null,
   tracklist: null,
   bpm: 120,
@@ -88,6 +91,7 @@ test('frame assembly respects renderer settings and preserves supplied identitie
     height: 1280,
     durationSeconds: 2.000001,
     project,
+    announcements: [],
   });
   expect(frame.composition.project).toBe(project);
   expect(frame.mix.currentPlays.map((play) => play.play.id)).toEqual(['second']);
@@ -123,4 +127,26 @@ test('last frames stay inside the finite mix, including a rounded microsecond en
       resolveFrame({ project: next, timeline: indexed, analyzer, frame: last + 1 }),
     ).toThrow();
   }
+});
+
+test('recorded scenes replace branding and announcements stay on the mix timeline', () => {
+  const branding = BrandingSchema.parse({ name: 'Scene' });
+  const live: ResolvedLiveProject = {
+    ...project,
+    audio: null,
+    mix: null,
+    panel: null,
+    tracklist: null,
+    branding,
+    live: { clock: false, input: { channels: null, gain: 1, delay: 0 } },
+  };
+  const announcements = [{ at: 0.5, text: 'Hello', seconds: 5 }];
+  const staged = { ...project, announcements, scenes: [{ at: 1, scene: live }] };
+  const before = resolveFrame({ project: staged, timeline, analyzer, frame: 15 });
+  const after = resolveFrame({ project: staged, timeline, analyzer, frame: 45 });
+  expect(before.composition.project.branding).toBeNull();
+  expect(after.composition.project.branding).toBe(branding);
+  expect(after.composition.announcements).toBe(announcements);
+  const session = resolveLiveFrame({ project: live, analyzer, frame: 0, announcements });
+  expect(session.composition.announcements).toBe(announcements);
 });

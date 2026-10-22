@@ -835,3 +835,10 @@
     padding: 1.8cqw 4cqw 2.2cqw;
   }
 }
+
+/* Branding insets clear this theme's own furniture. */
+@container (aspect-ratio < 1) {
+  .theme-afterhours :is(.sc-brand-identity, .sc-brand-message) {
+    --brand-top: 27cqh;
+  }
+}

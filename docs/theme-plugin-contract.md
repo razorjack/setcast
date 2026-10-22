@@ -290,6 +290,42 @@ or let the oldest rows give way first, because the current rows matter most. Wit
 the list is the only credit, and loading warns about plays without a listing, which it cannot
 show.
 
+## Branding
+
+`branding:` (`BrandingSchema` in `@setcast/core`) resolves to `ResolvedProject.branding`, or null,
+and `announcements:` to `ResolvedProject.announcements`. Live projects take `branding:` only; the
+live session supplies its announcements to `resolveLiveFrame({ announcements })`. Both reach
+components as `composition.project.branding` and `composition.announcements`. A recorded scene
+(`scenes:`) replaces branding with its own. `messageAt(branding, announcements, time)` returns
+the line shown at any moment as a pure function of time; usage is in [branding.md](branding.md).
+
+The `Branding` component renders after the credits:
+
+- `.sc-brand-identity[data-position]`, while the branding is visible and has a logo, name, event
+  or episode. It holds `img.sc-brand-logo` (through the `Img` wrapper, which holds the frame)
+  and `.sc-brand-text` with `.sc-brand-name`, `.sc-brand-event` and `.sc-brand-episode`, each
+  only when set. It sets `--brand-size` (0.25..4) and `--brand-opacity`.
+- `.sc-brand-message[data-position][data-kind]` while a message or announcement shows. `data-kind`
+  is `message` or `announcement`. It holds `.sc-brand-message-text` and sets
+  `--message-presence` (0..1, the fade), `--message-index` (the line, or the announcement's
+  position) and `--message-size`.
+- The stage root has `data-brand-position` while the identity block shows.
+
+`data-position` is `top-left`, `top`, `top-right`, `left`, `center`, `right`, `bottom-left`,
+`bottom` or `bottom-right`. base.css places both elements at `z-index: 4` and insets them from
+the frame's edges by `--brand-top`, `--brand-right`, `--brand-bottom` and `--brand-left`
+(`--margin`, and below the header for `--brand-top` when the stage has one). A theme sets these
+to clear its own header, credits and visualizers. On the stage root use `.setcast.theme-<name>`,
+which outranks base.css's header rule; portrait values go on the branding elements inside the
+container query, because the root does not match its own container query. Opacity follows
+`--message-presence` and `--brand-opacity` structurally; motion is deliberately absent.
+
+base.css styles both in `@layer fallback` with the theme's `--font-display`, `--font-mono`,
+`--fg`, `--fg-dim` and `--accent`, and a halo that grows with `--bg-luma-behind`. A theme with
+dark type on a light ground sets `--brand-halo` (halo color, default black) and `--brand-plate`
+(the announcement's ground, default translucent black) to its paper. Both elements are measured
+like the panels: `--bg-luma-behind` and `--bg-detail-behind` describe the art behind them.
+
 ## Scoped modulation
 
 Routes accept `scope: mix` (default) or `scope: play`. Mix routes produce stage `--mod-*`

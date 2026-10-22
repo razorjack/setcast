@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { historyTimes, SILENCE, type AudioAnalyzer, type AudioFeatures } from '../audio.ts';
+import type { Announcement } from '../branding.ts';
 import type { PerformanceState } from '../performance.ts';
 import type { SceneProject } from '../project.ts';
 import type { MixState } from '../timeline.ts';
@@ -10,6 +11,8 @@ export interface CompositionState {
   durationSeconds: number | null;
   project: SceneProject;
   performance?: PerformanceState;
+  /** Timed lines for the message line: the recorded project's, or the live session's. */
+  announcements: readonly Announcement[];
 }
 
 /** The contract between a renderer and every Setcast component. Renderer-agnostic by design. */

@@ -4,7 +4,11 @@ import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
-import type { Exporter, ResolvedProject } from '../../packages/core/src/index.ts';
+import {
+  BrandingSchema,
+  type Exporter,
+  type ResolvedProject,
+} from '../../packages/core/src/index.ts';
 import { pixels } from './measure.ts';
 
 export interface AcceptanceContext {
@@ -23,12 +27,13 @@ export async function checkReadiness(context: AcceptanceContext): Promise<void> 
     const path = request.url ?? '';
     requests.add(path);
     if (path.startsWith('/slow/')) await setTimeout(900);
+    const logo = path.endsWith('.svg');
     response.writeHead(200, {
-      'Content-Type': 'font/woff2',
+      'Content-Type': logo ? 'image/svg+xml' : 'font/woff2',
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-store',
     });
-    response.end(font);
+    response.end(logo ? LOGO : font);
   });
   server.listen(0, '127.0.0.1');
   try {
@@ -37,8 +42,10 @@ export async function checkReadiness(context: AcceptanceContext): Promise<void> 
     assert(address && typeof address !== 'string');
     const url = `http://127.0.0.1:${address.port}`;
     await compareAssets(context, url);
+    await compareLogo(context, url);
     for (const prefix of ['fast', 'slow']) {
       assert(requests.has(`/${prefix}/font.woff2`), `Font never requested: ${prefix}`);
+      assert(requests.has(`/${prefix}/logo.svg`), `Logo never requested: ${prefix}`);
     }
   } finally {
     server.closeAllConnections();
@@ -47,7 +54,7 @@ export async function checkReadiness(context: AcceptanceContext): Promise<void> 
     );
   }
   console.log(
-    '  delayed font matches loaded font; image and font differ from missing-asset controls',
+    '  delayed font and logo match loaded ones; image, font and logo differ from missing-asset controls',
   );
 }
 
@@ -85,6 +92,27 @@ async function compareAssets(context: AcceptanceContext, url: string): Promise<v
     !results[0]!.equals(pixels(blank)),
     'Image check must distinguish loaded art from missing art',
   );
+}
+
+const LOGO =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="200" height="200"><circle cx="5" cy="5" r="4" fill="#f80"/></svg>';
+
+/** A branding logo served late must still be in the captured frame: the Img wrapper holds it. */
+async function compareLogo(context: AcceptanceContext, url: string): Promise<void> {
+  const { exporter, projectDir, out, project } = context;
+  const captures: Buffer[] = [];
+  for (const prefix of ['fast', 'slow', 'none']) {
+    const outFile = join(out, `logo-${prefix}.png`);
+    const branding =
+      prefix === 'none'
+        ? null
+        : BrandingSchema.parse({ logo: `${url}/${prefix}/logo.svg`, position: 'center', size: 3 });
+    const css = `${project.css}\n.setcast > .sc-brand-identity { display: flex; }`;
+    await exporter.still({ ...project, branding, css }, { projectDir, out: outFile, at: 1.7 });
+    captures.push(pixels(outFile));
+  }
+  assert(captures[0]!.equals(captures[1]!), 'Delayed logo changed captured pixels');
+  assert(!captures[0]!.equals(captures[2]!), 'Logo check must distinguish the logo from none');
 }
 
 function assetCss(url: string): string {

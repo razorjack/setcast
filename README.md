@@ -155,6 +155,7 @@ modulation:                  # audio and timeline → CSS custom properties (--m
 visualizer: { name: spectrum, bars: 48, gain: 1 }   # or a list, or leave it to the theme; see Visualizers
 panel: { dwell: 14, fade: 1.2 }   # entrance dwell; false shows no panels, only the tracklist
 tracklist: { before: 2, after: 2 }   # listings around the current one; true, false, or the counts
+branding: { logo: assets/logo.svg, name: Null Vector, event: Neurofunk Sessions }   # see Branding
 css: overrides.css           # optional, appended after the theme
 ```
 
@@ -388,6 +389,24 @@ as it comes in, for `panel.dwell` seconds, and then leaves the credit to the lis
 A tease or a loop that the list does not show keeps its panel while it plays. `panel: { dwell: 0 }`
 keeps the panels up the whole time, and `panel: false` shows no panels at all, so the list is the
 only credit; Setcast then warns about plays without an `at` time, which nothing would credit.
+
+## Branding
+
+`branding:` puts your logo, name, event and an episode label on screen, and `messages:` inside it
+rotates short lines such as social handles. `announcements:` shows timed one-off lines. Live
+output has the same keys in `live.yaml`, and the operator can change them during a set:
+
+```yaml
+branding:
+  logo: assets/logo.svg
+  name: Null Vector
+  episode: Episode 42
+  messages: { lines: [instagram.com/nullvector, Tracklist in the description] }
+announcements:
+  - { at: 58:30, text: Last track }
+```
+
+Positions, sizes, timing, styling and live controls are in [Branding and overlays](docs/branding.md).
 
 ## Customize without JavaScript
 

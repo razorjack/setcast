@@ -837,3 +837,10 @@
     font-size: 2cqw;
   }
 }
+
+/* Branding insets clear this theme's own furniture; .setcast outranks base.css's header rule. */
+.setcast.theme-pirate {
+  --brand-top: calc(var(--margin) + 7cqh);
+  --brand-halo: var(--paper);
+  --brand-plate: var(--paper);
+}

@@ -893,3 +893,9 @@
     font-size: 2.25cqw;
   }
 }
+
+/* Branding insets clear this theme's own furniture; .setcast outranks base.css's header rule. */
+.setcast.theme-escapement {
+  --brand-halo: var(--paper);
+  --brand-plate: var(--paper);
+}

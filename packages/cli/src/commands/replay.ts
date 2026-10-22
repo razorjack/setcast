@@ -8,6 +8,7 @@ import {
   sceneDirectory,
   copySceneDirectory,
   loadLiveProject,
+  rebaseScene,
 } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { parseCommandArgs } from '../args.ts';
@@ -91,13 +92,15 @@ async function copyScenes(
 }
 
 async function initialAppearance(root: string, preset: string) {
-  const { project } = await loadLiveProject(join(root, preset), { themes });
+  const { project: loaded } = await loadLiveProject(join(root, preset), { themes });
+  const project = rebaseScene(loaded, preset);
   await writeFile(join(root, `${project.theme}.css`), project.css);
   return {
     theme: `./${project.theme}.css`,
     title: project.title,
-    background: project.background ? `${preset}/${project.background}` : undefined,
+    background: project.background ?? undefined,
     backgroundFit: project.backgroundFit,
+    branding: project.branding ?? undefined,
     bpm: project.bpm ?? undefined,
     beatOffset: project.beatOffset,
     visualizer: project.visualizers,
