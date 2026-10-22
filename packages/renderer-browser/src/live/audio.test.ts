@@ -47,13 +47,14 @@ test('retention is bounded, gaps are silence, and routing changes discard old an
   expect(() => live.append(17 * rate, signal, signal)).toThrow('ordered, nonoverlapping');
 });
 
+// Every cache miss materializes four FFTs; shared CI runners can exceed the default 5 seconds.
 test('feature cache has a hard limit even for dense query schedules', () => {
   const live = new LiveAudio(8000);
   const signal = new Float32Array(8000);
   live.append(0, signal, signal);
   for (let sample = 0; sample < 2100; sample++) live.featuresAt(sample / 8000);
   expect(live.cachedMoments).toBe(2048);
-});
+}, 30_000);
 
 test('channel mapping preserves mono and rejects physical channels not exposed by capture', () => {
   expect(inputChannels(null, 1)).toEqual([1, 1]);

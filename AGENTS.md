@@ -82,6 +82,9 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- The live-audio cache-limit test makes 2,100 distinct queries, each materializing four FFTs.
+  It has a local 30 s timeout: the default 5 s failed on GitHub's Ubuntu runner at 9.3 s even
+  though it passed locally. Keep its full cache-overflow coverage and its timeout local.
 - `vp` must be the **standalone binary**, not the `vite-plus` npm package installed globally. Get
   it from `curl -fsSL https://vite.plus | bash`, or from mise with
   `mise use -g github:voidzero-dev/vite-plus` (the same release artifact; mise's own registry entry
