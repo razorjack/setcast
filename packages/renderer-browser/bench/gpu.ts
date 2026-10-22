@@ -331,7 +331,7 @@ async function checkSoftware(project: ResolvedProject, name: string) {
   });
 }
 
-/** SwiftShader draws on the CPU, so its frame time shows each shader's cost without a GPU. */
+/** Include screenshot readback: readiness can finish while software drawing is still in flight. */
 async function softwareBenchmark(project: ResolvedProject) {
   const reports = [];
   for (const config of [
@@ -346,13 +346,17 @@ async function softwareBenchmark(project: ResolvedProject) {
       height: 1080,
       visualizers: resolveVisualizerConfigs(config),
     };
-    const prepareMs = await withSoftwarePage(scene, async (page) => {
+    const captureFrameMs = await withSoftwarePage(scene, async (page) => {
       await prepareFrame(page, 0);
+      await page.screenshot({ type: 'jpeg', quality: 95 });
       const started = performance.now();
-      for (let frame = 1; frame <= 20; frame++) await prepareFrame(page, frame);
+      for (let frame = 1; frame <= 20; frame++) {
+        await prepareFrame(page, frame);
+        await page.screenshot({ type: 'jpeg', quality: 95 });
+      }
       return (performance.now() - started) / 20;
     });
-    const report = { config, backend: 'SwiftShader', width: 1920, height: 1080, prepareMs };
+    const report = { config, backend: 'SwiftShader', width: 1920, height: 1080, captureFrameMs };
     reports.push(report);
     process.stdout.write(`${JSON.stringify(report)}\n`);
   }
@@ -364,7 +368,9 @@ async function withSoftwarePage<T>(project: ResolvedProject, task: (page: Page) 
   const captureFiles = await exportBundle;
   const server = await play(project, { projectDir: directory, port: 0, captureFiles });
   try {
-    const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader'] });
+    const browser = await chromium.launch({
+      args: ['--disable-frame-rate-limit', '--use-gl=angle', '--use-angle=swiftshader'],
+    });
     try {
       const page = await browser.newPage({
         viewport: { width: project.width, height: project.height },

@@ -558,9 +558,9 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   each point inside its cell, so the twelve neighbor pairs whose 2x2 block contains a pixel's
   cell are every link that can cross it; keep that invariant when changing orbits. Its flight
   is stateless: three layers cycle through depth by the fractional part of absolute time, and
-  each pass gets a new layer id. It costs more than field or tunnel: about 70 ms a
-  half-resolution 1080p frame on SwiftShader against 33 ms. The browser check is
-  `node packages/renderer-browser/bench/gpu.ts [name]`; CI runs it.
+  each pass gets a new layer id. SwiftShader performance must include screenshot readback;
+  readiness can finish while drawing is still in flight. See docs/gpu-visualizer.md. The browser
+  check is `node packages/renderer-browser/bench/gpu.ts [name]`; CI runs it.
 
 - Branding (`branding:` in setcast.yaml and live.yaml) is scene-level appearance: saved scenes
   copy the logo and record it, recall restores it like the title, and recorded `scenes:` switch
@@ -628,6 +628,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Browser export exposes optional timing metrics. Readiness waits for two stable animation-frame
   callbacks, with fonts/images decoded inside the stability loop. Before changing this again,
   run both export acceptance suites and `node packages/renderer-browser/bench/frames.ts`.
+- Offline export Chromium uses `--disable-frame-rate-limit` to remove display refresh pacing,
+  while retaining all frame readiness checks. This does not configure the user's live or preview
+  browser. Keep the SwiftShader GPU check on the same scheduling mode. The measured one-worker
+  improvement is 22–33% with identical decoded frames; two-worker improvement was small. See
+  docs/renderer-scheduling.md for workloads, raw measurements and qualification limits.
 
 - Offline selection is `renderer: remotion | browser`, defaulting to Remotion, with `--renderer`
   overrides on render/still/clip/preview. The CLI imports only the chosen adapter at runtime and scopes

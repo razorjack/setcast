@@ -50,4 +50,14 @@ mixers, cameras, projectors and cross-platform drivers require separate qualific
   then read the handoff and implement/validate/commit measured renderer optimization.
 - Branding and overlays completed in this root checkout (plan: docs/branding-plan.md). Parent
   resumes with step 4, further renderer optimization.
-
+- Read the branding handoff and verified clean master at 5b24d4c (0096582, 8cdfad4,
+  5b24d4c). Profile the branded browser export first, then compare capture scheduling changes
+  on branded CSS/art, GPU and video scenes. Preserve two stable readiness callbacks and compare
+  all decoded frames. Keep only a measured improvement; qualify resume, errors and packaging.
+- Renderer scheduling candidate removes the offline Chromium display frame limit. Sequential
+  comparisons passed exact decoded-frame equality for all 3,600 frames; one-worker exports
+  improved 22–33% and the minute-long branded case fell from 94.53 to 63.45 seconds. Both
+  exporter acceptance suites, 506-test ready check, same-page frames and resume recovery pass.
+  GPU determinism/failure/live checks and installed-package qualification also pass. SwiftShader
+  timing now includes screenshot readback, since readiness alone can return before drawing
+  completes. Measurements and reproduction are recorded in docs/renderer-scheduling.md.

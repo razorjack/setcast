@@ -225,17 +225,18 @@ projector alignment and sustained performance remain unqualified.
 
 ### Next milestones
 
-1. Measured renderer optimization. Branding and overlays, energy-aware scene selection and
-   assisted beat tracking are complete. Continuous beat following needs a stronger onset
-   detector and broader real-recording qualification.
+1. Renderer qualification on Linux, Windows and longer real projects. Offline display scheduling
+   optimization is complete; further optimization should follow profiles of remaining capture
+   costs on those workloads.
 2. GPU hardware qualification. Measure sustained live GPU load on real machines and drivers;
    particles with accumulated state require deterministic replay or checkpoints. The stateless
    field, tunnel and constellation are complete.
 3. Extend projection only after one-projector hardware qualification: curved meshes, color
    matching and multi-projector edge blending are separate work.
 
-Camera test patterns, branding and hardware qualification
-remain in the delivery order above. No background task or recurring automation is installed.
+Camera test patterns and hardware qualification remain in the delivery order above. Continuous
+beat following needs a stronger onset detector and broader real-recording qualification.
+No background task or recurring automation is installed.
 
 ## References
 
@@ -318,8 +319,10 @@ configuration and CSS color. No visualizer keeps simulation state between frames
 (filmed backdrop with a CSS-masked quiet region). Remotion remains the default exporter, and no
 theme default changed. The tunnel's twist turns the whole wall about the center, rather than only
 the spokes, because spiralling spokes alone read as unrelated straight lines. Constellation
-links are drawn from the twelve neighbor pairs that can cross a pixel; that cut its SwiftShader
-frame time from 197 to about 70 ms at half-resolution 1080p.
+links are drawn from the twelve neighbor pairs that can cross a pixel; that cut its historical
+SwiftShader readiness measurement from 197 to about 70 ms at half-resolution 1080p. The benchmark
+now includes screenshot readback because readiness alone does not measure completed drawing;
+see [gpu-visualizer.md](gpu-visualizer.md) for the current capture measurements.
 
 Validation: `vp run ready` passed all 474 tests, lint/types, dependency checks and smoke render.
 Both exporter acceptance suites passed repeated stills and identical decoded frames between
@@ -388,3 +391,20 @@ A 10-second 1080p demo slice took 10.3/11.4 s without and 11.4/12.4 s with brand
 Remotion, and 17.5/17.6 s against 17.2/17.6 s through the browser exporter, including setup.
 The Remotion difference was not investigated; the browser difference is within run-to-run noise.
 
+## Completed offline renderer scheduling optimization
+
+After the branding handoff, profiles identified screenshot capture and display-paced readiness
+as the largest costs in the one-worker browser export. Offline Chromium now uses
+`--disable-frame-rate-limit`, preserving the existing asset/React readiness checks, JPEG quality,
+ordered bounded capture queue, encoding and resume behavior. Live playback and independent
+preview are unchanged; Remotion stays default.
+
+One-worker branded CSS, GPU and looping-video exports improved by 22–33% locally. A one-minute
+branded export fell from 94.53 to 63.45 seconds. All 3,600 compared decoded frames and captured
+JPEG byte totals matched. The single two-worker pair improved only 4.2%; that difference needs
+more repetitions. See [renderer-scheduling.md](renderer-scheduling.md) for the matrix, raw
+measurements, reproduction and qualification limits.
+
+Both exporter acceptance suites, same-page seeking, resume recovery and installed-package smoke
+passed. The SwiftShader benchmark now measures readiness plus screenshot readback; its earlier
+readiness-only measurements did not establish completed software rendering throughput.

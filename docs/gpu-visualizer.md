@@ -150,18 +150,22 @@ comparisons stay within each adapter, since the adapters use different Chromium 
 The capture benchmark compares 60 warmed 1080p frame requests and JPEG-95 screenshots per
 configuration. It includes browser scheduling, readiness and screenshot work and excludes
 bundling, initial shader compilation and video encoding. On the local Apple M1 Pro (ANGLE
-Metal, Chromium 156.0.8078.4, Node 26.7.0) every configuration captured about 19.9–20.0
-frames/s: field, tunnel and constellation at half and full resolution, spectrum and radial.
-Mean screenshot time was 29–31 ms for the GPU visualizers and 28 ms for SVG. Capture pacing
-sets this rate, so it shows the GPU work fits the schedule, not a GPU speedup or a live frame
-rate. With all three stacked, live synthetic input held 29.5 of 30 frames/s in a headless
-1280x800 window.
+Metal, Chromium 156.0.8078.4, Node 26.7.0), removing offline display pacing increased the
+short capture benchmark from its earlier 19.9–20.0 frames/s to 29.8–32.3 for the GPU visuals,
+28.3 for spectrum and 33.5 for radial. Mean screenshot time was 28.6–30.6 ms for the GPU
+visualizers and 27.0–27.3 ms for SVG. These are capture rates, not isolated GPU speed or live
+frame rates. See [renderer-scheduling.md](renderer-scheduling.md) for paired end-to-end exports.
+With all three stacked, the earlier live synthetic-input check held 29.5 of 30 frames/s in a
+headless 1280x800 window; offline scheduling does not change the live browser.
 
-The software benchmark renders 20 half-resolution 1080p frames on SwiftShader, where shaders run
-on the CPU. Field, tunnel and spectrum took about 33 ms a frame, the readiness floor, and the
-constellation 69–72 ms over two runs. A machine without hardware graphics can therefore render
-the constellation at about 14 frames/s; lower its resolution there. Before its link search was
-limited to the twelve pairs that can cross a pixel, it took 197 ms.
+The software benchmark measures 20 warmed 1080p frames on SwiftShader, with GPU visualizers at
+half resolution. It includes readiness and JPEG-95 screenshot readback, reported as
+`captureFrameMs`. The local run measured 49.1 ms for field, 52.7 ms for tunnel, 117.2 ms for
+constellation and 62.3 ms for spectrum. These short measurements include capture overhead and
+exclude encoding. Constellation remains the most expensive; lower its resolution on software
+graphics. Earlier results (33 ms for field/tunnel/spectrum and 69–72 ms for constellation)
+measured readiness alone. Since drawing can still be in flight when readiness returns, those
+numbers do not establish completed rendering throughput and are not comparable to this metric.
 
 Hardware mixers, long-duration GPU load, physical projectors and cameras, and cross-platform
 drivers still need qualification. Linux and Windows have not been run from this local session.

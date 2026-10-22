@@ -113,6 +113,8 @@ export async function withCapture<T>(
 
 async function launch(backend: GraphicsBackend) {
   const args = [
+    // Keep asset/React readiness; remove display refresh pacing only from offline capture.
+    '--disable-frame-rate-limit',
     '--disable-background-timer-throttling',
     '--disable-renderer-backgrounding',
     ...graphicsArgs(backend),

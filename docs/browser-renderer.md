@@ -237,3 +237,17 @@ encoder backpressure, partial ranges and failure cancellation. Browser acceptanc
 recovery passed with the overlapped path, including GPU field equality across workers/chunks.
 `vp run ready` passed all 450 tests and baseline checks; Remotion acceptance and installed-package
 smoke with browser export also passed.
+
+### Offline display scheduling
+
+The export-only Chromium process now uses `--disable-frame-rate-limit`. Asset/React readiness
+still waits for two stable animation-frame callbacks; the browser no longer applies display
+refresh pacing to offline capture. Playback and independent preview retain their normal browser
+scheduling. JPEG quality, output FPS, frame order and the bounded capture pipeline are unchanged.
+
+On the post-branding baseline (5b24d4c), one-worker 1080p exports improved by 22–33% across branded
+CSS, field/constellation GPU visuals and looping video. A one-minute branded export fell from
+94.53 to 63.45 seconds. All 3,600 compared decoded frames were identical. A two-worker pair
+improved only 4.2%, which needs more repetitions before treating it as a reliable gain.
+See [renderer-scheduling.md](renderer-scheduling.md) for the complete matrix, reproduction,
+raw measurements and platform limitations.
