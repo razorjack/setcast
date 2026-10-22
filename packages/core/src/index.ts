@@ -267,3 +267,11 @@ export {
 } from './performance.ts';
 
 export { SequenceSchema, type SceneSequence } from './sequence.ts';
+
+export {
+  ProjectionSchema,
+  VenueSchema,
+  type Projection,
+  type ProjectionPoint,
+  type Venue,
+} from './projection.ts';

@@ -39,7 +39,10 @@ test('live saves preserve tempo/input and reject escaped assets without leaving 
   const root = await mkdtemp(join(tmpdir(), 'setcast-save-'));
   const outside = await mkdtemp(join(tmpdir(), 'setcast-outside-'));
   try {
-    await writeFile(join(root, 'live.yaml'), 'theme: ./own.css\nbpm: 174\n');
+    await writeFile(
+      join(root, 'live.yaml'),
+      'theme: ./own.css\nbpm: 174\nprojection: { enabled: true }\n',
+    );
     await writeFile(join(root, 'own.css'), '');
     await writeFile(join(outside, 'art.png'), 'private');
     await symlink(join(outside, 'art.png'), join(root, 'escape.png'));
@@ -53,6 +56,8 @@ test('live saves preserve tempo/input and reject escaped assets without leaving 
     };
     const saved = await saveScene(root, project, selection);
     const loaded = await loadLiveProject(join(root, saved.directory));
+    expect(project.live.projection?.enabled).toBe(true);
+    expect(loaded.project.live.projection).toBeUndefined();
     expect(loaded.project.bpm).toBeNull();
     expect(loaded.project.live.input).toEqual(selection.input);
     const before = (await readdir(root)).sort();

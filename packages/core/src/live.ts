@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ProjectionSchema } from './projection.ts';
 import { SequenceSchema } from './sequence.ts';
 import { DisplaySchema, ProjectConfigSchema } from './config.ts';
 
@@ -22,6 +23,7 @@ export const LiveConfigSchema = ProjectConfigSchema.pick({
 }).extend({
   output: DisplaySchema.prefault({}),
   sequence: SequenceSchema.optional(),
+  projection: ProjectionSchema.optional(),
   clock: z.boolean({ error: 'clock must be true or false.' }).default(false),
   input: z
     .strictObject({

@@ -1,5 +1,10 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { PerformanceState, AudioAnalyzer, ResolvedLiveProject } from '@setcast/core';
+import type {
+  PerformanceState,
+  AudioAnalyzer,
+  ResolvedLiveProject,
+  Projection,
+} from '@setcast/core';
 import {
   FrameProvider,
   RendererProvider,
@@ -10,6 +15,7 @@ import {
 import { SceneBoundary } from '../browser/scene.tsx';
 import { assetUrl } from '../browser/url.ts';
 import { LiveReadiness } from './readiness.ts';
+import { ProjectionFrame } from './projection-frame.tsx';
 import { LiveVideo } from './video.tsx';
 
 interface SceneProps {
@@ -22,6 +28,9 @@ interface SceneProps {
   report: (message: string) => void;
   renderScale?: number;
   black?: boolean;
+  projection?: Projection;
+  pattern?: boolean;
+  document?: Document;
 }
 
 /** Keep the ready scene visible until a replacement's artwork, fonts and video have loaded. */
@@ -41,23 +50,60 @@ export function LiveViewport(props: SceneProps) {
           transform: `translate(-50%, -50%) scale(${scale})`,
         }}
       >
-        {layers.map((project) => (
-          <div className="sc-live-scene" data-ready={project === visible} key={sceneKey(project)}>
-            <SceneBoundary onError={(cause) => error(project, cause)}>
-              <LiveScene
-                performance={props.performance}
-                renderScale={props.renderScale}
-                project={project}
-                analyzer={props.analyzer}
-                frame={props.frame}
-                ready={project === visible ? undefined : ready}
-              />
-            </SceneBoundary>
-          </div>
-        ))}
+        {props.projection?.enabled ? (
+          <ProjectionFrame
+            config={props.projection}
+            width={props.project.width}
+            height={props.project.height}
+            pattern={props.pattern ?? false}
+            brightness={props.performance?.brightness ?? 1}
+          >
+            {(document) => (
+              <SceneLayers {...{ layers, visible, ready, error, props }} document={document} />
+            )}
+          </ProjectionFrame>
+        ) : (
+          <SceneLayers {...{ layers, visible, ready, error, props }} />
+        )}
         {props.black && <div className="sc-input-fallback" aria-hidden="true" />}
       </div>
     </div>
+  );
+}
+
+function SceneLayers({
+  layers,
+  visible,
+  ready,
+  error,
+  props,
+  document,
+}: {
+  layers: ResolvedLiveProject[];
+  visible: ResolvedLiveProject | null;
+  ready: () => void;
+  error: (project: ResolvedLiveProject, cause: unknown) => void;
+  props: SceneProps;
+  document?: Document;
+}) {
+  return (
+    <>
+      {layers.map((project) => (
+        <div className="sc-live-scene" data-ready={project === visible} key={sceneKey(project)}>
+          <SceneBoundary onError={(cause) => error(project, cause)}>
+            <LiveScene
+              performance={props.performance}
+              renderScale={props.renderScale}
+              project={project}
+              analyzer={props.analyzer}
+              frame={props.frame}
+              document={document}
+              ready={project === visible ? undefined : ready}
+            />
+          </SceneBoundary>
+        </div>
+      ))}
+    </>
   );
 }
 
@@ -91,18 +137,20 @@ const LiveScene = memo(function LiveScene({
   ready,
   performance,
   renderScale,
+  document,
 }: Omit<SceneProps, 'report'> & { ready?: () => void }) {
   const [readiness] = useState(() => new LiveReadiness());
   const bindings = useMemo<RendererBindings>(
     () => ({
       name: 'browser-live',
       renderScale,
+      document,
       asset: assetUrl,
       hold: readiness.hold,
       Img: LiveImage,
       Video: LiveVideo,
     }),
-    [readiness, renderScale],
+    [readiness, renderScale, document],
   );
   useReady(readiness, ready);
   const resolved = resolveLiveFrame({ project, analyzer, frame, performance });

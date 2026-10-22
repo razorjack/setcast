@@ -37,6 +37,8 @@ export interface RendererBindings {
   name: string;
   /** Live-only drawing-buffer scale. Offline renderers leave it at 1. */
   renderScale?: number;
+  /** Document containing the scene, when an adapter renders through a portal. */
+  document?: Document;
   Img: ComponentType<ImgProps>;
   Video: ComponentType<VideoProps>;
   hold: (label: string) => () => void;
@@ -172,9 +174,13 @@ function preloadImage(url: string): Promise<void> {
 
 /** Holds the frame until every @font-face in the document has loaded. */
 export function useFontsReady(revision?: unknown): boolean {
+  const owner = useRenderer().document;
   return useHoldUntil(
     'fonts',
-    () => (typeof document === 'undefined' ? Promise.resolve() : document.fonts.ready),
+    () => {
+      if (owner) return owner.fonts.ready;
+      return typeof document === 'undefined' ? Promise.resolve() : document.fonts.ready;
+    },
     revision,
   );
 }

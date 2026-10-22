@@ -39,3 +39,5 @@ jobs:
         run: node packages/renderer-browser/bench/output.ts
       - name: Automatic live scene progression and replay
         run: node packages/renderer-browser/bench/sequence.ts
+      - name: One-projector geometry, calibration and venue profiles
+        run: node packages/renderer-browser/bench/projection.ts

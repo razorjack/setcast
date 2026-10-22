@@ -293,7 +293,8 @@ scene, input and output size. See [live audio input](docs/live-input.md) for rou
 configuration and browser limitations.
 
 Live [performance controls](docs/live-performance.md) add intensity, brightness, blackout,
-saved scene pads, bar-aligned fades and MIDI mapping. Try `examples/live-backdrop` for a filmed
+saved scene pads, automatic scene sequences, bar-aligned fades and MIDI mapping.
+[One-projector setup](docs/projector-setup.md) adds corner correction, crop, masks and venue profiles. Try `examples/live-backdrop` for a filmed
 DJ set or `examples/live-projection` for a projector. The
 [rendering and live roadmap](docs/rendering-and-live-roadmap.md) records the next milestones.
 

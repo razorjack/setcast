@@ -240,3 +240,9 @@ with zero dropped analysis samples and bounded feature caching.
 Physical interface routing, end-to-end latency, OBS integration and long-session hardware
 stability remain unqualified. Use the checklist in
 [player-development-plan.md](player-development-plan.md) with the intended hardware.
+
+## Projection geometry
+
+[One-projector setup](projector-setup.md) provides four-corner correction, source crop, fixed
+output masks, a static calibration pattern and saved venue profiles. Scene recalls preserve
+these settings; journal replay exports the original composition without venue geometry.

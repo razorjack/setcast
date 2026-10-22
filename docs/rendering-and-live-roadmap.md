@@ -162,7 +162,7 @@ recovery and an operator override. Audio capture timing and offline resolution r
 
 The browser regression uses actual Chromium capture/fullscreen with simulated display inventory,
 track events and slow animation callbacks. Physical projector routing and device unplugging
-remain unqualified. Four-corner correction, masks and saved venue geometry are separate work.
+remain unqualified. Four-corner correction, masks and saved venue geometry were completed in the projector milestone below.
 See [live-input.md](live-input.md#output-setup-and-recovery) for controls and limits.
 
 Validation: `vp run ready` passed all 445 tests, lint/types, dependency checks and smoke render.
@@ -202,15 +202,36 @@ restart. The existing performance/MIDI/journal check passed and operator screens
 inspected. CI now includes the sequence check. Automatic beat tracking and energy-based scene
 selection remain follow-ups.
 
+### Completed one-projector milestone
+
+Implemented opt-in four-corner correction, source crop, up to eight fixed output masks, a static
+calibration pattern and up to 16 named venue profiles with versioned JSON import/export. YAML
+can supply initial geometry. Invalid configurations keep the working output; loading a venue
+turns off calibration. Blackout and input-loss fallback cover the pattern.
+
+Geometry stays separate from scenes and journal snapshots. An iframe keeps theme/art measurements
+in composition coordinates while its outer transform maps to the projector. Font readiness uses
+the iframe document; capture continues in the parent. The direct scene path remains the default.
+See [projector-setup.md](projector-setup.md) for alignment, controls and profile storage behavior.
+
+Validation: `vp run ready` passed all 462 tests, lint/types, dependency checks and smoke render.
+Both exporter acceptance suites and installed-package smoke with browser export passed. The
+Chromium projector check covers GPU motion, unwarped artwork measurements, delayed fonts,
+invalid corners, drag/keyboard adjustment, crop/masks, pixel-black calibration blackout, profiles,
+scene recall and snapshots. Existing sequence, performance/MIDI/journal and output recovery
+checks also pass. Operator and calibration screenshots were inspected. The output test now
+scopes artwork upload separately from venue import; CI includes the projector check. Physical
+projector alignment and sustained performance remain unqualified.
+
 ### Next milestones
 
-1. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.
-   Keep output geometry separate from scene appearance and recorded scene events.
-2. Sustained-energy influence on the completed scene sequencer. Add confidence-aware beat
+1. Sustained-energy influence on the completed scene sequencer. Add confidence-aware beat
    tracking only after the manual tempo path is qualified with real mixer recordings.
-3. Further GPU effects and hardware qualification. Measure sustained live GPU load and software
+2. Further GPU effects and hardware qualification. Measure sustained live GPU load and software
    backends before adding complexity; particles with accumulated state require deterministic
    replay or checkpoints. The first stateless field is complete.
+3. Extend projection only after one-projector hardware qualification: curved meshes, color
+   matching and multi-projector edge blending are separate work.
 
 Camera test patterns, branding, hardware qualification and independent preview
 remain in the delivery order above. No background task or recurring automation is installed.
@@ -221,10 +242,10 @@ remain in the delivery order above. No background task or recurring automation i
 - [Chrome Window Management API](https://developer.chrome.com/docs/capabilities/web-apis/window-management)
 - [Resolume projection transformation](https://resolume.com/support/en/output-transformation)
 
-## Active implementation: sequence and one-projector setup
+## Implementation record: sequence and one-projector setup
 
-Delivery order: automatic scene progression, then projector geometry. Each feature receives
-its own validation and commit. Remotion remains the default exporter.
+Delivered automatic scene progression, then projector geometry, with separate validation and
+commits. Remotion remains the default exporter.
 
 - Sequence: an explicitly started, ordered list of saved scenes with per-scene minimum dwell,
   looping, hold/resume and skip. Dwell uses available capture time and starts after a transition

@@ -14,6 +14,8 @@ import { LiveTempo, type Tempo } from './tempo.tsx';
 import { useLivePerformance } from './performance-session.ts';
 import { PerformanceControls } from './performance-controls.tsx';
 import { SessionJournal } from './journal.tsx';
+import { useProjection } from './projection-settings.ts';
+import { ProjectionControls } from './projection-controls.tsx';
 import { OutputControls, useOutput } from './output.tsx';
 
 export function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
@@ -90,6 +92,9 @@ export function LivePlayer({
       data-render-scale={controller.output.renderScale}
     >
       <LiveViewport
+        key={String(controller.projection.config.enabled)}
+        projection={controller.projection.config}
+        pattern={controller.projection.pattern}
         project={project}
         analyzer={input.snapshot.analyzer}
         frame={input.snapshot.frame}
@@ -120,6 +125,7 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     report,
     cleanOutput: () => setClean(true),
   });
+  const projection = useProjection(initial, report);
   const fullscreen = () => {
     setClean(true);
     void output.display.toggle();
@@ -142,6 +148,7 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     setNotice,
     diagnostics,
     output,
+    projection,
     ...performanceSession,
   };
 }
@@ -164,7 +171,7 @@ function LiveControls({
   midi,
   activePreset,
   sequence,
-  output,
+  ...settings
 }: ReturnType<typeof useLivePlayer>) {
   return (
     <div className="sc-live-controls" hidden={clean && !operator.target}>
@@ -188,7 +195,8 @@ function LiveControls({
           time={() => input.capture.audio?.capturedTime ?? 0}
         />
         <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
-        <OutputControls output={output} />
+        <OutputControls output={settings.output} />
+        <ProjectionControls projection={settings.projection} />
         <SessionJournal journal={journal} running={input.snapshot.status.phase === 'running'} />
       </section>
       <LiveNotice notice={notice} dismiss={() => setNotice(null)} />

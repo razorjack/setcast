@@ -86,7 +86,12 @@ function resolveLiveProject(
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
     performance: config.performance,
-    live: { input: config.input, clock: config.clock, sequence: config.sequence },
+    live: {
+      input: config.input,
+      clock: config.clock,
+      sequence: config.sequence,
+      projection: config.projection,
+    },
   };
 }
 

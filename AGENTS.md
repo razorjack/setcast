@@ -556,6 +556,14 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   pending fetch/queued recall and lets a transition already fading finish. Manual pads/MIDI take
   control; capture restart leaves the sequence held. Effective scenes and ramps use the existing
   journal path. Sequence settings belong to the parent live project and are omitted from snapshots.
+- Live projector geometry belongs to the output session. ProjectionSchema validates convex
+  normalized corners, source crop and output-space masks; VenueSchema wraps it for import/export.
+  Scene and journal snapshots omit projection. The warped scene renders in an iframe to preserve
+  untransformed theme/art measurements; RendererBindings.document selects its font readiness.
+  Pending stages must stay explicitly hidden inside that document. Capture remains in the parent.
+  Calibration follows brightness/blackout and the outer input-loss fallback covers it. Profiles
+  load explicitly, exclude the pattern, and persist by origin with JSON backup. See
+  docs/projector-setup.md and renderer-browser/bench/projection.ts.
 - Live scene pads recall self-contained `saved-scene-*` projects without changing input routing,
   dimensions, tempo or current performance levels. Transitions fade through black, start on the
   manual bar grid and wait for readiness. Failed scenes retain the previous output and do not
