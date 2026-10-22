@@ -183,7 +183,18 @@ async function exerciseBrowser(
   await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
   assert((await stat(still)).size > 0);
   const video = join(temporary, 'browser.mp4');
-  await run('render', project, '--renderer', 'browser', '--range', '0-0.2', '--out', video);
+  await run(
+    'render',
+    project,
+    '--renderer',
+    'browser',
+    '--resume',
+    '--range',
+    '0-0.2',
+    '--out',
+    video,
+  );
+  assert(!existsSync(`${video}.setcast-resume`), 'Successful resume export left checkpoints');
   const bytes = (await readFile(video)).toString('latin1');
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
   console.log('  installed browser exporter: PNG and H.264 + AAC');

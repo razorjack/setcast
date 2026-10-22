@@ -27,3 +27,9 @@ jobs:
           vp run smoke
       - name: Exporter acceptance (timing, readiness, themes, failure recovery)
         run: vp run export-acceptance
+      - name: Install browser exporter runtime
+        run: vp exec --filter @setcast/renderer-browser playwright install --with-deps chromium
+      - name: Browser exporter acceptance and resume recovery
+        run: |
+          vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/browser-acceptance
+          node packages/renderer-browser/bench/resume.ts
