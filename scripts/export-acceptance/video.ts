@@ -35,7 +35,7 @@ body { margin: 0; }
   console.log('  video background seeks and loops at the requested frame');
 }
 
-function createVideo(file: string): void {
+export function createVideo(file: string): void {
   execFileSync('ffmpeg', [
     '-v',
     'error',

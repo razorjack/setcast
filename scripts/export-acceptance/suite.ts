@@ -31,6 +31,7 @@ export async function runAcceptance(
       await checkVideo(context);
       await checkThemes(context, reference);
       await checkFailure(context);
+      await checkCancellation(context);
     });
     // A new session must work after both successful and failed jobs in the previous session.
     await exporter.still(project, { projectDir, out: join(out, 'after-session.png'), at: 1.7 });
@@ -63,8 +64,15 @@ async function checkExports({
       progress.some((event) => event.progress === 1),
       'Export never reported completion',
     );
-    for (const event of progress)
+    for (const event of progress) {
       assert(Number.isFinite(event.progress) && event.progress >= 0 && event.progress <= 1);
+      if (event.stage === 'encode')
+        assert.equal(
+          event.totalFrames,
+          FRAME_COUNT,
+          'Encoding progress lost the total frame count',
+        );
+    }
     checkTracks(file);
     checkSync(file);
     console.log(`  fractional range and partial final frame: chunkSeconds=${chunkSeconds}`);
@@ -128,4 +136,30 @@ async function checkFailure({
   });
   assert.equal(still.timeSeconds, 94 / FPS, 'Still must clamp inside the finite mix');
   console.log('  failed chunked export preserves destination, cleans up, and permits another job');
+}
+
+async function checkCancellation({ exporter, project, projectDir, out }: AcceptanceContext) {
+  const controller = new AbortController();
+  const file = join(out, 'cancelled.mp4');
+  await writeFile(file, 'previous export');
+  const before = (await readdir(out)).sort();
+  await assert.rejects(
+    exporter.render(project, {
+      projectDir,
+      out: file,
+      range: [0, 2],
+      chunkSeconds: 1,
+      concurrency: 2,
+      signal: controller.signal,
+      onProgress: ({ stage, progress }) => {
+        if (stage === 'frames' && progress > 0)
+          controller.abort(new Error('Acceptance cancelled export'));
+      },
+    }),
+  );
+  assert(controller.signal.aborted, 'Export never reached cancellation point');
+  assert.equal(await readFile(file, 'utf8'), 'previous export');
+  assert.deepEqual((await readdir(out)).sort(), before, 'Cancelled export leaked temporary files');
+  await exporter.still(project, { projectDir, out: join(out, 'after-cancellation.png'), at: 1.7 });
+  console.log('  cancellation preserves destination, cleans up, and permits another job');
 }

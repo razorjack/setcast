@@ -5,7 +5,8 @@ import { mkdir, mkdtemp, readFile, realpath, rm, stat, symlink, writeFile } from
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
+import { promisify, parseArgs } from 'node:util';
+const { values } = parseArgs({ options: { browser: { type: 'boolean', default: false } } });
 
 const execute = promisify(execFile);
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -163,10 +164,27 @@ async function exerciseCli(): Promise<void> {
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
   assert((await run('play', '--help')).stdout.includes('setcast play'));
   await exercisePlayer(project);
+  if (values.browser) await exerciseBrowser(run, project);
 }
 
 async function exercisePlayer(projectDir: string): Promise<void> {
   const script = join(temporary, 'player-smoke.mjs');
   await writeFile(script, playerSmokeSource);
   await command(process.execPath, [script, projectDir], temporary);
+}
+
+async function exerciseBrowser(
+  run: (...args: string[]) => Promise<{ stdout: string }>,
+  project: string,
+) {
+  assert((await run('browser-install', '--help')).stdout.includes('pinned Chromium'));
+  await run('browser-install');
+  const still = join(temporary, 'browser.png');
+  await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
+  assert((await stat(still)).size > 0);
+  const video = join(temporary, 'browser.mp4');
+  await run('render', project, '--renderer', 'browser', '--range', '0-0.2', '--out', video);
+  const bytes = (await readFile(video)).toString('latin1');
+  for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
+  console.log('  installed browser exporter: PNG and H.264 + AAC');
 }

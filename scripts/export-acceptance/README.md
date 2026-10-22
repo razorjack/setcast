@@ -11,7 +11,7 @@ stills against Remotion:
 
 ```sh
 vp run export-acceptance --out examples/demo/out/remotion-reference
-vp run export-acceptance --adapter ./packages/renderer-custom/src/index.ts --out examples/demo/out/custom --reference examples/demo/out/remotion-reference
+vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/custom --reference examples/demo/out/remotion-reference
 ```
 
 The adapter argument is a local module exporting those three functions. Reference comparisons
@@ -64,4 +64,10 @@ cancellation coverage. A future public cancellation contract needs its own tests
 The preparatory refactors keep range/chunk planning and export types in core, media URL probes
 in `@setcast/core/media`, file probes in `@setcast/core/node`, and CLI adapter selection in
 `packages/cli/src/renderer.ts`. They preserve Remotion's option translation and public type
-exports. FFmpeg invocation remains in the Remotion adapter until another exporter needs it.
+exports. Each adapter owns its FFmpeg invocation. Browser export uses a system subprocess without importing Remotion.
+
+
+Cancellation is also checked through the core AbortSignal option: an in-progress video must
+leave an existing destination intact, remove temporary files and permit another job in the
+same session. `--reference` still requires exact decoded pixels. See
+[the browser exporter guide](../../docs/browser-renderer.md) for measured cross-version differences.
