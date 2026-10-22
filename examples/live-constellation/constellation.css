@@ -1,0 +1,19 @@
+.setcast {
+  --backdrop-x: 50%;
+  --backdrop-y: 55%;
+  --accent: #c5bba1;
+  background: #101312;
+}
+.sc-bg,
+.sc-header,
+.sc-contributors,
+.sc-next {
+  display: none;
+}
+.sc-constellation {
+  mask-image: radial-gradient(
+    ellipse 22% 42% at var(--backdrop-x) var(--backdrop-y),
+    transparent 35%,
+    black 100%
+  );
+}

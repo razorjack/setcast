@@ -328,6 +328,7 @@ visualizer:
 | `bloom`        | the art's own lamps, signs and suns glowing with the music                          | `bands: [bass, highs]` (one or two), `gain: 1`, `lights: 0.05` (share of the art), `radius: 0.015`, `smooth: 0.1` |
 | `field` | broad audio-reactive contours drawn with WebGL 2 | `seed: 1`, `speed: 0.3`, `scale: 1`, `gain: 1`, `resolution: 0.5` |
 | `tunnel` | a perspective tunnel of rings and wall spokes flying toward the viewer, WebGL 2 | `seed: 1`, `speed: 0.25`, `sides: 6` (0 is round), `rings: 6`, `spokes: 12`, `twist: 0`, `spin: 3`, `gain: 1`, `resolution: 0.5` |
+| `constellation` | drifting points linked by fine lines in three layers flying toward the viewer, WebGL 2 | `seed: 1`, `speed: 0.3`, `density: 7`, `links: 1`, `gain: 1`, `resolution: 0.5` |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
 baseline in silence, and `spin` is degrees per second. `peak` is the seconds a marker holds each
@@ -359,11 +360,12 @@ The spectrogram is a canvas: its CSS `color` is the color of a full-strength cel
 Like an SVG, a canvas keeps its own height when only `top` and `bottom` are set, so give it a
 `height`.
 
-The opt-in `field` and `tunnel` visualizers use WebGL 2 and take their tint
+The opt-in `field`, `tunnel` and `constellation` visualizers use WebGL 2 and take their tint
 from CSS `color` (`.sc-tunnel { color: ... }`). Their time and seed are explicit, so they support
 seeks, live playback and both exporters. See [GPU visualizer usage and
-qualification](docs/gpu-visualizer.md) and the [`examples/live-field`](examples/live-field) and
-[`examples/live-tunnel`](examples/live-tunnel) presets.
+qualification](docs/gpu-visualizer.md) and the [`examples/live-field`](examples/live-field),
+[`examples/live-tunnel`](examples/live-tunnel) and
+[`examples/live-constellation`](examples/live-constellation) presets.
 
 ## Tracklist
 

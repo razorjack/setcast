@@ -190,6 +190,7 @@ export {
 } from './chapters.ts';
 export {
   BloomConfigSchema,
+  ConstellationConfigSchema,
   FieldConfigSchema,
   MetersConfigSchema,
   OscilloscopeConfigSchema,
@@ -205,6 +206,7 @@ export {
   resolveVisualizerConfigs,
   visualizers,
   type BloomConfig,
+  type ConstellationConfig,
   type FieldConfig,
   type MetersConfig,
   type OscilloscopeConfig,

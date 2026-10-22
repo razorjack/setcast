@@ -11,8 +11,12 @@ const artifacts = resolve('examples/demo/out/output-check');
 await mkdir(artifacts, { recursive: true });
 const projectDir = resolve('examples/live-field');
 const { project: field } = await loadLiveProject(projectDir, { themes });
-const GPU_CANVASES = ['.sc-field', '.sc-tunnel'];
-const visualizers = resolveVisualizerConfigs([{ name: 'field', seed: 42 }, { name: 'tunnel' }]);
+const GPU_CANVASES = ['.sc-field', '.sc-tunnel', '.sc-constellation'];
+const visualizers = resolveVisualizerConfigs([
+  { name: 'field', seed: 42 },
+  { name: 'tunnel' },
+  { name: 'constellation' },
+]);
 const server = await play({ ...field, visualizers }, { projectDir, port: 0 });
 const browser = await chromium.launch({
   args: ['--use-gl=angle', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],

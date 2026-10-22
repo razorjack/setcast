@@ -160,6 +160,20 @@ export const TunnelConfigSchema = visualizerSchema('tunnel', {
 });
 export type TunnelConfig = z.infer<typeof TunnelConfigSchema>;
 
+/** Drifting points linked by fading lines, in parallax layers that fly toward the viewer. */
+export const ConstellationConfigSchema = visualizerSchema('constellation', {
+  seed: wholeNumberSetting('seed', 0, 4294967295).default(1),
+  /** Scales drift, orbits, twinkle and flight together. 0 freezes them; audio still responds. */
+  speed: numberSetting('speed', 0, 2).default(0.3),
+  /** Points across the short side of the frame at mid depth, per layer. */
+  density: numberSetting('density', 3, 24).default(7),
+  /** How far links reach, in point spacings; 0 draws points only. */
+  links: numberSetting('links', 0, 1.5).default(1),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+  resolution: numberSetting('resolution', 0.25, 1).default(0.5),
+});
+export type ConstellationConfig = z.infer<typeof ConstellationConfigSchema>;
+
 /** The recent spectrum as stacked lines over the art's relief. */
 export const RidgelineConfigSchema = visualizerSchema('ridgeline', {
   /** Lines from the bottom of the box up, the newest at the bottom. */
@@ -247,6 +261,7 @@ visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true
 visualizers.add({ name: 'bloom', schema: BloomConfigSchema });
 visualizers.add({ name: 'field', schema: FieldConfigSchema });
 visualizers.add({ name: 'tunnel', schema: TunnelConfigSchema });
+visualizers.add({ name: 'constellation', schema: ConstellationConfigSchema });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */
 export const drawsWholeSet = (project: ResolvedProject): boolean =>

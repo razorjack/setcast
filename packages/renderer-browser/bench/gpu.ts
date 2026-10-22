@@ -26,6 +26,7 @@ const css = `${baseCss}
 const VISUALIZERS = [
   { name: 'field', still: { speed: 0 } },
   { name: 'tunnel', still: { speed: 0, spin: 0 } },
+  { name: 'constellation', still: { speed: 0 } },
 ];
 const only = process.argv[2];
 let exportBundle: ReturnType<typeof bundlePlayer> | undefined;
@@ -210,6 +211,8 @@ async function benchmark(project: ResolvedProject) {
     { name: 'field', resolution: 1 },
     { name: 'tunnel', resolution: 0.5 },
     { name: 'tunnel', resolution: 1 },
+    { name: 'constellation', resolution: 0.5 },
+    { name: 'constellation', resolution: 1 },
     { name: 'spectrum' },
     { name: 'radial' },
   ]) {
@@ -279,7 +282,7 @@ async function checkLive(project: ResolvedProject) {
     await page.goto(server.url);
     await page.getByRole('button', { name: 'Start input', exact: true }).click();
     await page.locator('[data-capture="running"]').waitFor();
-    await page.locator('.sc-live-scene[data-ready="true"] .sc-tunnel').waitFor();
+    await page.locator('.sc-live-scene[data-ready="true"] .sc-constellation').waitFor();
     const firstFrame = Number(await page.locator('main').getAttribute('data-frame'));
     const first = await everyPixel(page);
     await page.waitForFunction(
@@ -334,6 +337,7 @@ async function softwareBenchmark(project: ResolvedProject) {
   for (const config of [
     { name: 'field', resolution: 0.5 },
     { name: 'tunnel', resolution: 0.5 },
+    { name: 'constellation', resolution: 0.5 },
     { name: 'spectrum' },
   ]) {
     const scene = {

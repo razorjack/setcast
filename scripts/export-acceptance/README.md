@@ -41,7 +41,7 @@ for inspection; the temporary project is removed even after failure.
   measurement, overlap, and portrait layout. Capturing 1.7 s, 0.4 s, then 1.7 s must repeat the
   first image exactly, while the earlier image must differ. Optional reference images check
   visual parity between exporters or revisions.
-- The WebGL 2 visualizers `field` and `tunnel` each repeat stills after
+- The WebGL 2 visualizers `field`, `tunnel` and `constellation` each repeat stills after
   out-of-order jobs. Every decoded frame of a one-worker export matches a two-worker export with
   the same one-second chunks. This checks each adapter independently; GPU pixels are not
   compared across different GPU/browser runtimes.

@@ -227,9 +227,9 @@ projector alignment and sustained performance remain unqualified.
 
 1. Sustained-energy influence on the completed scene sequencer. Add confidence-aware beat
    tracking only after the manual tempo path is qualified with real mixer recordings.
-2. Further GPU effects and hardware qualification. Measure sustained live GPU load and software
-   backends before adding complexity; particles with accumulated state require deterministic
-   replay or checkpoints. The first stateless field is complete.
+2. GPU hardware qualification. Measure sustained live GPU load on real machines and drivers;
+   particles with accumulated state require deterministic replay or checkpoints. The stateless
+   field, tunnel and constellation are complete.
 3. Extend projection only after one-projector hardware qualification: curved meshes, color
    matching and multi-projector edge blending are separate work.
 
@@ -309,3 +309,26 @@ configuration and CSS color. No visualizer keeps simulation state between frames
   scale, SwiftShader); export acceptance stills and worker/chunk frame identity for both new
   visualizers in both exporters; capture benchmark; inspected stills under
   `examples/demo/out/gpu-check/`. Physical projectors and cross-driver identity stay unqualified.
+
+### Completed GPU visualizer expansion
+
+`tunnel` and `constellation` are implemented as planned above, on a `ShaderCanvas` shared with
+`field`. Live presets: `examples/live-tunnel` (projection) and `examples/live-constellation`
+(filmed backdrop with a CSS-masked quiet region). Remotion remains the default exporter, and no
+theme default changed. The tunnel's twist turns the whole wall about the center, rather than only
+the spokes, because spiralling spokes alone read as unrelated straight lines. Constellation
+links are drawn from the twelve neighbor pairs that can cross a pixel; that cut its SwiftShader
+frame time from 197 to about 70 ms at half-resolution 1080p.
+
+Validation: `vp run ready` passed all 474 tests, lint/types, dependency checks and smoke render.
+Both exporter acceptance suites passed repeated stills and identical decoded frames between
+one- and two-worker chunked exports for all three GPU visualizers. The browser GPU check passed
+for each visualizer (seeks, fresh workers, seed/audio/CSS/portrait, scene remounts, missing
+WebGL, context loss, SwiftShader order independence) plus stacked live input and capture
+restart. The output check verified adaptive resolution on all three canvases. The projection
+check and installed-package smoke with browser export passed. Stills, portrait, software and
+live preset images under `examples/demo/out/gpu-check/` were inspected. Capture throughput
+matched SVG visualizers on the local M1 Pro; see [gpu-visualizer.md](gpu-visualizer.md) for
+the measurements. Physical projectors, cameras, sustained GPU load and cross-driver pixel
+identity remain unqualified.
+

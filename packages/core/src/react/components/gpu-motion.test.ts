@@ -1,6 +1,17 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { FieldConfigSchema, TunnelConfigSchema } from '../../visualizers.ts';
-import { TUNNEL_RING_PERIOD, fieldPhases, tunnelMotion } from './gpu-motion.ts';
+import {
+  ConstellationConfigSchema,
+  FieldConfigSchema,
+  TunnelConfigSchema,
+} from '../../visualizers.ts';
+import {
+  CONSTELLATION_CELL_PERIOD,
+  CONSTELLATION_LAYERS,
+  TUNNEL_RING_PERIOD,
+  constellationMotion,
+  fieldPhases,
+  tunnelMotion,
+} from './gpu-motion.ts';
 import { drawingSize } from './shader-gl.ts';
 
 describe('field motion', () => {
@@ -57,9 +68,49 @@ describe('tunnel motion', () => {
   });
 });
 
-describe('tunnel configuration', () => {
+describe('constellation motion', () => {
+  const config = { seed: 3, speed: 0.3 };
+
+  test('every value is bounded after eight hours and still moves within a frame', () => {
+    const motion = constellationMotion(8 * 3600, config);
+    expect(motion.phases.every((phase) => phase >= 0 && phase < Math.PI * 2)).toBe(true);
+    expect(motion.depths.every((depth) => depth >= 0 && depth < 1)).toBe(true);
+    expect(motion.drift.every((drift) => drift >= 0 && drift < CONSTELLATION_CELL_PERIOD)).toBe(
+      true,
+    );
+    expect(motion.layers.every((layer) => Number.isInteger(layer) && layer >= 0)).toBe(true);
+    expect(constellationMotion(8 * 3600 + 1 / 60, config)).not.toEqual(motion);
+  });
+
+  test('layers fly toward the viewer and return with a new identity', () => {
+    const before = constellationMotion(100, config);
+    const after = constellationMotion(100.5, config);
+    expect(new Set(before.layers).size).toBe(CONSTELLATION_LAYERS);
+    for (let layer = 0; layer < CONSTELLATION_LAYERS; layer++) {
+      if (after.layers[layer] === before.layers[layer])
+        expect(after.depths[layer]).toBeGreaterThan(before.depths[layer]!);
+      else expect(after.depths[layer]).toBeLessThan(before.depths[layer]!);
+    }
+    const lap = 1 / (config.speed * 0.12);
+    const returned = constellationMotion(100 + lap, config);
+    expect(returned.depths[0]).toBeCloseTo(before.depths[0]!, 9);
+    expect(returned.layers[0]).toBe(before.layers[0]! + CONSTELLATION_LAYERS);
+  });
+
+  test('seed changes the arrangement; speed 0 freezes it', () => {
+    expect(constellationMotion(10, config)).not.toEqual(
+      constellationMotion(10, { seed: 4, speed: 0.3 }),
+    );
+    expect(constellationMotion(0, { seed: 3, speed: 0 })).toEqual(
+      constellationMotion(3600, { seed: 3, speed: 0 }),
+    );
+  });
+});
+
+describe('tunnel and constellation configuration', () => {
   test('defaults fill in and invalid values describe the allowed ones', () => {
     expect(TunnelConfigSchema.parse({})).toMatchObject({ sides: 6, rings: 6, spokes: 12 });
+    expect(ConstellationConfigSchema.parse({})).toMatchObject({ density: 7, links: 1 });
     const tunnel = TunnelConfigSchema.safeParse({ sides: 2, rings: 1.5, depth: 3 });
     expect(tunnel.success).toBe(false);
     if (tunnel.success) return;
@@ -67,6 +118,13 @@ describe('tunnel configuration', () => {
       'sides must be 0 for round rings, or a whole number from 3 to 12.',
       'rings must be a whole number from 2 to 24.',
       'Unknown key "depth". tunnel takes: seed, speed, sides, rings, spokes, twist, spin, gain, resolution.',
+    ]);
+    const constellation = ConstellationConfigSchema.safeParse({ links: -1, resolution: 0.1 });
+    expect(constellation.success).toBe(false);
+    if (constellation.success) return;
+    expect(constellation.error.issues.map(({ message }) => message)).toEqual([
+      'links must be a number from 0 to 1.5.',
+      'resolution must be a number from 0.25 to 1.',
     ]);
   });
 });

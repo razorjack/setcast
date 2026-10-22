@@ -133,7 +133,8 @@
 }
 
 .sc-field,
-.sc-tunnel {
+.sc-tunnel,
+.sc-constellation {
   position: absolute;
   inset: 0;
   width: 100%;

@@ -8,6 +8,7 @@ import {
   type VisualizerSpec,
 } from '../visualizers.ts';
 import { Bloom, BloomConfigSchema } from './components/Bloom.tsx';
+import { Constellation, ConstellationConfigSchema } from './components/Constellation.tsx';
 import { Field, FieldConfigSchema } from './components/Field.tsx';
 import { Meters, MetersConfigSchema } from './components/Meters.tsx';
 import { Oscilloscope, OscilloscopeConfigSchema } from './components/Oscilloscope.tsx';
@@ -69,3 +70,8 @@ defineVisualizer({ name: 'overview', schema: OverviewConfigSchema, component: Ov
 defineVisualizer({ name: 'bloom', schema: BloomConfigSchema, component: Bloom });
 defineVisualizer({ name: 'field', schema: FieldConfigSchema, component: Field });
 defineVisualizer({ name: 'tunnel', schema: TunnelConfigSchema, component: Tunnel });
+defineVisualizer({
+  name: 'constellation',
+  schema: ConstellationConfigSchema,
+  component: Constellation,
+});
