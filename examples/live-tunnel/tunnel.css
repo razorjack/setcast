@@ -1,0 +1,10 @@
+.setcast {
+  --accent: #d2ed45;
+  background: #000;
+}
+.sc-bg,
+.sc-header,
+.sc-contributors,
+.sc-next {
+  display: none;
+}

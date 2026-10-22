@@ -132,7 +132,8 @@
   fill: none;
 }
 
-.sc-field {
+.sc-field,
+.sc-tunnel {
   position: absolute;
   inset: 0;
   width: 100%;

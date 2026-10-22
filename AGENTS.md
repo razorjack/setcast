@@ -307,7 +307,8 @@ Each plugin kind is a small interface plus a Zod schema for its config. Extensio
 list; implemented today: visualizer, theme, tracklist importer):
 
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
-  vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓, field ✓); `visualizer:` takes one block
+  vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓, field ✓, tunnel ✓);
+  `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
   (16 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
@@ -532,6 +533,14 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   allowing React effect replay on a connected canvas. Determinism is qualified within one
   browser/GPU backend, not across drivers. Export acceptance checks repeated stills and decoded
   frame identity between one- and two-worker chunked exports.
+- `tunnel` shares `ShaderCanvas` with `field`: one full-frame fragment shader per visualizer,
+  `u_size` and `u_color` supplied, and the same context, readiness, context-loss, disposal and
+  `renderScale` handling. Motion is reduced in double precision in `gpu-motion.ts` to phases
+  with a period the shader shares (`TUNNEL_RING_PERIOD`), so an eight-hour session keeps
+  sub-frame motion. Per-ring randomness uses integer pcg3d hashing, never `fract(sin(x) * k)`,
+  whose result depends on the driver's `sin`. Twist turns the whole wall about the center;
+  twisting only the spokes made them read as unrelated straight lines. The browser check is
+  `node packages/renderer-browser/bench/gpu.ts [name]`; CI runs it.
 
 - `setcast render --resume` is browser-only and opt-in. Completed chunks live in
   `<output>.setcast-resume`; a content/runtime fingerprint invalidates stale jobs, and checksum

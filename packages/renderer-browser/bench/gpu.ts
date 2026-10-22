@@ -23,7 +23,10 @@ const css = `${baseCss}
 `;
 
 /** Each GPU visualizer, with the settings that stop its motion while audio still drives it. */
-const VISUALIZERS = [{ name: 'field', still: { speed: 0 } }];
+const VISUALIZERS = [
+  { name: 'field', still: { speed: 0 } },
+  { name: 'tunnel', still: { speed: 0, spin: 0 } },
+];
 const only = process.argv[2];
 let exportBundle: ReturnType<typeof bundlePlayer> | undefined;
 
@@ -205,6 +208,8 @@ async function benchmark(project: ResolvedProject) {
   for (const config of [
     { name: 'field', resolution: 0.5 },
     { name: 'field', resolution: 1 },
+    { name: 'tunnel', resolution: 0.5 },
+    { name: 'tunnel', resolution: 1 },
     { name: 'spectrum' },
     { name: 'radial' },
   ]) {
@@ -274,7 +279,7 @@ async function checkLive(project: ResolvedProject) {
     await page.goto(server.url);
     await page.getByRole('button', { name: 'Start input', exact: true }).click();
     await page.locator('[data-capture="running"]').waitFor();
-    await page.locator('.sc-live-scene[data-ready="true"] .sc-field').waitFor();
+    await page.locator('.sc-live-scene[data-ready="true"] .sc-tunnel').waitFor();
     const firstFrame = Number(await page.locator('main').getAttribute('data-frame'));
     const first = await everyPixel(page);
     await page.waitForFunction(
@@ -326,7 +331,11 @@ async function checkSoftware(project: ResolvedProject, name: string) {
 /** SwiftShader draws on the CPU, so its frame time shows each shader's cost without a GPU. */
 async function softwareBenchmark(project: ResolvedProject) {
   const reports = [];
-  for (const config of [{ name: 'field', resolution: 0.5 }, { name: 'spectrum' }]) {
+  for (const config of [
+    { name: 'field', resolution: 0.5 },
+    { name: 'tunnel', resolution: 0.5 },
+    { name: 'spectrum' },
+  ]) {
     const scene = {
       ...project,
       width: 1920,

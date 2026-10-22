@@ -16,6 +16,7 @@ import { Radial, RadialConfigSchema } from './components/Radial.tsx';
 import { Ridgeline, RidgelineConfigSchema } from './components/Ridgeline.tsx';
 import { Spectrogram, SpectrogramConfigSchema } from './components/Spectrogram.tsx';
 import { Spectrum, SpectrumConfigSchema } from './components/Spectrum.tsx';
+import { Tunnel, TunnelConfigSchema } from './components/Tunnel.tsx';
 import { Vectorscope, VectorscopeConfigSchema } from './components/Vectorscope.tsx';
 
 export { visualizers };
@@ -67,3 +68,4 @@ defineVisualizer({ name: 'ridgeline', schema: RidgelineConfigSchema, component: 
 defineVisualizer({ name: 'overview', schema: OverviewConfigSchema, component: Overview });
 defineVisualizer({ name: 'bloom', schema: BloomConfigSchema, component: Bloom });
 defineVisualizer({ name: 'field', schema: FieldConfigSchema, component: Field });
+defineVisualizer({ name: 'tunnel', schema: TunnelConfigSchema, component: Tunnel });

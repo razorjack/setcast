@@ -6,6 +6,24 @@ void main() {
 }
 `;
 
+/**
+ * Integer hashing (pcg3d, Jarzynski and Olano 2020) is exact on every GPU, unlike the common
+ * `fract(sin(x) * 43758.5453)`, whose result depends on the driver's `sin` precision.
+ */
+export const glslHash = `
+uvec3 hash(uvec3 v) {
+  v = v * 1664525u + 1013904223u;
+  v.x += v.y * v.z; v.y += v.z * v.x; v.z += v.x * v.y;
+  v ^= v >> 16u;
+  v.x += v.y * v.z; v.y += v.z * v.x; v.z += v.x * v.y;
+  return v;
+}
+
+float unit(uint bits) {
+  return float(bits >> 8u) / 16777216.0;
+}
+`;
+
 export function shaderContext(canvas: HTMLCanvasElement, name: string): WebGL2RenderingContext {
   const gl = canvas.getContext('webgl2', {
     alpha: true,

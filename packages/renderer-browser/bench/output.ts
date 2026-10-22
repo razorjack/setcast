@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { chromium, type Page } from 'playwright';
+import { resolveVisualizerConfigs } from '@setcast/core';
 import { loadLiveProject } from '@setcast/core/node';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
@@ -9,8 +10,10 @@ import { play } from '../src/index.ts';
 const artifacts = resolve('examples/demo/out/output-check');
 await mkdir(artifacts, { recursive: true });
 const projectDir = resolve('examples/live-field');
-const { project } = await loadLiveProject(projectDir, { themes });
-const server = await play(project, { projectDir, port: 0 });
+const { project: field } = await loadLiveProject(projectDir, { themes });
+const GPU_CANVASES = ['.sc-field', '.sc-tunnel'];
+const visualizers = resolveVisualizerConfigs([{ name: 'field', seed: 42 }, { name: 'tunnel' }]);
+const server = await play({ ...field, visualizers }, { projectDir, port: 0 });
 const browser = await chromium.launch({
   args: ['--use-gl=angle', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
 });
@@ -226,12 +229,12 @@ async function checkQuality(page: Page, operator: Page) {
     (first) => Number(document.querySelector('main')?.getAttribute('data-frame')) > first + 60,
     frame,
   );
-  await page.waitForFunction(() => {
+  await page.waitForFunction((selectors) => {
     const scale = Number(document.querySelector('main')?.getAttribute('data-render-scale'));
-    return (
-      scale < 1 && document.querySelector<HTMLCanvasElement>('.sc-field')?.width === 960 * scale
-    );
-  });
+    const scaled = (selector: string) =>
+      document.querySelector<HTMLCanvasElement>(selector)?.width === 960 * scale;
+    return scale < 1 && selectors.every(scaled);
+  }, GPU_CANVASES);
   assert(
     await originalArt!.evaluate((node) => node.isConnected),
     'Quality change remounted artwork',
@@ -240,7 +243,8 @@ async function checkQuality(page: Page, operator: Page) {
   await page.waitForFunction(
     () => document.querySelector('main')?.getAttribute('data-render-scale') === '1',
   );
-  assert.equal(await page.locator('.sc-field').getAttribute('width'), '960');
+  for (const selector of GPU_CANVASES)
+    assert.equal(await page.locator(selector).getAttribute('width'), '960');
   await page.evaluate(() => {
     window.outputProbe.slow = false;
   });

@@ -1,0 +1,18 @@
+title: ''
+theme: ./tunnel.css
+clock: false
+output: { width: 1920, height: 1080, fps: 30 }
+input: { gain: 1, delay: 0 }
+performance: { intensity: 1, brightness: 0.85 }
+visualizer:
+  {
+    name: tunnel,
+    seed: 7,
+    speed: 0.3,
+    sides: 6,
+    rings: 6,
+    spokes: 12,
+    twist: 0,
+    spin: 3,
+    resolution: 0.5,
+  }

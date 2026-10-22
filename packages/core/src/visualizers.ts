@@ -134,6 +134,32 @@ export const FieldConfigSchema = visualizerSchema('field', {
 });
 export type FieldConfig = z.infer<typeof FieldConfigSchema>;
 
+const sidesError = 'sides must be 0 for round rings, or a whole number from 3 to 12.';
+
+/** A perspective tunnel of rings and wall spokes that flies toward the viewer. */
+export const TunnelConfigSchema = visualizerSchema('tunnel', {
+  seed: wholeNumberSetting('seed', 0, 4294967295).default(1),
+  /** Depth units travelled per second; each depth unit holds `rings` rings. 0 stops travel. */
+  speed: numberSetting('speed', 0, 2).default(0.25),
+  /** Ring shape: 0 is a circle, otherwise a regular polygon with this many sides. */
+  sides: z
+    .number({ error: sidesError })
+    .int({ error: sidesError })
+    .refine((sides) => sides === 0 || (sides >= 3 && sides <= 12), { error: sidesError })
+    .default(6),
+  /** Rings per depth unit. */
+  rings: wholeNumberSetting('rings', 2, 24).default(6),
+  /** Lines along the wall; 0 draws rings only. */
+  spokes: wholeNumberSetting('spokes', 0, 48).default(12),
+  /** Turns the walls make per depth unit, so the tunnel becomes a vortex. */
+  twist: numberSetting('twist', -1, 1).default(0),
+  /** Rotation in degrees per second; 0 to pin. */
+  spin: numberSetting('spin', -90, 90).default(3),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+  resolution: numberSetting('resolution', 0.25, 1).default(0.5),
+});
+export type TunnelConfig = z.infer<typeof TunnelConfigSchema>;
+
 /** The recent spectrum as stacked lines over the art's relief. */
 export const RidgelineConfigSchema = visualizerSchema('ridgeline', {
   /** Lines from the bottom of the box up, the newest at the bottom. */
@@ -220,6 +246,7 @@ visualizers.add({ name: 'ridgeline', schema: RidgelineConfigSchema });
 visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true, audio: false });
 visualizers.add({ name: 'bloom', schema: BloomConfigSchema });
 visualizers.add({ name: 'field', schema: FieldConfigSchema });
+visualizers.add({ name: 'tunnel', schema: TunnelConfigSchema });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */
 export const drawsWholeSet = (project: ResolvedProject): boolean =>

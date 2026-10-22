@@ -20,6 +20,7 @@ export {
   type SpectrogramConfig,
 } from './components/Spectrogram.tsx';
 export { Spectrum, SpectrumConfigSchema, type SpectrumConfig } from './components/Spectrum.tsx';
+export { Tunnel, TunnelConfigSchema, type TunnelConfig } from './components/Tunnel.tsx';
 export { Tracklist } from './components/Tracklist.tsx';
 export { UpNext } from './components/UpNext.tsx';
 export {

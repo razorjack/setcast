@@ -4,7 +4,7 @@ import { resolveVisualizerConfigs } from '../../packages/core/src/index.ts';
 import { decode, pixels } from './measure.ts';
 import type { AcceptanceContext } from './readiness.ts';
 
-const GPU_VISUALIZERS = ['field'];
+const GPU_VISUALIZERS = ['field', 'tunnel'];
 
 export async function checkGpuVisualizers(context: AcceptanceContext) {
   for (const name of GPU_VISUALIZERS) await checkGpuVisualizer(context, name);
