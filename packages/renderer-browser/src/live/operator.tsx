@@ -6,12 +6,12 @@ export function useOperatorWindow(report: (message: string) => void) {
   const open = () => {
     if (operator && !operator.closed) {
       operator.focus();
-      return;
+      return true;
     }
     const popup = window.open('', '', 'popup,width=1000,height=720');
     if (!popup) {
       report('Operator window was blocked. Allow popups for this player and retry.');
-      return;
+      return false;
     }
     popup.document.title = 'Setcast / Operator';
     const stylesheet = popup.document.createElement('link');
@@ -20,6 +20,7 @@ export function useOperatorWindow(report: (message: string) => void) {
     popup.document.head.append(stylesheet);
     popup.document.body.className = 'sc-operator sc-live sc-player';
     setOperator(popup);
+    return true;
   };
   useEffect(() => {
     if (!operator) return;

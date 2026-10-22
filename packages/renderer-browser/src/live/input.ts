@@ -13,12 +13,13 @@ export function useLiveInput(initial: ResolvedLiveProject) {
   useEffect(() => {
     let request = 0;
     const tick = () => {
+      capture.checkHealth();
       const time = Math.max(0, (capture.audio?.time ?? 0) - settings.delay);
-      setSnapshot({
+      setSnapshot((previous) => ({
         status: capture.status,
-        analyzer: capture.audio ?? silentAnalyzer,
-        frame: Math.floor(time * initial.fps),
-      });
+        analyzer: capture.status.available ? capture.audio! : silentAnalyzer,
+        frame: capture.audio ? Math.floor(time * initial.fps) : previous.frame,
+      }));
       request = requestAnimationFrame(tick);
     };
     request = requestAnimationFrame(tick);

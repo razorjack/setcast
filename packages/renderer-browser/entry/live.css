@@ -366,3 +366,30 @@
   margin-top: 12px;
   font-size: 12px;
 }
+
+.sc-input-fallback {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 2147483647;
+  pointer-events: none;
+}
+.sc-output-settings {
+  flex-basis: 100%;
+}
+.sc-output-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding-block: 16px;
+}
+.sc-output-options label {
+  display: grid;
+  gap: 6px;
+}
+.sc-output-settings p {
+  color: #a2a6ac;
+  font-size: 12px;
+  margin-block: 8px;
+}

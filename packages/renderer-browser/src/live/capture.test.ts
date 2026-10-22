@@ -4,7 +4,14 @@ import { LiveCapture } from './capture.ts';
 afterEach(() => vi.unstubAllGlobals());
 
 function captureEnvironment() {
-  const track = { label: 'Interface', stop: vi.fn(), onended: null, onmute: null, onunmute: null };
+  const track = {
+    muted: false,
+    label: 'Interface',
+    stop: vi.fn(),
+    onended: null,
+    onmute: null,
+    onunmute: null,
+  };
   const stream = { getTracks: () => [track], getAudioTracks: () => [track] };
   const media = {
     getUserMedia: vi.fn(async () => stream),
@@ -124,5 +131,63 @@ test('named inputs request permission before resolving labels hidden by the brow
     }),
   );
   expect(environment.track.stop).toHaveBeenCalledOnce();
+  capture.stop();
+});
+
+function packet(start = 0) {
+  return {
+    data: {
+      start,
+      left: new Float32Array(1024),
+      right: new Float32Array(1024),
+      count: 2,
+      peaks: [0, 0],
+      revision: 0,
+      dropped: 0,
+    },
+  };
+}
+
+test('mute marks input unavailable until an unmuted fresh packet arrives', async () => {
+  const environment = captureEnvironment();
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  environment.node.port.onmessage(packet(1024));
+  expect(capture.status.available).toBe(true);
+  (environment.track.onmute as unknown as () => void)();
+  environment.node.port.onmessage(packet(2048));
+  expect(capture.status.available).toBe(false);
+  (environment.track.onunmute as unknown as () => void)();
+  expect(capture.status.available).toBe(false);
+  environment.node.port.onmessage(packet(3072));
+  expect(capture.status).toMatchObject({ available: true, message: null });
+  capture.stop();
+});
+
+test('missing packets fail explicitly and release capture, including initial starvation', async () => {
+  const environment = captureEnvironment();
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  capture.checkHealth(performance.now() + 1600);
+  expect(capture.status).toMatchObject({
+    phase: 'error',
+    available: false,
+    message: expect.stringContaining('packets stopped'),
+  });
+  expect(environment.track.stop).toHaveBeenCalledOnce();
+  expect(environment.node.port.close).toHaveBeenCalledOnce();
+});
+
+test('an initially muted track waits for fresh unmuted PCM, including ordinary silence', async () => {
+  const environment = captureEnvironment();
+  environment.track.muted = true;
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  environment.node.port.onmessage(packet());
+  expect(capture.status).toMatchObject({ phase: 'running', available: false });
+  (environment.track.onunmute as unknown as () => void)();
+  environment.node.port.onmessage(packet(1024));
+  capture.checkHealth();
+  expect(capture.status).toMatchObject({ phase: 'running', available: true, message: null });
   capture.stop();
 });

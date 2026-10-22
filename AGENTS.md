@@ -595,6 +595,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   title, elapsed clock, theme and art are session overrides. H hides all controls without edge
   reveal; F enters fullscreen. OBS uses window capture and receives mixer audio separately.
   The operator popup shares capture with the output window. There is no native capture backend. See `docs/live-input.md`.
+- Live output setup owns session-only display selection, input-loss fallback and adaptive GPU
+  resolution. Fullscreen exit and unexpected operator closure keep clean output; H reveals controls.
+  Muted input supplies silence and clears history. Missing packets for 1.5 seconds fail capture;
+  ordinary silent PCM does not. RendererBindings.renderScale changes only live field buffers,
+  never saved scene configuration or offline rendering. See docs/live-input.md.
 - Live scene replacements mount hidden until readiness holds settle, retaining the previous
   ready scene. Capture never waits for those holds. Background video plays muted and loops;
   unlike recorded playback it does not seek against the audio clock. Theme, title and artwork

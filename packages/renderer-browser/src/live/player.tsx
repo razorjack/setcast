@@ -14,6 +14,7 @@ import { LiveTempo, type Tempo } from './tempo.tsx';
 import { useLivePerformance } from './performance-session.ts';
 import { PerformanceControls } from './performance-controls.tsx';
 import { SessionJournal } from './journal.tsx';
+import { OutputControls, useOutput } from './output.tsx';
 
 export function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
   const themes = useThemes(initial, report);
@@ -85,6 +86,8 @@ export function LivePlayer({
       data-dropped={input.snapshot.status.dropped}
       data-cached={input.capture.audio?.cachedMoments ?? 0}
       data-pcm-capacity={input.capture.audio?.capacity ?? 0}
+      data-input-available={input.snapshot.status.available}
+      data-render-scale={controller.output.renderScale}
     >
       <LiveViewport
         project={project}
@@ -92,6 +95,8 @@ export function LivePlayer({
         frame={input.snapshot.frame}
         report={report}
         performance={controller.performance.value()}
+        renderScale={controller.output.renderScale}
+        black={controller.output.black}
         onReady={controller.ready}
         onFailure={controller.performance.cancel}
       />
@@ -110,16 +115,18 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
   const diagnostics = useDiagnostics(input);
   const operator = useOperatorWindow(report);
   const performanceSession = useLivePerformance(initial, input, scene, report);
+  const output = useOutput(input, diagnostics, {
+    fps: initial.fps,
+    report,
+    cleanOutput: () => setClean(true),
+  });
   const fullscreen = () => {
-    const action = document.fullscreenElement
-      ? document.exitFullscreen()
-      : document.documentElement.requestFullscreen();
-    void action.catch(() => report('Fullscreen was refused. Use the browser fullscreen command.'));
+    setClean(true);
+    void output.display.toggle();
   };
   useShortcuts({
     h: () => setClean((hidden) => !hidden),
     f: fullscreen,
-    Escape: () => setClean(false),
     '[': () => scene.themes.step(-1),
     ']': () => scene.themes.step(1),
   });
@@ -134,6 +141,7 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     notice,
     setNotice,
     diagnostics,
+    output,
     ...performanceSession,
   };
 }
@@ -155,6 +163,7 @@ function LiveControls({
   recall,
   midi,
   activePreset,
+  output,
 }: ReturnType<typeof useLivePlayer>) {
   return (
     <div className="sc-live-controls" hidden={clean && !operator.target}>
@@ -169,7 +178,7 @@ function LiveControls({
         active={activePreset}
       />
       <section className="sc-live-session">
-        <OperatorButton operator={operator} reveal={() => setClean(false)} />
+        <OperatorButton operator={operator} setClean={setClean} />
         <LiveTempo
           running={input.snapshot.status.phase === 'running'}
           tempo={scene.tempo}
@@ -177,6 +186,7 @@ function LiveControls({
           time={() => input.capture.audio?.capturedTime ?? 0}
         />
         <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
+        <OutputControls output={output} />
         <SessionJournal journal={journal} running={input.snapshot.status.phase === 'running'} />
       </section>
       <LiveNotice notice={notice} dismiss={() => setNotice(null)} />
@@ -198,18 +208,19 @@ function LiveNotice({ notice, dismiss }: { notice: string | null; dismiss: () =>
 
 function OperatorButton({
   operator,
-  reveal,
+  setClean,
 }: {
   operator: ReturnType<typeof useOperatorWindow>;
-  reveal: () => void;
+  setClean: (clean: boolean) => void;
 }) {
   return (
     <button
       className="sc-button"
       onClick={() => {
-        if (operator.target) operator.close();
-        else operator.open();
-        reveal();
+        if (operator.target) {
+          operator.close();
+          setClean(false);
+        } else if (operator.open()) setClean(true);
       }}
     >
       {operator.target ? 'Return controls to output' : 'Operator window'}

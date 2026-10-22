@@ -25,6 +25,7 @@ export interface CaptureStatus {
   peaks: number[];
   sampleRate: number;
   dropped: number;
+  available: boolean;
 }
 
 const stopped = (): CaptureStatus => ({
@@ -36,6 +37,7 @@ const stopped = (): CaptureStatus => ({
   peaks: [],
   sampleRate: 0,
   dropped: 0,
+  available: false,
 });
 
 /** One owner per capture session; the graph's only output is silence. */
@@ -47,6 +49,8 @@ export class LiveCapture {
   private node: AudioWorkletNode | null = null;
   private generation = 0;
   private revision = 0;
+  private lastPacket = 0;
+  private muted = false;
   private settings: CaptureSettings = { channels: null, gain: 1 };
 
   async start(settings: CaptureSettings) {
@@ -104,6 +108,12 @@ export class LiveCapture {
     this.node = null;
     this.audio = null;
     this.status = stopped();
+    this.muted = false;
+  }
+
+  checkHealth(now = performance.now()) {
+    if (!this.node || now - this.lastPacket < 1500) return;
+    this.fail('Audio packets stopped arriving. Check the interface and start input again.');
   }
 
   route(channels: [number, number], gain: number) {
@@ -128,9 +138,16 @@ export class LiveCapture {
       channelInterpretation: 'discrete',
     });
     this.node = node;
+    this.muted = track.muted;
+    this.lastPacket = performance.now();
     this.revision = 0;
     this.audio = new LiveAudio(context.sampleRate);
-    this.status = { ...this.status, device: track.label, sampleRate: context.sampleRate };
+    this.status = {
+      ...this.status,
+      device: track.label,
+      sampleRate: context.sampleRate,
+      message: this.muted ? 'The audio input is temporarily unavailable.' : null,
+    };
     node.port.onmessage = ({ data }: MessageEvent<CapturePacket>) => {
       if (generation === this.generation) this.receive(data);
     };
@@ -139,15 +156,20 @@ export class LiveCapture {
     track.onended = () =>
       this.fail('The audio input disconnected. Reconnect it and start input again.');
     track.onmute = () => {
+      this.muted = true;
       this.audio?.clear();
-      this.status = { ...this.status, message: 'The audio input is temporarily unavailable.' };
+      this.status = {
+        ...this.status,
+        available: false,
+        message: 'The audio input is temporarily unavailable.',
+      };
     };
     track.onunmute = () => {
-      this.status = { ...this.status, message: null };
+      this.muted = false;
     };
     context.onstatechange = () => {
-      if (generation === this.generation && context.state === 'suspended') {
-        this.fail('Audio capture was suspended. Start input again to resume.');
+      if (generation === this.generation && context.state !== 'running') {
+        this.fail(`Audio capture is ${context.state}. Start input again to resume.`);
       }
     };
     node.port.postMessage({ type: 'route', ...this.settings, revision: 0 });
@@ -158,9 +180,14 @@ export class LiveCapture {
   private receive(packet: CapturePacket) {
     this.node?.port.postMessage({ type: 'ack' });
     if (packet.revision !== this.revision) return;
+    this.lastPacket = performance.now();
     this.status = { ...this.status, channels: packet.count };
     try {
       const selected = inputChannels(this.settings.channels, packet.count);
+      if (this.muted) {
+        packet.left.fill(0);
+        packet.right.fill(0);
+      }
       this.audio?.append(packet.start, packet.left, packet.right);
       this.status = {
         ...this.status,
@@ -169,6 +196,8 @@ export class LiveCapture {
         selected,
         peaks: packet.peaks,
         dropped: packet.dropped,
+        available: !this.muted,
+        message: this.muted ? this.status.message : null,
       };
     } catch (error) {
       this.fail(error instanceof Error ? error.message : String(error));
@@ -178,7 +207,7 @@ export class LiveCapture {
   private fail(message: string) {
     const previous = this.status;
     this.stop();
-    this.status = { ...previous, peaks: [], phase: 'error', message };
+    this.status = { ...previous, peaks: [], phase: 'error', available: false, message };
   }
 }
 

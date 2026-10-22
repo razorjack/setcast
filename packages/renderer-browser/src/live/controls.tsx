@@ -72,7 +72,7 @@ function LiveToolbar(props: DockProps & { expanded: boolean; toggle: () => void 
       <button
         className="sc-button"
         onClick={props.clean}
-        title="Hide every control. Press H or Esc to return."
+        title="Hide every control. Press H to return."
       >
         Clean output <kbd>H</kbd>
       </button>

@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { level } from '../../audio.ts';
 import { FieldConfigSchema, type FieldConfig } from '../../visualizers.ts';
 import { useFrame, type RenderFrame } from '../frame.tsx';
+import { useRenderer } from '../renderer.tsx';
 import { fieldColor, fieldContext, fieldProgram } from './field-gl.ts';
 import { fieldPhases, fieldSize } from './field-motion.ts';
 
@@ -9,6 +10,7 @@ export { FieldConfigSchema, type FieldConfig };
 
 export function Field({ config }: { config: FieldConfig }) {
   const frame = useFrame();
+  const { renderScale = 1 } = useRenderer();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const painter = useRef<ReturnType<typeof createField> | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -30,7 +32,7 @@ export function Field({ config }: { config: FieldConfig }) {
     };
   }, []);
   useLayoutEffect(() => {
-    painter.current?.draw(frame, config);
+    painter.current?.draw(frame, { ...config, resolution: config.resolution * renderScale });
   });
   if (error) throw error;
   return <canvas ref={canvasRef} className="sc-field" aria-hidden="true" />;

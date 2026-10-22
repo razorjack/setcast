@@ -20,6 +20,8 @@ interface SceneProps {
   analyzer: AudioAnalyzer;
   frame: number;
   report: (message: string) => void;
+  renderScale?: number;
+  black?: boolean;
 }
 
 /** Keep the ready scene visible until a replacement's artwork, fonts and video have loaded. */
@@ -44,6 +46,7 @@ export function LiveViewport(props: SceneProps) {
             <SceneBoundary onError={(cause) => error(project, cause)}>
               <LiveScene
                 performance={props.performance}
+                renderScale={props.renderScale}
                 project={project}
                 analyzer={props.analyzer}
                 frame={props.frame}
@@ -52,6 +55,7 @@ export function LiveViewport(props: SceneProps) {
             </SceneBoundary>
           </div>
         ))}
+        {props.black && <div className="sc-input-fallback" aria-hidden="true" />}
       </div>
     </div>
   );
@@ -84,17 +88,19 @@ const LiveScene = memo(function LiveScene({
   frame,
   ready,
   performance,
+  renderScale,
 }: Omit<SceneProps, 'report'> & { ready?: () => void }) {
   const [readiness] = useState(() => new LiveReadiness());
   const bindings = useMemo<RendererBindings>(
     () => ({
       name: 'browser-live',
+      renderScale,
       asset: assetUrl,
       hold: readiness.hold,
       Img: (props) => <img {...props} />,
       Video: LiveVideo,
     }),
-    [readiness],
+    [readiness, renderScale],
   );
   useReady(readiness, ready);
   const resolved = resolveLiveFrame({ project, analyzer, frame, performance });

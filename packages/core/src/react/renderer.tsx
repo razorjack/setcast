@@ -35,6 +35,8 @@ export type VideoProps = MediaProps & {
  */
 export interface RendererBindings {
   name: string;
+  /** Live-only drawing-buffer scale. Offline renderers leave it at 1. */
+  renderScale?: number;
   Img: ComponentType<ImgProps>;
   Video: ComponentType<VideoProps>;
   hold: (label: string) => () => void;

@@ -151,6 +151,26 @@ spectrum and radial on the local Apple M1 Pro. This measures capture/readiness o
 it does not establish a GPU speedup or live frame rate. See [gpu-visualizer.md](gpu-visualizer.md)
 for configuration, limits and reproducible checks. The runnable preset is `examples/live-field`.
 
+### Completed output reliability milestone
+
+Implemented session display selection through the Window Management API, explicit fullscreen
+recovery, private exit/disconnection notices and clean output after unexpected operator closure.
+Capture now distinguishes available input from a running but muted track. Input loss defaults
+to black with an optional quiet scene; missing packets and interrupted contexts fail explicitly.
+Adaptive resolution reduces only the live GPU field under sustained overload, with slower
+recovery and an operator override. Audio capture timing and offline resolution remain explicit.
+
+The browser regression uses actual Chromium capture/fullscreen with simulated display inventory,
+track events and slow animation callbacks. Physical projector routing and device unplugging
+remain unqualified. Four-corner correction, masks and saved venue geometry are separate work.
+See [live-input.md](live-input.md#output-setup-and-recovery) for controls and limits.
+
+Validation: `vp run ready` passed all 445 tests, lint/types, dependency checks and smoke render.
+Both exporter acceptance suites passed, including deterministic GPU frames. The output recovery
+and existing performance/MIDI/journal browser checks passed. Operator and output screenshots
+were inspected; CI now runs the output regression. An initial cache stress-test timeout under
+concurrent Chromium load passed when the full validation suite ran alone.
+
 ### Next milestones
 
 1. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.
@@ -161,7 +181,7 @@ for configuration, limits and reproducible checks. The runnable preset is `examp
    backends before adding complexity; particles with accumulated state require deterministic
    replay or checkpoints. The first stateless field is complete.
 
-Display selection, camera test patterns, branding, hardware qualification and independent preview
+Camera test patterns, branding, hardware qualification and independent preview
 remain in the delivery order above. No background task or recurring automation is installed.
 
 ## References

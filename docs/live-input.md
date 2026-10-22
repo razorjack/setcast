@@ -29,13 +29,43 @@ Capture does not play through the computer's speakers. For streaming, add the mi
 to OBS separately and capture this browser window for video. Setcast does not encode or
 publish the stream. Direct device capture inside an OBS browser source is not qualified.
 
-**H** toggles clean output, hiding every control and notice. **H** or **Esc** restores the
-controls. **F** toggles fullscreen. Move the browser to the desired display before entering
-fullscreen. **[** and **]** switch themes. There is one capture owner in this window;
-the **Operator window** button moves controls into a separate window using the same capture
-owner. Capture the original output window in OBS. Closing the operator window, or choosing
-**Return controls to output**, returns the controls. Opening another localhost player tab
-starts an independent session. Closing the output window ends capture and closes its operator.
+**H** toggles clean output, hiding every control and notice. **F** toggles fullscreen.
+**Esc** leaves fullscreen while keeping the output clean; **H** explicitly reveals controls.
+**[** and **]** switch themes. There is one capture owner in this window; the **Operator window**
+button moves controls into a separate window and hides them in the output. Capture the original
+output window in OBS. **Return controls to output** reveals the controls there. Closing the
+operator window unexpectedly keeps output clean; press **H** to recover its controls.
+Opening another localhost player tab starts an independent session. Closing the output window
+ends capture and closes its operator.
+
+## Output setup and recovery
+
+Open **Output setup** in the operator window. **Find displays** requests window-management
+permission on supporting Chromium browsers. Select a display, then **Restore fullscreen**.
+If permission or cross-window fullscreen activation is refused, move the output window manually,
+focus it and press **F**. Fullscreen exit and display disconnection produce operator notices;
+Setcast does not repeatedly request fullscreen without a user gesture. Display selection is
+session-only and resets to the current display when the selected screen disappears or changes.
+
+**On input loss** defaults to **Black output**, including before input starts. **Quiet scene**
+keeps the scene with silent audio features. Temporary track muting clears stale audio history;
+output resumes only after fresh packets arrive. A disconnected input, an interrupted audio
+context or 1.5 seconds without analysis packets stops capture with a private diagnostic and
+requires **Start input** again. Ordinary silence from a connected mixer is valid input and
+never triggers this fallback. A stopped capture retains its last visual time.
+
+**Adaptive GPU resolution** defaults on. After three slow diagnostics samples (below 80% of
+target FPS), the `field` drawing-buffer scale halves, down to 25% of the scene setting.
+Fifteen healthy samples (at least 95% of target) raise it one step. Hidden output and unavailable
+input do not lower quality. Disabling adaptation restores the configured resolution. This adjusts
+only the live GPU field; other visualizers, capture timing, scene settings and offline exports
+are unchanged. Fallback and quality settings apply to this browser session and are not journal
+performance events. Replay uses the separately recorded master and full configured resolution.
+
+Run `node packages/renderer-browser/bench/output.ts` to check synthetic mute/recovery, stalled
+packets/restart, fullscreen exit, display denial/disconnection, private notices and adaptive
+resolution while capture advances. Display inventory and overload are simulated; actual
+multi-display routing, unplugged interfaces and projector hardware still require qualification.
 
 ## Configuration
 
