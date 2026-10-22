@@ -196,3 +196,10 @@ classification must settle again. Dwell and transition behavior remain unchanged
 scene changes use the existing journal snapshots and ramps, so replay does not rerun the
 classifier. The automated check uses generated audio; real-mixer threshold calibration remains
 hardware qualification work.
+
+## Confidence-aware beat tracking
+
+The operator can enable bounded live tempo/phase estimation, inspect uncertainty and apply a
+locked grid. Estimates never retime output automatically. Use **Downbeat now** after adoption
+for bar alignment. See [live-beat-tracking.md](live-beat-tracking.md) for controls, journal
+behavior, validation and the current limitations on dense real recordings.

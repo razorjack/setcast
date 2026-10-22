@@ -523,3 +523,17 @@
 .sc-sequence-rows li {
   flex-wrap: wrap;
 }
+.sc-beat-tracking {
+  margin-block: 12px;
+  max-width: 60rem;
+}
+.sc-beat-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block: 12px;
+}
+.sc-beat-range input {
+  width: 7rem;
+  margin-inline-start: 8px;
+}

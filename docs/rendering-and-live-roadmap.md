@@ -225,8 +225,9 @@ projector alignment and sustained performance remain unqualified.
 
 ### Next milestones
 
-1. Confidence-aware beat tracking, with explicit uncertainty and manual override. Energy-aware
-   scene selection is complete; physical mixer qualification remains separate.
+1. Branding and overlays, followed by measured renderer optimization. Energy-aware scene
+   selection and assisted beat tracking are complete. Continuous beat following needs a
+   stronger onset detector and broader real-recording qualification.
 2. GPU hardware qualification. Measure sustained live GPU load on real machines and drivers;
    particles with accumulated state require deterministic replay or checkpoints. The stateless
    field, tunnel and constellation are complete.
@@ -346,3 +347,20 @@ Validation: `vp run ready` passed 479 tests, lint/types, dependency checks and s
 The energy Chromium check passed synthetic live capture, transient rejection, sustained scene
 selection, hold/resume, settings export and journal recording. The existing ordered-sequence
 check also passed. The operator screenshot was inspected. Physical mixers remain unqualified.
+
+## Completed assisted beat-tracking prototype
+
+Opt-in live analysis estimates BPM, beat phase and evidence with explicit listening/uncertain/
+locked states. The operator adopts a locked estimate through the existing tempo and journal
+path; speculative estimates never rewrite output. Manual BPM, tap and downbeat controls remain
+valid. Analysis retains eight seconds of onset values and reads cheap stereo energy from the
+existing PCM ring without additional FFTs. See [live-beat-tracking.md](live-beat-tracking.md).
+
+Synthetic regular percussion locks; half/double-time competition, missing rhythm and unstable
+phase prevent adoption. Local recorded D&B excerpts remained uncertain. This is an assisted
+prototype, not a qualified continuous follower. Physical mixer timing and musical downbeats
+remain unqualified.
+
+Validation: `vp run ready` passed 484 tests, lint/types, dependency checks and smoke render.
+Chromium beat capture/adoption/journal/restart and existing performance/MIDI/scene/replay
+checks passed. The final operator screenshot was inspected.

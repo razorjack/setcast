@@ -624,7 +624,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   scene tree copies reject symlinks and recursive destinations. Export servers reject writes.
 - The operator popup receives a React portal. The output window owns capture, diagnostics and
   journal state, so moving or closing controls does not start another input. Manual BPM and
-  tap/downbeat controls provide a tempo grid; they do not infer beats from audio.
+  tap/downbeat controls provide a tempo grid. Opt-in beat tracking estimates tempo and phase
+  from bounded PCM energy but changes output only when the operator adopts a locked estimate.
+  The accepted grid uses the existing prepared-scene journal path. Never treat beat phase as
+  a detected downbeat or the evidence score as a calibrated probability. See
+  docs/live-beat-tracking.md for conservative real-recording qualification results.
 - Session journals are versioned JSONL with capture-sample timestamps, serialized/fsynced writes,
   manual credits/cues and saved scene references. Replay requires a separate master and explicit
   offset. Scene times are finite seconds; core resolveFrame selects appearance at that time while

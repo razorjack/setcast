@@ -85,6 +85,19 @@ export class LiveAudio implements AudioAnalyzer {
     return features;
   }
 
+  /** Cheap fixed-hop energy for live tempo analysis, without allocating FFT windows. */
+  energyAt(time: number): number {
+    const end = Math.round(time * this.sampleRate);
+    const start = end - Math.round(this.sampleRate / 100);
+    if (!Number.isFinite(time) || start < this.first || end > this.end) return 0;
+    let sum = 0;
+    for (let sample = start; sample < end; sample++) {
+      const index = sample % this.capacity;
+      sum += (this.left[index]! ** 2 + this.right[index]! ** 2) / 2;
+    }
+    return Math.sqrt(sum / (end - start));
+  }
+
   private window(channel: Float32Array, sample: number): PcmWindow {
     const from = Math.max(0, sample - Math.ceil(this.sampleRate * 0.2));
     const to = sample + FFT_SIZE / 2 + 1;

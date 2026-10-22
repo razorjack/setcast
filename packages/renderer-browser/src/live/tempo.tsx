@@ -1,11 +1,13 @@
 import { useRef } from 'react';
+import type { LiveInput } from './input.ts';
+import { BeatControls } from './beat-controls.tsx';
 
 export interface Tempo {
   bpm: number | null;
   beatOffset: number;
 }
 
-export function LiveTempo({
+function ManualTempo({
   tempo,
   setTempo,
   time,
@@ -66,4 +68,26 @@ function useTapTempo(time: () => number, setTempo: (tempo: Tempo) => void) {
     const bpm = (60 * (taps.current.length - 1)) / (now - taps.current[0]!);
     if (bpm <= 400) setTempo({ bpm: Math.round(bpm * 10) / 10, beatOffset: now });
   };
+}
+
+export function LiveTempo({
+  input,
+  tempo,
+  setTempo,
+}: {
+  input: LiveInput;
+  tempo: Tempo;
+  setTempo: (tempo: Tempo) => void;
+}) {
+  return (
+    <>
+      <ManualTempo
+        tempo={tempo}
+        setTempo={setTempo}
+        running={input.snapshot.status.phase === 'running'}
+        time={() => input.capture.audio?.capturedTime ?? 0}
+      />
+      <BeatControls input={input} setTempo={setTempo} />
+    </>
+  );
 }

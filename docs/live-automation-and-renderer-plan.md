@@ -13,7 +13,8 @@ remains the default. Do not push or publish.
 2. Confidence-aware live beat tracking. Opt-in bounded analysis on the capture clock, with
    explicit listening/locked/uncertain state, confidence and a configurable tempo range.
    Infer beats, never pretend to infer musical downbeats. Keep manual BPM/tap/downbeat override
-   authoritative. Do not repeatedly rewrite the active grid on weak or unstable estimates.
+   authoritative. Continuously estimate but require explicit adoption of a locked grid. Detection never rewrites
+   the active grid; automatic following needs stronger real-recording qualification.
    Preserve journal replay by recording accepted effective tempo changes. Test ambiguity,
    silence, tempo changes, input loss/restart and bounded analysis. Qualify with available real
    audio as well as deterministic synthetic signals; state physical-hardware limitations.
@@ -39,3 +40,11 @@ mixers, cameras, projectors and cross-platform drivers require separate qualific
 - Repository clean at start. Read the existing sequence, capture, performance and tempo paths.
 - Energy-aware selection implemented and validated: 479 tests in `vp run ready`, both energy
   and ordered-sequence Chromium checks, inspected operator screenshot.
+- Beat tracking implementation uses explicit adoption. The local recorded D&B master and
+  excerpt remained uncertain with the conservative detector; do not lower thresholds merely
+  to force these samples to lock. Continuous following is deliberately deferred.
+- Beat tracking validated with `vp run ready` (484 tests), the Chromium beats check and the
+  existing performance/MIDI/scene/journal check. Final operator screenshot inspected.
+- Next: launch Claude Opus 5.5 high in a new root/master T3 thread for branding and overlays.
+  Its completion must notify parent thread dc4b96a0-aa4d-4b0b-857b-d8c534cb0b55. The parent must
+  then read the handoff and implement/validate/commit measured renderer optimization.

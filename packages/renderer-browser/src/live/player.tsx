@@ -188,12 +188,7 @@ function LiveControls({
       />
       <section className="sc-live-session">
         <OperatorButton operator={operator} setClean={setClean} />
-        <LiveTempo
-          running={input.snapshot.status.phase === 'running'}
-          tempo={scene.tempo}
-          setTempo={scene.setTempo}
-          time={() => input.capture.audio?.capturedTime ?? 0}
-        />
+        <LiveTempo input={input} tempo={scene.tempo} setTempo={scene.setTempo} />
         <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
         <OutputControls output={settings.output} />
         <ProjectionControls projection={settings.projection} />

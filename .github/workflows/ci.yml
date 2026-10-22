@@ -45,3 +45,5 @@ jobs:
         run: node packages/renderer-browser/bench/preview.ts
       - name: Energy-aware live scene selection
         run: node packages/renderer-browser/bench/energy.ts
+      - name: Confidence-aware live beat tracking
+        run: node packages/renderer-browser/bench/beats.ts
