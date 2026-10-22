@@ -47,9 +47,11 @@ Software encoding supports `crf`, `videoBitrate`, `x264Preset`, `jpegQuality`, p
 must pass `hardwareAcceleration: disable` or omit it.
 
 `--concurrency` accepts 1 through 8 and defaults to 1. Each worker retains its own bounded
-PCM windows and decoder cache, so more workers use more memory. Batches contain at most one
-image per worker; encoded frames are written in order with backpressure. Start at 1 or 2
-and measure your project. Independence is not a speed guarantee.
+PCM windows and decoder cache, so more workers use more memory. Capture overlaps encoder writes
+through a bounded queue: at most one pending capture per worker plus the image being written.
+Each worker prepares its next assigned frame after its previous capture is consumed; it does
+not wait for the other workers to finish a batch. Frames still reach FFmpeg in exact order with
+backpressure. Start at 1 or 2 and measure your project. Independence is not a speed guarantee.
 
 Ctrl+C or SIGTERM cancels a CLI export. Programmatic `render` and `still` accept an
 `AbortSignal`. Preparation may need to finish before cancellation is observed. Video output
@@ -194,5 +196,43 @@ same-page frame check validate the readiness contract. This is one local compari
 general speed guarantee or a replacement for the earlier two-minute benchmark.
 
 Direct CDP screenshot capture did not improve the initial comparison and was not retained.
-Resumable verified chunks are implemented. Wider platform qualification and capture/encoding
-overlap remain next steps. Keep metrics enabled while choosing further optimizations.
+Resumable verified chunks and bounded capture/encoding overlap are implemented. Keep metrics
+enabled while choosing further optimizations.
+
+### Capture and encoding overlap
+
+The second optimization removes the batch barrier between capture workers. A consumed capture
+starts that worker's next assigned frame before writing the current image to FFmpeg. The queue
+holds at most `concurrency + 1` images, including the write in progress. Worker assignments,
+absolute frame times, readiness checks, JPEG quality and encoding settings are unchanged.
+A failed capture interrupts another worker or encoder wait, closes capture pages, cancels
+FFmpeg, and settles outstanding work before cleanup. Failure/cancellation still preserves the
+destination and completed resume chunks.
+
+The batched baseline is revision `d35ddcf`. Two sequential comparisons used the same 300-frame,
+1920×1080/30 fps demo slice at 30–40 seconds:
+
+| Run | Batched capture | Overlapped capture | Elapsed-time reduction |
+| --- | ---: | ---: | ---: |
+| First | 13.55 s | 10.56 s | 22.1% |
+| Repeat | 14.19 s | 10.48 s | 26.1% |
+
+The command above used two workers, JPEG quality 95, CRF 18 and the medium x264 preset on
+Apple M1 Pro, Node 26.7.0 and pinned Playwright Chromium. All four exports had identical decoded
+frames and identical captured JPEG byte totals (89,390,145 bytes). This is a short local
+comparison, not a general throughput guarantee. [Raw measurements](benchmarks/browser-pipeline-2026-10-22.csv)
+include summed worker timings and Node RSS; other processes are excluded from that memory metric.
+
+The baseline spent 11.74–13.27 summed worker seconds in screenshot capture and 5.92–8.35 in
+readiness. Audio-window preparation used only 47–82 ms; encoder writes waited 152–161 ms.
+Those measurements support improving capture scheduling before introducing shared analysis
+caches. JPEG quality was preserved because lower compression quality changes pixels; any future
+compression change needs an explicit quality comparison. The earlier CDP experiment remains
+unretained. Hardware encoding and shared analysis caching remain candidates for workloads whose
+profiles justify them.
+
+The pipeline unit tests cover bounded buffering, ordered writes, uneven worker completion,
+encoder backpressure, partial ranges and failure cancellation. Browser acceptance and resume
+recovery passed with the overlapped path, including GPU field equality across workers/chunks.
+`vp run ready` passed all 450 tests and baseline checks; Remotion acceptance and installed-package
+smoke with browser export also passed.

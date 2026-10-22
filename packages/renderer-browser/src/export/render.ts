@@ -18,6 +18,7 @@ import { ffmpeg } from './ffmpeg.ts';
 import { fingerprint } from './fingerprint.ts';
 import { withCheckpoint, type Checkpoint } from './checkpoint.ts';
 import { validateChunk } from './probe.ts';
+import { pipeline } from './pipeline.ts';
 
 export type BrowserRenderOptions = RenderOptions & {
   onMetrics?: MetricsReport;
@@ -152,19 +153,19 @@ async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob
   const { project, options, encoding } = job;
   const encoder = ffmpeg(videoArgs(project.fps, encoding, job.out), options.signal);
   try {
-    for (let first = range[0]; first <= range[1]; first += pages.length) {
-      const batch = pages.slice(0, range[1] - first + 1);
-      const images = await Promise.all(
-        batch.map(async (page, index) => {
-          options.signal?.throwIfAborted();
-          return captureFrame(page, first + index, job);
-        }),
-      );
-      for (const image of images)
+    await pipeline({
+      range,
+      workers: pages.length,
+      capture: (worker, frame) => {
+        options.signal?.throwIfAborted();
+        return captureFrame(pages[worker]!, frame, job);
+      },
+      write: async (image, frame) => {
         await measure('encoder-write', options.onMetrics, () => encoder.write(image));
-      const renderedFrames = first - job.first + images.length;
-      frameProgress(job, renderedFrames, job.reusedFrames);
-    }
+        frameProgress(job, frame - job.first + 1, job.reusedFrames);
+      },
+      cancel: () => Promise.allSettled([...pages.map((page) => page.close()), encoder.cancel()]),
+    });
     await measure('encoder-finish', options.onMetrics, () => encoder.finish());
   } catch (error) {
     await encoder.cancel();

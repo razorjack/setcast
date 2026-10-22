@@ -171,6 +171,23 @@ and existing performance/MIDI/journal browser checks passed. Operator and output
 were inspected; CI now runs the output regression. An initial cache stress-test timeout under
 concurrent Chromium load passed when the full validation suite ran alone.
 
+### Completed export optimization milestone
+
+Browser capture now overlaps the next frame with encoder writes, removing the batch barrier
+between workers. Buffering stays bounded to one pending capture per worker plus the active
+write. Capture failures interrupt pending waits and settle resources before cleanup. Existing
+frame assignments, JPEG quality, absolute-time readiness and resume semantics are preserved.
+
+Two 300-frame 1080p comparisons improved from 13.55/14.19 seconds to 10.56/10.48 seconds,
+a local 22–26% reduction. All four decoded videos matched exactly. Audio-window preparation and
+encoder backpressure were small relative to screenshot/readiness time, so shared analysis
+caching, hardware encoding and compression changes remain measurement-driven follow-ups.
+See [browser-renderer.md](browser-renderer.md#capture-and-encoding-overlap) and its raw measurements.
+
+Validation: `vp run ready` passed all 450 tests, lint/types, dependency checks and smoke render.
+Both exporter acceptance suites, resume recovery and installed-package smoke with browser
+export passed. The live output check also verifies that quality changes keep artwork mounted.
+
 ### Next milestones
 
 1. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.

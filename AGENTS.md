@@ -626,6 +626,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   fractional ranges, delayed fonts, local images, video loops, repeated theme captures and
   failed-export recovery. See its README for commands, tolerances and coverage limits.
 
+- Browser export pipelines captures into ordered FFmpeg writes, retaining one pending capture
+  per worker plus the active write. Keep worker/frame assignments stable. A capture failure must
+  interrupt other waits and close pages/encoder before awaiting outstanding work. Do not race every
+  frame against one never-settled promise: its retained listeners grow with export duration.
 - Every audible offline export encodes the master file once and muxes it with silent video,
   including a single batch and `chunkSeconds: 0`. The previous single-batch browser audio path
   delayed the acceptance fixture by about 43 ms; the file path aligns its pulses within 5 ms.
