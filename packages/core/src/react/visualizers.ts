@@ -8,6 +8,7 @@ import {
   type VisualizerSpec,
 } from '../visualizers.ts';
 import { Bloom, BloomConfigSchema } from './components/Bloom.tsx';
+import { Field, FieldConfigSchema } from './components/Field.tsx';
 import { Meters, MetersConfigSchema } from './components/Meters.tsx';
 import { Oscilloscope, OscilloscopeConfigSchema } from './components/Oscilloscope.tsx';
 import { Overview, OverviewConfigSchema } from './components/Overview.tsx';
@@ -65,3 +66,4 @@ defineVisualizer({ name: 'spectrogram', schema: SpectrogramConfigSchema, compone
 defineVisualizer({ name: 'ridgeline', schema: RidgelineConfigSchema, component: Ridgeline });
 defineVisualizer({ name: 'overview', schema: OverviewConfigSchema, component: Overview });
 defineVisualizer({ name: 'bloom', schema: BloomConfigSchema, component: Bloom });
+defineVisualizer({ name: 'field', schema: FieldConfigSchema, component: Field });

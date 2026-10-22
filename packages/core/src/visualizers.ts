@@ -124,6 +124,16 @@ export const SpectrogramConfigSchema = visualizerSchema('spectrogram', {
 });
 export type SpectrogramConfig = z.infer<typeof SpectrogramConfigSchema>;
 
+export const FieldConfigSchema = visualizerSchema('field', {
+  seed: wholeNumberSetting('seed', 0, 4294967295).default(1),
+  speed: numberSetting('speed', 0, 2).default(0.3),
+  scale: numberSetting('scale', 0.5, 4).default(1),
+  gain: numberSetting('gain', 0.1, 4).default(1),
+  /** Drawing-buffer pixels per composition pixel, independent of display pixel density. */
+  resolution: numberSetting('resolution', 0.25, 1).default(0.5),
+});
+export type FieldConfig = z.infer<typeof FieldConfigSchema>;
+
 /** The recent spectrum as stacked lines over the art's relief. */
 export const RidgelineConfigSchema = visualizerSchema('ridgeline', {
   /** Lines from the bottom of the box up, the newest at the bottom. */
@@ -209,6 +219,7 @@ visualizers.add({ name: 'spectrogram', schema: SpectrogramConfigSchema });
 visualizers.add({ name: 'ridgeline', schema: RidgelineConfigSchema });
 visualizers.add({ name: 'overview', schema: OverviewConfigSchema, wholeSet: true, audio: false });
 visualizers.add({ name: 'bloom', schema: BloomConfigSchema });
+visualizers.add({ name: 'field', schema: FieldConfigSchema });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */
 export const drawsWholeSet = (project: ResolvedProject): boolean =>

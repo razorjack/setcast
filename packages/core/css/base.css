@@ -132,6 +132,16 @@
   fill: none;
 }
 
+.sc-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: var(--accent, #fff);
+  pointer-events: none;
+}
+
 .sc-spectrogram {
   position: absolute;
   left: 0;

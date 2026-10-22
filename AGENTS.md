@@ -307,7 +307,7 @@ Each plugin kind is a small interface plus a Zod schema for its config. Extensio
 list; implemented today: visualizer, theme, tracklist importer):
 
 - visualizers `(RenderFrame, config) → JSX` (spectrum ✓, radial ✓, meters ✓, oscilloscope ✓,
-  vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓); `visualizer:` takes one block
+  vectorscope ✓, spectrogram ✓, ridgeline ✓, overview ✓, bloom ✓, field ✓); `visualizer:` takes one block
   or a list drawn in order
 - themes: CSS variables + fonts + default modulation patch + default visualizers + layout
   (16 built in, listed in the README ✓; a bare `.css` path is also a valid theme)
@@ -520,6 +520,18 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Generated per-project bundle entry so `plugins:` in `setcast.yaml` can pull npm plugins in.
 
 ## Decisions
+
+- `field` is an opt-in WebGL 2 contour visualizer in core/react, shared by live, recorded and
+  both offline renderers. Every draw uses absolute time, audio and an explicit seed. It has no
+  animation loop, feedback texture or accumulated simulation state. CPU-computed bounded phases
+  preserve motion precision in long sessions. CSS `color` supplies its tint and alpha.
+  `resolution` scales composition pixels, independently of device pixel density; the drawing
+  buffer is capped at 4096 pixels per side and the hardware limit. Preserve the drawing buffer
+  across readiness waits. Context creation/loss fails explicitly instead of exporting blank
+  frames. Dispose GPU programs on unmount and release detached canvas contexts after cleanup,
+  allowing React effect replay on a connected canvas. Determinism is qualified within one
+  browser/GPU backend, not across drivers. Export acceptance checks repeated stills and decoded
+  frame identity between one- and two-worker chunked exports.
 
 - `setcast render --resume` is browser-only and opt-in. Completed chunks live in
   `<output>.setcast-resume`; a content/runtime fingerprint invalidates stale jobs, and checksum
@@ -1099,7 +1111,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   larger than its print) does not apply to the copy, so the shapes show the art also where the
   theme hides it. Rotating `.sc-bg-img` or the SVG would misplace the copy, so pirate pads and
   rotates its spectrum only without `fill: art` (`[data-fill='theme']`).
-- The spectrogram is a canvas, the one visualizer that is not SVG or HTML: 120 columns of 64 bins
+- The spectrogram is a 2D canvas: 120 columns of 64 bins
   is 7,680 cells a frame, too many DOM nodes. It repaints entirely in a layout effect every frame
   from `useAudioHistory`, so it keeps no state across frames, and takes its color from CSS
   `color` so appearance stays in the theme. Columns are placed by age, not index, so it scrolls
