@@ -574,6 +574,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   pending fetch/queued recall and lets a transition already fading finish. Manual pads/MIDI take
   control; capture restart leaves the sequence held. Effective scenes and ramps use the existing
   journal path. Sequence settings belong to the parent live project and are omitted from snapshots.
+- Energy-aware sequencing is opt-in (`sequence.mode: energy`); ordered behavior stays default.
+  Scene entries carry low/medium/high/any tags. A 10 Hz pre-performance RMS/bass signal uses
+  smoothing, hysteresis and sustained classification. Only dwell expiry may select a matching
+  entry, rotating in list order; any is a fallback and no match retains the current scene.
+  Input loss/blackout/routing changes reset evidence. Effective recalls use existing journal
+  snapshots, not recorded classifier state. See docs/live-performance.md and bench/energy.ts.
 - Live projector geometry belongs to the output session. ProjectionSchema validates convex
   normalized corners, source crop and output-space masks; VenueSchema wraps it for import/export.
   Scene and journal snapshots omit projection. The warped scene renders in an iframe to preserve

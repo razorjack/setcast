@@ -1,3 +1,4 @@
+import { SequenceEnergy, SceneEnergy } from './sequence-energy.tsx';
 import type { LiveSequence } from './sequence.ts';
 import type { useSceneBank } from './bank.tsx';
 import { downloadJson } from './diagnostics.tsx';
@@ -21,6 +22,7 @@ export function SequenceControls(props: Props) {
     >
       <summary>Automatic sequence · {status}</summary>
       <SequenceActions {...props} />
+      <SequenceEnergy sequence={sequence} />
       <ol className="sc-sequence-rows">
         {sequence.scenes.map((entry, index) => (
           <SequenceRow
@@ -71,7 +73,12 @@ function SequenceActions({ sequence, available, active }: Props) {
         disabled={!sequence.scenes.length}
         onClick={() =>
           downloadJson('sequence.json', {
-            sequence: { scenes: sequence.scenes, loop: sequence.loop },
+            sequence: {
+              scenes: sequence.scenes,
+              loop: sequence.loop,
+              mode: sequence.mode,
+              energy: sequence.energy,
+            },
           })
         }
       >
@@ -119,6 +126,7 @@ function SequenceRow({
   return (
     <li data-active={sequence.index === index}>
       <span>{title}</span>
+      <SceneEnergy sequence={sequence} index={index} />
       <label>
         Dwell (s)
         <input

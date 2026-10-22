@@ -225,8 +225,8 @@ projector alignment and sustained performance remain unqualified.
 
 ### Next milestones
 
-1. Sustained-energy influence on the completed scene sequencer. Add confidence-aware beat
-   tracking only after the manual tempo path is qualified with real mixer recordings.
+1. Confidence-aware beat tracking, with explicit uncertainty and manual override. Energy-aware
+   scene selection is complete; physical mixer qualification remains separate.
 2. GPU hardware qualification. Measure sustained live GPU load on real machines and drivers;
    particles with accumulated state require deterministic replay or checkpoints. The stateless
    field, tunnel and constellation are complete.
@@ -332,3 +332,17 @@ matched SVG visualizers on the local M1 Pro; see [gpu-visualizer.md](gpu-visuali
 the measurements. Physical projectors, cameras, sustained GPU load and cross-driver pixel
 identity remain unqualified.
 
+
+## Completed energy-aware scene selection
+
+Opt-in `live.sequence.mode: energy` selects low, medium or high tagged scenes after sustained
+smoothed RMS/bass energy and the existing minimum dwell. Hysteresis rejects threshold chatter;
+`any` is a fallback, and no match retains the current scene. Ordered progression stays default.
+Manual hold/skip, non-looping lists, transition readiness and effective-scene journaling remain
+shared with the ordered sequencer. Input loss, routing changes and blackout reset classification.
+See [live-performance.md](live-performance.md#energy-aware-scene-selection).
+
+Validation: `vp run ready` passed 479 tests, lint/types, dependency checks and smoke render.
+The energy Chromium check passed synthetic live capture, transient rejection, sustained scene
+selection, hold/resume, settings export and journal recording. The existing ordered-sequence
+check also passed. The operator screenshot was inspected. Physical mixers remain unqualified.

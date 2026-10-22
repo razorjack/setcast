@@ -1,9 +1,15 @@
 import { z } from 'zod';
+import { EnergyBandSchema, EnergySelectionSchema } from './energy.ts';
 
 export const SequenceSchema = z.strictObject({
+  mode: z
+    .enum(['ordered', 'energy'], { error: 'sequence.mode must be ordered or energy.' })
+    .optional(),
+  energy: EnergySelectionSchema.optional(),
   scenes: z
     .array(
       z.strictObject({
+        energy: EnergyBandSchema.optional(),
         preset: z
           .string({ error: 'sequence scene preset must name a saved-scene directory.' })
           .regex(/^saved-scene-[a-zA-Z0-9_-]+$/, {

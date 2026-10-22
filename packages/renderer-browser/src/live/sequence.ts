@@ -1,4 +1,10 @@
-import type { SceneSequence } from '@setcast/core';
+import {
+  EnergySelectionSchema,
+  type EnergyBand,
+  type EnergySelection,
+  type SceneSequence,
+} from '@setcast/core';
+import { LiveEnergy } from './energy.ts';
 
 type Entry = SceneSequence['scenes'][number];
 interface SequenceOptions {
@@ -11,6 +17,9 @@ interface SequenceOptions {
 export class LiveSequence {
   scenes: Entry[];
   loop: boolean;
+  mode: 'ordered' | 'energy';
+  energy: EnergySelection;
+  readonly listening = new LiveEnergy();
   running = false;
   pending = false;
   index = -1;
@@ -23,11 +32,22 @@ export class LiveSequence {
   constructor(initial: SceneSequence | undefined, options: SequenceOptions) {
     this.scenes = initial?.scenes ?? [];
     this.loop = initial?.loop ?? true;
+    this.mode = initial?.mode ?? 'ordered';
+    this.energy = initial?.energy ?? EnergySelectionSchema.parse({});
     this.options = options;
   }
-  configure(scenes: Entry[], loop: boolean) {
+  configure(
+    scenes: Entry[],
+    loop: boolean,
+    selection?: { mode: 'ordered' | 'energy'; energy: EnergySelection },
+  ) {
     this.stop();
     this.scenes = scenes;
+    if (selection) {
+      this.mode = selection.mode;
+      this.energy = selection.energy;
+    }
+    this.listening.reset();
     this.loop = loop;
     this.index = -1;
     this.elapsed = 0;
@@ -68,7 +88,9 @@ export class LiveSequence {
     if (!this.running || this.pending || !available) return;
     this.elapsed += delta;
     const current = this.scenes[this.index];
-    if (current && this.elapsed >= current.seconds) this.next();
+    if (!current || this.elapsed < current.seconds) return;
+    if (this.mode === 'ordered') this.next();
+    else this.followEnergy(this.listening.band);
   }
   next() {
     if (this.pending || !this.scenes.length) return;
@@ -79,6 +101,21 @@ export class LiveSequence {
       return;
     }
     void this.select(next % this.scenes.length);
+  }
+  private followEnergy(band: EnergyBand | null) {
+    if (!band) return;
+    const candidates = this.scenes
+      .map((scene, index) => ({ scene, index }))
+      .filter(({ index }) => this.loop || index >= this.index);
+    let matching = candidates.filter(({ scene }) => scene.energy === band);
+    if (!matching.length)
+      matching = candidates.filter(({ scene }) => (scene.energy ?? 'any') === 'any');
+    const next = matching.find(({ index }) => index > this.index) ?? matching[0];
+    if (next && next.index !== this.index) void this.select(next.index);
+    else if (!this.loop && this.index === this.scenes.length - 1) {
+      this.completed = true;
+      this.hold();
+    }
   }
   private async select(index: number) {
     const generation = ++this.generation;

@@ -43,3 +43,5 @@ jobs:
         run: node packages/renderer-browser/bench/projection.ts
       - name: Independent preview frames, comparison and recovery
         run: node packages/renderer-browser/bench/preview.ts
+      - name: Energy-aware live scene selection
+        run: node packages/renderer-browser/bench/energy.ts

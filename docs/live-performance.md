@@ -156,3 +156,43 @@ The browser check covers saves, bar-aligned recall, brightness, blackout, MIDI, 
 failed artwork recovery and journal replay. Both export acceptance suites verify a black frame,
 intermediate brightness and repeated out-of-order frame requests. Hardware performance,
 camera/display interaction and multi-hour MIDI use remain unqualified.
+
+## Energy-aware scene selection
+
+Ordered progression remains the default. Set `sequence.mode: energy` to choose scenes using
+sustained input energy after the current scene's minimum dwell:
+
+```yaml
+sequence:
+  mode: energy
+  loop: true
+  energy: {low: 0.2, high: 0.55, hysteresis: 0.05, smooth: 3, sustain: 8}
+  scenes:
+    - {preset: saved-scene-calm, seconds: 45, energy: low}
+    - {preset: saved-scene-active, seconds: 60, energy: medium}
+    - {preset: saved-scene-intense, seconds: 30, energy: high}
+    - {preset: saved-scene-neutral, seconds: 60, energy: any}
+```
+
+Choose Audio energy in the operator's Automatic sequence controls. Tag each entry Low, Medium,
+High or Any, and adjust thresholds/timing there if needed. Configuration edits hold the sequence;
+press Run again. Export sequence includes these settings for reuse in live.yaml.
+
+Energy is the equally weighted mean of input RMS and bass, sampled at 10 Hz and exponentially
+smoothed over `smooth` seconds. It is measured before performance intensity and visual delay;
+input sensitivity still affects it. `low` and `high` separate three bands. Hysteresis widens the
+current band's exit thresholds; a candidate band must persist for `sustain` seconds before it
+is accepted. The operator shows the smoothed value and accepted band. These are signal-energy
+bands, not inferred breakdowns, buildups or future drops. Tune thresholds against your mixer.
+
+At dwell expiry, the sequencer rotates through entries matching the accepted band in list order.
+Any entries are used only when no matching entry is eligible. With no match, the current scene
+stays visible; a sole matching entry is not recalled repeatedly. Loop permits wrapping; without
+it only the current and later entries are eligible, and the final entry holds after its dwell.
+Next scene remains an explicit ordered skip. Manual recall takes control as before.
+
+Input loss, blackout, routing/sensitivity changes and capture restart discard energy evidence;
+classification must settle again. Dwell and transition behavior remain unchanged. Effective
+scene changes use the existing journal snapshots and ramps, so replay does not rerun the
+classifier. The automated check uses generated audio; real-mixer threshold calibration remains
+hardware qualification work.

@@ -279,3 +279,10 @@ export {
   type ProjectionPoint,
   type Venue,
 } from './projection.ts';
+
+export {
+  EnergySelectionSchema,
+  EnergyBandSchema,
+  type EnergySelection,
+  type EnergyBand,
+} from './energy.ts';

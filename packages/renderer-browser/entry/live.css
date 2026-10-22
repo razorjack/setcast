@@ -512,3 +512,14 @@
   border-radius: 4px;
   font: inherit;
 }
+
+.sc-sequence-energy {
+  margin-block: 12px;
+}
+.sc-sequence-energy meter {
+  width: 120px;
+  margin-inline: 10px;
+}
+.sc-sequence-rows li {
+  flex-wrap: wrap;
+}

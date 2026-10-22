@@ -32,15 +32,17 @@ export function useSequence(
   }, [options.project, sequence]);
   useEffect(() => {
     sequence.stop();
+    sequence.listening.reset();
     sequence.index = -1;
     sequence.elapsed = 0;
   }, [sequence, input.capture.audio]);
+  useEffect(
+    () => sequence.listening.reset(),
+    [sequence, input.settings.gain, input.settings.channels],
+  );
   useEffect(() => {
-    sequence.tick(
-      input.capture.audio?.capturedTime ?? 0,
-      input.snapshot.status.available && !options.performance.blackout,
-    );
-  }, [sequence, input.snapshot, input.capture.audio, options.performance]);
+    advanceSequence(sequence, input, options.performance.blackout);
+  }, [sequence, input, options.performance.blackout]);
   const manualRecall = {
     ...options.recall,
     recall: (preset: string) => {
@@ -51,4 +53,15 @@ export function useSequence(
     },
   };
   return { sequence, manualRecall };
+}
+
+function advanceSequence(sequence: LiveSequence, input: LiveInput, blackout: boolean) {
+  const audio = input.capture.audio;
+  const available = input.snapshot.status.available && !blackout;
+  if (!available) sequence.listening.reset();
+  else if (audio && sequence.mode === 'energy') {
+    const time = Math.floor(audio.time * 10) / 10;
+    sequence.listening.update(time, audio.featuresAt(time), sequence.energy);
+  }
+  sequence.tick(audio?.capturedTime ?? 0, available);
 }
