@@ -13,9 +13,17 @@ import { prepareFrame, withCapture, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
 import { graphicsArgs } from './graphics.ts';
 import { assemble, exportEncoding, videoArgs, preflight } from './encoding.ts';
+import { measure, type MetricsReport } from './metrics.ts';
 import { ffmpeg } from './ffmpeg.ts';
 
-export function render(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+export type BrowserRenderOptions = RenderOptions & {
+  onMetrics?: MetricsReport;
+};
+
+export function render(
+  project: ResolvedProject,
+  options: BrowserRenderOptions,
+): Promise<RenderResult> {
   graphicsArgs(options.gl);
   if (!/\.(mp4|mov|mkv)$/i.test(options.out))
     throw new SetcastError(`Cannot write video ${options.out}.`, 'Use .mp4, .mov or .mkv.');
@@ -41,24 +49,16 @@ export function render(project: ResolvedProject, options: RenderOptions): Promis
           });
         }
       });
-      options.onProgress?.({
-        stage: 'encode',
-        progress: 0,
-        renderedFrames: frames,
-        totalFrames: frames,
-      });
-      await assemble(project, options, {
-        directory,
-        output,
-        ranges,
-        duration: frames / project.fps,
-      });
-      options.onProgress?.({
-        stage: 'encode',
-        progress: 1,
-        renderedFrames: frames,
-        totalFrames: frames,
-      });
+      encodeProgress(options, frames, 0);
+      await measure('mux', options.onMetrics, () =>
+        assemble(project, options, {
+          directory,
+          output,
+          ranges,
+          duration: frames / project.fps,
+        }),
+      );
+      encodeProgress(options, frames, 1);
       return { file: resolve(options.out), frames, durationSeconds: frames / project.fps };
     }),
   );
@@ -78,7 +78,7 @@ function capturePool<T>(
 
 interface ChunkJob {
   project: ResolvedProject;
-  options: RenderOptions;
+  options: BrowserRenderOptions;
   encoding: ReturnType<typeof exportEncoding>;
   out: string;
   first: number;
@@ -94,11 +94,11 @@ async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob
       const images = await Promise.all(
         batch.map(async (page, index) => {
           options.signal?.throwIfAborted();
-          await prepareFrame(page, first + index);
-          return page.screenshot({ type: 'jpeg', quality: encoding.jpegQuality });
+          return captureFrame(page, first + index, job);
         }),
       );
-      for (const image of images) await encoder.write(image);
+      for (const image of images)
+        await measure('encoder-write', options.onMetrics, () => encoder.write(image));
       const renderedFrames = first - job.first + images.length;
       options.onProgress?.({
         stage: 'frames',
@@ -107,9 +107,27 @@ async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob
         totalFrames: job.frames,
       });
     }
-    await encoder.finish();
+    await measure('encoder-finish', options.onMetrics, () => encoder.finish());
   } catch (error) {
     await encoder.cancel();
     throw error;
   }
+}
+
+async function captureFrame(page: Page, frame: number, job: ChunkJob) {
+  const timings = await prepareFrame(page, frame);
+  const started = performance.now();
+  const image = await page.screenshot({ type: 'jpeg', quality: job.encoding.jpegQuality });
+  job.options.onMetrics?.({
+    kind: 'frame',
+    frame,
+    ...timings,
+    captureMs: performance.now() - started,
+    bytes: image.length,
+  });
+  return image;
+}
+
+function encodeProgress(options: BrowserRenderOptions, frames: number, progress: number) {
+  options.onProgress?.({ stage: 'encode', progress, renderedFrames: frames, totalFrames: frames });
 }

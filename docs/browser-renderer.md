@@ -82,7 +82,7 @@ node packages/renderer-browser/bench/frames.ts
 
 The suite checks fractional ranges, the partial final frame, chunking, audio/video pulses,
 delayed fonts, images, video seeking and looping, repeatable theme captures, failure recovery,
-and cancellation. Both exporters passed on 2026-10-22. A direct driver check also verifies backward seeks,
+performance dimming/blackout, and cancellation. Both exporters passed on 2026-10-22. A direct driver check also verifies backward seeks,
 video decoder reuse and delayed scene fonts within one page. Fixture audio pulses were within 5 ms
 of the visual pulse. Packed CLI checks cover browser PNG and H.264/AAC output as well as the
 default renderer and all built-in themes. JPEG, MOV and MKV are also verified. The local FFmpeg build lacks
@@ -106,3 +106,28 @@ and installed distributions. Remove Remotion only after the alternative meets th
 workloads and performance expectations. The next useful work is profiling capture/encoding,
 qualifying Linux and Windows, and expanding fixture coverage. A sidecar or another capture API
 should follow measurements, not precede a working exporter.
+
+## Profiling and readiness optimization
+
+```sh
+node packages/renderer-browser/bench/export.ts examples/demo --seconds 10 --at 30 --concurrency 2 --out examples/demo/out/browser-profile
+```
+
+This writes profile.mp4 and report.json. The browser adapter's optional `onMetrics` callback
+reports audio preparation, frame resolution, React commit, readiness, screenshot capture and
+captured bytes per frame. Separate measurements cover encoder write backpressure, final flush
+and muxing. Summed worker durations overlap and are not wall time. Encoder writes measure waiting
+on the pipe, not encoder CPU. Audio timings exclude initial decoder setup. Peak Node RSS excludes
+Chromium and FFmpeg; use process-level tools for total memory.
+
+The first measured optimization reduced readiness from three stable animation-frame callbacks
+to two. Font and image decoding are awaited inside the stability loop; holds and revision changes
+reset it. A ten-second 1080p/30 fps demo slice with two workers fell from 16.86 to 13.40 seconds
+on this machine, a 20.5% elapsed-time reduction. Mean readiness fell from 43.30 to 23.87 ms per
+frame. All 300 decoded output frames matched exactly. Both acceptance suites and the direct
+same-page frame check validate the readiness contract. This is one local comparison, not a
+general speed guarantee or a replacement for the earlier two-minute benchmark.
+
+Direct CDP screenshot capture did not improve the initial comparison and was not retained.
+Resumable verified chunks, wider platform qualification and capture/encoding overlap remain
+next steps. Keep metrics enabled while choosing further optimizations.

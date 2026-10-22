@@ -18,19 +18,19 @@ export class FrameReadiness {
     const deadline = performance.now() + timeout;
     let quiet = 0;
     let revision = this.revision;
-    while (quiet < 3) {
+    while (quiet < 2) {
       if (this.error) throw this.error;
       if (performance.now() > deadline)
         throw new Error(
           `Frame ${frame} timed out waiting for ${[...this.pending.values()].join(', ') || 'React commit and paint'}. Check the named assets.`,
         );
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      await document.fonts.ready;
+      await Promise.all([...document.images].map((image) => image.decode()));
       const ready = this.pending.size === 0 && this.committed === frame && this.effected === frame;
       quiet = ready && this.revision === revision ? quiet + 1 : 0;
       revision = this.revision;
     }
-    await document.fonts.ready;
-    await Promise.all([...document.images].map((image) => image.decode()));
     if (this.error) throw this.error;
   }
 }

@@ -13,10 +13,12 @@ import { openAnalysis } from '../browser/decode.ts';
 import { SceneBoundary } from '../browser/scene.tsx';
 import { assetUrl } from '../browser/url.ts';
 import { FrameReadiness } from './readiness.ts';
+import type { FrameTimings } from './metrics.ts';
 import { ExportVideo } from './video.tsx';
 
 export interface ExportDriver {
   frame(frame: number): Promise<number>;
+  timings?: FrameTimings;
   close(): void;
 }
 declare global {
@@ -30,20 +32,17 @@ export function mountExport(element: HTMLElement) {
   const readiness = new FrameReadiness();
   const initialized = initialize();
   void initialized.catch(() => {});
-  const bindings = {
-    name: 'browser-export',
-    Img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => <img {...props} />,
-    Video: ExportVideo,
-    asset: assetUrl,
-    hold: readiness.hold,
-  };
+  const bindings = exportBindings(readiness);
   window.setcastExport = {
     async frame(frame) {
       const { project, timeline, analysis } = await initialized;
+      const started = performance.now();
       await analysis.windows.prepare(frame / project.fps);
+      const prepared = performance.now();
       const analyzer = analysis.windows.at(frame / project.fps);
       if (!analyzer) throw new Error(`Audio analysis is unavailable at frame ${frame}.`);
       const resolved = resolveFrame({ project, timeline, analyzer, frame });
+      const resolvedAt = performance.now();
       flushSync(() =>
         root.render(
           <SceneBoundary
@@ -57,7 +56,14 @@ export function mountExport(element: HTMLElement) {
           </SceneBoundary>,
         ),
       );
+      const committed = performance.now();
       await readiness.settle(frame);
+      window.setcastExport!.timings = {
+        audioMs: prepared - started,
+        resolveMs: resolvedAt - prepared,
+        commitMs: committed - resolvedAt,
+        readinessMs: performance.now() - committed,
+      };
       return frame;
     },
     close() {
@@ -86,4 +92,14 @@ function ExportFrame({ frame, readiness }: { frame: RenderFrame; readiness: Fram
       <Stage key={frame.composition.project.theme} />
     </FrameProvider>
   );
+}
+
+function exportBindings(readiness: FrameReadiness) {
+  return {
+    name: 'browser-export',
+    Img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => <img {...props} />,
+    Video: ExportVideo,
+    asset: assetUrl,
+    hold: readiness.hold,
+  };
 }

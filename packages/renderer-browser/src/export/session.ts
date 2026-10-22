@@ -110,10 +110,18 @@ export async function prepareFrame(page: Page, frame: number) {
   });
   try {
     const captured = await Promise.race([
-      page.evaluate((frame) => window.setcastExport!.frame(frame), frame),
+      page.evaluate(
+        async (frame) => ({
+          frame: await window.setcastExport!.frame(frame),
+          timings: window.setcastExport!.timings,
+        }),
+        frame,
+      ),
       timeout,
     ]);
-    if (captured !== frame) throw new Error(`Requested frame ${frame}, received ${captured}.`);
+    if (captured.frame !== frame)
+      throw new Error(`Requested frame ${frame}, received ${captured.frame}.`);
+    return captured.timings!;
   } finally {
     clearTimeout(timer);
   }
