@@ -19,6 +19,7 @@ const commands: Record<string, () => Promise<Command>> = {
   chapters: () => import('./commands/chapters.ts'),
   live: () => import('./commands/live.ts'),
   replay: () => import('./commands/replay.ts'),
+  'browser-install': () => import('./commands/browser-install.ts'),
 };
 
 const usage = `${bold(accent('setcast'))} ${dim(`v${version}`)}  event-driven visuals for DJ sets
@@ -37,6 +38,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      visualize a live audio input in the browser
   ${steel('replay')}    turn a session journal and recorded master into a project
+  ${steel('browser-install')}  install Chromium for the experimental browser exporter
 
 Run ${bold('setcast <command> --help')} for details.
 `;

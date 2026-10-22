@@ -267,8 +267,7 @@ export class RenderUi {
   }: RenderProgress): void => {
     const percent = Math.round(progress * 100);
     if (stage === 'browser') {
-      const message =
-        progress < 1 ? `Downloading Chrome Headless Shell ${percent}%` : 'Browser ready';
+      const message = progress < 1 ? `Preparing browser ${percent}%` : 'Browser ready';
       this.#spin.message(message);
       return;
     }
@@ -323,6 +322,7 @@ export class RenderUi {
   done(message: string): void {
     clearTabProgress();
     if (this.#encode) this.#encode.done(message);
+    else if (this.#frames) this.#frames.done(message);
     else this.#spin.stop(message);
   }
 

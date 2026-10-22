@@ -231,8 +231,8 @@ export const ProjectConfigSchema = z
         .default('sterile-tech'),
       css: relativePath('css').optional(),
       renderer: z
-        .literal('remotion', {
-          error: 'renderer must be "remotion" (the only renderer in v1).',
+        .enum(['remotion', 'browser'], {
+          error: 'renderer must be remotion or browser.',
         })
         .default('remotion'),
       output: OutputSchema.prefault({}),

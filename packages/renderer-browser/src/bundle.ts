@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 
-export async function bundlePlayer(): Promise<Map<string, Buffer>> {
+export async function bundlePlayer(entry = 'index.tsx'): Promise<Map<string, Buffer>> {
   const built = await build({
     configFile: false,
     root: fileURLToPath(new URL('..', import.meta.url)),
@@ -12,7 +12,7 @@ export async function bundlePlayer(): Promise<Map<string, Buffer>> {
     build: {
       write: false,
       lib: {
-        entry: fileURLToPath(new URL('../entry/index.tsx', import.meta.url)),
+        entry: fileURLToPath(new URL(`../entry/${entry}`, import.meta.url)),
         formats: ['es'],
         fileName: () => 'player.js',
         cssFileName: 'player',

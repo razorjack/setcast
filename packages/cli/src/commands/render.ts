@@ -1,5 +1,5 @@
 import type { RenderOptions, StillOptions } from '@setcast/core';
-import { withRenderSession } from '../renderer.ts';
+import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
@@ -34,10 +34,11 @@ import { firstDrop } from './still.ts';
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
 Renders the project in <dir> (default: current directory) to an MP4.
+  --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
   --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
-  --concurrency  parallel browser tabs (default: Remotion's choice)
+  --concurrency  parallel browser tabs (default: Remotion chooses; browser uses 1)
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
 interface RenderCommandOptions {
@@ -45,18 +46,28 @@ interface RenderCommandOptions {
   range: [number, number] | undefined;
   out: string | undefined;
   theme: string | undefined;
+  renderer: string | undefined;
   concurrency: number | undefined;
   bundle: boolean;
 }
 
-export const run = (argv: string[]) => withRenderSession(() => runCommand(argv));
-
-async function runCommand(argv: string[]): Promise<void> {
-  let options = parseOptions(argv);
-
+export async function run(argv: string[]) {
+  const options = parseOptions(argv);
   intro('render');
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
+  await withRenderSession(
+    () => runCommand(options, loaded),
+    rendererName(options.renderer, loaded.config.renderer),
+  );
+}
+
+async function runCommand(
+  initial: RenderCommandOptions,
+  loaded: Awaited<ReturnType<typeof load>>,
+): Promise<void> {
+  let options = initial;
+
   const { dir } = loaded;
   const duration = loaded.project.mix.duration / 1_000_000;
   if (options.range) {
@@ -74,6 +85,7 @@ async function runCommand(argv: string[]): Promise<void> {
   const job = renderOptions(options, {
     projectDir: dir,
     out,
+    profile: config.output.profile,
     crf: config.output.crf,
     x264Preset: config.output.x264Preset,
     parallelEncoding: config.output.parallelEncoding,
@@ -105,6 +117,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
       range: { type: 'string' },
       out: { type: 'string' },
       theme: { type: 'string' },
+      renderer: { type: 'string' },
       concurrency: { type: 'string' },
       bundle: { type: 'boolean' },
     },
@@ -123,6 +136,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
     range,
     out: values.out,
     theme: values.theme,
+    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
     concurrency,
     bundle: values.bundle ?? false,
   };

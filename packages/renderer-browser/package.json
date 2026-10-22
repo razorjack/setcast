@@ -1,7 +1,7 @@
 {
   "name": "@setcast/renderer-browser",
   "version": "0.1.0",
-  "description": "Browser playback and live audio visualization for Setcast.",
+  "description": "Browser playback, live audio visualization and experimental offline export for Setcast.",
   "license": "MIT",
   "files": [
     "dist",
@@ -11,13 +11,17 @@
   "exports": {
     ".": "./src/index.ts",
     "./player": "./src/browser/main.tsx",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./export": "./src/export/index.ts",
+    "./export-scene": "./src/export/scene.tsx"
   },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
       "./player": "./dist/browser/main.mjs",
-      "./package.json": "./package.json"
+      "./package.json": "./package.json",
+      "./export": "./dist/export/index.mjs",
+      "./export-scene": "./dist/export/scene.mjs"
     },
     "access": "public"
   },
@@ -27,6 +31,7 @@
   "dependencies": {
     "@setcast/core": "workspace:*",
     "mediabunny": "catalog:",
+    "playwright": "catalog:",
     "vite": "catalog:"
   },
   "devDependencies": {

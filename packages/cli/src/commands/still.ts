@@ -1,5 +1,5 @@
 import type { StillOptions, StillResult } from '@setcast/core';
-import { withRenderSession } from '../renderer.ts';
+import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { formatTime, type Annotation, type ResolvedProject, type SetEnvelope } from '@setcast/core';
@@ -14,6 +14,7 @@ import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme name|all]
 
 Renders one frame as an image, ready to upload as the YouTube thumbnail.
+  --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
   --at     the moment to grab; defaults to the first drop, or a quarter into the set
   --out    output file; .png, .jpg or .webp (default: output.file with a .jpg extension)
   --theme  a built-in theme or a .css file to use instead of setcast.yaml's theme:;
@@ -26,22 +27,30 @@ interface StillCommandOptions {
   at: number | undefined;
   out: string | undefined;
   theme: string | undefined;
+  renderer: string | undefined;
 }
 
 type StillPlan = Omit<StillOptions, 'onProgress'> & { at: number };
 
-export const run = (argv: string[]) => withRenderSession(() => runCommand(argv));
-
-async function runCommand(argv: string[]): Promise<void> {
+export async function run(argv: string[]) {
   const options = parseOptions(argv);
-
   intro('still');
+  const loaded = await load(
+    options.dir,
+    options.theme === EVERY_THEME ? Object.keys(themes)[0] : options.theme,
+  );
+  await withRenderSession(
+    () => runCommand(options, loaded),
+    rendererName(options.renderer, loaded.config.renderer),
+  );
+}
+
+async function runCommand(options: StillCommandOptions, loaded: LoadedProject): Promise<void> {
   if (options.theme === EVERY_THEME) {
     await grabEveryTheme(options);
     return;
   }
 
-  const loaded = await load(options.dir, options.theme);
   const plan = planStill(loaded, options);
   const project = await withWholeSet(loaded);
   const result = await grabStill(
@@ -82,7 +91,12 @@ async function grabEveryTheme(options: StillCommandOptions): Promise<void> {
 function parseOptions(argv: string[]): StillCommandOptions {
   const { values, positionals } = parseCommandArgs(
     argv,
-    { at: { type: 'string' }, out: { type: 'string' }, theme: { type: 'string' } },
+    {
+      at: { type: 'string' },
+      out: { type: 'string' },
+      theme: { type: 'string' },
+      renderer: { type: 'string' },
+    },
     help,
   );
   return {
@@ -90,6 +104,7 @@ function parseOptions(argv: string[]): StillCommandOptions {
     at: values.at ? parseAt(values.at) : undefined,
     out: values.out,
     theme: values.theme,
+    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
   };
 }
 

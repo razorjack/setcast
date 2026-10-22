@@ -1,4 +1,4 @@
-import { withRenderSession } from '../renderer.ts';
+import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { formatTime, SetcastError, type Annotation } from '@setcast/core';
@@ -23,6 +23,7 @@ const MAX_SECONDS = 120;
 export const help = `setcast clip [dir] [--at MM:SS] [--seconds 45] [--all] [--out clip.mp4] [--theme name]
 
 Cuts a promo clip around a drop, for socials. The drop lands a third of the way in.
+  --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
   --at       the drop to cut around; defaults to the first drop
   --seconds  clip length, ${MIN_SECONDS} to ${MAX_SECONDS}; clips at the set end (default ${DEFAULT_SECONDS})
   --all      one clip per drop
@@ -36,15 +37,24 @@ interface ClipOptions {
   all: boolean;
   out: string | undefined;
   theme: string | undefined;
+  renderer: string | undefined;
 }
 
-export const run = (argv: string[]) => withRenderSession(() => runCommand(argv));
-
-async function runCommand(argv: string[]): Promise<void> {
+export async function run(argv: string[]) {
   const options = parseOptions(argv);
-
   intro('clip');
+
   const loaded = await load(options.dir, options.theme);
+  await withRenderSession(
+    () => runCommand(options, loaded),
+    rendererName(options.renderer, loaded.config.renderer),
+  );
+}
+
+async function runCommand(
+  options: ClipOptions,
+  loaded: Awaited<ReturnType<typeof load>>,
+): Promise<void> {
   const duration = loaded.project.mix.duration / 1_000_000;
   const centers = clipCenters(loaded.project.mix.annotations, options).map((center) =>
     timeWithinAudio(center, duration, '--at'),
@@ -72,6 +82,7 @@ function parseOptions(argv: string[]): ClipOptions {
       all: { type: 'boolean' },
       out: { type: 'string' },
       theme: { type: 'string' },
+      renderer: { type: 'string' },
     },
     help,
   );
@@ -95,6 +106,7 @@ function parseOptions(argv: string[]): ClipOptions {
     all: values.all ?? false,
     out: values.out,
     theme: values.theme,
+    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
   };
 }
 
@@ -138,6 +150,7 @@ async function renderClip(
       projectDir: loaded.dir,
       out,
       range,
+      profile: loaded.config.output.profile,
       crf: loaded.config.output.crf,
       x264Preset: loaded.config.output.x264Preset,
       parallelEncoding: loaded.config.output.parallelEncoding,
