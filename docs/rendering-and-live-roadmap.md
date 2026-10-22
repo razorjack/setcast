@@ -106,16 +106,36 @@ Physical controllers, camera/display interaction and projector routing remain
 unqualified. See [live-performance.md](live-performance.md) and
 [browser-renderer.md](browser-renderer.md) for commands and limits.
 
+### Completed resume milestone, 2026-10-22
+
+Starting revision: 1872692. Implemented browser-only `render --resume`, including CLI progress
+for reused frames and explicit rejection by Remotion. Completed silent chunks use an atomic
+manifest beside the output. Project settings, source contents, adapter/bundle code and runtime
+identity determine reuse. Chunk checksums reject damaged files; ffprobe validates new chunks
+before publication. Missing/invalid chunks render again, and final output replacement stays
+atomic. Successful output removes the checkpoints; failure retains completed work.
+
+The checkpoint directory has an exclusive writer lock. An abandoned lock requires checking
+the recorded process before manual removal. Resumable jobs reject remote/untracked resources
+and require embedded CSS dependencies. Source metadata is rechecked during the job. Checkpoints
+are local recovery files, with additional disk and hashing cost. Details and recovery instructions
+are in [browser-renderer.md](browser-renderer.md#resume-an-interrupted-export).
+
+Validation: all 437 tests and `vp run ready` passed. Both exporter acceptance suites passed.
+Installed-package smoke covers `--resume`. The recovery check reused 30 of 75 frames and
+captured the remaining 45, with identical decoded output to an uninterrupted export. A complete
+checkpoint set reused all 75 with no new captures. Missing/corrupt chunks and changed
+audio/artwork/configuration/encoding rebuilt correctly; source changes during a job and untracked
+resources failed explicitly. Relative asset paths were exercised. CI now includes browser
+acceptance and recovery; its Linux run has not been executed from this local session.
+
 ### Next milestones
 
-1. Resume interrupted exports from validated chunks. Start with a manifest and atomic checkpoints;
-   test cancellation, changed audio/assets/configuration and corrupt/missing chunks. Keep current
-   atomic final-output replacement. Do not reuse a chunk based only on its filename.
-2. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.
+1. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.
    Keep output geometry separate from scene appearance and recorded scene events.
-3. One deterministic GPU visualizer, measured against the existing SVG examples. Add explicit
+2. One deterministic GPU visualizer, measured against the existing SVG examples. Add explicit
    seed/time and random-access tests before particles with accumulated simulation state.
-4. Curated automatic scene progression with minimum dwell and manual hold. Add confidence-aware
+3. Curated automatic scene progression with minimum dwell and manual hold. Add confidence-aware
    beat tracking only after the manual tempo path is qualified with real mixer recordings.
 
 Display selection, camera test patterns, branding, hardware qualification and independent preview

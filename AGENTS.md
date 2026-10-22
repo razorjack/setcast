@@ -521,6 +521,20 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- `setcast render --resume` is browser-only and opt-in. Completed chunks live in
+  `<output>.setcast-resume`; a content/runtime fingerprint invalidates stale jobs, and checksum
+  validation rejects missing/corrupt chunks. Source metadata is rechecked during capture and
+  assembly. Resume blocks untracked resource requests and requires embedded CSS dependencies.
+  Chunks are probed with ffprobe, flushed and published through an atomic manifest. The writer
+  lock is exclusive; a stale lock requires manual confirmation/removal, never age-based takeover.
+  Successful final-output replacement removes checkpoints through a directory rename before
+  cleanup, so a new writer cannot enter a directory being deleted. Default exports still use
+  temporary files. See `docs/browser-renderer.md` and `bench/resume.ts` in renderer-browser.
+- Browser capture/runtime identity hashes the actual Vite bundle and adapter source/distribution
+  files, so local iterations invalidate checkpoints even when package versions are unchanged.
+  The fingerprint includes host/runtime identity; checkpoints are not a cross-machine cache.
+  CI installs pinned Playwright Chromium and runs browser acceptance plus resume recovery.
+
 - Performance values and timestamped ramps belong to core. Intensity scales visual features,
   not input PCM; brightness uses a black overlay outside the theme's `.setcast` element, inside
   an isolated `.sc-output` wrapper. This covers theme pseudo-elements and survives rules that

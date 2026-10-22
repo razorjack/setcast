@@ -55,6 +55,71 @@ Ctrl+C or SIGTERM cancels a CLI export. Programmatic `render` and `still` accept
 `AbortSignal`. Preparation may need to finish before cancellation is observed. Video output
 is assembled in a temporary directory beside the destination and renamed only after success.
 Failure and cancellation preserve an existing output file and remove temporary files.
+With `--resume`, completed checkpoints are retained separately as described below.
+
+## Resume an interrupted export
+
+Install both `ffmpeg` and `ffprobe` on PATH, then add `--resume` from the first attempt:
+
+```sh
+setcast render path/to/project --renderer browser --resume --out set.mp4
+```
+
+After Ctrl+C, SIGTERM or a render failure, rerun the same command. Setcast stores completed
+silent-video chunks in `set.mp4.setcast-resume` beside the output. The progress line reports
+reused frames. It captures only missing or invalid chunks, then encodes the continuous master
+audio and assembles the final output again. A failure during final assembly can therefore
+resume without capturing any frames. The existing output survives until successful replacement.
+Checkpoints are removed after the final video is published.
+
+Checkpoint frequency follows `output.chunkSeconds` in setcast.yaml, which defaults to 60.
+For less work lost between checkpoints, choose a shorter chunk:
+
+```yaml
+output:
+  chunkSeconds: 20
+```
+
+Only completed chunks are reusable. `chunkSeconds: 0` makes the entire range one chunk, so an
+interruption during frame capture cannot reuse partial work. Resume is available on `render`,
+including `--range` and `--bundle`; it is not a `clip` or `still` flag. Remotion explicitly
+rejects the resume option. Programmatic browser `render()` accepts `resume: true`.
+
+Reuse requires an identical resolved project, frame ranges, encoding settings, concurrency and
+graphics backend. Setcast hashes audio, global/per-play/replay backgrounds, the capture bundle
+and adapter code, and records runtime identity including Chromium, Playwright, FFmpeg, Node,
+OS and host. Embedded fonts and artwork are covered by the resolved CSS. Changed identity
+starts a fresh set of checkpoints; it never mixes chunks from two configurations. Missing or
+checksum-mismatched chunks are rendered again. Each newly encoded chunk is checked for codec,
+dimensions, frame rate and frame count before being flushed and atomically added to the manifest.
+
+Keep source files unchanged during a job. Changes detected during capture or assembly stop the
+export. Resumable jobs require self-contained CSS: use relative local `url()` references so
+Setcast embeds them, and remove `@import`. Network requests and untracked resources are rejected.
+Render without `--resume` if the scene needs them. Checkpoints are local recovery files, not
+portable render artifacts; keep the machine's fonts and graphics environment unchanged.
+
+Allow disk space for the checkpoints, working chunk copies and final output. Hashing large
+source files and validating checkpoints adds startup work. Without `--resume`, the existing
+temporary-file workflow is unchanged.
+
+Concurrent resumable jobs cannot share one checkpoint directory. `lock.json` contains the
+writer's PID, host and start time. Graceful cancellation removes the lock. A process crash or
+forced kill can leave it behind: confirm that the recorded process is no longer running before
+removing only `lock.json` and retrying. Setcast never steals a lock based on its age. A missing
+or malformed manifest produces an error; remove that checkpoint directory to start fresh.
+Temporary files left by a forced kill can be removed after the process has stopped. Do not
+edit a checkpoint directory while a render is running.
+
+The recovery regression is:
+
+```sh
+node packages/renderer-browser/bench/resume.ts
+```
+
+It verifies frame-identical resumed output, interruption before and during assembly, missing and
+corrupt chunks, changed audio/artwork/configuration/encoding, source edits during a job and
+untracked resource rejection. CI runs this check and both exporter acceptance suites.
 
 ## Frame delivery
 
@@ -129,5 +194,5 @@ same-page frame check validate the readiness contract. This is one local compari
 general speed guarantee or a replacement for the earlier two-minute benchmark.
 
 Direct CDP screenshot capture did not improve the initial comparison and was not retained.
-Resumable verified chunks, wider platform qualification and capture/encoding overlap remain
-next steps. Keep metrics enabled while choosing further optimizations.
+Resumable verified chunks are implemented. Wider platform qualification and capture/encoding
+overlap remain next steps. Keep metrics enabled while choosing further optimizations.
