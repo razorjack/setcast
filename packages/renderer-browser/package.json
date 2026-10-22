@@ -13,7 +13,9 @@
     "./player": "./src/browser/main.tsx",
     "./package.json": "./package.json",
     "./export": "./src/export/index.ts",
-    "./export-scene": "./src/export/scene.tsx"
+    "./export-scene": "./src/export/scene.tsx",
+    "./preview": "./src/preview/server.ts",
+    "./preview-ui": "./src/preview/main.tsx"
   },
   "publishConfig": {
     "exports": {
@@ -21,7 +23,9 @@
       "./player": "./dist/browser/main.mjs",
       "./package.json": "./package.json",
       "./export": "./dist/export/index.mjs",
-      "./export-scene": "./dist/export/scene.mjs"
+      "./export-scene": "./dist/export/scene.mjs",
+      "./preview": "./dist/preview/server.mjs",
+      "./preview-ui": "./dist/preview/main.mjs"
     },
     "access": "public"
   },

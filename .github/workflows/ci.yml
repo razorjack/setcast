@@ -41,3 +41,5 @@ jobs:
         run: node packages/renderer-browser/bench/sequence.ts
       - name: One-projector geometry, calibration and venue profiles
         run: node packages/renderer-browser/bench/projection.ts
+      - name: Independent preview frames, comparison and recovery
+        run: node packages/renderer-browser/bench/preview.ts

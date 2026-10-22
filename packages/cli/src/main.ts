@@ -29,7 +29,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('init')}      scaffold a project (interactive; --demo ships a working demo)
   ${steel('import')}    turn a tracklist file into plays: for setcast.yaml
   ${steel('analyze')}   read the audio and draft drop / breakdown annotations
-  ${steel('preview')}   open the project in Remotion Studio
+  ${steel('preview')}   open the configured renderer preview
   ${steel('play')}      play a recorded project in the browser (prototype)
   ${steel('render')}    render the MP4 (--range for a slice, --bundle adds thumbnail + description)
   ${steel('clip')}      cut a promo clip around a drop (--all for every drop)

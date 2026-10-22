@@ -1,19 +1,22 @@
-import { preview, type PreviewOptions } from '../renderer.ts';
+import { preview, rendererName, type PreviewOptions } from '../renderer.ts';
 import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
+import { browserPreview } from './browser-preview.ts';
 import { dim, intro, log, printError } from '../ui.ts';
 
-export const help = `setcast preview [dir] [--port N] [--theme name]
+export const help = `setcast preview [dir] [--port N] [--theme name] [--renderer remotion|browser]
 
-Opens the project in Remotion Studio: scrub the timeline, tweak, then render.
-  --port   the port Remotion Studio listens on
+Preview with the configured renderer (default: Remotion Studio).
+  --renderer  remotion or browser; overrides setcast.yaml
+  --port   localhost port (browser default 3210)
   --theme  a built-in theme or a .css file to use instead of setcast.yaml's theme:`;
 
 interface PreviewCommandOptions {
   dir: string | undefined;
   port: number | undefined;
   theme: string | undefined;
+  renderer: 'remotion' | 'browser' | undefined;
 }
 
 export async function run(argv: string[]): Promise<void> {
@@ -21,7 +24,12 @@ export async function run(argv: string[]): Promise<void> {
 
   intro('preview');
   const dependencies = new Set<string>();
-  const loaded = await withHardwareEncoding(await load(options.dir, options.theme, dependencies));
+  const initial = await load(options.dir, options.theme, dependencies);
+  if (rendererName(options.renderer, initial.config.renderer) === 'browser') {
+    await browserPreview(initial, dependencies, options);
+    return;
+  }
+  const loaded = await withHardwareEncoding(initial);
   const { dir } = loaded;
   const project = await withWholeSet(loaded);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
@@ -54,7 +62,7 @@ export async function run(argv: string[]): Promise<void> {
 function parseOptions(argv: string[]): PreviewCommandOptions {
   const { values, positionals } = parseCommandArgs(
     argv,
-    { port: { type: 'string' }, theme: { type: 'string' } },
+    { port: { type: 'string' }, theme: { type: 'string' }, renderer: { type: 'string' } },
     help,
   );
   const port =
@@ -66,5 +74,10 @@ function parseOptions(argv: string[]): PreviewCommandOptions {
           integer: true,
           hint: 'Use a whole number between 1 and 65535.',
         });
-  return { dir: positionals[0], port, theme: values.theme };
+  return {
+    dir: positionals[0],
+    port,
+    theme: values.theme,
+    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
+  };
 }

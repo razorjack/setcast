@@ -17,6 +17,7 @@ const modules = join(temporary, 'node_modules');
 
 const playerSmokeSource = `import assert from 'node:assert/strict';
 import { play } from '@setcast/renderer-browser';
+import { preview } from '@setcast/renderer-browser/preview';
 import { loadProject, loadLiveProject, probeAudio } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 const projectDir = process.argv[2];
@@ -38,6 +39,14 @@ try {
 } finally {
   await server.close();
 }
+const inspection = await preview(project, { projectDir, port: 0 });
+try {
+  for (const path of ['', 'player.js', 'frame.html', 'frame/player.js', 'frame/player.css', 'preview.json']) {
+    const response = await fetch(new URL(path, inspection.url));
+    assert.equal(response.status, 200, path);
+    assert((await response.text()).length > 0, path);
+  }
+} finally { await inspection.close(); }
 const live = await loadLiveProject(projectDir, { themes, theme: 'relief' });
 const liveServer = await play(live.project, { projectDir, port: 0 });
 try {

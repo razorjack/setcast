@@ -233,7 +233,7 @@ projector alignment and sustained performance remain unqualified.
 3. Extend projection only after one-projector hardware qualification: curved meshes, color
    matching and multi-projector edge blending are separate work.
 
-Camera test patterns, branding, hardware qualification and independent preview
+Camera test patterns, branding and hardware qualification
 remain in the delivery order above. No background task or recurring automation is installed.
 
 ## References
@@ -268,3 +268,15 @@ commits. Remotion remains the default exporter.
   journal replay, failure/restart behavior, scene/readiness regression, both exporter acceptance
   suites for the document binding, installed packages and `vp run ready`. Physical projector
   alignment and camera behavior remain hardware qualification work.
+
+## Independent preview delivered
+
+`preview --renderer browser` and `renderer: browser` now select a frame inspector independently
+of Remotion Studio. It shares the browser export driver, with exact seeking, silent sequential
+playback, rendered audio/timeline inspection, readiness diagnostics and local reference-image
+comparison. Resolved project inputs reload automatically; invalid edits retain the last valid
+project. Remotion remains the default. See [independent preview](independent-preview.md).
+
+The browser bench covers export-frame agreement, backward seeks, video loops, reference import,
+reload and recovery. The CLI is exercised with Remotion imports forbidden. Wider platform and
+physical hardware qualification remain open; this completes the preview portion of milestone 6.

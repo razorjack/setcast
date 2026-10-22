@@ -261,7 +261,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast init`     | scaffolds a project; `--demo` includes a generated demo track                                    |
 | `setcast import`   | turns a tracklist file (plain text or `.cue`) into `plays:` with source evidence; `--write` replaces that list after validation |
 | `setcast analyze`  | reads the audio and drafts mix drop and breakdown annotations plus tempo, without snapping; `--write` accepts and merges them |
-| `setcast preview`  | opens the set in Remotion Studio                                                                 |
+| `setcast preview`  | opens Remotion Studio; `--renderer browser` selects the independent frame inspector                                                                 |
 | `setcast play`     | prototype: plays a recorded project in a local browser and switches themes, credits and art while it plays |
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
@@ -271,6 +271,10 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast replay`   | create a recorded project from a live journal and separately recorded master |
 | `setcast browser-install` | install pinned Chromium for the experimental browser exporter |
 | `setcast live`     | visualizes a selected live audio input, with themes, channel routing and clean fullscreen output                                                                       |
+
+The [independent preview](docs/independent-preview.md) provides exact frame stepping, audio-feature
+and readiness inspection, local reference-image comparison and automatic project reload.
+`renderer: browser` also selects it for `preview`; Remotion remains the default.
 
 `play`, `preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without editing
 `setcast.yaml`, e.g. `setcast still --theme bristol --out bristol.jpg`. Run

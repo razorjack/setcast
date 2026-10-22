@@ -26,10 +26,11 @@ To select the exporter for a project:
 renderer: browser
 ```
 
-Omitting `renderer` selects `remotion`. `--renderer` overrides the YAML for `render`, `still`
-and `clip`, including bundled thumbnails and batches. Failure is reported without switching
-exporters. `preview` still opens Remotion Studio. `play` and `live` use browser playback
-independently of this export setting.
+Omitting `renderer` selects `remotion`. `--renderer` overrides the YAML for `render`, `still`,
+`clip` and `preview`, including bundled thumbnails and batches. Failure is reported without switching
+exporters. `preview --renderer browser` opens the [independent frame inspector](independent-preview.md);
+Remotion Studio remains the default preview. `play` and `live` use browser playback independently
+of this setting.
 
 ## Supported settings and limits
 

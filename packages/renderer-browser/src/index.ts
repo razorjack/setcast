@@ -5,6 +5,7 @@ import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
 import { projectCatalog, type ThemeCatalog } from './catalog.ts';
 import { savedScene, savedScenes } from './scenes.ts';
+import type { PreviewRevision } from './preview/server.ts';
 import { saveRequest } from './save.ts';
 
 export type { ThemeCatalog, ThemeChoice, ThemeListing } from './catalog.ts';
@@ -18,6 +19,8 @@ export interface PlayerOptions {
   themes?: ThemeCatalog;
   /** Internal export server: prebundled frame driver, with all writes disabled. */
   captureFiles?: Map<string, Buffer>;
+  /** Mutable, read-only preview revision supplied by the preview server. */
+  preview?: PreviewRevision;
 }
 export interface PlayerServer {
   url: string;
@@ -44,6 +47,7 @@ export async function play(project: SceneProject, options: PlayerOptions): Promi
     files,
     catalog: projectCatalog(project, options.themes),
     readOnly: Boolean(options.captureFiles),
+    preview: options.preview,
   };
   const server = createServer((request, response) => {
     void respond(site, request, response).catch((error: unknown) => failResponse(response, error));
@@ -86,10 +90,11 @@ interface Site {
   files: Map<string, Buffer>;
   catalog: ReturnType<typeof projectCatalog>;
   readOnly: boolean;
+  preview?: PreviewRevision;
 }
 
 async function respond(
-  { root, files, catalog, readOnly }: Site,
+  { root, files, catalog, readOnly, preview }: Site,
   request: IncomingMessage,
   response: ServerResponse,
 ) {
@@ -123,6 +128,7 @@ async function respond(
     response.writeHead(405).end();
     return;
   }
+  if (sendPreview(preview, url, request, response)) return;
   if (path === '/scenes.json' || path === '/scene.json') {
     await sendScenes(root, url, request, response);
     return;
@@ -203,4 +209,23 @@ async function sendScenes(
       .writeHead(400, { 'Content-Type': 'application/json' })
       .end(JSON.stringify({ message: error instanceof Error ? error.message : String(error) }));
   }
+}
+
+function sendPreview(
+  preview: PreviewRevision | undefined,
+  url: URL,
+  request: IncomingMessage,
+  response: ServerResponse,
+): boolean {
+  if (!preview || !['/preview.json', '/project.json'].includes(url.pathname)) return false;
+  let body: unknown = preview.project;
+  if (url.pathname === '/preview.json')
+    body = {
+      revision: preview.revision,
+      error: preview.error,
+      project:
+        url.searchParams.get('revision') === String(preview.revision) ? undefined : preview.project,
+    };
+  send(request, response, Buffer.from(JSON.stringify(body)), 'application/json');
+  return true;
 }

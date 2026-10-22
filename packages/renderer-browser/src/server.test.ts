@@ -166,3 +166,27 @@ test('export asset servers reject all player writes', async () => {
     await server.close();
   }
 });
+
+test('preview revisions publish valid projects and retain them after an invalid edit', async () => {
+  const { preview } = await import('./preview/server.ts');
+  const server = await preview(project, { projectDir: '.', port: 0 });
+  const revision = async (known = -1) =>
+    (await fetch(`${server.url}/preview.json?revision=${known}`)).json();
+  try {
+    expect(await revision()).toEqual({ revision: 0, project, error: null });
+    expect(await revision(0)).toEqual({ revision: 0, error: null });
+    server.report('Invalid annotation');
+    expect(await revision(0)).toEqual({ revision: 0, error: 'Invalid annotation' });
+    expect(await (await fetch(`${server.url}/project.json`)).json()).toEqual(project);
+    const next = { ...project, title: 'Updated' };
+    server.update(next);
+    expect(await revision(0)).toEqual({ revision: 1, project: next, error: null });
+    expect(await (await fetch(`${server.url}/project.json`)).json()).toEqual(next);
+    const frame = await fetch(`${server.url}/frame.html`);
+    expect(frame.headers.get('content-type')).toBe('text/html');
+    expect(await frame.text()).toContain('/frame/player.js');
+    expect((await fetch(`${server.url}/save`, { method: 'POST' })).status).toBe(405);
+  } finally {
+    await server.close();
+  }
+});

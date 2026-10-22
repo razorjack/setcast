@@ -29,6 +29,7 @@ export async function projectAsset(root: string, path: string): Promise<string |
 
 export const mediaType = (path: string): string =>
   ({
+    '.html': 'text/html',
     '.js': 'text/javascript',
     '.css': 'text/css',
     '.png': 'image/png',

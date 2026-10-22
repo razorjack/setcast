@@ -14,6 +14,10 @@ export class FrameReadiness {
     };
   };
 
+  get labels(): string[] {
+    return [...this.pending.values()];
+  }
+
   async settle(frame: number, timeout = 30_000) {
     const deadline = performance.now() + timeout;
     let quiet = 0;
