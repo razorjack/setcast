@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { historyTimes, SILENCE, type AudioAnalyzer, type AudioFeatures } from '../audio.ts';
+import type { PerformanceState } from '../performance.ts';
 import type { SceneProject } from '../project.ts';
 import type { MixState } from '../timeline.ts';
 
@@ -8,6 +9,7 @@ export interface CompositionState {
   height: number;
   durationSeconds: number | null;
   project: SceneProject;
+  performance?: PerformanceState;
 }
 
 /** The contract between a renderer and every Setcast component. Renderer-agnostic by design. */

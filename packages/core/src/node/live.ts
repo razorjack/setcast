@@ -78,6 +78,7 @@ function resolveLiveProject(
     tracklist: null,
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
+    performance: config.performance,
     live: { input: config.input, clock: config.clock },
   };
 }

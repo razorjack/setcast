@@ -56,6 +56,13 @@ test('journal CLI creates a standalone finite project with mapped credits, cues,
     await convert(root, [
       { type: 'scene', sample: 0, preset: saved.directory },
       { type: 'credit', sample: 0, title: 'Current' },
+      {
+        type: 'performance',
+        sample: 0,
+        from: { intensity: 1, brightness: 1 },
+        to: { intensity: 0, brightness: 0 },
+        duration: 1,
+      },
       { type: 'cue', sample: 12000, kind: 'drop' },
       { type: 'end', sample: 48000 },
     ]);
@@ -72,6 +79,7 @@ test('journal CLI creates a standalone finite project with mapped credits, cues,
       frame: 6,
       analyzer: silentAnalyzer,
     });
+    expect(frame.composition.performance?.brightness).toBeCloseTo(0.7);
     expect(frame.composition.project.title).toBe('Journal scene');
     expect(frame.composition.project.beatOffset).toBeCloseTo(1.65);
     const copy = await saveScene(join(root, directory), project, { theme: 'initial', art: 'none' });

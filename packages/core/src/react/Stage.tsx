@@ -23,6 +23,26 @@ import { resolveVisualizer } from './visualizers.ts';
  * tracklist or up next.
  */
 export function Stage() {
+  const { composition } = useFrame();
+  return (
+    <div
+      className="sc-output"
+      style={{
+        position: 'relative',
+        isolation: 'isolate',
+        width: composition.width,
+        height: composition.height,
+      }}
+    >
+      <div style={{ position: 'relative', zIndex: 0 }}>
+        <SceneStage />
+      </div>
+      <OutputDimmer brightness={composition.performance?.brightness ?? 1} />
+    </div>
+  );
+}
+
+function SceneStage() {
   const { composition, mix, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
   useFontsReady(project.css);
@@ -48,6 +68,8 @@ export function Stage() {
     ...travelVars(project.travel, timeSeconds),
     ...modulationVars(modulation),
     ...backgroundVars(backgroundArt),
+    '--performance-intensity': composition.performance?.intensity ?? 1,
+    '--performance-brightness': composition.performance?.brightness ?? 1,
   };
 
   return (
@@ -113,3 +135,22 @@ const frameArea = (box: DOMRect, frame: DOMRect): FrameArea => ({
   right: (box.right - frame.left) / frame.width,
   bottom: (box.bottom - frame.top) / frame.height,
 });
+
+function OutputDimmer({ brightness }: { brightness: number }) {
+  if (brightness === 1) return null;
+  return (
+    <div
+      className="sc-output-dimmer"
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        position: 'absolute',
+        inset: 0,
+        zIndex: 2147483647,
+        background: 'black',
+        opacity: 1 - brightness,
+        pointerEvents: 'none',
+      }}
+    />
+  );
+}

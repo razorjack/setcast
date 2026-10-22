@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PerformanceSchema, AutomationSchema } from './performance.ts';
 import { TimeSchema } from './time-schema.ts';
 import { MixInputShape } from './mix-schema.ts';
 import { ModRouteSchema } from './modulation.ts';
@@ -263,6 +264,8 @@ export const ProjectConfigSchema = z
         .optional(),
       /** Seconds into the audio of a downbeat, so `--bar` lines up with the music. */
       beatOffset: TimeSchema.default(0),
+      performance: PerformanceSchema.optional(),
+      automation: AutomationSchema.optional(),
       scenes: z
         .array(
           z.strictObject(

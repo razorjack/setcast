@@ -51,6 +51,7 @@ export async function run(argv: string[]) {
       plays: replay.plays,
       annotations: replay.annotations,
       scenes: replay.scenes,
+      automation: replay.automation,
       panel: { dwell: 0 },
     };
     await writeFile(join(output, 'setcast.yaml'), stringify(config));
@@ -101,6 +102,7 @@ async function initialAppearance(root: string, preset: string) {
     beatOffset: project.beatOffset,
     visualizer: project.visualizers,
     modulation: project.modulation,
+    performance: project.performance,
     output: { width: project.width, height: project.height, fps: project.fps, file: 'set.mp4' },
   };
 }

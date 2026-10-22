@@ -47,11 +47,19 @@ The renderer supplies `RenderFrame` through `FrameProvider`:
 React components consume `useMixState()`, `useFrame()`, `useTime()`, `useComposition()`,
 `useAudioFeatures()`, `useAudioHistory()` and `useModulation()` from `@setcast/core/react`.
 `timeSeconds` uses the original mix clock, including during a render slice. `composition`
-contains `width`, `height`, `durationSeconds` and the resolved `project`. Audio features,
+contains `width`, `height`, `durationSeconds`, the resolved `project` and optional `performance`
+values (`intensity`, `brightness`, both defaulting to 1). Audio features,
 waveforms and history describe the mixed master only. There is no per-play audio or meter.
 Media still uses Setcast's `Img`, `Video`, `useAsset` and renderer readiness bindings.
 
 ## CSS state
+
+`Stage` wraps the theme's `.setcast.sc-stage` in `.sc-output`. The outer wrapper owns an
+isolated stacking context and the performance dimmer; themes continue to style `.setcast` and
+its descendants. Do not override `.sc-output` or `.sc-output-dimmer`. Brightness covers the
+whole composition, including theme pseudo-elements. The stage exposes `--performance-intensity`
+and `--performance-brightness`; audio hooks already include intensity, so do not multiply it
+again. Renderers and plugins must retain labeled readiness holds for asynchronous work.
 
 The stage carries `data-presentation="playlist|dj"`, `data-current-plays`, and optional
 `data-section="drop|breakdown|buildup"`. `data-shared-drop="true"` means the current mix section

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PerformanceRampSchema, rampAt, type PerformanceEvent } from './performance.ts';
 
 const sampleError =
   'Journal sample must be a nonnegative safe integer. Keep the original capture sample positions.';
@@ -60,8 +61,9 @@ export const SessionEventSchema = z.discriminatedUnion(
     ),
     z.strictObject({ type: eventType('scene'), sample, preset: text }, entryError),
     z.strictObject({ type: eventType('end'), sample }, entryError),
+    PerformanceRampSchema.extend({ type: eventType('performance'), sample }),
   ],
-  { error: 'Journal event type must be credit, cue, scene or end.' },
+  { error: 'Journal event type must be credit, cue, scene, performance or end.' },
 );
 export type SessionHeader = z.infer<typeof SessionHeaderSchema>;
 export type SessionEvent = z.infer<typeof SessionEventSchema>;
@@ -112,6 +114,7 @@ export function replayEvents(
   const plays: { at: number; title: string; artist?: string }[] = [];
   const annotations: { at: number; kind: string }[] = [];
   const scenes: { at: number; preset: string }[] = [];
+  const automation: PerformanceEvent[] = [];
   for (const event of events) {
     const at = event.sample / header.sampleRate + offset;
     if (at >= duration) continue;
@@ -123,12 +126,28 @@ export function replayEvents(
       replaceAt(scenes, at);
       scenes.push({ at: Math.max(0, at), preset: event.preset });
     }
+    if (event.type === 'performance') {
+      replaceAt(automation, at);
+      automation.push(
+        replayPerformance({ at, from: event.from, to: event.to, duration: event.duration }),
+      );
+    }
     if (event.type === 'cue' && at >= 0) annotations.push({ at, kind: event.kind });
   }
-  return { plays, annotations, scenes };
+  return { plays, annotations, scenes, automation };
 }
 
 function replaceAt(entries: { at: number }[], at: number) {
   if (at < 0) entries.length = 0;
   if (entries.at(-1)?.at === Math.max(0, at)) entries.pop();
+}
+
+function replayPerformance(event: PerformanceEvent): PerformanceEvent {
+  if (event.at >= 0) return event;
+  return {
+    ...event,
+    at: 0,
+    from: rampAt(event, 0),
+    duration: Math.max(0, event.duration + event.at),
+  };
 }

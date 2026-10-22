@@ -1,3 +1,4 @@
+import type { PerformanceState, PerformanceEvent } from './performance.ts';
 import type { SetEnvelope, SetTravel } from './analysis.ts';
 import type { BackgroundFit } from './background.ts';
 import type { MixDocument } from './mix-schema.ts';
@@ -53,6 +54,8 @@ export type ResolvedProject = {
   /** Seconds into the audio of a downbeat. */
   beatOffset: number;
   /** Finite replay changes, resolved from saved live scene directories. */
+  performance?: PerformanceState;
+  automation?: PerformanceEvent[];
   scenes?: { at: number; scene: ResolvedLiveProject }[];
 };
 

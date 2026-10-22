@@ -11,12 +11,17 @@ import { SetcastError } from '../errors.ts';
 import { parseConfigYaml } from './project.ts';
 
 /** Saves a self-contained copy; source YAML and media are never changed. */
-export async function saveScene(root: string, project: SceneProject, selection: SceneSelection) {
+export async function saveScene(
+  root: string,
+  project: SceneProject,
+  selection: SceneSelection,
+  kind: 'scene' | 'journal' = 'scene',
+) {
   root = await realpath(root);
   SceneSelectionSchema.parse(selection);
   const configName = project.mix ? 'setcast.yaml' : 'live.yaml';
   const config = await sourceConfig(root, configName);
-  const output = await mkdtemp(join(root, 'saved-scene-'));
+  const output = await mkdtemp(join(root, kind === 'journal' ? 'journal-scene-' : 'saved-scene-'));
   try {
     const selected = selectedConfig(config, project, selection);
     await copyMedia(root, output, selected);
@@ -52,6 +57,7 @@ function selectedConfig(
   if (!project.scenes) delete copy.scenes;
   copy.theme = `./${project.theme}.css`;
   copy.title = selected.title ?? project.title;
+  copy.performance = selected.performance ?? project.performance;
   copy.modulation = project.modulation;
   copy.visualizer = project.visualizers;
   copy.backgroundFit = project.backgroundFit;

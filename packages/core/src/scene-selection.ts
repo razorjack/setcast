@@ -1,9 +1,15 @@
 import { z } from 'zod';
+import { PerformanceSchema } from './performance.ts';
 import { LiveConfigSchema } from './live.ts';
 import { ProjectConfigSchema } from './config.ts';
 
 export const SceneSelectionSchema = z.strictObject(
   {
+    preset: z
+      .string({ error: 'selection.preset must be a saved scene directory.' })
+      .min(1, { error: 'selection.preset cannot be empty.' })
+      .optional(),
+    performance: PerformanceSchema.optional(),
     theme: z
       .string({ error: 'selection.theme must name a theme offered by the player.' })
       .min(1, { error: 'selection.theme is empty. Choose a theme offered by the player.' }),

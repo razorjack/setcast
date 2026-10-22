@@ -249,3 +249,17 @@ export {
   type SessionHeader,
   type SessionEvent,
 } from './session.ts';
+
+export {
+  PerformanceSchema,
+  PerformanceRampSchema,
+  PerformanceEventSchema,
+  AutomationSchema,
+  DEFAULT_PERFORMANCE,
+  performanceAt,
+  rampAt,
+  performanceAnalyzer,
+  nextBar,
+  type PerformanceState,
+  type PerformanceEvent,
+} from './performance.ts';

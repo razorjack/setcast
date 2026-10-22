@@ -1,3 +1,9 @@
+import {
+  DEFAULT_PERFORMANCE,
+  performanceAt,
+  performanceAnalyzer,
+  type PerformanceState,
+} from '../performance.ts';
 import type { AudioAnalyzer } from '../audio.ts';
 import { evaluateModulation } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
@@ -53,10 +59,12 @@ export function resolveLiveFrame({
   project,
   analyzer,
   frame,
+  performance,
 }: {
   project: ResolvedLiveProject;
   analyzer: AudioAnalyzer;
   frame: number;
+  performance?: PerformanceState;
 }): RenderFrame {
   if (!Number.isSafeInteger(frame) || frame < 0) {
     throw new RangeError(
@@ -88,32 +96,34 @@ export function resolveLiveFrame({
       fps: project.fps,
       width: project.width,
       height: project.height,
+      performance,
     },
     null,
   );
 }
 
+interface AssemblyRequest {
+  project: SceneProject;
+  analyzer: AudioAnalyzer;
+  mix: MixState;
+  frame: number;
+  fps: number;
+  width: number;
+  height: number;
+  performance?: PerformanceState;
+}
+
 function assembleFrame(
-  {
-    project,
-    analyzer,
-    mix,
-    frame,
-    fps,
-    width,
-    height,
-  }: {
-    project: SceneProject;
-    analyzer: AudioAnalyzer;
-    mix: MixState;
-    frame: number;
-    fps: number;
-    width: number;
-    height: number;
-  },
+  { project, analyzer, mix, frame, fps, width, height, performance }: AssemblyRequest,
   durationSeconds: number | null,
 ): RenderFrame {
   const timeSeconds = frame / fps;
+  performance ??= performanceAt(
+    project.performance ?? DEFAULT_PERFORMANCE,
+    project.automation ?? [],
+    timeSeconds,
+  );
+  analyzer = performanceAnalyzer(analyzer, performance.intensity);
   const modulation = evaluateModulation(project.modulation, {
     time: timeSeconds,
     fps,
@@ -129,7 +139,24 @@ function assembleFrame(
     audio: analyzer.featuresAt(timeSeconds),
     analyzer,
     mix,
-    composition: { width, height, durationSeconds, project },
+    composition: {
+      width,
+      height,
+      durationSeconds,
+      project,
+      ...performanceComposition(project, performance),
+    },
     modulation,
   };
+}
+
+function performanceComposition(project: SceneProject, performance: PerformanceState) {
+  if (
+    !project.performance &&
+    !project.automation &&
+    performance.intensity === 1 &&
+    performance.brightness === 1
+  )
+    return {};
+  return { performance };
 }

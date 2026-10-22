@@ -17,6 +17,7 @@ export const LiveConfigSchema = ProjectConfigSchema.pick({
   visualizer: true,
   bpm: true,
   beatOffset: true,
+  performance: true,
 }).extend({
   output: DisplaySchema.prefault({}),
   clock: z.boolean({ error: 'clock must be true or false.' }).default(false),

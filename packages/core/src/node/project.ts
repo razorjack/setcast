@@ -121,6 +121,8 @@ function resolveProject(
     tracklist: resolveProjectTracklist(config.tracklist, theme),
     bpm: config.bpm ?? null,
     beatOffset: config.beatOffset,
+    performance: config.performance,
+    automation: config.automation,
   };
 }
 
