@@ -50,6 +50,7 @@ export function SaveScene({
         '/save',
         JSON.stringify({ ...selection, art: art.kind, artwork }),
       );
+      window.dispatchEvent(new Event('setcast-scenes-changed'));
       report(
         `Saved ${saved.directory}/${saved.config}. Open that directory with setcast ${saved.config === 'live.yaml' ? 'live' : 'play or render'}.`,
       );

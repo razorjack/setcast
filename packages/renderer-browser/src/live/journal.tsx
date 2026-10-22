@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
-import type { SceneSelection, SessionEvent } from '@setcast/core';
+import {
+  rampAt,
+  type PerformanceEvent,
+  type SceneSelection,
+  type SessionEvent,
+} from '@setcast/core';
 import type { Art } from '../browser/overrides.ts';
 import { playerWrite, uploadArt } from '../browser/save.tsx';
 import type { LiveInput } from './input.ts';
 
 interface JournalProps {
   input: LiveInput;
+  performance?: () => PerformanceEvent;
   selection: Omit<SceneSelection, 'art'>;
   art: Art;
   report: (message: string) => void;
@@ -119,6 +125,7 @@ class JournalRecorder {
       this.failed = false;
       this.active = true;
       this.scene(this.props.selection, this.props.art, 0);
+      this.initialPerformance();
       if (audio !== this.props.input.capture.audio) this.stop();
     } catch (error) {
       this.props.report(String(error));
@@ -126,6 +133,29 @@ class JournalRecorder {
       this.starting = false;
       this.changed();
     }
+  };
+  initialPerformance() {
+    const ramp = this.props.performance?.();
+    if (!ramp || !this.audio) return;
+    const now = this.origin / this.audio.sampleRate;
+    this.event({
+      type: 'performance',
+      sample: 0,
+      from: rampAt(ramp, now),
+      to: ramp.to,
+      duration: Math.max(0, ramp.at + ramp.duration - now),
+    });
+  }
+  performance = (ramp: PerformanceEvent) => {
+    if (!this.audio) return;
+    const sample = Math.max(0, Math.round(ramp.at * this.audio.sampleRate) - this.origin);
+    this.event({
+      type: 'performance',
+      sample,
+      from: ramp.from,
+      to: ramp.to,
+      duration: ramp.duration,
+    });
   };
   enqueue(task: () => Promise<void>) {
     if (this.pending >= 32) {
@@ -171,7 +201,7 @@ class JournalRecorder {
     this.enqueue(async () => {
       const artwork = await uploading;
       const saved = await playerWrite(
-        '/save',
+        '/journal/scene',
         JSON.stringify({ ...selection, art: art.kind, artwork }),
       );
       await playerWrite(

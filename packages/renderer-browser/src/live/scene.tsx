@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { AudioAnalyzer, ResolvedLiveProject } from '@setcast/core';
+import type { PerformanceState, AudioAnalyzer, ResolvedLiveProject } from '@setcast/core';
 import {
   FrameProvider,
   RendererProvider,
@@ -14,6 +14,9 @@ import { LiveVideo } from './video.tsx';
 
 interface SceneProps {
   project: ResolvedLiveProject;
+  performance?: PerformanceState;
+  onReady?: (project: ResolvedLiveProject) => void;
+  onFailure?: () => void;
   analyzer: AudioAnalyzer;
   frame: number;
   report: (message: string) => void;
@@ -22,21 +25,7 @@ interface SceneProps {
 /** Keep the ready scene visible until a replacement's artwork, fonts and video have loaded. */
 export function LiveViewport(props: SceneProps) {
   const { viewport, scale } = useStageScale(props.project);
-  const { report } = props;
-  const [visible, setVisible] = useState<ResolvedLiveProject | null>(null);
-  const [failed, setFailed] = useState<ResolvedLiveProject | null>(null);
-  const pending = props.project !== visible && props.project !== failed;
-  const ready = useCallback(() => setVisible(props.project), [props.project]);
-  const error = useCallback(
-    (project: ResolvedLiveProject, cause: unknown) => {
-      setFailed(project);
-      setVisible((current) => (current === project ? null : current));
-      report(
-        `Cannot prepare this scene: ${cause instanceof Error ? cause.message : String(cause)}. Choose another theme or artwork.`,
-      );
-    },
-    [report],
-  );
+  const { visible, pending, ready, error } = useSceneReadiness(props);
   const layers: ResolvedLiveProject[] = [];
   if (visible) layers.push(visible);
   if (pending) layers.push(props.project);
@@ -54,6 +43,7 @@ export function LiveViewport(props: SceneProps) {
           <div className="sc-live-scene" data-ready={project === visible} key={sceneKey(project)}>
             <SceneBoundary onError={(cause) => error(project, cause)}>
               <LiveScene
+                performance={props.performance}
                 project={project}
                 analyzer={props.analyzer}
                 frame={props.frame}
@@ -93,6 +83,7 @@ const LiveScene = memo(function LiveScene({
   analyzer,
   frame,
   ready,
+  performance,
 }: Omit<SceneProps, 'report'> & { ready?: () => void }) {
   const [readiness] = useState(() => new LiveReadiness());
   const bindings = useMemo<RendererBindings>(
@@ -106,7 +97,7 @@ const LiveScene = memo(function LiveScene({
     [readiness],
   );
   useReady(readiness, ready);
-  const resolved = resolveLiveFrame({ project, analyzer, frame });
+  const resolved = resolveLiveFrame({ project, analyzer, frame, performance });
   return (
     <RendererProvider bindings={bindings}>
       <FrameProvider frame={resolved}>
@@ -117,12 +108,23 @@ const LiveScene = memo(function LiveScene({
 });
 
 function useReady(readiness: LiveReadiness, ready?: () => void) {
+  const [error, fail] = useState<Error | null>(null);
+  if (error) throw error;
   useEffect(() => {
     if (!ready) return;
     let request = 0;
+    const deadline = performance.now() + 30_000;
     let quiet = 0;
     let revision = readiness.revision;
     const tick = () => {
+      if (performance.now() > deadline) {
+        fail(
+          new Error(
+            'Scene assets did not become ready within 30 seconds. Check the artwork and video files.',
+          ),
+        );
+        return;
+      }
       quiet = readiness.ready && revision === readiness.revision ? quiet + 1 : 0;
       revision = readiness.revision;
       if (quiet >= 3) {
@@ -134,4 +136,27 @@ function useReady(readiness: LiveReadiness, ready?: () => void) {
     request = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(request);
   }, [readiness, ready]);
+}
+
+function useSceneReadiness(props: SceneProps) {
+  const { report, onReady, onFailure, project: requested } = props;
+  const [visible, setVisible] = useState<ResolvedLiveProject | null>(null);
+  const [failed, setFailed] = useState<ResolvedLiveProject | null>(null);
+  const pending = requested !== visible && requested !== failed;
+  const ready = useCallback(() => {
+    setVisible(requested);
+    onReady?.(requested);
+  }, [requested, onReady]);
+  const error = useCallback(
+    (project: ResolvedLiveProject, cause: unknown) => {
+      setFailed(project);
+      onFailure?.();
+      setVisible((current) => (current === project ? null : current));
+      report(
+        `Cannot prepare this scene: ${cause instanceof Error ? cause.message : String(cause)}. Choose another theme or artwork.`,
+      );
+    },
+    [report, onFailure],
+  );
+  return { visible, pending, ready, error };
 }

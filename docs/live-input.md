@@ -142,9 +142,12 @@ machine can sustain before using it for a performance.
 
 ## Session journal and replay
 
+See [live performance controls](live-performance.md) for scene pads, brightness/intensity,
+blackout, bar-aligned fades and MIDI. Those actions also enter the journal for replay.
+
 **Start journal** writes a version 1 `session-*.jsonl` file beside live.yaml. The journal
 records credits entered with **Log track now**, cue buttons, and scene changes. These manual
-entries are replay metadata; they do not add live track panels or trigger live cue effects.
+credit and cue entries are replay metadata; they do not add live track panels or trigger live cue effects.
 **Finish journal** writes an end marker. Starting or stopping the input ends the current
 journal; reconnect with a new journal. Completed lines are flushed to disk. An abrupt window
 close may omit pending writes or the end marker; complete earlier lines remain usable.
@@ -153,7 +156,7 @@ The journal stores capture sample positions, sample rate, its origin in the capt
 and references to self-contained saved scenes. Visual delay does not shift journal timestamps. Manual actions use the most recently delivered
 PCM sample position, so their time resolution follows packet delivery (about 23 ms at 44.1 kHz).
 Scene writes are serialized and bounded. If saving falls behind or fails, journaling stops
-with a notice while input capture continues. Keep the journal and its saved-scene directories
+with a notice while input capture continues. Keep the journal and its journal-scene directories
 together. It does not contain audio.
 
 Record the mixer master separately, then align journal time zero explicitly:
@@ -202,7 +205,8 @@ bounded feature caching and capture status. A 120-second Chromium run passed wit
 analysis samples and all 16 theme selections. A one-hour synthetic run kept capture running
 with fixed PCM capacity and at most 1707 cached features (limit 2048). It skipped one
 1024-sample analysis packet near the start under concurrent load, with no further skips.
-That run preceded final UI polish; a final 30-second check covers the updated controls.
+That run preceded final UI polish; a final 120-second check covers the performance controls,
+with zero dropped analysis samples and bounded feature caching.
 Physical interface routing, end-to-end latency, OBS integration and long-session hardware
 stability remain unqualified. Use the checklist in
 [player-development-plan.md](player-development-plan.md) with the intended hardware.

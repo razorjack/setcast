@@ -4,6 +4,7 @@ import { basename, extname, join } from 'node:path';
 import { SceneSelectionSchema, type SceneProject } from '@setcast/core';
 import { saveScene } from '@setcast/core/node';
 import type { projectCatalog } from './catalog.ts';
+import { savedScene } from './scenes.ts';
 import { startJournal, appendJournal } from './journal.ts';
 
 /** Custom header and exact origin prevent unrelated sites from writing through localhost. */
@@ -29,8 +30,15 @@ export async function saveRequest(
       saved = await appendJournal(root, await readSettings(request));
     } else {
       const selected = SceneSelectionSchema.parse(await readSettings(request));
-      const project: SceneProject = JSON.parse((await catalog.load(selected.theme)).toString());
-      saved = await saveScene(root, project, selected);
+      const project: SceneProject = selected.preset
+        ? await savedScene(root, selected.preset)
+        : JSON.parse((await catalog.load(selected.theme)).toString());
+      saved = await saveScene(
+        root,
+        project,
+        selected,
+        url.pathname === '/journal/scene' ? 'journal' : 'scene',
+      );
     }
     response.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(saved));
   } catch (error) {

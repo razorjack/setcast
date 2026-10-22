@@ -4,6 +4,7 @@ import { SetcastError, type SceneProject } from '@setcast/core';
 import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
 import { projectCatalog, type ThemeCatalog } from './catalog.ts';
+import { savedScene, savedScenes } from './scenes.ts';
 import { saveRequest } from './save.ts';
 
 export type { ThemeCatalog, ThemeChoice, ThemeListing } from './catalog.ts';
@@ -109,7 +110,7 @@ async function respond(
   }
   if (
     request.method === 'POST' &&
-    ['/save', '/art', '/journal/start', '/journal/append'].includes(path)
+    ['/save', '/art', '/journal/start', '/journal/append', '/journal/scene'].includes(path)
   ) {
     if (readOnly) {
       response.writeHead(405).end();
@@ -120,6 +121,10 @@ async function respond(
   }
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     response.writeHead(405).end();
+    return;
+  }
+  if (path === '/scenes.json' || path === '/scene.json') {
+    await sendScenes(root, url, request, response);
     return;
   }
   if (path === '/themes.json') {
@@ -179,4 +184,23 @@ async function sendProject(
     return;
   }
   send(request, response, project, 'application/json');
+}
+
+async function sendScenes(
+  root: string,
+  url: URL,
+  request: IncomingMessage,
+  response: ServerResponse,
+) {
+  try {
+    const scenes =
+      url.pathname === '/scenes.json'
+        ? await savedScenes(root)
+        : await savedScene(root, url.searchParams.get('preset') ?? '');
+    send(request, response, Buffer.from(JSON.stringify(scenes)), 'application/json');
+  } catch (error) {
+    response
+      .writeHead(400, { 'Content-Type': 'application/json' })
+      .end(JSON.stringify({ message: error instanceof Error ? error.message : String(error) }));
+  }
 }

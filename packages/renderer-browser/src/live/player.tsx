@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ResolvedLiveProject } from '@setcast/core';
+import type { Art } from '../browser/overrides.ts';
 import { DropOverlay, useArt } from '../browser/art.tsx';
 import { useShortcuts } from '../browser/keyboard.ts';
 import { useThemes } from '../browser/themes.ts';
@@ -10,18 +11,19 @@ import { LiveViewport } from './scene.tsx';
 import { useOperatorWindow } from './operator.tsx';
 import { LiveDiagnostics, useDiagnostics } from './diagnostics.tsx';
 import { LiveTempo, type Tempo } from './tempo.tsx';
-import { SessionJournal, useSessionJournal } from './journal.tsx';
+import { useLivePerformance } from './performance-session.ts';
+import { PerformanceControls } from './performance-controls.tsx';
+import { SessionJournal } from './journal.tsx';
 
-function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
+export function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
   const themes = useThemes(initial, report);
   const art = useArt(report);
   const [title, setTitle] = useState(initial.title);
+  const [preset, setPreset] = useState<string | null>(null);
   const [clock, setClock] = useState(initial.live.clock);
   const [tempo, setTempo] = useState<Tempo>({ bpm: initial.bpm, beatOffset: initial.beatOffset });
   const project = useMemo(() => {
-    let background = themes.project.background;
-    if (art.art.kind === 'none') background = null;
-    if (art.art.kind === 'file') background = `${art.art.url}#${art.art.name}`;
+    const background = selectedBackground(themes.project.background, art.art);
     return {
       ...themes.project,
       ...tempo,
@@ -30,7 +32,37 @@ function useLiveScene(initial: ResolvedLiveProject, report: (message: string) =>
       live: { ...themes.project.live, clock },
     };
   }, [themes.project, art.art, title, clock, tempo]);
-  return { themes, art, title, setTitle, clock, setClock, project, tempo, setTempo };
+  const recall = (saved: ResolvedLiveProject, directory: string) => {
+    themes.adopt({ ...saved, width: initial.width, height: initial.height, fps: initial.fps });
+    art.setArt({ kind: 'project' });
+    setTitle(saved.title);
+    setClock(saved.live.clock);
+    setPreset(directory);
+  };
+  const selectedThemes = {
+    ...themes,
+    step: (offset: number) => {
+      setPreset(null);
+      return themes.step(offset);
+    },
+    select: (name: string) => {
+      setPreset(null);
+      themes.select(name);
+    },
+  };
+  return {
+    themes: selectedThemes,
+    art,
+    title,
+    setTitle,
+    clock,
+    setClock,
+    project,
+    tempo,
+    setTempo,
+    preset,
+    recall,
+  };
 }
 
 export function LivePlayer({
@@ -59,6 +91,9 @@ export function LivePlayer({
         analyzer={input.snapshot.analyzer}
         frame={input.snapshot.frame}
         report={report}
+        performance={controller.performance.value()}
+        onReady={controller.ready}
+        onFailure={controller.performance.cancel}
       />
       {operator.target ? createPortal(controls, operator.target) : controls}
       {art.dragging && !clean && <DropOverlay />}
@@ -70,24 +105,11 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
   const [notice, setNotice] = useState(startupNotice);
   const report = useCallback((message: string) => setNotice(message), []);
   const scene = useLiveScene(initial, report);
-  const { themes, art, project } = scene;
   const [clean, setClean] = useState(false);
   const input = useLiveInput(initial);
   const diagnostics = useDiagnostics(input);
   const operator = useOperatorWindow(report);
-  const journal = useSessionJournal({
-    input,
-    report,
-    art: art.art,
-    selection: {
-      theme: project.theme,
-      title: scene.title,
-      clock: scene.clock,
-      input: input.settings,
-      bpm: project.bpm,
-      beatOffset: project.beatOffset,
-    },
-  });
+  const performanceSession = useLivePerformance(initial, input, scene, report);
   const fullscreen = () => {
     const action = document.fullscreenElement
       ? document.exitFullscreen()
@@ -98,8 +120,8 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     h: () => setClean((hidden) => !hidden),
     f: fullscreen,
     Escape: () => setClean(false),
-    '[': () => themes.step(-1),
-    ']': () => themes.step(1),
+    '[': () => scene.themes.step(-1),
+    ']': () => scene.themes.step(1),
   });
   return {
     scene,
@@ -111,8 +133,8 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     fullscreen,
     notice,
     setNotice,
-    journal,
     diagnostics,
+    ...performanceSession,
   };
 }
 
@@ -128,21 +150,26 @@ function LiveControls({
   setNotice,
   journal,
   diagnostics,
+  performance,
+  bank,
+  recall,
+  midi,
+  activePreset,
 }: ReturnType<typeof useLivePlayer>) {
   return (
     <div className="sc-live-controls" hidden={clean && !operator.target}>
-      <LiveDock {...{ input, ...scene, report, fullscreen }} clean={() => setClean(true)} />
+      <LiveDock
+        {...{ input, ...scene, report, fullscreen }}
+        performance={performance.target}
+        clean={() => setClean(true)}
+      />
+      <PerformanceControls
+        {...{ performance, bank, recall, report, midi }}
+        running={input.snapshot.status.phase === 'running'}
+        active={activePreset}
+      />
       <section className="sc-live-session">
-        <button
-          className="sc-button"
-          onClick={() => {
-            if (operator.target) operator.close();
-            else operator.open();
-            setClean(false);
-          }}
-        >
-          {operator.target ? 'Return controls to output' : 'Operator window'}
-        </button>
+        <OperatorButton operator={operator} reveal={() => setClean(false)} />
         <LiveTempo
           running={input.snapshot.status.phase === 'running'}
           tempo={scene.tempo}
@@ -167,4 +194,31 @@ function LiveNotice({ notice, dismiss }: { notice: string | null; dismiss: () =>
       </button>
     </div>
   );
+}
+
+function OperatorButton({
+  operator,
+  reveal,
+}: {
+  operator: ReturnType<typeof useOperatorWindow>;
+  reveal: () => void;
+}) {
+  return (
+    <button
+      className="sc-button"
+      onClick={() => {
+        if (operator.target) operator.close();
+        else operator.open();
+        reveal();
+      }}
+    >
+      {operator.target ? 'Return controls to output' : 'Operator window'}
+    </button>
+  );
+}
+
+function selectedBackground(background: string | null, art: Art) {
+  if (art.kind === 'none') return null;
+  if (art.kind === 'file') return `${art.url}#${art.name}`;
+  return background;
 }

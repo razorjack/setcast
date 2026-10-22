@@ -64,7 +64,12 @@ export function useThemes<Project extends SceneProject>(
     return theme;
   };
 
-  return { project, listings, loading, select, step };
+  const adopt = (next: Project) => {
+    latest.current++;
+    setLoading(null);
+    setProject(next);
+  };
+  return { project, listings, loading, select, step, adopt };
 }
 
 export const requestedTheme = () => new URLSearchParams(location.search).get('theme');

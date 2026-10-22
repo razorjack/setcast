@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { formatTime, type ResolvedLiveProject } from '@setcast/core';
+import { formatTime, type PerformanceState, type ResolvedLiveProject } from '@setcast/core';
 import { ArtMenu, type useArt } from '../browser/art.tsx';
 import type { useThemes } from '../browser/themes.ts';
 import { SaveScene } from '../browser/save.tsx';
 import { useInputDevices, type LiveInput } from './input.ts';
 
 interface DockProps {
+  performance?: PerformanceState;
+  preset?: string | null;
   input: LiveInput;
   themes: ReturnType<typeof useThemes<ResolvedLiveProject>>;
   art: ReturnType<typeof useArt>;
@@ -84,6 +86,8 @@ function LiveToolbar(props: DockProps & { expanded: boolean; toggle: () => void 
 function SaveLiveScene(props: DockProps) {
   const selection = {
     theme: props.project.theme,
+    preset: props.preset ?? undefined,
+    performance: props.performance,
     title: props.title,
     clock: props.clock,
     input: props.input.settings,
