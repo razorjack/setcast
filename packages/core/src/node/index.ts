@@ -10,3 +10,6 @@ export {
 export { audioDuration, probeAudio } from './media.ts';
 
 export { loadLiveProject, type LoadedLiveProject } from './live.ts';
+export { saveScene } from './save-scene.ts';
+
+export { sceneDirectory, copySceneDirectory } from './copy-scenes.ts';

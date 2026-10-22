@@ -76,8 +76,8 @@ function resolveLiveProject(
     travel: null,
     panel: null,
     tracklist: null,
-    bpm: null,
-    beatOffset: 0,
+    bpm: config.bpm ?? null,
+    beatOffset: config.beatOffset,
     live: { input: config.input, clock: config.clock },
   };
 }
@@ -101,11 +101,19 @@ function liveWarnings(project: ResolvedLiveProject, config: LiveConfig): string[
       (route) =>
         route.scope === 'play' ||
         route.when ||
-        !['bass', 'mids', 'highs', 'rms', 'onset'].includes(route.source),
+        !['bass', 'mids', 'highs', 'rms', 'onset', 'beat', 'bar'].includes(route.source),
     )
   ) {
     warnings.push(
-      'Live input has no tracks, tempo grid or annotations. Only unconditional audio modulation routes can react; other routes stay at their resting values.',
+      'Live input has no tracks or annotations. Unconditional audio and manual tempo routes can react; other routes stay at their resting values.',
+    );
+  }
+  if (
+    !project.bpm &&
+    config.modulation.some((route) => route.source === 'beat' || route.source === 'bar')
+  ) {
+    warnings.push(
+      'Live beat/bar routes rest until tempo is set. Add bpm: to live.yaml or use the Tempo controls.',
     );
   }
   if (/var\(\s*--travel-/.test(project.css)) {

@@ -240,3 +240,12 @@ export type {
 } from './export.ts';
 
 export { LiveConfigSchema, type LiveConfig } from './live.ts';
+export { SceneSelectionSchema, type SceneSelection } from './scene-selection.ts';
+export {
+  SessionHeaderSchema,
+  SessionEventSchema,
+  readSession,
+  replayEvents,
+  type SessionHeader,
+  type SessionEvent,
+} from './session.ts';

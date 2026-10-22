@@ -20,6 +20,7 @@ import {
 import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.ts';
 import { loadCss } from './css.ts';
 import { readImageSize } from './image-size.ts';
+import { loadScenes } from './scenes.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
 const BASE_CSS = fileURLToPath(new URL('../../css/base.css', import.meta.url));
@@ -72,6 +73,11 @@ export async function loadProject(
     mix,
     await composeCss(theme, userCssFile, dependencies),
   );
+  if (config.scenes && themeOverride === undefined)
+    project.scenes = await loadScenes(root, config, mix.duration / 1_000_000, {
+      themes,
+      dependencies,
+    });
   return {
     dir: root,
     config,

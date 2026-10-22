@@ -52,6 +52,8 @@ export type ResolvedProject = {
   bpm: number | null;
   /** Seconds into the audio of a downbeat. */
   beatOffset: number;
+  /** Finite replay changes, resolved from saved live scene directories. */
+  scenes?: { at: number; scene: ResolvedLiveProject }[];
 };
 
 /** An open-ended performance. A live session has no recorded file or finite mix document. */

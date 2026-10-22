@@ -25,11 +25,28 @@ export function resolveFrame({
   height = project.height,
 }: FrameRequest): RenderFrame {
   const timeSeconds = frame / fps;
+  const selected = project.scenes?.findLast((entry) => entry.at <= timeSeconds)?.scene;
+  if (selected) project = sceneAt(project, selected);
   const mix = timeline.at(timeSeconds);
   return assembleFrame(
     { project, analyzer, mix, frame, fps, width, height },
     project.mix.duration / 1_000_000,
   );
+}
+
+function sceneAt(project: ResolvedProject, scene: ResolvedLiveProject): ResolvedProject {
+  return {
+    ...project,
+    title: scene.title,
+    background: scene.background,
+    backgroundFit: scene.backgroundFit,
+    theme: scene.theme,
+    css: scene.css,
+    visualizers: scene.visualizers,
+    modulation: scene.modulation,
+    bpm: scene.bpm,
+    beatOffset: scene.beatOffset,
+  };
 }
 
 export function resolveLiveFrame({

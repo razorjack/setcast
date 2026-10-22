@@ -18,6 +18,7 @@ const commands: Record<string, () => Promise<Command>> = {
   inspect: () => import('./commands/inspect.ts'),
   chapters: () => import('./commands/chapters.ts'),
   live: () => import('./commands/live.ts'),
+  replay: () => import('./commands/replay.ts'),
 };
 
 const usage = `${bold(accent('setcast'))} ${dim(`v${version}`)}  event-driven visuals for DJ sets
@@ -35,6 +36,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      visualize a live audio input in the browser
+  ${steel('replay')}    turn a session journal and recorded master into a project
 
 Run ${bold('setcast <command> --help')} for details.
 `;

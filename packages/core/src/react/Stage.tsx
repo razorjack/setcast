@@ -25,7 +25,7 @@ import { resolveVisualizer } from './visualizers.ts';
 export function Stage() {
   const { composition, mix, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
-  useFontsReady();
+  useFontsReady(project.css);
   const background = currentBackground(mix, project.background);
   const backgroundArt = useBackgroundArt(background);
   // Themes lay the stage out by the art (data-bg-calm, --bg-*). Chrome does not repaint text in a

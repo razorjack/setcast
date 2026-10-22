@@ -116,27 +116,32 @@ interface HoldState {
   label: string;
   ready: boolean;
   error: Error | null;
+  revision: unknown;
 }
 
 /** Holds the frame until `load` resolves and reports load failures through React. */
-export function useHoldUntil(label: string, load: () => Promise<unknown>): boolean {
+export function useHoldUntil(
+  label: string,
+  load: () => Promise<unknown>,
+  revision?: unknown,
+): boolean {
   const { hold } = useRenderer();
-  const [state, setState] = useState<HoldState>({ label, ready: false, error: null });
+  const [state, setState] = useState<HoldState>({ label, ready: false, error: null, revision });
   const loadRef = useRef(load);
   loadRef.current = load;
 
   useEffect(() => {
     const release = hold(label);
-    setState({ label, ready: false, error: null });
+    setState({ label, ready: false, error: null, revision });
     return holdUntil(
       () => loadRef.current(),
       release,
-      (result) => setState({ label, ...result }),
+      (result) => setState({ label, revision, ...result }),
     );
-  }, [hold, label]);
+  }, [hold, label, revision]);
 
   // State left over from a previous label describes a resource this render no longer waits for.
-  if (state.label !== label) return false;
+  if (state.label !== label || state.revision !== revision) return false;
   if (state.error) throw state.error;
   return state.ready;
 }
@@ -164,8 +169,10 @@ function preloadImage(url: string): Promise<void> {
 }
 
 /** Holds the frame until every @font-face in the document has loaded. */
-export function useFontsReady(): boolean {
-  return useHoldUntil('fonts', () =>
-    typeof document === 'undefined' ? Promise.resolve() : document.fonts.ready,
+export function useFontsReady(revision?: unknown): boolean {
+  return useHoldUntil(
+    'fonts',
+    () => (typeof document === 'undefined' ? Promise.resolve() : document.fonts.ready),
+    revision,
   );
 }

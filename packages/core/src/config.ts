@@ -263,6 +263,18 @@ export const ProjectConfigSchema = z
         .optional(),
       /** Seconds into the audio of a downbeat, so `--bar` lines up with the music. */
       beatOffset: TimeSchema.default(0),
+      scenes: z
+        .array(
+          z.strictObject(
+            {
+              at: TimeSchema,
+              preset: relativePath('scenes[].preset'),
+            },
+            { error: 'Each scenes entry takes only at and preset. Use {at: 0, preset: scenes/0}.' },
+          ),
+          { error: 'scenes must be a list of {at, preset} live scene directories.' },
+        )
+        .optional(),
     },
     { error: 'setcast.yaml must be a YAML mapping of keys and values, not a list.' },
   )
