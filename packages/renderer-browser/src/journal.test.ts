@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { appendFile, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vite-plus/test';
@@ -46,6 +46,26 @@ test('a journal symlink cannot append to another file', async () => {
       appendJournal(root, { journal, event: { type: 'end', sample: 0 } }),
     ).rejects.toThrow();
     expect(await readFile(file, 'utf8')).toBe(JSON.stringify(header) + '\n');
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('external journal edits invalidate the append cache and incomplete lines are preserved', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'setcast-journal-edit-'));
+  try {
+    const { journal } = await startJournal(root, header);
+    await appendJournal(root, { journal, event: { type: 'cue', sample: 1, kind: 'drop' } });
+    await appendFile(join(root, journal), JSON.stringify({ type: 'end', sample: 2 }) + '\n');
+    const ended = await readFile(join(root, journal), 'utf8');
+    await expect(
+      appendJournal(root, { journal, event: { type: 'cue', sample: 3, kind: 'drop' } }),
+    ).rejects.toThrow('follow an end');
+    expect(await readFile(join(root, journal), 'utf8')).toBe(ended);
+    await writeFile(join(root, journal), ended.trimEnd());
+    await expect(
+      appendJournal(root, { journal, event: { type: 'cue', sample: 3, kind: 'drop' } }),
+    ).rejects.toThrow('incomplete line');
   } finally {
     await rm(root, { recursive: true, force: true });
   }
