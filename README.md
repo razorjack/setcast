@@ -292,6 +292,11 @@ for streaming video and add mixer audio separately. Optional `live.yaml` configu
 scene, input and output size. See [live audio input](docs/live-input.md) for routing,
 configuration and browser limitations.
 
+Live [performance controls](docs/live-performance.md) add intensity, brightness, blackout,
+saved scene pads, bar-aligned fades and MIDI mapping. Try `examples/live-backdrop` for a filmed
+DJ set or `examples/live-projection` for a projector. The
+[rendering and live roadmap](docs/rendering-and-live-roadmap.md) records the next milestones.
+
 
 ## Visualizers
 

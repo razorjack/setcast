@@ -1,0 +1,15 @@
+title: ''
+theme: ./backdrop.css
+clock: false
+output: { width: 1920, height: 1080, fps: 30 }
+input: { gain: 1, delay: 0 }
+performance: { intensity: 0.65, brightness: 0.65 }
+visualizer:
+  name: radial
+  style: line
+  bars: 32
+  radius: 0.36
+  length: 0.08
+  gain: 0.8
+  floor: 0.02
+  spin: 0

@@ -521,6 +521,22 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Performance values and timestamped ramps belong to core. Intensity scales visual features,
+  not input PCM; brightness uses a black overlay outside the theme's `.setcast` element, inside
+  an isolated `.sc-output` wrapper. This covers theme pseudo-elements and survives rules that
+  hide stage children. Both exporters evaluate ramps at absolute frame time.
+- Live scene pads recall self-contained `saved-scene-*` projects without changing input routing,
+  dimensions, tempo or current performance levels. Transitions fade through black, start on the
+  manual bar grid and wait for readiness. Failed scenes retain the previous output and do not
+  enter the journal. MIDI ownership stays in the output window when controls move to the popup.
+  See `docs/live-performance.md` and `docs/rendering-and-live-roadmap.md`.
+- Journal snapshots use `journal-scene-*`, keeping them out of the manual bank. Performance
+  ramps use capture-sample timestamps. Appends cache bounded tail metadata and revalidate on
+  external changes, avoiding full-log parsing on each fader update. The file limit is 64 MiB.
+- Browser export exposes optional timing metrics. Readiness waits for two stable animation-frame
+  callbacks, with fonts/images decoded inside the stability loop. Before changing this again,
+  run both export acceptance suites and `node packages/renderer-browser/bench/frames.ts`.
+
 - Offline selection is `renderer: remotion | browser`, defaulting to Remotion, with `--renderer`
   overrides on render/still/clip. The CLI imports only the chosen adapter at runtime and scopes
   jobs to its session. Studio stays Remotion-specific. No silent exporter fallback occurs.

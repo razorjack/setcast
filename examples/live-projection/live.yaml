@@ -1,0 +1,20 @@
+title: ''
+theme: ./projection.css
+clock: false
+output: { width: 1920, height: 1080, fps: 30 }
+input: { gain: 1, delay: 0 }
+performance: { intensity: 1, brightness: 0.85 }
+visualizer:
+  - {
+      name: radial,
+      style: bars,
+      bars: 24,
+      radius: 0.23,
+      length: 0.2,
+      gain: 1.2,
+      floor: 0.02,
+      spin: 3,
+    }
+  - { name: vectorscope, gain: 1.5, trail: 4 }
+modulation:
+  - { source: bass, target: ring-scale, range: [1, 1.12], smooth: 0.12 }
