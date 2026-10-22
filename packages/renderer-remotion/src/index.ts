@@ -21,6 +21,7 @@ import { graphicsOptions } from './graphics.ts';
 import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './encoding.ts';
 import { renderVideo, resolveChunkSeconds } from './chunks.ts';
 import { hardwareEncoding } from './hardware.ts';
+import { cancellable } from './cancellation.ts';
 
 export type {
   RenderStage,
@@ -67,6 +68,7 @@ async function prepare(
 }
 
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+  options.signal?.throwIfAborted();
   validateVideoFile(options.out);
   const encoding = encodingOptions(options);
   const { hardwareAcceleration } = await hardwareEncoding(encoding.hardwareAcceleration);
@@ -98,6 +100,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
       {
         frameRange,
         chunkSeconds,
+        signal: options.signal,
         audio: project.audio ? resolve(options.projectDir, project.audio) : null,
         report,
       },
@@ -122,6 +125,7 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
 }
 
 async function stillIn(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
+  options.signal?.throwIfAborted();
   const imageFormat = stillFormat(options.out);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
@@ -131,18 +135,21 @@ async function stillIn(project: ResolvedProject, options: StillOptions): Promise
   const frame = Math.min(durationInFrames - 1, Math.max(0, Math.round(at * fps)));
 
   try {
-    await renderStill({
-      composition,
-      serveUrl,
-      puppeteerInstance,
-      output: options.out,
-      frame,
-      chromiumOptions: graphicsOptions(options.gl),
-      inputProps: project,
-      imageFormat,
-      // Remotion rejects a quality for a lossless format, so png and webp must pass none.
-      jpegQuality: imageFormat === 'jpeg' ? (options.jpegQuality ?? 95) : undefined,
-    });
+    await cancellable(options.signal, (cancelSignal) =>
+      renderStill({
+        cancelSignal,
+        composition,
+        serveUrl,
+        puppeteerInstance,
+        output: options.out,
+        frame,
+        chromiumOptions: graphicsOptions(options.gl),
+        inputProps: project,
+        imageFormat,
+        // Remotion rejects a quality for a lossless format, so png and webp must pass none.
+        jpegQuality: imageFormat === 'jpeg' ? (options.jpegQuality ?? 95) : undefined,
+      }),
+    );
   } catch (cause) {
     throw translateRenderError(cause);
   }

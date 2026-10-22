@@ -31,6 +31,7 @@ export interface RenderProgress {
 export type RenderReport = (progress: RenderProgress) => void;
 
 export interface RenderOptions extends EncodingOptions {
+  signal?: AbortSignal;
   projectDir: string;
   out: string;
   /** Seconds; inclusive start, exclusive end. */
@@ -49,6 +50,7 @@ export interface RenderResult {
 }
 
 export interface StillOptions {
+  signal?: AbortSignal;
   projectDir: string;
   out: string;
   /** Seconds into the set. Defaults to a quarter of the way in. */

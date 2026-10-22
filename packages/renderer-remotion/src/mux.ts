@@ -9,6 +9,7 @@ interface MuxOptions {
   audio: string | null;
   output: string;
   onProgress: (progress: number) => void;
+  signal?: AbortSignal;
 }
 
 interface MasterAudioOptions {
@@ -98,6 +99,7 @@ export async function muxChunks(options: MuxOptions): Promise<void> {
     description: `assemble rendered chunks into ${output}`,
     duration,
     onProgress,
+    signal: options.signal,
   });
 }
 

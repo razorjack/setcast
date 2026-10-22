@@ -10,6 +10,7 @@ import { splitFrameRange, type FrameRange } from '@setcast/core';
 export { splitFrameRange, resolveChunkSeconds } from '@setcast/core';
 import type { RenderProgress } from './index.ts';
 import { encodeMasterAudio, muxChunks } from './mux.ts';
+import { cancellable } from './cancellation.ts';
 import { canPipeline, renderChunkPipeline } from './chunk-pipeline.ts';
 
 type VideoJob = RenderMediaOptions & { outputLocation: string };
@@ -19,18 +20,23 @@ interface ChunkOptions {
   chunkSeconds: number;
   audio: string | null;
   report: Report;
+  signal?: AbortSignal;
 }
 
 export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise<void> {
+  options.signal?.throwIfAborted();
   const { fps } = job.composition;
   const ranges = splitFrameRange(options.frameRange, options.chunkSeconds * fps);
   const totalFrames = options.frameRange[1] - options.frameRange[0] + 1;
   if (ranges.length === 1 && !options.audio) {
-    await renderMedia({
-      ...job,
-      frameRange: options.frameRange,
-      onProgress: mediaProgress(totalFrames, options.report),
-    });
+    await cancellable(options.signal, (cancelSignal) =>
+      renderMedia({
+        ...job,
+        cancelSignal,
+        frameRange: options.frameRange,
+        onProgress: mediaProgress(totalFrames, options.report),
+      }),
+    );
     return;
   }
   // Encode the master once for every audible export, including a single batch. The browser
@@ -44,12 +50,14 @@ export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise
       dir,
       audio: options.audio,
       report: options.report,
+      signal: options.signal,
     });
     const output = join(dir, `assembled${extname(job.outputLocation)}`);
     const onProgress = (progress: number) =>
       options.report({ stage: 'encode', progress, renderedFrames: totalFrames, totalFrames });
     onProgress(0);
-    await muxChunks({ dir, ranges, fps, audio, output, onProgress });
+    await muxChunks({ dir, ranges, fps, audio, output, onProgress, signal: options.signal });
+    options.signal?.throwIfAborted();
     await rename(output, job.outputLocation);
     onProgress(1);
   } finally {
@@ -64,12 +72,22 @@ async function renderTracks(
     dir,
     audio,
     report,
-  }: { ranges: FrameRange[]; dir: string; audio: string | null; report: Report },
+    signal: externalSignal,
+  }: {
+    ranges: FrameRange[];
+    dir: string;
+    audio: string | null;
+    report: Report;
+    signal?: AbortSignal;
+  },
 ): Promise<string | null> {
   const controller = new AbortController();
+  const signal = externalSignal
+    ? AbortSignal.any([controller.signal, externalSignal])
+    : controller.signal;
   const output = audio ? join(dir, 'master.mp4') : null;
   const { fps } = job.composition;
-  const tasks = [renderChunks(job, ranges, dir, { report, signal: controller.signal })];
+  const tasks = [renderChunks(job, ranges, dir, { report, signal })];
   if (audio && output)
     tasks.push(
       encodeMasterAudio({
@@ -77,7 +95,7 @@ async function renderTracks(
         output,
         start: ranges[0]![0] / fps,
         duration: (ranges.at(-1)![1] - ranges[0]![0] + 1) / fps,
-        signal: controller.signal,
+        signal,
       }),
     );
   try {
