@@ -129,14 +129,37 @@ audio/artwork/configuration/encoding rebuilt correctly; source changes during a 
 resources failed explicitly. Relative asset paths were exercised. CI now includes browser
 acceptance and recovery; its Linux run has not been executed from this local session.
 
+### Completed GPU field milestone
+
+Starting revision: 9f63697. Implemented the first deterministic GPU visualizer, `field`, ahead of
+projector setup at the user's request. It draws broad WebGL 2 contours using explicit seed/time, bounded time phases
+and current audio features. CSS supplies color and composition. Configurable resolution bounds
+the drawing buffer; no simulation history, new dependency or renderer-specific import is needed.
+Remotion stays the default and the visualizer is opt-in.
+
+Both exporters passed repeated stills and exact decoded-frame comparisons between one-worker
+and two-worker chunked exports. The browser check passed shuffled/backward seeks, concurrent
+fresh capture pages, scene remounts, seed/audio changes, CSS resizing/color, portrait output,
+unavailable WebGL and forced context loss. SwiftShader also repeated frames exactly within its
+own backend. Synthetic live input advanced and restarted with no
+dropped analysis samples. Physical hardware and cross-driver identity remain unqualified.
+`vp run ready` passed all 440 tests, lint/types, dependency checks and smoke render;
+installed-package smoke with browser export passed too. CI now runs the field check.
+
+The short 1080p capture comparison was about 20 frames/s for field at half/full resolution,
+spectrum and radial on the local Apple M1 Pro. This measures capture/readiness overhead too;
+it does not establish a GPU speedup or live frame rate. See [gpu-visualizer.md](gpu-visualizer.md)
+for configuration, limits and reproducible checks. The runnable preset is `examples/live-field`.
+
 ### Next milestones
 
 1. One-projector setup: four-corner correction, crop/masks, saved venue geometry and a setup pattern.
    Keep output geometry separate from scene appearance and recorded scene events.
-2. One deterministic GPU visualizer, measured against the existing SVG examples. Add explicit
-   seed/time and random-access tests before particles with accumulated simulation state.
-3. Curated automatic scene progression with minimum dwell and manual hold. Add confidence-aware
+2. Curated automatic scene progression with minimum dwell and manual hold. Add confidence-aware
    beat tracking only after the manual tempo path is qualified with real mixer recordings.
+3. Further GPU effects and hardware qualification. Measure sustained live GPU load and software
+   backends before adding complexity; particles with accumulated state require deterministic
+   replay or checkpoints. The first stateless field is complete.
 
 Display selection, camera test patterns, branding, hardware qualification and independent preview
 remain in the delivery order above. No background task or recurring automation is installed.

@@ -321,6 +321,7 @@ visualizer:
 | `ridgeline`    | the last seconds of spectrum as stacked lines rising up the frame, over the art's relief | `lines: 44`, `seconds: 6` (at most 8), `gain: 1`, `relief: 0.5` (0 to 1), `spread: 0.7`, `fill: theme` (or `art`) |
 | `overview`     | the whole set as a strip under the header, with track and drop marks and a playhead | none                                                                                                       |
 | `bloom`        | the art's own lamps, signs and suns glowing with the music                          | `bands: [bass, highs]` (one or two), `gain: 1`, `lights: 0.05` (share of the art), `radius: 0.015`, `smooth: 0.1` |
+| `field` | broad audio-reactive contours drawn with WebGL 2 | `seed: 1`, `speed: 0.3`, `scale: 1`, `gain: 1`, `resolution: 0.5` |
 
 `gain` scales the levels (real masters are louder in the highs than the demo), `floor` keeps a
 baseline in silence, and `spin` is degrees per second. `peak` is the seconds a marker holds each
@@ -351,6 +352,11 @@ The spectrogram is a canvas: its CSS `color` is the color of a full-strength cel
 `fill: art` the art is. Its cells blend into each other, so a full-frame spectrogram shows no grid.
 Like an SVG, a canvas keeps its own height when only `top` and `bottom` are set, so give it a
 `height`.
+
+The opt-in `field` visualizer uses WebGL 2 and takes its tint from `.sc-field { color: ... }`.
+Its time and seed are explicit, so it supports seeks, live playback and both exporters.
+See [GPU field usage and qualification](docs/gpu-visualizer.md) and the
+[`examples/live-field`](examples/live-field) preset.
 
 ## Tracklist
 

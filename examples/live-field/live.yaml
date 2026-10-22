@@ -1,0 +1,7 @@
+title: ''
+theme: ./field.css
+clock: false
+output: { width: 1920, height: 1080, fps: 30 }
+input: { gain: 1, delay: 0 }
+performance: { intensity: 1, brightness: 0.85 }
+visualizer: { name: field, seed: 42, speed: 0.3, scale: 1, gain: 1, resolution: 0.5 }
