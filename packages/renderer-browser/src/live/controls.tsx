@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { formatTime, type ResolvedLiveProject } from '@setcast/core';
 import { ArtMenu, type useArt } from '../browser/art.tsx';
 import type { useThemes } from '../browser/themes.ts';
+import { SaveScene } from '../browser/save.tsx';
 import { useInputDevices, type LiveInput } from './input.ts';
 
 interface DockProps {
@@ -65,6 +66,7 @@ function LiveToolbar(props: DockProps & { expanded: boolean; toggle: () => void 
       <button className="sc-button" onClick={props.toggle} aria-expanded={props.expanded}>
         Settings
       </button>
+      <SaveLiveScene {...props} />
       <button
         className="sc-button"
         onClick={props.clean}
@@ -77,6 +79,18 @@ function LiveToolbar(props: DockProps & { expanded: boolean; toggle: () => void 
       </button>
     </div>
   );
+}
+
+function SaveLiveScene(props: DockProps) {
+  const selection = {
+    theme: props.project.theme,
+    title: props.title,
+    clock: props.clock,
+    input: props.input.settings,
+    bpm: props.project.bpm,
+    beatOffset: props.project.beatOffset,
+  };
+  return <SaveScene selection={selection} art={props.art.art} report={props.report} />;
 }
 
 function InputControls({ input, report }: Pick<DockProps, 'input' | 'report'>) {
@@ -233,6 +247,7 @@ function AppearanceControls(props: DockProps) {
         <label>
           Theme
           <select
+            aria-label="Theme"
             value={themes.loading ?? themes.project.theme}
             onChange={(event) => themes.select(event.target.value)}
           >
@@ -283,7 +298,7 @@ function InputStatus({ input }: { input: LiveInput }) {
   return (
     <div className="sc-live-footnote">
       <span role={status.message ? 'alert' : 'status'}>{status.message ?? detail}</span>
-      <span>OBS: capture this window; add mixer audio separately.</span>
+      <span>OBS: capture the output window; add mixer audio separately.</span>
     </div>
   );
 }

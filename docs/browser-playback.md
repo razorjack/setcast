@@ -98,7 +98,9 @@ From an installed CLI, use `setcast play path/to/project`. Open the printed URL 
 Chrome. The dock has play/pause, a chapter scrubber with the mix's drops, volume and full
 screen. It also switches among the built-in themes, credits with panels, the tracklist or both,
 and replaces the art with a chosen or dropped image or video for the whole set. None of these
-write to the project. `H` hides the dock, which then returns while the pointer touches the
+write to the source configuration. **Save scene** writes a separate `saved-scene-*` project
+with the selected theme, credits, artwork and copied media. Open that directory with `setcast
+play` or `setcast render`. Source files remain unchanged. `H` hides the dock, which then returns while the pointer touches the
 bottom edge, and `?` lists every shortcut.
 Restart the command after editing the project. Ctrl+C closes the server.
 
@@ -155,3 +157,11 @@ visual parity comparison. Native compressed-audio clocks can differ slightly fro
 loader's probed duration because of codec padding. Background tabs can throttle visual
 callbacks. Smooth, uninterrupted broadcasting and frame-exact video synchronization remain
 separate work.
+
+
+## Follow-up work
+
+Saved scenes, live operator controls, diagnostics, manual tempo and journal replay are tracked
+in [player-development-plan.md](player-development-plan.md). The selectable offline exporter
+has its own [guide](browser-renderer.md) and [implementation plan](independent-renderer-plan.md).
+Remotion remains the default for offline output.

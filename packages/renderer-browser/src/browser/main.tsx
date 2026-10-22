@@ -53,6 +53,7 @@ interface Notice {
   message: string;
   tone: 'info' | 'error';
   id: number;
+  persistent?: boolean;
 }
 
 function Player({
@@ -92,7 +93,7 @@ function Player({
         transport={transport}
         onDoubleClick={autoHide.toggle}
       />
-      <Dock dock={dock} snapshot={snapshot} {...controls} />
+      <Dock dock={dock} snapshot={snapshot} {...controls} report={notices.saved} />
       {adjusted.art.dragging && <DropOverlay />}
       {notices.notice && (
         <NoticeBar key={notices.notice.id} notice={notices.notice} dismiss={notices.dismiss} />
@@ -123,8 +124,16 @@ function useNotices(startup: string | null) {
   const inform = useCallback((message: string) => {
     setNotice({ message, tone: 'info', id: performance.now() });
   }, []);
+  const saved = useCallback((message: string, failed = false) => {
+    setNotice({
+      message,
+      tone: failed ? 'error' : 'info',
+      id: performance.now(),
+      persistent: true,
+    });
+  }, []);
   const dismiss = useCallback(() => setNotice(null), []);
-  return { notice, report, inform, dismiss };
+  return { notice, report, inform, saved, dismiss };
 }
 
 const CREDIT_ORDER: Credits[] = ['panels', 'tracklist', 'both'];
@@ -289,6 +298,7 @@ const NOTICE_MS = { info: 1400, error: 9000 };
 
 function NoticeBar({ notice, dismiss }: { notice: Notice; dismiss: () => void }) {
   useEffect(() => {
+    if (notice.persistent) return;
     const timer = setTimeout(dismiss, NOTICE_MS[notice.tone]);
     return () => clearTimeout(timer);
   }, [notice, dismiss]);
@@ -299,7 +309,7 @@ function NoticeBar({ notice, dismiss }: { notice: Notice; dismiss: () => void })
       role={notice.tone === 'error' ? 'alert' : 'status'}
     >
       <span>{notice.message}</span>
-      {notice.tone === 'error' && (
+      {(notice.tone === 'error' || notice.persistent) && (
         <button className="sc-notice-close" aria-label="Dismiss" onClick={dismiss}>
           ×
         </button>

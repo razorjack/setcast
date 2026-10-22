@@ -3,6 +3,7 @@ import { formatTime, type ResolvedProject } from '@setcast/core';
 import type { ThemeListing } from '../catalog.ts';
 import type { Transport } from '../transport.ts';
 import { ArtMenu } from './art.tsx';
+import { SaveScene } from './save.tsx';
 import {
   ArtIcon,
   CheckIcon,
@@ -29,6 +30,7 @@ export interface DockProps {
   art: { art: Art; setArt: (art: Art) => void; choose: (file: File) => void };
   autoHide: { enabled: boolean; shown: boolean; toggle: () => void };
   fullscreen: { active: boolean; toggle: () => void };
+  report: (message: string, failed?: boolean) => void;
 }
 
 export function Dock(props: DockProps) {
@@ -56,26 +58,39 @@ export function Dock(props: DockProps) {
             <ArtMenu project={project} {...props.art} />
           </Menu>
           <Volume {...props.volume} />
-          <span className="sc-dock-divider" />
-          <IconButton
-            label={props.autoHide.enabled ? 'Keep controls shown (H)' : 'Hide controls (H)'}
-            pressed={props.autoHide.enabled}
-            onClick={props.autoHide.toggle}
-          >
-            <DockIcon pinned={!props.autoHide.enabled} />
-          </IconButton>
-          <Menu id="sc-shortcuts" label="Keyboard shortcuts (?)" icon={<KeyboardIcon />}>
-            <Shortcuts />
-          </Menu>
-          <IconButton
-            label={props.fullscreen.active ? 'Exit full screen (F)' : 'Full screen (F)'}
-            onClick={props.fullscreen.toggle}
-          >
-            <FullscreenIcon active={props.fullscreen.active} />
-          </IconButton>
+          <SaveScene
+            selection={{ theme: project.theme, credits: props.credits.value }}
+            art={props.art.art}
+            report={props.report}
+          />
+          <WindowControls {...props} />
         </div>
       </div>
     </footer>
+  );
+}
+
+function WindowControls(props: DockProps) {
+  return (
+    <>
+      <span className="sc-dock-divider" />
+      <IconButton
+        label={props.autoHide.enabled ? 'Keep controls shown (H)' : 'Hide controls (H)'}
+        pressed={props.autoHide.enabled}
+        onClick={props.autoHide.toggle}
+      >
+        <DockIcon pinned={!props.autoHide.enabled} />
+      </IconButton>
+      <Menu id="sc-shortcuts" label="Keyboard shortcuts (?)" icon={<KeyboardIcon />}>
+        <Shortcuts />
+      </Menu>
+      <IconButton
+        label={props.fullscreen.active ? 'Exit full screen (F)' : 'Full screen (F)'}
+        onClick={props.fullscreen.toggle}
+      >
+        <FullscreenIcon active={props.fullscreen.active} />
+      </IconButton>
+    </>
   );
 }
 

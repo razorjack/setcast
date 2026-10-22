@@ -4,6 +4,7 @@ import { SetcastError, type SceneProject } from '@setcast/core';
 import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
 import { projectCatalog, type ThemeCatalog } from './catalog.ts';
+import { saveRequest } from './save.ts';
 
 export type { ThemeCatalog, ThemeChoice, ThemeListing } from './catalog.ts';
 
@@ -14,6 +15,8 @@ export interface PlayerOptions {
   port?: number;
   /** Themes the player offers besides the project's own. */
   themes?: ThemeCatalog;
+  /** Internal export server: prebundled frame driver, with all writes disabled. */
+  captureFiles?: Map<string, Buffer>;
 }
 export interface PlayerServer {
   url: string;
@@ -29,24 +32,20 @@ export async function play(project: SceneProject, options: PlayerOptions): Promi
     );
   }
   const root = await realpath(options.projectDir);
-  const files = await bundlePlayer();
+  const files = new Map(options.captureFiles ?? (await bundlePlayer()));
   files.set('/', Buffer.from(html));
   files.set(
     '/capture-worklet.js',
     await readFile(new URL('../entry/capture-worklet.js', import.meta.url)),
   );
-  const site = { root, files, catalog: projectCatalog(project, options.themes) };
+  const site = {
+    root,
+    files,
+    catalog: projectCatalog(project, options.themes),
+    readOnly: Boolean(options.captureFiles),
+  };
   const server = createServer((request, response) => {
-    void respond(site, request, response).catch((error: unknown) => {
-      if (response.headersSent) {
-        response.destroy(error instanceof Error ? error : undefined);
-        return;
-      }
-      const missing = (error as NodeJS.ErrnoException).code === 'ENOENT';
-      response
-        .writeHead(missing ? 404 : 500)
-        .end(missing ? 'Asset not found' : 'Cannot read project asset');
-    });
+    void respond(site, request, response).catch((error: unknown) => failResponse(response, error));
   });
   await new Promise<void>((resolve, reject) => {
     server.once('error', reject);
@@ -70,21 +69,29 @@ export async function play(project: SceneProject, options: PlayerOptions): Promi
   };
 }
 
+function failResponse(response: ServerResponse, error: unknown) {
+  if (response.headersSent) {
+    response.destroy(error instanceof Error ? error : undefined);
+    return;
+  }
+  const missing = (error as NodeJS.ErrnoException).code === 'ENOENT';
+  response
+    .writeHead(missing ? 404 : 500)
+    .end(missing ? 'Asset not found' : 'Cannot read project asset');
+}
+
 interface Site {
   root: string;
   files: Map<string, Buffer>;
   catalog: ReturnType<typeof projectCatalog>;
+  readOnly: boolean;
 }
 
 async function respond(
-  { root, files, catalog }: Site,
+  { root, files, catalog, readOnly }: Site,
   request: IncomingMessage,
   response: ServerResponse,
 ) {
-  if (request.method !== 'GET' && request.method !== 'HEAD') {
-    response.writeHead(405).end();
-    return;
-  }
   if (!/^(127\.0\.0\.1|localhost)(:\d+)?$/.test(request.headers.host ?? '')) {
     response.writeHead(403).end();
     return;
@@ -100,6 +107,21 @@ async function respond(
     response.writeHead(400).end();
     return;
   }
+  if (
+    request.method === 'POST' &&
+    ['/save', '/art', '/journal/start', '/journal/append'].includes(path)
+  ) {
+    if (readOnly) {
+      response.writeHead(405).end();
+      return;
+    }
+    await saveRequest(root, catalog, request, response);
+    return;
+  }
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    response.writeHead(405).end();
+    return;
+  }
   if (path === '/themes.json') {
     send(request, response, Buffer.from(JSON.stringify(catalog.listings)), 'application/json');
     return;
@@ -108,6 +130,15 @@ async function respond(
     await sendProject(catalog, url.searchParams.get('theme'), request, response);
     return;
   }
+  await sendFile({ root, files }, path, request, response);
+}
+
+async function sendFile(
+  { root, files }: Pick<Site, 'root' | 'files'>,
+  path: string,
+  request: IncomingMessage,
+  response: ServerResponse,
+) {
   const file = files.get(path);
   if (file) {
     send(request, response, file, path === '/' ? 'text/html' : mediaType(path));

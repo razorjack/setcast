@@ -36,5 +36,9 @@ export function withArt(project: ResolvedProject, art: Art): ResolvedProject {
   if (art.kind === 'project') return project;
   const plays = project.mix.plays.map(({ background: _background, ...play }) => play);
   const background = art.kind === 'file' ? `${art.url}#${art.name}` : null;
-  return { ...project, background, mix: { ...project.mix, plays } };
+  const scenes = project.scenes?.map((entry) => ({
+    ...entry,
+    scene: { ...entry.scene, background },
+  }));
+  return { ...project, background, ...(scenes ? { scenes } : {}), mix: { ...project.mix, plays } };
 }

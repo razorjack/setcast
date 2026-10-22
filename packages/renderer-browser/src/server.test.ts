@@ -109,3 +109,60 @@ test('invalid ports fail before bundling or opening files', async () => {
     hint: expect.stringContaining('1 to 65535'),
   });
 });
+
+test('scene writes require an exact origin and header, validate paths, and leave source config intact', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'setcast-player-save-'));
+  const yaml = 'audio: set.mp3\ntheme: ./test.css\n';
+  await writeFile(join(root, 'setcast.yaml'), yaml);
+  await writeFile(join(root, 'set.mp3'), 'audio');
+  const server = await play(project, { projectDir: root, port: 0 });
+  const body = JSON.stringify({ theme: 'test', art: 'none' });
+  const headers = { Origin: server.url, 'X-Setcast-Player': '1' };
+  try {
+    const invalidHeaders: Record<string, string>[] = [
+      {},
+      { Origin: 'http://evil.example', 'X-Setcast-Player': '1' },
+      { Origin: server.url },
+    ];
+    for (const invalid of invalidHeaders)
+      expect(
+        (await fetch(server.url + '/save', { method: 'POST', headers: invalid, body })).status,
+      ).toBe(403);
+    const saved = await fetch(server.url + '/save', { method: 'POST', headers, body });
+    expect(saved.status).toBe(200);
+    expect(await saved.json()).toMatchObject({
+      directory: expect.stringMatching(/^saved-scene-/),
+      config: 'setcast.yaml',
+    });
+    const escaped = await fetch(server.url + '/save', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ theme: 'test', art: 'file', artwork: '../outside.png' }),
+    });
+    expect(escaped.status).toBe(400);
+    const invalidType = await fetch(server.url + '/art?name=code.html', {
+      method: 'POST',
+      headers,
+      body: 'html',
+    });
+    expect(invalidType.status).toBe(400);
+    expect(await (await fetch(server.url + '/assets/setcast.yaml')).text()).toBe(yaml);
+  } finally {
+    await server.close();
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('export asset servers reject all player writes', async () => {
+  const server = await play(project, { projectDir: '.', port: 0, captureFiles: new Map() });
+  try {
+    const response = await fetch(server.url + '/journal/start', {
+      method: 'POST',
+      headers: { Origin: server.url, 'X-Setcast-Player': '1' },
+      body: '{}',
+    });
+    expect(response.status).toBe(405);
+  } finally {
+    await server.close();
+  }
+});
