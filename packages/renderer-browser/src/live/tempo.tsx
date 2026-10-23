@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { LiveInput } from './input.ts';
 import { BeatControls } from './beat-controls.tsx';
+import type { BeatTrackingConfig } from '@setcast/core';
 
 export interface Tempo {
   bpm: number | null;
@@ -74,10 +75,12 @@ export function LiveTempo({
   input,
   tempo,
   setTempo,
+  tracking,
 }: {
   input: LiveInput;
   tempo: Tempo;
   setTempo: (tempo: Tempo) => void;
+  tracking?: BeatTrackingConfig;
 }) {
   return (
     <>
@@ -87,7 +90,7 @@ export function LiveTempo({
         running={input.snapshot.status.phase === 'running'}
         time={() => input.capture.audio?.capturedTime ?? 0}
       />
-      <BeatControls input={input} setTempo={setTempo} />
+      <BeatControls input={input} setTempo={setTempo} initial={tracking} />
     </>
   );
 }

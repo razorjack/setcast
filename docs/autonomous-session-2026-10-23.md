@@ -75,3 +75,7 @@ projection and journal semantics. Every standalone completed piece gets a commit
   stability and performance evidence. Compare candidate methods against the existing detector.
 - Use the existing real master for longer export qualification after the live hour finishes;
   retain source files unchanged and report concurrent workloads when interpreting timings.
+- Extracted the shared core onset-to-evidence tracker and complete-window estimator, with explicit
+  clock validation, bounded history and diagnostic scores. Live YAML can configure the initial
+  range without enabling detection. Existing energy novelty and adoption rules remain in place.
+  Core/adapter tests and the live beat browser check passed; ready passed all 515 tests.

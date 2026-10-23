@@ -41,7 +41,7 @@ test('live saves preserve tempo/input and reject escaped assets without leaving 
   try {
     await writeFile(
       join(root, 'live.yaml'),
-      'theme: ./own.css\nbpm: 174\nprojection: { enabled: true }\ntestPattern: {pattern: motion, speed: 0.2}\n',
+      'theme: ./own.css\nbpm: 174\nprojection: { enabled: true }\ntestPattern: {pattern: motion, speed: 0.2}\nbeatTracking: {range: {min: 160, max: 185}}\n',
     );
     await writeFile(join(root, 'own.css'), '');
     await writeFile(join(outside, 'art.png'), 'private');
@@ -60,6 +60,8 @@ test('live saves preserve tempo/input and reject escaped assets without leaving 
     expect(loaded.project.live.projection).toBeUndefined();
     expect(project.live.testPattern?.pattern).toBe('motion');
     expect(loaded.project.live.testPattern).toBeUndefined();
+    expect(project.live.beatTracking?.range).toEqual({ min: 160, max: 185 });
+    expect(loaded.project.live.beatTracking).toBeUndefined();
     expect(loaded.project.bpm).toBeNull();
     expect(loaded.project.live.input).toEqual(selection.input);
     const before = (await readdir(root)).sort();

@@ -77,6 +77,7 @@ export type ResolvedLiveProject = Omit<
     sequence?: import('./sequence.ts').SceneSequence;
     projection?: import('./projection.ts').Projection;
     testPattern?: import('./test-pattern.ts').TestPatternConfig;
+    beatTracking?: import('./beat.ts').BeatTrackingConfig;
     clock: boolean;
     input: {
       device?: string;

@@ -192,6 +192,11 @@ CompositionState, modulation }`. Components consume it via Setcast hooks: `useFr
 
 ## Architecture
 
+Assisted beat evidence is a pure core capability: `BeatTracker.push({hop,value})` consumes
+ordered absolute 100 Hz onset samples, retains 800 values and never applies tempo. The live
+adapter owns stereo energy extraction and explicit operator adoption. `beatTracking.range`
+supplies initial detector settings; saved scenes omit it. See `docs/live-beat-tracking.md`.
+
 ### Finite mix timeline
 
 `mix-schema.ts` defines strict authoring and normalized schemas; `mix.ts` normalizes authoring

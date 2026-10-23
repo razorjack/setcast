@@ -57,6 +57,18 @@ export {
   type X264Preset,
 } from './config.ts';
 export { TimeSchema } from './time-schema.ts';
+export {
+  BEAT_HOPS_PER_SECOND,
+  BEAT_WINDOW_HOPS,
+  BeatRangeSchema,
+  BeatTrackingSchema,
+  validBeatRange,
+  type BeatRange,
+  type BeatTrackingConfig,
+  type BeatOnset,
+} from './beat.ts';
+export { estimateBeat, type BeatEstimate } from './beat-estimate.ts';
+export { BeatTracker, type BeatTrackingState } from './beat-tracker.ts';
 export { normalizeMix, compileMix, readMixDocument, mixWarnings } from './mix.ts';
 export {
   MixInputSchema,

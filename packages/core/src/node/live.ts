@@ -97,6 +97,7 @@ function resolveLiveProject(
       sequence: config.sequence,
       projection: config.projection,
       testPattern: config.testPattern,
+      beatTracking: config.beatTracking,
     },
   };
 }

@@ -57,6 +57,7 @@ function selectedConfig(
   delete copy.sequence;
   delete copy.projection;
   delete copy.testPattern;
+  delete copy.beatTracking;
   if (!project.scenes) delete copy.scenes;
   copy.theme = `./${project.theme}.css`;
   copy.title = selected.title ?? project.title;

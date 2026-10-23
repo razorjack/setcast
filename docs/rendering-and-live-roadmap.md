@@ -393,6 +393,20 @@ Validation: `vp run ready` passed 484 tests, lint/types, dependency checks and s
 Chromium beat capture/adoption/journal/restart and existing performance/MIDI/scene/replay
 checks passed. The final operator screenshot was inspected.
 
+### Shared beat-analysis contract
+
+The detector's bounded evidence tracker and window estimator now live in core. Adapters feed
+ordered absolute 100 Hz onset samples; the live adapter supplies the existing stereo log-energy
+novelty. Estimates expose periodicity, phase concentration and competing-tempo margin for
+evaluation. The initial range can be configured with `beatTracking.range` in live.yaml, without
+enabling detection or changing scene content. Acceptance thresholds and explicit adoption remain
+unchanged. This establishes a common contract for comparing onset methods, not a claim of better
+real-music accuracy. See [live-beat-tracking.md](live-beat-tracking.md#core-analysis-contract).
+
+Validation: 515 tests and `vp run ready` passed. Core checks cover clock validation, gaps,
+bounded history, configuration isolation and diagnostics. The Chromium beat check passed
+configured-range startup, confidence loss, adoption, journaling and restart.
+
 ## Completed branding and overlays
 
 Starting revision: ac48ad6. `branding:` (setcast.yaml and live.yaml) adds a logo, name, event

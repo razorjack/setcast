@@ -1,17 +1,23 @@
-export interface BeatRange {
-  min: number;
-  max: number;
-}
+import { BEAT_WINDOW_HOPS, validBeatRange, type BeatRange } from './beat.ts';
 
 export interface BeatEstimate {
   bpm: number;
   beatOffset: number;
   confidence: number;
   ambiguous: boolean;
+  periodicity: number;
+  phaseStrength: number;
+  margin: number;
+  competitorBpm: number | null;
 }
 
 /** Scores are periodicity heuristics, not calibrated probabilities of musical correctness. */
-export function estimateBeat(onsets: number[], start: number, range: BeatRange): BeatEstimate {
+export function estimateBeat(
+  onsets: readonly number[],
+  start: number,
+  range: BeatRange,
+): BeatEstimate {
+  validateWindow(onsets, start, range);
   const accents = prominentOnsets(onsets);
   const candidates = [];
   for (let bpm = range.min; bpm <= range.max; bpm += 0.2) {
@@ -28,10 +34,14 @@ export function estimateBeat(onsets: number[], start: number, range: BeatRange):
     beatOffset: start + phase.offset / 100,
     confidence: Math.max(0, Math.min(best.score, phase.strength)),
     ambiguous: Boolean(competitor && best.score - competitor.score < 0.08),
+    periodicity: best.score,
+    phaseStrength: phase.strength,
+    margin: competitor ? best.score - competitor.score : best.score,
+    competitorBpm: competitor ? Math.round(competitor.bpm * 10) / 10 : null,
   };
 }
 
-function prominentOnsets(values: number[]) {
+function prominentOnsets(values: readonly number[]) {
   const accents = values.map((value, index) => {
     const local = values.slice(Math.max(0, index - 25), index + 26);
     const average = local.reduce((sum, entry) => sum + entry, 0) / local.length;
@@ -73,12 +83,15 @@ function beatPhase(values: number[], period: number) {
   return { offset: offset * period, strength: Math.hypot(x, y) / Math.max(1e-12, total) };
 }
 
-export function validBeatRange(range: BeatRange) {
-  return (
-    Number.isFinite(range.min) &&
-    Number.isFinite(range.max) &&
-    range.min >= 40 &&
-    range.max <= 240 &&
-    range.max - range.min >= 10
-  );
+function validateWindow(onsets: readonly number[], start: number, range: BeatRange) {
+  if (!validBeatRange(range)) throw new RangeError('Choose 40–240 BPM, at least 10 BPM apart.');
+  if (!Number.isFinite(start) || start < 0)
+    throw new RangeError('estimateBeat requires finite, nonnegative absolute start seconds.');
+  if (
+    onsets.length !== BEAT_WINDOW_HOPS ||
+    onsets.some((value) => !Number.isFinite(value) || value < 0)
+  )
+    throw new RangeError(
+      'estimateBeat requires exactly 800 finite, nonnegative onset values at 100 Hz.',
+    );
 }

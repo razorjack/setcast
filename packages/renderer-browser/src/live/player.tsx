@@ -167,31 +167,29 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     output,
     projection,
     testPattern,
+    beatTracking: initial.live.beatTracking,
     ...performanceSession,
   };
 }
 
-function LiveControls({
-  scene,
-  input,
-  operator,
-  clean,
-  setClean,
-  report,
-  fullscreen,
-  notice,
-  setNotice,
-  journal,
-  diagnostics,
-  performance,
-  bank,
-  recall,
-  midi,
-  activePreset,
-  sequence,
-  announcements,
-  ...settings
-}: ReturnType<typeof useLivePlayer>) {
+function LiveControls(props: ReturnType<typeof useLivePlayer>) {
+  const {
+    scene,
+    input,
+    operator,
+    clean,
+    setClean,
+    report,
+    fullscreen,
+    notice,
+    setNotice,
+    performance,
+    bank,
+    recall,
+    midi,
+    activePreset,
+    sequence,
+  } = props;
   return (
     <div className="sc-live-controls" hidden={clean && !operator.target}>
       <LiveDock
@@ -205,18 +203,38 @@ function LiveControls({
         running={input.snapshot.status.phase === 'running'}
         active={activePreset}
       />
-      <section className="sc-live-session">
-        <OperatorButton operator={operator} setClean={setClean} />
-        <LiveTempo input={input} tempo={scene.tempo} setTempo={scene.setTempo} />
-        <BrandingControls branding={scene.branding} announcements={announcements} />
-        <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
-        <OutputControls output={settings.output} />
-        <TestPatternControls testPattern={settings.testPattern} />
-        <ProjectionControls projection={settings.projection} />
-        <SessionJournal journal={journal} running={input.snapshot.status.phase === 'running'} />
-      </section>
+      <LiveSession {...props} />
       <LiveNotice notice={notice} dismiss={() => setNotice(null)} />
     </div>
+  );
+}
+
+function LiveSession({
+  scene,
+  input,
+  operator,
+  setClean,
+  journal,
+  diagnostics,
+  announcements,
+  ...settings
+}: ReturnType<typeof useLivePlayer>) {
+  return (
+    <section className="sc-live-session">
+      <OperatorButton operator={operator} setClean={setClean} />
+      <LiveTempo
+        input={input}
+        tempo={scene.tempo}
+        setTempo={scene.setTempo}
+        tracking={settings.beatTracking}
+      />
+      <BrandingControls branding={scene.branding} announcements={announcements} />
+      <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
+      <OutputControls output={settings.output} />
+      <TestPatternControls testPattern={settings.testPattern} />
+      <ProjectionControls projection={settings.projection} />
+      <SessionJournal journal={journal} running={input.snapshot.status.phase === 'running'} />
+    </section>
   );
 }
 

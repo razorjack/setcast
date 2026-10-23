@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import type { LiveInput } from './input.ts';
 import type { Tempo } from './tempo.tsx';
 import { BeatTracker } from './beat-tracker.ts';
-import { validBeatRange, type BeatRange } from './beat-estimate.ts';
+import { validBeatRange, type BeatRange, type BeatTrackingConfig } from '@setcast/core';
 
 export function BeatControls({
   input,
   setTempo,
+  initial,
 }: {
   input: LiveInput;
   setTempo: (tempo: Tempo) => void;
+  initial?: BeatTrackingConfig;
 }) {
-  const { enabled, setEnabled, range, tracker, changeRange } = useBeatTracker(input);
+  const { enabled, setEnabled, range, tracker, changeRange } = useBeatTracker(input, initial);
   const available = input.snapshot.status.available;
   return (
     <details className="sc-beat-tracking" data-beat-state={enabled ? tracker.state : 'off'}>
@@ -87,10 +89,14 @@ function BeatStatus({ tracker }: { tracker: BeatTracker }) {
   );
 }
 
-function useBeatTracker(input: LiveInput) {
+function useBeatTracker(input: LiveInput, initial?: BeatTrackingConfig) {
   const [enabled, setEnabled] = useState(false);
-  const [range, setRange] = useState<BeatRange>({ min: 90, max: 180 });
-  const [tracker] = useState(() => new BeatTracker());
+  const [range, setRange] = useState<BeatRange>(initial?.range ?? { min: 90, max: 180 });
+  const [tracker] = useState(() => {
+    const tracker = new BeatTracker();
+    tracker.configure(range);
+    return tracker;
+  });
   const audio = input.capture.audio;
   const available = input.snapshot.status.available;
   useEffect(() => {

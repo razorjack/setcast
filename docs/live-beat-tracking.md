@@ -10,7 +10,16 @@ estimate creates a journal entry.
 The default search range is 90–180 BPM. Set minimum and maximum within 40–240 BPM, at least
 10 BPM apart. A range containing both a tempo and its half-time interpretation can remain
 uncertain. Narrow it to the expected musical range, or use tap tempo. Invalid settings suspend
-detection. Settings are local to the current player session.
+detection. YAML can supply the initial range without enabling detection:
+
+```yaml
+beatTracking:
+  range: {min: 160, max: 185}
+```
+
+Operator edits are local to the player session and do not rewrite YAML. Detector setup survives
+scene recall and is omitted from saved scenes and journals; only an explicitly accepted grid
+becomes performance content.
 
 Detection finds a beat phase, not the musical downbeat. After applying an estimate, use
 **Downbeat now** on beat one before relying on bar-aligned scene transitions. Existing beat
@@ -60,3 +69,39 @@ The tempo-periodicity approach is related to the onset/autocorrelation family de
 [Ellis, Beat Tracking by Dynamic Programming](https://www.ee.columbia.edu/~dpwe/pubs/Ellis07-beattrack.pdf).
 This implementation uses bounded local estimation and explicit operator adoption; it does not
 implement that paper's offline dynamic-programming beat sequence.
+
+## Core analysis contract
+
+`@setcast/core` exports `BeatTracker`, `estimateBeat`, `BeatRangeSchema`, `BeatTrackingSchema`,
+`validBeatRange`, `BEAT_HOPS_PER_SECOND` (100) and `BEAT_WINDOW_HOPS` (800), with their associated
+types. These APIs have no React, browser, renderer or audio-device dependency.
+
+`BeatTracker.push({hop, value})` consumes one finite nonnegative onset value per 10 ms. `hop` is
+a safe nonnegative integer on the source's absolute clock, not a video frame. Hops must increase
+strictly; duplicates and backward samples throw. A missing hop discards the old evidence and
+starts a fresh window. Call `reset()` before restarting a source clock, changing routing or
+changing the onset method. `configure({min, max})` validates and copies the search range, then
+resets; an invalid range preserves the existing state.
+
+```ts
+import {BeatTracker} from '@setcast/core';
+
+const tracker = new BeatTracker();
+tracker.configure({min: 160, max: 185});
+for (const onset of sourceOnsets) tracker.push(onset);
+// Read tracker.state, tracker.estimate and tracker.reason for an adoption UI.
+```
+
+The tracker retains at most 800 values (`retainedHops`) and evaluates every 50 hops after warmup.
+It does not retain PCM, schedule callbacks or apply output timing. `estimateBeat(onsets, start,
+range)` evaluates one complete 800-value window, where `start` is the absolute time of its first
+hop in seconds. Both APIs return the same candidate and evidence: `periodicity`, `phaseStrength`,
+`confidence`, `ambiguous`, the competing `competitorBpm` outside the 6% neighborhood and its score
+`margin`. These are diagnostics, not calibrated probabilities. `beatOffset` is an absolute beat
+phase anchor and does not identify a downbeat.
+
+The live adapter supplies positive differences of `log1p(100 * stereoRms)`. A different onset
+extractor can use the same explicit-hop contract, but must qualify its scale and latency: the
+tracker's recent-transient thresholds were calibrated for this energy baseline. The contract
+does not make arbitrary onset methods equally reliable. Keep operator adoption until labeled
+evaluation establishes the behavior required by a different consumer.

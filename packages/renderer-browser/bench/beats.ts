@@ -18,7 +18,7 @@ await mkdir(out, { recursive: true });
 await writeFile(join(root, 'theme.css'), '.setcast {background:#172226;color:white}');
 await writeFile(
   join(root, 'live.yaml'),
-  'theme: ./theme.css\nbpm: 135\noutput: {width: 640, height: 360, fps: 30}\n',
+  'theme: ./theme.css\nbpm: 135\nbeatTracking: {range: {min: 110, max: 140}}\noutput: {width: 640, height: 360, fps: 30}\n',
 );
 const { project } = await loadLiveProject(root);
 const server = await play(project, { projectDir: root, port: 0 });
@@ -60,6 +60,9 @@ try {
   await page.getByRole('button', { name: 'Start journal', exact: true }).click();
   await page.getByRole('button', { name: 'Finish journal', exact: true }).waitFor();
   await page.locator('.sc-beat-tracking summary').click();
+  assert.equal(await page.getByLabel('Minimum detected BPM').inputValue(), '110');
+  assert.equal(await page.getByLabel('Maximum detected BPM').inputValue(), '140');
+  assert.equal(await page.getByLabel('Estimate beats from input').isChecked(), false);
   await page.getByLabel('Estimate beats from input').check();
   await page.locator('[data-beat-state=locked]').waitFor();
   assert.equal(await page.getByLabel('Tempo (BPM)', { exact: true }).inputValue(), '135');
@@ -111,4 +114,5 @@ async function checkJournal() {
   const { project: saved } = await loadLiveProject(join(root, scenes[1]!.preset));
   assert(Math.abs(saved.bpm! - 120) < 1);
   assert(Number.isFinite(saved.beatOffset));
+  assert.equal(saved.live.beatTracking, undefined, 'Detector setup is not scene content');
 }

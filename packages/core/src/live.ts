@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ProjectionSchema } from './projection.ts';
 import { TestPatternSchema } from './test-pattern.ts';
+import { BeatTrackingSchema } from './beat.ts';
 import { SequenceSchema } from './sequence.ts';
 import { DisplaySchema, ProjectConfigSchema } from './config.ts';
 
@@ -27,6 +28,7 @@ export const LiveConfigSchema = ProjectConfigSchema.pick({
   sequence: SequenceSchema.optional(),
   projection: ProjectionSchema.optional(),
   testPattern: TestPatternSchema.optional(),
+  beatTracking: BeatTrackingSchema.optional(),
   clock: z.boolean({ error: 'clock must be true or false.' }).default(false),
   input: z
     .strictObject({
