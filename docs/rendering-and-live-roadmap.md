@@ -231,8 +231,8 @@ the default while qualifying and improving the independent renderer.
 
 1. **Explicit plugin loading in the stock CLI.** Load a configured visualizer package's schema
    before project validation and its component in each selected renderer bundle. Define package
-   entry points, compatibility and asset handling; verify an installed package through both
-   exporters, preview and live output. The registries already exist, but automatic discovery and
+   entry points, compatibility and asset handling, including scene copies and resume fingerprints;
+   verify an installed package through both exporters, preview and live output. The registries already exist, but automatic discovery and
    runtime loading do not. Start with one external visualizer fixture, not a general plugin host.
 2. **Portable scene collections.** Package scenes, artwork/fonts and a versioned manifest with
    display names, previews and energy tags. Validate paths and dependencies before import. Keep
@@ -254,6 +254,8 @@ the default while qualifying and improving the independent renderer.
    on Linux/Windows and additional drivers, then physical mixers, MIDI controllers, cameras and
    projectors. Further export optimization should target measured capture costs, with decoded
    parity, readiness and bounded memory checked for every retained change.
+   For live software stalls, first separate scene preparation, recovery and concurrent load using
+   the [software qualification plan](software-qualification-plan.md#follow-up-investigation).
 6. **More GPU effects with explicit resource budgets.** The public stateless shader canvas is ready
    for external authors. Profile cost at target resolutions and qualify recovery in the same
    workload. Accumulated particle state requires deterministic replay or checkpoints before it can

@@ -195,3 +195,9 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   samples during combined scene/recovery work under concurrent ready/smoke load. Preserve the
   failure; do not expand the queue to make this pass. A narrower 40-minute single-visual software
   run without forced loss will establish separate evidence before handoff.
+- The narrower software run also failed at 15.6 minutes, with watchdog starvation after restart.
+  Investigation found a reproducible ordering bug: after a two-second main-thread task, the health
+  check ran before queued PCM and killed healthy capture. 57527b0 adds a bounded 100 ms confirmation
+  period. Three controlled reproductions now resume with visible dropped-sample counts; genuine
+  worklet starvation still fails. Ready passed 570 tests and transport/output browser checks passed.
+  Final 20-minute software regression will cross the first 15-minute restart before handoff.

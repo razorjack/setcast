@@ -131,6 +131,13 @@ Give `.my-pulse` layout and appearance in CSS, then author
 registered schemas. `defineVisualizer` completes an existing schema-only registration; duplicate
 complete registrations fail. Keep the schema module single-instanced within each bundle.
 
+Keep parsed visualizer configuration JSON-compatible: loaders pass resolved project data across
+process and browser boundaries. Media readiness is separate from asset discovery. The built-in
+loader, scene saver and resume fingerprint know core asset fields; they do not scan arbitrary
+plugin configuration keys for file paths. A host adding plugin files must integrate validation,
+serving, copying/rebasing and content fingerprints, or leave unsupported persistence/resume paths
+disabled. Calling `useAsset` only provides readiness, not those asset-lifecycle guarantees.
+
 For GPU effects, use the public `ShaderCanvas`, `Shader<C>` and `GpuCanvasConfigSchema`.
 [GPU visualizer authoring](gpu-visualizer.md#shared-canvas-for-visualizer-authors) documents bounded
 buffers, premultiplied output, absolute-time uniforms, context recovery and a complete shader

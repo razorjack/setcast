@@ -2,7 +2,8 @@
 
 Three completed workloads establish sustained local behavior: one hour of live scene changes,
 two hours of repeated GPU recovery, and a 56-minute real-master browser export. A planned
-75-minute stacked SwiftShader stress run failed after 26 minutes and remains unqualified. These are local qualification results,
+75-minute stacked SwiftShader stress run failed after 26 minutes; a narrower software run also
+failed after 15.6 minutes. Both remain failed qualification evidence. These are local qualification results,
 not cross-platform or physical-device certification.
 
 The machine is an Apple M1 Pro running macOS 27.0.0 and Node 26.7.0. Browser workloads use
@@ -75,6 +76,30 @@ sustained support must be qualified separately. A narrower single-visual run wit
 is the next check, preserving the same zero-drop requirement.
 
 Artifact: `examples/demo/out/endurance-software-75-minutes-2026-10-23`.
+
+## Narrow software failure and watchdog correction
+
+A planned 40-minute run on clean `9f3355d` removed stacked scenes and forced recovery. It retained
+quarter-resolution individual GPU scenes, changes each minute and capture restarts every 15
+minutes. The first restart succeeded, but capture entered its error state about 30 seconds later:
+"Audio packets stopped arriving." The final sample had released PCM/cache state. This was not a
+successful 40-minute run, and it does not qualify that configuration for unattended software use.
+
+Investigation reproduced a watchdog ordering bug without any GPU visualizer. In three controlled
+two-second main-thread stalls, an animation callback checked health before queued MessagePort
+packets could drain, stopping a still-active AudioWorklet. The fix in `57527b0` adds a 100 ms
+confirmation interval after the 1.5-second missing-packet threshold. A fresh current-revision
+packet cancels confirmation; stop/restart cancels the old session's timer. Genuine starvation
+still fails and releases capture.
+
+All three controlled stalls then resumed capture, each reporting 71680 skipped samples rather
+than hiding the overload. The permanent Chromium regression checks the 300 ms queue budget,
+two-second stall recovery and actual worklet packet starvation. Ready passed 570 tests and output
+recovery passed. This fixes the reproduced ordering bug; it does not establish the cause of
+every long-run software stall or turn the earlier failed runs into passes. A final 20-minute
+software regression is planned to pass the first 15-minute restart before handoff.
+
+Artifact: `examples/demo/out/endurance-software-single-40-minutes-2026-10-23`.
 
 ## Full real-master export
 

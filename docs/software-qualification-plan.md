@@ -76,3 +76,37 @@ Keep the bounded queue and strict zero-drop assertion; do not increase buffering
 Next run the supplied single-visual SwiftShader workload without forced loss for 40 minutes,
 ending before the 19:00 handoff. This is a distinct, narrower operating configuration and cannot
 replace or erase the failed stress result.
+
+## Follow-up investigation
+
+The failed stress run combines scene preparation, shader/context recreation and other local
+validation work. It does not isolate the stall's cause. Before changing the production pipeline:
+
+1. Add opt-in, bounded benchmark evidence for main-thread long tasks, packet acknowledgement
+   delay/high-water mark and scene/GPU preparation time. Keep PCM and device identity out of those
+   diagnostics. Record observations before the failing assertion so the final counter is sampled.
+2. Repeat one change at a time: individual versus stacked visuals, ordinary scene change versus
+   forced recovery, and quiet versus concurrent load. Keep dimensions, sample rate, browser and
+   driver fixed. Retain failed runs and compare startup with steady-state behavior separately.
+3. If shader preparation causes the stall, investigate bounded reuse of scene resources without
+   changing arbitrary-seek behavior or keeping old contexts indefinitely. If main-thread delivery
+   remains the limiting factor, evaluate analysis in a dedicated worker with explicit ownership,
+   bounded transport and unchanged sample positions. Worker migration is a separate design,
+   not an established fix for GPU/compositor stalls.
+4. Preserve honest overload behavior. A larger queue cannot make frames appear on time, and a
+   driver identity string alone is not enough to choose a reliable quality level. Qualify the
+   operating workload before recommending it for an unattended show.
+
+## Narrow run and watchdog fix
+
+The 40-minute single-visual run failed at 15.6 minutes on clean 9f3355d. After a successful
+15-minute capture restart, the watchdog stopped input about 30 seconds later. A controlled
+two-second main-thread stall reproduced the same erroneous shutdown three times without GPU
+visualizers: requestAnimationFrame checked health before queued PCM could drain.
+
+57527b0 confirms suspected starvation after 100 ms instead of immediately closing the input.
+Fresh current-revision packets cancel confirmation; restart cancels the old timer. All three
+controlled stalls then kept capture running while honestly reporting skipped analysis samples.
+A real worklet that stops sending packets still fails. Ready passed 570 tests, and transport/output
+browser checks passed. This does not prove the original long-run stall's cause or qualify every
+software workload. Run a final 20-minute single-visual regression across the first restart.
