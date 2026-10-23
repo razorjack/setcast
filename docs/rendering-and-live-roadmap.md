@@ -420,6 +420,17 @@ abrupt tempo changes. Simple filter candidates did not justify replacing the liv
 six real-recording segments supplied coverage evidence only. Validation: 520 tests and ready
 passed, including metric/decoder/configuration checks and a complete synthetic evaluation.
 
+### Recent beat evidence
+
+Confidence now also requires recent accents to agree with the candidate grid. The unchanged
+eight-second estimator can no longer retain a lock solely on old periodicity when current
+transients have moved away. The abrupt tempo-change fixture cleared its stale lock at the next
+half-second observation, with regular-pulse and four-floor coverage unchanged for the live
+energy method. Offbeat ambiguity remains unresolved; accepted output timing still changes only
+through the operator. The expanded evaluation corpus covers phase-continuous changes, phase
+steps and missing beats. Validation: 521 tests and ready passed; the live beat browser check
+passed adoption, confidence loss, journal and capture restart.
+
 ## Completed branding and overlays
 
 Starting revision: ac48ad6. `branding:` (setcast.yaml and live.yaml) adds a logo, name, event

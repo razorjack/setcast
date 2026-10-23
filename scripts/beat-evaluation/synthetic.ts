@@ -10,19 +10,34 @@ export function syntheticSample(source: SyntheticSource, sample: number): number
   if (source.pattern === 'silence') return 0;
   if (source.pattern === 'noise') return noise * 0.25;
   if (source.pattern === 'tone') return Math.sin(time * Math.PI * 2 * 220) * 0.3;
-  const bpm = source.pattern === 'tempo-change' && time >= 16 ? source.bpm + 20 : source.bpm;
+  const { bpm, offset } = gridAt(source, time);
   const period = 60 / bpm;
-  const beat = (time - source.offset) / period;
+  const beat = (time - offset) / period;
   if (beat < 0) return 0;
   if (source.pattern === 'breaks') return breaks(beat, period, noise);
   const kick = drum(remainder(beat, 1) * period, 70, 0.06) * 0.65;
-  if (source.pattern === 'pulse' || source.pattern === 'tempo-change') return kick;
+  if (source.pattern === 'missing-beats') return Math.floor(beat) % 7 === 6 ? 0 : kick;
+  if (['pulse', 'tempo-change', 'tempo-continuous', 'phase-step'].includes(source.pattern))
+    return kick;
   const hatTime = remainder(beat - 0.5, 1) * period;
   const hat = noise * decay(hatTime, 0.025);
   if (source.pattern === 'offbeat') return kick * 0.08 + hat * 0.9;
   const snare = noise * decay(remainder(beat - 1, 2) * period, 0.08) * 0.4;
   const bass = Math.sin(time * Math.PI * 2 * 55) * 0.15;
   return Math.max(-1, Math.min(1, kick + snare + hat * 0.25 + bass));
+}
+
+function gridAt(source: SyntheticSource, time: number) {
+  if (time < 16) return { bpm: source.bpm, offset: source.offset };
+  if (source.pattern === 'phase-step')
+    return { bpm: source.bpm, offset: source.offset + 15 / source.bpm };
+  if (!source.pattern.startsWith('tempo-')) return { bpm: source.bpm, offset: source.offset };
+  const bpm = source.bpm + 20;
+  const offset =
+    source.pattern === 'tempo-continuous'
+      ? 16 - ((16 - source.offset) * source.bpm) / bpm
+      : source.offset;
+  return { bpm, offset };
 }
 
 function breaks(beat: number, period: number, noise: number) {

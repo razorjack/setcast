@@ -9,6 +9,9 @@ export const PATTERNS = [
   'silence',
   'tone',
   'tempo-change',
+  'tempo-continuous',
+  'phase-step',
+  'missing-beats',
 ] as const;
 export type Pattern = (typeof PATTERNS)[number];
 export const METHODS = ['energy', 'bands', 'bass'] as const;
@@ -86,7 +89,12 @@ function parseSource(value: unknown): EvaluationCase['source'] {
   if (!Number.isInteger(seed)) throw new Error('seed must be a whole unsigned 32-bit value.');
   return {
     pattern: source.pattern as Pattern,
-    bpm: number(source.bpm ?? 120, 40, 240, 'bpm'),
+    bpm: number(
+      source.bpm ?? 120,
+      40,
+      String(source.pattern).startsWith('tempo-') ? 220 : 240,
+      'bpm',
+    ),
     offset: number(source.offset ?? 0.17, 0, 86400, 'offset'),
     seed,
   };

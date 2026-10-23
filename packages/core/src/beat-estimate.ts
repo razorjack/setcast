@@ -7,6 +7,7 @@ export interface BeatEstimate {
   ambiguous: boolean;
   periodicity: number;
   phaseStrength: number;
+  recentAgreement: number;
   margin: number;
   competitorBpm: number | null;
 }
@@ -29,13 +30,15 @@ export function estimateBeat(
   const best = candidates[0]!;
   const competitor = candidates.find((item) => Math.abs(item.bpm / best.bpm - 1) > 0.06);
   const phase = beatPhase(accents, 6000 / best.bpm);
+  const recentAgreement = recentPhaseAgreement(accents, 6000 / best.bpm, phase.offset);
   return {
     bpm: Math.round(best.bpm * 10) / 10,
     beatOffset: start + phase.offset / 100,
-    confidence: Math.max(0, Math.min(best.score, phase.strength)),
+    confidence: Math.max(0, Math.min(best.score, phase.strength, recentAgreement)),
     ambiguous: Boolean(competitor && best.score - competitor.score < 0.08),
     periodicity: best.score,
     phaseStrength: phase.strength,
+    recentAgreement,
     margin: competitor ? best.score - competitor.score : best.score,
     competitorBpm: competitor ? Math.round(competitor.bpm * 10) / 10 : null,
   };
@@ -81,6 +84,17 @@ function beatPhase(values: number[], period: number) {
   }
   const offset = (((Math.atan2(y, x) / (2 * Math.PI)) % 1) + 1) % 1;
   return { offset: offset * period, strength: Math.hypot(x, y) / Math.max(1e-12, total) };
+}
+
+/** Old periodicity is insufficient when the newest transients have moved off that grid. */
+function recentPhaseAgreement(values: number[], period: number, offset: number) {
+  let aligned = 0;
+  let total = 0;
+  for (let index = Math.max(0, values.length - 150); index < values.length; index++) {
+    aligned += values[index]! * Math.cos((2 * Math.PI * (index - offset)) / period);
+    total += values[index]!;
+  }
+  return Math.max(0, Math.min(1, aligned / Math.max(1e-12, total)));
 }
 
 function validateWindow(onsets: readonly number[], start: number, range: BeatRange) {

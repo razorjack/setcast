@@ -64,6 +64,8 @@ export class BeatTracker {
     this.state = this.stable >= 3 ? 'locked' : 'uncertain';
     if (recent <= 0.2) this.reason = 'No recent rhythmic transients';
     else if (next.ambiguous) this.reason = 'Competing tempos; narrow the range or tap manually';
+    else if (next.recentAgreement < 0.55)
+      this.reason = 'Recent transients disagree with the estimated grid';
     else if (!reliable) this.reason = 'Weak or irregular beat evidence';
     else
       this.reason =

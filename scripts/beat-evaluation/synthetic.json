@@ -183,6 +183,72 @@
           "beatOffset": 0.17
         }
       ]
+    },
+    {
+      "id": "tempo-continuous",
+      "source": {
+        "pattern": "tempo-continuous",
+        "bpm": 120
+      },
+      "seconds": 40,
+      "reference": [
+        {
+          "from": 0,
+          "until": 16,
+          "bpm": 120,
+          "beatOffset": 0.17
+        },
+        {
+          "from": 16,
+          "until": 40,
+          "bpm": 140,
+          "beatOffset": 2.4314285714285724
+        }
+      ]
+    },
+    {
+      "id": "phase-step",
+      "source": {
+        "pattern": "phase-step",
+        "bpm": 120
+      },
+      "seconds": 40,
+      "reference": [
+        {
+          "from": 0,
+          "until": 16,
+          "bpm": 120,
+          "beatOffset": 0.17
+        },
+        {
+          "from": 16,
+          "until": 40,
+          "bpm": 120,
+          "beatOffset": 0.29500000000000004
+        }
+      ]
+    },
+    {
+      "id": "missing-beats",
+      "source": {
+        "pattern": "missing-beats",
+        "bpm": 120
+      },
+      "seconds": 40,
+      "reference": [
+        {
+          "from": 0,
+          "until": 16,
+          "bpm": 120,
+          "beatOffset": 0.17
+        },
+        {
+          "from": 16,
+          "until": 40,
+          "bpm": 120,
+          "beatOffset": 0.17
+        }
+      ]
     }
   ]
 }

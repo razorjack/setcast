@@ -30,7 +30,9 @@ test('explicit-hop tracking bounds history, retains absolute phase and explains 
   expect(tracker.estimate!.bpm).toBeCloseTo(120, 0);
   const estimate = tracker.estimate!;
   expect(estimate.beatOffset).toBeGreaterThan(28800);
-  expect(estimate.confidence).toBe(Math.min(estimate.periodicity, estimate.phaseStrength));
+  expect(estimate.confidence).toBe(
+    Math.min(estimate.periodicity, estimate.phaseStrength, estimate.recentAgreement),
+  );
   expect(estimate.margin).toBeGreaterThanOrEqual(0.08);
   expect(estimate.competitorBpm).not.toBe(null);
 });
@@ -78,4 +80,20 @@ test('standalone estimation rejects malformed windows and clocks', () => {
   const silence = estimateBeat(Array(800).fill(0), 0, range);
   expect(silence.confidence).toBe(0);
   expect(silence.ambiguous).toBe(true);
+});
+
+test('recent phase disagreement removes an old lock while the long window still looks periodic', () => {
+  const tracker = new BeatTracker();
+  for (let hop = 0; hop < 1600; hop++) tracker.push({ hop, value: hop % 50 === 17 ? 1 : 0 });
+  expect(tracker.state).toBe('locked');
+  for (let hop = 1600; hop <= 1650; hop++) {
+    const phase = (((((hop / 100 - 0.17) * 140) / 60) % 1) + 1) % 1;
+    tracker.push({ hop, value: phase < 0.04 ? 1 : 0 });
+  }
+  expect(tracker.estimate!.bpm).toBe(120);
+  expect(tracker.estimate!.periodicity).toBeGreaterThan(0.55);
+  expect(tracker.estimate!.phaseStrength).toBeGreaterThan(0.55);
+  expect(tracker.estimate!.recentAgreement).toBeLessThan(0.55);
+  expect(tracker.state).toBe('uncertain');
+  expect(tracker.reason).toContain('Recent transients disagree');
 });

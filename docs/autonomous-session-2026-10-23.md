@@ -85,3 +85,9 @@ projection and journal semantics. Every standalone completed piece gets a commit
   energy/multiband can lock half a beat off under strong offbeat accents, and all retain some
   stale locks across abrupt tempo changes. Six real 120-second segments had little coverage.
   Next investigate recent phase agreement and spectral novelty without treating coverage as accuracy.
+- Evaluation tooling committed as 5972975. Added a conservative recent-phase agreement check:
+  it only lowers confidence and does not alter tempo candidates. The original abrupt-change
+  fixture's stale locks fell from seven half-second observations to one at the exact change.
+  Regular pulses and four-floor energy tracking retained coverage; offbeat ambiguity remains.
+  Expanded fixtures cover continuous-phase tempo changes, phase-only changes and missing kicks.
+  Ready passed 521 tests and the real Chromium beat/adoption/journal check passed.

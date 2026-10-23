@@ -33,11 +33,14 @@ tracking cannot overwrite them. Capture loss never clears a grid that the operat
 The detector reads stereo RMS energy in 10 ms hops from the existing bounded PCM ring. It uses
 positive log-energy changes, a local onset floor, accent emphasis and short smoothing. It
 compares normalized autocorrelation across the requested BPM range at 0.2 BPM spacing and
-estimates phase from the circular concentration of onsets. The evidence score is the smaller
-of periodicity and phase concentration. It is a heuristic, not a probability of correctness.
+estimates phase from the circular concentration of onsets. The evidence score is the smallest
+of periodicity, phase concentration and recent phase agreement. Recent agreement measures the
+weighted cosine alignment of the newest 1.5 seconds of accents with the candidate grid, clamped
+to 0–1. This rejects a stale grid when the newest transients move away from it. The score is a
+heuristic, not a probability of correctness.
 
 Eight seconds of fresh audio and three consistent estimates, half a second apart, are needed
-to lock. Periodicity and phase must both exceed 0.55, the best competing tempo outside a 6%
+to lock. Periodicity, phase concentration and recent agreement must all reach 0.55. The best competing tempo outside a 6%
 neighborhood must score at least 0.08 lower, and recent transients must remain present. Tempo
 and phase must agree across estimates. Silence can take up to two seconds to remove a lock.
 Input loss, routing/sensitivity changes, capture restart, range edits and a processing gap over
@@ -100,7 +103,7 @@ for (const onset of sourceOnsets) tracker.push(onset);
 The tracker retains at most 800 values (`retainedHops`) and evaluates every 50 hops after warmup.
 It does not retain PCM, schedule callbacks or apply output timing. `estimateBeat(onsets, start,
 range)` evaluates one complete 800-value window, where `start` is the absolute time of its first
-hop in seconds. Both APIs return the same candidate and evidence: `periodicity`, `phaseStrength`,
+hop in seconds. Both APIs return the same candidate and evidence: `periodicity`, `phaseStrength`, `recentAgreement`,
 `confidence`, `ambiguous`, the competing `competitorBpm` outside the 6% neighborhood and its score
 `margin`. These are diagnostics, not calibrated probabilities. `beatOffset` is an absolute beat
 phase anchor and does not identify a downbeat.

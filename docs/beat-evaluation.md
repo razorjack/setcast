@@ -47,9 +47,13 @@ omitting it runs all three methods.
 
 For synthetic input, replace `source` with
 `{"pattern":"four-floor","bpm":128,"offset":0.17,"seed":1}`. Available patterns are `pulse`,
-`four-floor`, `breaks`, `offbeat`, `noise`, `silence`, `tone` and `tempo-change`. Defaults are
+`four-floor`, `breaks`, `offbeat`, `noise`, `silence`, `tone`, `tempo-change`, `tempo-continuous`,
+`phase-step` and `missing-beats`. Defaults are
 120 BPM, offset 0.17 seconds and seed 1. The tempo-change fixture adds 20 BPM at absolute time
-16 seconds while retaining the phase anchor. These fixtures deliberately include competing
+16 seconds while retaining the phase anchor; this changes phase as well as tempo. `tempo-continuous`
+adds the same 20 BPM while preserving phase at the change. These two patterns accept initial
+tempos up to 220 BPM. `phase-step` delays the anchor by a quarter beat at 16 seconds without
+changing tempo. `missing-beats` omits every seventh kick. These fixtures deliberately include competing
 subdivisions and misleading accents, not only easy regular kicks. The JSON corpus records their
 authored grids explicitly.
 
@@ -117,6 +121,22 @@ Six unlabeled 120-second windows of the locally available Stakka & Skynet master
 with any method. The occasional locks do not establish accuracy. These findings do not justify
 replacing the live baseline with either simple filter candidate or enabling continuous retiming.
 Artifacts: `examples/demo/out/beat-evaluation-synthetic-1` and `beat-evaluation-real-1`.
+
+### Recent-evidence check
+
+The core tracker now includes agreement of the newest 1.5 seconds of accents with the candidate
+grid. This can only reduce the evidence score: tempo selection and the full-window measurements
+are unchanged. In the original 120→140 BPM fixture, energy-method false-lock observations fell
+from seven to one. The remaining observation is exactly at the change, before new audio arrives.
+The old grid became uncertain at 16.5 seconds instead of 19.5. Correct locks on regular pulses
+and the four-floor fixture were unchanged. Strong offbeat ambiguity remains unresolved.
+
+The expanded corpus also exercises continuous-phase tempo changes, a phase-only step and missing
+kicks. These still have a finite response delay; recent agreement does not promise instantaneous
+change detection. The six real segments lost their few energy-method locks. Since those segments
+are unlabeled, this is a coverage reduction, not demonstrated accuracy improvement. Baseline and
+new reports are in `beat-evaluation-baseline`, `beat-evaluation-recent-expanded` and
+`beat-evaluation-real-recent` under `examples/demo/out/`.
 
 Next experiments should distinguish spectral onset detection, metrical periodicity and recent
 phase agreement. Spectral-flux methods compare positive spectral changes; maximum filtering can
