@@ -13,6 +13,7 @@ visualizer:
   scale: 1
   gain: 1
   resolution: 0.5
+  recoverySeconds: 5
 ```
 
 Use these blocks in `setcast.yaml` or `live.yaml`. Each has a runnable live preset:
@@ -36,6 +37,8 @@ still apply to the entire output.
   uses one quarter of the full-resolution pixels. The longest side is capped at 4096 pixels or
   the hardware limit, whichever is smaller. Live adaptive resolution scales this further under
   sustained overload.
+- `recoverySeconds`: 0 to 15, default 5. Maximum wall-clock wait for the browser to restore a lost
+  graphics context. Zero fails immediately. This is resource readiness, not animation time.
 
 ## field
 
@@ -114,11 +117,19 @@ The drawing buffer persists while the renderer waits for fonts, artwork and othe
 holds. This uses WebGL's `preserveDrawingBuffer` option, which can have a performance cost.
 See the [WebGL specification](https://registry.khronos.org/webgl/specs/latest/1.0/).
 
-Missing WebGL 2, shader compilation failure and context loss produce explicit errors naming the
-visualizer. The visualizer does not silently substitute another effect. Enable browser graphics
-acceleration, try another supported `output.gl` backend, reduce the visualizer's resolution or
-capture concurrency, or select an SVG visualizer. After live context loss, reload the player;
-automatic context recovery is not implemented.
+A lost context starts a bounded recovery wait. If the browser restores it, the canvas rebuilds
+its program and uniform locations, then draws the latest explicit frame before releasing its
+readiness hold. Remotion and the browser exporter wait for that frame. Live audio capture and
+scene time continue; the affected canvas can be empty during recovery while other scene layers
+continue. The live operator receives private loss/restoration notices. Recovery does not recall
+a scene, restart capture, change the journal or appear as text on the projected output.
+
+The timeout starts at loss and is not extended by later setting changes. Missing WebGL 2,
+compilation failure, unsuccessful restoration and expired recovery waits produce explicit errors
+naming the visualizer. Setcast cannot force a driver to recover and does not substitute another
+effect. If recovery fails, reload the player or retry the export. Enable browser graphics
+acceleration, try another supported `output.gl` backend, reduce resolution or capture concurrency,
+or select an SVG visualizer. A disconnected canvas releases its pending hold and timer.
 
 The same inputs reproduce pixels on the tested browser and graphics backend. Bit-identical
 output across GPU vendors, drivers or Chromium versions is not promised: floating-point
@@ -130,16 +141,20 @@ images.
 ```sh
 node packages/renderer-browser/bench/gpu.ts            # all three; or add field, tunnel or constellation
 node packages/renderer-browser/bench/output.ts         # live adaptive resolution
+node packages/renderer-remotion/bench/gpu-recovery.ts  # forced loss through Remotion readiness
 vp run export-acceptance
 vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/browser-acceptance
 ```
 
 For each visualizer, the browser check exercises backward and shuffled frame requests, fresh
 concurrent capture pages, seed changes, audio response with stopped motion, CSS colors and
-resizing, portrait output, repeated scene remounts, unavailable WebGL and forced context loss.
-An explicit SwiftShader check verifies request-order independence on the software backend.
-It then starts synthetic live input with all three stacked, checks that each advances with no
-dropped analysis samples, and restarts capture. The output check verifies that live adaptive
+resizing, portrait output, repeated scene remounts, unavailable WebGL, repeated context restoration,
+fail-fast policy, timeout failure and scene replacement during recovery. Restored frames match the
+requested reference pixels. SwiftShader checks request-order independence and restored pixels.
+Synthetic live input continues with all three contexts lost together, recovers them without dropped
+analysis samples, then restarts capture. The projection check restores a context inside the warped
+iframe and verifies private operator notices. The Remotion check forces loss during the first draw,
+compares restored still pixels and verifies timeout failure. The output check verifies that live adaptive
 resolution scales all three drawing buffers and restores them. Images and timings are saved
 under `examples/demo/out/gpu-check/`.
 
@@ -171,3 +186,63 @@ Hardware mixers, long-duration GPU load, physical projectors and cameras, and cr
 drivers still need qualification. Linux and Windows have not been run from this local session.
 Stateful particle simulation remains out of scope: it would need deterministic replay or
 checkpoints to satisfy arbitrary frame requests.
+
+## Shared canvas for visualizer authors
+
+`@setcast/core/react` exports `ShaderCanvas`, `Shader<C>` and `Uniforms`. `@setcast/core` exports
+`GpuCanvasConfigSchema` and `GpuCanvasConfig`. A visualizer schema can extend the shared schema
+with its own controls. Pass the parsed result, including defaults, to the canvas:
+
+```tsx
+import { GpuCanvasConfigSchema } from '@setcast/core';
+import { ShaderCanvas, type Shader } from '@setcast/core/react';
+import { z } from 'zod';
+
+const schema = GpuCanvasConfigSchema.extend({ speed: z.number().min(0).max(2).default(0.3) });
+type Config = z.infer<typeof schema>;
+
+const shader: Shader<Config> = {
+  name: 'pulse-disc',
+  uniforms: ['phase', 'bass'],
+  fragment: `#version 300 es
+precision highp float;
+uniform vec2 u_size;
+uniform vec4 u_color;
+uniform float u_phase;
+uniform float u_bass;
+out vec4 outputColor;
+void main() {
+  vec2 point = (gl_FragCoord.xy - 0.5 * u_size) / min(u_size.x, u_size.y);
+  float radius = 0.2 + 0.04 * sin(u_phase) + 0.08 * u_bass;
+  float alpha = (1.0 - smoothstep(radius - 0.01, radius, length(point))) * u_color.a;
+  outputColor = vec4(u_color.rgb * alpha, alpha);
+}`,
+  apply(gl, uniforms, frame, config) {
+    gl.uniform1f(uniforms.phase!, (frame.timeSeconds * config.speed % 1) * Math.PI * 2);
+    gl.uniform1f(uniforms.bass!, frame.audio.bass);
+  },
+};
+
+export function PulseDisc({ config }: { config: Config }) {
+  return <ShaderCanvas shader={shader} config={config} />;
+}
+```
+
+Style `.sc-pulse-disc` with explicit width/height and CSS color. Keep the shader descriptor stable,
+for example at module scope: replacing it recreates GPU resources. `uniforms` lists names without
+the `u_` prefix; `apply` receives locations under those names. The canvas supplies `u_size` in
+buffer pixels and `u_color` as straight RGBA from computed CSS color. The fragment must write
+premultiplied RGBA to every pixel; transparent areas must also be written.
+
+`apply` sets uniforms from the supplied frame and parsed configuration. It must not retain WebGL
+objects or simulation state, change render targets, schedule a drawing loop or depend on call
+order. Restoration creates fresh uniform locations and invokes it again with current inputs.
+Textures, accumulated particle simulations and custom resource lifecycles need a separate contract.
+The canvas handles sizing, adaptive scale, CSS color readback, readiness, recovery and disposal.
+This component is an authoring API; it does not add automatic package discovery or loading.
+
+Renderer hosts may implement the optional `RendererBindings.diagnostic` callback. Events have
+`level` (`info` or `warning`), `source`, `code` and `message`. GPU recovery uses
+`gpu-context-lost` and `gpu-context-restored`; these are operational observations, not timeline
+or journal events. Hosts decide where to display them. A diagnostic handler cannot determine frame
+readiness, and a handler failure does not interrupt rendering.

@@ -117,7 +117,7 @@ describe('tunnel and constellation configuration', () => {
     expect(tunnel.error.issues.map(({ message }) => message)).toEqual([
       'sides must be 0 for round rings, or a whole number from 3 to 12.',
       'rings must be a whole number from 2 to 24.',
-      'Unknown key "depth". tunnel takes: seed, speed, sides, rings, spokes, twist, spin, gain, resolution.',
+      'Unknown key "depth". tunnel takes: seed, speed, sides, rings, spokes, twist, spin, gain, resolution, recoverySeconds.',
     ]);
     const constellation = ConstellationConfigSchema.safeParse({ links: -1, resolution: 0.1 });
     expect(constellation.success).toBe(false);

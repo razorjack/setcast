@@ -57,6 +57,7 @@ export {
   type X264Preset,
 } from './config.ts';
 export { TimeSchema } from './time-schema.ts';
+export { GpuCanvasConfigSchema, type GpuCanvasConfig } from './gpu.ts';
 export {
   BEAT_HOPS_PER_SECOND,
   BEAT_WINDOW_HOPS,

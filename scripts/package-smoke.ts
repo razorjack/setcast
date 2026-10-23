@@ -28,9 +28,13 @@ const modules = join(temporary, 'node_modules');
 const playerSmokeSource = `import assert from 'node:assert/strict';
 import { play } from '@setcast/renderer-browser';
 import { preview } from '@setcast/renderer-browser/preview';
+import { GpuCanvasConfigSchema } from '@setcast/core';
+import { ShaderCanvas } from '@setcast/core/react';
 import { loadProject, loadLiveProject, probeAudio } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 
+assert.deepEqual(GpuCanvasConfigSchema.parse({}), { resolution: 0.5, recoverySeconds: 5 });
+assert.equal(typeof ShaderCanvas, 'function');
 const projectDir = process.argv[2];
 const { project } = await loadProject(projectDir, {
   themes, probeDuration: (audio, root) => probeAudio({ audio }, root)

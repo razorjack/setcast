@@ -101,6 +101,7 @@ function SceneLayers({
               analyzer={props.analyzer}
               frame={props.frame}
               document={document}
+              report={props.report}
               ready={project === visible ? undefined : ready}
             />
           </SceneBoundary>
@@ -151,7 +152,8 @@ const LiveScene = memo(function LiveScene({
   announcements,
   renderScale,
   document,
-}: Omit<SceneProps, 'report'> & { ready?: () => void }) {
+  report,
+}: SceneProps & { ready?: () => void }) {
   const [readiness] = useState(() => new LiveReadiness());
   const bindings = useMemo<RendererBindings>(
     () => ({
@@ -160,10 +162,11 @@ const LiveScene = memo(function LiveScene({
       document,
       asset: assetUrl,
       hold: readiness.hold,
+      diagnostic: (event) => report(event.message),
       Img: LiveImage,
       Video: LiveVideo,
     }),
-    [readiness, renderScale, document],
+    [readiness, renderScale, document, report],
   );
   useReady(readiness, ready);
   const resolved = resolveLiveFrame({ project, analyzer, frame, performance, announcements });

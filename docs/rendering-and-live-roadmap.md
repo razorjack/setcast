@@ -471,3 +471,19 @@ measurements, reproduction and qualification limits.
 Both exporter acceptance suites, same-page seeking, resume recovery and installed-package smoke
 passed. The SwiftShader benchmark now measures readiness plus screenshot readback; its earlier
 readiness-only measurements did not establish completed software rendering throughput.
+
+## Completed bounded GPU recovery and shader authoring API
+
+All three GPU visualizers share a configurable `recoverySeconds` policy (0–15, default 5).
+A restored context rebuilds resources and draws the latest explicit frame before releasing
+readiness; timeouts fail explicitly. Live capture continues and operator diagnostics stay private.
+Scene replacement cancels pending recovery. Core exports the shader canvas and shared schema for
+stateless visualizer authors, with a documented frame, uniform, alpha and resource contract.
+See [gpu-visualizer.md](gpu-visualizer.md).
+
+Validation: 522 tests and ready passed, both exporter acceptance suites passed, and installed
+package smoke verified the public exports. Browser checks exercised repeated restoration of all
+three visualizers, unchanged requested pixels, SwiftShader, fail-fast/timeout behavior, unmount
+during recovery and simultaneous live loss without dropped samples. The projection check restored
+an iframe context; the Remotion check forced loss during the first GPU draw, compared reference
+pixels and verified timeout failure. Forced extension events do not qualify real driver resets.

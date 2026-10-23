@@ -9,6 +9,12 @@ import { play } from '../src/index.ts';
 import { bundlePlayer } from '../src/bundle.ts';
 import { prepareFrame, withCapture, withRenderSession } from '../src/export/session.ts';
 
+declare global {
+  interface Window {
+    setcastRestoreGpu?: Record<string, () => void>;
+  }
+}
+
 const directory = await mkdtemp(join(tmpdir(), 'setcast-gpu-'));
 const artifacts = resolve('examples/demo/out/gpu-check');
 await mkdir(artifacts, { recursive: true });
@@ -47,6 +53,7 @@ try {
       await checkVariants(project, visualizer, reference);
       await checkScenes(project, visualizer.name);
       await checkUnavailable(project);
+      await checkContextRecovery(project, visualizer.name);
       await checkContextLoss(project, visualizer.name);
       await checkSoftware(project, visualizer.name);
       process.stdout.write(`${visualizer.name}: deterministic frames, failures and software\n`);
@@ -161,11 +168,25 @@ async function checkScenes(project: ResolvedProject, name: string) {
     live: { clock: false, input: { channels: null, gain: 1, delay: 0 } },
   };
   await withCapture(
-    { ...project, scenes: [{ at: 1, scene }] },
+    {
+      ...project,
+      visualizers: resolveVisualizerConfigs({ ...project.visualizers[0], recoverySeconds: 0.2 }),
+      scenes: [{ at: 1, scene }],
+    },
     { projectDir: directory },
     async (page) => {
       await prepareFrame(page, 12);
       const reference = await pixels(page, name);
+      await loseContext(page, name);
+      await prepareFrame(page, 51);
+      assert.deepEqual(await page.evaluate(() => window.setcastExport!.readiness.labels), []);
+      await page.waitForTimeout(250);
+      await prepareFrame(page, 12);
+      assert.equal(
+        await pixels(page, name),
+        reference,
+        'Unmount during recovery poisoned the new scene',
+      );
       for (let index = 0; index < 10; index++) {
         await prepareFrame(page, 51);
         assert.equal(await page.locator(`.sc-${name}`).count(), 0);
@@ -194,13 +215,74 @@ async function checkUnavailable(project: ResolvedProject) {
 }
 
 async function checkContextLoss(project: ResolvedProject, name: string) {
+  for (const recoverySeconds of [0, 0.2]) {
+    const failing = {
+      ...project,
+      visualizers: resolveVisualizerConfigs({ name, recoverySeconds }),
+    };
+    await withCapture(failing, { projectDir: directory }, async (page) => {
+      await prepareFrame(page, 12);
+      await loseContext(page, name);
+      await assert.rejects(
+        prepareFrame(page, 13),
+        recoverySeconds === 0 ? /Recovery is disabled/ : /did not recover within 0.2 seconds/,
+      );
+    });
+  }
+}
+
+async function loseContext(page: Page, name: string) {
+  await page.evaluate(
+    (name) =>
+      new Promise<void>((resolve) => {
+        const canvas = document.querySelector<HTMLCanvasElement>(`.sc-${name}`)!;
+        canvas.addEventListener('webglcontextlost', () => resolve(), { once: true });
+        const extension = canvas.getContext('webgl2')!.getExtension('WEBGL_lose_context')!;
+        (window.setcastRestoreGpu ??= {})[name] = () => extension.restoreContext();
+        extension.loseContext();
+      }),
+    name,
+  );
+}
+
+async function checkContextRecovery(project: ResolvedProject, name: string) {
   await withCapture(project, { projectDir: directory }, async (page) => {
-    await prepareFrame(page, 12);
-    await page.evaluate((name) => {
-      const canvas = document.querySelector<HTMLCanvasElement>(`.sc-${name}`)!;
-      canvas.getContext('webgl2')!.getExtension('WEBGL_lose_context')!.loseContext();
-    }, name);
-    await assert.rejects(prepareFrame(page, 13), new RegExp(`"${name}" lost its WebGL context`));
+    await prepareFrame(page, 51);
+    const reference = await pixels(page, name);
+    for (let cycle = 0; cycle < 3; cycle++) {
+      await prepareFrame(page, 12);
+      await loseContext(page, name);
+      assert.equal(await page.locator(`.sc-${name}`).getAttribute('data-gpu-state'), 'recovering');
+      assert(
+        (await page.evaluate(() => window.setcastExport!.readiness.labels)).includes(
+          `gpu:${name}:context`,
+        ),
+      );
+      let settled = false;
+      const pending = prepareFrame(page, 51).then(
+        () => {
+          settled = true;
+          return null;
+        },
+        (error: unknown) => {
+          settled = true;
+          return error;
+        },
+      );
+      await page.waitForTimeout(100);
+      assert.equal(settled, false, 'A frame completed while its GPU context was unavailable');
+      await page.evaluate((name) => {
+        window.setcastRestoreGpu![name]!();
+      }, name);
+      assert.equal(await pending, null);
+      assert.equal(
+        await pixels(page, name),
+        reference,
+        'Restoration changed the requested absolute frame',
+      );
+      assert.equal(await page.locator(`.sc-${name}`).getAttribute('data-gpu-state'), 'ready');
+      assert.deepEqual(await page.evaluate(() => window.setcastExport!.readiness.labels), []);
+    }
   });
 }
 
@@ -293,6 +375,7 @@ async function checkLive(project: ResolvedProject) {
     for (const [index, { name }] of VISUALIZERS.entries())
       assert(later[index] !== first[index], `Live ${name} did not advance`);
     assert.equal(await page.locator('main').getAttribute('data-dropped'), '0');
+    await checkLiveRecovery(page);
     await page.screenshot({ path: join(artifacts, 'live.png') });
     await page.getByRole('button', { name: 'Stop input', exact: true }).click();
     await page.getByRole('button', { name: 'Start input', exact: true }).click();
@@ -303,6 +386,31 @@ async function checkLive(project: ResolvedProject) {
     await browser?.close();
     await server.close();
   }
+}
+
+async function checkLiveRecovery(page: Page) {
+  const before = Number(await page.locator('main').getAttribute('data-frame'));
+  for (const { name } of VISUALIZERS) await loseContext(page, name);
+  await page.waitForFunction(
+    (frame) => Number(document.querySelector('main')?.getAttribute('data-frame')) > frame + 12,
+    before,
+  );
+  assert.equal(await page.locator('main').getAttribute('data-capture'), 'running');
+  assert.equal(await page.locator('main').getAttribute('data-dropped'), '0');
+  assert.equal(await page.locator('canvas[data-gpu-state="recovering"]').count(), 3);
+  for (const { name } of VISUALIZERS) {
+    await page.evaluate((name) => window.setcastRestoreGpu![name]!(), name);
+    await page.locator(`.sc-${name}[data-gpu-state="ready"]`).waitFor();
+  }
+  await everyPixel(page);
+  assert.match(await page.locator('.sc-live-notice').innerText(), /recovered its graphics context/);
+  assert.equal(
+    await page
+      .locator('.sc-stage')
+      .getByText(/graphics context/)
+      .count(),
+    0,
+  );
 }
 
 async function gpuRenderer(page: Page) {
@@ -327,6 +435,11 @@ async function checkSoftware(project: ResolvedProject, name: string) {
     assert((await pixels(page, name)) !== first, `Software ${name} did not move`);
     await prepareFrame(page, 51);
     assert((await pixels(page, name)) === first, `Software ${name} depends on request order`);
+    await loseContext(page, name);
+    const pending = prepareFrame(page, 51);
+    await page.evaluate((name) => window.setcastRestoreGpu![name]!(), name);
+    await pending;
+    assert.equal(await pixels(page, name), first, `Software ${name} recovery changed pixels`);
     await page.screenshot({ path: join(artifacts, `${name}-software.png`) });
   });
 }

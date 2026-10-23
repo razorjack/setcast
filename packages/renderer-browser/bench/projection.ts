@@ -92,6 +92,32 @@ try {
     gpuBefore,
     'Projected GPU field did not advance',
   );
+  const beforeLoss = Number(await page.locator('main').getAttribute('data-frame'));
+  await gpu.evaluate(
+    (el) =>
+      new Promise<void>((resolve) => {
+        const canvas = el as HTMLCanvasElement;
+        const extension = canvas.getContext('webgl2')!.getExtension('WEBGL_lose_context')!;
+        canvas.addEventListener(
+          'webglcontextlost',
+          () => {
+            resolve();
+            setTimeout(() => extension.restoreContext(), 500);
+          },
+          { once: true },
+        );
+        extension.loseContext();
+      }),
+  );
+  await frame.locator('canvas.sc-field[data-gpu-state="recovering"]').waitFor();
+  await frame.locator('canvas.sc-field[data-gpu-state="ready"]').waitFor();
+  assert(Number(await page.locator('main').getAttribute('data-frame')) > beforeLoss);
+  assert.equal(await page.locator('main').getAttribute('data-dropped'), '0');
+  assert.match(
+    await operator.locator('.sc-live-notice').innerText(),
+    /recovered its graphics context/,
+  );
+  assert.equal(await frame.getByText(/graphics context/).count(), 0);
   const artBefore = await frame
     .locator('.sc-bg-copy')
     .evaluate((el) => (el as HTMLElement).style.cssText);

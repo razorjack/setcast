@@ -33,8 +33,10 @@ jobs:
         run: |
           vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/browser-acceptance
           node packages/renderer-browser/bench/resume.ts
-      - name: GPU visualizer determinism, failures and synthetic live input
-        run: node packages/renderer-browser/bench/gpu.ts
+      - name: GPU visualizer determinism, recovery and synthetic live input
+        run: |
+          node packages/renderer-browser/bench/gpu.ts
+          node packages/renderer-remotion/bench/gpu-recovery.ts
       - name: Live output recovery and adaptive GPU resolution
         run: node packages/renderer-browser/bench/output.ts
       - name: Automatic live scene progression and replay

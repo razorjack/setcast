@@ -126,3 +126,10 @@ GPU canvas. Preserve absolute frame time, capture ownership, journals, projectio
 readiness. Rebuild resources only after browser restoration; hold incomplete export frames and
 fail explicitly on timeout. Make the policy configurable and the shared shader component usable
 by platform visualizer plugins. Stop starting features at 18:00 as planned.
+
+- Bounded context recovery implemented with shared schema/public ShaderCanvas authoring API.
+  Hardware and SwiftShader restoration checks pass for all three visuals, including exact restored
+  frame pixels, timeout/fail-fast, unmount, simultaneous live loss and projected iframe recovery.
+  Remotion forced loss during first draw also preserves pixels and times out explicitly.
+  Ready passed 522 tests, both acceptance suites passed, and package smoke passed.
+  Next: reusable repeated-loss endurance action and a longer 1080p recovery workload.

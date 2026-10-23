@@ -3,6 +3,7 @@ import { FEATURE_SOURCES, HISTORY_SECONDS } from './audio.ts';
 import { ConfigError, zodIssues, type Issue } from './errors.ts';
 import type { ResolvedProject } from './project.ts';
 import { Registry } from './registry.ts';
+import { GpuCanvasConfigSchema } from './gpu.ts';
 
 /** A number in a `visualizer:` block, with one message for every way it can be wrong. */
 function numberSetting(key: string, min: number, max: number) {
@@ -129,8 +130,7 @@ export const FieldConfigSchema = visualizerSchema('field', {
   speed: numberSetting('speed', 0, 2).default(0.3),
   scale: numberSetting('scale', 0.5, 4).default(1),
   gain: numberSetting('gain', 0.1, 4).default(1),
-  /** Drawing-buffer pixels per composition pixel, independent of display pixel density. */
-  resolution: numberSetting('resolution', 0.25, 1).default(0.5),
+  ...GpuCanvasConfigSchema.shape,
 });
 export type FieldConfig = z.infer<typeof FieldConfigSchema>;
 
@@ -156,7 +156,7 @@ export const TunnelConfigSchema = visualizerSchema('tunnel', {
   /** Rotation in degrees per second; 0 to pin. */
   spin: numberSetting('spin', -90, 90).default(3),
   gain: numberSetting('gain', 0.1, 4).default(1),
-  resolution: numberSetting('resolution', 0.25, 1).default(0.5),
+  ...GpuCanvasConfigSchema.shape,
 });
 export type TunnelConfig = z.infer<typeof TunnelConfigSchema>;
 
@@ -170,7 +170,7 @@ export const ConstellationConfigSchema = visualizerSchema('constellation', {
   /** How far links reach, in point spacings; 0 draws points only. */
   links: numberSetting('links', 0, 1.5).default(1),
   gain: numberSetting('gain', 0.1, 4).default(1),
-  resolution: numberSetting('resolution', 0.25, 1).default(0.5),
+  ...GpuCanvasConfigSchema.shape,
 });
 export type ConstellationConfig = z.infer<typeof ConstellationConfigSchema>;
 

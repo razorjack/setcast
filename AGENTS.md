@@ -547,11 +547,20 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   preserve motion precision in long sessions. CSS `color` supplies its tint and alpha.
   `resolution` scales composition pixels, independently of device pixel density; the drawing
   buffer is capped at 4096 pixels per side and the hardware limit. Preserve the drawing buffer
-  across readiness waits. Context creation/loss fails explicitly instead of exporting blank
-  frames. Dispose GPU programs on unmount and release detached canvas contexts after cleanup,
+  across readiness waits. Context creation fails explicitly. Context loss holds readiness for a bounded
+  restoration wait and fails on timeout instead of exporting incomplete frames. Dispose GPU programs on unmount and release detached canvas contexts after cleanup,
   allowing React effect replay on a connected canvas. Determinism is qualified within one
   browser/GPU backend, not across drivers. Export acceptance checks repeated stills and decoded
   frame identity between one- and two-worker chunked exports.
+- GPU recovery is owned by `ShaderSession`, not capture or scene selection. `recoverySeconds`
+  (0–15, default 5) bounds each loss; 0 fails immediately. Rebuild program/uniforms only after
+  browser restoration, draw the latest frame/config/scale before releasing the hold, and retain
+  the hold until React commits a fatal error. Unmount cancels timers and releases holds. Live
+  capture continues, so recovery can leave a temporary empty GPU layer. Optional renderer
+  diagnostics go to the private operator notice, never the stage or journal. Public `ShaderCanvas`,
+  `Shader<C>`, `Uniforms` and `GpuCanvasConfigSchema` support stateless visualizer authors; `apply`
+  only sets uniforms, descriptors are stable, and shaders write premultiplied pixels everywhere.
+  The supplied `u_color` is straight RGBA. See docs/gpu-visualizer.md for the full contract.
 - `tunnel` and `constellation` share `ShaderCanvas` with `field`: one full-frame fragment
   shader per visualizer, `u_size` and `u_color` supplied, and the same context, readiness,
   context-loss, disposal and `renderScale` handling. Motion is reduced in double precision in

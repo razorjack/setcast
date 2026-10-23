@@ -360,3 +360,17 @@ otherwise export preserves the compiled chapter timestamps and warns about YouTu
 Namespaced custom annotations and extension payloads survive normalization and inspection.
 Unknown core fields fail validation. Capture logs, source transport, hardware occupancy,
 per-deck audio and live receipt-time replay remain deferred.
+
+## GPU canvas authoring
+
+`ShaderCanvas` and `Shader<C>` from `@setcast/core/react` provide a shared stateless WebGL 2
+canvas. Extend `GpuCanvasConfigSchema` from `@setcast/core` for resolution and bounded context
+recovery, then supply parsed config and a stable shader descriptor. Shaders consume explicit
+`RenderFrame` inputs and write the complete drawing buffer. The canvas owns context resources,
+CSS color, adaptive scale, readiness and restoration. See [gpu-visualizer.md](gpu-visualizer.md#shared-canvas-for-visualizer-authors)
+for the authoring contract, premultiplied output and a complete example. This API does not imply
+runtime plugin package discovery.
+
+`RendererBindings.diagnostic` is an optional host callback for operational information and
+warnings (`level`, `source`, `code`, `message`). Keep these messages off the scene and separate
+from authored timeline events. Readiness continues to use labeled `hold` tokens.

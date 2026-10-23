@@ -28,6 +28,14 @@ export type VideoProps = MediaProps & {
   muted?: boolean;
 };
 
+/** Private host diagnostics. Renderers decide where to display or record them. */
+export interface RendererDiagnostic {
+  level: 'info' | 'warning';
+  source: string;
+  code: string;
+  message: string;
+}
+
 /**
  * What a renderer adapter plugs in. `hold` marks the current frame as not ready until the returned
  * release function is called (Remotion: delayRender/continueRender; a future renderer: its own
@@ -42,6 +50,7 @@ export interface RendererBindings {
   Img: ComponentType<ImgProps>;
   Video: ComponentType<VideoProps>;
   hold: (label: string) => () => void;
+  diagnostic?: (event: RendererDiagnostic) => void;
   /** Maps a project-relative path (`assets/bg.png`) to a URL the renderer serves. */
   asset: (path: string) => string;
 }
