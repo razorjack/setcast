@@ -407,6 +407,19 @@ Validation: 515 tests and `vp run ready` passed. Core checks cover clock validat
 bounded history, configuration isolation and diagnostics. The Chromium beat check passed
 configured-range startup, confidence loss, adoption, journaling and restart.
 
+### Beat evaluation workbench
+
+Versioned corpora now compare the shared tracker across stereo energy, three-band and bass-only
+onset inputs. Synthetic fixtures have authored grids; file segments can supply partial reference
+intervals or remain explicitly unlabeled. Reports distinguish coverage, tempo errors, phase
+errors and false locks, retain source hashes and stream observations. Cancellation and short
+recordings fail explicitly with retained reports. See [beat-evaluation.md](beat-evaluation.md).
+
+The first corpus exposed half-beat shifts under strong offbeat accents and stale locks after
+abrupt tempo changes. Simple filter candidates did not justify replacing the live baseline;
+six real-recording segments supplied coverage evidence only. Validation: 520 tests and ready
+passed, including metric/decoder/configuration checks and a complete synthetic evaluation.
+
 ## Completed branding and overlays
 
 Starting revision: ac48ad6. `branding:` (setcast.yaml and live.yaml) adds a logo, name, event

@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "pulse-100",
+      "source": {
+        "pattern": "pulse",
+        "bpm": 100
+      },
+      "seconds": 24,
+      "reference": [
+        {
+          "from": 0,
+          "until": 24,
+          "bpm": 100,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "pulse-120",
+      "source": {
+        "pattern": "pulse",
+        "bpm": 120
+      },
+      "seconds": 24,
+      "reference": [
+        {
+          "from": 0,
+          "until": 24,
+          "bpm": 120,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "pulse-128",
+      "source": {
+        "pattern": "pulse",
+        "bpm": 128
+      },
+      "seconds": 24,
+      "reference": [
+        {
+          "from": 0,
+          "until": 24,
+          "bpm": 128,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "pulse-174",
+      "source": {
+        "pattern": "pulse",
+        "bpm": 174
+      },
+      "seconds": 24,
+      "reference": [
+        {
+          "from": 0,
+          "until": 24,
+          "bpm": 174,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "four-floor",
+      "source": {
+        "pattern": "four-floor",
+        "bpm": 128
+      },
+      "range": {
+        "min": 118,
+        "max": 138
+      },
+      "seconds": 32,
+      "reference": [
+        {
+          "from": 0,
+          "until": 32,
+          "bpm": 128,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "breaks",
+      "source": {
+        "pattern": "breaks",
+        "bpm": 174
+      },
+      "range": {
+        "min": 164,
+        "max": 184
+      },
+      "seconds": 32,
+      "reference": [
+        {
+          "from": 0,
+          "until": 32,
+          "bpm": 174,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "offbeat",
+      "source": {
+        "pattern": "offbeat",
+        "bpm": 128
+      },
+      "range": {
+        "min": 118,
+        "max": 138
+      },
+      "seconds": 32,
+      "reference": [
+        {
+          "from": 0,
+          "until": 32,
+          "bpm": 128,
+          "beatOffset": 0.17
+        }
+      ]
+    },
+    {
+      "id": "silence",
+      "source": {
+        "pattern": "silence"
+      },
+      "seconds": 24,
+      "reference": null
+    },
+    {
+      "id": "noise",
+      "source": {
+        "pattern": "noise"
+      },
+      "seconds": 24,
+      "reference": null
+    },
+    {
+      "id": "tone",
+      "source": {
+        "pattern": "tone"
+      },
+      "seconds": 24,
+      "reference": null
+    },
+    {
+      "id": "half-time-ambiguity",
+      "source": {
+        "pattern": "pulse",
+        "bpm": 120
+      },
+      "range": {
+        "min": 60,
+        "max": 180
+      },
+      "seconds": 24,
+      "reference": null
+    },
+    {
+      "id": "tempo-change",
+      "source": {
+        "pattern": "tempo-change",
+        "bpm": 120
+      },
+      "seconds": 40,
+      "reference": [
+        {
+          "from": 0,
+          "until": 16,
+          "bpm": 120,
+          "beatOffset": 0.17
+        },
+        {
+          "from": 16,
+          "until": 40,
+          "bpm": 140,
+          "beatOffset": 0.17
+        }
+      ]
+    }
+  ]
+}

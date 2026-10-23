@@ -55,6 +55,11 @@ are not implemented. Physical mixer timing remains unqualified.
 
 ## Verification
 
+The configurable [beat-evaluation workbench](beat-evaluation.md) compares onset candidates with
+the shared tracker, explicit reference grids and streamed observations. Its synthetic offbeat
+fixture demonstrates that a stable estimate can still have the wrong musical phase. Continue
+to verify an adopted grid by ear and use Downbeat now for manual alignment.
+
 - Pure tests cover stable tempos, beat phase after eight hours, half/double-time ambiguity,
   silence, irregular input, tempo changes, gaps and reset, stereo cancellation and PCM bounds.
 - `node packages/renderer-browser/bench/beats.ts` runs actual Chromium/WebAudio capture with

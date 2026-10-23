@@ -79,3 +79,9 @@ projection and journal semantics. Every standalone completed piece gets a commit
   clock validation, bounded history and diagnostic scores. Live YAML can configure the initial
   range without enabling detection. Existing energy novelty and adoption rules remain in place.
   Core/adapter tests and the live beat browser check passed; ready passed all 515 tests.
+- Core beat capability committed as 8b3a4b4. Added a configurable, streamed evaluation workbench
+  with labeled synthetic fixtures and unlabeled file segments. Simple three-band and bass-only
+  onset candidates did not justify a live replacement: the break fixture stayed uncertain;
+  energy/multiband can lock half a beat off under strong offbeat accents, and all retain some
+  stale locks across abrupt tempo changes. Six real 120-second segments had little coverage.
+  Next investigate recent phase agreement and spectral novelty without treating coverage as accuracy.
