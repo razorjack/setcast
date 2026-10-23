@@ -527,6 +527,20 @@ and rejected timing shifts, missing sound, truncated video and invalid checkpoin
 during full decoding retained a cancelled report. This supplements pixel/readiness acceptance;
 it does not establish correctness of every scene pixel or unsampled audio interval.
 
+## Completed live sampling and transport resilience
+
+Live diagnostics reset their one-second window across capture/availability/visibility changes,
+and adaptive quality consumes each complete sample once. Paused startup time no longer supplies
+false overload evidence. The worklet transport now permits half a second of outstanding packets,
+rounded up and capped at 96 packets / 768 KiB, while keeping immediate healthy-path delivery and
+absolute sample positions. This absorbs brief scene/GPU stalls without an unbounded message queue.
+
+Validation: ready passed 567 tests. Worklet tests cover queue bounds across sample rates, exact
+gaps and recovery. A real 300 ms browser-thread stall dropped 6144 samples with the old eight-packet
+fixture and zero with the new worklet. Output recovery/adaptive quality and installed-package smoke
+passed. A short stacked SwiftShader scene/recovery/restart workload that previously skipped audio
+analysis now passed without drops. Longer stalls and physical hardware remain separate limits.
+
 ## Completed portable MIDI setup
 
 Core owns MIDI channel decoding, finite actions, strict mapping/profile schemas and a bounded

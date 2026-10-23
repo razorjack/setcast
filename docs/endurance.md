@@ -87,7 +87,10 @@ at a time, resolution 0.25, a separate operator window, scene changes each minut
 restart every 15 minutes. It does not inject context loss. The separate
 `live-software-stress.json` adds stacked visuals and forced recovery; it is a stress reproducer,
 not a qualified preset. Initial local runs of its stacked scene dropped analysis samples during
-startup, including at resolution 0.25. Keep those failures when reporting results.
+startup, including at resolution 0.25, with the former eight-packet transport queue. After the
+bounded half-second queue change, the short stacked scene/recovery/restart check passed. Keep both
+the earlier failures and the exact passing workload when reporting results; longer qualification
+is separate evidence.
 
 Lower rendering resolution does not guarantee that startup, shader compilation or compositor
 work will fit the live input budget. Adaptive resolution responds to observed update rates and
@@ -140,7 +143,7 @@ file sizes and FFmpeg versions. Rendering and verification wall times are separa
   "at": 0,
   "seconds": 3372,
   "verification": "decoded",
-  "audioAt": [5, 60, 930, 1686, 2400, 3368]
+  "audioAt": [5, 60, 930, 1686, 2400, 3350]
 }
 ```
 

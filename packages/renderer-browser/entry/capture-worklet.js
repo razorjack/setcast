@@ -1,6 +1,7 @@
-/* global AudioWorkletProcessor, registerProcessor, currentFrame */
+/* global AudioWorkletProcessor, registerProcessor, currentFrame, sampleRate */
 const PACKET_SAMPLES = 1024;
-const MAX_PENDING = 8;
+// Tolerate brief scene/GPU stalls; cap retained stereo PCM at 768 KiB even at unusual rates.
+const MAX_PENDING = Math.min(96, Math.ceil((sampleRate * 0.5) / PACKET_SAMPLES));
 
 class CaptureProcessor extends AudioWorkletProcessor {
   constructor() {

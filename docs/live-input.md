@@ -154,8 +154,9 @@ latency. This is not a measured end-to-end latency guarantee.
 
 PCM retention is fixed at 11 seconds, covering the eight-second history contract,
 additional visual delay and analysis padding. Feature caching is capped at 2048 moments.
-At most eight worklet packets can await acknowledgement (64 KiB of stereo PCM, about
-171 ms at 48 kHz). This absorbs short main-thread stalls without delaying normal delivery;
+The worklet permits half a second of unacknowledged packets, rounded up to a complete packet,
+with a hard cap of 96 packets (768 KiB of queued stereo PCM). At 48 kHz this is 24 packets,
+192 KiB and 512 ms; one additional packet is being filled. This absorbs brief main-thread stalls without delaying normal delivery;
 longer overload drops analysis packets instead of queuing indefinitely. Missing packets become silence at their original times.
 The dock reports how much analysis was skipped. Channel and sensitivity changes discard
 old analysis without resetting session time.
@@ -226,6 +227,12 @@ display latency.
 Each FPS window resets when the capture source, input availability or document visibility changes.
 Adaptive quality consumes each complete window once, so paused startup time and repeated availability
 updates do not count as sustained rendering overload.
+
+`node packages/renderer-browser/bench/transport.ts` compares the current queue with the former
+eight-packet policy under the same 300 ms main-thread stall. The current queue retained all samples
+locally; the negative control skipped 6144. This is a bounded transport improvement, not a promise
+that rendering stays smooth while the main thread is blocked. Sample positions and healthy packet
+delivery remain unchanged.
 
 The automated synthetic-input check is:
 

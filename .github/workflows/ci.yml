@@ -39,6 +39,8 @@ jobs:
           node packages/renderer-remotion/bench/gpu-recovery.ts
       - name: Live output recovery and adaptive GPU resolution
         run: node packages/renderer-browser/bench/output.ts
+      - name: Bounded live transport under main-thread stalls
+        run: node packages/renderer-browser/bench/transport.ts
       - name: Automatic live scene progression and replay
         run: node packages/renderer-browser/bench/sequence.ts
       - name: One-projector geometry, calibration and venue profiles

@@ -13,7 +13,7 @@ interface Packet {
 }
 const source = await readFile(new URL('../../entry/capture-worklet.js', import.meta.url), 'utf8');
 
-function worklet() {
+function worklet(sampleRate = 48000) {
   const packets: Packet[] = [];
   const port = {
     onmessage: (_event: { data: unknown }) => {},
@@ -22,6 +22,7 @@ function worklet() {
   let Processor: new () => { process: (inputs: Float32Array[][]) => boolean };
   const environment = {
     currentFrame: 5000,
+    sampleRate,
     AudioWorkletProcessor: class {
       port = port;
     },
@@ -42,8 +43,8 @@ function worklet() {
 test('worklet routes exposed channels and bounds the queue across stalls and recovery', () => {
   const capture = worklet();
   capture.send({ type: 'route', channels: [3, 4], gain: 2, revision: 1 });
-  for (let block = 0; block < 80; block++) capture.tick([0.1, 0.2, 0.3, 0.4]);
-  expect(capture.packets).toHaveLength(8);
+  for (let block = 0; block < 208; block++) capture.tick([0.1, 0.2, 0.3, 0.4]);
+  expect(capture.packets).toHaveLength(24);
   const first = capture.packets[0]!;
   expect(first.start).toBe(0);
   expect(first.count).toBe(4);
@@ -52,8 +53,8 @@ test('worklet routes exposed channels and bounds the queue across stalls and rec
   expect(first.peaks[3]).toBeCloseTo(0.4);
   capture.send({ type: 'ack' });
   for (let block = 0; block < 8; block++) capture.tick([0.1, 0.2, 0.3, 0.4]);
-  expect(capture.packets).toHaveLength(9);
-  expect(capture.packets[8]).toMatchObject({ start: 10240, dropped: 2048, revision: 1 });
+  expect(capture.packets).toHaveLength(25);
+  expect(capture.packets[24]).toMatchObject({ start: 26624, dropped: 2048, revision: 1 });
 });
 
 test('worklet defaults to duplicated mono and discards a partially routed packet on change', () => {
@@ -75,4 +76,37 @@ test('worklet clamps sensitivity without hiding raw input meter levels', () => {
   expect(capture.packets[0]!.left[0]).toBe(1);
   expect(capture.packets[0]!.right[0]).toBe(-1);
   expect(capture.packets[0]!.peaks[1]).toBeCloseTo(0.4);
+});
+
+test.each([
+  [8000, 4],
+  [44100, 22],
+  [48000, 24],
+  [96000, 47],
+  [192000, 94],
+  [384000, 96],
+])(
+  'transport queue follows a half-second budget at %i Hz with a hard packet cap',
+  (rate, limit) => {
+    const capture = worklet(rate!);
+    for (let block = 0; block < 800; block++) capture.tick([0.2, 0.4]);
+    expect(capture.packets).toHaveLength(limit!);
+    capture.send({ type: 'ack' });
+    for (let block = 0; block < 8; block++) capture.tick([0.2, 0.4]);
+    expect(capture.packets.at(-1)).toMatchObject({ start: 102400, dropped: (100 - limit!) * 1024 });
+  },
+);
+
+test('a brief backlog retains exact sample positions without delaying healthy packets', () => {
+  const capture = worklet();
+  for (let block = 0; block < 8; block++) capture.tick([0.2]);
+  expect(capture.packets).toHaveLength(1);
+  for (let block = 0; block < 112; block++) capture.tick([0.2]);
+  expect(capture.packets).toHaveLength(15);
+  for (let index = 0; index < 15; index++) {
+    expect(capture.packets[index]).toMatchObject({ start: index * 1024, dropped: 0 });
+    capture.send({ type: 'ack' });
+  }
+  for (let block = 0; block < 8; block++) capture.tick([0.2]);
+  expect(capture.packets.at(-1)).toMatchObject({ start: 15360, dropped: 0 });
 });

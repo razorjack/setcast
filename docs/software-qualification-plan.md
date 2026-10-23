@@ -47,3 +47,20 @@ The repeated software scene/restart check exposed a separate transient drop of 2
 samples when restart coincided with scene preparation. The transport currently permits only
 eight outstanding packets, about 171 ms at 48 kHz. Next evaluate a time-based, still-bounded
 half-second transport budget; normal delivery and sample positions must remain unchanged.
+
+The half-second budget is implemented, rounded to packets and capped at 96 packets. At 48 kHz
+the queue holds 24 packets / 192 KiB; the absolute PCM queue cap is 768 KiB. Worklet tests cover
+rates from 8 kHz through the hard cap, exact gap/sample positions, normal immediate delivery,
+backlog recovery and routing. The same real 300 ms main-thread stall dropped 6144 samples with
+the old eight-packet fixture and zero with the new production worklet. The software scene/restart
+case also passed without drops. Longer stalls still skip analysis or trigger the existing watchdog.
+
+Final short stacked SwiftShader run passed six scene/announcement changes, four forced recoveries
+and two restarts, with three valid journals and zero dropped samples. Ready passed 567 tests;
+output recovery/adaptive quality and installed-package smoke passed. A visibility-event listener
+also resets diagnostic windows when animation callbacks do not run while hidden.
+
+The sustained software run will use the stacked stress workload for 75 minutes, starting from
+the clean reliability commit around 17:35 and ending about 18:50. This leaves the planned final
+handoff around 19:00. It supplements the earlier two-hour auto-backend run rather than replacing
+its recorded revision or its measurements.

@@ -172,3 +172,9 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   stacked software scenes failed startup with dropped samples and remain explicitly unqualified.
   Auto-backend recovery/scene/restart check passed; ready passed 557 tests. Before the sustained
   software run, correct diagnostics sampling across capture availability changes.
+- Corrected diagnostic windows and once-only quality sampling (44367b1, with visibility-event
+  follow-up 9b0372a). A separate queue limit caused transient skips during combined software
+  scene preparation/restart. A bounded half-second transport budget retained all samples under
+  a real 300 ms stall; the old eight-packet control dropped 6144. The stacked software recovery
+  workload now passes short runs. Ready passed 567 tests; output and package checks passed.
+  Start a 75-minute stacked software qualification from the clean commit, ending about 18:50.

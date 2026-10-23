@@ -684,7 +684,8 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   Live endurance graphics may request SwiftShader explicitly; record the actual active context
   identity before capture. operatorWindow separates controls from output and reads diagnostics
   from the control window. Both windows' errors are observed. Stacked software visuals failed
-  startup qualification locally; do not infer support from individual-visual runs.
+  with the former eight-packet transport queue; a short repeated-recovery workload passed after
+  the half-second queue change. Keep exact workload and duration when reporting support.
 - Live diagnostics start a fresh one-second frame-rate window when the capture source,
   availability or document visibility changes. Adaptive quality consumes each completed sample
   once. Availability changes reset hysteresis without reapplying an old metric; paused startup
@@ -751,7 +752,9 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   package's entry directory and served locally, including from packed installations.
 
 - Browser live capture uses an AudioWorklet with discrete input channels and a silent output.
-  At most eight 1024-sample stereo packets may be unacknowledged (64 KiB of PCM); dropped packets retain their absolute
+  Unacknowledged 1024-sample stereo packets have a half-second budget rounded up, capped at
+  96 packets / 768 KiB (24 packets / 192 KiB at 48 kHz). This absorbs brief main-thread stalls
+  without adding healthy-path latency. The packet being filled is separate. Dropped packets retain their absolute
   sample positions and become silence in the bounded 11-second PCM ring. Analysis uses core's
   PCM calculations with FFT lookahead, caches at most 2048 materialized moments, and never
   retains scratch PCM through lazy feature getters. Routing changes clear history without
