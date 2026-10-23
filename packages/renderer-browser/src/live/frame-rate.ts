@@ -11,6 +11,11 @@ export class FrameRateSampler {
   private started = 0;
   private updates = 0;
 
+  reset() {
+    this.previous = null;
+    this.updates = 0;
+  }
+
   /** Null resets stale diagnostics; undefined is an incomplete window; a number is a fresh rate. */
   sample(current: Observation): number | null | undefined {
     const previous = this.previous;

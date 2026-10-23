@@ -25,3 +25,12 @@ test('startup, mute/resume, visibility and new capture sources require a full fr
     expect(sampler.sample({ ...observation, now: 2200, frame: 6 })).toBe(2);
   }
 });
+
+test('visibility events reset the clock even when no animation callback ran while hidden', () => {
+  const sampler = new FrameRateSampler();
+  sampler.sample(observation);
+  sampler.sample({ ...observation, now: 1000, frame: 30 });
+  sampler.reset();
+  expect(sampler.sample({ ...observation, now: 6000, frame: 180 })).toBeNull();
+  expect(sampler.sample({ ...observation, now: 6500, frame: 195 })).toBeUndefined();
+});

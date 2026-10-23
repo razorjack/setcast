@@ -19,6 +19,11 @@ export function useDiagnostics(input: LiveInput) {
   const [sample, setSample] = useState<Sample | null>(null);
   useEffect(() => {
     const rates = new FrameRateSampler();
+    const visibility = () => {
+      rates.reset();
+      setSample(null);
+    };
+    document.addEventListener('visibilitychange', visibility);
     let request = 0;
     const tick = () => {
       const current = latest.current;
@@ -39,7 +44,10 @@ export function useDiagnostics(input: LiveInput) {
       request = requestAnimationFrame(tick);
     };
     request = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(request);
+    return () => {
+      cancelAnimationFrame(request);
+      document.removeEventListener('visibilitychange', visibility);
+    };
   }, []);
   return { samples, sample };
 }

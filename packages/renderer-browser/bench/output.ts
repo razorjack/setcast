@@ -39,6 +39,7 @@ try {
   await page.getByRole('button', { name: 'Operator window', exact: true }).click();
   const operator = await popup;
   await operator.locator('.sc-output-settings summary').click();
+  await checkDiagnosticVisibility(page, operator);
   await checkInputLoss(page, operator);
   await checkDisplays(page, operator);
   await checkQuality(page, operator);
@@ -145,6 +146,13 @@ function throttleFrames(probe: Window['outputProbe']) {
     if (entry?.timer !== undefined) clearTimeout(entry.timer);
     pending.delete(key);
   };
+}
+
+async function checkDiagnosticVisibility(page: Page, operator: Page) {
+  await operator.locator('.sc-live-diagnostics summary').filter({ hasText: 'FPS' }).waitFor();
+  await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+  await operator.getByText('Session diagnostics', { exact: true }).waitFor();
+  await operator.locator('.sc-live-diagnostics summary').filter({ hasText: 'FPS' }).waitFor();
 }
 
 async function checkInputLoss(page: Page, operator: Page) {
