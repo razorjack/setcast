@@ -55,3 +55,5 @@ jobs:
         run: node packages/renderer-browser/bench/camera.ts
       - name: Portable MIDI profiles, learning and session ownership
         run: node packages/renderer-browser/bench/midi.ts
+      - name: Decoded export qualification and timing failures
+        run: node packages/renderer-browser/bench/export-verification.ts

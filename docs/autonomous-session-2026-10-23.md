@@ -157,3 +157,9 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   discards queued fader values; scene recall and journals remain independent of controller setup.
   Ready passed 548 tests, installed-package smoke passed, and MIDI/performance/branding/camera/
   projection Chromium checks passed. Plan and evidence: docs/midi-platform-plan.md.
+- Reusable decoded export qualification completed around 16:50. Existing-video checks retain
+  decoder/media identity, full video decode results and bounded per-channel audio alignment.
+  Silence/periodicity remain inconclusive; explicit output-relative checkpoints are supported.
+  Ready passed 555 tests; real encoded positive/delayed/truncated/silent fixtures and cancellation
+  passed. The full-master default check correctly identified the silent tail as inconclusive;
+  the musical-checkpoint rerun is in progress. See docs/export-qualification-plan.md.

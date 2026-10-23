@@ -514,6 +514,19 @@ passed. Tests cover structured failures, aliases, scene deduplication/warnings, 
 missing files, unexpected probe failures and CLI exit behavior. Browser media readiness and
 physical input/output qualification remain separate checks.
 
+## Completed decoded export qualification tooling
+
+Endurance export workloads can decode every video frame and compare bounded stereo windows with
+the source master. The verifier accounts for rounded range origins, checks each channel, reports
+signed offsets and rejects silent/periodically ambiguous evidence. Existing exports can be checked
+without rendering again. Media hashes, decoder versions, explicit checkpoints and verification
+time make reports reproducible. See [endurance.md](endurance.md#decoded-verification).
+
+Validation: ready passed 555 tests. The short browser/FFmpeg regression accepted correct exports
+and rejected timing shifts, missing sound, truncated video and invalid checkpoints. Cancellation
+during full decoding retained a cancelled report. This supplements pixel/readiness acceptance;
+it does not establish correctness of every scene pixel or unsampled audio interval.
+
 ## Completed portable MIDI setup
 
 Core owns MIDI channel decoding, finite actions, strict mapping/profile schemas and a bounded

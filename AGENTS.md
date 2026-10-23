@@ -676,6 +676,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   saved-scene format; exports use an existing project and reject ranges beyond its duration.
   Reports distinguish synthetic input, browser JS heap and runner Node RSS. See docs/endurance.md.
   Long-duration checks are explicit local jobs, not part of the short CI suite.
+  Export workloads may select decoded verification: full video decode/count plus bounded stereo
+  source/output comparisons. Silence and periodic ambiguity are inconclusive, not alignment proof.
+  Explicit audioAt checkpoints use output time; source time follows rounded render origins.
+  --verify-video checks existing media without rendering. Reports retain input hashes, decoder
+  versions, per-channel evidence and separate verification time. See bench/export-verification.ts.
 - Offline export Chromium uses `--disable-frame-rate-limit` to remove display refresh pacing,
   while retaining all frame readiness checks. This does not configure the user's live or preview
   browser. Keep the SwiftShader GPU check on the same scheduling mode. The measured one-worker

@@ -18,6 +18,8 @@ export interface EnduranceConfig {
   concurrency: number;
   scenes: LiveConfig[];
   gpuRecovery: GpuRecoveryWorkload | null;
+  verification: 'metadata' | 'decoded';
+  audioAt: number[] | null;
 }
 
 const keys = [
@@ -32,6 +34,8 @@ const keys = [
   'concurrency',
   'scenes',
   'gpuRecovery',
+  'verification',
+  'audioAt',
 ];
 
 export function readEnduranceConfig(input: unknown): EnduranceConfig {
@@ -62,7 +66,32 @@ export function readEnduranceConfig(input: unknown): EnduranceConfig {
     concurrency: number(config, 'concurrency', { fallback: 1, min: 1, max: 8, integer: true }),
     scenes: readScenes(config.scenes),
     gpuRecovery: readGpuRecovery(config.gpuRecovery, config.mode),
+    verification: readVerification(config.verification, config.mode),
+    audioAt: readAudioAt(config),
   };
+}
+
+function readVerification(input: unknown, mode: string): EnduranceConfig['verification'] {
+  if (input === undefined) return 'metadata';
+  if (mode !== 'export') throw new Error('verification is only available in export workloads.');
+  if (input !== 'metadata' && input !== 'decoded')
+    throw new Error('verification must be metadata or decoded.');
+  return input;
+}
+
+function readAudioAt(config: Record<string, unknown>): number[] | null {
+  if (config.audioAt === undefined) return null;
+  if (config.mode !== 'export' || config.verification !== 'decoded')
+    throw new Error('audioAt requires an export workload with verification: decoded.');
+  const values = config.audioAt;
+  if (
+    !Array.isArray(values) ||
+    values.length < 1 ||
+    values.length > 64 ||
+    values.some((value) => typeof value !== 'number' || !Number.isFinite(value) || value < 0.05)
+  )
+    throw new Error('audioAt must contain 1–64 output-relative seconds, each at least 0.05.');
+  return values;
 }
 
 function number(

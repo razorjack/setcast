@@ -1,24 +1,34 @@
-import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { load, withWholeSet } from '../../../cli/src/project.ts';
 import { render, type BrowserMetric } from '../../src/export/index.ts';
 import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';
+import { verifyExport } from './verify.ts';
 
 export async function runExport(
   config: EnduranceConfig,
   out: string,
   report: EnduranceReport,
-  signal: AbortSignal,
+  control: { signal: AbortSignal; existingVideo?: string },
 ) {
+  const { signal, existingVideo } = control;
   const loaded = await load(config.project);
-  const project = await withWholeSet(loaded);
   const end = config.at + config.seconds;
-  if (end > project.mix.duration / 1_000_000)
+  if (end > loaded.project.mix.duration / 1_000_000)
     throw new Error(
       `Endurance range ${config.at}–${end}s exceeds ${config.project}. Use a longer master or reduce seconds; endurance runs do not clamp ranges.`,
     );
+  if (existingVideo) {
+    report.report.details.existingVideo = existingVideo;
+    await verifyExport(
+      existingVideo,
+      { project: loaded.project, dir: loaded.dir },
+      { config, report },
+      signal,
+    );
+    return;
+  }
+  const project = await withWholeSet(loaded);
   const metrics = exportMetrics();
   const file = join(out, 'export.mp4');
   const stop = new AbortController();
@@ -30,6 +40,7 @@ export async function runExport(
     onMetrics: metrics.measured,
     signal: AbortSignal.any([signal, stop.signal]),
   });
+  const started = performance.now();
   const result = await sampleExport(rendering, { report, metrics, config, stop });
   report.report.details = {
     ...report.report.details,
@@ -39,8 +50,9 @@ export async function runExport(
     height: project.height,
     fps: project.fps,
     frames: metrics.frames(),
+    renderWallSeconds: (performance.now() - started) / 1000,
   };
-  verifyVideo(file, result.frames, project.fps);
+  await verifyExport(file, { project, dir: loaded.dir }, { config, report }, signal);
 }
 
 function exportMetrics() {
@@ -120,27 +132,4 @@ function delay(milliseconds: number) {
     const timer = setTimeout(resolve, milliseconds);
     timer.unref();
   });
-}
-
-function verifyVideo(file: string, frames: number, fps: number) {
-  const probe = spawnSync('ffprobe', ['-v', 'error', '-show_streams', '-of', 'json', file], {
-    encoding: 'utf8',
-  });
-  if (probe.error) throw probe.error;
-  assert.equal(probe.status, 0, probe.stderr);
-  const streams = JSON.parse(probe.stdout).streams as {
-    codec_type: string;
-    nb_frames: string;
-    duration: string;
-  }[];
-  const video = streams.find((stream) => stream.codec_type === 'video');
-  assert.equal(Number(video?.nb_frames), frames, 'Export frame count differs from planned range');
-  assert(
-    Math.abs(Number(video?.duration) - frames / fps) < 1 / fps,
-    'Export duration differs from planned range',
-  );
-  assert(
-    streams.some((stream) => stream.codec_type === 'audio'),
-    'Export has no master audio stream',
-  );
 }

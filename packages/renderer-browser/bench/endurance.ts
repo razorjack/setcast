@@ -10,17 +10,20 @@ const { values } = parseArgs({
   options: {
     config: { type: 'string' },
     out: { type: 'string' },
+    'verify-video': { type: 'string' },
     help: { type: 'boolean' },
   },
 });
 if (values.help) {
   process.stdout.write(
-    'Usage: node packages/renderer-browser/bench/endurance.ts --config workload.json --out NEW_DIRECTORY\nSee docs/endurance.md for live/export workloads and report fields.\n',
+    'Usage: node packages/renderer-browser/bench/endurance.ts --config workload.json --out NEW_DIRECTORY [--verify-video EXISTING_EXPORT]\nSee docs/endurance.md for live/export workloads and report fields.\n',
   );
 } else {
   if (!values.config || !values.out)
     throw new Error('Supply --config workload.json and --out NEW_DIRECTORY. Use --help for usage.');
   const config = readEnduranceConfig(JSON.parse(await readFile(values.config, 'utf8')));
+  if (values['verify-video'] && config.mode !== 'export')
+    throw new Error('--verify-video requires an export workload.');
   const out = resolve(values.out);
   await mkdir(dirname(out), { recursive: true });
   const report = await openReport(out, config);
@@ -30,7 +33,11 @@ if (values.help) {
   process.once('SIGTERM', interrupt);
   try {
     if (config.mode === 'live') await runLive(config, out, report, stop.signal);
-    else await runExport(config, out, report, stop.signal);
+    else
+      await runExport(config, out, report, {
+        signal: stop.signal,
+        existingVideo: values['verify-video'] && resolve(values['verify-video']),
+      });
     stop.signal.throwIfAborted();
     await report.finish('passed');
     process.stdout.write(`Endurance: PASS (${out})\n`);

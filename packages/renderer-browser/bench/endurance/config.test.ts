@@ -57,3 +57,26 @@ test('GPU recovery injection is opt-in, bounded and live-only', () => {
     'only available in live',
   );
 });
+
+test('decoded export verification is explicit and export-only', () => {
+  expect(readEnduranceConfig({ version: 1, mode: 'export' }).verification).toBe('metadata');
+  expect(
+    readEnduranceConfig({ version: 1, mode: 'export', verification: 'decoded' }).verification,
+  ).toBe('decoded');
+  expect(() => readEnduranceConfig({ version: 1, mode: 'export', verification: true })).toThrow(
+    'metadata or decoded',
+  );
+  expect(() => readEnduranceConfig({ version: 1, mode: 'live', verification: 'decoded' })).toThrow(
+    'only available in export',
+  );
+});
+
+test('audio checkpoints are explicit bounded output-relative times', () => {
+  const base = { version: 1, mode: 'export', verification: 'decoded' };
+  expect(readEnduranceConfig({ ...base, audioAt: [1, 50, 100] }).audioAt).toEqual([1, 50, 100]);
+  for (const audioAt of [[], [0], [NaN], ['1'], Array(65).fill(1)])
+    expect(() => readEnduranceConfig({ ...base, audioAt })).toThrow('1–64');
+  expect(() => readEnduranceConfig({ ...base, verification: 'metadata', audioAt: [1] })).toThrow(
+    'verification: decoded',
+  );
+});

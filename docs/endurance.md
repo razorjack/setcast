@@ -95,15 +95,72 @@ runner rejects an overlong range instead of silently producing a shorter qualifi
 It never modifies the source project. The generated MP4 uses that project's encoding settings.
 
 Samples contain completed frame metrics, stage count/sum/maximum, captured bytes and Node RSS.
-The final check uses ffprobe to verify video frame count, duration and an audio stream. This is
-structural validation, not a full decoded audio/video synchronization comparison. Use both
-export acceptance suites for synchronization and pixel correctness.
+The default `verification: "metadata"` checks video dimensions, rate, frame count and duration,
+plus audio presence and duration. `verification: "decoded"` also decodes every video frame and
+compares sampled audio against the source master. Both modes retain source/output SHA-256 hashes,
+file sizes and FFmpeg versions. Rendering and verification wall times are separate report fields.
+
+### Decoded verification
+
+```json
+{
+  "version": 1,
+  "mode": "export",
+  "project": "path/to/project",
+  "at": 0,
+  "seconds": 3372,
+  "verification": "decoded",
+  "audioAt": [5, 60, 930, 1686, 2400, 3368]
+}
+```
+
+Omit `audioAt` to compare six one-second windows distributed through the output, starting 0.25 s
+from its beginning and ending 0.25 s before its end. An explicit list contains 1–64 output-relative
+window start times, each at least 0.05 s, with one second of sound and 0.05 s of search padding
+remaining. Choose informative musical passages when an intro/outro is silent. The report records
+every selected time; omitting a passage is not evidence that it is aligned. `audioAt` requires
+decoded verification; both settings are export-only.
+
+The verifier decodes stereo at 16 kHz, keeping channels separate so opposite-phase material does
+not cancel. It searches every sample offset within ±50 ms. Positive lag means exported audio
+arrives late. A window passes when normalized correlation is at least 0.95, its best lag is within
+1 ms, and its RMS level ratio is 0.9–1.1. The best correlation must exceed candidates at least 2 ms
+away by 0.005. Silence below RMS 0.0001 and ambiguous periodic signals are **inconclusive** and
+make the qualification run fail explicitly. Reports preserve correlation, zero-lag correlation,
+RMS, level ratio, competing-peak margin and signed lag, including failed checks.
+Each active channel must also meet the correlation and level bounds at the selected lag, so a
+quiet channel cannot disappear behind a correct louder channel. A silent source channel must
+remain silent. Input file identities are checked again before accepting the result.
+
+Range origins use the same frame rounding as the exporter, so a fractional requested start is
+compared against the audio that was actually selected. PCM windows and subprocess output are
+bounded independently of set duration. FFmpeg/ffprobe decode errors fail the run; interruption
+cancels the subprocess and retains the report. Input files must be regular files, not symlinks.
+
+To qualify an existing file without rendering again:
+
+```sh
+node packages/renderer-browser/bench/endurance.ts --config workload.json --verify-video path/to/export.mp4 --out examples/demo/out/decoded-check-1
+```
+
+This mode accepts either verification level and never modifies the source project or export.
+The recorded runtime/revision describes the verifier, not the original renderer; preserve the
+original render report alongside it. File hashes identify the media being checked. It can inspect
+outputs from either renderer when their composition and requested range match the workload.
+
+Decoded frame count proves that the frames decode, not that each scene pixel is correct. Sampled
+audio alignment does not prove every audio sample or establish camera/display latency. Continue
+using both exporter acceptance suites for scene pixels, readiness and deterministic seeks.
+The short `bench/export-verification.ts` check includes a browser export, rounded range origin,
+20 ms delayed audio, truncated video and missing sound.
 
 ## Report contract and interpretation
 
 - `report.json`: version 1, resolved workload, Node/platform/CPU and source revision/dirty state,
   start time, elapsed wall time, sample/action counts, workload-specific details and errors.
   Status is `running`, `passed`, `failed` or `cancelled`. Checkpoints replace the JSON atomically.
+  Export details include `verification.phase`, decoded/metadata stream information and sampled
+  audio results. Existing-video checks identify their source path and do not report render speed.
 - `samples.jsonl`: append-only `{kind, wallSeconds, details}` records. `kind` is `sample` or
   `action`; action counts only increase after the operation completes. Schema version comes
   from the report. This file can be processed line by line during a run.
