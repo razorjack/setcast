@@ -8,6 +8,7 @@ service or a new scene API.
 ```sh
 node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/live-hour.json --out examples/demo/out/live-hour-1
 node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/export-demo.json --out examples/demo/out/export-two-minutes-1
+node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/live-gpu-recovery.json --out examples/demo/out/gpu-recovery-hour-1
 ```
 
 Use a new output directory for every run. Existing directories are rejected to preserve evidence.
@@ -62,6 +63,29 @@ settling interval at the end. `sampleSeconds` is 1–60 (default 5), `changeSeco
 the capture epoch, frame, dropped samples, cache count, PCM capacity, adaptive render scale,
 rendered-update FPS, document visibility, DOM node count, browser JS heap and runner Node RSS.
 The first FPS sample can be null until player diagnostics has collected a full interval.
+
+## Repeated GPU loss
+
+Live workloads may add `gpuRecovery: {"everySeconds": 30, "restoreSeconds": 0.5}`. Omit it or
+use null to disable injection. `everySeconds` is 5–86400 (default 60); `restoreSeconds` is
+0.05–15 (default 0.5). Export workloads reject this setting.
+
+The runner loses every ready ShaderCanvas context in the active scene through
+`WEBGL_lose_context`, requests browser restoration after the configured delay, then verifies
+ready canvases, an advancing capture clock and zero dropped samples. A scene without GPU canvases
+fails explicitly. The scene's own `recoverySeconds` policy still applies: choose a restoration
+delay below it for a passing workload. Missing extension support or restoration failure fails the
+run. The injection has a separate 20-second deadline so a lost browser event cannot wait forever.
+
+Action records contain the affected canvas classes and elapsed recovery time. Production code
+never uses this extension to request recovery. This tests the application's lifecycle and resource
+handling under repeatable browser events; it does not simulate every driver reset or prove that a
+real lost context will be restored.
+
+`live-gpu-recovery.json` runs an hour at 1920×1080/30, alternates stacked and individual GPU scenes,
+changes scenes/announcements every 45 seconds, loses contexts every 30 seconds and restarts capture
+every 15 minutes. Journals retain authored scene/announcement actions; graphics recovery is a
+private operational event and is not written into them.
 
 ## Export workloads
 

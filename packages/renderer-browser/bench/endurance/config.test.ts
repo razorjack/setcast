@@ -44,3 +44,16 @@ describe('endurance workload configuration', () => {
     ).toThrow('references external assets');
   });
 });
+
+test('GPU recovery injection is opt-in, bounded and live-only', () => {
+  expect(readEnduranceConfig({ version: 1, mode: 'live' }).gpuRecovery).toBeNull();
+  expect(readEnduranceConfig({ version: 1, mode: 'live', gpuRecovery: {} }).gpuRecovery).toEqual({
+    everySeconds: 60,
+    restoreSeconds: 0.5,
+  });
+  for (const gpuRecovery of [false, [], { everySeconds: 0 }, { restoreSeconds: 16 }, { delay: 1 }])
+    expect(() => readEnduranceConfig({ version: 1, mode: 'live', gpuRecovery })).toThrow();
+  expect(() => readEnduranceConfig({ version: 1, mode: 'export', gpuRecovery: {} })).toThrow(
+    'only available in live',
+  );
+});

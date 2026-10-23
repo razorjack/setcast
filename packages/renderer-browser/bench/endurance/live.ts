@@ -8,6 +8,7 @@ import { themes } from '../../../themes/src/index.ts';
 import { play } from '../../src/index.ts';
 import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';
+import { recoverGpu } from './gpu-recovery.ts';
 
 export async function runLive(
   config: EnduranceConfig,
@@ -90,15 +91,11 @@ async function exercise(
   },
 ) {
   const { config, report, signal, errors } = options;
-  await startInput(page);
-  await page.locator('.sc-live-journal summary').click();
-  await startJournal(page);
-  await page.getByLabel('Start on next bar').uncheck();
-  await page.getByLabel('Scene transition', { exact: true }).selectOption('0.5');
-  await page.locator('.sc-live-branding summary').click();
+  await prepareControls(page);
   const started = performance.now();
   let nextChange = config.changeSeconds;
   let nextRestart = config.restartSeconds || Infinity;
+  let nextRecovery = config.gpuRecovery?.everySeconds ?? Infinity;
   let nextSample = 0;
   let cycle = 0;
   while ((performance.now() - started) / 1000 < config.seconds) {
@@ -115,6 +112,11 @@ async function exercise(
       await changeScene(page, cycle++ % config.scenes.length);
       await report.event('action', { name: 'scene-and-announcement', elapsed });
       nextChange = elapsed + config.changeSeconds;
+    }
+    if (config.gpuRecovery && elapsed >= nextRecovery) {
+      const recovery = await recoverGpu(page, config.gpuRecovery);
+      await report.event('action', { name: 'gpu-recovery', elapsed, ...recovery });
+      nextRecovery = elapsed + config.gpuRecovery.everySeconds;
     }
     if (elapsed >= nextSample) {
       await sample(page, report);
@@ -209,4 +211,13 @@ async function validateJournals(root: string, report: EnduranceReport) {
     'Scene announcements were missing from journals',
   );
   report.report.details.journals = { files: files.length, scenes, announcements };
+}
+
+async function prepareControls(page: Page) {
+  await startInput(page);
+  await page.locator('.sc-live-journal summary').click();
+  await startJournal(page);
+  await page.getByLabel('Start on next bar').uncheck();
+  await page.getByLabel('Scene transition', { exact: true }).selectOption('0.5');
+  await page.locator('.sc-live-branding summary').click();
 }

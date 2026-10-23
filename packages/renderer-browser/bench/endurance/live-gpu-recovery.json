@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "mode": "live",
+  "seconds": 3600,
+  "sampleSeconds": 5,
+  "changeSeconds": 45,
+  "restartSeconds": 900,
+  "gpuRecovery": {
+    "everySeconds": 30,
+    "restoreSeconds": 0.5
+  },
+  "scenes": [
+    {
+      "theme": "sterile-tech",
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "visualizer": [
+        {
+          "name": "field",
+          "resolution": 0.5
+        },
+        {
+          "name": "tunnel",
+          "resolution": 0.5
+        },
+        {
+          "name": "constellation",
+          "resolution": 0.5
+        }
+      ],
+      "branding": {
+        "name": "GPU recovery qualification",
+        "logo": "logo.svg",
+        "messages": {
+          "lines": ["Sustained 1080p output"],
+          "seconds": 3,
+          "gap": 2
+        }
+      }
+    },
+    {
+      "theme": "sterile-tech",
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "visualizer": [
+        {
+          "name": "field",
+          "resolution": 0.5
+        }
+      ],
+      "branding": {
+        "name": "GPU recovery qualification",
+        "logo": "logo.svg",
+        "messages": {
+          "lines": ["Sustained 1080p output"],
+          "seconds": 3,
+          "gap": 2
+        }
+      }
+    },
+    {
+      "theme": "sterile-tech",
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "visualizer": [
+        {
+          "name": "tunnel",
+          "resolution": 0.5
+        }
+      ],
+      "branding": {
+        "name": "GPU recovery qualification",
+        "logo": "logo.svg",
+        "messages": {
+          "lines": ["Sustained 1080p output"],
+          "seconds": 3,
+          "gap": 2
+        }
+      }
+    },
+    {
+      "theme": "sterile-tech",
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "visualizer": [
+        {
+          "name": "constellation",
+          "resolution": 0.5
+        }
+      ],
+      "branding": {
+        "name": "GPU recovery qualification",
+        "logo": "logo.svg",
+        "messages": {
+          "lines": ["Sustained 1080p output"],
+          "seconds": 3,
+          "gap": 2
+        }
+      }
+    }
+  ]
+}

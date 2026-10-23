@@ -133,3 +133,7 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   Remotion forced loss during first draw also preserves pixels and times out explicitly.
   Ready passed 522 tests, both acceptance suites passed, and package smoke passed.
   Next: reusable repeated-loss endurance action and a longer 1080p recovery workload.
+- GPU recovery and shader authoring contract committed as eb3c743. Repeated-loss endurance
+  configuration adds a live-only injection policy and a reusable 1080p preset. The 35-second
+  combined check passed four recoveries, six scene/announcement actions and two restarts, with
+  three valid journals. Ready passed 523 tests. A longer run will start from the committed tree.

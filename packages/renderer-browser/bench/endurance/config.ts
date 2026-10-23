@@ -1,6 +1,11 @@
 import { LiveConfigSchema, type LiveConfig } from '@setcast/core';
 import { themes } from '../../../themes/src/index.ts';
 
+export interface GpuRecoveryWorkload {
+  everySeconds: number;
+  restoreSeconds: number;
+}
+
 export interface EnduranceConfig {
   version: 1;
   mode: 'live' | 'export';
@@ -12,6 +17,7 @@ export interface EnduranceConfig {
   at: number;
   concurrency: number;
   scenes: LiveConfig[];
+  gpuRecovery: GpuRecoveryWorkload | null;
 }
 
 const keys = [
@@ -25,6 +31,7 @@ const keys = [
   'at',
   'concurrency',
   'scenes',
+  'gpuRecovery',
 ];
 
 export function readEnduranceConfig(input: unknown): EnduranceConfig {
@@ -54,6 +61,7 @@ export function readEnduranceConfig(input: unknown): EnduranceConfig {
     at: number(config, 'at', { fallback: 0, min: 0, max: 86400 }),
     concurrency: number(config, 'concurrency', { fallback: 1, min: 1, max: 8, integer: true }),
     scenes: readScenes(config.scenes),
+    gpuRecovery: readGpuRecovery(config.gpuRecovery, config.mode),
   };
 }
 
@@ -109,4 +117,20 @@ function readScenes(input: unknown): LiveConfig[] {
       );
     return config;
   });
+}
+
+function readGpuRecovery(input: unknown, mode: string): GpuRecoveryWorkload | null {
+  if (input === undefined || input === null) return null;
+  if (mode !== 'live')
+    throw new Error('gpuRecovery is only available in live endurance workloads.');
+  if (typeof input !== 'object' || Array.isArray(input))
+    throw new Error('gpuRecovery must be an object with everySeconds and restoreSeconds.');
+  const config = input as Record<string, unknown>;
+  for (const key of Object.keys(config))
+    if (!['everySeconds', 'restoreSeconds'].includes(key))
+      throw new Error(`Unknown gpuRecovery setting ${key}. Use everySeconds and restoreSeconds.`);
+  return {
+    everySeconds: number(config, 'everySeconds', { fallback: 60, min: 5, max: 86400 }),
+    restoreSeconds: number(config, 'restoreSeconds', { fallback: 0.5, min: 0.05, max: 15 }),
+  };
 }
