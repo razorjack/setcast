@@ -118,6 +118,8 @@ Configuration editors and external tools can use locally generated [JSON Schemas
 `setcast schema project` and `setcast schema live` print the installed authoring contracts.
 `setcast validate [dir]` checks configuration, assets and the timeline before rendering; use `--live`
 for live projects or `--json` for a structured report.
+The [platform guide](docs/platform.md) maps configuration, portable setup, renderer contracts and
+visualizer authoring, including the current boundaries of JavaScript plugin support.
 
 A project is a directory:
 

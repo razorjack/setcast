@@ -358,8 +358,9 @@ explains every boundary's mechanical origin: `authored`, `listing`, `next_listin
 otherwise export preserves the compiled chapter timestamps and warns about YouTube constraints.
 
 Namespaced custom annotations and extension payloads survive normalization and inspection.
-Unknown core fields fail validation. Capture logs, source transport, hardware occupancy,
-per-deck audio and live receipt-time replay remain deferred.
+Unknown core fields fail validation. Manual capture-clock journals and replay from a separate
+master are implemented; see [live-input.md](live-input.md). Hardware event transport, hardware
+occupancy, per-deck audio and hardware receipt-time replay remain deferred.
 
 ## GPU canvas authoring
 

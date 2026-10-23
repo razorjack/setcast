@@ -61,11 +61,11 @@ This is a short, deterministic migration check. It does not establish hour-long 
 throughput, bounded memory, all-theme visual quality, or behavior on every supported codec.
 It does not test remote background artwork, which project loading does not accept.
 
-There is no public cancellation signal in the current export API. Adapter tests inject audio
-and video failures to verify cancellation of the sibling task and waiting before cleanup
-(`chunks.test.ts`); session tests cover resource closure on failures (`render.test.ts`). The
-acceptance suite exercises real failure recovery, but does not claim SIGINT/process-tree
-cancellation coverage. A future public cancellation contract needs its own tests.
+Cancellation uses the core `AbortSignal` option. The suite cancels an in-progress video, checks
+that it preserves the existing destination and removes temporary files, then runs another job
+in the same session. Adapter tests also inject audio/video failures to verify sibling-task
+cancellation and cleanup. This does not establish process-tree cleanup for every operating-system
+termination mode.
 
 The preparatory refactors keep range/chunk planning and export types in core, media URL probes
 in `@setcast/core/media`, file probes in `@setcast/core/node`, and CLI adapter selection in
@@ -73,7 +73,5 @@ in `@setcast/core/media`, file probes in `@setcast/core/node`, and CLI adapter s
 exports. Each adapter owns its FFmpeg invocation. Browser export uses a system subprocess without importing Remotion.
 
 
-Cancellation is also checked through the core AbortSignal option: an in-progress video must
-leave an existing destination intact, remove temporary files and permit another job in the
-same session. `--reference` still requires exact decoded pixels. See
+`--reference` requires exact decoded pixels. See
 [the browser exporter guide](../../docs/browser-renderer.md) for measured cross-version differences.

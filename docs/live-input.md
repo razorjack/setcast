@@ -100,8 +100,11 @@ input:
 #   - {source: bass, target: bg-zoom, range: [1, 1.06], smooth: 0.1}
 ```
 
-The supported keys are `title`, `theme`, `background`, `backgroundFit`, `css`, `clock`,
-`output`, `input`, `visualizer`, `modulation`, `bpm` and `beatOffset`. Live `output` accepts only `width`,
+Live configuration covers appearance, branding, input, manual tempo, performance defaults, scene
+progression, assisted beat tracking, projector setup, camera patterns and MIDI assignments.
+`setcast schema live` prints the complete installed authoring contract; see
+[configuration-schemas.md](configuration-schemas.md) for editor setup and validation.
+Live `output` accepts only `width`,
 `height` and `fps`; it has no encoding settings or output file. Asset paths must stay
 inside the project directory. Restart the command after editing the YAML or CSS.
 
@@ -133,13 +136,14 @@ input occurs.
 Whole-set visualizers such as `overview` are omitted with a warning. Audio routes work;
 there are no live track identities or annotations. **Tempo (BPM)**, **Tap tempo** and
 **Downbeat now** drive the beat/bar variables and modulation. Clear BPM to disable the
-manual grid. This is not automatic beat tracking. Cue routes rest at their baseline, and
+manual grid. Optional [assisted beat tracking](live-beat-tracking.md) estimates tempo and phase;
+it starts disabled and requires explicit adoption before changing that grid. Cue routes rest at their baseline, and
 play-scoped routes have no panels to affect. `--set-progress` stays
 at zero; CSS that derives motion exclusively from progress will not advance. Precomputed
 `--travel-*` variables are unavailable. Background drift still follows elapsed time.
 
-Automatic BPM/drop detection, DJ hardware events, audio recording and direct streaming
-are separate features. The session journal below records manual metadata for replay.
+Continuous tempo following, live drop detection, DJ hardware events, audio recording and direct
+streaming are not implemented. The session journal below records manual metadata for replay.
 
 ## Timing and readiness
 
