@@ -91,3 +91,22 @@ projection and journal semantics. Every standalone completed piece gets a commit
   Regular pulses and four-floor energy tracking retained coverage; offbeat ambiguity remains.
   Expanded fixtures cover continuous-phase tempo changes, phase-only changes and missing kicks.
   Ready passed 521 tests and the real Chromium beat/adoption/journal check passed.
+
+## Sustained qualification progress
+
+- Hour-long live run completed at 14:48 Warsaw: passed, 714 samples, 119 scene/announcement
+  actions, five capture restarts, six valid journals containing 125 scenes and 119 announcements.
+  Dropped samples stayed zero; cache never exceeded 2048; PCM capacity stayed 485100 frames.
+  Browser JS heap 19.5–70.8 MB, Node RSS 136.6–426.2 MB (final 174.8 MB), reported FPS 28.5–31
+  with median 30. Adaptive scale stayed 1. Concurrent development checks ran during this workload.
+  These are observed process metrics, not a total browser/GPU memory bound.
+- Started the 3372-second 1080p/30 full-master browser export on clean 5aedace at about 14:48.
+  It uses the existing full-mix timeline and hard-linked source assets in a gitignored qualification
+  project, with field and branding. Original files are unchanged. Still at 15:30 inspected.
+  Workload config /tmp/setcast-endurance-master.json; output examples/demo/out/endurance-export-master-2026-10-23;
+  process session 41965; log /tmp/setcast-endurance-master.log. Wait for its final report and inspect
+  selected decoded output frames before claiming qualification.
+- A bounded FFT experiment compared cached trigonometric coefficients with the current implementation.
+  All 128 tested spectra matched exactly; alternating 4000-transform runs suggested a modest CPU
+  reduction. Profile artifacts /tmp/setcast-fft-profile.mjs and .json. Measure and validate any
+  retained change; audio preparation was not the earlier exporter bottleneck.

@@ -6,6 +6,23 @@ const reversed = Uint16Array.from({ length: FFT_SIZE }, (_, index) => {
   return reversedIndex;
 });
 
+const rotations = rotationTable();
+
+function rotationTable() {
+  const table = new Map<number, { cosine: Float64Array; sine: Float64Array }>();
+  for (let width = 2; width <= FFT_SIZE; width *= 2) {
+    const cosine = new Float64Array(width / 2);
+    const sine = new Float64Array(width / 2);
+    for (let offset = 0; offset < width / 2; offset++) {
+      const angle = (-2 * Math.PI * offset) / width;
+      cosine[offset] = Math.cos(angle);
+      sine[offset] = Math.sin(angle);
+    }
+    table.set(width, { cosine, sine });
+  }
+  return table;
+}
+
 /** Full-scale PCM is the reference, independent of the surrounding decoded windows. */
 export function spectrum(samples: Float32Array, center: number): number[] {
   const real = Float64Array.from(reversed, (index) => samples[center - FFT_SIZE / 2 + index] ?? 0);
@@ -20,10 +37,10 @@ export function spectrum(samples: Float32Array, center: number): number[] {
 
 function transformPass(real: Float64Array, imaginary: Float64Array, width: number): void {
   const half = width / 2;
+  const rotation = rotations.get(width)!;
   for (let offset = 0; offset < half; offset++) {
-    const angle = (-2 * Math.PI * offset) / width;
-    const cosine = Math.cos(angle);
-    const sine = Math.sin(angle);
+    const cosine = rotation.cosine[offset]!;
+    const sine = rotation.sine[offset]!;
     for (let even = offset; even < FFT_SIZE; even += width) {
       const odd = even + half;
       const realOdd = real[odd]! * cosine - imaginary[odd]! * sine;

@@ -101,3 +101,29 @@ measure completed software rendering and cannot establish export or live through
 
 Hardware/platform qualification remains local to the machine above; Linux and Windows drivers
 and sustained multi-hour thermal behavior are not qualified.
+
+## Shared FFT coefficient cache, 2026-10-23
+
+Core's fixed 2048-point transform now computes its sine/cosine coefficients once per module.
+The table contains 2,047 pairs of doubles, about 32 KiB plus small map overhead. Transform
+ordering, normalization, edge padding and spectral smoothing are unchanged. This benefits all
+consumers of core audio analysis, including live input and both exporters.
+
+On the local Apple M1 Pro with Node 26.7.0, six alternating measurements of 4,000 transforms
+had medians of 1,324.9 ms before and 1,170.4 ms after caching, an 11.7% reduction. Both versions
+received 4,000 warmup transforms. A full-master export was running concurrently; this is a
+microbenchmark under that load, not an exporter throughput result. Screenshot capture remains
+the larger cost in the sustained export. [Raw measurements](benchmarks/spectrum-2026-10-23.json)
+include every repetition, not only the median.
+
+Reproduce from the repository root:
+
+```sh
+git show 5aedace:packages/core/src/spectrum.ts > /tmp/setcast-reference-spectrum.ts
+node scripts/spectrum-bench.ts --reference /tmp/setcast-reference-spectrum.ts
+```
+
+The benchmark requires exact equality for 256 windows, including both file edges, before timing.
+Existing transform tests, all 521 tests and ready passed. Both exporter acceptance suites passed.
+A branded 1080p GPU frame from the real master also matched the pre-change decoded pixels exactly
+(`96a12d9d5f875e7163dcd96c1e5831c8`, FFmpeg raw-frame MD5).

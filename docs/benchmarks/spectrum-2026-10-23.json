@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "node": "v26.7.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "cpu": "Apple M1 Pro",
+  "reference": "/tmp/setcast-reference-spectrum.ts",
+  "equalWindows": 256,
+  "transformsPerMeasurement": 4000,
+  "warmupTransformsPerImplementation": 4000,
+  "measurements": [
+    {
+      "repeat": 0,
+      "implementation": "reference",
+      "milliseconds": 1987.2238749999997,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 0,
+      "implementation": "current",
+      "milliseconds": 1283.6624579999998,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 1,
+      "implementation": "current",
+      "milliseconds": 1144.514416,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 1,
+      "implementation": "reference",
+      "milliseconds": 1337.7890420000003,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 2,
+      "implementation": "reference",
+      "milliseconds": 1333.1535829999993,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 2,
+      "implementation": "current",
+      "milliseconds": 1168.2913749999989,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 3,
+      "implementation": "current",
+      "milliseconds": 1180.2385829999985,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 3,
+      "implementation": "reference",
+      "milliseconds": 1316.6839579999996,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 4,
+      "implementation": "reference",
+      "milliseconds": 1293.2759999999998,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 4,
+      "implementation": "current",
+      "milliseconds": 1169.0977500000008,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 5,
+      "implementation": "current",
+      "milliseconds": 1171.7747500000005,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 5,
+      "implementation": "reference",
+      "milliseconds": 1294.1787499999991,
+      "checksum": 27.81313251310019
+    }
+  ]
+}
