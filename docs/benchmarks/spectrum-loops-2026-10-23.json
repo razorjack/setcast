@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "reference": "ff76fe1b0a06bb2ea54d99bb46410ad4a66a20aa",
+  "currentSourceSha256": "747989018d605cc0cf40a8c4d7b9ae837247f86494febdceec26d8941606145b",
+  "node": "v26.7.0",
+  "chromium": "156.0.8078.4",
+  "cpu": "Apple M1 Pro",
+  "equalWindows": 256,
+  "warmupTransformsPerImplementation": 4000,
+  "transformsPerMeasurement": 4000,
+  "nodeMeasurements": [
+    {
+      "repeat": 0,
+      "implementation": "reference",
+      "milliseconds": 1069.097625,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 0,
+      "implementation": "current",
+      "milliseconds": 215.51587500000005,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 1,
+      "implementation": "current",
+      "milliseconds": 216.81412500000033,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 1,
+      "implementation": "reference",
+      "milliseconds": 1089.780792,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 2,
+      "implementation": "reference",
+      "milliseconds": 1081.9633749999994,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 2,
+      "implementation": "current",
+      "milliseconds": 217.75129099999958,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 3,
+      "implementation": "current",
+      "milliseconds": 222.50004100000024,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 3,
+      "implementation": "reference",
+      "milliseconds": 1085.4373330000008,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 4,
+      "implementation": "reference",
+      "milliseconds": 1069.5089589999998,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 4,
+      "implementation": "current",
+      "milliseconds": 217.88516699999946,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 5,
+      "implementation": "current",
+      "milliseconds": 222.44579199999953,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 5,
+      "implementation": "reference",
+      "milliseconds": 1067.9439999999995,
+      "checksum": 27.81313251310019
+    }
+  ],
+  "browserMeasurements": [
+    {
+      "repeat": 0,
+      "implementation": "reference",
+      "milliseconds": 1016.4000000059605,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 0,
+      "implementation": "current",
+      "milliseconds": 217.70000000298023,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 1,
+      "implementation": "current",
+      "milliseconds": 216.09999999403954,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 1,
+      "implementation": "reference",
+      "milliseconds": 1015.3000000119209,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 2,
+      "implementation": "reference",
+      "milliseconds": 1010.2000000029802,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 2,
+      "implementation": "current",
+      "milliseconds": 219.29999999701977,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 3,
+      "implementation": "current",
+      "milliseconds": 217.29999999701977,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 3,
+      "implementation": "reference",
+      "milliseconds": 1012.1000000089407,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 4,
+      "implementation": "reference",
+      "milliseconds": 1034.7999999970198,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 4,
+      "implementation": "current",
+      "milliseconds": 223.5,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 5,
+      "implementation": "current",
+      "milliseconds": 221.40000000596046,
+      "checksum": 27.81313251310019
+    },
+    {
+      "repeat": 5,
+      "implementation": "reference",
+      "milliseconds": 1012.7999999970198,
+      "checksum": 27.81313251310019
+    }
+  ]
+}

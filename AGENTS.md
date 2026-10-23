@@ -907,6 +907,12 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   Readiness includes FFT lookahead as well as history. Audio smoothing uses a fixed sampling schedule,
   independent of output FPS. Waveforms, energy and FFTs are computed only when read; scenes
   without audio consumers skip analysis.
+- The fixed 2048-point FFT caches its trigonometric coefficients. Input copying, magnitudes and
+  three smoothing passes use indexed loops; smoothing alternates two call-owned arrays. Preserve
+  operation order and owned result arrays when optimizing this path: both renderers and live
+  history must retain exact values across out-of-order queries. Compare a revision with
+  `node packages/renderer-browser/bench/spectrum.ts --reference REF --out NEW_JSON` in Node and
+  pinned Chromium before claiming a speedup. Kernel timings are not exporter throughput.
 - Remotion bundles with webpack (its own esbuild loader for TS/TSX); `rspack: true` exists and is
   the announced future default. Vite+ drives everything else. They coexist because the adapter's
   bundle entry is plain TSX resolved through package `exports` → `src/*.ts`. No `tsconfig paths`

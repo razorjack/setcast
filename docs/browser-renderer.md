@@ -200,6 +200,10 @@ Direct CDP screenshot capture did not improve the initial comparison and was not
 Resumable verified chunks and bounded capture/encoding overlap are implemented. Keep metrics
 enabled while choosing further optimizations.
 
+Shared audio analysis also uses an [exact-output spectrum optimization](spectrum-optimization.md).
+Its kernel benchmark is independent of screenshot/encoding throughput; use whole-export metrics
+before attributing a render-speed change to audio analysis.
+
 ### Capture and encoding overlap
 
 The second optimization removes the batch barrier between capture workers. A consumed capture

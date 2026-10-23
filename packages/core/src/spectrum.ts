@@ -25,13 +25,16 @@ function rotationTable() {
 
 /** Full-scale PCM is the reference, independent of the surrounding decoded windows. */
 export function spectrum(samples: Float32Array, center: number): number[] {
-  const real = Float64Array.from(reversed, (index) => samples[center - FFT_SIZE / 2 + index] ?? 0);
+  const real = new Float64Array(FFT_SIZE);
+  for (let index = 0; index < FFT_SIZE; index++) {
+    real[index] = samples[center - FFT_SIZE / 2 + reversed[index]!] ?? 0;
+  }
   const imaginary = new Float64Array(FFT_SIZE);
   for (let width = 2; width <= FFT_SIZE; width *= 2) transformPass(real, imaginary, width);
-  const magnitudes = Array.from(
-    { length: FFT_SIZE / 2 },
-    (_, index) => Math.hypot(real[index]!, imaginary[index]!) / (FFT_SIZE / 2),
-  );
+  const magnitudes = new Array<number>(FFT_SIZE / 2);
+  for (let index = 0; index < magnitudes.length; index++) {
+    magnitudes[index] = Math.hypot(real[index]!, imaginary[index]!) / (FFT_SIZE / 2);
+  }
   return smoothSpectrum(magnitudes);
 }
 
@@ -55,11 +58,17 @@ function transformPass(real: Float64Array, imaginary: Float64Array, width: numbe
 
 function smoothSpectrum(magnitudes: number[]): number[] {
   let previous = magnitudes;
+  let next = new Array<number>(magnitudes.length);
+  const last = magnitudes.length - 1;
   for (let pass = 0; pass < 3; pass++) {
-    previous = previous.map((magnitude, index, bins) => {
-      if (index === 0 || index === bins.length - 1) return magnitude;
-      return (bins[index - 1]! + magnitude + bins[index + 1]!) / 3;
-    });
+    next[0] = previous[0]!;
+    next[last] = previous[last]!;
+    for (let index = 1; index < last; index++) {
+      next[index] = (previous[index - 1]! + previous[index]! + previous[index + 1]!) / 3;
+    }
+    const swap = previous;
+    previous = next;
+    next = swap;
   }
   return previous;
 }

@@ -5,6 +5,7 @@
     "endurance.ts",
     "export-verification.ts",
     "transport.ts",
+    "spectrum.ts",
     "camera.ts",
     "gpu.ts",
     "projection.ts",

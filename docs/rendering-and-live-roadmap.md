@@ -584,3 +584,18 @@ keyboard file selection, validation failures, learning/reset, popup ownership, s
 journaled actions and browser migration. Existing performance, branding, camera and projection
 checks passed. Operator images were inspected; installed-package smoke verified the public API and
 schema command. Physical MIDI controllers and device permission behavior remain unqualified.
+
+## Completed exact-output spectrum optimization
+
+Profiles identified FFT copying and smoothing as routine live CPU costs. Indexed loops and
+two call-owned smoothing arrays preserve arithmetic order and independent results. Against
+ff76fe1, a local 4000-transform median fell from 1075.74 to 217.82 ms in Node and from 1014.05
+to 218.50 ms in Chromium. This is a kernel improvement, not an export-throughput claim.
+The reusable comparison command, raw timings and limits are in
+[spectrum-optimization.md](spectrum-optimization.md).
+
+Validation: exact equality for 256 windows in both runtimes, ready with 571 tests, both exporter
+acceptance suites and all GPU visualizer/live checks passed. A real-master frame at 15:30 has
+the same decoded-pixel MD5 as the pre-optimization image. Sustained software-rendering failures
+remain unqualified; profiling identifies context creation/disposal as additional costs without
+yet establishing a complete correction. See [software-qualification-plan.md](software-qualification-plan.md).
