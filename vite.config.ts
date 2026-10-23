@@ -54,7 +54,11 @@ export default defineConfig({
     ],
   },
   test: {
-    include: ['packages/*/src/**/*.test.{ts,tsx}', 'scripts/export-acceptance/*.test.ts'],
+    include: [
+      'packages/*/src/**/*.test.{ts,tsx}',
+      'scripts/export-acceptance/*.test.ts',
+      'packages/renderer-browser/bench/endurance/*.test.ts',
+    ],
   },
   run: {
     tasks: {

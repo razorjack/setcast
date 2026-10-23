@@ -628,6 +628,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Browser export exposes optional timing metrics. Readiness waits for two stable animation-frame
   callbacks, with fonts/images decoded inside the stability loop. Before changing this again,
   run both export acceptance suites and `node packages/renderer-browser/bench/frames.ts`.
+- `bench/endurance.ts` in renderer-browser runs versioned JSON live/export workloads and streams
+  samples instead of retaining them. Live fixtures use the normal schema and self-contained
+  saved-scene format; exports use an existing project and reject ranges beyond its duration.
+  Reports distinguish synthetic input, browser JS heap and runner Node RSS. See docs/endurance.md.
+  Long-duration checks are explicit local jobs, not part of the short CI suite.
 - Offline export Chromium uses `--disable-frame-rate-limit` to remove display refresh pacing,
   while retaining all frame readiness checks. This does not configure the user's live or preview
   browser. Keep the SwiftShader GPU check on the same scheduling mode. The measured one-worker

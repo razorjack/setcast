@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "mode": "live",
+  "seconds": 3600,
+  "sampleSeconds": 5,
+  "changeSeconds": 30,
+  "restartSeconds": 600
+}

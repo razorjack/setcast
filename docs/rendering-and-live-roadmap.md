@@ -238,6 +238,15 @@ Camera test patterns and hardware qualification remain in the delivery order abo
 beat following needs a stronger onset detector and broader real-recording qualification.
 No background task or recurring automation is installed.
 
+### Sustained workload tooling
+
+`packages/renderer-browser/bench/endurance.ts` accepts versioned JSON workloads for live input
+and browser exports. It streams samples, checkpoints reports, repeats live scenes/announcements
+and capture restarts, validates journals and checks exported stream structure. Workloads use
+existing live configuration and renderer contracts. See [endurance.md](endurance.md).
+This enables longer local and cross-platform qualification; it does not itself establish
+physical hardware support or a memory bound for the entire browser process tree.
+
 ## References
 
 - [WebCodecs specification](https://www.w3.org/TR/webcodecs/)
