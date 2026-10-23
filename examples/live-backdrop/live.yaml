@@ -4,6 +4,7 @@ clock: false
 output: { width: 1920, height: 1080, fps: 30 }
 input: { gain: 1, delay: 0 }
 performance: { intensity: 0.65, brightness: 0.65 }
+testPattern: { pattern: grayscale, level: 1, speed: 0.1, detailSize: 8, safeArea: 0.1 }
 visualizer:
   name: radial
   style: line

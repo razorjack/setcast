@@ -65,6 +65,7 @@ export {
   type VideoProps,
 } from './renderer.tsx';
 export { Stage } from './Stage.tsx';
+export { TestPattern, type TestPatternProps } from './components/TestPattern.tsx';
 export { resolveFrame, resolveLiveFrame, type FrameRequest } from './resolve-frame.ts';
 export {
   defineVisualizer,

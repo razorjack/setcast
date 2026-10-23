@@ -49,3 +49,5 @@ jobs:
         run: node packages/renderer-browser/bench/beats.ts
       - name: Live branding, announcements and journal replay
         run: node packages/renderer-browser/bench/branding.ts
+      - name: Camera patterns, output protection and portable settings
+        run: node packages/renderer-browser/bench/camera.ts

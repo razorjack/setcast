@@ -234,7 +234,7 @@ projector alignment and sustained performance remain unqualified.
 3. Extend projection only after one-projector hardware qualification: curved meshes, color
    matching and multi-projector edge blending are separate work.
 
-Camera test patterns and hardware qualification remain in the delivery order above. Continuous
+Camera test patterns are implemented below; physical camera qualification remains open. Continuous
 beat following needs a stronger onset detector and broader real-recording qualification.
 No background task or recurring automation is installed.
 
@@ -246,6 +246,22 @@ and capture restarts, validates journals and checks exported stream structure. W
 existing live configuration and renderer contracts. See [endurance.md](endurance.md).
 This enables longer local and cross-platform qualification; it does not itself establish
 physical hardware support or a memory bound for the entire browser process tree.
+
+### Completed camera setup patterns
+
+Core now exports a strict test-pattern schema, versioned settings format and renderer-independent
+React component with explicit size, time and brightness. Alignment, grayscale, detail and motion
+patterns work in direct output and inside projector correction. The live operator can show/hide,
+adjust and transfer settings; live.yaml supplies initial settings without activating output.
+Settings belong to output setup and survive scene recall, but do not enter saved scenes or
+performance journals. The existing projector alignment control uses the same component.
+Brightness, blackout, input-loss fallback, crop and masks still apply. See [camera-setup.md](camera-setup.md).
+
+Validation: 510 tests and `vp run ready` passed. Installed-package smoke with browser export
+passed. The camera Chromium check covers static output without input, all four patterns in
+landscape and portrait, explicit-time motion, settings transfer, scene recall and projected
+blackout. Existing output-recovery and projector checks passed. Pattern and operator images
+were inspected. Physical display/camera flicker, exposure and moiré remain unqualified.
 
 ## References
 

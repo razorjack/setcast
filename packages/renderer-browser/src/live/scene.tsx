@@ -5,12 +5,14 @@ import type {
   AudioAnalyzer,
   ResolvedLiveProject,
   Projection,
+  TestPatternConfig,
 } from '@setcast/core';
 import {
   FrameProvider,
   RendererProvider,
   resolveLiveFrame,
   Stage,
+  TestPattern,
   type RendererBindings,
 } from '@setcast/core/react';
 import { SceneBoundary } from '../browser/scene.tsx';
@@ -31,7 +33,7 @@ interface SceneProps {
   renderScale?: number;
   black?: boolean;
   projection?: Projection;
-  pattern?: boolean;
+  testPattern?: TestPatternConfig;
   document?: Document;
 }
 
@@ -57,8 +59,6 @@ export function LiveViewport(props: SceneProps) {
             config={props.projection}
             width={props.project.width}
             height={props.project.height}
-            pattern={props.pattern ?? false}
-            brightness={props.performance?.brightness ?? 1}
           >
             {(document) => (
               <SceneLayers {...{ layers, visible, ready, error, props }} document={document} />
@@ -106,6 +106,15 @@ function SceneLayers({
           </SceneBoundary>
         </div>
       ))}
+      {props.testPattern && (
+        <TestPattern
+          config={props.testPattern}
+          width={props.project.width}
+          height={props.project.height}
+          timeSeconds={props.frame / props.project.fps}
+          brightness={props.performance?.brightness ?? 1}
+        />
+      )}
     </>
   );
 }

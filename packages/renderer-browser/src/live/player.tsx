@@ -19,6 +19,8 @@ import { ProjectionControls } from './projection-controls.tsx';
 import { OutputControls, useOutput } from './output.tsx';
 import { useLiveBranding } from './branding.ts';
 import { BrandingControls } from './branding-controls.tsx';
+import { useTestPattern } from './test-pattern.ts';
+import { TestPatternControls } from './test-pattern-controls.tsx';
 
 export function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
   const themes = useThemes(initial, report);
@@ -107,7 +109,7 @@ export function LivePlayer({
       <LiveViewport
         key={String(controller.projection.config.enabled)}
         projection={controller.projection.config}
-        pattern={controller.projection.pattern}
+        testPattern={controller.testPattern.active ? controller.testPattern.config : undefined}
         project={project}
         analyzer={input.snapshot.analyzer}
         frame={input.snapshot.frame}
@@ -139,7 +141,8 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     report,
     cleanOutput: () => setClean(true),
   });
-  const projection = useProjection(initial, report);
+  const testPattern = useTestPattern(initial, report);
+  const projection = useProjection(initial, report, testPattern);
   const fullscreen = () => {
     setClean(true);
     void output.display.toggle();
@@ -163,6 +166,7 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
     diagnostics,
     output,
     projection,
+    testPattern,
     ...performanceSession,
   };
 }
@@ -207,6 +211,7 @@ function LiveControls({
         <BrandingControls branding={scene.branding} announcements={announcements} />
         <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
         <OutputControls output={settings.output} />
+        <TestPatternControls testPattern={settings.testPattern} />
         <ProjectionControls projection={settings.projection} />
         <SessionJournal journal={journal} running={input.snapshot.status.phase === 'running'} />
       </section>

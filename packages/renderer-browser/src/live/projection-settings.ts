@@ -7,10 +7,14 @@ import {
   type Venue,
 } from '@setcast/core';
 import { downloadJson } from './diagnostics.tsx';
+import type { LiveTestPattern } from './test-pattern.ts';
 
-export function useProjection(initial: ResolvedLiveProject, report: (message: string) => void) {
+export function useProjection(
+  initial: ResolvedLiveProject,
+  report: (message: string) => void,
+  testPattern: LiveTestPattern,
+) {
   const [config, setConfig] = useState(() => initial.live.projection ?? ProjectionSchema.parse({}));
-  const [pattern, setPattern] = useState(false);
   const [name, setName] = useState('My venue');
   const change = (next: Projection) => {
     const parsed = ProjectionSchema.safeParse(next);
@@ -23,7 +27,7 @@ export function useProjection(initial: ResolvedLiveProject, report: (message: st
   const apply = (venue: Venue) => {
     setConfig(venue.projection);
     setName(venue.name);
-    setPattern(false);
+    testPattern.show(false);
   };
   const venues = useVenues(report);
   const current = () => VenueSchema.parse({ version: 1, name, projection: config });
@@ -44,8 +48,8 @@ export function useProjection(initial: ResolvedLiveProject, report: (message: st
   return {
     config,
     change,
-    pattern,
-    setPattern,
+    pattern: testPattern.alignment,
+    setPattern: testPattern.showAlignment,
     name,
     setName,
     venues,

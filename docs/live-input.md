@@ -243,6 +243,10 @@ stability remain unqualified. Use the checklist in
 
 ## Projection geometry
 
+[Camera test patterns](camera-setup.md) provide alignment, grayscale, detail and explicit-time
+motion samples. `testPattern:` in live.yaml configures them; the operator explicitly enables
+the output. Settings transfer uses versioned JSON, and scene recall preserves setup settings.
+
 [One-projector setup](projector-setup.md) provides four-corner correction, source crop, fixed
 output masks, a static calibration pattern and saved venue profiles. Scene recalls preserve
 these settings; journal replay exports the original composition without venue geometry.

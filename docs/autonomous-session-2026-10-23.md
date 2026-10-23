@@ -39,3 +39,39 @@ projection and journal semantics. Every standalone completed piece gets a commit
   and ffprobe verification. The short 35-second live run and 10-second export passed. Initial
   live fixture failure was fixed by writing self-contained saved-scene CSS, matching the platform's
   existing scene contract. No production runtime behavior changed.
+- Endurance tooling committed as 04bf035; 508 tests and ready passed. SIGTERM retained a
+  cancelled report and exited cleanly. Hour-long live run started at about 13:50 Warsaw,
+  artifacts examples/demo/out/endurance-live-hour-2026-10-23, process session 56790,
+  log /tmp/setcast-endurance-hour.log. It runs the committed bundle while later code changes.
+
+## Camera setup design
+
+- Visual thesis: one full-frame diagnostic image with restrained monochrome geometry and readable
+  labels; retain the compact dark operator UI and its existing accent.
+- Content plan: explicit show/hide, pattern selection, relevant controls, settings import/export;
+  keep the scene and its controls available underneath. No decorative panels or imagery.
+- Interaction thesis: static alignment/gray/detail patterns, absolute-time motion sample,
+  immediate hide and existing output brightness/blackout. No CSS animation or ornamental motion.
+- Platform contract: pure core TestPatternSchema and motion/layout helpers, renderer-independent
+  React TestPattern with explicit size/time/brightness. live.yaml testPattern supplies initial
+  settings, never automatically activates it. Settings belong to output setup, not scene recall
+  or journal replay. Versioned JSON settings transfer reuses the schema.
+- Unify the existing projector alignment pattern with this capability. Patterns appear in
+  composition coordinates inside the projected iframe, underneath masks and input-loss black.
+  Quiet-scene fallback permits setup without input, as it does for projector calibration today.
+
+- Implemented all four patterns, declarative initial settings, versioned settings transfer and
+  shared projector alignment. Camera, output and projection browser checks passed; landscape,
+  portrait and operator images were inspected. Installed-package smoke passed. Packaging exposed
+  benchmark declarations escaping into other packages; a separate benchmark tsconfig fixes this.
+  A sandboxed ready attempt could not bind localhost; validation was rerun with localhost access.
+
+## Beat-analysis design
+
+- Evaluate onset extraction separately from tempo/phase acceptance. Keep explicit operator
+  adoption, manual tempo and downbeat controls. A larger heuristic score is not accuracy evidence.
+- Prefer pure, renderer-independent analysis contracts with bounded history and documented time
+  semantics. Synthetic fixtures provide exact labels; unlabeled recordings only provide coverage,
+  stability and performance evidence. Compare candidate methods against the existing detector.
+- Use the existing real master for longer export qualification after the live hour finishes;
+  retain source files unchanged and report concurrent workloads when interpreting timings.

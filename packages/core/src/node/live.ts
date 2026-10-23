@@ -96,6 +96,7 @@ function resolveLiveProject(
       clock: config.clock,
       sequence: config.sequence,
       projection: config.projection,
+      testPattern: config.testPattern,
     },
   };
 }

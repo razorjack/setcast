@@ -265,6 +265,14 @@ export type {
 } from './export.ts';
 
 export { LiveConfigSchema, type LiveConfig } from './live.ts';
+export {
+  TEST_PATTERNS,
+  TestPatternSchema,
+  TestPatternPresetSchema,
+  testPatternPhase,
+  type TestPatternConfig,
+  type TestPatternPreset,
+} from './test-pattern.ts';
 export { SceneSelectionSchema, type SceneSelection } from './scene-selection.ts';
 export {
   SessionHeaderSchema,

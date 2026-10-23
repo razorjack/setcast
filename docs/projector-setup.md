@@ -32,7 +32,9 @@ aspect ratio before correction; the pattern is static and follows the performanc
 
 **Reset geometry** restores the full-frame rectangle and removes crop and masks. It preserves
 the enabled state. Disabling correction bypasses all geometry, crop and masks without deleting
-those settings. The calibration pattern is an explicit setup tool and is never saved.
+those settings. The calibration pattern is an explicit setup tool. Its settings can be saved
+through [camera test patterns](camera-setup.md); activation is never saved. Disabling correction
+keeps an active pattern visible on the direct output until you turn it off.
 
 ## Venue profiles
 

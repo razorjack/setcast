@@ -469,6 +469,13 @@
 .sc-projection-settings {
   flex-basis: 100%;
 }
+.sc-test-pattern-settings {
+  flex-basis: 100%;
+}
+.sc-test-pattern-settings p {
+  color: var(--ink-2);
+  font-size: 12px;
+}
 .sc-projection-settings p {
   color: var(--ink-2);
   font-size: 12px;

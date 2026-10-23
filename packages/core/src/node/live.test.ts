@@ -54,6 +54,7 @@ test('configuration errors name live.yaml and the invalid field', async () => {
     ['input: {channels: [0, 2]}', 'input.channels[0]', 'Input channels start at 1'],
     ['input: {delay: -1}', 'input.delay', 'cannot be negative'],
     ['visualizer: {name: unknown}', 'visualizer.name', 'Unknown visualizer'],
+    ['testPattern: {detailSize: 0}', 'testPattern.detailSize', 'at least 1 composition pixel'],
   ]) {
     await writeFile(join(dir, 'live.yaml'), yaml!);
     await expect(loadLiveProject(dir, { themes })).rejects.toMatchObject({

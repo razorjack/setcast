@@ -15,7 +15,6 @@ export function ProjectionControls({ projection }: { projection: Settings }) {
             checked={config.enabled}
             onChange={(event) => {
               change({ ...config, enabled: event.target.checked });
-              projection.setPattern(false);
             }}
           />
           Enable projection correction
@@ -24,7 +23,6 @@ export function ProjectionControls({ projection }: { projection: Settings }) {
           <input
             type="checkbox"
             checked={projection.pattern}
-            disabled={!config.enabled}
             onChange={(event) => projection.setPattern(event.target.checked)}
           />
           Show calibration pattern

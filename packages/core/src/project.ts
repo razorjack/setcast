@@ -76,6 +76,7 @@ export type ResolvedLiveProject = Omit<
   live: {
     sequence?: import('./sequence.ts').SceneSequence;
     projection?: import('./projection.ts').Projection;
+    testPattern?: import('./test-pattern.ts').TestPatternConfig;
     clock: boolean;
     input: {
       device?: string;

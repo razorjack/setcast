@@ -617,6 +617,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   Calibration follows brightness/blackout and the outer input-loss fallback covers it. Profiles
   load explicitly, exclude the pattern, and persist by origin with JSON backup. See
   docs/projector-setup.md and renderer-browser/bench/projection.ts.
+- Camera test patterns share core's TestPatternSchema and explicit-time React TestPattern.
+  live.yaml testPattern settings belong to output setup, never saved scenes or journal snapshots.
+  Activation is always explicit, and valid preset/venue imports turn it off. The projector's
+  alignment control selects the same pattern; direct output supports it too. Patterns render in
+  composition coordinates beneath masks/input-loss fallback and receive effective brightness.
+  They do not use theme colors, audio analysis or CSS animation. See docs/camera-setup.md.
 - Live scene pads recall self-contained `saved-scene-*` projects without changing input routing,
   dimensions, tempo or current performance levels. Transitions fade through black, start on the
   manual bar grid and wait for readiness. Failed scenes retain the previous output and do not
