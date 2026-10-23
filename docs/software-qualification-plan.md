@@ -35,3 +35,15 @@ changes, four forced recoveries and two capture restarts, with three valid journ
 dropped samples. A review before the long software run found that diagnostics can include paused
 startup time and that availability changes can apply the same quality sample twice. Correct that
 sampling policy before measuring sustained software quality.
+
+Diagnostics now reset their one-second rate window when capture source, availability or document
+visibility changes. Capture-frame jumps still count as one observed rendered update. Adaptive
+quality consumes each completed sample at most once; availability changes reset hysteresis without
+replaying a cached sample. Startup/paused intervals therefore cannot masquerade as sustained GPU
+overload. This does not accelerate shaders or promise that severe software stalls cannot drop data.
+
+The correction passed ready (559 tests) and the output recovery/adaptive-resolution browser check.
+The repeated software scene/restart check exposed a separate transient drop of 2048 analysis
+samples when restart coincided with scene preparation. The transport currently permits only
+eight outstanding packets, about 171 ms at 48 kHz. Next evaluate a time-based, still-bounded
+half-second transport budget; normal delivery and sample positions must remain unchanged.

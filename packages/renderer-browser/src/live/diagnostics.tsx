@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { LiveInput } from './input.ts';
+import { FrameRateSampler } from './frame-rate.ts';
 
 interface Sample {
   seconds: number;
@@ -7,6 +8,7 @@ interface Sample {
   dropped: number;
   cached: number;
   hidden: boolean;
+  available: boolean;
   heapBytes: number | null;
 }
 
@@ -16,31 +18,23 @@ export function useDiagnostics(input: LiveInput) {
   const samples = useRef<Sample[]>([]);
   const [sample, setSample] = useState<Sample | null>(null);
   useEffect(() => {
-    let previous = performance.now();
-    let frame = -1;
-    let frames = 0;
+    const rates = new FrameRateSampler();
     let request = 0;
     const tick = () => {
       const current = latest.current;
-      if (current.snapshot.frame !== frame) frames++;
-      frame = current.snapshot.frame;
-      const now = performance.now();
-      if (now - previous >= 1000) {
-        const next = {
-          seconds: current.capture.audio?.capturedTime ?? 0,
-          fps: (frames * 1000) / (now - previous),
-          dropped: current.snapshot.status.dropped,
-          cached: current.capture.audio?.cachedMoments ?? 0,
-          hidden: document.hidden,
-          heapBytes:
-            (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
-              ?.usedJSHeapSize ?? null,
-        };
+      const fps = rates.sample({
+        now: performance.now(),
+        frame: current.snapshot.frame,
+        source: current.capture.audio,
+        available: current.snapshot.status.available,
+        hidden: document.hidden,
+      });
+      if (fps === null) setSample(null);
+      if (typeof fps === 'number') {
+        const next = diagnosticSample(current, fps);
         samples.current.push(next);
         if (samples.current.length > 7200) samples.current.shift();
         setSample(next);
-        previous = now;
-        frames = 0;
       }
       request = requestAnimationFrame(tick);
     };
@@ -48,6 +42,20 @@ export function useDiagnostics(input: LiveInput) {
     return () => cancelAnimationFrame(request);
   }, []);
   return { samples, sample };
+}
+
+function diagnosticSample(current: LiveInput, fps: number): Sample {
+  return {
+    seconds: current.capture.audio?.capturedTime ?? 0,
+    fps,
+    dropped: current.snapshot.status.dropped,
+    cached: current.capture.audio?.cachedMoments ?? 0,
+    hidden: document.hidden,
+    available: current.snapshot.status.available,
+    heapBytes:
+      (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
+        ?.usedJSHeapSize ?? null,
+  };
 }
 
 export function LiveDiagnostics({

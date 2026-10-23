@@ -685,6 +685,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   identity before capture. operatorWindow separates controls from output and reads diagnostics
   from the control window. Both windows' errors are observed. Stacked software visuals failed
   startup qualification locally; do not infer support from individual-visual runs.
+- Live diagnostics start a fresh one-second frame-rate window when the capture source,
+  availability or document visibility changes. Adaptive quality consumes each completed sample
+  once. Availability changes reset hysteresis without reapplying an old metric; paused startup
+  time is not evidence of rendering overload. See live/frame-rate.ts and output.tsx.
 - Offline export Chromium uses `--disable-frame-rate-limit` to remove display refresh pacing,
   while retaining all frame readiness checks. This does not configure the user's live or preview
   browser. Keep the SwiftShader GPU check on the same scheduling mode. The measured one-worker

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { useDiagnostics } from './diagnostics.tsx';
 import type { LiveInput } from './input.ts';
 import { adaptQuality, fullQuality } from './quality.ts';
@@ -18,14 +18,20 @@ export function useOutput(
   const [adaptive, setAdaptive] = useState(true);
   const [quality, setQuality] = useState(fullQuality);
   const sample = diagnostics.sample;
+  const consumed = useRef(sample);
   const available = input.snapshot.status.available;
   useEffect(() => {
+    const fresh = sample !== consumed.current;
+    consumed.current = sample;
     if (!adaptive) {
       setQuality(fullQuality());
       return;
     }
-    if (!sample) return;
-    setQuality((previous) => adaptQuality(previous, sample.fps, fps, available && !sample.hidden));
+    if (!sample || !sample.available || !available || sample.hidden) {
+      setQuality((previous) => adaptQuality(previous, 0, fps, false));
+      return;
+    }
+    if (fresh) setQuality((previous) => adaptQuality(previous, sample.fps, fps, true));
   }, [sample, fps, available, adaptive]);
   return {
     display,

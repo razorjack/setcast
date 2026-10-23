@@ -223,6 +223,9 @@ and JavaScript heap use when the browser exposes it. **Download diagnostics** sa
 two hours. Moving controls to the operator window retains the samples. Heap values are browser
 estimates, not total process or GPU memory. FPS measures delivered frame updates, not physical
 display latency.
+Each FPS window resets when the capture source, input availability or document visibility changes.
+Adaptive quality consumes each complete window once, so paused startup time and repeated availability
+updates do not count as sustained rendering overload.
 
 The automated synthetic-input check is:
 
