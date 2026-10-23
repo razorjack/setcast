@@ -16,6 +16,7 @@ const commands: Record<string, () => Promise<Command>> = {
   clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
   inspect: () => import('./commands/inspect.ts'),
+  schema: () => import('./commands/schema.ts'),
   chapters: () => import('./commands/chapters.ts'),
   live: () => import('./commands/live.ts'),
   replay: () => import('./commands/replay.ts'),
@@ -35,6 +36,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('clip')}      cut a promo clip around a drop (--all for every drop)
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document
+  ${steel('schema')}    print an authoring JSON Schema for editors and tools
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      visualize a live audio input in the browser
   ${steel('replay')}    turn a session journal and recorded master into a project

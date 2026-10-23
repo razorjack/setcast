@@ -171,6 +171,9 @@ async function exerciseCli(): Promise<void> {
   assert((await readFile(cli, 'utf8')).startsWith('#!/usr/bin/env node'));
   const run = (...args: string[]) => command(process.execPath, [cli, ...args], temporary);
   assert.equal((await run('--version')).stdout.trim(), manifest.version);
+  const schema = JSON.parse((await run('schema', 'live')).stdout);
+  assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
+  assert(schema.properties.visualizer.anyOf.length > 0);
   const project = join(temporary, 'project');
   await run('init', project, '--demo', '--yes');
   const configFile = join(project, 'setcast.yaml');

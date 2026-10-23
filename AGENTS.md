@@ -340,6 +340,17 @@ list; implemented today: visualizer, theme, tracklist importer):
 
 Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setcast-import-*`.
 
+### Configuration tooling
+
+`configurationSchema(kind)` in core generates draft-2020-12 input schemas for project, live,
+visualizer, venue and test-pattern authoring. `setcast schema [kind]` prints them without loading
+projects or renderers. Derive alternatives from the visualizer registry, requiring an explicit
+name for every kind except the existing spectrum default. JSON Schema cannot represent all Zod
+refinements or filesystem/timeline checks; retain runtime loading as authoritative. Never use
+`unrepresentable: 'any'` to hide unsupported types. Output extension regexes use explicit letter
+cases because JSON Schema patterns cannot carry JavaScript regex flags. Ajv is test-only.
+See docs/configuration-schemas.md for editor association and contract limits.
+
 ### Project resolution and orchestration
 
 `setcast.yaml` (schema: `packages/core/src/config.ts`) → `loadProject(dir, {themes, probeDuration})` in

@@ -78,7 +78,7 @@ const outputShape = {
     .default(30),
   file: z
     .string({ error: 'file must be an output path ending in .mp4, .mov or .mkv.' })
-    .regex(/\.(?:mp4|mov|mkv)$/i, {
+    .regex(/\.(?:[mM][pP]4|[mM][oO][vV]|[mM][kK][vV])$/, {
       error: 'file must end in .mp4, .mov or .mkv.',
     })
     .default('out/set.mp4'),

@@ -137,3 +137,14 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   configuration adds a live-only injection policy and a reusable 1080p preset. The 35-second
   combined check passed four recoveries, six scene/announcement actions and two restarts, with
   three valid journals. Ready passed 523 tests. A longer run will start from the committed tree.
+
+- Repeated-loss tooling committed as f4b8ec4. Two-hour 1080p workload started on that clean revision
+  at about 15:35 Warsaw; session 63874, /tmp/setcast-endurance-recovery-two-hours.log, artifacts
+  examples/demo/out/endurance-gpu-recovery-two-hours-2026-10-23. Expected completion about 17:35.
+- Full-master export passed: 101160 frames / 3372 seconds at 1080p30, 2757.3 seconds wall time.
+  Full decoder counted all frames; selected stills inspected. Six stereo audio comparisons at
+  5/60/930/1686/2400/3368 seconds had zero sample offset at 16 kHz and correlations 0.9976–0.9999.
+  Node RSS 223.8–468.3 MB, final 257.9 MB. Concurrent development means this is qualification,
+  not an isolated performance benchmark. Detailed artifacts remain in the export workload folder.
+- Configuration tooling is the next platform capability: locally generated editor JSON Schemas
+  followed by renderer-free project validation. Plan: docs/configuration-tooling-plan.md.

@@ -487,3 +487,15 @@ three visualizers, unchanged requested pixels, SwiftShader, fail-fast/timeout be
 during recovery and simultaneous live loss without dropped samples. The projection check restored
 an iframe context; the Remotion check forced loss during the first GPU draw, compared reference
 pixels and verified timeout failure. Forced extension events do not qualify real driver resets.
+
+## Completed configuration schema interface
+
+`configurationSchema(kind)` and `setcast schema [kind]` generate draft-2020-12 authoring schemas
+for recorded/live projects, visualizers and portable venue/test-pattern settings. Visualizer
+alternatives derive from the registry; input shorthand and defaults remain distinct from normalized
+runtime output. Local editor association and validation limits are documented in
+[configuration-schemas.md](configuration-schemas.md). No schema service or plugin loader is added.
+
+Validation: ready passed 531 tests. Independent Ajv checks compile every schema, validate repository
+examples and reject invalid structure/visualizer controls. CLI checks cover JSON stdout outside
+projects and invalid arguments. Installed-package smoke passed with the schema command.

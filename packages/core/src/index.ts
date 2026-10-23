@@ -326,3 +326,9 @@ export {
   type EnergySelection,
   type EnergyBand,
 } from './energy.ts';
+
+export {
+  configurationSchema,
+  CONFIGURATION_SCHEMA_KINDS,
+  type ConfigurationSchemaKind,
+} from './configuration-schema.ts';
