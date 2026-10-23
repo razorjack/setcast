@@ -3,7 +3,8 @@
 Three completed workloads establish sustained local behavior: one hour of live scene changes,
 two hours of repeated GPU recovery, and a 56-minute real-master browser export. A planned
 75-minute stacked SwiftShader stress run failed after 26 minutes; a narrower software run also
-failed after 15.6 minutes. Both remain failed qualification evidence. These are local qualification results,
+failed after 15.6 minutes. A post-watchdog-fix run failed after 128 seconds with skipped analysis
+samples while capture stayed running. These remain failed qualification evidence. These are local qualification results,
 not cross-platform or physical-device certification.
 
 The machine is an Apple M1 Pro running macOS 27.0.0 and Node 26.7.0. Browser workloads use
@@ -96,10 +97,34 @@ All three controlled stalls then resumed capture, each reporting 71680 skipped s
 than hiding the overload. The permanent Chromium regression checks the 300 ms queue budget,
 two-second stall recovery and actual worklet packet starvation. Ready passed 570 tests and output
 recovery passed. This fixes the reproduced ordering bug; it does not establish the cause of
-every long-run software stall or turn the earlier failed runs into passes. A final 20-minute
-software regression is planned to pass the first 15-minute restart before handoff.
+every long-run software stall or turn the earlier failed runs into passes. The subsequent
+20-minute regression on clean ff76fe1 failed after 128.10 seconds, before restart, with 15360
+skipped samples and capture still running. No heavy concurrent checks were active.
 
 Artifact: `examples/demo/out/endurance-software-single-40-minutes-2026-10-23`.
+Post-fix artifact: `examples/demo/out/endurance-software-watchdog-20-minutes-2026-10-23`.
+
+### Diagnostic follow-up
+
+A three-minute instrumented run passed; a longer attempt failed after 196.53 seconds with 12288
+skipped samples. CPU sampling placed long tasks in deferred canvas disposal and drawing, with no
+measured shader compilation call exceeding 10 ms. A final fixed five-minute profile, using the
+same pre-optimization bundle, passed nine scene/announcement changes and journal validation.
+Native-call timings measured context creation up to 132.1 ms and `loseContext()` up to 192.9 ms.
+This supports investigating resource lifecycle, but does not fully explain the earlier 769 ms
+draw task. No shader-lifecycle fix was made on this evidence.
+
+Instrumentation affects execution. These are diagnostic samples, not qualification of sustained
+software output. A separate signal-cancelled diagnostic lost its profiler data during browser
+cleanup; its report remains cancelled. Machine-readable results separate all four diagnostics
+from ordinary live workloads. The final profile, timings and captured bundle are retained under
+`examples/demo/out/endurance-software-profile-native-2026-10-23`.
+
+The subsequent shared spectrum optimization, `d0934d0`, passed ready with 571 tests, both exporter
+acceptance suites and all GPU/live checks. Its real-master 15:30 frame matches the pre-optimization
+decoded pixels exactly. [Spectrum measurements](spectrum-optimization.md) establish reduced kernel
+CPU cost. No new sustained software qualification was completed after that optimization, so it
+does not replace the failed runs above.
 
 ## Full real-master export
 

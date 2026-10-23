@@ -4,6 +4,10 @@ Started at 13:35 Europe/Warsaw on master after ecb0f76. Target handoff: about 19
 (17:00 UTC). Stop starting features at 18:00 and reserve the last hour for validation,
 fixes, documentation and commits. Nothing is to be pushed or published.
 
+The user later extended the deadline: finish work already started, including its validation,
+instead of stopping early for 19:00. The remaining investigation is software-rendering stalls;
+new unrelated platform milestones stay deferred.
+
 ## Design constraints
 
 Treat features as platform capabilities: explicit configuration, reusable contracts,
@@ -201,3 +205,34 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   period. Three controlled reproductions now resume with visible dropped-sample counts; genuine
   worklet starvation still fails. Ready passed 570 tests and transport/output browser checks passed.
   Final 20-minute software regression will cross the first 15-minute restart before handoff.
+- The post-fix single-visual regression failed after 128 seconds, before restart: capture remained
+  running but reported 15360 skipped samples. A three-minute instrumented run passed; a longer
+  diagnostic reproduced 12288 skipped samples after 196 seconds. CPU sampling places a 454 ms
+  task in deferred context disposal and a 769 ms task in canvas drawing. Shader compile/link
+  calls measured so far did not exceed 10 ms. Keep these observations distinct from a causal fix.
+- The same CPU profile identified FFT copying and smoothing as routine analysis costs. An indexed
+  loop experiment preserves 256 spectra exactly in Node and Chromium while reducing microbenchmark
+  time substantially. Validate and commit this independently; it does not establish the cause or
+  resolution of the long software stalls. A reproducible comparison command is being added.
+- Native-call profiling completed five minutes and nine scene changes without drops. Context
+  creation reached 132.1 ms and loseContext reached 192.9 ms. No shader compilation fix is justified
+  by that evidence. Document bounded context reuse as a future experiment, preserve all failures,
+  and finish the independent exact-output spectrum optimization with both exporter checks.
+- Completed d0934d0: indexed FFT loops preserve exact spectra while reducing local kernel time
+  by 79.8% in Node and 78.5% in Chromium. Ready passed 571 tests; both exporter acceptance suites
+  and all GPU/live checks passed. The real-master 15:30 frame remains pixel-identical. No sustained
+  post-optimization software qualification is claimed. Final evidence and next experiments are in
+  docs/qualification-2026-10-23.md and docs/software-qualification-plan.md.
+
+## Session handoff
+
+Completed the planned platform work and the follow-up reliability investigation. Each standalone
+piece is committed on master; nothing was pushed or published. The platform guide maps YAML/CSS,
+generated schemas, validation, portable setup, shader authoring and ownership boundaries. The
+roadmap lists the remaining plugin-loading, scene-collection, adapter, labeled-music and hardware
+qualification work. No background benchmark or scheduled task is left running.
+
+Sustained local successes are one hour of live operation, two hours with 238 GPU recovery cycles,
+and a fully decoded 56-minute real-master export. SwiftShader still lacks a sustained qualified
+workload; retain its failed runs. The watchdog ordering correction and exact-output FFT improvement
+are independently validated, and neither is presented as a complete fix for native graphics stalls.

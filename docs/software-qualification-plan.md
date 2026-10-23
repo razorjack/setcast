@@ -110,3 +110,39 @@ controlled stalls then kept capture running while honestly reporting skipped ana
 A real worklet that stops sending packets still fails. Ready passed 570 tests, and transport/output
 browser checks passed. This does not prove the original long-run stall's cause or qualify every
 software workload. Run a final 20-minute single-visual regression across the first restart.
+
+## Drawing and disposal profiling
+
+The post-fix 20-minute regression failed after 128.10 seconds on clean ff76fe1, before its first
+restart. Capture remained running and reported 15360 skipped samples. No heavy validation ran
+alongside it. The watchdog correction survives overload; it does not remove the underlying stall.
+
+An instrumented three-minute run with changes every 30 seconds passed. A second instrumented run,
+with the original one-minute scene cadence, failed after 196.53 seconds with 12288 skipped samples.
+Both use the pre-optimization player bundle. The latter records long tasks of 454 and 769 ms around
+a scene change. CPU samples place them in deferred context disposal and canvas drawing. Measured
+compile/link/status/draw/flush calls did not exceed 10 ms; further instrumentation must cover the
+remaining native calls and layout/property reads. Do not infer that shader compilation caused them.
+
+Profiling changes runtime behavior. These diagnostic runs supplement the uninstrumented failures;
+their passes cannot qualify the workload. Preserve timing data, CPU profiles and the exact bundle.
+Separately, evaluate exact-output indexed FFT loops: copying and smoothing are substantial routine
+CPU costs, but reducing them is not yet evidence of a correction to the software stalls.
+
+A fixed five-minute native-call profile completed nine scene/announcement changes with zero drops
+and a valid journal. It measured `getContext()` calls up to 132.1 ms and explicit `loseContext()`
+calls up to 192.9 ms. The shader compile/link calls were not the observed long native operations.
+This narrows the next experiment to context creation, disposal and draw-time synchronization;
+it does not establish the complete cause of the earlier 769 ms draw task. A preceding five-minute
+diagnostic was cancelled by signal; Chromium closed before profiling data could be saved, so only
+its workload samples remain. Neither diagnostic supersedes the uninstrumented failures.
+
+Do not add asynchronous shader compilation or remove context disposal on this evidence. Evaluate
+bounded context reuse in a separate experiment: explicit ownership per output/worker, a fixed
+resource budget, disposal on host shutdown, fresh shader/config/frame state after recall, and
+correct readiness/context-loss behavior. Compare pixels after arbitrary seeks and repeated recalls,
+then repeat the failing workload. Deferring expensive work does not remove its synchronous cost.
+
+The user extended the deadline to finish this investigation and its validation. The indexed FFT
+optimization is independent and documented in [spectrum-optimization.md](spectrum-optimization.md).
+Further resource-lifecycle changes remain experiments until they demonstrate an improvement.

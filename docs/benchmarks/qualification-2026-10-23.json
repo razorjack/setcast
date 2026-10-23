@@ -668,6 +668,978 @@
         }
       },
       "recoverySeconds": null
+    },
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-software-watchdog-20-minutes-2026-10-23",
+        "reportSha256": "db60bf8786437d6f675de55b98233e05021d2070a048fb56423f0574bf436ad7",
+        "samplesSha256": "f303a23c0d68e9a2e2a61f5b1dc5f801e481d890260ad8642b327e9f7325f866"
+      },
+      "status": "failed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "ff76fe1b0a06bb2ea54d99bb46410ad4a66a20aa",
+        "dirty": false
+      },
+      "startedAt": "2026-10-23T16:31:18.742Z",
+      "wallSeconds": 128.097075875,
+      "sampleCount": 13,
+      "actions": {
+        "scene-and-announcement": 2
+      },
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Capture dropped analysis samples\n\n15360 !== 0\n\n    at sample (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:249:10)\n    at async exercise (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:155:7)\n    at async runLive (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:42:9)\n    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshot": "failure.png"
+      },
+      "workload": {
+        "seconds": 1200,
+        "sampleSeconds": 10,
+        "changeSeconds": 60,
+        "restartSeconds": 900,
+        "gpuRecovery": null,
+        "graphics": "swiftshader",
+        "operatorWindow": true
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 13,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 15360,
+          "final": 15360
+        },
+        "cached": {
+          "count": 13,
+          "minimum": 46,
+          "median": 2048,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 13,
+          "minimum": 528000,
+          "median": 528000,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 13,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 12,
+          "minimum": 6.6,
+          "median": 29.5,
+          "maximum": 30.5,
+          "final": 9.7
+        },
+        "heapBytes": {
+          "count": 13,
+          "minimum": 27577970,
+          "median": 39504851,
+          "maximum": 62219905,
+          "final": 39504851
+        },
+        "nodeRssBytes": {
+          "count": 13,
+          "minimum": 352059392,
+          "median": 362708992,
+          "maximum": 423772160,
+          "final": 362708992
+        },
+        "nodes": {
+          "count": 13,
+          "minimum": 27,
+          "median": 29,
+          "maximum": 29,
+          "final": 29
+        }
+      },
+      "recoverySeconds": null
+    }
+  ],
+  "diagnosticRuns": [
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-software-profile-2026-10-23",
+        "reportSha256": "c28caa385cb0741df05d64a7005cd87a7fa86cf8efdb112ab2ec3766e3ee4fd7",
+        "samplesSha256": "79fd3e5f73d7b478bf3fb70111df52dde5cb5c32436f0fdfeb69b91060ac194d"
+      },
+      "status": "passed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "ff76fe1b0a06bb2ea54d99bb46410ad4a66a20aa",
+        "dirty": false
+      },
+      "startedAt": "2026-10-23T16:35:43.184Z",
+      "wallSeconds": 184.579720708,
+      "sampleCount": 19,
+      "actions": {
+        "scene-and-announcement": 5
+      },
+      "errors": [],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "workloadSeconds": 180.047380584,
+        "journals": {
+          "files": 1,
+          "scenes": 6,
+          "announcements": 5
+        }
+      },
+      "workload": {
+        "seconds": 180,
+        "sampleSeconds": 10,
+        "changeSeconds": 30,
+        "restartSeconds": 0,
+        "gpuRecovery": null,
+        "graphics": "swiftshader",
+        "operatorWindow": true
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 19,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0,
+          "final": 0
+        },
+        "cached": {
+          "count": 19,
+          "minimum": 11,
+          "median": 2048,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 19,
+          "minimum": 528000,
+          "median": 528000,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 19,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 18,
+          "minimum": 17.5,
+          "median": 29.75,
+          "maximum": 30.8,
+          "final": 30.5
+        },
+        "heapBytes": {
+          "count": 19,
+          "minimum": 24134437,
+          "median": 46097627,
+          "maximum": 59503825,
+          "final": 30489455
+        },
+        "nodeRssBytes": {
+          "count": 19,
+          "minimum": 345948160,
+          "median": 383664128,
+          "maximum": 414449664,
+          "final": 347308032
+        },
+        "nodes": {
+          "count": 19,
+          "minimum": 27,
+          "median": 29,
+          "maximum": 29,
+          "final": 27
+        }
+      },
+      "recoverySeconds": null,
+      "interpretation": "Instrumented diagnostic, not an uninstrumented workload qualification. Player bundle predates indexed FFT loops.",
+      "instrumentation": {
+        "timingsSha256": "5e2ea452dd08d01ebc2189ed046265aa4776c27627973f1ead9f2f29abf0c9c4",
+        "timings": {
+          "tasks": [
+            {
+              "start": 60.79999999701977,
+              "duration": 78
+            },
+            {
+              "start": 94424.19999998808,
+              "duration": 125
+            },
+            {
+              "start": 124414.39999999106,
+              "duration": 156
+            },
+            {
+              "start": 124647.59999999404,
+              "duration": 74
+            }
+          ],
+          "gl": []
+        },
+        "cpuProfileSha256": "b3e258320e75c172fa174a28c51b9d7454c4d28ba84e6bcfe6fd869185ecee9e"
+      }
+    },
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-software-profile-long-2026-10-23",
+        "reportSha256": "c090e3d8e6451d2ff1069b02983a2890799dfc970dcfbe3739f3a702a415aedd",
+        "samplesSha256": "68f107c498cef8bf023f52d69b5b1361921af6fc23532fd240a20bf5491173d7"
+      },
+      "status": "failed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "ff76fe1b0a06bb2ea54d99bb46410ad4a66a20aa",
+        "dirty": false
+      },
+      "startedAt": "2026-10-23T16:42:03.548Z",
+      "wallSeconds": 196.532672792,
+      "sampleCount": 20,
+      "actions": {
+        "scene-and-announcement": 3
+      },
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Capture dropped analysis samples\n\n12288 !== 0\n\n    at sample (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:249:10)\n    at async exercise (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:155:7)\n    at async runLive (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:42:9)\n    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshot": "failure.png"
+      },
+      "workload": {
+        "seconds": 1200,
+        "sampleSeconds": 10,
+        "changeSeconds": 60,
+        "restartSeconds": 900,
+        "gpuRecovery": null,
+        "graphics": "swiftshader",
+        "operatorWindow": true
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "maximum": 12288,
+          "final": 12288
+        },
+        "cached": {
+          "count": 20,
+          "minimum": 40,
+          "median": 2048.0,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 20,
+          "minimum": 528000,
+          "median": 528000.0,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 20,
+          "minimum": 0.5,
+          "median": 1.0,
+          "maximum": 1,
+          "final": 0.5
+        },
+        "renderFps": {
+          "count": 19,
+          "minimum": 6.4,
+          "median": 30,
+          "maximum": 30.5,
+          "final": 30.5
+        },
+        "heapBytes": {
+          "count": 20,
+          "minimum": 25610165,
+          "median": 48044204.0,
+          "maximum": 70079011,
+          "final": 50770964
+        },
+        "nodeRssBytes": {
+          "count": 20,
+          "minimum": 349011968,
+          "median": 357285888.0,
+          "maximum": 424361984,
+          "final": 358563840
+        },
+        "nodes": {
+          "count": 20,
+          "minimum": 27,
+          "median": 27.0,
+          "maximum": 29,
+          "final": 29
+        }
+      },
+      "recoverySeconds": null,
+      "interpretation": "Instrumented diagnostic, not an uninstrumented workload qualification. Player bundle predates indexed FFT loops.",
+      "instrumentation": {
+        "timingsSha256": "f2b2f8e3d7182812af989c3386c3216a1fbee092b86a59b96d54ed7f5df72e94",
+        "timings": {
+          "tasks": [
+            {
+              "start": 46.80000001192093,
+              "duration": 51
+            },
+            {
+              "start": 124244.80000001192,
+              "duration": 77
+            },
+            {
+              "start": 184313,
+              "duration": 141
+            },
+            {
+              "start": 184658.90000000596,
+              "duration": 454
+            },
+            {
+              "start": 186982,
+              "duration": 769
+            }
+          ],
+          "gl": []
+        },
+        "cpuProfileSha256": "1ee01fd1f1bdb221431ed709da84397921eab9d16139688151d260c5a42d6951"
+      }
+    },
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-software-profile-calls-2026-10-23",
+        "reportSha256": "9e80bdc869027352b1ada351ceb9dddda4863412a4a9113b53e6b0f1ad75dca9",
+        "samplesSha256": "57922b4f104446a5651dd099abc1cc0be19f5b402e1cc38adb5923e0b7294c93"
+      },
+      "status": "cancelled",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "ff76fe1b0a06bb2ea54d99bb46410ad4a66a20aa",
+        "dirty": true
+      },
+      "startedAt": "2026-10-23T16:47:06.675Z",
+      "wallSeconds": 309.03443133300004,
+      "sampleCount": 31,
+      "actions": {
+        "scene-and-announcement": 5
+      },
+      "errors": [
+        "page.waitForTimeout: Target page, context or browser has been closed\n    at exercise (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:159:16)\n    at async runLive (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:42:9)\n    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshotError": "Error: page.screenshot: Target page, context or browser has been closed"
+      },
+      "workload": {
+        "seconds": 1200,
+        "sampleSeconds": 10,
+        "changeSeconds": 60,
+        "restartSeconds": 900,
+        "gpuRecovery": null,
+        "graphics": "swiftshader",
+        "operatorWindow": true
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 31,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0,
+          "final": 0
+        },
+        "cached": {
+          "count": 31,
+          "minimum": 24,
+          "median": 2048,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 31,
+          "minimum": 528000,
+          "median": 528000,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 31,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 30,
+          "minimum": 24,
+          "median": 30.0,
+          "maximum": 31,
+          "final": 30
+        },
+        "heapBytes": {
+          "count": 31,
+          "minimum": 21390434,
+          "median": 43672807,
+          "maximum": 61896615,
+          "final": 38712359
+        },
+        "nodeRssBytes": {
+          "count": 31,
+          "minimum": 347488256,
+          "median": 355729408,
+          "maximum": 427196416,
+          "final": 353370112
+        },
+        "nodes": {
+          "count": 31,
+          "minimum": 27,
+          "median": 29,
+          "maximum": 29,
+          "final": 29
+        }
+      },
+      "recoverySeconds": null,
+      "interpretation": "Instrumented diagnostic, not an uninstrumented workload qualification. Player bundle predates indexed FFT loops.",
+      "profilingError": "Signal closed Chromium before the wrapper could save timing/profile data. Only workload samples remain."
+    },
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-software-profile-native-2026-10-23",
+        "reportSha256": "c610669c6285cf16ae9221cb9091e57662ecd4e9dddefea7736138e2a8171827",
+        "samplesSha256": "981e38195dbba39ec38af2cc3a0f4c6ace096192bd1102dfc5174312e89ae1bc"
+      },
+      "status": "passed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "ff76fe1b0a06bb2ea54d99bb46410ad4a66a20aa",
+        "dirty": true
+      },
+      "startedAt": "2026-10-23T16:53:53.927Z",
+      "wallSeconds": 304.84028812500003,
+      "sampleCount": 31,
+      "actions": {
+        "scene-and-announcement": 9
+      },
+      "errors": [],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "workloadSeconds": 300.26367312499997,
+        "journals": {
+          "files": 1,
+          "scenes": 10,
+          "announcements": 9
+        }
+      },
+      "workload": {
+        "seconds": 300,
+        "sampleSeconds": 10,
+        "changeSeconds": 30,
+        "restartSeconds": 0,
+        "gpuRecovery": null,
+        "graphics": "swiftshader",
+        "operatorWindow": true
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 31,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0,
+          "final": 0
+        },
+        "cached": {
+          "count": 31,
+          "minimum": 32,
+          "median": 2048,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 31,
+          "minimum": 528000,
+          "median": 528000,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 31,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 30,
+          "minimum": 24.8,
+          "median": 30.0,
+          "maximum": 31,
+          "final": 29.5
+        },
+        "heapBytes": {
+          "count": 31,
+          "minimum": 27653486,
+          "median": 40132822,
+          "maximum": 63928981,
+          "final": 38370747
+        },
+        "nodeRssBytes": {
+          "count": 31,
+          "minimum": 346374144,
+          "median": 356581376,
+          "maximum": 419397632,
+          "final": 348225536
+        },
+        "nodes": {
+          "count": 31,
+          "minimum": 27,
+          "median": 29,
+          "maximum": 29,
+          "final": 27
+        }
+      },
+      "recoverySeconds": null,
+      "interpretation": "Instrumented diagnostic, not an uninstrumented workload qualification. Player bundle predates indexed FFT loops.",
+      "instrumentation": {
+        "timingsSha256": "d52c983b20dfa1d4637ae56182284b6006a4bf0691d5eb4379fa8cb5caef3b45",
+        "timings": {
+          "tasks": [
+            {
+              "start": 77.40000000596046,
+              "duration": 50
+            },
+            {
+              "start": 94288.10000000894,
+              "duration": 111
+            },
+            {
+              "start": 124275.90000000596,
+              "duration": 135
+            },
+            {
+              "start": 124482,
+              "duration": 105
+            },
+            {
+              "start": 184554.60000000894,
+              "duration": 83
+            },
+            {
+              "start": 214493.40000000596,
+              "duration": 101
+            },
+            {
+              "start": 214659.10000000894,
+              "duration": 71
+            },
+            {
+              "start": 274707.200000003,
+              "duration": 194
+            }
+          ],
+          "gl": [
+            {
+              "name": "loseContext",
+              "start": 94289.10000000894,
+              "duration": 110.59999999403954
+            },
+            {
+              "name": "getContext",
+              "start": 124277.5,
+              "duration": 132.1000000089407
+            },
+            {
+              "name": "loseContext",
+              "start": 124496.40000000596,
+              "duration": 90.70000000298023
+            },
+            {
+              "name": "loseContext",
+              "start": 184568.40000000596,
+              "duration": 69.79999999701977
+            },
+            {
+              "name": "getContext",
+              "start": 214494.90000000596,
+              "duration": 98.09999999403954
+            },
+            {
+              "name": "loseContext",
+              "start": 214673.40000000596,
+              "duration": 56.79999999701977
+            },
+            {
+              "name": "getContext",
+              "start": 244493.90000000596,
+              "duration": 12.5
+            },
+            {
+              "name": "getContext",
+              "start": 274637.700000003,
+              "duration": 10.299999997019768
+            },
+            {
+              "name": "loseContext",
+              "start": 274708.299999997,
+              "duration": 192.90000000596046
+            }
+          ]
+        },
+        "cpuProfileSha256": "797e1cf90754ea2373c5b7f37e9ab5ac74f48ca706d99cf938c7dab9e70a4c34"
+      }
     }
   ],
   "export": {
