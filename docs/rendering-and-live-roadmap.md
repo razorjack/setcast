@@ -225,18 +225,45 @@ projector alignment and sustained performance remain unqualified.
 
 ### Next milestones
 
-1. Renderer qualification on Linux, Windows and longer real projects. Offline display scheduling
-   optimization is complete; further optimization should follow profiles of remaining capture
-   costs on those workloads.
-2. GPU hardware qualification. Measure sustained live GPU load on real machines and drivers;
-   particles with accumulated state require deterministic replay or checkpoints. The stateless
-   field, tunnel and constellation are complete.
-3. Extend projection only after one-projector hardware qualification: curved meshes, color
-   matching and multi-projector edge blending are separate work.
+The configuration, rendering and host APIs are mapped in [platform.md](platform.md). The next
+software milestones should make those contracts useful outside this checkout. Keep Remotion as
+the default while qualifying and improving the independent renderer.
 
-Camera test patterns are implemented below; physical camera qualification remains open. Continuous
-beat following needs a stronger onset detector and broader real-recording qualification.
-No background task or recurring automation is installed.
+1. **Explicit plugin loading in the stock CLI.** Load a configured visualizer package's schema
+   before project validation and its component in each selected renderer bundle. Define package
+   entry points, compatibility and asset handling; verify an installed package through both
+   exporters, preview and live output. The registries already exist, but automatic discovery and
+   runtime loading do not. Start with one external visualizer fixture, not a general plugin host.
+2. **Portable scene collections.** Package scenes, artwork/fonts and a versioned manifest with
+   display names, previews and energy tags. Validate paths and dependencies before import. Keep
+   venue geometry, device routing, MIDI and active performance state outside scene recall. Saved
+   self-contained scene directories are the existing building block; archive transfer and a
+   collection format are not implemented.
+3. **A concrete live metadata adapter.** Choose one transport with a reproducible captured fixture,
+   then define its adapter contract around that consumer. Map source observations onto capture
+   time, retain timing uncertainty and source identity, handle reconnect/duplicates, and record
+   replayable events. Manual journals already work; hardware deck occupancy and protocol adapters
+   do not. Avoid inventing an adapter framework before the first real integration establishes it.
+4. **Labeled music for beat tracking.** Extend the evaluation corpus with legally usable, labeled
+   passages across steady four-floor, breaks, half-time, offbeat accents and tempo changes. Measure
+   tempo, metrical level, phase error and false confident locks separately. Current spectral novelty
+   experiments did not justify replacing live energy detection. Continuous following and downbeat
+   inference need evidence beyond synthetic pulses and unlabeled coverage.
+5. **Renderer and device qualification.** Local hour/two-hour workloads and a full 56-minute real
+   master are now exercised; see [qualification-2026-10-23.md](qualification-2026-10-23.md). Repeat
+   on Linux/Windows and additional drivers, then physical mixers, MIDI controllers, cameras and
+   projectors. Further export optimization should target measured capture costs, with decoded
+   parity, readiness and bounded memory checked for every retained change.
+6. **More GPU effects with explicit resource budgets.** The public stateless shader canvas is ready
+   for external authors. Profile cost at target resolutions and qualify recovery in the same
+   workload. Accumulated particle state requires deterministic replay or checkpoints before it can
+   support arbitrary seeks and independent export workers.
+7. **Projection beyond one flat target.** Qualify the current setup with a physical projector first.
+   Curved meshes, color matching and multi-projector edge blending each need separate geometry,
+   calibration and overlap contracts.
+
+These are remaining candidates, not claims of implemented features. No recurring automation or
+external publication is installed by the autonomous development session.
 
 ### Sustained workload tooling
 

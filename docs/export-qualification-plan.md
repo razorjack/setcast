@@ -34,4 +34,7 @@ range origin, selected checkpoints and rejection of 20 ms delay, silent output, 
 out-of-range checkpoints. SIGTERM during full video decoding produced a cancelled report and
 clean exit. The first full-master check decoded all 101160 frames, passed five musical windows
 with zero lag, and correctly rejected its sixth window as inconclusive because it landed in the
-silent tail. A rerun with the six previously inspected musical passages is in progress.
+silent tail. The final rerun used 5/60/930/1686/2400/3350-second musical windows and passed all six with zero
+lag and correlations 0.9993–0.9999. The former 3368-second window was below the energy floor and
+remains inconclusive. See [qualification-2026-10-23.md](qualification-2026-10-23.md) for revisions,
+measurements, hashes and limits.

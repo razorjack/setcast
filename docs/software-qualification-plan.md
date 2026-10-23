@@ -64,3 +64,15 @@ The sustained software run will use the stacked stress workload for 75 minutes, 
 the clean reliability commit around 17:35 and ending about 18:50. This leaves the planned final
 handoff around 19:00. It supplements the earlier two-hour auto-backend run rather than replacing
 its recorded revision or its measurements.
+
+## Sustained stress result
+
+The 75-minute run failed after 26 minutes on clean a9af960: 4096 analysis samples were dropped
+during a combined scene change and forced recovery after 26 scene actions, 25 recovery cycles
+and one restart. The last periodic sample was still zero; the failure report retains the counter.
+Concurrent ready/smoke work was active. The stacked software/recovery workload remains unqualified.
+Keep the bounded queue and strict zero-drop assertion; do not increase buffering to obtain a pass.
+
+Next run the supplied single-visual SwiftShader workload without forced loss for 40 minutes,
+ending before the 19:00 handoff. This is a distinct, narrower operating configuration and cannot
+replace or erase the failed stress result.

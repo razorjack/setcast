@@ -251,6 +251,9 @@ with fixed PCM capacity and at most 1707 cached features (limit 2048). It skippe
 1024-sample analysis packet near the start under concurrent load, with no further skips.
 That run preceded final UI polish; a final 120-second check covers the performance controls,
 with zero dropped analysis samples and bounded feature caching.
+Later configurable one-hour and two-hour synthetic workloads passed with zero observed drops,
+repeated scene/announcement changes, capture restarts and forced GPU recovery. Their revisions,
+measurements and limits are recorded in [qualification-2026-10-23.md](qualification-2026-10-23.md).
 Physical interface routing, end-to-end latency, OBS integration and long-session hardware
 stability remain unqualified. Use the checklist in
 [player-development-plan.md](player-development-plan.md) with the intended hardware.

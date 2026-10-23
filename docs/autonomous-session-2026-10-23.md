@@ -178,3 +178,20 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   a real 300 ms stall; the old eight-packet control dropped 6144. The stacked software recovery
   workload now passes short runs. Ready passed 567 tests; output and package checks passed.
   Start a 75-minute stacked software qualification from the clean commit, ending about 18:50.
+
+- Two-hour GPU recovery completed: 238 forced cycles, 159 scene/announcement changes and seven
+  capture restarts, with zero observed drops and eight valid journals. Both final exporter suites
+  passed independently. The extra exact cross-exporter comparison failed by at most 2/255 under
+  different Chromium versions (149 versus 156), matching the previously documented limitation.
+- Platform guide committed as c3a1a21 after ready (567 tests). It maps supported configuration,
+  scene/session ownership, public entry points and explicit host-side visualizer registration;
+  automatic plugin loading remains future work. Stale beat-tracking, journal and cancellation
+  descriptions were corrected. Sustained evidence is being consolidated while SwiftShader runs.
+- Final endurance-runner review added a mandatory tail sample plus viewport/initial drawing-buffer
+  dimensions. A ten-second run with a sixty-second sampling interval now retains initial and
+  final observations; a late injected bad capture counter fails correctly. Ready passed 567 tests.
+  The sustained runs use their original frozen bundles; their historical evidence is unchanged.
+- The planned 75-minute stacked SwiftShader stress run failed at 26 minutes: 4096 dropped analysis
+  samples during combined scene/recovery work under concurrent ready/smoke load. Preserve the
+  failure; do not expand the queue to make this pass. A narrower 40-minute single-visual software
+  run without forced loss will establish separate evidence before handoff.

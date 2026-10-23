@@ -1,0 +1,968 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "scope": "Local qualification under concurrent development and validation load; not an isolated performance benchmark.",
+  "limits": [
+    "Live input is Chromium fake-device audio, not a physical mixer.",
+    "Live baseline composition is 960x540; recovery/software compositions are 1920x1080. Browser viewport is 1440x1000 with a CSS-scaled preview. GPU buffers derive from untransformed canvas dimensions and configured/adaptive resolution.",
+    "Rendered-update FPS is a sampled application diagnostic, not GPU completion time or physical presentation rate. The first two live runs predate the fresh-window diagnostic correction.",
+    "Browser JS heap and Node runner RSS exclude other browser, GPU, compositor and FFmpeg allocations.",
+    "Context loss is injected through WEBGL_lose_context; successful restoration does not guarantee recovery from every real driver reset.",
+    "Decoded frame count does not verify every visual pixel. Six sampled stereo windows do not verify every audio sample.",
+    "The original two live runs predate explicit driver identity. Their runtime records cannot prove the actual GPU backend."
+  ],
+  "liveRuns": [
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-live-hour-2026-10-23",
+        "reportSha256": "d19f746c439d6a5887ae97e6ae1f7d39ac8a0f12cb10b51ae97ac8088581d3f1",
+        "samplesSha256": "e6fca3d218bc13340aaaa26e6c8d6e1fe4df0ae1577988a3c11d9987b58d209a"
+      },
+      "status": "passed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "04bf035cbcaf7365d2d14c8c3247b43e223c88f1",
+        "dirty": false
+      },
+      "startedAt": "2026-10-23T11:48:12.045Z",
+      "wallSeconds": 3601.644526,
+      "sampleCount": 714,
+      "actions": {
+        "scene-and-announcement": 119,
+        "restart": 5
+      },
+      "errors": [],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "workloadSeconds": 3600.212333875,
+        "journals": {
+          "files": 6,
+          "scenes": 125,
+          "announcements": 119
+        }
+      },
+      "workload": {
+        "seconds": 3600,
+        "sampleSeconds": 5,
+        "changeSeconds": 30,
+        "restartSeconds": 600
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 960,
+            "height": 540,
+            "fps": 30
+          },
+          "visualizer": {
+            "name": "field",
+            "resolution": 0.5
+          }
+        },
+        {
+          "output": {
+            "width": 960,
+            "height": 540,
+            "fps": 30
+          },
+          "visualizer": {
+            "name": "tunnel",
+            "resolution": 0.5
+          }
+        },
+        {
+          "output": {
+            "width": 960,
+            "height": 540,
+            "fps": 30
+          },
+          "visualizer": {
+            "name": "constellation",
+            "resolution": 0.5
+          }
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 714,
+          "minimum": 0,
+          "median": 0.0,
+          "maximum": 0,
+          "final": 0
+        },
+        "cached": {
+          "count": 714,
+          "minimum": 28,
+          "median": 2048.0,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 714,
+          "minimum": 485100,
+          "median": 485100.0,
+          "maximum": 485100,
+          "final": 485100
+        },
+        "scale": {
+          "count": 714,
+          "minimum": 1,
+          "median": 1.0,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 713,
+          "minimum": 28.5,
+          "median": 30,
+          "maximum": 31,
+          "final": 30
+        },
+        "heapBytes": {
+          "count": 714,
+          "minimum": 19512945,
+          "median": 44279275.0,
+          "maximum": 70824194,
+          "final": 56124824
+        },
+        "nodeRssBytes": {
+          "count": 714,
+          "minimum": 136609792,
+          "median": 173309952.0,
+          "maximum": 426246144,
+          "final": 174751744
+        },
+        "nodes": {
+          "count": 714,
+          "minimum": 335,
+          "median": 337.0,
+          "maximum": 337,
+          "final": 337
+        }
+      },
+      "recoverySeconds": null
+    },
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-gpu-recovery-two-hours-2026-10-23",
+        "reportSha256": "82e830072b56fdf6fce64569054e8bf4205ab002efb83f15f968a38c41cb6e79",
+        "samplesSha256": "2adeb7daf52484511eae0d3e534d4636cb6579e51c5d07c55ea395a22bc2dc44"
+      },
+      "status": "passed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "f4b8ec4d33eee1a66963eb7f66ae736b4cb39dad",
+        "dirty": false
+      },
+      "startedAt": "2026-10-23T13:34:45.437Z",
+      "wallSeconds": 7201.495496834001,
+      "sampleCount": 1426,
+      "actions": {
+        "gpu-recovery": 238,
+        "scene-and-announcement": 159,
+        "restart": 7
+      },
+      "errors": [],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "workloadSeconds": 7200.175351209001,
+        "journals": {
+          "files": 8,
+          "scenes": 167,
+          "announcements": 159
+        }
+      },
+      "workload": {
+        "seconds": 7200,
+        "sampleSeconds": 5,
+        "changeSeconds": 45,
+        "restartSeconds": 900,
+        "gpuRecovery": {
+          "everySeconds": 30,
+          "restoreSeconds": 0.5
+        }
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.5
+            },
+            {
+              "name": "tunnel",
+              "resolution": 0.5
+            },
+            {
+              "name": "constellation",
+              "resolution": 0.5
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.5
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.5
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.5
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 1426,
+          "minimum": 0,
+          "median": 0.0,
+          "maximum": 0,
+          "final": 0
+        },
+        "cached": {
+          "count": 1426,
+          "minimum": 61,
+          "median": 2048.0,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 1426,
+          "minimum": 485100,
+          "median": 528000.0,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 1426,
+          "minimum": 1,
+          "median": 1.0,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 1425,
+          "minimum": 25.6,
+          "median": 30,
+          "maximum": 31,
+          "final": 30
+        },
+        "heapBytes": {
+          "count": 1426,
+          "minimum": 24443640,
+          "median": 44689201.0,
+          "maximum": 77235507,
+          "final": 33301322
+        },
+        "nodeRssBytes": {
+          "count": 1426,
+          "minimum": 153059328,
+          "median": 165888000.0,
+          "maximum": 435863552,
+          "final": 166002688
+        },
+        "nodes": {
+          "count": 1426,
+          "minimum": 360,
+          "median": 363.0,
+          "maximum": 365,
+          "final": 361
+        }
+      },
+      "recoverySeconds": {
+        "count": 238,
+        "minimum": 0.508955667000264,
+        "median": 0.5246121249998688,
+        "maximum": 0.5767885839994997,
+        "final": 0.5228388750003651
+      }
+    },
+    {
+      "source": {
+        "directory": "examples/demo/out/endurance-software-75-minutes-2026-10-23",
+        "reportSha256": "756105ec86a4d15b1b7ff602ee85fad23dbcbbf576e0ff758d5ee319829d7b4d",
+        "samplesSha256": "7050bb47e9a32de08e447ac65019e116f9b1488f99086788cf6bcbd0d4ea9ece"
+      },
+      "status": "failed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "release": "27.0.0",
+        "arch": "arm64",
+        "cpu": "Apple M1 Pro",
+        "revision": "a9af9606c44d61dd34e474295c883834c30c0e37",
+        "dirty": false
+      },
+      "startedAt": "2026-10-23T15:34:00.385Z",
+      "wallSeconds": 1570.6743945,
+      "sampleCount": 155,
+      "actions": {
+        "scene-and-announcement": 26,
+        "gpu-recovery": 25,
+        "restart": 1
+      },
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'4096' !== '0'\n\n    at recoverGpu (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/gpu-recovery.ts:21:10)\n    at async exercise (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:149:24)\n    at async runLive (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance/live.ts:41:9)\n    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": ["Visualizer \"field\" recovered its graphics context.\u00d7"],
+        "failureScreenshot": "failure.png"
+      },
+      "workload": {
+        "seconds": 4500,
+        "sampleSeconds": 10,
+        "changeSeconds": 60,
+        "restartSeconds": 900,
+        "gpuRecovery": {
+          "everySeconds": 60,
+          "restoreSeconds": 0.5
+        },
+        "graphics": "swiftshader",
+        "operatorWindow": true
+      },
+      "scenes": [
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            },
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            },
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "field",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "tunnel",
+              "resolution": 0.25
+            }
+          ]
+        },
+        {
+          "output": {
+            "width": 1920,
+            "height": 1080,
+            "fps": 30
+          },
+          "visualizer": [
+            {
+              "name": "constellation",
+              "resolution": 0.25
+            }
+          ]
+        }
+      ],
+      "sampleStatistics": {
+        "dropped": {
+          "count": 155,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0,
+          "final": 0
+        },
+        "cached": {
+          "count": 155,
+          "minimum": 53,
+          "median": 2048,
+          "maximum": 2048,
+          "final": 2048
+        },
+        "pcmCapacity": {
+          "count": 155,
+          "minimum": 528000,
+          "median": 528000,
+          "maximum": 528000,
+          "final": 528000
+        },
+        "scale": {
+          "count": 155,
+          "minimum": 0.25,
+          "median": 1,
+          "maximum": 1,
+          "final": 1
+        },
+        "renderFps": {
+          "count": 154,
+          "minimum": 17.7,
+          "median": 29.6,
+          "maximum": 31,
+          "final": 24.6
+        },
+        "heapBytes": {
+          "count": 155,
+          "minimum": 28301323,
+          "median": 43363255,
+          "maximum": 81894877,
+          "final": 29606508
+        },
+        "nodeRssBytes": {
+          "count": 155,
+          "minimum": 33406976,
+          "median": 186023936,
+          "maximum": 443645952,
+          "final": 105480192
+        },
+        "nodes": {
+          "count": 155,
+          "minimum": 27,
+          "median": 29,
+          "maximum": 31,
+          "final": 31
+        }
+      },
+      "recoverySeconds": {
+        "count": 25,
+        "minimum": 0.5269777500000782,
+        "median": 0.6844965419999789,
+        "maximum": 1.0211222089999938,
+        "final": 0.7668514170001727
+      }
+    }
+  ],
+  "export": {
+    "source": {
+      "directory": "examples/demo/out/endurance-export-master-2026-10-23",
+      "reportSha256": "0fd52ea9e6c38c273f2ce8935aa78c995a168d25ebb00b3c760cabe2356ab8de",
+      "samplesSha256": "82c0bbfad3ae504d06c2536dccfcb32e0b1be28f20627e2e615d26d6098af3a3"
+    },
+    "status": "passed",
+    "runtime": {
+      "node": "v26.7.0",
+      "platform": "darwin",
+      "release": "27.0.0",
+      "arch": "arm64",
+      "cpu": "Apple M1 Pro",
+      "revision": "5aedace89cb496f3845f0d0a03b05b787f9921e7",
+      "dirty": false
+    },
+    "startedAt": "2026-10-23T12:48:28.988Z",
+    "wallSeconds": 2757.30673725,
+    "composition": {
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "frames": 101160
+    },
+    "durationSeconds": 3372,
+    "concurrency": 1,
+    "throughputFramesPerSecond": 36.68797476659849,
+    "stages": {
+      "audioMs": {
+        "count": 101160,
+        "sum": 8207.80000025034,
+        "max": 94.80000001192093
+      },
+      "resolveMs": {
+        "count": 101160,
+        "sum": 378658.1000017375,
+        "max": 5.699999988079071
+      },
+      "commitMs": {
+        "count": 101160,
+        "sum": 139246.0000011623,
+        "max": 26.100000008940697
+      },
+      "readinessMs": {
+        "count": 101160,
+        "sum": 116882.5000013411,
+        "max": 31.399999991059303
+      },
+      "captureMs": {
+        "count": 101160,
+        "sum": 1854109.9197779805,
+        "max": 329.1517079999903
+      },
+      "bytes": {
+        "count": 101160,
+        "sum": 36323495593,
+        "max": 383095
+      },
+      "encoder-write": {
+        "count": 101160,
+        "sum": 113354.35467604395,
+        "max": 153.88245799997821
+      },
+      "encoder-finish": {
+        "count": 57,
+        "sum": 23379.624330000304,
+        "max": 1601.9624169999734
+      },
+      "mux": {
+        "count": 1,
+        "sum": 108670.36012500012,
+        "max": 108670.36012500012
+      }
+    },
+    "nodeRssBytes": {
+      "count": 276,
+      "minimum": 223756288,
+      "median": 323076096.0,
+      "maximum": 468254720,
+      "final": 257916928
+    }
+  },
+  "exportVerification": {
+    "source": {
+      "directory": "examples/demo/out/endurance-export-master-final-2026-10-23",
+      "reportSha256": "be2a229dd09480cb8ebe7636c9d7f8aec061cd3abe5f730ee0b43205d0c11bd0",
+      "samplesSha256": "df2729aa4d10e7483927a8e8bf05f280ce5d3ff0702b96f3a3c18db7b7e315c6"
+    },
+    "status": "passed",
+    "runtime": {
+      "node": "v26.7.0",
+      "platform": "darwin",
+      "release": "27.0.0",
+      "arch": "arm64",
+      "cpu": "Apple M1 Pro",
+      "revision": "e58e7f47696915b655b266d7f28e76c3991dcf83",
+      "dirty": true
+    },
+    "wallSeconds": 390.126478667,
+    "verification": {
+      "mode": "decoded",
+      "expected": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "frames": 101160,
+        "sourceAt": 0
+      },
+      "phase": "complete",
+      "video": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1088,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
+            "level": 40,
+            "color_range": "pc",
+            "color_space": "bt470bg",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 303480000,
+            "duration": "3372.000000",
+            "bit_rate": "3818501",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "101160",
+            "nb_read_frames": "101160",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler"
+            },
+            "side_data_list": [
+              {
+                "side_data_type": "ICC Profile"
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 1024,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 161856000,
+            "duration": "3372.000000",
+            "bit_rate": "329326",
+            "nb_frames": "158064",
+            "nb_read_frames": "158063",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          }
+        ],
+        "errors": []
+      },
+      "audio": [
+        {
+          "at": 5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9998877605454712,
+            "sourceRms": 0.03425120356310816,
+            "outputRms": 0.03419386569338371,
+            "zeroLagCorrelation": 0.9998877605454712,
+            "margin": 0.4234836067251051,
+            "levelRatio": 0.9983259604405199,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9998956592390158,
+                "sourceRms": 0.034682732538756485,
+                "outputRms": 0.034622469245796705,
+                "levelRatio": 0.9982624410319332,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9998794563157433,
+                "sourceRms": 0.0338141679579435,
+                "outputRms": 0.03375982117011471,
+                "levelRatio": 0.998392780567708,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 60,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9995629620002152,
+            "sourceRms": 0.09365730399809649,
+            "outputRms": 0.0933623341278688,
+            "zeroLagCorrelation": 0.9995629620002152,
+            "margin": 0.7337621223128119,
+            "levelRatio": 0.9968505406664954,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9995961727470787,
+                "sourceRms": 0.09400008298074106,
+                "outputRms": 0.0937417588030837,
+                "levelRatio": 0.9972518728764285,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9995293989758229,
+                "sourceRms": 0.09331326585216743,
+                "outputRms": 0.09298136116508436,
+                "levelRatio": 0.9964431135910634,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 930,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.999827799183908,
+            "sourceRms": 0.16079505092025806,
+            "outputRms": 0.1604940059158514,
+            "zeroLagCorrelation": 0.999827799183908,
+            "margin": 0.4643367181289424,
+            "levelRatio": 0.9981277719514143,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9998240973567349,
+                "sourceRms": 0.15621155102643916,
+                "outputRms": 0.15598698305310454,
+                "levelRatio": 0.9985624112182548,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9998312703322625,
+                "sourceRms": 0.16525146936354404,
+                "outputRms": 0.16487787294790363,
+                "levelRatio": 0.9977392248487756,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 1686,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.999382318355521,
+            "sourceRms": 0.15996415374876344,
+            "outputRms": 0.15952881670017144,
+            "zeroLagCorrelation": 0.999382318355521,
+            "margin": 0.4506244198955015,
+            "levelRatio": 0.9972785337315275,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9993945970217556,
+                "sourceRms": 0.16077477548938887,
+                "outputRms": 0.16039185993438532,
+                "levelRatio": 0.9976183107465834,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.999369898664865,
+                "sourceRms": 0.1591494031891175,
+                "outputRms": 0.15866107897749127,
+                "levelRatio": 0.9969316616849266,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 2400,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9992873149753075,
+            "sourceRms": 0.24264923485922527,
+            "outputRms": 0.24047143068549348,
+            "zeroLagCorrelation": 0.9992873149753075,
+            "margin": 0.4484435773144282,
+            "levelRatio": 0.9910248875295434,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9996139647094991,
+                "sourceRms": 0.24256234244934627,
+                "outputRms": 0.24129542372561041,
+                "levelRatio": 0.9947769356490263,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9989730525679714,
+                "sourceRms": 0.24273609616416472,
+                "outputRms": 0.23964460444777752,
+                "levelRatio": 0.9872639802433982,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 3350,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9999338357466091,
+            "sourceRms": 0.028991907329271222,
+            "outputRms": 0.028939277749717385,
+            "zeroLagCorrelation": 0.9999338357466091,
+            "margin": 0.43152699535095884,
+            "levelRatio": 0.9981846803331667,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9999345823719827,
+                "sourceRms": 0.02868021794810337,
+                "outputRms": 0.028641949737440553,
+                "levelRatio": 0.9986656931710888,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9999333377316407,
+                "sourceRms": 0.029300281220960695,
+                "outputRms": 0.02923358186381715,
+                "levelRatio": 0.9977235932774656,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "audioAt": [5, 60, 930, 1686, 2400, 3350],
+      "wallSeconds": 390.03782775
+    },
+    "identity": {
+      "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers",
+      "output": {
+        "sha256": "08cd2a93bc1f5fc3409dc12e13993588d57223b30f6e0df2ae4abe43e1022bcc",
+        "bytes": 1752026128
+      },
+      "source": {
+        "sha256": "7fd2975e98a73d37cd1cddc6647aeaffac8fdb12ca2a14bada8ae647882a18a1",
+        "bytes": 971166720
+      }
+    }
+  },
+  "exporterAcceptance": {
+    "remotion": "passed",
+    "browserIndependent": "passed",
+    "exactCrossRendererReference": "failed",
+    "remotionBrowser": "149.0.7790.0",
+    "browserExporterChromium": "156.0.8078.4",
+    "sterileTechDifference": {
+      "pixels": 5263,
+      "pixelFraction": 0.022842881944444445,
+      "maximumChannelDifference": 2,
+      "meanAbsoluteChannelDifference": 0.010354456018518518
+    },
+    "note": "Cross-renderer check used different Chromium versions and did not meet the matching-runtime prerequisite. No tolerance or assertion was weakened."
+  }
+}

@@ -182,8 +182,11 @@ graphics. Earlier results (33 ms for field/tunnel/spectrum and 69–72 ms for co
 measured readiness alone. Since drawing can still be in flight when readiness returns, those
 numbers do not establish completed rendering throughput and are not comparable to this metric.
 
-Hardware mixers, long-duration GPU load, physical projectors and cameras, and cross-platform
-drivers still need qualification. Linux and Windows have not been run from this local session.
+A local two-hour live workload passed repeated scene changes, capture restarts and 238 forced
+GPU recovery cycles, including stacked visuals. See [qualification-2026-10-23.md](qualification-2026-10-23.md)
+for the exact revision, workload and limits. Physical mixers, projectors, cameras, real driver
+resets and broader GPU/driver combinations still need qualification. Linux and Windows have not
+been run from this local session.
 Stateful particle simulation remains out of scope: it would need deterministic replay or
 checkpoints to satisfy arbitrary frame requests.
 
