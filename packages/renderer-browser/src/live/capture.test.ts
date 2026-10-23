@@ -1,7 +1,10 @@
 import { afterEach, expect, test, vi } from 'vite-plus/test';
 import { LiveCapture } from './capture.ts';
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
 
 function captureEnvironment() {
   const track = {
@@ -164,11 +167,16 @@ test('mute marks input unavailable until an unmuted fresh packet arrives', async
   capture.stop();
 });
 
-test('missing packets fail explicitly and release capture, including initial starvation', async () => {
+test('missing packets fail explicitly after confirmation, including initial starvation', async () => {
+  vi.useFakeTimers();
   const environment = captureEnvironment();
   const capture = new LiveCapture();
   await capture.start({ channels: null, gain: 1 });
   capture.checkHealth(performance.now() + 1600);
+  capture.checkHealth(performance.now() + 1700);
+  await vi.advanceTimersByTimeAsync(99);
+  expect(capture.status.phase).toBe('starting');
+  await vi.advanceTimersByTimeAsync(1);
   expect(capture.status).toMatchObject({
     phase: 'error',
     available: false,
@@ -189,5 +197,50 @@ test('an initially muted track waits for fresh unmuted PCM, including ordinary s
   environment.node.port.onmessage(packet(1024));
   capture.checkHealth();
   expect(capture.status).toMatchObject({ phase: 'running', available: true, message: null });
+  capture.stop();
+});
+
+test('queued current PCM cancels a suspected starvation without hiding gaps', async () => {
+  vi.useFakeTimers();
+  const environment = captureEnvironment();
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  environment.node.port.onmessage(packet());
+  capture.checkHealth(performance.now() + 1600);
+  const resumed = packet(96000);
+  resumed.data.dropped = 71680;
+  environment.node.port.onmessage(resumed);
+  await vi.advanceTimersByTimeAsync(100);
+  expect(capture.status).toMatchObject({ phase: 'running', available: true, dropped: 71680 });
+  expect(environment.track.stop).not.toHaveBeenCalled();
+  capture.stop();
+});
+
+test('stale routing packets cannot cancel starvation confirmation', async () => {
+  vi.useFakeTimers();
+  const environment = captureEnvironment();
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  environment.node.port.onmessage(packet());
+  capture.route([1, 2], 1);
+  capture.checkHealth(performance.now() + 1600);
+  environment.node.port.onmessage(packet(1024));
+  await vi.advanceTimersByTimeAsync(100);
+  expect(capture.status.phase).toBe('error');
+  expect(environment.track.stop).toHaveBeenCalledOnce();
+});
+
+test('capture restart cancels the previous session starvation confirmation', async () => {
+  vi.useFakeTimers();
+  const environment = captureEnvironment();
+  const capture = new LiveCapture();
+  await capture.start({ channels: null, gain: 1 });
+  environment.node.port.onmessage(packet());
+  capture.checkHealth(performance.now() + 1600);
+  await capture.start({ channels: null, gain: 1 });
+  environment.node.port.onmessage(packet());
+  await vi.advanceTimersByTimeAsync(100);
+  expect(capture.status.phase).toBe('running');
+  expect(environment.track.stop).toHaveBeenCalledOnce();
   capture.stop();
 });

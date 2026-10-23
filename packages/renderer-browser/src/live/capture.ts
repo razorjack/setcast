@@ -50,6 +50,7 @@ export class LiveCapture {
   private generation = 0;
   private revision = 0;
   private lastPacket = 0;
+  private healthTimer: ReturnType<typeof setTimeout> | null = null;
   private muted = false;
   private settings: CaptureSettings = { channels: null, gain: 1 };
 
@@ -92,6 +93,7 @@ export class LiveCapture {
 
   stop() {
     this.generation++;
+    this.clearHealthTimer();
     if (this.node) this.node.onprocessorerror = null;
     if (this.context) this.context.onstatechange = null;
     for (const track of this.stream?.getTracks() ?? []) {
@@ -112,8 +114,14 @@ export class LiveCapture {
   }
 
   checkHealth(now = performance.now()) {
-    if (!this.node || now - this.lastPacket < 1500) return;
-    this.fail('Audio packets stopped arriving. Check the interface and start input again.');
+    if (!this.node || now - this.lastPacket < 1500 || this.healthTimer !== null) return;
+    const generation = this.generation;
+    // An animation callback can run before queued PCM after a long main-thread task.
+    this.healthTimer = setTimeout(() => {
+      this.healthTimer = null;
+      if (generation === this.generation)
+        this.fail('Audio packets stopped arriving. Check the interface and start input again.');
+    }, 100);
   }
 
   route(channels: [number, number], gain: number) {
@@ -180,6 +188,7 @@ export class LiveCapture {
   private receive(packet: CapturePacket) {
     this.node?.port.postMessage({ type: 'ack' });
     if (packet.revision !== this.revision) return;
+    this.clearHealthTimer();
     this.lastPacket = performance.now();
     this.status = { ...this.status, channels: packet.count };
     try {
@@ -202,6 +211,11 @@ export class LiveCapture {
     } catch (error) {
       this.fail(error instanceof Error ? error.message : String(error));
     }
+  }
+
+  private clearHealthTimer() {
+    if (this.healthTimer !== null) clearTimeout(this.healthTimer);
+    this.healthTimer = null;
   }
 
   private fail(message: string) {

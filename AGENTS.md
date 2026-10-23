@@ -742,8 +742,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   The operator popup shares capture with the output window. There is no native capture backend. See `docs/live-input.md`.
 - Live output setup owns session-only display selection, input-loss fallback and adaptive GPU
   resolution. Fullscreen exit and unexpected operator closure keep clean output; H reveals controls.
-  Muted input supplies silence and clears history. Missing packets for 1.5 seconds fail capture;
-  ordinary silent PCM does not. RendererBindings.renderScale changes only live field buffers,
+  Muted input supplies silence and clears history. After 1.5 seconds without packets, a 100 ms
+  confirmation timer lets queued PCM drain before failing capture. Fresh current-revision packets
+  cancel it; stop/restart clears it. This avoids a false watchdog failure when animation callbacks
+  run before queued MessagePort data after a long main-thread task. Dropped samples remain visible;
+  ordinary silent PCM does not. RendererBindings.renderScale changes only live GPU visualizer buffers,
   never saved scene configuration or offline rendering. See docs/live-input.md.
 - Live scene replacements mount hidden until readiness holds settle, retaining the previous
   ready scene. Capture never waits for those holds. Background video plays muted and loops;

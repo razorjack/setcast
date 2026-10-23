@@ -50,15 +50,18 @@ session-only and resets to the current display when the selected screen disappea
 **On input loss** defaults to **Black output**, including before input starts. **Quiet scene**
 keeps the scene with silent audio features. Temporary track muting clears stale audio history;
 output resumes only after fresh packets arrive. A disconnected input, an interrupted audio
-context or 1.5 seconds without analysis packets stops capture with a private diagnostic and
+context stops capture with a private diagnostic. After 1.5 seconds without analysis packets,
+the watchdog allows 100 ms for queued packets to arrive before confirming failure. This prevents
+a long main-thread task from being mistaken for a dead input; it does not hide skipped samples.
+Confirmed starvation stops capture and
 requires **Start input** again. Ordinary silence from a connected mixer is valid input and
 never triggers this fallback. A stopped capture retains its last visual time.
 
 **Adaptive GPU resolution** defaults on. After three slow diagnostics samples (below 80% of
-target FPS), the `field` drawing-buffer scale halves, down to 25% of the scene setting.
+target FPS), the `field`, `tunnel` and `constellation` drawing-buffer scale halves, down to 25% of the scene setting.
 Fifteen healthy samples (at least 95% of target) raise it one step. Hidden output and unavailable
 input do not lower quality. Disabling adaptation restores the configured resolution. This adjusts
-only the live GPU field; other visualizers, capture timing, scene settings and offline exports
+only the live GPU drawing buffers; capture timing, scene settings and offline exports
 are unchanged. Fallback and quality settings apply to this browser session and are not journal
 performance events. Replay uses the separately recorded master and full configured resolution.
 
