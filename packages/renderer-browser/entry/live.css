@@ -532,9 +532,6 @@
   stroke: white;
   stroke-width: 0.5px;
 }
-.sc-venue-file {
-  max-width: 180px;
-}
 @media (max-width: 650px) {
   .sc-projection-layout {
     grid-template-columns: 1fr;
@@ -573,4 +570,27 @@
 .sc-beat-range input {
   width: 7rem;
   margin-inline-start: 8px;
+}
+
+.sc-midi-mappings {
+  margin-top: 0.7rem;
+}
+.sc-midi-mapping-list {
+  max-height: 16rem;
+  overflow: auto;
+  margin-top: 0.5rem;
+}
+.sc-midi-mapping-list table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.75rem;
+}
+.sc-midi-mapping-list th,
+.sc-midi-mapping-list td {
+  padding: 0.25rem 0.75rem 0.25rem 0;
+}
+.sc-midi-mapping-list th {
+  color: #b7c2c5;
+  font-weight: 500;
 }

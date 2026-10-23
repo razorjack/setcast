@@ -78,6 +78,7 @@ export type ResolvedLiveProject = Omit<
     projection?: import('./projection.ts').Projection;
     testPattern?: import('./test-pattern.ts').TestPatternConfig;
     beatTracking?: import('./beat.ts').BeatTrackingConfig;
+    midi?: import('./midi.ts').MidiConfig;
     clock: boolean;
     input: {
       device?: string;

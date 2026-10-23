@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "name": "Projection controls",
+  "mapping": {
+    "cc:1:1": "intensity",
+    "cc:1:7": "brightness",
+    "note:1:44": "blackout",
+    "note:1:45": "branding",
+    "note:1:46": "messages",
+    "note:1:36": "scene-1",
+    "note:1:37": "scene-2",
+    "note:1:38": "scene-3",
+    "note:1:39": "scene-4",
+    "note:1:40": "scene-5",
+    "note:1:41": "scene-6",
+    "note:1:42": "scene-7",
+    "note:1:43": "scene-8"
+  }
+}

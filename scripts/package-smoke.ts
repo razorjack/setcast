@@ -28,13 +28,17 @@ const modules = join(temporary, 'node_modules');
 const playerSmokeSource = `import assert from 'node:assert/strict';
 import { play } from '@setcast/renderer-browser';
 import { preview } from '@setcast/renderer-browser/preview';
-import { GpuCanvasConfigSchema } from '@setcast/core';
+import { GpuCanvasConfigSchema, MidiProfileSchema, MidiControlBuffer, midiMessage } from '@setcast/core';
 import { ShaderCanvas } from '@setcast/core/react';
 import { loadProject, loadLiveProject, probeAudio } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 
 assert.deepEqual(GpuCanvasConfigSchema.parse({}), { resolution: 0.5, recoverySeconds: 5 });
 assert.equal(typeof ShaderCanvas, 'function');
+const profile = MidiProfileSchema.parse({ version: 1, mapping: { 'cc:1:7': 'brightness' } });
+const controls = new MidiControlBuffer();
+controls.push(midiMessage([0xb0, 7, 127]), profile.mapping);
+assert.deepEqual(controls.flush(profile.mapping), [{ action: 'brightness', value: 1 }]);
 const projectDir = process.argv[2];
 const { project } = await loadProject(projectDir, {
   themes, probeDuration: (audio, root) => probeAudio({ audio }, root)
@@ -174,6 +178,7 @@ async function exerciseCli(): Promise<void> {
   const schema = JSON.parse((await run('schema', 'live')).stdout);
   assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
   assert(schema.properties.visualizer.anyOf.length > 0);
+  assert.equal(JSON.parse((await run('schema', 'midi')).stdout).properties.version.const, 1);
   const project = join(temporary, 'project');
   await run('init', project, '--demo', '--yes');
   const configFile = join(project, 'setcast.yaml');

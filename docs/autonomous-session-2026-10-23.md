@@ -152,3 +152,8 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
 - Structured project validation completed with ready (541 tests), package smoke and all seven
   source examples passing. It preserves referenced scene filenames and uses authored paths even
   when filesystem aliases resolve elsewhere. No renderer or full feature decode is started.
+- Portable MIDI setup completed around 16:31: core schemas/decoder/control buffer, live.yaml
+  startup configuration, versioned import/export and legacy browser migration. Mapping replacement
+  discards queued fader values; scene recall and journals remain independent of controller setup.
+  Ready passed 548 tests, installed-package smoke passed, and MIDI/performance/branding/camera/
+  projection Chromium checks passed. Plan and evidence: docs/midi-platform-plan.md.

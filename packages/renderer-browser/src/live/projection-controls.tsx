@@ -1,3 +1,4 @@
+import { ProfileImport } from './profile-import.tsx';
 import { ProjectionSchema, type Projection } from '@setcast/core';
 import type { useProjection } from './projection-settings.ts';
 import { CornerEditor, FractionInput } from './projection-editor.tsx';
@@ -168,20 +169,7 @@ function VenueTransfer({ projection }: { projection: Settings }) {
       <button className="sc-button" onClick={projection.download}>
         Export venue
       </button>
-      <label className="sc-button">
-        Import venue
-        <input
-          className="sc-venue-file"
-          aria-label="Import venue"
-          type="file"
-          accept=".json,application/json"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            if (file) void projection.upload(file);
-            event.target.value = '';
-          }}
-        />
-      </label>
+      <ProfileImport label="Import venue" upload={projection.upload} />
     </>
   );
 }

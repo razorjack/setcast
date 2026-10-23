@@ -513,3 +513,18 @@ Validation: ready passed 541 tests; installed-package smoke and all seven source
 passed. Tests cover structured failures, aliases, scene deduplication/warnings, timeline errors,
 missing files, unexpected probe failures and CLI exit behavior. Browser media readiness and
 physical input/output qualification remain separate checks.
+
+## Completed portable MIDI setup
+
+Core owns MIDI channel decoding, finite actions, strict mapping/profile schemas and a bounded
+continuous-control buffer. live.yaml can supply project mappings; versioned JSON import/export
+transfers them between machines. Configured sessions keep edits local and do not overwrite the
+user's unrelated browser profile. Unconfigured sessions migrate valid legacy mappings and persist
+by origin. Scene recall preserves setup; saved scenes omit it. Replacing mappings discards queued
+values and old button edges. See [midi-controls.md](midi-controls.md).
+
+Validation: ready passed 548 tests. Chromium checks passed configured startup, transfer through
+keyboard file selection, validation failures, learning/reset, popup ownership, scene isolation,
+journaled actions and browser migration. Existing performance, branding, camera and projection
+checks passed. Operator images were inspected; installed-package smoke verified the public API and
+schema command. Physical MIDI controllers and device permission behavior remain unqualified.

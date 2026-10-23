@@ -33,6 +33,7 @@ after upgrading Setcast; these are local artifacts, not URLs for a hosted schema
 | `setcast schema visualizer` | One visualizer block or an ordered list of blocks |
 | `setcast schema venue` | Version 1 portable venue document |
 | `setcast schema test-pattern` | Version 1 portable camera test-pattern document |
+| `setcast schema midi` | Version 1 portable MIDI mapping profile |
 
 Output is one draft-2020-12 JSON document on stdout. Errors use stderr and exit code 2. The command
 does not read a project, so it works in an empty directory. Redirection is explicit; Setcast does

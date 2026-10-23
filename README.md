@@ -306,6 +306,7 @@ configuration and browser limitations.
 
 Live [performance controls](docs/live-performance.md) add intensity, brightness, blackout,
 saved scene pads, automatic scene sequences, bar-aligned fades and MIDI mapping.
+[Portable MIDI profiles](docs/midi-controls.md) provide project defaults, controller learning and JSON transfer between machines.
 [Camera test patterns](docs/camera-setup.md) provide configurable framing, grayscale, detail and motion samples with portable settings.
 [One-projector setup](docs/projector-setup.md) adds corner correction, crop, masks and venue profiles. Try `examples/live-backdrop` for a filmed
 DJ set or `examples/live-projection` for a projector. The

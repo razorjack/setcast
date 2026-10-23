@@ -6,7 +6,7 @@ import {
 } from '@setcast/core';
 import { parseCommandArgs } from '../args.ts';
 
-export const help = `setcast schema [project|live|visualizer|venue|test-pattern]
+export const help = `setcast schema [project|live|visualizer|venue|test-pattern|midi]
 
 Print a JSON Schema for authoring configuration (default: project).
 Output is draft-2020-12 JSON on stdout. Generate a local file for editor association, e.g.

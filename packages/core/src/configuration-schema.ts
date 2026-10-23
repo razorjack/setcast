@@ -4,6 +4,7 @@ import { LiveConfigSchema } from './live.ts';
 import { VenueSchema } from './projection.ts';
 import { TestPatternPresetSchema } from './test-pattern.ts';
 import { TimeSchema } from './time-schema.ts';
+import { MidiProfileSchema } from './midi.ts';
 import { GpuCanvasConfigSchema } from './gpu.ts';
 import { visualizers } from './visualizers.ts';
 import { SetcastError } from './errors.ts';
@@ -14,6 +15,7 @@ export const CONFIGURATION_SCHEMA_KINDS = [
   'visualizer',
   'venue',
   'test-pattern',
+  'midi',
 ] as const;
 export type ConfigurationSchemaKind = (typeof CONFIGURATION_SCHEMA_KINDS)[number];
 
@@ -26,6 +28,7 @@ export function configurationSchema(kind: ConfigurationSchemaKind) {
     visualizer,
     venue: VenueSchema,
     'test-pattern': TestPatternPresetSchema,
+    midi: MidiProfileSchema,
   };
   const schema = schemas[kind];
   if (!Object.hasOwn(schemas, kind))

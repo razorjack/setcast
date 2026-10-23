@@ -332,3 +332,21 @@ export {
   CONFIGURATION_SCHEMA_KINDS,
   type ConfigurationSchemaKind,
 } from './configuration-schema.ts';
+
+export {
+  MIDI_ACTIONS,
+  DEFAULT_MIDI,
+  MidiMappingSchema,
+  MidiConfigSchema,
+  MidiProfileSchema,
+  midiMessage,
+  midiKey,
+  learnMidiMapping,
+  type MidiAction,
+  type MidiMessage,
+  type MidiMapping,
+  type MidiConfig,
+  type MidiProfile,
+} from './midi.ts';
+
+export { MidiControlBuffer, type MidiControl } from './midi-buffer.ts';

@@ -43,10 +43,8 @@ export function useLivePerformance(
     report,
   });
   const announcements = useAnnouncements(input, journal);
-  const midi = useMidi(
-    performanceMidi({ input, scene, performance, bank, recall: manualRecall }),
-    report,
-  );
+  const dispatch = performanceMidi({ input, scene, performance, bank, recall: manualRecall });
+  const midi = useMidi(dispatch, report, initial.live.midi);
   return {
     announcements,
     performance,

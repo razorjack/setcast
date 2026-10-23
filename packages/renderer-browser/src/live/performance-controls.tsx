@@ -3,7 +3,8 @@ import type { LiveSequence } from './sequence.ts';
 import { useEffect, useRef, useState } from 'react';
 import { SceneBank, type useSceneBank, type useSceneRecall } from './bank.tsx';
 import type { LivePerformance } from './performance.ts';
-import type { useMidi, MidiAction } from './midi.ts';
+import type { useMidi } from './midi.ts';
+import { MidiControls } from './midi-controls.tsx';
 
 interface Props {
   sequence: LiveSequence;
@@ -97,83 +98,5 @@ function PerformanceFader({ name, value, max, disabled, change }: FaderProps) {
         onBlur={commit}
       />
     </label>
-  );
-}
-
-function MidiControls({ midi }: { midi: ReturnType<typeof useMidi> }) {
-  return (
-    <details className="sc-performance-midi">
-      <summary>
-        MIDI controls
-        {midi.selected && !midi.devices.some((device) => device.id === midi.selected)
-          ? ' · Disconnected'
-          : ''}
-      </summary>
-      <p>
-        Default channel 1: CC 1 intensity, CC 7 brightness, notes 36–43 scenes, note 44 blackout,
-        note 45 branding, note 46 messages. Learn replaces a mapping; Reset adds new defaults to
-        saved mappings. Audio stays in the output window.
-      </p>
-      {!midi.connected && (
-        <button
-          className="sc-button"
-          disabled={midi.connecting}
-          onClick={() => void midi.connect()}
-        >
-          Connect MIDI
-        </button>
-      )}
-      {midi.connected && <MidiMappingControls midi={midi} />}
-      {midi.learning && <p role="status">Move or press the controller for {midi.learning}.</p>}
-    </details>
-  );
-}
-
-function MidiMappingControls({ midi }: { midi: ReturnType<typeof useMidi> }) {
-  const [target, setTarget] = useState<MidiAction>('intensity');
-  const choices: MidiAction[] = [
-    'intensity',
-    'brightness',
-    'blackout',
-    'branding',
-    'messages',
-    ...Array.from({ length: 8 }, (_, index) => `scene-${index + 1}` as const),
-  ];
-  return (
-    <div className="sc-performance-timing">
-      <label>
-        MIDI input
-        <select
-          aria-label="MIDI input"
-          value={midi.selected}
-          onChange={(event) => midi.select(event.target.value)}
-        >
-          <option value="">Choose input</option>
-          {midi.devices.map((device) => (
-            <option key={device.id} value={device.id}>
-              {device.name ?? device.id}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Control
-        <select value={target} onChange={(event) => setTarget(event.target.value as MidiAction)}>
-          {choices.map((choice) => (
-            <option key={choice}>{choice}</option>
-          ))}
-        </select>
-      </label>
-      <button
-        className="sc-button"
-        disabled={!midi.selected}
-        onClick={() => midi.learn(midi.learning ? null : target)}
-      >
-        {midi.learning ? 'Cancel learning' : 'Learn MIDI'}
-      </button>
-      <button className="sc-button" onClick={midi.reset}>
-        Reset MIDI mappings
-      </button>
-    </div>
   );
 }

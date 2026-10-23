@@ -343,7 +343,7 @@ Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setc
 ### Configuration tooling
 
 `configurationSchema(kind)` in core generates draft-2020-12 input schemas for project, live,
-visualizer, venue and test-pattern authoring. `setcast schema [kind]` prints them without loading
+visualizer, venue, test-pattern and MIDI profile authoring. `setcast schema [kind]` prints them without loading
 projects or renderers. Derive alternatives from the visualizer registry, requiring an explicit
 name for every kind except the existing spectrum default. JSON Schema cannot represent all Zod
 refinements or filesystem/timeline checks; retain runtime loading as authoritative. Never use
@@ -662,6 +662,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Journal snapshots use `journal-scene-*`, keeping them out of the manual bank. Performance
   ramps use capture-sample timestamps. Appends cache bounded tail metadata and revalidate on
   external changes, avoiding full-log parsing on each fader update. The file limit is 64 MiB.
+- MIDI setup belongs to the output session, not scenes or journal snapshots. Core owns the finite
+  action/key/profile schemas, decoder and bounded continuous-control buffer. live.yaml midi wins
+  at startup; configured sessions never overwrite the unrelated browser profile. Unconfigured
+  sessions migrate valid legacy mappings and persist versioned profiles by origin. Mapping object
+  replacement clears pending values/button edges. Learn/import/reset share this path; permissions
+  and device selection stay explicit. See docs/midi-controls.md and bench/midi.ts.
 - Browser export exposes optional timing metrics. Readiness waits for two stable animation-frame
   callbacks, with fonts/images decoded inside the stability loop. Before changing this again,
   run both export acceptance suites and `node packages/renderer-browser/bench/frames.ts`.

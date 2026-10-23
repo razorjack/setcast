@@ -1,3 +1,4 @@
+import { ProfileImport } from './profile-import.tsx';
 import { TEST_PATTERNS, type TestPatternConfig } from '@setcast/core';
 import type { LiveTestPattern } from './test-pattern.ts';
 
@@ -141,20 +142,7 @@ function PatternTransfer({ testPattern }: { testPattern: LiveTestPattern }) {
       <button className="sc-button" onClick={testPattern.download}>
         Export test pattern settings
       </button>
-      <label className="sc-button">
-        Import test pattern settings
-        <input
-          className="sc-venue-file"
-          aria-label="Import test pattern settings"
-          type="file"
-          accept=".json,application/json"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            if (file) void testPattern.upload(file);
-            event.target.value = '';
-          }}
-        />
-      </label>
+      <ProfileImport label="Import test pattern settings" upload={testPattern.upload} />
     </div>
   );
 }

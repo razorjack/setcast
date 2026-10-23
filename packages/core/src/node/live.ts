@@ -98,6 +98,7 @@ function resolveLiveProject(
       projection: config.projection,
       testPattern: config.testPattern,
       beatTracking: config.beatTracking,
+      midi: config.midi,
     },
   };
 }

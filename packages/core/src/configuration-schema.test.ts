@@ -101,6 +101,20 @@ describe('authoring JSON Schema', () => {
     expect(validate({ name: 'schema-test-plugin', count: 1 })).toBe(false);
   });
 
+  test('portable MIDI profiles validate versions, canonical keys and finite actions', () => {
+    const validate = ajv.compile(configurationSchema('midi'));
+    expect(validate({ version: 1, mapping: {} })).toBe(true);
+    expect(validate({ version: 1, mapping: { 'cc:16:127': 'brightness' } })).toBe(true);
+    for (const input of [
+      { version: 2, mapping: {} },
+      { version: 1, mapping: { 'note:01:60': 'blackout' } },
+      { version: 1, mapping: { 'cc:17:7': 'brightness' } },
+      { version: 1, mapping: { 'cc:1:128': 'brightness' } },
+      { version: 1, mapping: { 'cc:1:7': 'volume' } },
+    ])
+      expect(validate(input)).toBe(false);
+  });
+
   test('does not pretend JSON Schema can check all semantic constraints', () => {
     const value = { audio: 'missing.wav', beatOffset: 'not a timecode' };
     expect(ajv.compile(configurationSchema('project'))(value)).toBe(true);

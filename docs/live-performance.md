@@ -114,17 +114,22 @@ MIDI is input-only and does not request SysEx. Defaults use channel 1:
 Choose a control and click **Learn MIDI**, then move or press the hardware control. Learning
 replaces that action's previous assignment. A CC assigned to a button triggers on its rising
 half-range crossing. Note-off, velocity-zero note-on and MIDI clock are ignored. Continuous
-values are coalesced at 100 ms. Mappings persist in browser storage for the server origin;
-changing the port uses another origin. **Reset MIDI mappings** restores defaults.
+values are coalesced at 100 ms. **Reset MIDI mappings** restores defaults.
+
+`live.yaml midi` supplies repeatable project mappings. Without it, mappings persist in browser
+storage for the server origin; changing the port uses another origin. With project mappings,
+edits remain session-only and never overwrite the unrelated browser profile. **Export MIDI profile**
+and **Import MIDI profile** transfer versioned JSON settings. See [portable MIDI controls](midi-controls.md)
+for configuration, persistence rules, validation and the shared core API.
 
 Scene slots follow the bank order, so deleting or copying directories can change assignments.
 Use a stable bank for a performance. Browser support, device permissions and physical controllers
 remain equipment-specific; the automated check uses a synthetic MIDI input.
 
-## Journal and deterministic export
-
 Saved mappings from earlier versions keep their assignments; **Reset MIDI mappings** adds notes 45
 and 46. Branding controls and announcements are described in [branding.md](branding.md#live-operator).
+
+## Journal and deterministic export
 
 The journal records effective performance ramps on the capture sample clock, including blackout
 and transition fades. Only scenes that reach ready output enter the journal. Start the journal
