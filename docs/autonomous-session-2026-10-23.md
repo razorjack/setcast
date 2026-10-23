@@ -110,3 +110,19 @@ projection and journal semantics. Every standalone completed piece gets a commit
   All 128 tested spectra matched exactly; alternating 4000-transform runs suggested a modest CPU
   reduction. Profile artifacts /tmp/setcast-fft-profile.mjs and .json. Measure and validate any
   retained change; audio preparation was not the earlier exporter bottleneck.
+- Cached FFT coefficients committed as 382c749 after 256 exact spectrum comparisons, identical
+  decoded real-master stills, ready and both exporter acceptance suites. Median transform time
+  improved 11.7% locally under concurrent export load; no export throughput claim.
+- Spectral onset evaluation now uses a short Hann window, log-frequency buckets and maximum-filter
+  novelty. It gained a few unlabeled real locks but lost four-floor coverage, retained offbeat
+  errors and did not lock the break fixture. Keep it in the workbench; retain energy in live.
+  Stronger novelty alone is insufficient. Next beat work needs labeled music and metrical modeling.
+
+## Next reliability work
+
+The initial feature plan is delivered and sustained export is still running. Use the remaining
+development window for bounded WebGL context restoration, a documented limitation of the shared
+GPU canvas. Preserve absolute frame time, capture ownership, journals, projection and offline
+readiness. Rebuild resources only after browser restoration; hold incomplete export frames and
+fail explicitly on timeout. Make the policy configurable and the shared shader component usable
+by platform visualizer plugins. Stop starting features at 18:00 as planned.

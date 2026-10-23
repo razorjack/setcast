@@ -1,6 +1,8 @@
 import type { Method } from './config.ts';
+import { SpectralOnsets } from './spectral.ts';
+import { EVALUATION_RATE } from './constants.ts';
 
-export const EVALUATION_RATE = 16000;
+export { EVALUATION_RATE } from './constants.ts';
 const HOP_SAMPLES = EVALUATION_RATE / 100;
 const LOW = 1 - Math.exp((-2 * Math.PI * 150) / EVALUATION_RATE);
 const HIGH = 1 - Math.exp((-2 * Math.PI * 2000) / EVALUATION_RATE);
@@ -12,14 +14,17 @@ export class OnsetComparison {
   private previous = new Float64Array(4);
   private samples = 0;
   private hop: number;
+  private spectral: SpectralOnsets | null;
 
-  constructor(at = 0) {
+  constructor(at = 0, spectral = false) {
     this.hop = Math.round(at * 100);
+    this.spectral = spectral ? new SpectralOnsets() : null;
   }
 
   push(left: number, right: number): { hop: number; values: Record<Method, number> } | null {
     if (!Number.isFinite(left) || !Number.isFinite(right))
       throw new Error('Decoded PCM contains a non-finite sample.');
+    this.spectral?.push(left, right);
     this.channel(left, this.filters[0]!);
     this.channel(right, this.filters[1]!);
     if (++this.samples < HOP_SAMPLES) return null;
@@ -37,6 +42,7 @@ export class OnsetComparison {
         energy: novelty[0]!,
         bands: (novelty[1]! + novelty[2]! + novelty[3]!) / 3,
         bass: novelty[1]!,
+        spectral: this.spectral?.read() ?? 0,
       },
     };
   }

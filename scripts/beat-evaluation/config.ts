@@ -14,7 +14,7 @@ export const PATTERNS = [
   'missing-beats',
 ] as const;
 export type Pattern = (typeof PATTERNS)[number];
-export const METHODS = ['energy', 'bands', 'bass'] as const;
+export const METHODS = ['energy', 'bands', 'bass', 'spectral'] as const;
 export type Method = (typeof METHODS)[number];
 export interface ReferenceGrid {
   from: number;
@@ -47,7 +47,7 @@ export function parseEvaluation(input: unknown): EvaluationConfig {
     methods.some((m) => !METHODS.includes(m)) ||
     new Set(methods).size !== methods.length
   )
-    throw new Error('methods must list unique energy, bands or bass methods.');
+    throw new Error('methods must list unique energy, bands, bass or spectral methods.');
   if (!Array.isArray(config.cases) || config.cases.length < 1 || config.cases.length > 64)
     throw new Error('cases must contain 1–64 evaluation cases.');
   const cases = config.cases.map(parseCase);

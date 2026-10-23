@@ -16,7 +16,7 @@ export async function evaluate(
     tracker.configure(entry.range);
     return { method, tracker, metrics: createMetrics() };
   });
-  const onsets = new OnsetComparison(entry.at);
+  const onsets = new OnsetComparison(entry.at, methods.includes('spectral'));
   let frames = 0;
   let analysisMs = 0;
   const started = performance.now();

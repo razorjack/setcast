@@ -27,7 +27,7 @@ audio files or external decoder.
 ```json
 {
   "version": 1,
-  "methods": ["energy", "bands", "bass"],
+  "methods": ["energy", "bands", "bass", "spectral"],
   "cases": [
     {
       "id": "recorded-section",
@@ -43,7 +43,7 @@ audio files or external decoder.
 `at` defaults to 0 and `seconds` to 24. Both align to 10 ms hops; duration is 12–7200 seconds.
 The range defaults to 90–180 BPM and uses the same schema as live tracking. A short file fails
 instead of silently reducing the requested duration. A method list must contain unique names;
-omitting it runs all three methods.
+omitting it runs all four methods.
 
 For synthetic input, replace `source` with
 `{"pattern":"four-floor","bpm":128,"offset":0.17,"seed":1}`. Available patterns are `pulse`,
@@ -100,9 +100,17 @@ are shared; only onset extraction changes.
 - `bands`: two cascaded one-pole low-pass filters at 150 Hz and 2 kHz split each channel into
   low, middle and high residuals. Average the three positive log-RMS differences.
 - `bass`: use only the low band's positive log-RMS difference.
+- `spectral`: a trailing 512-sample Hann window (32 ms), zero-padded into the shared 2048-point
+  spectrum transform, then 48 logarithmic buckets from 40 Hz to 7 kHz. Stereo bucket powers
+  become `log1p(100 * normalizedMagnitude)`. Sum positive changes against the maximum of the
+  same/neighbor buckets two hops earlier, divided by the square root of the bucket count.
+  Zero padding interpolates the spectrum; it does not increase the window's frequency resolution.
 
 The filter bands overlap and are not an orthogonal decomposition. Their causal phase response
-is not compensated. `bands` and `bass` are evaluation candidates, not selectable live detectors.
+is not compensated. The spectral candidate uses the core transform's three smoothing passes and
+does not compensate its causal window delay. Its scale is an explicit experiment parameter,
+not an independently calibrated confidence model. `bands`, `bass` and `spectral` are evaluation
+candidates, not selectable live detectors.
 Native-rate live capture and resampled file evaluation can differ. The combined `analysisMs`
 includes all selected methods, core tracking and observation serialization; `wallMs` also
 includes decoding or synthesis and observation writes. These are throughput measurements, not
@@ -137,6 +145,21 @@ change detection. The six real segments lost their few energy-method locks. Sinc
 are unlabeled, this is a coverage reduction, not demonstrated accuracy improvement. Baseline and
 new reports are in `beat-evaluation-baseline`, `beat-evaluation-recent-expanded` and
 `beat-evaluation-real-recent` under `examples/demo/out/`.
+
+### Spectral candidate
+
+The spectral candidate retained regular-pulse locks and rejected silence, constant tone and
+noise. It still locked half a beat off on the strong-offbeat fixture, failed to lock the break
+fixture and lost four-floor coverage. In the six real segments it produced 28 half-second locks
+in the window starting at 1500 seconds and one in the window at 2400 seconds. Those segments
+remain unlabeled, so this is additional coverage, not verified musical accuracy. Each 120-second
+segment took about 5.4–5.8 seconds of analysis with only spectral selected while a long export
+ran concurrently. This does not establish suitability for the live animation thread.
+
+Keep the energy method in live output. Stronger spectral novelty alone does not resolve metrical
+interpretation or phase ambiguity. Further work needs independently labeled music and a better
+metrical model, with explicit regression checks for incorrect locks. Reports are in
+`beat-evaluation-spectral-1` and `beat-evaluation-real-spectral` under `examples/demo/out/`.
 
 Next experiments should distinguish spectral onset detection, metrical periodicity and recent
 phase agreement. Spectral-flux methods compare positive spectral changes; maximum filtering can

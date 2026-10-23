@@ -32,8 +32,8 @@ test('evaluation configuration distinguishes unknown labels, forbidden locks and
 });
 
 test('onset baseline matches hop RMS and multiband candidates preserve antiphase stereo energy', () => {
-  const same = new OnsetComparison(12);
-  const opposite = new OnsetComparison(12);
+  const same = new OnsetComparison(12, true);
+  const opposite = new OnsetComparison(12, true);
   const outputs = [];
   for (const value of [0.5, 1, 0]) {
     for (let sample = 0; sample < 160; sample++) {
@@ -105,7 +105,7 @@ test('complete synthetic evaluation writes reproducible observations with bounde
   try {
     const result = await evaluate(
       entry,
-      ['energy', 'bands', 'bass'],
+      ['energy', 'bands', 'bass', 'spectral'],
       join(root, 'observations.jsonl'),
     );
     expect(result.frames).toBe(24 * 16000);
@@ -115,9 +115,9 @@ test('complete synthetic evaluation writes reproducible observations with bounde
       expect(method.maxRetainedHops).toBe(800);
     }
     const lines = (await readFile(join(root, 'observations.jsonl'), 'utf8')).trim().split('\n');
-    expect(lines).toHaveLength(24 * 2 * 3);
+    expect(lines).toHaveLength(24 * 2 * 4);
     expect(JSON.parse(lines.at(-1)!).at).toBe(24);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
-});
+}, 30_000);
