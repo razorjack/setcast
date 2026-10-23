@@ -35,7 +35,8 @@ scene, journals effective actions and restarts capture at the requested interval
 the current journal and begins a new one. Final checks parse every journal and require explicit
 end events and the expected announcements. A run fails on browser errors, stopped capture,
 dropped analysis samples or feature-cache overflow. FPS and heap use are measurements, not
-universal pass thresholds.
+universal pass thresholds. A final sample after journal closure checks the tail of the workload
+even when the sampling interval is longer than the run.
 
 `scenes` optionally supplies 1–16 live configuration objects. It uses the existing `live.yaml`
 schema, including visualizers, branding, modulation and output dimensions. Choose built-in themes;
@@ -71,8 +72,10 @@ The first FPS sample can be null until player diagnostics has collected a full i
 `graphics: "swiftshader"` explicitly requests software rendering and requires an active shader
 canvas whose driver identifies itself as SwiftShader. The first scene must therefore contain a
 GPU visualizer for that choice. Reports record requested backend, WebGL/GLSL versions and the
-vendor/renderer information exposed by the active context. An auto run may use software too;
-read the reported identity rather than inferring acceleration from the CPU model. Identity is
+vendor/renderer information exposed by the active context, plus its initial canvas and drawing-buffer
+dimensions. The report also records the browser viewport; it is 1440×1000 with a scaled preview.
+An auto run may use software too; read the reported identity rather than inferring acceleration
+from the CPU model. Identity is
 collected before audio capture starts because driver queries may synchronize graphics work.
 
 `operatorWindow: true` moves controls into a separate window before capture. Scene changes,

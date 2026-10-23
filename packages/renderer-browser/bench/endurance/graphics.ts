@@ -19,6 +19,8 @@ export async function liveGraphicsIdentity(page: Page, requested: EnduranceConfi
     const extension = gl.getExtension('WEBGL_debug_renderer_info');
     return {
       version: String(gl.getParameter(gl.VERSION)),
+      canvas: { width: canvas!.clientWidth, height: canvas!.clientHeight },
+      drawingBuffer: { width: gl.drawingBufferWidth, height: gl.drawingBufferHeight },
       shadingLanguage: String(gl.getParameter(gl.SHADING_LANGUAGE_VERSION)),
       vendor: String(gl.getParameter(gl.VENDOR)),
       renderer: String(gl.getParameter(gl.RENDERER)),

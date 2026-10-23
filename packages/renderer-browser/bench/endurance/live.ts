@@ -34,6 +34,7 @@ export async function runLive(
     report.report.details.syntheticInput = true;
     try {
       const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+      report.report.details.viewport = page.viewportSize();
       const errors: string[] = [];
       watchErrors(page, errors);
       await page.goto(server.url);
@@ -158,6 +159,7 @@ async function exercise(
     await page.waitForTimeout(250);
   }
   await finishJournal(controls);
+  await sample(page, report, controls);
   assert.deepEqual(errors, []);
   report.report.details.workloadSeconds = (performance.now() - started) / 1000;
 }
