@@ -9,6 +9,7 @@ service or a new scene API.
 node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/live-hour.json --out examples/demo/out/live-hour-1
 node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/export-demo.json --out examples/demo/out/export-two-minutes-1
 node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/live-gpu-recovery.json --out examples/demo/out/gpu-recovery-hour-1
+node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/live-software.json --out examples/demo/out/software-90-minutes-1
 ```
 
 Use a new output directory for every run. Existing directories are rejected to preserve evidence.
@@ -63,6 +64,35 @@ settling interval at the end. `sampleSeconds` is 1–60 (default 5), `changeSeco
 the capture epoch, frame, dropped samples, cache count, PCM capacity, adaptive render scale,
 rendered-update FPS, document visibility, DOM node count, browser JS heap and runner Node RSS.
 The first FPS sample can be null until player diagnostics has collected a full interval.
+
+### Graphics and operator setup
+
+`graphics: "auto"` follows the browser adapter's platform-specific graphics selection.
+`graphics: "swiftshader"` explicitly requests software rendering and requires an active shader
+canvas whose driver identifies itself as SwiftShader. The first scene must therefore contain a
+GPU visualizer for that choice. Reports record requested backend, WebGL/GLSL versions and the
+vendor/renderer information exposed by the active context. An auto run may use software too;
+read the reported identity rather than inferring acceleration from the CPU model. Identity is
+collected before audio capture starts because driver queries may synchronize graphics work.
+
+`operatorWindow: true` moves controls into a separate window before capture. Scene changes,
+announcements and restart actions use that window; capture, frame/cache measurements, graphics
+recovery and the final output screenshot stay in the output window. Diagnostics come from the
+operator window, and browser errors from both windows fail the run. Default false retains the
+controls over the scene. These two workloads have different compositing costs.
+
+Both settings are live-only qualification options. They do not change normal player defaults or
+the selected offline renderer. The software preset runs 90 minutes at 1080p30 with one GPU visual
+at a time, resolution 0.25, a separate operator window, scene changes each minute and capture
+restart every 15 minutes. It does not inject context loss. The separate
+`live-software-stress.json` adds stacked visuals and forced recovery; it is a stress reproducer,
+not a qualified preset. Initial local runs of its stacked scene dropped analysis samples during
+startup, including at resolution 0.25. Keep those failures when reporting results.
+
+Lower rendering resolution does not guarantee that startup, shader compilation or compositor
+work will fit the live input budget. Adaptive resolution responds to observed update rates and
+cannot prevent every initial stall. Software runs should establish the exact supported workload;
+do not generalize a single-visual pass to stacked visuals or context restoration.
 
 ## Repeated GPU loss
 
@@ -166,6 +196,8 @@ The short `bench/export-verification.ts` check includes a browser export, rounde
   from the report. This file can be processed line by line during a run.
 - Live `workload/`: self-contained scene fixtures and session journals, retained for inspection.
   `output.png` records the final operator view. Export `export.mp4` is the completed video.
+  With a separate operator, output.png contains the clean output. Failed live runs attempt a
+  bounded failure.png capture and retain visible operator notices, even when capture has stopped.
 
 SIGINT/SIGTERM request cleanup and a cancelled report. A hard kill can leave `running` and the
 last complete checkpoint; do not interpret that as a pass. A cancelled live journal may lack

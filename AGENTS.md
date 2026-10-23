@@ -681,6 +681,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   Explicit audioAt checkpoints use output time; source time follows rounded render origins.
   --verify-video checks existing media without rendering. Reports retain input hashes, decoder
   versions, per-channel evidence and separate verification time. See bench/export-verification.ts.
+  Live endurance graphics may request SwiftShader explicitly; record the actual active context
+  identity before capture. operatorWindow separates controls from output and reads diagnostics
+  from the control window. Both windows' errors are observed. Stacked software visuals failed
+  startup qualification locally; do not infer support from individual-visual runs.
 - Offline export Chromium uses `--disable-frame-rate-limit` to remove display refresh pacing,
   while retaining all frame readiness checks. This does not configure the user's live or preview
   browser. Keep the SwiftShader GPU check on the same scheduling mode. The measured one-worker

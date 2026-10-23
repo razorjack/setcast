@@ -9,6 +9,7 @@ import { play } from '../../src/index.ts';
 import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';
 import { recoverGpu } from './gpu-recovery.ts';
+import { liveGraphicsArgs, liveGraphicsIdentity } from './graphics.ts';
 
 export async function runLive(
   config: EnduranceConfig,
@@ -22,7 +23,7 @@ export async function runLive(
   try {
     const browser = await chromium.launch({
       args: [
-        '--use-gl=angle',
+        ...liveGraphicsArgs(config.graphics),
         '--use-fake-device-for-media-stream',
         '--use-fake-ui-for-media-stream',
         '--autoplay-policy=no-user-gesture-required',
@@ -34,11 +35,14 @@ export async function runLive(
     try {
       const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
       const errors: string[] = [];
-      page.on('pageerror', (error) => {
-        if (errors.length < 10) errors.push(error.message);
-      });
+      watchErrors(page, errors);
       await page.goto(server.url);
-      await exercise(page, { config, report, signal, errors });
+      try {
+        await exercise(page, { config, report, signal, errors });
+      } catch (error) {
+        await recordFailure(page, out, report);
+        throw error;
+      }
       await page.screenshot({ path: join(out, 'output.png') });
       await validateJournals(root, report);
     } finally {
@@ -46,6 +50,34 @@ export async function runLive(
     }
   } finally {
     await server.close();
+  }
+}
+
+function watchErrors(page: Page, errors: string[]) {
+  page.on('pageerror', (error) => {
+    if (errors.length < 10) errors.push(error.message);
+  });
+  page.on('popup', (popup) => watchErrors(popup, errors));
+}
+
+async function recordFailure(page: Page, out: string, report: EnduranceReport) {
+  const notices = await Promise.all(
+    page
+      .context()
+      .pages()
+      .map((window) =>
+        window
+          .locator('[role=alert]')
+          .allTextContents()
+          .catch(() => []),
+      ),
+  );
+  report.report.details.notices = notices.flat().slice(0, 10);
+  try {
+    await page.screenshot({ path: join(out, 'failure.png'), timeout: 5000 });
+    report.report.details.failureScreenshot = 'failure.png';
+  } catch (error) {
+    report.report.details.failureScreenshotError = String(error);
   }
 }
 
@@ -91,7 +123,7 @@ async function exercise(
   },
 ) {
   const { config, report, signal, errors } = options;
-  await prepareControls(page);
+  const controls = await prepareRun(page, config, report);
   const started = performance.now();
   let nextChange = config.changeSeconds;
   let nextRestart = config.restartSeconds || Infinity;
@@ -103,13 +135,13 @@ async function exercise(
     assert.deepEqual(errors, [], 'Live browser raised errors');
     const elapsed = (performance.now() - started) / 1000;
     if (elapsed >= nextRestart) {
-      await sample(page, report);
-      await restart(page);
+      await sample(page, report, controls);
+      await restart(controls, page);
       await report.event('action', { name: 'restart', elapsed });
       nextRestart = elapsed + config.restartSeconds;
     }
     if (elapsed >= nextChange) {
-      await changeScene(page, cycle++ % config.scenes.length);
+      await changeScene(controls, cycle++ % config.scenes.length);
       await report.event('action', { name: 'scene-and-announcement', elapsed });
       nextChange = elapsed + config.changeSeconds;
     }
@@ -119,20 +151,37 @@ async function exercise(
       nextRecovery = elapsed + config.gpuRecovery.everySeconds;
     }
     if (elapsed >= nextSample) {
-      await sample(page, report);
+      await sample(page, report, controls);
       await report.checkpoint();
       nextSample = elapsed + config.sampleSeconds;
     }
     await page.waitForTimeout(250);
   }
-  await finishJournal(page);
+  await finishJournal(controls);
   assert.deepEqual(errors, []);
   report.report.details.workloadSeconds = (performance.now() - started) / 1000;
 }
 
-async function startInput(page: Page) {
+async function prepareRun(page: Page, config: EnduranceConfig, report: EnduranceReport) {
+  // Driver queries can synchronize GPU work; collect identity before audio owns a real-time clock.
+  report.report.details.graphics = await liveGraphicsIdentity(page, config.graphics);
+  await report.checkpoint();
+  const controls = config.operatorWindow ? await openOperator(page) : page;
+  await prepareControls(controls, page);
+  return controls;
+}
+
+async function openOperator(page: Page) {
+  const popup = page.waitForEvent('popup');
+  await page.getByRole('button', { name: 'Operator window', exact: true }).click();
+  const controls = await popup;
+  await controls.getByRole('button', { name: 'Start input', exact: true }).waitFor();
+  return controls;
+}
+
+async function startInput(page: Page, output: Page) {
   await page.getByRole('button', { name: 'Start input', exact: true }).click();
-  await page.locator('main[data-capture=running][data-input-available=true]').waitFor();
+  await output.locator('main[data-capture=running][data-input-available=true]').waitFor();
 }
 
 async function startJournal(page: Page) {
@@ -145,12 +194,12 @@ async function finishJournal(page: Page) {
   await page.getByText(/^Saved to /).waitFor();
 }
 
-async function restart(page: Page) {
+async function restart(page: Page, output: Page) {
   await finishJournal(page);
   await page.getByRole('button', { name: 'Stop input', exact: true }).click();
-  await page.locator('main[data-capture=stopped]').waitFor();
-  await startInput(page);
-  const frame = Number(await page.locator('main').getAttribute('data-frame'));
+  await output.locator('main[data-capture=stopped]').waitFor();
+  await startInput(page, output);
+  const frame = Number(await output.locator('main').getAttribute('data-frame'));
   assert(frame < 120, `Capture restart retained old frame ${frame}`);
   await startJournal(page);
 }
@@ -165,7 +214,13 @@ async function changeScene(page: Page, index: number) {
   await page.getByRole('button', { name: 'Announce', exact: true }).click();
 }
 
-async function sample(page: Page, report: EnduranceReport) {
+async function sample(page: Page, report: EnduranceReport, controls: Page) {
+  const operator = await controls.evaluate(() => ({
+    diagnostics: document.querySelector('.sc-live-diagnostics summary')?.textContent,
+    notices: [...document.querySelectorAll('[role=alert]')]
+      .slice(0, 10)
+      .map((element) => element.textContent),
+  }));
   const snapshot = await page.locator('main').evaluate((main) => ({
     frame: Number(main.getAttribute('data-frame')),
     capture: main.getAttribute('data-capture'),
@@ -174,15 +229,15 @@ async function sample(page: Page, report: EnduranceReport) {
     pcmCapacity: Number(main.getAttribute('data-pcm-capacity')),
     scale: Number(main.getAttribute('data-render-scale')),
     hidden: document.hidden,
-    diagnostics: document.querySelector('.sc-live-diagnostics summary')?.textContent,
     heapBytes:
       (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
         ?.usedJSHeapSize ?? null,
     nodes: document.getElementsByTagName('*').length,
   }));
-  const fps = snapshot.diagnostics?.match(/([\d.]+) \/ ([\d.]+) FPS/);
+  const fps = operator.diagnostics?.match(/([\d.]+) \/ ([\d.]+) FPS/);
   await report.event('sample', {
     ...snapshot,
+    ...operator,
     renderFps: fps ? Number(fps[1]) : null,
     targetFps: fps ? Number(fps[2]) : null,
     captureEpoch: report.report.actions.restart ?? 0,
@@ -213,8 +268,8 @@ async function validateJournals(root: string, report: EnduranceReport) {
   report.report.details.journals = { files: files.length, scenes, announcements };
 }
 
-async function prepareControls(page: Page) {
-  await startInput(page);
+async function prepareControls(page: Page, output: Page) {
+  await startInput(page, output);
   await page.locator('.sc-live-journal summary').click();
   await startJournal(page);
   await page.getByLabel('Start on next bar').uncheck();

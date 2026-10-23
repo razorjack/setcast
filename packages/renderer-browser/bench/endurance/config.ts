@@ -20,6 +20,8 @@ export interface EnduranceConfig {
   gpuRecovery: GpuRecoveryWorkload | null;
   verification: 'metadata' | 'decoded';
   audioAt: number[] | null;
+  graphics: 'auto' | 'swiftshader';
+  operatorWindow: boolean;
 }
 
 const keys = [
@@ -36,6 +38,8 @@ const keys = [
   'gpuRecovery',
   'verification',
   'audioAt',
+  'graphics',
+  'operatorWindow',
 ];
 
 export function readEnduranceConfig(input: unknown): EnduranceConfig {
@@ -68,7 +72,24 @@ export function readEnduranceConfig(input: unknown): EnduranceConfig {
     gpuRecovery: readGpuRecovery(config.gpuRecovery, config.mode),
     verification: readVerification(config.verification, config.mode),
     audioAt: readAudioAt(config),
+    graphics: readGraphics(config.graphics, config.mode),
+    operatorWindow: readOperatorWindow(config.operatorWindow, config.mode),
   };
+}
+
+function readOperatorWindow(input: unknown, mode: string) {
+  if (input === undefined) return false;
+  if (mode !== 'live' || typeof input !== 'boolean')
+    throw new Error('operatorWindow must be a boolean in a live workload.');
+  return input;
+}
+
+function readGraphics(input: unknown, mode: string): EnduranceConfig['graphics'] {
+  if (input === undefined) return 'auto';
+  if (mode !== 'live') throw new Error('graphics is only available in live endurance workloads.');
+  if (input !== 'auto' && input !== 'swiftshader')
+    throw new Error('graphics must be auto or swiftshader.');
+  return input;
 }
 
 function readVerification(input: unknown, mode: string): EnduranceConfig['verification'] {

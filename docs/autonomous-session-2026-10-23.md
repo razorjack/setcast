@@ -163,3 +163,12 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   Ready passed 555 tests; real encoded positive/delayed/truncated/silent fixtures and cancellation
   passed. The full-master default check correctly identified the silent tail as inconclusive;
   the musical-checkpoint rerun is in progress. See docs/export-qualification-plan.md.
+- Full-master decoded qualification passed with checkpoints at 5/60/930/1686/2400/3350 seconds:
+  all 101160 frames decode, all sampled lags are zero and joint correlations are 0.9993–0.9999.
+  The former 3368-second checkpoint was below the verifier's silence floor, so its high raw
+  correlation is retained as an observation but not treated as qualified synchronization evidence.
+- Graphics identity, explicit SwiftShader selection and separate-operator endurance setup are
+  implemented. Individual quarter-resolution visuals and a 45-second scene/restart workload passed;
+  stacked software scenes failed startup with dropped samples and remain explicitly unqualified.
+  Auto-backend recovery/scene/restart check passed; ready passed 557 tests. Before the sustained
+  software run, correct diagnostics sampling across capture availability changes.

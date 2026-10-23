@@ -80,3 +80,29 @@ test('audio checkpoints are explicit bounded output-relative times', () => {
     'verification: decoded',
   );
 });
+
+test('software graphics selection is explicit and live-only', () => {
+  expect(readEnduranceConfig({ version: 1, mode: 'live' }).graphics).toBe('auto');
+  expect(readEnduranceConfig({ version: 1, mode: 'live', graphics: 'swiftshader' }).graphics).toBe(
+    'swiftshader',
+  );
+  expect(() => readEnduranceConfig({ version: 1, mode: 'live', graphics: 'metal' })).toThrow(
+    'auto or swiftshader',
+  );
+  expect(() => readEnduranceConfig({ version: 1, mode: 'export', graphics: 'auto' })).toThrow(
+    'only available in live',
+  );
+});
+
+test('operator window selection is a live setup choice', () => {
+  expect(readEnduranceConfig({ version: 1, mode: 'live' }).operatorWindow).toBe(false);
+  expect(
+    readEnduranceConfig({ version: 1, mode: 'live', operatorWindow: true }).operatorWindow,
+  ).toBe(true);
+  expect(() => readEnduranceConfig({ version: 1, mode: 'live', operatorWindow: 'true' })).toThrow(
+    'boolean',
+  );
+  expect(() => readEnduranceConfig({ version: 1, mode: 'export', operatorWindow: true })).toThrow(
+    'live workload',
+  );
+});
