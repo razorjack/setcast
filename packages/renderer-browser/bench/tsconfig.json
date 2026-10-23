@@ -1,0 +1,4 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["endurance", "endurance.ts", "camera.ts"]
+}
