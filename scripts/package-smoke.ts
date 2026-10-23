@@ -184,6 +184,9 @@ async function exerciseCli(): Promise<void> {
   await writeFile(configFile, `${config}\n${BRANDING}`);
   const inspected = JSON.parse((await run('inspect', project, '--json')).stdout);
   assert(inspected.plays.length > 0);
+  const validated = JSON.parse((await run('validate', project, '--json')).stdout);
+  assert.equal(validated.valid, true);
+  assert.equal(validated.documents[0].summary.width, 640);
   await run('still', project, '--theme', 'all', '--at', '1', '--out', join(temporary, 'theme.jpg'));
   assert((await stat(join(temporary, 'theme-sterile-tech.jpg'))).size > 0);
   const video = join(temporary, 'render.mp4');

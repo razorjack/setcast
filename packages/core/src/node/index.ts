@@ -14,3 +14,12 @@ export { saveScene } from './save-scene.ts';
 export { rebaseScene } from './scenes.ts';
 
 export { sceneDirectory, copySceneDirectory } from './copy-scenes.ts';
+
+export {
+  validateProject,
+  type ValidationOptions,
+  type ValidationKind,
+  type ValidationDiagnostic,
+  type ValidationDocument,
+  type ValidationReport,
+} from './validate.ts';

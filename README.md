@@ -116,6 +116,8 @@ instead. Inside the clone the command is `vp exec setcast`; the rest of this REA
 
 Configuration editors and external tools can use locally generated [JSON Schemas](docs/configuration-schemas.md):
 `setcast schema project` and `setcast schema live` print the installed authoring contracts.
+`setcast validate [dir]` checks configuration, assets and the timeline before rendering; use `--live`
+for live projects or `--json` for a structured report.
 
 A project is a directory:
 
@@ -270,6 +272,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
+| `setcast validate` | checks project configuration, timeline and directly referenced scenes without rendering; `--live`, `--json` |
 | `setcast schema`   | prints input JSON Schemas for project, live, visualizer and portable setup configuration |
 | `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |

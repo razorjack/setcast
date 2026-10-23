@@ -499,3 +499,17 @@ runtime output. Local editor association and validation limits are documented in
 Validation: ready passed 531 tests. Independent Ajv checks compile every schema, validate repository
 examples and reject invalid structure/visualizer controls. CLI checks cover JSON stdout outside
 projects and invalid arguments. Installed-package smoke passed with the schema command.
+
+## Completed project validation interface
+
+`validateProject` in core/node and `setcast validate [dir] [--live] [--json]` load projects and
+check direct scene references without a renderer or whole-set feature decode. Version 1 reports
+include root-relative filenames, configuration key paths, warnings, resolved composition summaries
+and explicit exit status. Missing live configuration is identified as defaults. Recorded scene
+errors retain the referenced filename. Runtime loading remains authoritative for timeline,
+asset-path and cross-field rules that JSON Schema cannot express.
+
+Validation: ready passed 541 tests; installed-package smoke and all seven source example projects
+passed. Tests cover structured failures, aliases, scene deduplication/warnings, timeline errors,
+missing files, unexpected probe failures and CLI exit behavior. Browser media readiness and
+physical input/output qualification remain separate checks.

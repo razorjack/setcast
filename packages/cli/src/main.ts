@@ -4,7 +4,7 @@ import { accent, bold, dim, errorExitCode, formatHelp, printError, steel } from 
 
 const { version } = createRequire(import.meta.url)('../package.json') as { version: string };
 
-type Command = { help: string; run: (argv: string[]) => Promise<void> };
+type Command = { help: string; run: (argv: string[]) => Promise<void | number> };
 
 const commands: Record<string, () => Promise<Command>> = {
   init: () => import('./commands/init.ts'),
@@ -17,6 +17,7 @@ const commands: Record<string, () => Promise<Command>> = {
   still: () => import('./commands/still.ts'),
   inspect: () => import('./commands/inspect.ts'),
   schema: () => import('./commands/schema.ts'),
+  validate: () => import('./commands/validate.ts'),
   chapters: () => import('./commands/chapters.ts'),
   live: () => import('./commands/live.ts'),
   replay: () => import('./commands/replay.ts'),
@@ -37,6 +38,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document
   ${steel('schema')}    print an authoring JSON Schema for editors and tools
+  ${steel('validate')}  check project configuration, timeline and assets without rendering
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      visualize a live audio input in the browser
   ${steel('replay')}    turn a session journal and recorded master into a project
@@ -66,8 +68,7 @@ async function main(argv: string[]): Promise<number> {
     return 0;
   }
   try {
-    await command.run(rest);
-    return 0;
+    return (await command.run(rest)) ?? 0;
   } catch (error) {
     printError(error);
     return errorExitCode(error);

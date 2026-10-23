@@ -13,7 +13,7 @@ Output is draft-2020-12 JSON on stdout. Generate a local file for editor associa
   setcast schema live > live.schema.json
 
 Schemas come from this installed version and its registered visualizers. They describe input
-before normalization. Runtime project loading also checks semantics, timeline and assets.
+before normalization. Use setcast validate for runtime configuration, timeline and asset checks.
 No renderer, server, media probe or network request is started.`;
 
 export async function run(argv: string[]): Promise<void> {

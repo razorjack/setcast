@@ -349,6 +349,12 @@ name for every kind except the existing spectrum default. JSON Schema cannot rep
 refinements or filesystem/timeline checks; retain runtime loading as authoritative. Never use
 `unrepresentable: 'any'` to hide unsupported types. Output extension regexes use explicit letter
 cases because JSON Schema patterns cannot carry JavaScript regex flags. Ajv is test-only.
+`validateProject(dir, options)` in core/node and `setcast validate [dir] [--live] [--json]` reuse
+project loaders, probe recorded duration and check direct scene references. Reports are versioned
+JSON with root-relative file/key diagnostics; warnings remain nonfatal. Keep source labels such
+as mix timeline separate from physical config filenames. Preserve authored paths when realpath
+resolves aliases. Validation does not render, decode full features, activate nested scene sequences
+or scan unused scene-bank entries. Recorded scene ConfigErrors include their preset path.
 See docs/configuration-schemas.md for editor association and contract limits.
 
 ### Project resolution and orchestration

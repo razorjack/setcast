@@ -60,13 +60,83 @@ JSON-compatible document and does not retain generated schemas across registry c
 Zod's [input JSON Schema conversion](https://zod.dev/json-schema#io), so timecode strings,
 shorthand booleans and omitted defaults remain authoring inputs rather than normalized output.
 
+## Validate a project before rendering
+
+```sh
+setcast validate path/to/recorded-project
+setcast validate path/to/live-project --live
+setcast validate path/to/project --json > validation.json
+```
+
+Validation uses the same project loaders as playback/export. Recorded mode probes master duration
+and validates finite timeline references and intervals. Both modes resolve schemas, theme/CSS
+files, artwork/logo paths and visualizer settings. It checks directly referenced recorded scenes
+or the root live sequence's presets, deduplicating repeated directories. Scene warnings are included.
+It does not inspect unreferenced scene-bank entries or recursively activate a recalled scene's own
+sequence settings. A missing `live.yaml` uses defaults, as `setcast live` does, and the report states
+that explicitly. A missing `setcast.yaml` fails.
+
+No renderer, local server, full audio-feature decode or hardware encoder is started. Duration
+probing can scan media packets when container metadata is insufficient. Validation does not
+modify authored files. Loader failures stop that document's checks; diagnostics are not an
+exhaustive list of every possible error in an invalid project. Successfully loaded roots then
+check their direct scene references independently.
+
+Exit statuses are 0 for valid projects (warnings allowed), 2 for configuration/assets that need
+correction, and 1 for unexpected runtime or filesystem failures. With `--json`, stdout contains
+one versioned report on success or project-validation failure, and stderr stays empty. Invalid
+command arguments use the normal CLI usage error on stderr and do not produce a project report.
+
+```json
+{
+  "version": 1,
+  "root": "/projects/session",
+  "kind": "live",
+  "valid": false,
+  "exitCode": 2,
+  "documents": [{
+    "file": "live.yaml", "kind": "live", "valid": false,
+    "usesDefaults": false, "summary": null
+  }],
+  "diagnostics": [{
+    "level": "error", "code": "configuration", "file": "live.yaml",
+    "path": "output.fps", "message": "fps must be 24, 25, 30, 50 or 60."
+  }]
+}
+```
+
+`documents` records attempted project/scene loads. Successful summaries include title, theme,
+composition width/height/FPS, visualizer names and recorded duration (null live). `file` uses
+forward slashes relative to `root`, preserving authored scene paths even when the root is a
+filesystem alias. Diagnostic `path` is a configuration key path, or empty for a document-level
+error. Optional `hint` suggests a correction; `context` preserves a loader's source label such
+as `mix timeline`. Codes are `configuration`, `project`, `io`, `runtime` and `project-warning`.
+Warnings do not change `valid` or the exit code. A host can apply a stricter warning policy to
+the structured report without parsing terminal prose.
+
+The reusable Node API returns the same report:
+
+```ts
+import { validateProject } from '@setcast/core/node';
+import { themes } from '@setcast/themes';
+
+const report = await validateProject('/projects/session', { kind: 'live', themes });
+```
+
+`ValidationReport`, `ValidationOptions`, `ValidationKind`, `ValidationDocument` and
+`ValidationDiagnostic` are exported types from core/node. Supply the host's theme catalog;
+CSS-path themes work without a catalog. Recorded validation uses core's media probe unless a
+host supplies `probeDuration(audio, root)`. Invalid API options are programmer errors; project
+loading failures become diagnostics. Report version 1 is separate from project configuration
+and portable setup-document versions.
+
 ## Validation boundaries
 
 JSON Schema checks structure, supported keys, enums, numeric bounds and representable patterns.
 It cannot express every runtime refinement. For example, a timecode is structurally a string,
 but its exact syntax and range are checked during normalization. Cross-field encoder rules,
 finite timeline references and intervals, file existence and project containment also require
-runtime loading. CSS validity, font loading, graphics support, decoder behavior and physical
+runtime loading, available through `setcast validate`. CSS validity, font loading, graphics support, decoder behavior and physical
 input/output hardware are outside the authoring schema.
 
 A schema-valid document can therefore still fail project loading or rendering. The schemas do

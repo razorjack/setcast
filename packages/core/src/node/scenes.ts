@@ -2,7 +2,7 @@ import { join, sep } from 'node:path';
 import { sceneDirectory } from './copy-scenes.ts';
 import type { ProjectConfig } from '../config.ts';
 import type { ResolvedProject, ResolvedLiveProject } from '../project.ts';
-import { SetcastError } from '../errors.ts';
+import { ConfigError, SetcastError } from '../errors.ts';
 import { loadLiveProject } from './live.ts';
 import type { LoadOptions } from './project.ts';
 
@@ -22,8 +22,14 @@ export async function loadScenes(
     }
     const dir = await sceneDirectory(root, entry.preset);
     options.dependencies?.add(join(dir, 'live.yaml'));
-    const { project } = await loadLiveProject(dir, { themes: options.themes });
-    scenes.push({ at: entry.at, scene: rebaseScene(project, entry.preset) });
+    try {
+      const { project } = await loadLiveProject(dir, { themes: options.themes });
+      scenes.push({ at: entry.at, scene: rebaseScene(project, entry.preset) });
+    } catch (error) {
+      if (error instanceof ConfigError)
+        throw new ConfigError(join(entry.preset, error.file).split(sep).join('/'), error.issues);
+      throw error;
+    }
   }
   return scenes;
 }

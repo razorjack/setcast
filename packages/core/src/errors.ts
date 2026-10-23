@@ -28,7 +28,7 @@ export class ConfigError extends SetcastError {
   constructor(file: string, issues: Issue[]) {
     super(
       `${file} has ${issues.length} problem${issues.length === 1 ? '' : 's'}`,
-      `Fix the entries above and run again. See ${file === 'live.yaml' ? 'docs/live-input.md' : 'the setcast.yaml reference in README.md'}.`,
+      `Fix the entries above and run again. See ${file.split(/[\\/]/).at(-1) === 'live.yaml' ? 'docs/live-input.md' : 'the setcast.yaml reference in README.md'}.`,
     );
     this.name = 'ConfigError';
     this.file = file;

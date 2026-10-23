@@ -148,3 +148,7 @@ by platform visualizer plugins. Stop starting features at 18:00 as planned.
   not an isolated performance benchmark. Detailed artifacts remain in the export workload folder.
 - Configuration tooling is the next platform capability: locally generated editor JSON Schemas
   followed by renderer-free project validation. Plan: docs/configuration-tooling-plan.md.
+- Schema interface committed as c7a6b87 after ready (531 tests) and package smoke.
+- Structured project validation completed with ready (541 tests), package smoke and all seven
+  source examples passing. It preserves referenced scene filenames and uses authored paths even
+  when filesystem aliases resolve elsewhere. No renderer or full feature decode is started.

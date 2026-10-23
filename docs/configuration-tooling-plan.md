@@ -50,3 +50,7 @@ and reserve the remaining window for verification, documentation, commits and th
 - Validation command is the next standalone piece. No runtime plugin loader is added.
 - Schema milestone validation completed: ready 531 tests, independent schema/CLI checks and
   installed-package smoke passed. Public docs and agent guide describe semantic limits.
+- Validation API and CLI implemented. Reports preserve authored paths, loader issue paths and
+  warnings, check direct scene references, and distinguish usage/configuration/runtime exits.
+  Recorded scene errors now retain their preset filename. Ready passed 541 tests; installed-package
+  smoke and validation of all seven source example configurations passed.
