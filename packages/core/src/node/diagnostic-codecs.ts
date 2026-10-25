@@ -14,11 +14,11 @@ export async function diagnoseCodecs(session: RendererDiagnostics, command: Diag
   const system = session.capabilities.runtime.ffmpeg === 'system';
   const inspectionFeatures = supported(system ? ['resume'] : ['video', 'hardwareEncoding']);
   const hint = system
-    ? 'Install FFmpeg on PATH with libx264, AAC and libwebp encoding support.'
+    ? 'Install FFmpeg on PATH with libx264 and AAC encoding support.'
     : 'Reinstall the selected Setcast/Remotion packages for this operating system and architecture.';
   const ffmpeg = await session.check(
     'ffmpeg',
-    supported([...features, 'hardwareEncoding', ...(system ? (['webp'] as const) : [])]),
+    supported([...features, 'hardwareEncoding']),
     hint,
     async () => ({ message: (await command('ffmpeg', ['-version'])).split('\n')[0]! }),
   );
@@ -32,7 +32,6 @@ export async function diagnoseCodecs(session: RendererDiagnostics, command: Diag
   );
   if (!ffmpeg) {
     session.skip('video.encode', features, 'FFmpeg is unavailable.');
-    if (system) session.skip('webp.encode', ['webp'], 'FFmpeg is unavailable.');
     return;
   }
   const directory = await mkdtemp(join(tmpdir(), 'setcast-doctor-'));
@@ -43,7 +42,6 @@ export async function diagnoseCodecs(session: RendererDiagnostics, command: Diag
         await encodeFixture(command, directory, join(directory, `probe.${container}`));
       return { message: 'Encoded H.264 + AAC in MP4, MOV and MKV.' };
     });
-    if (system) await checkWebp(session, command, directory, hint);
     if (video && ffprobe)
       await checkMedia(session, command, join(directory, 'probe.mp4'), inspectionFeatures);
     else
@@ -132,39 +130,6 @@ async function encodeFixture(command: DiagnosticCommand, directory: string, file
     'null',
     '-',
   ]);
-}
-
-async function checkWebp(
-  session: RendererDiagnostics,
-  command: DiagnosticCommand,
-  directory: string,
-  hint: string,
-) {
-  await session.check('webp.encode', ['webp'], hint, async () => {
-    const file = join(directory, 'probe.webp');
-    await command('ffmpeg', [
-      ...quiet,
-      ...videoInput(directory),
-      '-frames:v',
-      '1',
-      '-c:v',
-      'libwebp',
-      file,
-    ]);
-    await command('ffmpeg', [
-      ...quiet,
-      '-i',
-      file,
-      '-frames:v',
-      '1',
-      '-c:v',
-      'libwebp',
-      '-f',
-      'null',
-      '-',
-    ]);
-    return { message: 'Encoded and decoded a WebP image with libwebp.' };
-  });
 }
 
 async function checkMedia(

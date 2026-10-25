@@ -62,8 +62,9 @@ Checks include:
 - `local-server`: bind and fetch a loopback HTTP endpoint.
 - `browser.launch`: start the installed browser and open a page; record version or executable.
 - `browser.capture`: capture PNG/JPEG, decode the screenshots in the browser, and verify pixels
-  from CSS and Canvas 2D. Browser WebP uses this capture path followed by FFmpeg conversion.
-- `browser.webp`: Remotion's native WebP screenshot and pixel verification.
+  from CSS and Canvas 2D.
+- `browser.webp`: native WebP screenshot and pixel verification in either adapter. The browser
+  adapter also verifies lossless VP8L encoding; no system FFmpeg is needed.
 - `browser.webgl`: compile/link a WebGL 2 shader, draw a triangle and verify pixel readback.
   Report the actual WebGL renderer/vendor string. Software WebGL can pass this check.
 - `ffmpeg`, `ffprobe`: execute the appropriate binaries and retain their version lines.
@@ -71,14 +72,13 @@ Checks include:
   then decode/re-encode each fixture to check H.264/AAC decoding too.
 - `video.inspect`: verify MP4 codecs, dimensions and frame count. Browser export requires
   ffprobe for resume; missing ffprobe does not invalidate ordinary browser video export.
-- `webp.encode`: browser adapter's system libwebp encode and decode check.
 - `hardware.encode`: Remotion's actual platform H.264 hardware encoder on one frame. An encoder
   name in FFmpeg's compiled list is insufficient evidence that a device works.
 
 For missing browser Chromium, run `setcast browser-install`. For missing Remotion Chrome, run
 one normal Remotion render or still with network access so the adapter can install it. System
-FFmpeg needs `libx264` and AAC for video, plus `libwebp` for WebP. A missing optional encoder does
-not require changing renderer defaults. On Linux/Windows Remotion hardware encoding uses NVENC;
+FFmpeg needs `libx264` and AAC for video. A missing optional encoder does not require changing
+renderer defaults. On Linux/Windows Remotion hardware encoding uses NVENC;
 on macOS it uses VideoToolbox. A GPU that renders WebGL does not necessarily support that encoder.
 
 ## Report contract and host API

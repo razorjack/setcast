@@ -99,7 +99,7 @@ class BrowserChecks {
         await runtime.verify(`data:image/${format};base64,${await runtime.capture(format)}`);
       return { message: 'PNG and JPEG screenshots preserve CSS and Canvas 2D pixels.', details };
     });
-    if (this.session.capabilities.runtime.ffmpeg === 'packaged')
+    if (this.session.capabilities.features.includes('webp'))
       await this.check('browser.webp', ['webp'], async () => {
         await runtime.verify(`data:image/webp;base64,${await runtime.capture('webp')}`);
         return { message: 'WebP screenshot preserves fixture pixels.' };

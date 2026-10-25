@@ -56,3 +56,15 @@ software-rendering qualification failures visible.
   preserves every decoded pixel of a patterned fixture. Next: verify that this can replace the
   browser still export's PNG-to-FFmpeg conversion while preserving its lossless contract. This
   would remove the machine's observed libwebp setup limitation instead of only reporting it.
+
+- `0094583`: renderer-aware project validation committed.
+- Native WebP capture passed exact decoded-pixel comparisons for all 16 themes and field, tunnel
+  and constellation in landscape and portrait. With FFmpeg absent, WebP diagnostics and capture
+  pass while video reports unavailable. Failure and cancellation preserve existing outputs.
+- User requested stopping after the current piece. Finish WebP validation, documentation and its
+  commit, then stop; do not start another roadmap item.
+
+- WebP validation: ready passed 594 tests and both exporter acceptance suites passed. The
+  installed-package check now requires WebP readiness and renders both PNG and WebP.
+- Installed-package smoke passed, including native WebP readiness/export and browser H.264/AAC.
+  Session finished after this piece as requested. Nothing was pushed or published.

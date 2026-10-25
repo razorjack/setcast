@@ -35,7 +35,7 @@ of this setting.
 ## Supported settings and limits
 
 The prototype writes PNG, JPEG and WebP stills, and H.264 video with AAC audio in MP4, MOV or
-MKV. Video requires FFmpeg with `libx264`; WebP requires `libwebp`. PNG and JPEG need no system
+MKV. Video requires FFmpeg with `libx264` and AAC. PNG, JPEG and lossless WebP need no system
 FFmpeg. Audio analysis accepts mono or stereo recordings supported by the pinned Chromium
 and Mediabunny decoder. Re-export an unsupported input as PCM WAV.
 
@@ -153,8 +153,12 @@ delayed fonts, images, video seeking and looping, repeatable theme captures, fai
 performance dimming/blackout, and cancellation. Both exporters passed on 2026-10-22. A direct driver check also verifies backward seeks,
 video decoder reuse and delayed scene fonts within one page. Fixture audio pulses were within 5 ms
 of the visual pulse. Packed CLI checks cover browser PNG and H.264/AAC output as well as the
-default renderer and all built-in themes. JPEG, MOV and MKV are also verified. The local FFmpeg build lacks
-`libwebp`, so WebP reports that prerequisite before capture and was not qualified on this machine.
+default renderer and all built-in themes. JPEG, MOV and MKV are also verified. Native lossless
+WebP capture replaces the former FFmpeg conversion. `node packages/renderer-browser/bench/webp.ts`
+compares decoded WebP pixels with PNG across every theme and GPU visualizer, including portrait,
+and verifies still export and setup diagnostics with FFmpeg absent from PATH. Capture uses the
+pinned Chromium at quality 100 and rejects an unexpected lossy encoding. Readiness, cancellation
+and atomic output replacement apply to WebP as they do to PNG.
 
 Do not assume identical pixels across Chromium versions or graphics backends. On this machine,
 Playwright 1.64.1 / Chromium 156.0.8078.4 matched the `relief` portrait reference exactly.

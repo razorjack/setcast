@@ -611,8 +611,8 @@ unchecked and unavailable capabilities. Remotion stays the default, and diagnost
 install anything. See [renderer-diagnostics.md](renderer-diagnostics.md).
 
 Local probes passed both pinned browsers, PNG/JPEG pixels, H.264/AAC containers and WebGL 2 on
-ANGLE Metal / Apple M1 Pro. Remotion WebP and VideoToolbox passed. System FFmpeg lacks libwebp;
-browser WebP reports unavailable without blocking normal export or resume prerequisites. This is
+ANGLE Metal / Apple M1 Pro. Remotion WebP and VideoToolbox passed. The initial probe found system
+FFmpeg lacked libwebp; the native WebP work below removes that dependency. This is
 setup evidence, not a replacement for the existing sustained/physical qualification work.
 
 Validation: ready passed 584 tests. Both exporter acceptance suites and installed-package smoke
@@ -630,3 +630,14 @@ resolvers to `validateProject`. See [configuration-schemas.md](configuration-sch
 
 Validation: ready passed 591 tests and installed-package smoke passed both selections. Tests
 cover override isolation, scene warnings, unsupported options, fallback and runtime import bans.
+
+## Completed native lossless WebP capture
+
+Browser still export captures WebP directly from pinned Chromium and verifies lossless VP8L
+encoding before replacing the output. PNG, JPEG and WebP need no system FFmpeg. Setup diagnostics
+use the same capture path and report WebP readiness independently of video tools. The regression
+check compares decoded WebP and PNG pixels across all 16 themes and three GPU visualizers in
+landscape and portrait, with FFmpeg absent during capture. See [browser-renderer.md](browser-renderer.md).
+
+Validation: ready passed 594 tests, both exporter acceptance suites passed, and the WebP regression
+check passed with exact decoded pixels. Installed-package smoke passed, including WebP capture.

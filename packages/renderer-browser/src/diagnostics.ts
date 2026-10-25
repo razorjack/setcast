@@ -12,6 +12,7 @@ import {
 } from '@setcast/core/node';
 import { capabilities } from './capabilities.ts';
 import { captureBrowserArgs } from './export/graphics.ts';
+import { captureWebp } from './export/webp.ts';
 
 export async function diagnose(options: RendererDiagnosticOptions = {}) {
   const session = new RendererDiagnostics(capabilities, options);
@@ -33,7 +34,8 @@ export async function diagnose(options: RendererDiagnosticOptions = {}) {
         details: { version: browser.version() },
         prepare: () => page.evaluate(drawDiagnosticCanvas),
         capture: async (format) => {
-          if (format === 'webp') throw new Error('Browser WebP uses FFmpeg.');
+          if (format === 'webp')
+            return (await captureWebp(page, session.options.timeoutMs)).toString('base64');
           return (
             await page.screenshot({ type: format, timeout: session.options.timeoutMs })
           ).toString('base64');

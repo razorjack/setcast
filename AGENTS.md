@@ -578,6 +578,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Browser WebP stills use native CDP capture at quality 100. Verify the result uses lossless VP8L
+  before writing it; do not silently accept a lossy fallback after a browser update. All browser
+  still formats work without system FFmpeg. The WebP check compares decoded PNG/WebP pixels
+  across themes and GPU visualizers with FFmpeg absent during capture (`bench/webp.ts`).
+
 - `field` is an opt-in WebGL 2 contour visualizer in core/react, shared by live, recorded and
   both offline renderers. Every draw uses absolute time, audio and an explicit seed. It has no
   animation loop, feedback texture or accumulated simulation state. CPU-computed bounded phases

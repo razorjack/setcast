@@ -71,3 +71,6 @@ remove Remotion on a calendar deadline; require correctness, practical performan
   slower in this local comparison. Keep optimization and platform qualification as follow-up work.
 - Local FFmpeg lacks libwebp. Verified the prerequisite error occurs before capture, preserves
   an existing destination and removes temporary output. WebP encoding itself remains unqualified.
+
+The historical WebP limitation above was removed on 2026-10-25 by native lossless Chromium
+capture. See [browser-renderer.md](browser-renderer.md) for the current requirements and checks.

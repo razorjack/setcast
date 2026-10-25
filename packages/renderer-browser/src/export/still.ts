@@ -1,4 +1,4 @@
-import { rm } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 import type { Page } from 'playwright';
 import {
@@ -11,7 +11,7 @@ import {
 import { prepareFrame, withCapture, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
 import { graphicsArgs } from './graphics.ts';
-import { runFfmpeg } from './ffmpeg.ts';
+import { captureWebp } from './webp.ts';
 
 export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
   graphicsArgs(options.gl);
@@ -26,7 +26,6 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
     throw new SetcastError(`Invalid still time ${options.at}.`, 'Use a finite time in seconds.');
   return withRenderSession(() =>
     atomicOutput(options.out, options.signal, async (temporary) => {
-      if (extension === '.webp') await requireWebp(options.signal);
       await withCapture(project, options, async (page) => {
         await prepareFrame(page, frame);
         await captureImage(page, temporary, options);
@@ -48,42 +47,5 @@ async function captureImage(page: Page, temporary: string, options: StillOptions
     });
     return;
   }
-  const png = `${temporary}.png`;
-  await page.screenshot({ path: png, type: 'png' });
-  try {
-    await runFfmpeg(['-i', png, '-c:v', 'libwebp', '-lossless', '1', temporary], options.signal);
-  } finally {
-    await rm(png, { force: true });
-  }
-}
-
-async function requireWebp(signal?: AbortSignal) {
-  try {
-    await runFfmpeg(
-      [
-        '-f',
-        'lavfi',
-        '-i',
-        'color=s=16x16',
-        '-frames:v',
-        '1',
-        '-c:v',
-        'libwebp',
-        '-lossless',
-        '1',
-        '-f',
-        'null',
-        '-',
-      ],
-      signal,
-    );
-  } catch (cause) {
-    if (cause instanceof SetcastError && cause.hint?.includes("Unknown encoder 'libwebp'"))
-      throw new SetcastError(
-        'This FFmpeg build cannot encode WebP stills.',
-        'Choose .png or .jpg, select --renderer remotion, or install an FFmpeg build with libwebp.',
-        { cause, exitCode: 1 },
-      );
-    throw cause;
-  }
+  await writeFile(temporary, await captureWebp(page));
 }

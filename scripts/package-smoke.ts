@@ -238,14 +238,16 @@ async function exerciseBrowser(
   assert((await run('browser-install', '--help')).stdout.includes('pinned Chromium'));
   await run('browser-install');
   const doctor = JSON.parse(
-    (await run('doctor', '--renderer', 'browser', '--require', 'still,video,resume', '--json'))
+    (await run('doctor', '--renderer', 'browser', '--require', 'still,webp,video,resume', '--json'))
       .stdout,
   );
   assert.equal(doctor.ready, true);
   assert.equal(doctor.features.resume, 'ready');
-  const still = join(temporary, 'browser.png');
-  await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
-  assert((await stat(still)).size > 0);
+  for (const extension of ['png', 'webp']) {
+    const still = join(temporary, `browser.${extension}`);
+    await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
+    assert((await stat(still)).size > 0);
+  }
   const video = join(temporary, 'browser.mp4');
   await run(
     'render',
@@ -261,5 +263,5 @@ async function exerciseBrowser(
   assert(!existsSync(`${video}.setcast-resume`), 'Successful resume export left checkpoints');
   const bytes = (await readFile(video)).toString('latin1');
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
-  console.log('  installed browser exporter: PNG and H.264 + AAC');
+  console.log('  installed browser exporter: PNG, lossless WebP and H.264 + AAC');
 }

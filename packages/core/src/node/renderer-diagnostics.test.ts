@@ -166,7 +166,7 @@ test('missing ffprobe blocks resume without invalidating video encoding', async 
     features: {
       video: 'ready',
       resume: 'unavailable',
-      webp: 'ready',
+      webp: 'unchecked',
     },
   });
 });
