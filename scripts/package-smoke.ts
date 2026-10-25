@@ -183,6 +183,10 @@ async function exerciseCli(): Promise<void> {
     assert.equal(capabilities.renderer, renderer);
     assert(capabilities.features.includes('video'));
   }
+  const doctor = JSON.parse((await run('doctor', '--renderer', 'remotion', '--json')).stdout);
+  assert.equal(doctor.version, 1);
+  assert.equal(doctor.ready, true);
+  assert.equal(doctor.features.video, 'ready');
   const schema = JSON.parse((await run('schema', 'live')).stdout);
   assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
   assert(schema.properties.visualizer.anyOf.length > 0);
@@ -223,6 +227,12 @@ async function exerciseBrowser(
 ) {
   assert((await run('browser-install', '--help')).stdout.includes('pinned Chromium'));
   await run('browser-install');
+  const doctor = JSON.parse(
+    (await run('doctor', '--renderer', 'browser', '--require', 'still,video,resume', '--json'))
+      .stdout,
+  );
+  assert.equal(doctor.ready, true);
+  assert.equal(doctor.features.resume, 'ready');
   const still = join(temporary, 'browser.png');
   await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
   assert((await stat(still)).size > 0);

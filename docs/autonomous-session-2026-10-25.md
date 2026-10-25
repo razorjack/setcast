@@ -28,3 +28,19 @@ software-rendering qualification failures visible.
 - Read the adapter boundaries, CLI command conventions and existing performance/qualification
   records. Browser export uses system FFmpeg; Remotion uses its packaged binaries. PNG/JPEG
   browser stills do not require FFmpeg, and resume additionally requires ffprobe.
+
+- `afc6811`: capability descriptors, lightweight package entries and CLI reports. Ready passed
+  573 tests; installed-package smoke passed both renderer descriptors and browser export.
+- Diagnostics now execute both installed runtimes. Local results: both passed PNG/JPEG, H.264/AAC
+  containers and WebGL 2 on ANGLE Metal / Apple M1 Pro. Remotion WebP and VideoToolbox passed;
+  system FFmpeg 9.0.2 lacks libwebp, so browser WebP is correctly unavailable while video and
+  resume prerequisites pass. No installations or default changes were made.
+
+- Follow-up chosen: renderer compatibility during project validation. Reuse the pure descriptor
+  to identify settings the selected adapter cannot accept before starting a browser. Keep machine
+  readiness (`doctor`) separate, and avoid adding a plugin loader without its full cross-runtime
+  and packaging contract in this session.
+- Diagnostics validation: ready passed 584 tests; both exporter acceptance suites and installed
+  package smoke passed. Tests cover missing executables with no downloads, optional failures,
+  timeouts, late browser handles, cleanup, cancellation and JSON/usage behavior. Raw local reports
+  are in `examples/demo/out/doctor/`; exporter acceptance artifacts use `doctor-acceptance-*`.

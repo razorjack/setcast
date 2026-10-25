@@ -29,6 +29,9 @@ needs working fonts, decoders and graphics. Regenerate editor schemas after upgr
 [Renderer capabilities](renderer-diagnostics.md) can be queried without starting a browser:
 `setcast capabilities --renderer browser --json`. Each adapter also exports a lightweight
 `/capabilities` entry for hosts and configuration tools. This describes support, not machine readiness.
+`setcast doctor --renderer browser --require video,gpu,resume --json` runs small machine checks.
+Adapters export `diagnose(options)` from `/diagnostics`; its versioned report keeps optional
+failures separate from the features the caller requires. Neither command reads a project.
 
 Project YAML has no `version` or `$schema` key. Portable venue, camera-pattern and MIDI documents
 have their own versioned envelopes. Validation reports and journals also have separate contracts;

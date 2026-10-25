@@ -4,6 +4,7 @@ export default defineConfig({
     entry: [
       'src/index.ts',
       'src/capabilities.ts',
+      'src/diagnostics.ts',
       'src/browser/main.tsx',
       'src/export/index.ts',
       'src/export/scene.tsx',

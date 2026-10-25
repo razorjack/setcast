@@ -346,6 +346,13 @@ Core owns `RendererCapabilities`, `RendererName` and `RendererFeature`. Each ada
 its descriptor from a lightweight `/capabilities` entry with no runtime dependencies. The CLI's
 `setcast capabilities [--renderer browser] [--json]` reads it without a project or browser.
 These declarations describe Setcast's adapter support, not runtime availability or qualification.
+Adapters also export `diagnose(options)` from `/diagnostics`. Core owns versioned report types
+and feature readiness; core/node supplies shared probe/report helpers. The CLI's `doctor` checks
+the machine without reading a project or downloading executables. Optional failed checks do not
+fail unrelated requested features. Browser uses system FFmpeg, Remotion its packaged binaries;
+JPEG/WAV fixtures avoid optional lavfi filters and rawvideo demuxers omitted by Remotion. The
+read-only Remotion browser lookup runs in a child because rejecting its download callback poisons
+its process-global ensureBrowser queue. Probe helpers evaluated in a browser must be self-contained.
 See docs/renderer-diagnostics.md.
 
 ### Configuration tooling

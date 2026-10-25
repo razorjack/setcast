@@ -23,3 +23,20 @@ export {
   type ValidationDocument,
   type ValidationReport,
 } from './validate.ts';
+
+export {
+  RendererDiagnostics,
+  diagnosticCommand,
+  type DiagnosticEvidence,
+  type DiagnosticCommand,
+} from './renderer-diagnostics.ts';
+export { diagnoseCodecs } from './diagnostic-codecs.ts';
+export {
+  drawDiagnosticCanvas,
+  verifyDiagnosticImage,
+  probeDiagnosticWebGL,
+} from './diagnostic-browser.ts';
+
+export { diagnoseBrowserRuntime, type DiagnosticBrowser } from './diagnostic-browser-runtime.ts';
+
+export { diagnoseLocalServer } from './diagnostic-server.ts';

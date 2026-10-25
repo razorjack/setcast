@@ -356,3 +356,13 @@ export type {
   RendererFeature,
   RendererCapabilities,
 } from './renderer-capabilities.ts';
+
+export {
+  RENDERER_FEATURES,
+  diagnosticOptions,
+  rendererReadiness,
+  type RendererDiagnosticOptions,
+  type RendererCheck,
+  type RendererReadiness,
+  type RendererDiagnosticReport,
+} from './renderer-diagnostics.ts';

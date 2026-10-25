@@ -118,6 +118,8 @@ Configuration editors and external tools can use locally generated [JSON Schemas
 `setcast schema project` and `setcast schema live` print the installed authoring contracts.
 `setcast validate [dir]` checks configuration, assets and the timeline before rendering; use `--live`
 for live projects or `--json` for a structured report.
+[Renderer diagnostics](docs/renderer-diagnostics.md) separate declared support (`setcast capabilities`)
+from machine checks (`setcast doctor --renderer browser --json`).
 The [platform guide](docs/platform.md) maps configuration, portable setup, renderer contracts and
 visualizer authoring, including the current boundaries of JavaScript plugin support.
 
@@ -275,6 +277,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
 | `setcast validate` | checks project configuration, timeline and directly referenced scenes without rendering; `--live`, `--json` |
+| `setcast doctor` | checks local renderer setup with browser and codec probes; `--renderer`, `--require`, `--json` |
 | `setcast capabilities` | describes adapter support without starting a browser; `--renderer`, `--json` |
 | `setcast schema`   | prints input JSON Schemas for project, live, visualizer and portable setup configuration |
 | `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |

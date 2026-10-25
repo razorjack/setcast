@@ -599,3 +599,22 @@ acceptance suites and all GPU visualizer/live checks passed. A real-master frame
 the same decoded-pixel MD5 as the pre-optimization image. Sustained software-rendering failures
 remain unqualified; profiling identifies context creation/disposal as additional costs without
 yet establishing a complete correction. See [software-qualification-plan.md](software-qualification-plan.md).
+
+
+## Completed renderer capability reporting and setup diagnostics
+
+Each adapter exports a lightweight, versioned capability descriptor and `diagnose(options)`.
+`setcast capabilities` describes supported settings without starting a runtime; `setcast doctor`
+executes small local browser/codec probes and reports feature-specific readiness. Hosts can
+consume the same JSON/types, require only the features they use and distinguish unsupported,
+unchecked and unavailable capabilities. Remotion stays the default, and diagnostics do not
+install anything. See [renderer-diagnostics.md](renderer-diagnostics.md).
+
+Local probes passed both pinned browsers, PNG/JPEG pixels, H.264/AAC containers and WebGL 2 on
+ANGLE Metal / Apple M1 Pro. Remotion WebP and VideoToolbox passed. System FFmpeg lacks libwebp;
+browser WebP reports unavailable without blocking normal export or resume prerequisites. This is
+setup evidence, not a replacement for the existing sustained/physical qualification work.
+
+Validation: ready passed 584 tests. Both exporter acceptance suites and installed-package smoke
+passed, including packed diagnostics for both adapters. Failure tests cover missing tools without
+downloads, optional feature failures, cancellation, timeouts and browser cleanup.

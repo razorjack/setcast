@@ -11,7 +11,10 @@ const fs = vi.hoisted(() => ({
   rename: vi.fn(),
 }));
 
-vi.mock('node:child_process', () => ({ spawn: childProcess.spawn }));
+vi.mock('node:child_process', async (original) => ({
+  ...(await original<typeof import('node:child_process')>()),
+  spawn: childProcess.spawn,
+}));
 vi.mock('node:fs/promises', () => fs);
 vi.mock('./hardware.ts', () => ({
   hardwareEncoding: async (hardwareAcceleration: string) => ({ hardwareAcceleration }),

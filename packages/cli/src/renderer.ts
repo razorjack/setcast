@@ -4,6 +4,7 @@ import {
   type Exporter,
   type ProjectConfig,
   type HardwareAcceleration,
+  type RendererDiagnosticOptions,
 } from '@setcast/core';
 export type { PreviewOptions } from '@setcast/renderer-remotion';
 
@@ -29,6 +30,14 @@ export async function rendererCapabilities(name: Renderer) {
       ? await import('@setcast/renderer-browser/capabilities')
       : await import('@setcast/renderer-remotion/capabilities');
   return adapter.capabilities;
+}
+
+export async function diagnoseRenderer(name: Renderer, options: RendererDiagnosticOptions) {
+  const adapter =
+    name === 'browser'
+      ? await import('@setcast/renderer-browser/diagnostics')
+      : await import('@setcast/renderer-remotion/diagnostics');
+  return adapter.diagnose(options);
 }
 
 export async function withRenderSession<T>(task: () => Promise<T>, name: Renderer = 'remotion') {

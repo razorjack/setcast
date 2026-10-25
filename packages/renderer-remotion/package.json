@@ -12,14 +12,16 @@
     ".": "./src/index.ts",
     "./package.json": "./package.json",
     "./composition": "./src/Root.tsx",
-    "./capabilities": "./src/capabilities.ts"
+    "./capabilities": "./src/capabilities.ts",
+    "./diagnostics": "./src/diagnostics.ts"
   },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
       "./package.json": "./package.json",
       "./composition": "./dist/Root.mjs",
-      "./capabilities": "./dist/capabilities.mjs"
+      "./capabilities": "./dist/capabilities.mjs",
+      "./diagnostics": "./dist/diagnostics.mjs"
     },
     "access": "public"
   },

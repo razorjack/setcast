@@ -8,7 +8,7 @@ import {
   type StillOptions,
 } from '@setcast/core';
 import { bundlePlayer } from '../bundle.ts';
-import { graphicsArgs } from './graphics.ts';
+import { captureBrowserArgs } from './graphics.ts';
 import { play } from '../index.ts';
 import { restrictResources, assertResources } from './resources.ts';
 import type {} from './scene.tsx';
@@ -112,13 +112,7 @@ export async function withCapture<T>(
 }
 
 async function launch(backend: GraphicsBackend) {
-  const args = [
-    // Keep asset/React readiness; remove display refresh pacing only from offline capture.
-    '--disable-frame-rate-limit',
-    '--disable-background-timer-throttling',
-    '--disable-renderer-backgrounding',
-    ...graphicsArgs(backend),
-  ];
+  const args = captureBrowserArgs(backend);
   try {
     return await chromium.launch({ args });
   } catch (cause) {

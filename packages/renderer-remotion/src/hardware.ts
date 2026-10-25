@@ -8,7 +8,7 @@ export interface HardwareEncoding {
 }
 
 /** The H.264 encoder Remotion 4.0.513 selects for hardware acceleration (`get-codec-name.js`). */
-function hardwareEncoder(platform: NodeJS.Platform): string | null {
+export function hardwareEncoder(platform: NodeJS.Platform): string | null {
   if (platform === 'darwin') return 'h264_videotoolbox';
   if (platform === 'linux' || platform === 'win32') return 'h264_nvenc';
   return null;
