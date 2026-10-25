@@ -16,6 +16,7 @@ const commands: Record<string, () => Promise<Command>> = {
   clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
   inspect: () => import('./commands/inspect.ts'),
+  capabilities: () => import('./commands/capabilities.ts'),
   schema: () => import('./commands/schema.ts'),
   validate: () => import('./commands/validate.ts'),
   chapters: () => import('./commands/chapters.ts'),
@@ -37,6 +38,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('clip')}      cut a promo clip around a drop (--all for every drop)
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document
+  ${steel('capabilities')}  describe renderer support without starting its runtime
   ${steel('schema')}    print an authoring JSON Schema for editors and tools
   ${steel('validate')}  check project configuration, timeline and assets without rendering
   ${steel('chapters')}  print YouTube chapters + description

@@ -3,6 +3,7 @@ export default defineConfig({
   pack: {
     entry: [
       'src/index.ts',
+      'src/capabilities.ts',
       'src/browser/main.tsx',
       'src/export/index.ts',
       'src/export/scene.tsx',

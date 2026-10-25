@@ -275,6 +275,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
 | `setcast validate` | checks project configuration, timeline and directly referenced scenes without rendering; `--live`, `--json` |
+| `setcast capabilities` | describes adapter support without starting a browser; `--renderer`, `--json` |
 | `setcast schema`   | prints input JSON Schemas for project, live, visualizer and portable setup configuration |
 | `setcast inspect`  | explains contribution origins; `--at` queries a moment, `--json` exports normalized data |
 | `setcast chapters` | prints the YouTube description with chapters and warns about anything that would stop YouTube showing them |

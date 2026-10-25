@@ -175,6 +175,14 @@ async function exerciseCli(): Promise<void> {
   assert((await readFile(cli, 'utf8')).startsWith('#!/usr/bin/env node'));
   const run = (...args: string[]) => command(process.execPath, [cli, ...args], temporary);
   assert.equal((await run('--version')).stdout.trim(), manifest.version);
+  for (const renderer of ['remotion', 'browser']) {
+    const capabilities = JSON.parse(
+      (await run('capabilities', '--renderer', renderer, '--json')).stdout,
+    );
+    assert.equal(capabilities.version, 1);
+    assert.equal(capabilities.renderer, renderer);
+    assert(capabilities.features.includes('video'));
+  }
   const schema = JSON.parse((await run('schema', 'live')).stdout);
   assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
   assert(schema.properties.visualizer.anyOf.length > 0);

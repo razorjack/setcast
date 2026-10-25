@@ -15,7 +15,8 @@
     "./export": "./src/export/index.ts",
     "./export-scene": "./src/export/scene.tsx",
     "./preview": "./src/preview/server.ts",
-    "./preview-ui": "./src/preview/main.tsx"
+    "./preview-ui": "./src/preview/main.tsx",
+    "./capabilities": "./src/capabilities.ts"
   },
   "publishConfig": {
     "exports": {
@@ -25,7 +26,8 @@
       "./export": "./dist/export/index.mjs",
       "./export-scene": "./dist/export/scene.mjs",
       "./preview": "./dist/preview/server.mjs",
-      "./preview-ui": "./dist/preview/main.mjs"
+      "./preview-ui": "./dist/preview/main.mjs",
+      "./capabilities": "./dist/capabilities.mjs"
     },
     "access": "public"
   },

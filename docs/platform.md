@@ -26,6 +26,10 @@ report and reusable `configurationSchema` / `validateProject` APIs. JSON Schema 
 structure; project loading also checks references, assets and finite timelines. Rendering still
 needs working fonts, decoders and graphics. Regenerate editor schemas after upgrading Setcast.
 
+[Renderer capabilities](renderer-diagnostics.md) can be queried without starting a browser:
+`setcast capabilities --renderer browser --json`. Each adapter also exports a lightweight
+`/capabilities` entry for hosts and configuration tools. This describes support, not machine readiness.
+
 Project YAML has no `version` or `$schema` key. Portable venue, camera-pattern and MIDI documents
 have their own versioned envelopes. Validation reports and journals also have separate contracts;
 a version number from one document does not describe another.

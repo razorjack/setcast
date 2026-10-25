@@ -350,3 +350,9 @@ export {
 } from './midi.ts';
 
 export { MidiControlBuffer, type MidiControl } from './midi-buffer.ts';
+
+export type {
+  RendererName,
+  RendererFeature,
+  RendererCapabilities,
+} from './renderer-capabilities.ts';

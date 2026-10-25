@@ -23,6 +23,14 @@ export function rendererName(value: string | undefined, configured: Renderer): R
   );
 }
 
+export async function rendererCapabilities(name: Renderer) {
+  const adapter =
+    name === 'browser'
+      ? await import('@setcast/renderer-browser/capabilities')
+      : await import('@setcast/renderer-remotion/capabilities');
+  return adapter.capabilities;
+}
+
 export async function withRenderSession<T>(task: () => Promise<T>, name: Renderer = 'remotion') {
   const exporter =
     name === 'browser'

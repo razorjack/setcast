@@ -340,6 +340,14 @@ list; implemented today: visualizer, theme, tracklist importer):
 
 Community naming: `setcast-theme-*`, `setcast-viz-*`, `setcast-adapter-*`, `setcast-import-*`.
 
+### Renderer capability reporting
+
+Core owns `RendererCapabilities`, `RendererName` and `RendererFeature`. Each adapter exports
+its descriptor from a lightweight `/capabilities` entry with no runtime dependencies. The CLI's
+`setcast capabilities [--renderer browser] [--json]` reads it without a project or browser.
+These declarations describe Setcast's adapter support, not runtime availability or qualification.
+See docs/renderer-diagnostics.md.
+
 ### Configuration tooling
 
 `configurationSchema(kind)` in core generates draft-2020-12 input schemas for project, live,

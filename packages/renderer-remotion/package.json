@@ -11,13 +11,15 @@
   "exports": {
     ".": "./src/index.ts",
     "./package.json": "./package.json",
-    "./composition": "./src/Root.tsx"
+    "./composition": "./src/Root.tsx",
+    "./capabilities": "./src/capabilities.ts"
   },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
       "./package.json": "./package.json",
-      "./composition": "./dist/Root.mjs"
+      "./composition": "./dist/Root.mjs",
+      "./capabilities": "./dist/capabilities.mjs"
     },
     "access": "public"
   },
