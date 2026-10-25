@@ -276,7 +276,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
 | `setcast still`    | renders one frame as an image, for the thumbnail; `--at 1:04` picks the moment, `--theme all` grabs one per theme |
-| `setcast validate` | checks project configuration, timeline and directly referenced scenes without rendering; `--live`, `--json` |
+| `setcast validate` | checks configuration, timeline, scenes and selected renderer support; `--live`, `--renderer`, `--json` |
 | `setcast doctor` | checks local renderer setup with browser and codec probes; `--renderer`, `--require`, `--json` |
 | `setcast capabilities` | describes adapter support without starting a browser; `--renderer`, `--json` |
 | `setcast schema`   | prints input JSON Schemas for project, live, visualizer and portable setup configuration |

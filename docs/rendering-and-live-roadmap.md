@@ -618,3 +618,15 @@ setup evidence, not a replacement for the existing sustained/physical qualificat
 Validation: ready passed 584 tests. Both exporter acceptance suites and installed-package smoke
 passed, including packed diagnostics for both adapters. Failure tests cover missing tools without
 downloads, optional feature failures, cancellation, timeouts and browser cleanup.
+
+## Completed renderer-aware project validation
+
+Recorded CLI validation checks output settings against the configured renderer or an explicit
+`--renderer` override without loading rendering libraries. Unsupported settings retain their
+`output.*` paths, optional hardware fallback is a warning, and reports record renderer selection
+and whether capabilities were checked. Live scene validation remains independent of offline
+export settings. Hosts can use the pure `rendererCompatibility` function and supply capability
+resolvers to `validateProject`. See [configuration-schemas.md](configuration-schemas.md).
+
+Validation: ready passed 591 tests and installed-package smoke passed both selections. Tests
+cover override isolation, scene warnings, unsupported options, fallback and runtime import bans.

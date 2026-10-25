@@ -175,6 +175,38 @@ async function exerciseCli(): Promise<void> {
   assert((await readFile(cli, 'utf8')).startsWith('#!/usr/bin/env node'));
   const run = (...args: string[]) => command(process.execPath, [cli, ...args], temporary);
   assert.equal((await run('--version')).stdout.trim(), manifest.version);
+  await exerciseTooling(run);
+  const project = join(temporary, 'project');
+  await run('init', project, '--demo', '--yes');
+  const configFile = join(project, 'setcast.yaml');
+  const config = (await readFile(configFile, 'utf8'))
+    .replace('width: 1920', 'width: 640')
+    .replace('height: 1080', 'height: 360');
+  await writeFile(join(project, 'logo.svg'), BRANDING_LOGO);
+  await writeFile(configFile, `${config}\n${BRANDING}`);
+  const inspected = JSON.parse((await run('inspect', project, '--json')).stdout);
+  assert(inspected.plays.length > 0);
+  const validated = JSON.parse((await run('validate', project, '--json')).stdout);
+  assert.equal(validated.valid, true);
+  assert.deepEqual(validated.renderer, { name: 'remotion', checked: true });
+  const browserValidation = JSON.parse(
+    (await run('validate', project, '--renderer', 'browser', '--json')).stdout,
+  );
+  assert.equal(browserValidation.valid, true);
+  assert.deepEqual(browserValidation.renderer, { name: 'browser', checked: true });
+  assert.equal(validated.documents[0].summary.width, 640);
+  await run('still', project, '--theme', 'all', '--at', '1', '--out', join(temporary, 'theme.jpg'));
+  assert((await stat(join(temporary, 'theme-sterile-tech.jpg'))).size > 0);
+  const video = join(temporary, 'render.mp4');
+  await run('render', project, '--range', '0-0.2', '--out', video, '--concurrency', '1');
+  const bytes = (await readFile(video)).toString('latin1');
+  for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
+  assert((await run('play', '--help')).stdout.includes('setcast play'));
+  await exercisePlayer(project);
+  if (values.browser) await exerciseBrowser(run, project);
+}
+
+async function exerciseTooling(run: (...args: string[]) => Promise<{ stdout: string }>) {
   for (const renderer of ['remotion', 'browser']) {
     const capabilities = JSON.parse(
       (await run('capabilities', '--renderer', renderer, '--json')).stdout,
@@ -191,28 +223,6 @@ async function exerciseCli(): Promise<void> {
   assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
   assert(schema.properties.visualizer.anyOf.length > 0);
   assert.equal(JSON.parse((await run('schema', 'midi')).stdout).properties.version.const, 1);
-  const project = join(temporary, 'project');
-  await run('init', project, '--demo', '--yes');
-  const configFile = join(project, 'setcast.yaml');
-  const config = (await readFile(configFile, 'utf8'))
-    .replace('width: 1920', 'width: 640')
-    .replace('height: 1080', 'height: 360');
-  await writeFile(join(project, 'logo.svg'), BRANDING_LOGO);
-  await writeFile(configFile, `${config}\n${BRANDING}`);
-  const inspected = JSON.parse((await run('inspect', project, '--json')).stdout);
-  assert(inspected.plays.length > 0);
-  const validated = JSON.parse((await run('validate', project, '--json')).stdout);
-  assert.equal(validated.valid, true);
-  assert.equal(validated.documents[0].summary.width, 640);
-  await run('still', project, '--theme', 'all', '--at', '1', '--out', join(temporary, 'theme.jpg'));
-  assert((await stat(join(temporary, 'theme-sterile-tech.jpg'))).size > 0);
-  const video = join(temporary, 'render.mp4');
-  await run('render', project, '--range', '0-0.2', '--out', video, '--concurrency', '1');
-  const bytes = (await readFile(video)).toString('latin1');
-  for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
-  assert((await run('play', '--help')).stdout.includes('setcast play'));
-  await exercisePlayer(project);
-  if (values.browser) await exerciseBrowser(run, project);
 }
 
 async function exercisePlayer(projectDir: string): Promise<void> {

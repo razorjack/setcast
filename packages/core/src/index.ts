@@ -366,3 +366,9 @@ export {
   type RendererReadiness,
   type RendererDiagnosticReport,
 } from './renderer-diagnostics.ts';
+
+export {
+  rendererCompatibility,
+  type RendererCompatibilityOptions,
+  type RendererCompatibilityIssue,
+} from './renderer-compatibility.ts';

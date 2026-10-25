@@ -368,7 +368,12 @@ cases because JSON Schema patterns cannot carry JavaScript regex flags. Ajv is t
 project loaders, probe recorded duration and check direct scene references. Reports are versioned
 JSON with root-relative file/key diagnostics; warnings remain nonfatal. Keep source labels such
 as mix timeline separate from physical config filenames. Preserve authored paths when realpath
-resolves aliases. Validation does not render, decode full features, activate nested scene sequences
+resolves aliases. Recorded CLI validation supplies an adapter capability resolver and checks output settings without
+importing rendering libraries. `--renderer` overrides selection for validation only. Core callers
+supply `rendererCapabilities(name)` to opt in; reports distinguish unchecked capabilities. Pure
+`rendererCompatibility` returns support issues, including CLI hardware fallback warnings, without
+applying fallback or probing devices. Live scenes never receive offline renderer checks.
+Validation does not render, decode full features, activate nested scene sequences
 or scan unused scene-bank entries. Recorded scene ConfigErrors include their preset path.
 See docs/configuration-schemas.md for editor association and contract limits.
 

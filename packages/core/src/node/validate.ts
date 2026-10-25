@@ -7,11 +7,17 @@ import { probeAudio } from './media.ts';
 import { sceneDirectory } from './copy-scenes.ts';
 import { validationFailure } from './validation-report.ts';
 import { SetcastError } from '../errors.ts';
+import type { RendererName, RendererCapabilities } from '../renderer-capabilities.ts';
+import {
+  rendererCompatibility,
+  type RendererCompatibilityIssue,
+} from '../renderer-compatibility.ts';
+import type { ProjectConfig } from '../config.ts';
 
 export type ValidationKind = 'project' | 'live';
 export interface ValidationDiagnostic {
   level: 'error' | 'warning';
-  code: 'configuration' | 'project' | 'io' | 'runtime' | 'project-warning';
+  code: 'configuration' | 'project' | 'io' | 'runtime' | 'project-warning' | 'renderer';
   file: string;
   path: string;
   message: string;
@@ -39,11 +45,17 @@ export interface ValidationReport {
   kind: ValidationKind;
   valid: boolean;
   exitCode: 0 | 1 | 2;
+  renderer: { name: RendererName; checked: boolean } | null;
   documents: ValidationDocument[];
   diagnostics: ValidationDiagnostic[];
 }
 export interface ValidationOptions extends Pick<LoadOptions, 'themes' | 'probeDuration'> {
   kind?: ValidationKind;
+  /** Override the recorded project's renderer without changing its configuration. */
+  renderer?: RendererName;
+  rendererCapabilities?: (
+    name: RendererName,
+  ) => RendererCapabilities | Promise<RendererCapabilities>;
 }
 
 /** Load authored projects and direct scene references, without rendering or whole-set analysis. */
@@ -55,12 +67,18 @@ export async function validateProject(
   const kind = options.kind ?? 'project';
   if (kind !== 'project' && kind !== 'live')
     throw new SetcastError(`Unknown validation kind "${String(kind)}".`, 'Use project or live.');
+  if (options.renderer && (kind === 'live' || !options.rendererCapabilities))
+    throw new SetcastError(
+      'Renderer overrides require a recorded project and capability resolver.',
+      'Use rendererCapabilities with a recorded project; live output has no offline renderer selection.',
+    );
   const report: ValidationReport = {
     version: 1,
     root,
     kind,
     valid: true,
     exitCode: 0,
+    renderer: null,
     documents: [],
     diagnostics: [],
   };
@@ -101,8 +119,9 @@ class ValidationSession {
     this.report.documents.push(document);
     try {
       document.usesDefaults = kind === 'live' && !(await exists(join(directory, filename)));
-      const { project, warnings, references } = await this.load(directory, kind);
-      document.valid = true;
+      const { project, warnings, references, compatibility } = await this.load(directory, kind);
+      document.valid = !compatibility.some((issue) => issue.level === 'error');
+      this.recordCompatibility(compatibility, file);
       document.summary = summarize(project);
       this.report.diagnostics.push(
         ...warnings.map((message): ValidationDiagnostic => ({
@@ -125,6 +144,7 @@ class ValidationSession {
       const loaded = await loadLiveProject(directory, { themes: this.options.themes });
       return {
         ...loaded,
+        compatibility: [] as RendererCompatibilityIssue[],
         references: loaded.project.live.sequence?.scenes.map((scene) => scene.preset) ?? [],
       };
     }
@@ -132,7 +152,39 @@ class ValidationSession {
       ...this.options,
       probeDuration: this.options.probeDuration ?? ((audio, root) => probeAudio({ audio }, root)),
     });
-    return { ...loaded, references: loaded.config.scenes?.map((scene) => scene.preset) ?? [] };
+    const compatibility = await this.checkRenderer(loaded.config);
+    return {
+      ...loaded,
+      compatibility,
+      references: loaded.config.scenes?.map((scene) => scene.preset) ?? [],
+    };
+  }
+
+  private async checkRenderer(config: ProjectConfig): Promise<RendererCompatibilityIssue[]> {
+    const name = this.options.renderer ?? config.renderer;
+    this.report.renderer = { name, checked: false };
+    if (!this.options.rendererCapabilities) return [];
+    const capabilities = await this.options.rendererCapabilities(name);
+    if (capabilities.renderer !== name || capabilities.version !== 1)
+      throw new Error(`Capability resolver returned an incompatible descriptor for ${name}.`);
+    const issues = rendererCompatibility(capabilities, config.output);
+    this.report.renderer.checked = true;
+    return issues;
+  }
+
+  private recordCompatibility(issues: RendererCompatibilityIssue[], file: string) {
+    this.report.diagnostics.push(
+      ...issues.map((issue): ValidationDiagnostic => ({
+        ...issue,
+        code: 'renderer',
+        file,
+        path: issue.path ? `output.${issue.path}` : 'output',
+      })),
+    );
+    if (issues.some((issue) => issue.level === 'error')) {
+      this.report.valid = false;
+      if (this.report.exitCode !== 1) this.report.exitCode = 2;
+    }
   }
 
   fail(error: unknown, file: string) {

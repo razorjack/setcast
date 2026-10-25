@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { beforeEach, afterEach, expect, test, vi } from 'vite-plus/test';
 import type { Theme } from '../theme.ts';
 import { validateProject } from './validate.ts';
+import { fixture } from '../renderer-diagnostics.fixture.ts';
 
 let root: string;
 let themes: Record<string, Theme>;
@@ -146,4 +147,77 @@ test('missing configuration and assets fail; unexpected probe failures use runti
     exitCode: 1,
     diagnostics: [{ code: 'runtime', message: 'probe unavailable' }],
   });
+});
+
+test('renderer incompatibilities keep their authored paths and do not stop scene validation', async () => {
+  await recorded(
+    'renderer: browser\noutput: {gl: egl, parallelEncoding: false}\nscenes: [{at: 1, preset: scene}]',
+  );
+  await write('scene/live.yaml', 'visualizer: {name: overview}');
+  const rendererCapabilities = vi.fn(() => fixture);
+  const report = await validateProject(root, {
+    themes,
+    probeDuration: async () => 60,
+    rendererCapabilities,
+  });
+  expect(rendererCapabilities).toHaveBeenCalledExactlyOnceWith('browser');
+  expect(report).toMatchObject({
+    valid: false,
+    exitCode: 2,
+    renderer: { name: 'browser', checked: true },
+  });
+  expect(report.documents).toMatchObject([
+    { valid: false },
+    { file: 'scene/live.yaml', valid: true },
+  ]);
+  expect(report.diagnostics).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ file: 'setcast.yaml', path: 'output.gl', code: 'renderer' }),
+      expect.objectContaining({
+        file: 'setcast.yaml',
+        path: 'output.parallelEncoding',
+        code: 'renderer',
+      }),
+      expect.objectContaining({
+        file: 'scene/live.yaml',
+        code: 'project-warning',
+      }),
+    ]),
+  );
+});
+
+test('renderer selection is explicit in reports and overrides do not rewrite configuration', async () => {
+  await recorded('output: {hardwareAcceleration: if-possible, videoBitrate: 12M}');
+  const unchecked = await validateProject(root, { themes, probeDuration: async () => 60 });
+  expect(unchecked.renderer).toEqual({ name: 'remotion', checked: false });
+  const report = await validateProject(root, {
+    themes,
+    probeDuration: async () => 60,
+    renderer: 'browser',
+    rendererCapabilities: () => fixture,
+  });
+  expect(report).toMatchObject({
+    valid: true,
+    exitCode: 0,
+    renderer: { name: 'browser', checked: true },
+  });
+  expect(report.diagnostics).toMatchObject([
+    { level: 'warning', path: 'output.hardwareAcceleration' },
+  ]);
+  const again = await validateProject(root, { themes, probeDuration: async () => 60 });
+  expect(again.renderer?.name).toBe('remotion');
+});
+
+test('live scene configuration never receives offline renderer checks', async () => {
+  await write('live.yaml', '');
+  const rendererCapabilities = vi.fn(() => fixture);
+  const report = await validateProject(root, { kind: 'live', themes, rendererCapabilities });
+  expect(report.renderer).toBeNull();
+  expect(rendererCapabilities).not.toHaveBeenCalled();
+  await expect(
+    validateProject(root, { kind: 'live', renderer: 'browser', rendererCapabilities }),
+  ).rejects.toThrow('recorded project');
+  await expect(validateProject(root, { renderer: 'browser' })).rejects.toThrow(
+    'capability resolver',
+  );
 });

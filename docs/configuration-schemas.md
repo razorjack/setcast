@@ -67,6 +67,7 @@ shorthand booleans and omitted defaults remain authoring inputs rather than norm
 setcast validate path/to/recorded-project
 setcast validate path/to/live-project --live
 setcast validate path/to/project --json > validation.json
+setcast validate path/to/recorded-project --renderer browser
 ```
 
 Validation uses the same project loaders as playback/export. Recorded mode probes master duration
@@ -76,6 +77,13 @@ or the root live sequence's presets, deduplicating repeated directories. Scene w
 It does not inspect unreferenced scene-bank entries or recursively activate a recalled scene's own
 sequence settings. A missing `live.yaml` uses defaults, as `setcast live` does, and the report states
 that explicitly. A missing `setcast.yaml` fails.
+
+Recorded CLI validation also checks export settings against the selected adapter's declared
+capabilities. `--renderer browser` overrides the YAML selection for this check without writing it.
+Unsupported graphics backends, serial encoding or required hardware encoding are errors at their
+`output.*` paths. Browser `hardwareAcceleration: if-possible` is a warning because the CLI falls
+back to software. Renderer checks do not run for live projects or recalled live scene settings;
+`--live --renderer` is a usage error. This is not a machine check: use `setcast doctor` separately.
 
 No renderer, local server, full audio-feature decode or hardware encoder is started. Duration
 probing can scan media packets when container metadata is insufficient. Validation does not
@@ -95,6 +103,7 @@ command arguments use the normal CLI usage error on stderr and do not produce a 
   "kind": "live",
   "valid": false,
   "exitCode": 2,
+  "renderer": null,
   "documents": [{
     "file": "live.yaml", "kind": "live", "valid": false,
     "usesDefaults": false, "summary": null
@@ -106,12 +115,14 @@ command arguments use the normal CLI usage error on stderr and do not produce a 
 }
 ```
 
-`documents` records attempted project/scene loads. Successful summaries include title, theme,
+`renderer` is `{ name, checked }` after a recorded project loads, or null for live projects and
+failures before renderer selection. `checked` records whether adapter capabilities were supplied
+and checked. `documents` records attempted project/scene loads. Successful summaries include title, theme,
 composition width/height/FPS, visualizer names and recorded duration (null live). `file` uses
 forward slashes relative to `root`, preserving authored scene paths even when the root is a
 filesystem alias. Diagnostic `path` is a configuration key path, or empty for a document-level
 error. Optional `hint` suggests a correction; `context` preserves a loader's source label such
-as `mix timeline`. Codes are `configuration`, `project`, `io`, `runtime` and `project-warning`.
+as `mix timeline`. Codes are `configuration`, `project`, `io`, `runtime`, `project-warning` and `renderer`.
 Warnings do not change `valid` or the exit code. A host can apply a stricter warning policy to
 the structured report without parsing terminal prose.
 
@@ -130,6 +141,29 @@ CSS-path themes work without a catalog. Recorded validation uses core's media pr
 host supplies `probeDuration(audio, root)`. Invalid API options are programmer errors; project
 loading failures become diagnostics. Report version 1 is separate from project configuration
 and portable setup-document versions.
+
+Core does not import renderer adapters. Programmatic callers opt into compatibility checks by
+providing `rendererCapabilities(name)`, returning the selected adapter's lightweight descriptor.
+Without it, the report records the configured renderer with `checked: false`. The optional
+`renderer` override requires this resolver and recorded mode. The CLI always supplies the resolver.
+
+```ts
+const report = await validateProject('/projects/session', {
+  themes,
+  renderer: 'browser',
+  rendererCapabilities: async (name) => name === 'browser'
+    ? (await import('@setcast/renderer-browser/capabilities')).capabilities
+    : (await import('@setcast/renderer-remotion/capabilities')).capabilities,
+});
+```
+
+Hosts assembling export requests directly can call the pure
+`rendererCompatibility(capabilities, options)` from core. It returns all support issues for
+video export, graphics, parallel encoding, concurrency, resume and hardware encoding. Paths are
+relative to the supplied render options. It does not validate every encoding field, apply fallback,
+probe runtime limits or change options. The browser adapter's direct render API still requires
+`hardwareAcceleration: disable`; the CLI owns `if-possible` fallback. Use `OutputSchema` for
+configuration validation and diagnostics for runtime availability.
 
 ## Validation boundaries
 

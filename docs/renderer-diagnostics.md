@@ -22,7 +22,10 @@ should inspect the fields they need and ignore unknown fields. Removing or chang
 field's meaning requires a new version. Missing features mean unsupported, not untested.
 
 Project validation remains separate: `setcast validate` checks authored configuration and assets.
-Capability reporting cannot establish that a project or machine can render successfully.
+Recorded CLI validation now also checks settings against the configured adapter's descriptor;
+`setcast validate path/to/project --renderer browser` checks a different selection without writing
+configuration. The pure `rendererCompatibility` API lets other hosts perform the same support
+checks on export options. Capability reporting cannot establish that a machine can render successfully.
 
 ## Check this machine
 

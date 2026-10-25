@@ -44,3 +44,15 @@ software-rendering qualification failures visible.
   package smoke passed. Tests cover missing executables with no downloads, optional failures,
   timeouts, late browser handles, cleanup, cancellation and JSON/usage behavior. Raw local reports
   are in `examples/demo/out/doctor/`; exporter acceptance artifacts use `doctor-acceptance-*`.
+
+- `3b30d49`: renderer setup diagnostics committed. Both adapters expose the same report/API.
+- Compatibility follow-up implemented: pure option checks, renderer selection/checked state in
+  validation reports, configured or explicit CLI selection, hardware fallback warnings and tests
+  proving neither rendering library is imported. Validation still never rewrites projects.
+- Renderer-aware validation passed ready (591 tests) and installed-package smoke for both
+  selections. Runtime import blockers prove capability checking stays independent of Remotion
+  and Playwright.
+- A bounded image experiment found that pinned Chromium's native WebP screenshot at quality 100
+  preserves every decoded pixel of a patterned fixture. Next: verify that this can replace the
+  browser still export's PNG-to-FFmpeg conversion while preserving its lossless contract. This
+  would remove the machine's observed libwebp setup limitation instead of only reporting it.
