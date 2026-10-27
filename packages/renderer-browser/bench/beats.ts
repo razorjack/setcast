@@ -1,33 +1,28 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { readSession } from '@setcast/core';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
 declare global {
   interface Window {
     setBeatLevel: (level: number) => void;
   }
 }
-const root = await mkdtemp(join(tmpdir(), 'setcast-beats-'));
+const root = await writeFixture('beats', {
+  'theme.css': '.setcast {background:#172226;color:white}',
+  'live.yaml':
+    'theme: ./theme.css\nbpm: 135\nbeatTracking: {range: {min: 110, max: 140}}\noutput: {width: 640, height: 360, fps: 30}\n',
+});
 const out = resolve('examples/demo/out/beat-check');
 await mkdir(out, { recursive: true });
-await writeFile(join(root, 'theme.css'), '.setcast {background:#172226;color:white}');
-await writeFile(
-  join(root, 'live.yaml'),
-  'theme: ./theme.css\nbpm: 135\nbeatTracking: {range: {min: 110, max: 140}}\noutput: {width: 640, height: 360, fps: 30}\n',
-);
 const { project } = await loadLiveProject(root);
 const server = await play(project, { projectDir: root, port: 0 });
-const browser = await chromium.launch({
-  args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
-});
+const browser = await launchLiveBrowser();
 const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
-const errors: string[] = [];
-page.on('pageerror', (error) => errors.push(error.message));
+const errors = pageErrors(page);
 await page.addInitScript(() => {
   navigator.mediaDevices.getUserMedia = async () => {
     const context = new AudioContext();

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { readSession } from '@setcast/core';
 import { themes } from '../../../themes/src/index.ts';
@@ -10,6 +10,7 @@ import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';
 import { recoverGpu } from './gpu-recovery.ts';
 import { liveGraphicsArgs, liveGraphicsIdentity } from './graphics.ts';
+import { launchLiveBrowser } from '../live-harness.ts';
 
 export async function runLive(
   config: EnduranceConfig,
@@ -21,14 +22,9 @@ export async function runLive(
   const { project } = await loadLiveProject(root, { themes });
   const server = await play(project, { projectDir: root, port: 0 });
   try {
-    const browser = await chromium.launch({
-      args: [
-        ...liveGraphicsArgs(config.graphics),
-        '--use-fake-device-for-media-stream',
-        '--use-fake-ui-for-media-stream',
-        '--autoplay-policy=no-user-gesture-required',
-        '--enable-precise-memory-info',
-      ],
+    const browser = await launchLiveBrowser({
+      autoplay: true,
+      args: [...liveGraphicsArgs(config.graphics), '--enable-precise-memory-info'],
     });
     report.report.details.browser = browser.version();
     report.report.details.syntheticInput = true;

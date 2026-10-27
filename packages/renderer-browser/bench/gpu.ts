@@ -8,6 +8,7 @@ import { createFixture, fixtureProject } from '../../../scripts/export-acceptanc
 import { play } from '../src/index.ts';
 import { bundlePlayer } from '../src/bundle.ts';
 import { prepareFrame, withCapture, withRenderSession } from '../src/export/session.ts';
+import { launchLiveBrowser, pageErrors } from './live-harness.ts';
 
 declare global {
   interface Window {
@@ -350,17 +351,9 @@ async function checkLive(project: ResolvedProject) {
   const server = await play(live, { projectDir: directory, port: 0 });
   let browser: Browser | undefined;
   try {
-    browser = await chromium.launch({
-      args: [
-        '--use-gl=angle',
-        '--use-fake-device-for-media-stream',
-        '--use-fake-ui-for-media-stream',
-        '--autoplay-policy=no-user-gesture-required',
-      ],
-    });
+    browser = await launchLiveBrowser({ autoplay: true, args: ['--use-gl=angle'] });
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-    const errors: string[] = [];
-    page.on('pageerror', (error) => errors.push(error.message));
+    const errors = pageErrors(page);
     await page.goto(server.url);
     await page.getByRole('button', { name: 'Start input', exact: true }).click();
     await page.locator('[data-capture="running"]').waitFor();

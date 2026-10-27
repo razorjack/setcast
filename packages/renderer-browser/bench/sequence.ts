@@ -1,19 +1,15 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { readSession, replayEvents } from '@setcast/core';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
-const root = await mkdtemp(join(tmpdir(), 'setcast-sequence-'));
-const out = resolve('examples/demo/out/sequence-check');
-await mkdir(out, { recursive: true });
-await writeFile(join(root, 'theme.css'), '.setcast { background: #09212b; color: white; }');
-await writeFile(
-  join(root, 'live.yaml'),
-  `theme: ./theme.css
+const root = await writeFixture('sequence', {
+  'theme.css': '.setcast { background: #09212b; color: white; }',
+  'live.yaml': `theme: ./theme.css
 bpm: 120
 output: {width: 960, height: 540, fps: 30}
 sequence:
@@ -21,30 +17,19 @@ sequence:
     - {preset: saved-scene-a, seconds: 5}
     - {preset: saved-scene-b, seconds: 5}
 `,
-);
-for (const [name, color] of [
-  ['a', '#173e42'],
-  ['b', '#402b51'],
-  ['broken', '#aa0000'],
-]) {
-  const scene = join(root, `saved-scene-${name}`);
-  await mkdir(scene);
-  await writeFile(join(scene, 'theme.css'), `.setcast { background: ${color}; color: white; }`);
-  await writeFile(
-    join(scene, 'live.yaml'),
-    `theme: ./theme.css\ntitle: Scene ${name}\n${name === 'broken' ? 'background: broken.svg\n' : ''}`,
-  );
-  if (name === 'broken') await writeFile(join(scene, 'broken.svg'), 'invalid SVG');
-}
+  ...savedScene('a', '#173e42'),
+  ...savedScene('b', '#402b51'),
+  ...savedScene('broken', '#aa0000', 'background: broken.svg\n'),
+  'saved-scene-broken/broken.svg': 'invalid SVG',
+});
+const out = resolve('examples/demo/out/sequence-check');
+await mkdir(out, { recursive: true });
 const { project } = await loadLiveProject(root);
 const server = await play(project, { projectDir: root, port: 0 });
-const browser = await chromium.launch({
-  args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
-});
+const browser = await launchLiveBrowser();
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 960 } });
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
+  const errors = pageErrors(page);
   await page.goto(server.url);
   await page.getByRole('button', { name: 'Start input', exact: true }).click();
   await page.locator('[data-input-available=true]').waitFor();
@@ -127,4 +112,11 @@ async function verifyJournal() {
   }
   const replay = replayEvents(journal.header, journal.events, 0, 120);
   assert(replay.automation.some((event) => event.to.brightness === 0));
+}
+
+function savedScene(name: string, color: string, extra = '') {
+  return {
+    [`saved-scene-${name}/theme.css`]: `.setcast { background: ${color}; color: white; }`,
+    [`saved-scene-${name}/live.yaml`]: `theme: ./theme.css\ntitle: Scene ${name}\n${extra}`,
+  };
 }

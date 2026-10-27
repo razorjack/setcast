@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { resolveVisualizerConfigs } from '@setcast/core';
 import { loadLiveProject } from '@setcast/core/node';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors } from './live-harness.ts';
 
 const artifacts = resolve('examples/demo/out/output-check');
 await mkdir(artifacts, { recursive: true });
@@ -18,16 +19,13 @@ const visualizers = resolveVisualizerConfigs([
   { name: 'constellation' },
 ]);
 const server = await play({ ...field, visualizers }, { projectDir, port: 0 });
-const browser = await chromium.launch({
-  args: ['--use-gl=angle', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
-});
+const browser = await launchLiveBrowser({ args: ['--use-gl=angle'] });
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.addInitScript(
     `(${installProbes.toString()})(); (${throttleFrames.toString()})(window.outputProbe);`,
   );
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
+  const errors = pageErrors(page);
   await page.goto(server.url);
   await page.locator('.sc-input-fallback').waitFor();
   await page.getByRole('button', { name: 'Start input', exact: true }).click();

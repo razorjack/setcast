@@ -1,12 +1,11 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { readSession, replayEvents } from '@setcast/core';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
 declare global {
   interface Window {
@@ -15,11 +14,10 @@ declare global {
 }
 const out = resolve('examples/demo/out/performance-check');
 await mkdir(out, { recursive: true });
-const root = await mkdtemp(join(tmpdir(), 'setcast-performance-'));
-await writeFile(
-  join(root, 'live.yaml'),
-  'theme: darkroom\ntitle: Backdrop\nbpm: 120\noutput: {width: 960, height: 540, fps: 30}\n',
-);
+const root = await writeFixture('performance', {
+  'live.yaml':
+    'theme: darkroom\ntitle: Backdrop\nbpm: 120\noutput: {width: 960, height: 540, fps: 30}\n',
+});
 const { project } = await loadLiveProject(root, { themes });
 const server = await play(project, {
   projectDir: root,
@@ -29,16 +27,9 @@ const server = await play(project, {
     load: async (theme) => (await loadLiveProject(root, { themes, theme })).project,
   },
 });
-const browser = await chromium.launch({
-  args: [
-    '--use-fake-device-for-media-stream',
-    '--use-fake-ui-for-media-stream',
-    '--autoplay-policy=no-user-gesture-required',
-  ],
-});
+const browser = await launchLiveBrowser({ autoplay: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const errors: string[] = [];
-page.on('pageerror', (error) => errors.push(error.message));
+const errors = pageErrors(page);
 await page.addInitScript(() => {
   const input = Object.assign(new EventTarget(), {
     id: 'fixture',

@@ -7,6 +7,7 @@ import { createFixture, fixtureProject } from '../../../scripts/export-acceptanc
 import { createVideo } from '../../../scripts/export-acceptance/video.ts';
 import { checkPreviewCli } from './preview-cli.ts';
 import { preview } from '../src/preview/server.ts';
+import { pageErrors } from './live-harness.ts';
 
 const directory = await mkdtemp(join(tmpdir(), 'setcast-preview-'));
 const out = resolve('examples/demo/out/preview-check');
@@ -16,8 +17,7 @@ const project = await fixtureProject(directory, 'sterile-tech');
 const server = await preview(project, { projectDir: directory, port: 0 });
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-const errors: string[] = [];
-page.on('pageerror', (error) => errors.push(error.message));
+const errors = pageErrors(page);
 const ready = (frame: number) => page.locator(`[data-ready-frame="${frame}"]`).waitFor();
 const seek = async (frame: number) => {
   await page.getByLabel('Frame number', { exact: true }).fill(String(frame));

@@ -7,6 +7,7 @@ import { loadProject } from '@setcast/core/node';
 import { themes } from '../../themes/src/index.ts';
 import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
 import { play } from '../src/index.ts';
+import { pageErrors } from './live-harness.ts';
 
 const root = await mkdtemp(join(tmpdir(), 'setcast-recorded-check-'));
 const out = resolve('examples/demo/out/recorded-player-check');
@@ -21,8 +22,7 @@ const server = await play(project, {
 });
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const errors: string[] = [];
-page.on('pageerror', (error) => errors.push(error.message));
+const errors = pageErrors(page);
 try {
   await page.goto(server.url);
   await page.getByRole('button', { name: 'Play (Space)', exact: true }).click();

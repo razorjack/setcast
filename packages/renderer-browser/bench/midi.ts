@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { MidiProfileSchema, readSession, type MidiProfile } from '@setcast/core';
 import { loadLiveProject } from '@setcast/core/node';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
 declare global {
   interface Window {
@@ -14,7 +14,6 @@ declare global {
     midiRequests: number;
   }
 }
-const root = await mkdtemp(join(tmpdir(), 'setcast-midi-'));
 const out = resolve('examples/demo/out/midi-check');
 await mkdir(out, { recursive: true });
 const browserProfile = { version: 1, name: 'Stored browser', mapping: { 'note:1:1': 'blackout' } };
@@ -32,9 +31,8 @@ const imported: MidiProfile = {
     'note:3:62': 'scene-1',
   },
 };
-await writeFile(
-  join(root, 'live.yaml'),
-  JSON.stringify({
+const root = await writeFixture('midi', {
+  'live.yaml': JSON.stringify({
     title: 'Controller fixture',
     bpm: 120,
     output: { width: 960, height: 540, fps: 30 },
@@ -42,16 +40,10 @@ await writeFile(
     branding: { name: 'Controller fixture' },
     midi: configured,
   }),
-);
+});
 const loaded = await loadLiveProject(root, { themes });
 const server = await play(loaded.project, { projectDir: root, port: 0 });
-const browser = await chromium.launch({
-  args: [
-    '--use-fake-device-for-media-stream',
-    '--use-fake-ui-for-media-stream',
-    '--autoplay-policy=no-user-gesture-required',
-  ],
-});
+const browser = await launchLiveBrowser({ autoplay: true });
 try {
   await configuredSession();
   await browserPersistence();
@@ -64,8 +56,7 @@ try {
 
 async function configuredSession() {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
+  const errors = pageErrors(page);
   await page.addInitScript(fakeMidi);
   await page.addInitScript(
     (profile) => localStorage.setItem('setcast-midi-profile-v1', JSON.stringify(profile)),

@@ -3,14 +3,14 @@
 // Run: node packages/renderer-browser/bench/branding.ts   (screenshots in examples/demo/out/branding-check)
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { readSession, replayEvents } from '@setcast/core';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
 declare global {
   interface Window {
@@ -45,10 +45,9 @@ async function runLandscape() {
       load: async (theme) => (await loadLiveProject(root, { themes, theme })).project,
     },
   });
-  const browser = await launch();
+  const browser = await launchLiveBrowser({ autoplay: true });
   const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
+  const errors = pageErrors(page);
   await page.addInitScript(fakeMidi);
   try {
     await page.goto(server.url);
@@ -197,7 +196,7 @@ async function runPortrait() {
   const root = await project(`${yaml}\nclock: true\n`);
   const { project: initial } = await loadLiveProject(root, { themes });
   const server = await play(initial, { projectDir: root, port: 0 });
-  const browser = await launch();
+  const browser = await launchLiveBrowser({ autoplay: true });
   const page = await browser.newPage({ viewport: { width: 700, height: 1100 } });
   try {
     await page.goto(server.url);
@@ -228,20 +227,7 @@ async function toggleControls(page: Page, state: 'hidden' | 'visible') {
 }
 
 async function project(yaml: string) {
-  const root = await mkdtemp(join(tmpdir(), 'setcast-branding-'));
-  await copyFile(logo, join(root, 'logo.svg'));
-  await writeFile(join(root, 'live.yaml'), yaml);
-  return root;
-}
-
-function launch() {
-  return chromium.launch({
-    args: [
-      '--use-fake-device-for-media-stream',
-      '--use-fake-ui-for-media-stream',
-      '--autoplay-policy=no-user-gesture-required',
-    ],
-  });
+  return writeFixture('branding', { 'logo.svg': await readFile(logo), 'live.yaml': yaml });
 }
 
 /** An element of the scene on screen, optionally with exactly this text. */

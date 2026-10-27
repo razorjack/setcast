@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { TestPatternPresetSchema } from '@setcast/core';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
 const out = resolve('examples/demo/out/camera-check');
 await mkdir(out, { recursive: true });
@@ -20,15 +20,12 @@ async function checkCamera(portrait: boolean) {
   const root = await fixture(portrait);
   const { project } = await loadLiveProject(root);
   const server = await play(project, { projectDir: root, port: 0 });
-  const browser = await chromium.launch({
-    args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
-  });
+  const browser = await launchLiveBrowser();
   try {
     const page = await browser.newPage({
       viewport: portrait ? { width: 700, height: 1100 } : { width: 1280, height: 900 },
     });
-    const errors: string[] = [];
-    page.on('pageerror', (error) => errors.push(error.message));
+    const errors = pageErrors(page);
     await page.goto(server.url);
     assert.equal(
       await page.locator('.sc-test-pattern').count(),
@@ -60,18 +57,15 @@ async function checkCamera(portrait: boolean) {
   }
 }
 
-async function fixture(portrait: boolean) {
-  const root = await mkdtemp(join(tmpdir(), 'setcast-camera-'));
-  await writeFile(join(root, 'theme.css'), '.setcast {background:#194847;color:white;}');
-  await writeFile(
-    join(root, 'live.yaml'),
-    `theme: ./theme.css
+function fixture(portrait: boolean) {
+  return writeFixture('camera', {
+    'theme.css': '.setcast {background:#194847;color:white;}',
+    'live.yaml': `theme: ./theme.css
 title: Camera fixture
 output: {width: ${portrait ? 540 : 960}, height: ${portrait ? 960 : 540}, fps: 30}
 testPattern: {pattern: grayscale, level: 0.8, detailSize: 3}
 `,
-  );
-  return root;
+  });
 }
 
 async function configure(operator: Page) {

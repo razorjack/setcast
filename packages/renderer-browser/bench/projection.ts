@@ -1,26 +1,18 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { VenueSchema } from '@setcast/core';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
-const root = await mkdtemp(join(tmpdir(), 'setcast-projection-'));
-const out = resolve('examples/demo/out/projection-check');
-await mkdir(out, { recursive: true });
-await writeFile(
-  join(root, 'art.svg'),
-  '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="400" height="300" fill="#428277"/><circle cx="200" cy="150" r="100" fill="#e8b85a"/></svg>',
-);
-await writeFile(
-  join(root, 'theme.css'),
-  '.setcast { background:#09212b; color:white; } .sc-bg-img {width:100%; height:100%; object-fit:cover;transform:none !important;} .sc-art {display:none;} .sc-spectrum {color:white;}',
-);
-await writeFile(
-  join(root, 'live.yaml'),
-  `theme: ./theme.css
+const root = await writeFixture('projection', {
+  'art.svg':
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="400" height="300" fill="#428277"/><circle cx="200" cy="150" r="100" fill="#e8b85a"/></svg>',
+  'theme.css':
+    '.setcast { background:#09212b; color:white; } .sc-bg-img {width:100%; height:100%; object-fit:cover;transform:none !important;} .sc-art {display:none;} .sc-spectrum {color:white;}',
+  'live.yaml': `theme: ./theme.css
 title: Projector qualification
 background: art.svg
 output: {width: 960, height: 540, fps: 30}
@@ -29,7 +21,9 @@ visualizer:
   - {name: spectrum, fill: art}
 projection: {enabled: false}
 `,
-);
+});
+const out = resolve('examples/demo/out/projection-check');
+await mkdir(out, { recursive: true });
 const { project } = await loadLiveProject(root);
 project.css += `@font-face {font-family:ProjectionTest;src:url('/projection-test.woff2')} @media (width:960px){ .sc-stage{font-family:ProjectionTest} .sc-header{font-family:ProjectionTest !important} }`;
 const font = await readFile(resolve('packages/themes/fonts/JetBrainsMono-100-800-latin.woff2'));
@@ -38,14 +32,11 @@ const fontReady = new Promise<void>((resolve) => {
   releaseFont = resolve;
 });
 const server = await play(project, { projectDir: root, port: 0 });
-const browser = await chromium.launch({
-  args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
-});
+const browser = await launchLiveBrowser();
 try {
   const context = await browser.newContext({ viewport: { width: 1280, height: 960 } });
   const page = await context.newPage();
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
+  const errors = pageErrors(page);
   await page.goto(server.url);
   await page.getByRole('button', { name: 'Start input', exact: true }).click();
   await page.locator('[data-input-available=true]').waitFor();

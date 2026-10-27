@@ -1,23 +1,18 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { type Page } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser } from './live-harness.ts';
 
 const out = resolve('examples/demo/out/transport-check');
 await mkdir(out, { recursive: true });
 const projectDir = resolve('examples/live');
 const { project } = await loadLiveProject(projectDir, { themes });
 const server = await play({ ...project, visualizers: [] }, { projectDir, port: 0 });
-const browser = await chromium.launch({
-  args: [
-    '--use-fake-device-for-media-stream',
-    '--use-fake-ui-for-media-stream',
-    '--autoplay-policy=no-user-gesture-required',
-  ],
-});
+const browser = await launchLiveBrowser({ autoplay: true });
 try {
   const current = await stalledCapture(false);
   const legacy = await stalledCapture(true);

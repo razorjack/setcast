@@ -1,13 +1,12 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { chromium } from 'playwright';
 import { loadLiveProject } from '@setcast/core/node';
 import { readSession } from '@setcast/core';
 import { themes } from '../../themes/src/index.ts';
 import { play } from '../src/index.ts';
+import { launchLiveBrowser, pageErrors, writeFixture } from './live-harness.ts';
 
 const { values } = parseArgs({
   options: {
@@ -22,11 +21,10 @@ assert(
 );
 const out = resolve(values.out);
 await mkdir(out, { recursive: true });
-const root = await mkdtemp(join(tmpdir(), 'setcast-player-check-'));
-await writeFile(
-  join(root, 'live.yaml'),
-  'theme: darkroom\ntitle: Input qualification\noutput: {width: 960, height: 540, fps: 30}\n',
-);
+const root = await writeFixture('player-check', {
+  'live.yaml':
+    'theme: darkroom\ntitle: Input qualification\noutput: {width: 960, height: 540, fps: 30}\n',
+});
 const { project } = await loadLiveProject(root, { themes });
 const server = await play(project, {
   projectDir: root,
@@ -36,17 +34,9 @@ const server = await play(project, {
     load: async (theme) => (await loadLiveProject(root, { themes, theme })).project,
   },
 });
-const browser = await chromium.launch({
-  args: [
-    '--use-fake-device-for-media-stream',
-    '--use-fake-ui-for-media-stream',
-    '--autoplay-policy=no-user-gesture-required',
-    '--enable-precise-memory-info',
-  ],
-});
+const browser = await launchLiveBrowser({ autoplay: true, args: ['--enable-precise-memory-info'] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const errors: string[] = [];
-page.on('pageerror', (error) => errors.push(error.message));
+const errors = pageErrors(page);
 try {
   await page.goto(server.url);
   assert(await page.getByRole('button', { name: 'Tap tempo', exact: true }).isDisabled());
