@@ -368,6 +368,7 @@ export {
   midiMessage,
   midiKey,
   learnMidiMapping,
+  scenePad,
   type MidiAction,
   type MidiMessage,
   type MidiMapping,

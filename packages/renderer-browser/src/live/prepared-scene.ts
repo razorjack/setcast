@@ -1,13 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import type { ResolvedLiveProject } from '@setcast/core';
-import type { useLiveScene } from './player.tsx';
+import type { SceneControl } from './scene-control.ts';
 import type { LivePerformance } from './performance.ts';
 
 /** Only a scene that reached output belongs in the replay journal. */
-export function usePreparedScene(
-  scene: ReturnType<typeof useLiveScene>,
-  performance: LivePerformance,
-) {
+export function usePreparedScene(scene: SceneControl, performance: LivePerformance) {
   const {
     project,
     preset,

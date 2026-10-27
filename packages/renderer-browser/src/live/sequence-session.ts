@@ -18,7 +18,7 @@ export function useSequence(
 ) {
   const [, update] = useState(0);
   const actions = {
-    recall: options.recall.recall,
+    recall: options.recall.start,
     cancel: options.recall.cancelPending,
     report: options.report,
     changed: () => update((revision) => revision + 1),
@@ -46,11 +46,11 @@ export function useSequence(
   }, [sequence, input, options.performance.blackout]);
   const manualRecall = {
     ...options.recall,
-    recall: (preset: string) => {
+    start: (preset: string) => {
       sequence.stop();
       sequence.index = -1;
       sequence.elapsed = 0;
-      return options.recall.recall(preset);
+      return options.recall.start(preset);
     },
   };
   return { sequence, manualRecall };

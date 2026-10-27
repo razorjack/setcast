@@ -7,6 +7,7 @@ import {
   learnMidiMapping,
   midiMessage,
   midiKey,
+  scenePad,
 } from './midi.ts';
 import { MidiControlBuffer } from './midi-buffer.ts';
 
@@ -102,4 +103,10 @@ test('mapping replacement and reset discard buffered values and old button edges
   controls.push(midiMessage([0xb0, 7, 127])!, replacement);
   controls.reset();
   expect(controls.flush(replacement)).toEqual([]);
+});
+
+test('scene actions name their pad from 0; other actions name none', () => {
+  expect(scenePad('scene-1')).toBe(0);
+  expect(scenePad('scene-8')).toBe(7);
+  expect(scenePad('blackout')).toBeNull();
 });

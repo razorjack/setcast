@@ -1,26 +1,17 @@
-import { SequenceControls } from './sequence-controls.tsx';
-import type { LiveSequence } from './sequence.ts';
 import { useEffect, useRef, useState } from 'react';
-import { ScenePads, type SceneBank, type SceneRecall } from './bank.tsx';
-import type { LivePerformance } from './performance.ts';
-import type { LiveMidi } from './midi.ts';
+import { ScenePads } from './bank.tsx';
 import { MidiControls } from './midi-controls.tsx';
-import type { Report } from '../browser/report.ts';
+import { SequenceControls } from './sequence-controls.tsx';
+import type { LiveShow } from './show.ts';
 
 interface Props {
-  sequence: LiveSequence;
+  show: LiveShow;
   available: boolean;
-  performance: LivePerformance;
-  midi: LiveMidi;
-  bank: SceneBank;
-  recall: SceneRecall;
   running: boolean;
-  active: string | null;
-  report: Report;
 }
 
-export function PerformanceControls(props: Props) {
-  const { performance, midi } = props;
+export function PerformanceControls({ show, available, running }: Props) {
+  const { performance } = show;
   return (
     <section className="sc-performance" aria-label="Performance">
       <div className="sc-performance-faders">
@@ -46,9 +37,20 @@ export function PerformanceControls(props: Props) {
           {performance.blackout ? 'Restore output' : 'Blackout'}
         </button>
       </div>
-      <ScenePads {...props} />
-      <SequenceControls {...props} />
-      <MidiControls midi={midi} />
+      <ScenePads
+        bank={show.bank}
+        recall={show.recall}
+        performance={performance}
+        running={running}
+        active={show.activePreset}
+      />
+      <SequenceControls
+        sequence={show.sequence}
+        bank={show.bank}
+        available={available}
+        active={show.activePreset}
+      />
+      <MidiControls midi={show.midi} />
     </section>
   );
 }

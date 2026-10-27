@@ -1,8 +1,9 @@
 import { expect, test } from 'vite-plus/test';
+import { LiveAudio } from './audio.ts';
 import { FrameRateSampler } from './frame-rate.ts';
 
-const source = {};
-const observation = { now: 0, frame: 0, source, available: true, hidden: false };
+const audio = new LiveAudio(48_000);
+const observation = { now: 0, frame: 0, audio, available: true, hidden: false };
 
 test('counts observed frame updates, not jumps in the capture frame number', () => {
   const sampler = new FrameRateSampler();
@@ -14,7 +15,11 @@ test('counts observed frame updates, not jumps in the capture frame number', () 
 });
 
 test('startup, mute/resume, visibility and new capture sources require a full fresh window', () => {
-  for (const changed of [{ available: false }, { hidden: true }, { source: {} }]) {
+  for (const changed of [
+    { available: false },
+    { hidden: true },
+    { audio: new LiveAudio(48_000) },
+  ]) {
     const sampler = new FrameRateSampler();
     sampler.sample(observation);
     sampler.sample({ ...observation, now: 500, frame: 1 });

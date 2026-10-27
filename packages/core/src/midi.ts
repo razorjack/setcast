@@ -16,6 +16,12 @@ export const MIDI_ACTIONS = [
   'scene-8',
 ] as const;
 export type MidiAction = (typeof MIDI_ACTIONS)[number];
+
+/** The scene pad an action recalls, counted from 0, or null when it recalls none. */
+export function scenePad(action: MidiAction): number | null {
+  if (!action.startsWith('scene-')) return null;
+  return Number(action.slice('scene-'.length)) - 1;
+}
 export interface MidiMessage {
   kind: 'note' | 'cc';
   channel: number;

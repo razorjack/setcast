@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ResolvedLiveProject } from '@setcast/core';
 import type { LivePerformance } from './performance.ts';
 import type { Tempo } from './tempo.tsx';
+import type { LiveAudio } from './audio.ts';
 import type { Report } from '../browser/report.ts';
 
 interface SceneListing {
@@ -39,19 +40,20 @@ async function sceneRequest<T>(path: string, signal?: AbortSignal): Promise<T> {
 }
 
 export function useSceneRecall(options: {
-  capture: object | null;
+  /** A new capture cancels a pending request. */
+  audio: LiveAudio | null;
   performance: LivePerformance;
   tempo: Tempo;
   report: Report;
 }) {
   const [duration, setDuration] = useState(1);
   const [quantized, setQuantized] = useState(true);
-  const request = useSceneRequest(options.capture, options.report);
+  const request = useSceneRequest(options.audio, options.report);
   const cancelPending = () => {
     request.cancel();
     if (options.performance.transition?.phase === 'queued') options.performance.cancel();
   };
-  const recall = async (preset: string) => {
+  const start = async (preset: string) => {
     const project = await request.load(preset);
     if (!project) return false;
     return options.performance.queue(preset, project, { ...options.tempo, duration, quantized });
@@ -62,14 +64,14 @@ export function useSceneRecall(options: {
     quantized,
     setQuantized,
     loading: request.loading,
-    recall,
+    start,
     cancelPending,
   };
 }
 
 export type SceneRecall = ReturnType<typeof useSceneRecall>;
 
-function useSceneRequest(capture: object | null, report: Report) {
+function useSceneRequest(audio: LiveAudio | null, report: Report) {
   const [loading, setLoading] = useState<string | null>(null);
   const controller = useRef<AbortController | null>(null);
   const cancel = () => {
@@ -79,7 +81,7 @@ function useSceneRequest(capture: object | null, report: Report) {
   useEffect(() => {
     setLoading(null);
     return () => controller.current?.abort();
-  }, [capture]);
+  }, [audio]);
   const load = async (preset: string) => {
     cancel();
     const current = new AbortController();
@@ -128,7 +130,7 @@ export function ScenePads({
               !running ||
               Boolean(performance.transition && performance.transition.phase !== 'queued')
             }
-            onClick={() => void recall.recall(scene.preset)}
+            onClick={() => void recall.start(scene.preset)}
             title={scene.preset}
           >
             <span>{index + 1}</span>

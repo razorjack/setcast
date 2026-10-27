@@ -1,85 +1,25 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ResolvedLiveProject } from '@setcast/core';
-import type { Art } from '../browser/overrides.ts';
-import { DropOverlay, useArt } from '../browser/art.tsx';
+import { DropOverlay } from '../browser/art.tsx';
 import { useShortcuts } from '../browser/keyboard.ts';
-import { useThemes, type ThemeSelection } from '../browser/themes.ts';
+import type { Report } from '../browser/report.ts';
 import { LiveDock } from './controls.tsx';
-import { useLiveInput } from './input.ts';
+import { useLiveInput, type LiveInput } from './input.ts';
 import { LiveViewport } from './scene.tsx';
 import { useOperatorWindow, type OperatorWindow } from './operator.tsx';
 import { LiveDiagnostics, useDiagnostics } from './diagnostics.tsx';
-import { LiveTempo, type Tempo } from './tempo.tsx';
-import { useLivePerformance } from './performance-session.ts';
+import { LiveTempo } from './tempo.tsx';
+import { useLiveShow, type LiveShow } from './show.ts';
 import { PerformanceControls } from './performance-controls.tsx';
 import { SessionJournal } from './journal.tsx';
 import { useProjection } from './projection-settings.ts';
 import { ProjectionControls } from './projection-controls.tsx';
 import { OutputControls, useOutput } from './output.tsx';
-import { useLiveBranding } from './branding.ts';
 import { BrandingControls } from './branding-controls.tsx';
 import { useTestPattern } from './test-pattern.ts';
 import { TestPatternControls } from './test-pattern-controls.tsx';
-import type { Report } from '../browser/report.ts';
-
-export function useLiveScene(initial: ResolvedLiveProject, report: Report) {
-  const themes = useThemes(initial, report);
-  const art = useArt(report);
-  const [title, setTitle] = useState(initial.title);
-  const [preset, setPreset] = useState<string | null>(null);
-  const [clock, setClock] = useState(initial.live.clock);
-  const [tempo, setTempo] = useState<Tempo>({ bpm: initial.bpm, beatOffset: initial.beatOffset });
-  const branding = useLiveBranding(initial.branding, report);
-  const project = useMemo(
-    () => ({
-      ...themes.project,
-      ...tempo,
-      background: selectedBackground(themes.project.background, art.art),
-      title,
-      branding: branding.value,
-      live: { ...themes.project.live, clock },
-    }),
-    [themes.project, art.art, title, clock, tempo, branding.value],
-  );
-  const recall = (saved: ResolvedLiveProject, directory: string) => {
-    themes.adopt({ ...saved, width: initial.width, height: initial.height, fps: initial.fps });
-    art.setArt({ kind: 'project' });
-    setTitle(saved.title);
-    branding.set(saved.branding);
-    setClock(saved.live.clock);
-    setPreset(directory);
-  };
-  return {
-    themes: manualThemes(themes, () => setPreset(null)),
-    art,
-    title,
-    setTitle,
-    branding,
-    clock,
-    setClock,
-    project,
-    tempo,
-    setTempo,
-    preset,
-    recall,
-  };
-}
-
-/** Choosing a theme by hand leaves the recalled scene preset behind. */
-function manualThemes(themes: ThemeSelection<ResolvedLiveProject>, leave: () => void) {
-  return {
-    ...themes,
-    step: (offset: number) => {
-      leave();
-      return themes.step(offset);
-    },
-    select: (name: string) => {
-      leave();
-      themes.select(name);
-    },
-  };
-}
+import { useSceneControl, type SceneControl } from './scene-control.ts';
 
 export function LivePlayer({
   initial,
@@ -88,10 +28,9 @@ export function LivePlayer({
   initial: ResolvedLiveProject;
   startupNotice: string | null;
 }) {
-  const controller = useLivePlayer(initial, startupNotice);
-  const { scene, input, operator, clean, report } = controller;
-  const { art, project } = scene;
-  const controls = <LiveControls {...controller} />;
+  const player = useLivePlayer(initial, startupNotice);
+  const { scene, input, show, setup, operator, clean } = player;
+  const controls = <LiveControls player={player} />;
   return (
     <main
       className="sc-player sc-live"
@@ -102,25 +41,25 @@ export function LivePlayer({
       data-cached={input.capture.audio?.cachedMoments ?? 0}
       data-pcm-capacity={input.capture.audio?.capacity ?? 0}
       data-input-available={input.snapshot.status.available}
-      data-render-scale={controller.output.renderScale}
+      data-render-scale={setup.output.renderScale}
     >
       <LiveViewport
-        key={String(controller.projection.config.enabled)}
-        projection={controller.projection.config}
-        testPattern={controller.testPattern.active ? controller.testPattern.config : undefined}
-        project={project}
+        key={String(setup.projection.config.enabled)}
+        projection={setup.projection.config}
+        testPattern={setup.testPattern.active ? setup.testPattern.config : undefined}
+        project={scene.project}
         analyzer={input.snapshot.analyzer}
         frame={input.snapshot.frame}
-        announcements={controller.announcements.list}
-        report={report}
-        performance={controller.performance.value()}
-        renderScale={controller.output.renderScale}
-        black={controller.output.black}
-        onReady={controller.ready}
-        onFailure={controller.performance.cancel}
+        announcements={show.announcements.list}
+        report={player.report}
+        performance={show.performance.value()}
+        renderScale={setup.output.renderScale}
+        black={setup.output.black}
+        onReady={show.ready}
+        onFailure={show.performance.cancel}
       />
       {operator.target ? createPortal(controls, operator.target) : controls}
-      {art.dragging && !clean && <DropOverlay />}
+      {scene.art.dragging && !clean && <DropOverlay />}
     </main>
   );
 }
@@ -128,22 +67,15 @@ export function LivePlayer({
 function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | null) {
   const [notice, setNotice] = useState(startupNotice);
   const report = useCallback((message: string) => setNotice(message), []);
-  const scene = useLiveScene(initial, report);
   const [clean, setClean] = useState(false);
+  const scene = useSceneControl(initial, report);
   const input = useLiveInput(initial);
-  const diagnostics = useDiagnostics(input);
   const operator = useOperatorWindow(report);
-  const performanceSession = useLivePerformance(initial, input, scene, report);
-  const output = useOutput(input, diagnostics, {
-    fps: initial.fps,
-    report,
-    cleanOutput: () => setClean(true),
-  });
-  const testPattern = useTestPattern(initial, report);
-  const projection = useProjection(initial, report, testPattern);
+  const show = useLiveShow(initial, input, scene, report);
+  const setup = useOutputSetup(initial, input, report, () => setClean(true));
   const fullscreen = () => {
     setClean(true);
-    void output.display.toggle();
+    void setup.output.display.toggle();
   };
   useShortcuts({
     h: () => setClean((hidden) => !hidden),
@@ -154,55 +86,65 @@ function useLivePlayer(initial: ResolvedLiveProject, startupNotice: string | nul
   return {
     scene,
     input,
+    show,
+    setup,
     operator,
-    clean,
-    setClean,
     report,
-    fullscreen,
     notice,
     setNotice,
-    diagnostics,
-    output,
-    projection,
-    testPattern,
+    clean,
+    setClean,
+    fullscreen,
     beatTracking: initial.live.beatTracking,
-    ...performanceSession,
   };
 }
 
-function LiveControls(props: ReturnType<typeof useLivePlayer>) {
-  const {
-    scene,
-    input,
-    operator,
-    clean,
-    setClean,
-    report,
-    fullscreen,
-    notice,
-    setNotice,
-    performance,
-    bank,
-    recall,
-    midi,
-    activePreset,
-    sequence,
-  } = props;
+type LivePlayerState = ReturnType<typeof useLivePlayer>;
+
+/** The output window's own settings: display, quality, projection and the test pattern. */
+function useOutputSetup(
+  initial: ResolvedLiveProject,
+  input: LiveInput,
+  report: Report,
+  cleanOutput: () => void,
+) {
+  const diagnostics = useDiagnostics(input);
+  const output = useOutput(input, diagnostics, { fps: initial.fps, report, cleanOutput });
+  const testPattern = useTestPattern(initial, report);
+  const projection = useProjection(initial, report, testPattern);
+  return { diagnostics, output, testPattern, projection };
+}
+
+type OutputSetup = ReturnType<typeof useOutputSetup>;
+
+function LiveControls({ player }: { player: LivePlayerState }) {
+  const { scene, input, show, operator, clean, setClean, report, fullscreen } = player;
+  const { status } = input.snapshot;
   return (
     <div className="sc-live-controls" hidden={clean && !operator.target}>
       <LiveDock
-        {...{ input, ...scene, report, fullscreen }}
-        performance={performance.target}
+        scene={scene}
+        input={input}
+        performance={show.performance.target}
+        report={report}
+        fullscreen={fullscreen}
         clean={() => setClean(true)}
       />
       <PerformanceControls
-        {...{ performance, bank, recall, report, midi, sequence }}
-        available={input.snapshot.status.available}
-        running={input.snapshot.status.phase === 'running'}
-        active={activePreset}
+        show={show}
+        available={status.available}
+        running={status.phase === 'running'}
       />
-      <LiveSession {...props} />
-      <LiveNotice notice={notice} dismiss={() => setNotice(null)} />
+      <LiveSession
+        scene={scene}
+        input={input}
+        show={show}
+        setup={player.setup}
+        operator={operator}
+        setClean={setClean}
+        beatTracking={player.beatTracking}
+      />
+      <LiveNotice notice={player.notice} dismiss={() => player.setNotice(null)} />
     </div>
   );
 }
@@ -210,13 +152,20 @@ function LiveControls(props: ReturnType<typeof useLivePlayer>) {
 function LiveSession({
   scene,
   input,
+  show,
+  setup,
   operator,
   setClean,
-  journal,
-  diagnostics,
-  announcements,
-  ...settings
-}: ReturnType<typeof useLivePlayer>) {
+  beatTracking,
+}: {
+  scene: SceneControl;
+  input: LiveInput;
+  show: LiveShow;
+  setup: OutputSetup;
+  operator: OperatorWindow;
+  setClean: (clean: boolean) => void;
+  beatTracking: ResolvedLiveProject['live']['beatTracking'];
+}) {
   return (
     <section className="sc-live-session">
       <OperatorButton operator={operator} setClean={setClean} />
@@ -224,14 +173,14 @@ function LiveSession({
         input={input}
         tempo={scene.tempo}
         setTempo={scene.setTempo}
-        tracking={settings.beatTracking}
+        tracking={beatTracking}
       />
-      <BrandingControls branding={scene.branding} announcements={announcements} />
-      <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={diagnostics} />
-      <OutputControls output={settings.output} />
-      <TestPatternControls testPattern={settings.testPattern} />
-      <ProjectionControls projection={settings.projection} />
-      <SessionJournal journal={journal} running={input.snapshot.status.phase === 'running'} />
+      <BrandingControls branding={scene.branding} announcements={show.announcements} />
+      <LiveDiagnostics input={input} fps={scene.project.fps} diagnostics={setup.diagnostics} />
+      <OutputControls output={setup.output} />
+      <TestPatternControls testPattern={setup.testPattern} />
+      <ProjectionControls projection={setup.projection} />
+      <SessionJournal journal={show.journal} running={input.snapshot.status.phase === 'running'} />
     </section>
   );
 }
@@ -268,10 +217,4 @@ function OperatorButton({
       {operator.target ? 'Return controls to output' : 'Operator window'}
     </button>
   );
-}
-
-function selectedBackground(background: string | null, art: Art) {
-  if (art.kind === 'none') return null;
-  if (art.kind === 'file') return `${art.url}#${art.name}`;
-  return background;
 }

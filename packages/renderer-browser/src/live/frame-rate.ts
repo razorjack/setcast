@@ -1,7 +1,10 @@
+import type { LiveAudio } from './audio.ts';
+
 interface Observation {
   now: number;
   frame: number;
-  source: object | null;
+  /** The capture's audio; a new capture starts a fresh window. */
+  audio: LiveAudio | null;
   available: boolean;
   hidden: boolean;
 }
@@ -22,7 +25,7 @@ export class FrameRateSampler {
     this.previous = current;
     if (
       !previous ||
-      current.source !== previous.source ||
+      current.audio !== previous.audio ||
       current.available !== previous.available ||
       current.hidden !== previous.hidden ||
       current.now < previous.now

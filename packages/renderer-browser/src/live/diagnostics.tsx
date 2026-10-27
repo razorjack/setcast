@@ -30,7 +30,7 @@ export function useDiagnostics(input: LiveInput) {
       const fps = rates.sample({
         now: performance.now(),
         frame: current.snapshot.frame,
-        source: current.capture.audio,
+        audio: current.capture.audio,
         available: current.snapshot.status.available,
         hidden: document.hidden,
       });

@@ -1,27 +1,15 @@
 import { useState } from 'react';
-import {
-  errorMessage,
-  formatTime,
-  type PerformanceState,
-  type ResolvedLiveProject,
-} from '@setcast/core';
-import { ArtMenu, type ArtSelection } from '../browser/art.tsx';
-import type { ThemeSelection } from '../browser/themes.ts';
+import { errorMessage, formatTime, type PerformanceState } from '@setcast/core';
+import { ArtMenu } from '../browser/art.tsx';
 import { SaveScene } from '../browser/save.tsx';
-import { useInputDevices, type LiveInput } from './input.ts';
 import type { Report } from '../browser/report.ts';
+import { useInputDevices, type LiveInput } from './input.ts';
+import type { SceneControl } from './scene-control.ts';
 
 interface DockProps {
-  performance?: PerformanceState;
-  preset?: string | null;
+  scene: SceneControl;
   input: LiveInput;
-  themes: ThemeSelection<ResolvedLiveProject>;
-  art: ArtSelection;
-  project: ResolvedLiveProject;
-  title: string;
-  setTitle: (title: string) => void;
-  clock: boolean;
-  setClock: (clock: boolean) => void;
+  performance: PerformanceState;
   report: Report;
   fullscreen: () => void;
   clean: () => void;
@@ -35,7 +23,7 @@ export function LiveDock(props: DockProps) {
       {expanded && (
         <div className="sc-live-settings">
           <InputControls input={props.input} report={props.report} />
-          <AppearanceControls {...props} />
+          <AppearanceControls scene={props.scene} />
         </div>
       )}
       <InputStatus input={props.input} />
@@ -58,7 +46,7 @@ function LiveToolbar(props: DockProps & { expanded: boolean; toggle: () => void 
       </div>
       <span className="sc-live-status" role="status">
         {running
-          ? `${status.device} · ${formatTime(props.input.snapshot.frame / props.project.fps)}`
+          ? `${status.device} · ${formatTime(props.input.snapshot.frame / props.scene.project.fps)}`
           : 'Choose an input to begin'}
       </span>
       <button
@@ -89,19 +77,20 @@ function LiveToolbar(props: DockProps & { expanded: boolean; toggle: () => void 
   );
 }
 
-function SaveLiveScene(props: DockProps) {
+function SaveLiveScene({ scene, input, performance, report }: DockProps) {
+  const { project } = scene;
   const selection = {
-    theme: props.project.theme,
-    preset: props.preset ?? undefined,
-    performance: props.performance,
-    title: props.title,
-    branding: props.project.branding,
-    clock: props.clock,
-    input: props.input.settings,
-    bpm: props.project.bpm,
-    beatOffset: props.project.beatOffset,
+    theme: project.theme,
+    preset: scene.preset ?? undefined,
+    performance,
+    title: scene.title,
+    branding: project.branding,
+    clock: scene.clock,
+    input: input.settings,
+    bpm: project.bpm,
+    beatOffset: project.beatOffset,
   };
-  return <SaveScene selection={selection} art={props.art.art} report={props.report} />;
+  return <SaveScene selection={selection} art={scene.art.art} report={report} />;
 }
 
 function InputControls({ input, report }: Pick<DockProps, 'input' | 'report'>) {
@@ -249,8 +238,8 @@ function InputMeters({ peaks }: { peaks: number[] }) {
   );
 }
 
-function AppearanceControls(props: DockProps) {
-  const { themes, art } = props;
+function AppearanceControls({ scene }: { scene: SceneControl }) {
+  const { themes, art } = scene;
   return (
     <div className="sc-live-appearance">
       <h2>Scene</h2>
@@ -275,22 +264,22 @@ function AppearanceControls(props: DockProps) {
             aria-label="Title"
             type="text"
             placeholder="Optional"
-            value={props.title}
-            onChange={(event) => props.setTitle(event.target.value)}
+            value={scene.title}
+            onChange={(event) => scene.setTitle(event.target.value)}
           />
         </label>
         <label className="sc-live-check">
           <input
             type="checkbox"
-            checked={props.clock}
-            onChange={(event) => props.setClock(event.target.checked)}
+            checked={scene.clock}
+            onChange={(event) => scene.setClock(event.target.checked)}
           />
           Elapsed clock
         </label>
       </div>
       <details className="sc-live-art">
         <summary>Background artwork</summary>
-        <ArtMenu project={props.project} {...art} />
+        <ArtMenu project={scene.project} {...art} />
       </details>
     </div>
   );
