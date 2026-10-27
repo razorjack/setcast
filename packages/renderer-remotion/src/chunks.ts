@@ -11,7 +11,7 @@ export { splitFrameRange, resolveChunkSeconds } from '@setcast/core';
 import type { RenderProgress } from './index.ts';
 import { encodeMasterAudio, muxChunks } from './mux.ts';
 import { cancellable } from './cancellation.ts';
-import { canPipeline, renderChunkPipeline } from './chunk-pipeline.ts';
+import { canPipeline, renderChunkPipeline, type ChunkJob } from './chunk-pipeline.ts';
 
 type VideoJob = RenderMediaOptions & { outputLocation: string };
 type Report = (progress: RenderProgress) => void;
@@ -115,12 +115,6 @@ async function renderChunks(
   { report, signal }: { report: Report; signal: AbortSignal },
 ) {
   const totalFrames = ranges.at(-1)![1] - ranges[0]![0] + 1;
-  const inputProps = { ...job.inputProps, renderAudio: false };
-  // Remotion uses resolved composition props when rendering, independently of inputProps.
-  const composition = {
-    ...job.composition,
-    props: { ...job.composition.props, renderAudio: false },
-  };
   const reportFrames = (index: number, renderedFrames: number) => {
     const rendered = ranges[index]![0] - ranges[0]![0] + renderedFrames;
     report({
@@ -130,7 +124,32 @@ async function renderChunks(
       totalFrames,
     });
   };
-  const jobs = ranges.map((frameRange, index) => ({
+  const chunks = chunkJobs(job, ranges, dir);
+  for (const [index, chunk] of chunks.entries()) {
+    const encoding = await renderChunk(
+      chunk,
+      (renderedFrames) => reportFrames(index, renderedFrames),
+      signal,
+    );
+    const remaining = chunks.slice(index + 1);
+    if (shouldPipeline(job, encoding, remaining.length)) {
+      await renderChunkPipeline(remaining, signal, (offset, frames) =>
+        reportFrames(index + 1 + offset, frames),
+      );
+      return;
+    }
+  }
+}
+
+/** One silent video job per range. */
+function chunkJobs(job: VideoJob, ranges: FrameRange[], dir: string): ChunkJob[] {
+  const inputProps = { ...job.inputProps, renderAudio: false };
+  // Remotion uses resolved composition props when rendering, independently of inputProps.
+  const composition = {
+    ...job.composition,
+    props: { ...job.composition.props, renderAudio: false },
+  };
+  return ranges.map((frameRange, index) => ({
     ...job,
     composition,
     inputProps,
@@ -138,29 +157,39 @@ async function renderChunks(
     muted: true,
     outputLocation: join(dir, `chunk-${index}.mp4`),
   }));
-  for (const [index, chunk] of jobs.entries()) {
-    let parallelEncoding = true;
-    await renderCancellable(
-      {
-        ...chunk,
-        onStart: (info) => {
-          parallelEncoding = info.parallelEncoding;
-          job.onStart?.(info);
-        },
-        onProgress: ({ renderedFrames }) => reportFrames(index, renderedFrames),
-      },
-      signal,
-    );
-    // Keep Remotion's faster streaming path when it is available. If its memory
-    // check chose serial encoding, overlap the remaining batches without forcing it.
-    if (!parallelEncoding && canPipeline(job) && jobs.length - index > 2) {
-      await renderChunkPipeline(jobs.slice(index + 1), signal, (offset, frames) =>
-        reportFrames(index + 1 + offset, frames),
-      );
-      return;
-    }
-  }
 }
+
+/** Renders one chunk and returns whether Remotion encoded it while capturing. */
+async function renderChunk(
+  chunk: VideoJob,
+  reportFrames: (renderedFrames: number) => void,
+  signal: AbortSignal,
+): Promise<{ parallelEncoding: boolean }> {
+  let parallelEncoding = true;
+  await renderCancellable(
+    {
+      ...chunk,
+      onStart: (info) => {
+        parallelEncoding = info.parallelEncoding;
+        chunk.onStart?.(info);
+      },
+      onProgress: ({ renderedFrames }) => reportFrames(renderedFrames),
+    },
+    signal,
+  );
+  return { parallelEncoding };
+}
+
+/**
+ * Keep Remotion's faster streaming path when it is available. If its memory check chose serial
+ * encoding, overlap capture and encoding of the remaining chunks ourselves, when at least two
+ * remain and the job's settings allow it.
+ */
+const shouldPipeline = (
+  job: VideoJob,
+  encoding: { parallelEncoding: boolean },
+  remaining: number,
+) => !encoding.parallelEncoding && canPipeline(job) && remaining >= 2;
 
 async function renderCancellable(job: VideoJob, signal: AbortSignal) {
   signal.throwIfAborted();
