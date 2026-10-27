@@ -1,6 +1,6 @@
 import type { Page } from 'playwright';
 import { SetcastError } from '@setcast/core';
-import { assetUrl } from '../browser/url.ts';
+import { assetUrl } from '../player/url.ts';
 
 const failures = new WeakMap<Page, Error>();
 export async function restrictResources(

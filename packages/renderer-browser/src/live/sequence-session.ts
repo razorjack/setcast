@@ -4,7 +4,7 @@ import type { LiveInput } from './input.ts';
 import type { LivePerformance } from './performance.ts';
 import type { SceneRecall } from './bank.tsx';
 import { LiveSequence } from './sequence.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 export function useSequence(
   initial: ResolvedLiveProject,

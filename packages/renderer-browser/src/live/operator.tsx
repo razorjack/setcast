@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 /** React keeps capture in the output window; only its controls move into this document. */
 export function useOperatorWindow(report: Report) {

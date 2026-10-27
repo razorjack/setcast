@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ResolvedLiveProject } from '@setcast/core';
-import { DropOverlay } from '../browser/art.tsx';
-import { useShortcuts } from '../browser/keyboard.ts';
-import type { Report } from '../browser/report.ts';
+import { DropOverlay } from '../player/art.tsx';
+import { useShortcuts } from '../player/keyboard.ts';
+import type { Report } from '../player/report.ts';
 import { LiveDock } from './controls.tsx';
 import { useLiveInput, type LiveInput } from './input.ts';
 import { LiveViewport } from './scene.tsx';

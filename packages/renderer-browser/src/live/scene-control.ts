@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import type { ResolvedLiveProject } from '@setcast/core';
-import type { Art } from '../browser/overrides.ts';
-import { useArt } from '../browser/art.tsx';
-import { useThemes, type ThemeSelection } from '../browser/themes.ts';
-import type { Report } from '../browser/report.ts';
+import type { Art } from '../player/overrides.ts';
+import { useArt } from '../player/art.tsx';
+import { useThemes, type ThemeSelection } from '../player/themes.ts';
+import type { Report } from '../player/report.ts';
 import { useLiveBranding } from './branding.ts';
 import type { Tempo } from './tempo.tsx';
 

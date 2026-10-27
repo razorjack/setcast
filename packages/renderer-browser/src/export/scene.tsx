@@ -10,9 +10,9 @@ import {
   type RenderFrame,
   type RendererBindings,
 } from '@setcast/core/react';
-import { openAnalysis } from '../browser/decode.ts';
-import { SceneBoundary } from '../browser/scene.tsx';
-import { assetUrl } from '../browser/url.ts';
+import { openAnalysis } from '../player/decode.ts';
+import { SceneBoundary } from '../player/scene.tsx';
+import { assetUrl } from '../player/url.ts';
 import { FrameReadiness } from './readiness.ts';
 import type { FrameTimings } from './metrics.ts';
 import { ExportVideo } from './video.tsx';

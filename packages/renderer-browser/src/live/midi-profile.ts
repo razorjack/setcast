@@ -8,7 +8,7 @@ import {
   type MidiMapping,
 } from '@setcast/core';
 import { downloadJson } from './diagnostics.tsx';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 const storageKey = 'setcast-midi-profile-v1';
 export function readMidiProfile(storage: Pick<Storage, 'getItem'>): {

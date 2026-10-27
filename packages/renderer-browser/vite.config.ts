@@ -5,7 +5,7 @@ export default defineConfig({
       'src/index.ts',
       'src/capabilities.ts',
       'src/diagnostics.ts',
-      'src/browser/main.tsx',
+      'src/player/main.tsx',
       'src/export/index.ts',
       'src/export/scene.tsx',
       'src/preview/server.ts',

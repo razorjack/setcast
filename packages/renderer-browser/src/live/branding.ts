@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrandingSchema, type Branding, type BrandPosition } from '@setcast/core';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 /** What the operator edits. An empty text field removes that line. */
 export interface BrandingEdit {

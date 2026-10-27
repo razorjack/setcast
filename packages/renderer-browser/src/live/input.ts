@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { errorMessage, silentAnalyzer, type ResolvedLiveProject } from '@setcast/core';
 import { LiveCapture } from './capture.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 export function useLiveInput(initial: ResolvedLiveProject) {
   const [capture] = useState(() => new LiveCapture());

@@ -5,7 +5,7 @@ import {
   type SceneSequence,
 } from '@setcast/core';
 import { LiveEnergy } from './energy.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 type Entry = SceneSequence['scenes'][number];
 interface SequenceOptions {

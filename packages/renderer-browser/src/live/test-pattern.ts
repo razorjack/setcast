@@ -7,7 +7,7 @@ import {
   type ResolvedLiveProject,
 } from '@setcast/core';
 import { downloadJson } from './diagnostics.tsx';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 export function useTestPattern(initial: ResolvedLiveProject, report: Report) {
   const [config, setConfig] = useState(

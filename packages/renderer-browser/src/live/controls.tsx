@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { errorMessage, formatTime, type PerformanceState } from '@setcast/core';
-import { ArtMenu } from '../browser/art.tsx';
-import { SaveScene } from '../browser/save.tsx';
-import type { Report } from '../browser/report.ts';
+import { ArtMenu } from '../player/art.tsx';
+import { SaveScene } from '../player/save.tsx';
+import type { Report } from '../player/report.ts';
 import { useInputDevices, type LiveInput } from './input.ts';
 import type { SceneControl } from './scene-control.ts';
 

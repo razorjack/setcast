@@ -15,13 +15,13 @@ import {
   TestPattern,
   type RendererBindings,
 } from '@setcast/core/react';
-import { SceneBoundary } from '../browser/scene.tsx';
-import { assetUrl } from '../browser/url.ts';
+import { SceneBoundary } from '../player/scene.tsx';
+import { assetUrl } from '../player/url.ts';
 import { LiveReadiness } from './readiness.ts';
 import { ProjectionFrame } from './projection-frame.tsx';
 import { LiveVideo } from './video.tsx';
 import { errorMessage } from '@setcast/core';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 interface SceneProps {
   project: ResolvedLiveProject;

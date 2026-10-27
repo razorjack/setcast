@@ -3,7 +3,7 @@ import type { ResolvedLiveProject } from '@setcast/core';
 import type { LivePerformance } from './performance.ts';
 import type { Tempo } from './tempo.tsx';
 import type { LiveAudio } from './audio.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 interface SceneListing {
   preset: string;

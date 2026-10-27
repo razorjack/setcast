@@ -1,5 +1,5 @@
 import type { FramePreview } from './frame-preview.ts';
-import { useShortcuts } from '../browser/keyboard.ts';
+import { useShortcuts } from '../player/keyboard.ts';
 
 type TransportProps = { session: FramePreview; count: number; fps: number };
 export function PreviewTransport({ session, count, fps }: TransportProps) {

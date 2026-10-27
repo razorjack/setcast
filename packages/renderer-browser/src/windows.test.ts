@@ -1,7 +1,7 @@
 import { SILENCE, type AudioAnalyzer } from '@setcast/core';
 import { expect, test, vi } from 'vite-plus/test';
 import { AnalysisWindows } from './windows.ts';
-import { copyPcm } from './browser/decode.ts';
+import { copyPcm } from './player/decode.ts';
 
 const analyzer = (index: number): AudioAnalyzer => ({
   featuresAt: () => ({ ...SILENCE, bass: index / 100 }),

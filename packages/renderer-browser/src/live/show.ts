@@ -8,7 +8,7 @@ import { useMidi, type MidiAction } from './midi.ts';
 import type { SceneControl } from './scene-control.ts';
 import type { LiveInput } from './input.ts';
 import { useAnnouncements } from './announcements.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 /** What the operator plays during the set: levels, scene recall, the sequence, MIDI and the journal. */
 export function useLiveShow(

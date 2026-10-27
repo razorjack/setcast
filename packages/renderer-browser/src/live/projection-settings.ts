@@ -9,7 +9,7 @@ import {
 } from '@setcast/core';
 import { downloadJson } from './diagnostics.tsx';
 import type { LiveTestPattern } from './test-pattern.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 export function useProjection(
   initial: ResolvedLiveProject,

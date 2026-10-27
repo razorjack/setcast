@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { errorMessage } from '@setcast/core';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 interface Display extends Screen {
   left: number;

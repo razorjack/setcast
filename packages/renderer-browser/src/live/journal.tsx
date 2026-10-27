@@ -5,10 +5,10 @@ import {
   type SceneSelection,
   type SessionEvent,
 } from '@setcast/core';
-import type { Art } from '../browser/overrides.ts';
-import { playerWrite, uploadArt } from '../browser/save.tsx';
+import type { Art } from '../player/overrides.ts';
+import { playerWrite, uploadArt } from '../player/save.tsx';
 import type { LiveInput } from './input.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 interface JournalProps {
   input: LiveInput;

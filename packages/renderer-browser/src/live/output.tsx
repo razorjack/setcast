@@ -3,7 +3,7 @@ import type { DiagnosticHistory } from './diagnostics.tsx';
 import type { LiveInput } from './input.ts';
 import { adaptQuality, fullQuality } from './quality.ts';
 import { useOutputDisplay, type OutputDisplay } from './display.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 
 export function useOutput(
   input: LiveInput,

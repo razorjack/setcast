@@ -11,7 +11,7 @@ import {
   type MidiConfig,
 } from '@setcast/core';
 import { useMidiProfile } from './midi-profile.ts';
-import type { Report } from '../browser/report.ts';
+import type { Report } from '../player/report.ts';
 export { midiMessage, midiKey, type MidiAction } from '@setcast/core';
 
 export function useMidi(

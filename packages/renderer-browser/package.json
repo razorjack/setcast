@@ -10,7 +10,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./player": "./src/browser/main.tsx",
+    "./player": "./src/player/main.tsx",
     "./package.json": "./package.json",
     "./export": "./src/export/index.ts",
     "./export-scene": "./src/export/scene.tsx",
@@ -22,7 +22,7 @@
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
-      "./player": "./dist/browser/main.mjs",
+      "./player": "./dist/player/main.mjs",
       "./package.json": "./package.json",
       "./export": "./dist/export/index.mjs",
       "./export-scene": "./dist/export/scene.mjs",
