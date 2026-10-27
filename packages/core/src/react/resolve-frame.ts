@@ -10,7 +10,7 @@ import { evaluateModulation } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
 import type { Timeline, MixState } from '../timeline.ts';
 import type { RenderFrame } from './frame.tsx';
-import { microseconds, toSeconds } from '../mix-schema.ts';
+import { microseconds, toSeconds } from '../time.ts';
 
 export interface FrameRequest {
   project: ResolvedProject;

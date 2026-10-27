@@ -1,6 +1,7 @@
 import { expect, test } from 'vite-plus/test';
 import { clipFile, clipRange } from './clip.ts';
-import { parseRange, rangeName } from './render.ts';
+import { rangeName } from '../paths.ts';
+import { parseRange } from './render.ts';
 
 test('rangeName stamps a slice without colons', () => {
   expect(rangeName('out/set.mp4', [30, 45])).toBe('out/set.0m30s-0m45s.mp4');

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { parseTime } from './time.ts';
+import { microseconds, parseTime } from './time.ts';
 
 function object<S extends z.ZodRawShape>(shape: S) {
   return z.strictObject(shape, {
@@ -39,19 +39,6 @@ export const ScopeSchema = z.union([z.literal('mix'), object({ plays: targets })
   error: 'Use mix or {plays: [play-id]} for scope.',
 });
 export type Scope = z.infer<typeof ScopeSchema>;
-
-export function microseconds(seconds: number): number {
-  const time = Math.round(seconds * 1_000_000);
-  if (!Number.isFinite(seconds) || seconds < 0 || !Number.isSafeInteger(time)) {
-    throw new RangeError(
-      `Time ${seconds} must be finite, nonnegative and within safe microsecond precision.`,
-    );
-  }
-  return time;
-}
-
-/** Seconds for a normalized mix time, which is integer microseconds. */
-export const toSeconds = (time: number): number => time / 1_000_000;
 
 export const MixTimeSchema = z
   .union([z.number(), z.string()], {

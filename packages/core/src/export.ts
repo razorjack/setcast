@@ -5,7 +5,8 @@ import type {
   VideoBitrate,
   X264Preset,
 } from './config.ts';
-import { toSeconds, type MixDocument } from './mix-schema.ts';
+import { type MixDocument } from './mix-schema.ts';
+import { toSeconds } from './time.ts';
 import type { ResolvedProject } from './project.ts';
 
 export interface EncodingOptions {

@@ -49,5 +49,35 @@ export function formatTimecode(seconds: number): string {
   return formatTime(Number(whole)) + trimmedFraction(fraction);
 }
 
+/** Human durations: `45s`, `2m 05s`, `1h 01m 40s`. */
+export function formatDuration(seconds: number): string {
+  const { h, m, s } = hms(Math.round(seconds));
+  if (h > 0) return `${h}h ${pad(m)}m ${pad(s)}s`;
+  if (m > 0) return `${m}m ${pad(s)}s`;
+  return `${s}s`;
+}
+
+/** `0m30s`, `1h02m03.5s`: a time for a file name, so without colons. */
+export function formatFileTime(seconds: number): string {
+  const [whole, fraction] = seconds.toFixed(6).split('.') as [string, string];
+  const { h, m, s } = hms(Number(whole));
+  const suffix = trimmedFraction(fraction);
+  if (h > 0) return `${h}h${pad(m)}m${pad(s)}${suffix}s`;
+  return `${m}m${pad(s)}${suffix}s`;
+}
+
 /** `500` becomes `.5`, `000` becomes nothing: no trailing zeros in a hand-edited config. */
 const trimmedFraction = (fraction: string) => `.${fraction}`.replace(/\.?0+$/, '');
+
+export function microseconds(seconds: number): number {
+  const time = Math.round(seconds * 1_000_000);
+  if (!Number.isFinite(seconds) || seconds < 0 || !Number.isSafeInteger(time)) {
+    throw new RangeError(
+      `Time ${seconds} must be finite, nonnegative and within safe microsecond precision.`,
+    );
+  }
+  return time;
+}
+
+/** Seconds for a normalized mix time, which is integer microseconds. */
+export const toSeconds = (time: number): number => time / 1_000_000;

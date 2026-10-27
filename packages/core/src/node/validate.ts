@@ -13,7 +13,7 @@ import {
   type RendererCompatibilityIssue,
 } from '../renderer-compatibility.ts';
 import type { ProjectConfig } from '../config.ts';
-import { toSeconds } from '../mix-schema.ts';
+import { toSeconds } from '../time.ts';
 
 export type ValidationKind = 'project' | 'live';
 export interface ValidationDiagnostic {

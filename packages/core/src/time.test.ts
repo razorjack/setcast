@@ -1,5 +1,11 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { formatChapterTime, formatTime, formatTimecode, parseTime } from './time.ts';
+import {
+  formatChapterTime,
+  formatDuration,
+  formatTime,
+  formatTimecode,
+  parseTime,
+} from './time.ts';
 
 describe('parseTime', () => {
   test('accepts seconds, MM:SS, and H:MM:SS', () => {
@@ -33,4 +39,12 @@ test('formatTimecode keeps the fraction', () => {
   expect(formatTimecode(83.5)).toBe('1:23.5');
   expect(formatTimecode(33.104)).toBe('0:33.104');
   expect(formatTimecode(3723.25)).toBe('1:02:03.25');
+});
+
+test('formatDuration carries rounded seconds into the minute', () => {
+  expect(formatDuration(45.2)).toBe('45s');
+  expect(formatDuration(59.6)).toBe('1m 00s');
+  expect(formatDuration(119.7)).toBe('2m 00s');
+  expect(formatDuration(125)).toBe('2m 05s');
+  expect(formatDuration(3700)).toBe('1h 01m 40s');
 });

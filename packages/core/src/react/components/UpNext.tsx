@@ -1,6 +1,6 @@
 import type { MixDocument } from '../../mix-schema.ts';
 import { useFrame } from '../frame.tsx';
-import { toSeconds } from '../../mix-schema.ts';
+import { toSeconds } from '../../time.ts';
 
 export function UpNext() {
   const { mix, composition } = useFrame();

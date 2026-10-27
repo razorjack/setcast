@@ -10,7 +10,7 @@ import {
   type CurrentPlay,
 } from './timeline.ts';
 import type { TracklistRow, TracklistView } from './tracklist.ts';
-import { toSeconds } from './mix-schema.ts';
+import { toSeconds } from './time.ts';
 
 export const SECONDS_CAP = 60;
 export const stageData = (state: MixState, background: string | null) => ({

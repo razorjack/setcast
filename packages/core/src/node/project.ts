@@ -23,7 +23,7 @@ import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.
 import { loadCss } from './css.ts';
 import { readImageSize } from './image-size.ts';
 import { loadScenes } from './scenes.ts';
-import { toSeconds } from '../mix-schema.ts';
+import { toSeconds } from '../time.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
 const BASE_CSS = fileURLToPath(new URL('../../css/base.css', import.meta.url));

@@ -3,7 +3,7 @@ import type { SetEnvelope } from '../../analysis.ts';
 import { OverviewConfigSchema, type OverviewConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { linePath } from './svg.ts';
-import { toSeconds } from '../../mix-schema.ts';
+import { toSeconds } from '../../time.ts';
 
 export { OverviewConfigSchema, type OverviewConfig };
 

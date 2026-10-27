@@ -74,8 +74,6 @@ export { normalizeMix, compileMix, readMixDocument, mixWarnings } from './mix.ts
 export {
   MixInputSchema,
   MixTimeSchema,
-  microseconds,
-  toSeconds,
   ANNOTATION_KINDS,
   SECTION_KINDS,
   type MixDocument,
@@ -209,7 +207,17 @@ export {
   requireVideoOutput,
   type StillFormat,
 } from './file-types.ts';
-export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
+export {
+  formatChapterTime,
+  formatDuration,
+  formatFileTime,
+  formatTime,
+  formatTimecode,
+  hms,
+  microseconds,
+  parseTime,
+  toSeconds,
+} from './time.ts';
 export {
   Timeline,
   lastAnnotations,

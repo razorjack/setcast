@@ -1,13 +1,12 @@
 import type { RenderOptions, StillOptions } from '@setcast/core';
 import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
-import { dirname, extname, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import {
   toSeconds,
   chapterProblems,
   formatTime,
-  hms,
-  microseconds,
+  formatDuration,
   parseTime,
   SetcastError,
   youtubeDescription,
@@ -16,20 +15,9 @@ import {
 } from '@setcast/core';
 import { render, still } from '../renderer.ts';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
-import { stem } from '../paths.ts';
+import { rangeName, stem } from '../paths.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
-import {
-  bold,
-  dim,
-  formatDuration,
-  intro,
-  log,
-  outro,
-  RenderUi,
-  shown,
-  steel,
-  warn,
-} from '../ui.ts';
+import { bold, dim, intro, log, outro, RenderUi, shown, steel, warn } from '../ui.ts';
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
@@ -242,20 +230,3 @@ function splitRange(text: string): [number, number] | null {
   if (start === null || end === null || end <= start) return null;
   return [start, end];
 }
-
-export const rangeName = (file: string, [start, end]: [number, number]) =>
-  `${stem(file)}.${stamp(start)}-${stamp(end)}${extname(file)}`;
-
-/** `0m30s`, `1h02m03s`. Filename-safe, so no colons. */
-const stamp = (seconds: number) => {
-  const time = microseconds(seconds);
-  const { h, m, s } = hms(toSeconds(time));
-  const fraction = String(time % 1_000_000)
-    .padStart(6, '0')
-    .replace(/0+$/, '');
-  const suffix = fraction ? `.${fraction}` : '';
-  if (h > 0) return `${h}h${pad(m)}m${pad(s)}${suffix}s`;
-  return `${m}m${pad(s)}${suffix}s`;
-};
-
-const pad = (part: number) => String(part).padStart(2, '0');

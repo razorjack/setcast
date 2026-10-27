@@ -1,7 +1,7 @@
 import { homedir } from 'node:os';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import * as p from '@clack/prompts';
-import { clamp, ConfigError, hms, SetcastError } from '@setcast/core';
+import { clamp, ConfigError, formatDuration, SetcastError } from '@setcast/core';
 import type { RenderProgress } from '@setcast/core';
 import pc from 'picocolors';
 import { clearTabProgress, linkToFile, showTabBusy, showTabProgress } from './terminal.ts';
@@ -159,16 +159,6 @@ function printDebugStacks(error: unknown): void {
 
 /** Enough frames to place the failure, without burying the message under the whole stack. */
 const topOfStack = (stack: string) => stack.split('\n').slice(1, 6).join('\n');
-
-/** Human durations: `45s`, `2m 05s`, `1h 01m 40s`. */
-export function formatDuration(seconds: number): string {
-  const { h, m, s } = hms(Math.round(seconds));
-  if (h > 0) return `${h}h ${pad(m)}m ${pad(s)}s`;
-  if (m > 0) return `${m}m ${pad(s)}s`;
-  return `${s}s`;
-}
-
-const pad = (part: number) => String(part).padStart(2, '0');
 
 /** Decimal units, as file managers show them: `840 KB`, `4.1 MB`, `2.3 GB`. */
 export function formatSize(bytes: number): string {

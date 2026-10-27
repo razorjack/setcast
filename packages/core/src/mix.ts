@@ -1,7 +1,5 @@
 import { ConfigError, zodIssues } from './errors.ts';
 import {
-  toSeconds,
-  microseconds,
   MixInputSchema,
   MixDocumentSchema,
   type MixInput,
@@ -10,6 +8,7 @@ import {
   type Contribution,
   type Annotation,
 } from './mix-schema.ts';
+import { toSeconds, microseconds } from './time.ts';
 import { validateMix } from './mix-validation.ts';
 
 export function normalizeMix(input: unknown, durationSeconds: number): MixDocument {

@@ -1,4 +1,4 @@
-import { toSeconds, microseconds } from './mix-schema.ts';
+import { toSeconds, microseconds } from './time.ts';
 
 export function framesWithinMix(duration: number, fps: number): number {
   const frames = Math.max(1, Math.ceil(toSeconds(duration) * fps));

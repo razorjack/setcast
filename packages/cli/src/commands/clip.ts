@@ -13,8 +13,7 @@ import {
 } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { bold, dim, intro, log, outro, RenderUi, shown } from '../ui.ts';
-import { rangeName } from './render.ts';
-import { stem } from '../paths.ts';
+import { rangeName, stem } from '../paths.ts';
 
 const DEFAULT_SECONDS = 45;
 const MIN_SECONDS = 10;

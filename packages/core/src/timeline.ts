@@ -1,6 +1,4 @@
 import {
-  toSeconds,
-  microseconds,
   type MixDocument,
   type Play,
   type Recording,
@@ -8,6 +6,7 @@ import {
   type Annotation,
   type SectionKind,
 } from './mix-schema.ts';
+import { toSeconds, microseconds } from './time.ts';
 import { sectionTargets, validateMix } from './mix-validation.ts';
 
 export type ContributionRun = {

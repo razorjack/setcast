@@ -6,7 +6,7 @@ import type { CurrentPlay, MixState } from '../../timeline.ts';
 import { tracklistView } from '../../tracklist.ts';
 import { useFrame } from '../frame.tsx';
 import { labelLine } from './credit.ts';
-import { toSeconds } from '../../mix-schema.ts';
+import { toSeconds } from '../../time.ts';
 
 type PanelTiming = NonNullable<ResolvedProject['panel']>;
 type PanelMotion = { show: number; presence: number; handedOver: number };

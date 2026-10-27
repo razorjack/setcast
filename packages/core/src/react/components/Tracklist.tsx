@@ -1,9 +1,8 @@
 import { tracklistRowVars, tracklistVars } from '../../stage.ts';
-import { formatTime } from '../../time.ts';
+import { formatTime, toSeconds } from '../../time.ts';
 import { tracklistView, type TracklistRow, type TracklistCounts } from '../../tracklist.ts';
 import { useFrame } from '../frame.tsx';
 import { labelLine } from './credit.ts';
-import { toSeconds } from '../../mix-schema.ts';
 
 /** The listings around the current one; rows enter and leave through `--row-presence`. */
 export function Tracklist({ counts }: { counts: TracklistCounts }) {

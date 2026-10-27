@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
+  formatDuration,
   toSeconds,
   beatOffset,
   clamp,
@@ -24,7 +25,6 @@ import {
   bold,
   clearSpinnerOnError,
   dim,
-  formatDuration,
   highlightYaml,
   intro,
   log,
