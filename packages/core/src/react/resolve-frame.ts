@@ -8,7 +8,7 @@ import type { AudioAnalyzer } from '../audio.ts';
 import type { Announcement } from '../branding.ts';
 import { evaluateModulation } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
-import type { Timeline, MixState } from '../timeline.ts';
+import { emptyMixState, type Timeline, type MixState } from '../timeline.ts';
 import type { RenderFrame } from './frame.tsx';
 import { microseconds, toSeconds } from '../time.ts';
 
@@ -33,13 +33,19 @@ export function resolveFrame({
   height = project.height,
 }: FrameRequest): RenderFrame {
   const timeSeconds = frame / fps;
-  const selected = project.scenes?.findLast((entry) => entry.at <= timeSeconds)?.scene;
-  if (selected) project = sceneAt(project, selected);
-  const mix = timeline.at(timeSeconds);
-  return assembleFrame(
-    { project, analyzer, mix, frame, fps, width, height, announcements: project.announcements },
-    toSeconds(project.mix.duration),
-  );
+  const scene = project.scenes?.findLast((entry) => entry.at <= timeSeconds)?.scene;
+  const shown = scene ? sceneAt(project, scene) : project;
+  return assembleFrame({
+    project: shown,
+    analyzer,
+    mix: timeline.at(timeSeconds),
+    frame,
+    fps,
+    width,
+    height,
+    durationSeconds: toSeconds(project.mix.duration),
+    announcements: shown.announcements,
+  });
 }
 
 function sceneAt(project: ResolvedProject, scene: ResolvedLiveProject): ResolvedProject {
@@ -77,36 +83,18 @@ export function resolveLiveFrame({
       `resolveLiveFrame() received frame=${frame}; use a nonnegative safe integer.`,
     );
   }
-  const time = microseconds(frame / project.fps);
-  const mix: MixState = {
-    time,
-    currentPlays: [],
-    focusPlays: [],
-    mixSection: null,
-    activeAnnotations: [],
-    annotations: { mix: { last: {}, next: {} }, plays: {} },
-    nextEntries: [],
-    nextListings: [],
-    listings: [],
-    recordingCount: 0,
-    playCount: 0,
-    listingCount: 0,
-    currentPlayCount: 0,
-  };
-  return assembleFrame(
-    {
-      project,
-      analyzer,
-      mix,
-      frame,
-      fps: project.fps,
-      width: project.width,
-      height: project.height,
-      performance,
-      announcements,
-    },
-    null,
-  );
+  return assembleFrame({
+    project,
+    analyzer,
+    mix: emptyMixState(microseconds(frame / project.fps)),
+    frame,
+    fps: project.fps,
+    width: project.width,
+    height: project.height,
+    durationSeconds: null,
+    performance,
+    announcements,
+  });
 }
 
 interface AssemblyRequest {
@@ -117,31 +105,18 @@ interface AssemblyRequest {
   fps: number;
   width: number;
   height: number;
+  /** Null for a live performance, which has no known end. */
+  durationSeconds: number | null;
+  /** Live levels; recorded frames evaluate the project's levels and automation instead. */
   performance?: PerformanceState;
   announcements: readonly Announcement[];
 }
 
-function assembleFrame(
-  {
-    project,
-    analyzer,
-    mix,
-    frame,
-    fps,
-    width,
-    height,
-    performance,
-    announcements,
-  }: AssemblyRequest,
-  durationSeconds: number | null,
-): RenderFrame {
+function assembleFrame(request: AssemblyRequest): RenderFrame {
+  const { project, mix, frame, fps } = request;
   const timeSeconds = frame / fps;
-  performance ??= performanceAt(
-    project.performance ?? DEFAULT_PERFORMANCE,
-    project.automation ?? [],
-    timeSeconds,
-  );
-  analyzer = performanceAnalyzer(analyzer, performance.intensity);
+  const performance = request.performance ?? projectPerformance(project, timeSeconds);
+  const analyzer = performanceAnalyzer(request.analyzer, performance.intensity);
   const modulation = evaluateModulation(project.modulation, {
     time: timeSeconds,
     fps,
@@ -158,24 +133,23 @@ function assembleFrame(
     analyzer,
     mix,
     composition: {
-      width,
-      height,
-      durationSeconds,
+      width: request.width,
+      height: request.height,
+      durationSeconds: request.durationSeconds,
       project,
-      announcements,
-      ...performanceComposition(project, performance),
+      announcements: request.announcements,
+      performance: changedPerformance(project, performance),
     },
     modulation,
   };
 }
 
-function performanceComposition(project: SceneProject, performance: PerformanceState) {
-  if (
-    !project.performance &&
-    !project.automation &&
-    performance.intensity === 1 &&
-    performance.brightness === 1
-  )
-    return {};
-  return { performance };
+const projectPerformance = (project: SceneProject, timeSeconds: number) =>
+  performanceAt(project.performance ?? DEFAULT_PERFORMANCE, project.automation ?? [], timeSeconds);
+
+/** Undefined when nothing changes the levels, so the scene renders without a dimmer. */
+function changedPerformance(project: SceneProject, performance: PerformanceState) {
+  const unchanged = performance.intensity === 1 && performance.brightness === 1;
+  if (!project.performance && !project.automation && unchanged) return undefined;
+  return performance;
 }

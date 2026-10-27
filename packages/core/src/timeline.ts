@@ -45,6 +45,25 @@ export interface MixState {
   currentPlayCount: number;
 }
 
+/** The state of a performance without a finite mix: nothing credited, cued or listed. */
+export function emptyMixState(time: number): MixState {
+  return {
+    time,
+    currentPlays: [],
+    focusPlays: [],
+    mixSection: null,
+    activeAnnotations: [],
+    annotations: { mix: { last: {}, next: {} }, plays: {} },
+    nextEntries: [],
+    nextListings: [],
+    listings: [],
+    recordingCount: 0,
+    playCount: 0,
+    listingCount: 0,
+    currentPlayCount: 0,
+  };
+}
+
 /** First index whose timestamp is strictly later than time. */
 function upperBound<T>(entries: readonly T[], time: number, stamp: (entry: T) => number): number {
   let low = 0;
