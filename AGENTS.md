@@ -40,6 +40,26 @@ Packages point `exports` at `src/*.ts`; Node 26 runs TypeScript sources directly
 so there is no build step in development. `vp pack` builds `dist/` for publishing
 (`publishConfig.exports`). Do not reintroduce a dev build step.
 
+## Glossary
+
+One term per concept, in code, docs and messages. Do not reintroduce the retired synonyms.
+
+- **play**: one identifiable use of a recording in the mix (`plays:`).
+- **contribution**: an interval in which a play is heard; adjacent contributions form a **run**.
+  Not "interval" or "segment".
+- **listing**: a play's editorial position in the tracklist (`at`), separate from when it is heard.
+- **annotation**: a timed mark on the mix timeline (`annotations:`: drop, breakdown, buildup,
+  section_end, rewind, technique, note or a namespaced kind). Not "cue" or "event". A journal `cue` line is the live record
+  of one and replays into an annotation; a DJ's hardware cue point is unrelated.
+- **focus pin**: a `focus:` entry that holds a run in focus. Not "directive".
+- **scene**: saved appearance (`SceneAppearance`: title, art, theme, CSS, visualizers,
+  modulation, tempo, branding). A saved scene is a `saved-scene-*` directory.
+- **performance**: the live output levels, intensity and brightness, and their timed ramps
+  (`performance.ts`). Not the live session as a whole.
+- **live session**: an open-ended `setcast live` run, with no recorded file or finite mix.
+- **session journal**: the JSONL record of a live session (`journal.ts`).
+- **render session**: one browser and bundle shared by several exports (`withRenderSession`).
+
 ## Workflow
 
 Prerequisites: the standalone `vp` binary (see Gotchas below), Node 26.7.0
