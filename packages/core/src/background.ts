@@ -1,3 +1,4 @@
+import { isVideoFile } from './file-types.ts';
 import { clamp } from './motion.ts';
 import type { MixState } from './timeline.ts';
 
@@ -58,8 +59,6 @@ export interface CalmArea {
 /** The first focused play supplies its art; an empty focus uses the project background. */
 export const currentBackground = (state: MixState, projectBackground: string | null) =>
   state.focusPlays[0]?.play.background ?? projectBackground;
-
-export const isVideoFile = (path: string) => /\.(?:mp4|mov|webm|mkv|m4v)$/i.test(path);
 
 export function backgroundKind(path: string | null): 'none' | 'image' | 'video' {
   if (!path) return 'none';

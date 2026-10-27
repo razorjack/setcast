@@ -5,6 +5,8 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderStill } from '@remotion/renderer';
 import {
+  requireStillFormat,
+  requireVideoOutput,
   defaultStillTime,
   readMixDocument,
   SetcastError,
@@ -75,7 +77,7 @@ async function prepare(
 
 async function renderIn(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
   options.signal?.throwIfAborted();
-  validateVideoFile(options.out);
+  requireVideoOutput(options.out);
   const encoding = encodingOptions(options);
   const { hardwareAcceleration } = await hardwareEncoding(encoding.hardwareAcceleration);
   const chunkSeconds = resolveChunkSeconds(options.chunkSeconds);
@@ -118,13 +120,6 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
   return { file: options.out, frames: totalFrames, durationSeconds: totalFrames / fps };
 }
 
-const STILL_FORMATS: Record<string, 'png' | 'jpeg' | 'webp'> = {
-  png: 'png',
-  jpg: 'jpeg',
-  jpeg: 'jpeg',
-  webp: 'webp',
-};
-
 /** Renders a single frame as an image, for a thumbnail. */
 export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
   return withRenderSession(() => renderInPackage(() => stillIn(project, options)));
@@ -132,7 +127,7 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
 
 async function stillIn(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
   options.signal?.throwIfAborted();
-  const imageFormat = stillFormat(options.out);
+  const imageFormat = requireStillFormat(options.out);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
 
@@ -161,23 +156,6 @@ async function stillIn(project: ResolvedProject, options: StillOptions): Promise
   }
 
   return { file: options.out, timeSeconds: frame / fps };
-}
-
-function stillFormat(out: string): 'png' | 'jpeg' | 'webp' {
-  const format = STILL_FORMATS[out.split('.').pop()?.toLowerCase() ?? ''];
-  if (format) return format;
-  throw new SetcastError(
-    `Cannot write a still to ${out}`,
-    `Use a .png, .jpg or .webp file name for --out. Setcast picks the format from the extension.`,
-  );
-}
-
-function validateVideoFile(out: string): void {
-  if (/\.(?:mp4|mov|mkv)$/i.test(out)) return;
-  throw new SetcastError(
-    `Cannot write video to ${out}`,
-    'Use a .mp4, .mov or .mkv file name. Setcast renders H.264 video with AAC audio.',
-  );
 }
 
 function translateRenderError(thrown: unknown): Error {

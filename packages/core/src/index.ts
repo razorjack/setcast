@@ -200,6 +200,15 @@ export {
   type MeasuredArt,
   type Size,
 } from './background.ts';
+export {
+  IMAGE_EXTENSIONS,
+  VIDEO_EXTENSIONS,
+  fileExtension,
+  isVideoFile,
+  requireStillFormat,
+  requireVideoOutput,
+  type StillFormat,
+} from './file-types.ts';
 export { formatChapterTime, formatTime, formatTimecode, hms, parseTime } from './time.ts';
 export {
   Timeline,

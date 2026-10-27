@@ -1,7 +1,13 @@
 import { mkdtemp, open, rm } from 'node:fs/promises';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { basename, extname, join } from 'node:path';
-import { SceneSelectionSchema, type SceneProject } from '@setcast/core';
+import { basename, join } from 'node:path';
+import {
+  VIDEO_EXTENSIONS,
+  IMAGE_EXTENSIONS,
+  fileExtension,
+  SceneSelectionSchema,
+  type SceneProject,
+} from '@setcast/core';
 import { saveScene } from '@setcast/core/node';
 import type { projectCatalog } from './catalog.ts';
 import { savedScene } from './scenes.ts';
@@ -61,9 +67,10 @@ async function readSettings(request: IncomingMessage) {
 }
 
 async function uploadArtwork(root: string, request: IncomingMessage, name: string) {
-  const extension = extname(name).toLowerCase();
-  if (!['.png', '.jpg', '.jpeg', '.webp', '.svg', '.mp4', '.webm', '.mov'].includes(extension)) {
-    throw new Error(`Cannot save artwork ${name}. Choose PNG, JPEG, WebP, SVG, MP4, WebM or MOV.`);
+  const extension = fileExtension(name);
+  if (!IMAGE_EXTENSIONS.includes(extension) && !VIDEO_EXTENSIONS.includes(extension)) {
+    const accepted = [...IMAGE_EXTENSIONS, ...VIDEO_EXTENSIONS].join(', ');
+    throw new Error(`Cannot save artwork ${name}. Choose a file ending in ${accepted}.`);
   }
   const directory = await mkdtemp(join(root, 'player-art-'));
   const file = await open(join(directory, `art${extension}`), 'wx');

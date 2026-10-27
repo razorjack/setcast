@@ -44,6 +44,8 @@ export const mediaType = (path: string): string =>
     '.mp4': 'video/mp4',
     '.webm': 'video/webm',
     '.mov': 'video/quicktime',
+    '.mkv': 'video/x-matroska',
+    '.m4v': 'video/mp4',
   })[extname(path).toLowerCase()] ?? 'application/octet-stream';
 
 export async function serveAsset(file: string, request: IncomingMessage, response: ServerResponse) {

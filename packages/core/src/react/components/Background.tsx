@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import {
   currentBackground,
-  isVideoFile,
   measureBackground,
   resolveFit,
   type BackgroundFit,
@@ -13,6 +12,7 @@ import { useFrame } from '../frame.tsx';
 import { Img, useAssetResolver, Video } from '../renderer.tsx';
 import { context2d, drawFitted, loadImage, sizeOf } from './canvas.ts';
 import { PreparedCache, usePrepared } from './prepared.ts';
+import { isVideoFile } from '../../file-types.ts';
 
 /** The art is measured at the frame's shape, this many cells along its long side. */
 const MEASURE_CELLS = 64;

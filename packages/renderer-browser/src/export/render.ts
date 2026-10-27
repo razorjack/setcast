@@ -1,10 +1,10 @@
 import { join, resolve } from 'node:path';
 import type { Page } from 'playwright';
 import {
+  requireVideoOutput,
   framesWithinMix,
   resolveFrameRange,
   splitFrameRange,
-  SetcastError,
   type ResolvedProject,
   type RenderOptions,
   type RenderResult,
@@ -29,8 +29,7 @@ export function render(
   options: BrowserRenderOptions,
 ): Promise<RenderResult> {
   graphicsArgs(options.gl);
-  if (!/\.(mp4|mov|mkv)$/i.test(options.out))
-    throw new SetcastError(`Cannot write video ${options.out}.`, 'Use .mp4, .mov or .mkv.');
+  requireVideoOutput(options.out);
   const encoding = exportEncoding(options);
   const total = framesWithinMix(project.mix.duration, project.fps);
   const range = options.range
