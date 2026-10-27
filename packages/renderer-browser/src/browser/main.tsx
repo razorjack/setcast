@@ -1,7 +1,7 @@
 import { LivePlayer } from '../live/player.tsx';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { clamp, type ResolvedProject, type SceneProject } from '@setcast/core';
+import { errorMessage, clamp, type ResolvedProject, type SceneProject } from '@setcast/core';
 import type { Transport } from '../transport.ts';
 import { DropOverlay, useArt } from './art.tsx';
 import { useAutoHide } from './autohide.ts';
@@ -27,7 +27,7 @@ export function mountPlayer(element: HTMLElement) {
     .catch((error: unknown) => {
       root.render(
         <p className="sc-player-message" role="alert">
-          {error instanceof Error ? error.message : String(error)}
+          {errorMessage(error)}
         </p>,
       );
     });
@@ -41,7 +41,7 @@ async function loadInitialProject() {
     return { project: await fetchProject<SceneProject>(requested), notice: null };
   } catch (error) {
     history.replaceState(null, '', location.pathname);
-    const reason = error instanceof Error ? error.message : String(error);
+    const reason = errorMessage(error);
     return {
       project: await fetchProject<SceneProject>(null),
       notice: `Cannot show ${requested}: ${reason}`,

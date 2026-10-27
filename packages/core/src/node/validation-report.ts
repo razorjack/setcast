@@ -1,5 +1,5 @@
 import { dirname, join, sep } from 'node:path';
-import { ConfigError, SetcastError } from '../errors.ts';
+import { errorMessage, ConfigError, SetcastError } from '../errors.ts';
 import type { ValidationDiagnostic } from './validate.ts';
 
 export function validationFailure(
@@ -36,7 +36,7 @@ export function validationFailure(
         code,
         file,
         path: '',
-        message: error instanceof Error ? error.message : String(error),
+        message: errorMessage(error),
         ...(error instanceof SetcastError && error.hint ? { hint: error.hint } : {}),
       },
     ],

@@ -1,4 +1,5 @@
 import { LiveAudio, inputChannels } from './audio.ts';
+import { errorMessage } from '@setcast/core';
 
 export interface CaptureSettings {
   device?: string;
@@ -209,7 +210,7 @@ export class LiveCapture {
         message: this.muted ? this.status.message : null,
       };
     } catch (error) {
-      this.fail(error instanceof Error ? error.message : String(error));
+      this.fail(errorMessage(error));
     }
   }
 
@@ -267,8 +268,7 @@ function constraints(device?: string): MediaTrackConstraints {
 }
 
 function captureError(error: unknown): string {
-  if (!(error instanceof DOMException))
-    return error instanceof Error ? error.message : String(error);
+  if (!(error instanceof DOMException)) return errorMessage(error);
   switch (error.name) {
     case 'NotAllowedError':
       return 'Audio input access was denied. Allow microphone/audio-input access for this localhost page and start again.';

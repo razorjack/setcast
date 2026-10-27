@@ -20,6 +20,7 @@ import { assetUrl } from '../browser/url.ts';
 import { LiveReadiness } from './readiness.ts';
 import { ProjectionFrame } from './projection-frame.tsx';
 import { LiveVideo } from './video.tsx';
+import { errorMessage } from '@setcast/core';
 
 interface SceneProps {
   project: ResolvedLiveProject;
@@ -224,9 +225,7 @@ function useSceneReadiness(props: SceneProps) {
       setFailed(project);
       onFailure?.();
       setVisible((current) => (current === project ? null : current));
-      report(
-        `Cannot prepare this scene: ${cause instanceof Error ? cause.message : String(cause)}. Choose another theme or artwork.`,
-      );
+      report(`Cannot prepare this scene: ${errorMessage(cause)}. Choose another theme or artwork.`);
     },
     [report, onFailure],
   );

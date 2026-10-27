@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  errorMessage,
   DEFAULT_MIDI,
   MidiMappingSchema,
   MidiProfileSchema,
@@ -94,7 +95,7 @@ async function importProfile(
     report(`Imported MIDI profile "${profile.data.name}".`);
     return true;
   } catch (error) {
-    report(`Cannot import MIDI profile: ${error instanceof Error ? error.message : String(error)}`);
+    report(`Cannot import MIDI profile: ${errorMessage(error)}`);
     return false;
   }
 }

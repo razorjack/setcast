@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { SceneSelection } from '@setcast/core';
 import type { Art } from './overrides.ts';
+import { errorMessage } from '@setcast/core';
 
 const uploads = new WeakMap<Art, Promise<string | undefined>>();
 
@@ -55,7 +56,7 @@ export function SaveScene({
         `Saved ${saved.directory}/${saved.config}. Open that directory with setcast ${saved.config === 'live.yaml' ? 'live' : 'play or render'}.`,
       );
     } catch (error) {
-      report(error instanceof Error ? error.message : String(error), true);
+      report(errorMessage(error), true);
     } finally {
       setBusy(false);
     }

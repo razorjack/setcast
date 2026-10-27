@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  errorMessage,
   ProjectionSchema,
   VenueSchema,
   type Projection,
@@ -99,7 +100,7 @@ function venueError(error: unknown) {
     return (error as { issues: { message: string }[] }).issues
       .map((issue) => issue.message)
       .join(' ');
-  return error instanceof Error ? error.message : String(error);
+  return errorMessage(error);
 }
 
 async function importVenue(

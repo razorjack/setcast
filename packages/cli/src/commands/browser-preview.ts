@@ -1,4 +1,4 @@
-import { ConfigError, SetcastError } from '@setcast/core';
+import { errorMessage, ConfigError, SetcastError } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import { load, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
@@ -51,7 +51,7 @@ function untilStopped(): Promise<void> {
 }
 
 function previewError(error: unknown) {
-  const lines = [error instanceof Error ? error.message : String(error)];
+  const lines = [errorMessage(error)];
   if (error instanceof ConfigError)
     lines.push(...error.issues.map((issue) => `${issue.path || '(root)'}: ${issue.message}`));
   if (error instanceof SetcastError && error.hint) lines.push(error.hint);

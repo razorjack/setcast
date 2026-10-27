@@ -2,6 +2,7 @@ import { mkdtemp, open, rm } from 'node:fs/promises';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { basename, join } from 'node:path';
 import {
+  errorMessage,
   VIDEO_EXTENSIONS,
   IMAGE_EXTENSIONS,
   fileExtension,
@@ -50,7 +51,7 @@ export async function saveRequest(
   } catch (error) {
     response
       .writeHead(400, { 'Content-Type': 'application/json' })
-      .end(JSON.stringify({ message: error instanceof Error ? error.message : String(error) }));
+      .end(JSON.stringify({ message: errorMessage(error) }));
   }
 }
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { silentAnalyzer, type ResolvedLiveProject } from '@setcast/core';
+import { errorMessage, silentAnalyzer, type ResolvedLiveProject } from '@setcast/core';
 import { LiveCapture } from './capture.ts';
 
 export function useLiveInput(initial: ResolvedLiveProject) {
@@ -49,9 +49,7 @@ export function useInputDevices(report: (message: string) => void, phase: string
       const all = await navigator.mediaDevices.enumerateDevices();
       setDevices(all.filter((device) => device.kind === 'audioinput'));
     } catch (error) {
-      report(
-        `Cannot list audio inputs: ${error instanceof Error ? error.message : String(error)}. Check browser permissions.`,
-      );
+      report(`Cannot list audio inputs: ${errorMessage(error)}. Check browser permissions.`);
     }
   }, [report]);
   useEffect(() => {

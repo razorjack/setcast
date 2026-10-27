@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ResolvedProject, SceneProject } from '@setcast/core';
 import type { ThemeListing } from '../catalog.ts';
+import { errorMessage } from '@setcast/core';
 
 export async function fetchProject<Project extends SceneProject = ResolvedProject>(
   theme: string | null,
@@ -47,9 +48,7 @@ export function useThemes<Project extends SceneProject>(
       (error: unknown) => {
         if (request !== latest.current) return;
         setLoading(null);
-        report(
-          `Cannot switch to ${theme}: ${error instanceof Error ? error.message : String(error)}`,
-        );
+        report(`Cannot switch to ${theme}: ${errorMessage(error)}`);
       },
     );
   };

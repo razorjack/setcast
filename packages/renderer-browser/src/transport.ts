@@ -1,4 +1,4 @@
-import { framesWithinMix } from '@setcast/core';
+import { errorMessage, framesWithinMix } from '@setcast/core';
 
 export interface PlaybackMedia {
   currentTime: number;
@@ -80,7 +80,7 @@ export class Transport {
   }
 
   fail(error: unknown) {
-    this.error = error instanceof Error ? error.message : String(error);
+    this.error = errorMessage(error);
     this.pause();
   }
 

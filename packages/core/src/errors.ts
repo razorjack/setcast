@@ -1,5 +1,9 @@
 import type { z } from 'zod';
 
+/** The message of anything thrown, which need not be an `Error`. */
+export const errorMessage = (thrown: unknown): string =>
+  thrown instanceof Error ? thrown.message : String(thrown);
+
 /** An error with a user-facing message and what to do about it. The CLI prints both. */
 export interface SetcastErrorOptions extends ErrorOptions {
   /** 2 for usage or project configuration, 1 for a runtime failure. */

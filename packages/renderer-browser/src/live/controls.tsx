@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { formatTime, type PerformanceState, type ResolvedLiveProject } from '@setcast/core';
+import {
+  errorMessage,
+  formatTime,
+  type PerformanceState,
+  type ResolvedLiveProject,
+} from '@setcast/core';
 import { ArtMenu, type useArt } from '../browser/art.tsx';
 import type { useThemes } from '../browser/themes.ts';
 import { SaveScene } from '../browser/save.tsx';
@@ -106,7 +111,7 @@ function InputControls({ input, report }: Pick<DockProps, 'input' | 'report'>) {
     try {
       input.configure(next);
     } catch (error) {
-      report(error instanceof Error ? error.message : String(error));
+      report(errorMessage(error));
     }
   };
   return (

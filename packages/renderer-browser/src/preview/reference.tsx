@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { errorMessage } from '@setcast/core';
 
 interface ReferenceImage {
   url: string;
@@ -39,7 +40,7 @@ export function useReference() {
       setError(null);
       url = null;
     } catch (error) {
-      if (id === request.current) setError(error instanceof Error ? error.message : String(error));
+      if (id === request.current) setError(errorMessage(error));
     } finally {
       if (url) URL.revokeObjectURL(url);
     }

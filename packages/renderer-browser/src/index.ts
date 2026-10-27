@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { realpath, readFile } from 'node:fs/promises';
-import { SetcastError, type SceneProject } from '@setcast/core';
+import { errorMessage, SetcastError, type SceneProject } from '@setcast/core';
 import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
 import { projectCatalog, type ThemeCatalog } from './catalog.ts';
@@ -182,7 +182,7 @@ async function sendProject(
     project = await catalog.load(theme ?? catalog.theme);
   } catch (error) {
     const unknown = !catalog.listings.some((listing) => listing.name === theme);
-    const message = error instanceof Error ? error.message : String(error);
+    const message = errorMessage(error);
     const hint = error instanceof SetcastError ? error.hint : undefined;
     response
       .writeHead(unknown ? 404 : 500, { 'Content-Type': 'application/json' })
@@ -207,7 +207,7 @@ async function sendScenes(
   } catch (error) {
     response
       .writeHead(400, { 'Content-Type': 'application/json' })
-      .end(JSON.stringify({ message: error instanceof Error ? error.message : String(error) }));
+      .end(JSON.stringify({ message: errorMessage(error) }));
   }
 }
 

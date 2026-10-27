@@ -1,6 +1,6 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { SetcastError } from '../errors.ts';
+import { errorMessage, SetcastError } from '../errors.ts';
 import {
   diagnosticOptions,
   rendererReadiness,
@@ -47,7 +47,7 @@ export class RendererDiagnostics {
         features,
         status: 'fail',
         hint,
-        message: (error instanceof Error ? error.message : String(error)).slice(0, 4096),
+        message: errorMessage(error).slice(0, 4096),
       });
       return false;
     }

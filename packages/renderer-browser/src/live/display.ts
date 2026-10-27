@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { errorMessage } from '@setcast/core';
 
 interface Display extends Screen {
   left: number;
@@ -63,7 +64,7 @@ function useDisplays(report: (message: string) => void) {
       setDetails(await (window as DisplayWindow).getScreenDetails!());
     } catch (error) {
       report(
-        `Cannot list displays: ${error instanceof Error ? error.message : String(error)}. Allow window-management access, or move the output window manually.`,
+        `Cannot list displays: ${errorMessage(error)}. Allow window-management access, or move the output window manually.`,
       );
     }
   };
@@ -99,7 +100,7 @@ function useFullscreen(
       setActive(true);
     } catch (error) {
       report(
-        `Fullscreen was refused: ${error instanceof Error ? error.message : String(error)}. Focus the output window and press F to retry.`,
+        `Fullscreen was refused: ${errorMessage(error)}. Focus the output window and press F to retry.`,
       );
     }
   };

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import {
+  errorMessage,
   midiMessage,
   midiKey,
   learnMidiMapping,
@@ -32,9 +33,7 @@ export function useMidi(
         const mapping = learnMidiMapping(latest.current.mapping, key, action);
         profile.setMapping(() => mapping);
       } catch (error) {
-        report(
-          `Cannot learn MIDI mapping: ${error instanceof Error ? error.message : String(error)}`,
-        );
+        report(`Cannot learn MIDI mapping: ${errorMessage(error)}`);
       }
       learn(null);
     },

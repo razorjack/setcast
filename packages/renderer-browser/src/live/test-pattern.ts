@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  errorMessage,
   TestPatternSchema,
   TestPatternPresetSchema,
   type TestPatternConfig,
@@ -30,9 +31,7 @@ export function useTestPattern(initial: ResolvedLiveProject, report: (message: s
       setConfig(preset.data.testPattern);
       show(false);
     } catch (error) {
-      report(
-        `Cannot import test pattern preset: ${error instanceof Error ? error.message : String(error)}`,
-      );
+      report(`Cannot import test pattern preset: ${errorMessage(error)}`);
     }
   };
   return {
