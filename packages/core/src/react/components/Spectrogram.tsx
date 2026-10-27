@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import { BIN_COUNT, level } from '../../audio.ts';
+import { BIN_COUNT, scaleLevel } from '../../audio.ts';
 import { currentBackground } from '../../background.ts';
 import { SpectrogramConfigSchema, type SpectrogramConfig } from '../../visualizers.ts';
 import { useAudioHistory, useFrame, type AudioMoment } from '../frame.tsx';
@@ -91,7 +91,7 @@ function levelImage(history: AudioMoment[], gain: number): OffscreenCanvas {
     const { audio } = history[Math.min(column, history.length - 1)]!;
     for (const [bin, value] of audio.bins.entries()) {
       const row = BIN_COUNT - 1 - bin;
-      pixels[(row * columns + column) * 4 + 3] = level(value, gain, 0) ** 2 * 255;
+      pixels[(row * columns + column) * 4 + 3] = scaleLevel(value, gain, 0) ** 2 * 255;
     }
   }
   const image = new OffscreenCanvas(columns, BIN_COUNT);

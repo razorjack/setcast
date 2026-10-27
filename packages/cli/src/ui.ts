@@ -89,7 +89,7 @@ export async function clearSpinnerOnError<T>(
 }
 
 /** A file as the outro names it, styled, and a link to open it where the terminal has links. */
-export const shown = (file: string) => linkToFile(steel(displayPath(file)), file);
+export const formatPath = (file: string) => linkToFile(steel(displayPath(file)), file);
 
 /** Relative inside the working directory, `~/…` inside the home directory, absolute elsewhere. */
 export function displayPath(file: string): string {

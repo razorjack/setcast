@@ -1,4 +1,4 @@
-import { level } from '../../audio.ts';
+import { scaleLevel } from '../../audio.ts';
 import { FieldConfigSchema, type FieldConfig } from '../../visualizers.ts';
 import { fieldPhases } from './gpu-motion.ts';
 import { fieldFragment } from './field-shader.ts';
@@ -14,9 +14,9 @@ const field: Shader<FieldConfig> = {
     gl.uniform4fv(uniforms.phase!, fieldPhases(frame.timeSeconds, config.speed, config.seed));
     gl.uniform3f(
       uniforms.audio!,
-      level(frame.audio.bass, config.gain, 0),
-      level(frame.audio.mids, config.gain, 0),
-      level(frame.audio.highs, config.gain, 0),
+      scaleLevel(frame.audio.bass, config.gain, 0),
+      scaleLevel(frame.audio.mids, config.gain, 0),
+      scaleLevel(frame.audio.highs, config.gain, 0),
     );
     gl.uniform1f(uniforms.scale!, config.scale);
   },

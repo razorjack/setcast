@@ -1,4 +1,4 @@
-import { level } from '../../audio.ts';
+import { scaleLevel } from '../../audio.ts';
 import { ConstellationConfigSchema, type ConstellationConfig } from '../../visualizers.ts';
 import { constellationFragment } from './constellation-shader.ts';
 import { constellationMotion } from './gpu-motion.ts';
@@ -15,9 +15,9 @@ const constellation: Shader<ConstellationConfig> = {
     gl.uniform4fv(uniforms.phase!, motion.phases);
     gl.uniform3f(
       uniforms.audio!,
-      level(frame.audio.bass, config.gain, 0),
-      level(frame.audio.mids, config.gain, 0),
-      level(frame.audio.highs, config.gain, 0),
+      scaleLevel(frame.audio.bass, config.gain, 0),
+      scaleLevel(frame.audio.mids, config.gain, 0),
+      scaleLevel(frame.audio.highs, config.gain, 0),
     );
     gl.uniform3fv(uniforms.depths!, motion.depths);
     gl.uniform3uiv(uniforms.layers!, motion.layers);

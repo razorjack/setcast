@@ -23,7 +23,7 @@ import { resolveFrameRange } from './range.ts';
 import { graphicsOptions } from './graphics.ts';
 import { encodingOptions, studioEncodingArgs, type EncodingOptions } from './encoding.ts';
 import { renderVideo, resolveChunkSeconds } from './chunks.ts';
-import { hardwareEncoding } from './hardware.ts';
+import { resolveHardwareEncoding } from './hardware.ts';
 import { cancellable } from './cancellation.ts';
 
 export type {
@@ -36,7 +36,7 @@ export type {
 } from '@setcast/core';
 
 export { probeAudio } from './probe.ts';
-export { hardwareEncoding, type HardwareEncoding } from './hardware.ts';
+export { resolveHardwareEncoding, type HardwareEncoding } from './hardware.ts';
 
 export { ENTRY } from './paths.ts';
 import { ENTRY, PACKAGE_ROOT } from './paths.ts';
@@ -79,7 +79,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
   options.signal?.throwIfAborted();
   requireVideoOutput(options.out);
   const encoding = encodingOptions(options);
-  const { hardwareAcceleration } = await hardwareEncoding(encoding.hardwareAcceleration);
+  const { hardwareAcceleration } = await resolveHardwareEncoding(encoding.hardwareAcceleration);
   const chunkSeconds = resolveChunkSeconds(options.chunkSeconds);
   const report = options.onProgress ?? (() => {});
   const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
@@ -202,7 +202,7 @@ export interface PreviewOptions extends EncodingOptions {
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
 export async function preview(project: ResolvedProject, options: PreviewOptions): Promise<void> {
   readMixDocument(project.mix);
-  const { hardwareAcceleration } = await hardwareEncoding(
+  const { hardwareAcceleration } = await resolveHardwareEncoding(
     encodingOptions(options).hardwareAcceleration,
   );
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));

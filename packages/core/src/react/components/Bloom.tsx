@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import { level, type FeatureSource } from '../../audio.ts';
+import { scaleLevel, type FeatureSource } from '../../audio.ts';
 import { currentBackground, type Size } from '../../background.ts';
 import { lightLayers } from '../../lights.ts';
 import { smoothedFeature } from '../../modulation.ts';
@@ -72,7 +72,7 @@ function BloomLight({ src, band, level }: BloomLightProps) {
 function bandLevel(frame: RenderFrame, band: FeatureSource, { gain, smooth }: BloomConfig): number {
   const { timeSeconds, fps, analyzer } = frame;
   const feature = smoothedFeature(band, smooth, { time: timeSeconds, fps, analyzer });
-  return Math.round(level(feature, gain, 0) * 1000) / 1000;
+  return Math.round(scaleLevel(feature, gain, 0) * 1000) / 1000;
 }
 
 /**

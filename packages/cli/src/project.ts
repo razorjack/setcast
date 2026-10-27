@@ -40,9 +40,11 @@ export async function load(
  * cannot start. Commands call this before their progress UI, so the warning prints on its own line.
  */
 export async function withHardwareEncoding(loaded: LoadedProject): Promise<LoadedProject> {
-  const { hardwareEncoding } = await import('./renderer.ts');
+  const { resolveHardwareEncoding } = await import('./renderer.ts');
   const { output } = loaded.config;
-  const { hardwareAcceleration, fallback } = await hardwareEncoding(output.hardwareAcceleration);
+  const { hardwareAcceleration, fallback } = await resolveHardwareEncoding(
+    output.hardwareAcceleration,
+  );
   if (fallback) warn(fallback);
   return { ...loaded, config: { ...loaded.config, output: { ...output, hardwareAcceleration } } };
 }

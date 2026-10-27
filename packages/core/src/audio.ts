@@ -120,7 +120,8 @@ export function bandEnergy(
 }
 
 /** Soft limiter: 0 → 0, grows roughly linearly, approaches 1 asymptotically. */
-export const soft = (level: number, gain = 1): number => 1 - Math.exp(-gain * Math.max(0, level));
+export const softLimit = (level: number, gain = 1): number =>
+  1 - Math.exp(-gain * Math.max(0, level));
 
 export interface LogBinsOptions {
   count?: number;
@@ -145,7 +146,7 @@ export function logBins(
     const startHz = lo * ratio ** (bin / count);
     const endHz = lo * ratio ** ((bin + 1) / count);
     const centreHz = Math.sqrt(startHz * endHz);
-    bins[bin] = soft(bandEnergy(spectrum, startHz, endHz) * (centreHz / 100) ** tilt, gain);
+    bins[bin] = softLimit(bandEnergy(spectrum, startHz, endHz) * (centreHz / 100) ** tilt, gain);
   }
   return bins;
 }
@@ -159,9 +160,9 @@ export function spectrumFeatures(
   spectrum: Spectrum,
 ): Pick<AudioFeatures, 'bass' | 'mids' | 'highs' | 'bins'> {
   return {
-    bass: soft(bandEnergy(spectrum, ...BANDS.bass), 14),
-    mids: soft(bandEnergy(spectrum, ...BANDS.mids), 60),
-    highs: soft(bandEnergy(spectrum, ...BANDS.highs), 160),
+    bass: softLimit(bandEnergy(spectrum, ...BANDS.bass), 14),
+    mids: softLimit(bandEnergy(spectrum, ...BANDS.mids), 60),
+    highs: softLimit(bandEnergy(spectrum, ...BANDS.highs), 160),
     bins: logBins(spectrum),
   };
 }
@@ -174,7 +175,7 @@ export function rms(samples: ArrayLike<number>, gain = 3): number {
     const sample = samples[i]!;
     sum += sample * sample;
   }
-  return soft(Math.sqrt(sum / samples.length), gain);
+  return softLimit(Math.sqrt(sum / samples.length), gain);
 }
 
 /**
@@ -199,7 +200,7 @@ export function waveSlice(
 }
 
 /** A bin as a bar height: scaled by `gain`, never under `floor` so silence keeps a baseline, capped at 1. */
-export const level = (bin: number, gain: number, floor: number): number =>
+export const scaleLevel = (bin: number, gain: number, floor: number): number =>
   Math.max(floor, Math.min(1, bin * gain));
 
 /** Seconds a held peak takes to fall from full scale to nothing once its hold is over. */

@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import {
   formatDuration,
   toSeconds,
-  beatOffset,
+  estimateBeatOffset,
   clamp,
   detectSections,
   estimateBpm,
@@ -29,7 +29,7 @@ import {
   intro,
   log,
   outro,
-  shown,
+  formatPath,
   spinner,
   steel,
 } from '../ui.ts';
@@ -136,7 +136,7 @@ function draftFrom(energy: Envelope, sensitivity: number): AnalysisDraft {
   return {
     annotations: drafted,
     bpm,
-    offset: bpm ? beatOffset(energy, bpm) : null,
+    offset: bpm ? estimateBeatOffset(energy, bpm) : null,
     seconds: energy.bass.length * energy.hop,
     energy,
   };
@@ -260,7 +260,7 @@ function showWrittenChanges(path: string, changes: AnalysisChanges): void {
   const added: string[] = [];
   if (changes.annotations.length) added.push(`${changes.annotations.length} annotations`);
   if (changes.tempo) added.push(`bpm: ${changes.tempo} with beatOffset`);
-  outro(`Added ${added.join(' and ')} to ${shown(path)}`);
+  outro(`Added ${added.join(' and ')} to ${formatPath(path)}`);
 }
 
 function toYaml(event: DraftAnnotation): Record<string, string | number> {

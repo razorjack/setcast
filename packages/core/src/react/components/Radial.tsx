@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { level, sampleBins } from '../../audio.ts';
+import { scaleLevel, sampleBins } from '../../audio.ts';
 import { RadialConfigSchema, type RadialConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { ArtReveal, type Outline } from './ArtReveal.tsx';
@@ -31,7 +31,7 @@ export function Radial({ config }: { config: RadialConfig }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const ringRadius = radius * BOX;
   const rotation = (timeSeconds * spin) % 360;
-  const levels = sampleBins(audio.bins, bars).map((bin) => level(bin, gain, floor));
+  const levels = sampleBins(audio.bins, bars).map((bin) => scaleLevel(bin, gain, floor));
   const spokes = spokesAround(levels, ringRadius, length * BOX);
 
   return (

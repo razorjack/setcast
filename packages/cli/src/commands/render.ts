@@ -16,7 +16,7 @@ import {
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { rangeName, stem } from '../paths.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
-import { bold, dim, intro, log, outro, RenderUi, shown, steel, warn } from '../ui.ts';
+import { bold, dim, intro, log, outro, RenderUi, formatPath, steel, warn } from '../ui.ts';
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
@@ -100,7 +100,7 @@ async function runCommand(
   }
 
   const elapsed = formatDuration((Date.now() - started) / 1000);
-  outro(`${bold('Done')} in ${elapsed}  →  ${files.map(shown).join(', ')}`);
+  outro(`${bold('Done')} in ${elapsed}  →  ${files.map(formatPath).join(', ')}`);
 }
 
 function parseOptions(argv: string[]): RenderCommandOptions {

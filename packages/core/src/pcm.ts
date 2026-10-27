@@ -1,6 +1,6 @@
 import {
   HISTORY_SECONDS,
-  soft,
+  softLimit,
   spectrumFeatures,
   waveSlice,
   WAVE_SECONDS,
@@ -72,7 +72,7 @@ function measure(left: PcmWindow, right: PcmWindow, time: number): AudioFeatures
   const loudness = once(() => stereoLoudness(left, right, time));
   const onset = once(() => {
     const before = stereoLoudness(left, right, withinWindow(left, time - ONSET_LOOKBACK));
-    return soft(Math.max(0, loudness() - before) * 4);
+    return softLimit(Math.max(0, loudness() - before) * 4);
   });
   const wave = once(() => ({ left: waveAt(left, time), right: waveAt(right, time) }));
   return {
@@ -126,7 +126,7 @@ function powerAt(audioWindow: PcmWindow, time: number): number {
 
 function stereoLoudness(left: PcmWindow, right: PcmWindow, time: number): number {
   const power = (powerAt(left, time) + powerAt(right, time)) / 2;
-  return soft(Math.sqrt(power), 3);
+  return softLimit(Math.sqrt(power), 3);
 }
 
 /** The `WAVE_SECONDS` of samples that end at `time`. */

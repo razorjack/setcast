@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { level, segmentedLevel, type AudioFeatures, type FeatureSource } from '../../audio.ts';
+import { scaleLevel, segmentedLevel, type AudioFeatures, type FeatureSource } from '../../audio.ts';
 import { MetersConfigSchema, type MetersConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { usePeaks } from './history.ts';
@@ -15,7 +15,7 @@ export function Meters({ config }: { config: MetersConfig }) {
   const { audio } = useFrame();
   const { bands, gain, floor, segments } = config;
   const levelsOf = (features: AudioFeatures) =>
-    bands.map((band) => level(features[band], gain, floor));
+    bands.map((band) => scaleLevel(features[band], gain, floor));
   const levels = levelsOf(audio);
   const peaks = usePeaks(config.peak, levels, levelsOf);
   const peakCell = (peak: number | undefined) =>

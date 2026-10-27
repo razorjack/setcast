@@ -19,7 +19,7 @@ export function hardwareEncoder(platform: NodeJS.Platform): string | null {
  * open it (NVENC on an AMD or Intel GPU), FFmpeg exits and Remotion crashes on an unhandled EPIPE,
  * so try the encoder on one frame before rendering.
  */
-export async function hardwareEncoding(
+export async function resolveHardwareEncoding(
   setting: HardwareAcceleration,
   platform: NodeJS.Platform = process.platform,
 ): Promise<HardwareEncoding> {

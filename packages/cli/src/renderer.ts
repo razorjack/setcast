@@ -78,9 +78,9 @@ function current() {
   return context.exporter;
 }
 
-export async function hardwareEncoding(setting: HardwareAcceleration) {
+export async function resolveHardwareEncoding(setting: HardwareAcceleration) {
   if (selected.getStore()?.name !== 'browser')
-    return (await import('@setcast/renderer-remotion')).hardwareEncoding(setting);
+    return (await import('@setcast/renderer-remotion')).resolveHardwareEncoding(setting);
   if (setting === 'required')
     throw new SetcastError(
       'Browser export uses software H.264 encoding.',

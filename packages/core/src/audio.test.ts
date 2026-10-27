@@ -7,7 +7,7 @@ import {
   peakHold,
   rms,
   sampleBins,
-  soft,
+  softLimit,
   spectrumFeatures,
   waveSlice,
 } from './audio.ts';
@@ -56,10 +56,10 @@ describe('spectrum features', () => {
 });
 
 test('soft and rms', () => {
-  expect(soft(0)).toBe(0);
-  expect(soft(100)).toBeCloseTo(1);
+  expect(softLimit(0)).toBe(0);
+  expect(softLimit(100)).toBeCloseTo(1);
   expect(rms([])).toBe(0);
-  expect(rms([0.5, -0.5])).toBeCloseTo(soft(0.5, 3));
+  expect(rms([0.5, -0.5])).toBeCloseTo(softLimit(0.5, 3));
 });
 
 test('sampleBins keeps the ends and interpolates between them', () => {

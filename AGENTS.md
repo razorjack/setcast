@@ -291,7 +291,7 @@ a `drop` where the bass comes in and a `breakdown` where it drops out; `estimate
 autocorrelates the onset flux over several windows and takes the median, preferring the fastest
 lag that still correlates so a 174 BPM roller does not read as 87. `nearestBeat()` folds the onset
 flux around a moment by the beat period and reads the grid off where the hits pile up; it is local
-(±8 s) so a tempo a tenth of a BPM off cannot drift the grid over an hour. `snapToBeats()` is an explicit helper for callers that choose to move drafts onto it and `beatOffset()` places the first beat. `setcast analyze` prints detected times without snapping as
+(±8 s) so a tempo a tenth of a BPM off cannot drift the grid over an hour. `snapToBeats()` is an explicit helper for callers that choose to move drafts onto it and `estimateBeatOffset()` places the first beat. `setcast analyze` prints detected times without snapping as
 a draft `annotations:` block plus `bpm:` and `beatOffset:`, or merges them into `setcast.yaml` with
 `--write`.
 
@@ -1061,7 +1061,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   bitrate encoding. Studio receives the same encoding and JPEG quality settings as CLI renders.
   Remotion's own `if-possible` check only looks for the encoder in its bundled FFmpeg, which always
   contains `h264_nvenc`; without an NVIDIA device FFmpeg exits and Remotion crashes on an unhandled
-  `EPIPE`. `hardwareEncoding` therefore encodes one frame with the encoder before `render()` and
+  `EPIPE`. `resolveHardwareEncoding` therefore encodes one frame with the encoder before `render()` and
   `preview()` start the browser or Studio: `if-possible` falls back to `disable`, `required`
   throws. The CLI calls it before its progress UI, so the fallback warning prints on its own line.
   A driver failure after encoding starts is still not recovered.

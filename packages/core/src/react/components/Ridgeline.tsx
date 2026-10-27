@@ -1,5 +1,5 @@
 import { useId, useLayoutEffect, useRef } from 'react';
-import { level, type AudioFeatures } from '../../audio.ts';
+import { scaleLevel, type AudioFeatures } from '../../audio.ts';
 import { currentBackground, type Size } from '../../background.ts';
 import {
   colorAt,
@@ -129,7 +129,7 @@ function ridgeMoments(
   frame: RenderFrame,
   { lines, seconds, gain }: RidgelineConfig,
 ): RidgeMoment[] {
-  const levelsOf = (audio: AudioFeatures) => audio.bins.map((bin) => level(bin, gain, 0) ** 2);
+  const levelsOf = (audio: AudioFeatures) => audio.bins.map((bin) => scaleLevel(bin, gain, 0) ** 2);
   const past = audioHistory(frame, seconds, lines).map(({ time, audio }) => ({
     age: (frame.timeSeconds - time) / seconds,
     levels: levelsOf(audio),

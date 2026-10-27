@@ -26,7 +26,7 @@ vi.mock('./chunks.ts', async () => ({
   renderVideo: (job: unknown) => remotion.renderVideo(job),
 }));
 vi.mock('./probe.ts', () => ({ probeAudio: audio.probe }));
-vi.mock('./hardware.ts', () => ({ hardwareEncoding: hardware.encoding }));
+vi.mock('./hardware.ts', () => ({ resolveHardwareEncoding: hardware.encoding }));
 vi.mock('./local-server.ts', () => ({ checkLocalServer: localServer.check }));
 
 const { render, withRenderSession } = await import('./index.ts');

@@ -11,7 +11,7 @@ import {
   timeWithinAudio,
 } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
-import { bold, dim, intro, log, outro, RenderUi, shown } from '../ui.ts';
+import { bold, dim, intro, log, outro, RenderUi, formatPath } from '../ui.ts';
 import { rangeName, stem } from '../paths.ts';
 
 const DEFAULT_SECONDS = 45;
@@ -162,7 +162,7 @@ async function renderClip(
   );
   const { size } = await stat(result.file);
   ui.doneEncoding(result.durationSeconds, size);
-  return shown(result.file);
+  return formatPath(result.file);
 }
 
 /** A drop suffix keeps early drops distinct even when both clips clamp to the same range. */

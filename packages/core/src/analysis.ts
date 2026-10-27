@@ -24,7 +24,7 @@ export interface Envelope {
  * splitting: bass is what they keep, high is what they drop. Enough for section and beat
  * detection, and it needs no FFT.
  */
-export function envelope({ samples, sampleRate }: Pcm, hopSeconds = HOP_SECONDS): Envelope {
+export function computeEnvelope({ samples, sampleRate }: Pcm, hopSeconds = HOP_SECONDS): Envelope {
   const reader = new EnvelopeReader(sampleRate, hopSeconds);
   reader.push(samples);
   return reader.done();
@@ -230,7 +230,7 @@ export const snapToBeats = (
   events.map((event) => ({ ...event, at: round(nearestBeat(energy, bpm, event.at)) }));
 
 /** Seconds into the audio of the first beat: where CSS `--beat` should start from. */
-export function beatOffset(energy: Envelope, bpm: number): number {
+export function estimateBeatOffset(energy: Envelope, bpm: number): number {
   const period = 60 / bpm;
   return round(wrap(nearestBeat(energy, bpm, 0) / period) * period);
 }

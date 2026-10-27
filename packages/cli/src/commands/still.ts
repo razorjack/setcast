@@ -14,7 +14,7 @@ import { themes } from '@setcast/themes';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
 import { load, withWholeSet } from '../project.ts';
-import { bold, intro, outro, RenderUi, shown } from '../ui.ts';
+import { bold, intro, outro, RenderUi, formatPath } from '../ui.ts';
 
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme name|all]
 
@@ -64,7 +64,7 @@ async function runCommand(options: StillCommandOptions, loaded: LoadedProject): 
     (grabbed) => `Grabbed ${bold(formatTime(grabbed.timeSeconds))} of the set`,
   );
 
-  outro(`${bold('Done')}  →  ${shown(result.file)}`);
+  outro(`${bold('Done')}  →  ${formatPath(result.file)}`);
 }
 
 /** The same moment in every built-in theme, one file each, to compare them over the user's art. */
@@ -85,7 +85,7 @@ async function grabEveryTheme(options: StillCommandOptions): Promise<void> {
     const result = await grabStill(
       project,
       themedPlan,
-      (grabbed) => `${theme.padEnd(column)}  ${shown(grabbed.file)}`,
+      (grabbed) => `${theme.padEnd(column)}  ${formatPath(grabbed.file)}`,
     );
     grabbedAt = result.timeSeconds;
   }

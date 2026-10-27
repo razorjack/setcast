@@ -17,7 +17,7 @@ import {
   log,
   outro,
   prompts,
-  shown,
+  formatPath,
 } from '../ui.ts';
 
 interface InitOptions {
@@ -178,7 +178,7 @@ function configFor(answers: InitAnswers, project: ProjectContent): Record<string
 }
 
 function showNextSteps(dir: string, audio: string): void {
-  log.success(`Created ${shown(join(dir, CONFIG_FILE))}`);
+  log.success(`Created ${formatPath(join(dir, CONFIG_FILE))}`);
   if (!audio) {
     log.warn(`Set ${bold('audio:')} in ${CONFIG_FILE} to your mix file before rendering.`);
   }

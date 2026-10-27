@@ -15,7 +15,7 @@ import { CONFIG_FILE } from '@setcast/core/node';
 import { parseDocument, stringify } from 'yaml';
 import { load } from '../project.ts';
 import { parseCommandArgs } from '../args.ts';
-import { bold, dim, highlightYaml, intro, log, outro, shown, steel } from '../ui.ts';
+import { bold, dim, highlightYaml, intro, log, outro, formatPath, steel } from '../ui.ts';
 
 export const help = `setcast import <tracklist.txt> [--format plain] [--write] [dir]
 
@@ -47,7 +47,7 @@ export async function run(argv: string[]): Promise<void> {
   }
 
   const path = await replaceTracks(options.dir, tracks, options.file);
-  outro(`Wrote ${tracks.length} tracks to ${shown(path)}`);
+  outro(`Wrote ${tracks.length} tracks to ${formatPath(path)}`);
 }
 
 export function requireTracks(tracks: ImportedPlay[], file: string): void {

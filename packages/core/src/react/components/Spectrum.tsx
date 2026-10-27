@@ -1,5 +1,5 @@
 import { useId, useRef } from 'react';
-import { level, sampleBins, segmentedLevel, type AudioFeatures } from '../../audio.ts';
+import { scaleLevel, sampleBins, segmentedLevel, type AudioFeatures } from '../../audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { ArtReveal, type Outline } from './ArtReveal.tsx';
@@ -38,7 +38,7 @@ export function Spectrum({ config }: { config: SpectrumConfig }) {
   const { style, bars, gain, floor, gap, segments } = config;
   const svgRef = useRef<SVGSVGElement>(null);
   const levelsOf = (features: AudioFeatures) =>
-    sampleBins(features.bins, bars).map((bin) => level(bin, gain, floor));
+    sampleBins(features.bins, bars).map((bin) => scaleLevel(bin, gain, floor));
   const levels = levelsOf(audio);
   const peaks = usePeaks(config.peak, levels, levelsOf);
   const barShapes = style === 'bars' ? barRects(levels, gap, segments) : [];

@@ -1,4 +1,4 @@
-import { level } from '../../audio.ts';
+import { scaleLevel } from '../../audio.ts';
 import { TunnelConfigSchema, type TunnelConfig } from '../../visualizers.ts';
 import { tunnelMotion } from './gpu-motion.ts';
 import { ShaderCanvas, type Shader } from './ShaderCanvas.tsx';
@@ -14,9 +14,9 @@ const tunnel: Shader<TunnelConfig> = {
     gl.uniform2fv(uniforms.motion!, tunnelMotion(frame.timeSeconds, config));
     gl.uniform3f(
       uniforms.audio!,
-      level(frame.audio.bass, config.gain, 0),
-      level(frame.audio.mids, config.gain, 0),
-      level(frame.audio.highs, config.gain, 0),
+      scaleLevel(frame.audio.bass, config.gain, 0),
+      scaleLevel(frame.audio.mids, config.gain, 0),
+      scaleLevel(frame.audio.highs, config.gain, 0),
     );
     gl.uniform4f(uniforms.shape!, config.sides, config.rings, config.spokes, config.twist);
     gl.uniform1ui(uniforms.seed!, config.seed);

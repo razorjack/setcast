@@ -17,7 +17,7 @@ vi.mock('node:child_process', async (original) => ({
 }));
 vi.mock('node:fs/promises', () => fs);
 vi.mock('./hardware.ts', () => ({
-  hardwareEncoding: async (hardwareAcceleration: string) => ({ hardwareAcceleration }),
+  resolveHardwareEncoding: async (hardwareAcceleration: string) => ({ hardwareAcceleration }),
 }));
 
 const { preview } = await import('./index.ts');

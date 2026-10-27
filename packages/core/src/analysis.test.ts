@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vite-plus/test';
 import type { Pcm } from './audio.ts';
 import {
-  beatOffset,
+  estimateBeatOffset,
   detectSections,
-  envelope,
+  computeEnvelope,
   EnvelopeReader,
   estimateBpm,
   nearestBeat,
@@ -26,7 +26,7 @@ const tone = (time: number, hz: number, gain = 1) => gain * Math.sin(2 * Math.PI
 describe('envelope', () => {
   test('splits bass from everything above it', () => {
     // Two seconds of 60 Hz, then two of 5 kHz.
-    const energy = envelope(audio(4, (t) => (t < 2 ? tone(t, 60) : tone(t, 5000))));
+    const energy = computeEnvelope(audio(4, (t) => (t < 2 ? tone(t, 60) : tone(t, 5000))));
     const intoBass = Math.floor(energy.bass.length * 0.25);
     const intoHighs = Math.floor(energy.bass.length * 0.75);
 
@@ -41,7 +41,7 @@ describe('detectSections', () => {
   const set = audio(30, (t) => tone(t, 60, t >= 10 && t < 20 ? 0.08 : 1) + tone(t, 3000, 0.2));
 
   test('marks where the bass drops out and where it comes back', () => {
-    const events = detectSections(envelope(set));
+    const events = detectSections(computeEnvelope(set));
     expect(events.map((event) => event.kind)).toEqual(['breakdown', 'drop']);
     expect(events[0]!.at).toBeGreaterThan(9);
     expect(events[0]!.at).toBeLessThan(11);
@@ -50,12 +50,12 @@ describe('detectSections', () => {
   });
 
   test('a drop carries the mean bass of its stretch as intensity', () => {
-    const drop = detectSections(envelope(set))[1]!;
+    const drop = detectSections(computeEnvelope(set))[1]!;
     expect(drop.kind === 'drop' && drop.intensity).toBeGreaterThan(0.7);
   });
 
   test('nothing to split means no events', () => {
-    expect(detectSections(envelope(audio(30, (t) => tone(t, 60))))).toEqual([]);
+    expect(detectSections(computeEnvelope(audio(30, (t) => tone(t, 60))))).toEqual([]);
   });
 });
 
@@ -69,22 +69,22 @@ describe('estimateBpm', () => {
     });
 
   test('nearestBeat snaps to the grid and beatOffset finds its first beat', () => {
-    const energy = envelope(beats(150, 0.1));
+    const energy = computeEnvelope(beats(150, 0.1));
     expect(nearestBeat(energy, 150, 10.25)).toBeCloseTo(10.1, 1);
     expect(nearestBeat(energy, 150, 10.4)).toBeCloseTo(10.5, 1);
-    expect(beatOffset(energy, 150)).toBeCloseTo(0.1, 1);
+    expect(estimateBeatOffset(energy, 150)).toBeCloseTo(0.1, 1);
   });
 
   test('finds the tempo', () => {
-    expect(estimateBpm(envelope(beats(150)))!).toBeCloseTo(150, 0);
+    expect(estimateBpm(computeEnvelope(beats(150)))!).toBeCloseTo(150, 0);
   });
 
   test('prefers the fast reading of a half-tempo beat', () => {
-    expect(estimateBpm(envelope(beats(174)))!).toBeCloseTo(174, 0);
+    expect(estimateBpm(computeEnvelope(beats(174)))!).toBeCloseTo(174, 0);
   });
 
   test('silence has no tempo', () => {
-    expect(estimateBpm(envelope(audio(40, () => 0)))).toBeNull();
+    expect(estimateBpm(computeEnvelope(audio(40, () => 0)))).toBeNull();
   });
 });
 
@@ -126,5 +126,5 @@ test('streamed envelopes are independent of PCM chunk boundaries', () => {
   const reader = new EnvelopeReader(pcm.sampleRate);
   for (let index = 0; index < pcm.samples.length; index += 317)
     reader.push(pcm.samples.subarray(index, index + 317));
-  expect(reader.done()).toEqual(envelope(pcm));
+  expect(reader.done()).toEqual(computeEnvelope(pcm));
 });
