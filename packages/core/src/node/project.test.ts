@@ -228,7 +228,9 @@ annotations: [{ kind: drop, at: 14 }]
   });
 
   test('missing setcast.yaml points at init', async () => {
-    await expect(loadProject(join(dir, 'nope'))).rejects.toMatchObject({
+    await expect(
+      loadProject(join(dir, 'nope'), { probeDuration: async () => 600 }),
+    ).rejects.toMatchObject({
       message: expect.stringContaining('No setcast.yaml'),
       hint: expect.stringContaining('setcast init'),
     });
@@ -238,7 +240,9 @@ annotations: [{ kind: drop, at: 14 }]
     const root = join(dir, 'config-is-directory');
     await mkdir(join(root, 'setcast.yaml'), { recursive: true });
 
-    await expect(loadProject(root)).rejects.toMatchObject({ code: 'EISDIR' });
+    await expect(loadProject(root, { probeDuration: async () => 600 })).rejects.toMatchObject({
+      code: 'EISDIR',
+    });
   });
 
   test('broken yaml reports the line', async () => {

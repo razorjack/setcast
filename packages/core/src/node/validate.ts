@@ -50,7 +50,9 @@ export interface ValidationReport {
   documents: ValidationDocument[];
   diagnostics: ValidationDiagnostic[];
 }
-export interface ValidationOptions extends Pick<LoadOptions, 'themes' | 'probeDuration'> {
+export interface ValidationOptions extends Pick<LoadOptions, 'themes'> {
+  /** Defaults to the shared Mediabunny probe. */
+  probeDuration?: LoadOptions['probeDuration'];
   kind?: ValidationKind;
   /** Override the recorded project's renderer without changing its configuration. */
   renderer?: RendererName;

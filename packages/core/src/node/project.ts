@@ -38,8 +38,8 @@ export interface LoadedProject {
 export interface LoadOptions {
   /** Receives every input path, including missing inputs, for preview reloads. */
   dependencies?: Set<string>;
-  /** Renderer-owned audio probe, called before finite timeline normalization. */
-  probeDuration?: (audio: string, root: string) => Promise<number>;
+  /** Caller-owned audio probe, called before finite timeline normalization. */
+  probeDuration: (audio: string, root: string) => Promise<number>;
   /** Built-in themes by name. `theme: ./x.css` paths work without any table. */
   themes?: Record<string, Theme>;
   /** A theme to use instead of the one `setcast.yaml` names, such as the CLI's `--theme`. */
@@ -53,7 +53,7 @@ export async function loadProject(
     theme: themeOverride,
     probeDuration,
     dependencies = new Set<string>(),
-  }: LoadOptions = {},
+  }: LoadOptions,
 ): Promise<LoadedProject> {
   const root = resolve(dir);
   dependencies.add(join(root, CONFIG_FILE));
@@ -63,10 +63,6 @@ export async function loadProject(
   const theme = await resolveTheme(themeName, root, themes);
 
   await requireAssets(root, config);
-  if (!probeDuration)
-    throw new Error(
-      'loadProject requires options.probeDuration(audio, root) to finalize finite mix intervals.',
-    );
   const mix = compileMix(config, await probeDuration(config.audio, root));
   requireAnnouncements(config.announcements, toSeconds(mix.duration));
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;

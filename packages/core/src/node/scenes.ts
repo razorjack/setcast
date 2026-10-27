@@ -10,7 +10,7 @@ export async function loadScenes(
   root: string,
   config: ProjectConfig,
   duration: number,
-  options: LoadOptions,
+  options: Pick<LoadOptions, 'themes' | 'dependencies'>,
 ) {
   const scenes: NonNullable<ResolvedProject['scenes']> = [];
   for (const entry of config.scenes ?? []) {
