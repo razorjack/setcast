@@ -2,7 +2,13 @@ import type { StillOptions, StillResult } from '@setcast/core';
 import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
-import { formatTime, type Annotation, type ResolvedProject, type SetEnvelope } from '@setcast/core';
+import {
+  defaultStillTime,
+  toSeconds,
+  formatTime,
+  type ResolvedProject,
+  type SetEnvelope,
+} from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import { still } from '../renderer.ts';
 import { themes } from '@setcast/themes';
@@ -111,8 +117,8 @@ function parseOptions(argv: string[]): StillCommandOptions {
 /** Where and when to grab, from the flags and the project. */
 function planStill(loaded: LoadedProject, options: StillCommandOptions): StillPlan {
   const { dir, config, project } = loaded;
-  const duration = project.mix.duration / 1_000_000;
-  const at = options.at ?? firstDrop(project.mix.annotations) ?? duration / 4;
+  const duration = toSeconds(project.mix.duration);
+  const at = options.at ?? defaultStillTime(project.mix);
   return {
     projectDir: dir,
     out: options.out ? resolve(options.out) : defaultOut(dir, config.output.file),
@@ -139,11 +145,3 @@ const defaultOut = (dir: string, videoFile: string) => resolve(dir, `${stem(vide
 
 /** `out/set.jpg` → `out/set-pirate.jpg`. */
 const themedFile = (file: string, theme: string) => `${stem(file)}-${theme}${extname(file)}`;
-
-/** The drop a set is best known by. Undefined lets the renderer pick a quarter of the way in. */
-export function firstDrop(annotations: readonly Annotation[]): number | undefined {
-  const drop = annotations.find(
-    (annotation) => annotation.kind === 'drop' && annotation.scope === 'mix',
-  );
-  return drop ? drop.at / 1_000_000 : undefined;
-}

@@ -4,6 +4,7 @@ import { render, type BrowserMetric } from '../../src/export/index.ts';
 import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';
 import { verifyExport } from './verify.ts';
+import { toSeconds } from '@setcast/core';
 
 export async function runExport(
   config: EnduranceConfig,
@@ -14,7 +15,7 @@ export async function runExport(
   const { signal, existingVideo } = control;
   const loaded = await load(config.project);
   const end = config.at + config.seconds;
-  if (end > loaded.project.mix.duration / 1_000_000)
+  if (end > toSeconds(loaded.project.mix.duration))
     throw new Error(
       `Endurance range ${config.at}–${end}s exceeds ${config.project}. Use a longer master or reduce seconds; endurance runs do not clamp ranges.`,
     );

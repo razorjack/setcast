@@ -1,5 +1,6 @@
 import type { MixDocument } from '../../mix-schema.ts';
 import { useFrame } from '../frame.tsx';
+import { toSeconds } from '../../mix-schema.ts';
 
 export function UpNext() {
   const { mix, composition } = useFrame();
@@ -13,7 +14,7 @@ export function UpNext() {
   let label = 'Next in tracklist';
   if (dj) label = returning ? 'Returning' : 'Next entry';
   return (
-    <aside className="sc-next" style={{ '--until-next': (at - mix.time) / 1_000_000 }}>
+    <aside className="sc-next" style={{ '--until-next': toSeconds(at - mix.time) }}>
       <span className="sc-next-label">{label}</span>
       {next.map((entry) => (
         <NextCredit key={entry.play} document={project.mix} play={entry.play} />

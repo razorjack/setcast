@@ -4,6 +4,7 @@ import { playbackFrame, Transport } from '../transport.ts';
 import type { AnalysisWindows } from '../windows.ts';
 import { openAnalysis } from './decode.ts';
 import { assetUrl } from './url.ts';
+import { toSeconds } from '@setcast/core';
 
 export interface PlaybackSnapshot {
   frame: number;
@@ -18,7 +19,7 @@ export interface PlaybackSnapshot {
 
 export function usePlayback(project: ResolvedProject) {
   const [audio] = useState(() => new Audio());
-  const [transport] = useState(() => new Transport(audio, project.mix.duration / 1_000_000));
+  const [transport] = useState(() => new Transport(audio, toSeconds(project.mix.duration)));
   const windows = useRef<AnalysisWindows | null>(null);
   const [snapshot, setSnapshot] = useState<PlaybackSnapshot>({
     frame: 0,

@@ -1,7 +1,7 @@
 import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
-import { formatTime, SetcastError, type Annotation } from '@setcast/core';
+import { toSeconds, formatTime, SetcastError, type Annotation } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import { render } from '../renderer.ts';
 import {
@@ -55,7 +55,7 @@ async function runCommand(
   options: ClipOptions,
   loaded: Awaited<ReturnType<typeof load>>,
 ): Promise<void> {
-  const duration = loaded.project.mix.duration / 1_000_000;
+  const duration = toSeconds(loaded.project.mix.duration);
   const centers = clipCenters(loaded.project.mix.annotations, options).map((center) =>
     timeWithinAudio(center, duration, '--at'),
   );
@@ -114,7 +114,7 @@ function clipCenters(events: Annotation[], options: ClipOptions): number[] {
   if (options.center !== undefined) return [options.center];
 
   const drops = events.filter(isDrop);
-  if (options.all) return drops.map((event) => event.at / 1_000_000);
+  if (options.all) return drops.map((event) => toSeconds(event.at));
 
   const firstDrop = drops[0];
   if (!firstDrop) {
@@ -123,7 +123,7 @@ function clipCenters(events: Annotation[], options: ClipOptions): number[] {
       'Add a mix-scoped drop annotation to setcast.yaml (or run `setcast analyze --write`), or pass --at.',
     );
   }
-  return [firstDrop.at / 1_000_000];
+  return [toSeconds(firstDrop.at)];
 }
 
 async function renderClip(

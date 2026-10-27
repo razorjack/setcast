@@ -10,6 +10,7 @@ import {
   type CurrentPlay,
 } from './timeline.ts';
 import type { TracklistRow, TracklistView } from './tracklist.ts';
+import { toSeconds } from './mix-schema.ts';
 
 export const SECONDS_CAP = 60;
 export const stageData = (state: MixState, background: string | null) => ({
@@ -34,9 +35,7 @@ export function cueVars(state: MixState, play?: CurrentPlay): Record<string, str
   vars['--drop-intensity'] = cssNumber(drop?.kind === 'drop' ? drop.intensity : 0);
   vars['--drop-participants'] = String(drop?.participants?.length ?? 0);
   const section = play ? play.section : state.mixSection;
-  vars['--section-time'] = cssSeconds(
-    section ? (state.time - section.start) / 1_000_000 : Infinity,
-  );
+  vars['--section-time'] = cssSeconds(section ? toSeconds(state.time - section.start) : Infinity);
   return vars;
 }
 
@@ -63,8 +62,8 @@ export function playVars(state: MixState, play: CurrentPlay): Record<string, str
 }
 
 const runVars = (state: MixState, play: CurrentPlay): Record<string, string> => ({
-  '--since-entry': cssSeconds((state.time - play.run.from) / 1_000_000),
-  '--until-exit': cssSeconds((play.run.until - state.time) / 1_000_000),
+  '--since-entry': cssSeconds(toSeconds(state.time - play.run.from)),
+  '--until-exit': cssSeconds(toSeconds(play.run.until - state.time)),
 });
 
 export function tracklistVars(view: TracklistView): Record<string, string> {

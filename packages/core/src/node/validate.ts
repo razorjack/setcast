@@ -13,6 +13,7 @@ import {
   type RendererCompatibilityIssue,
 } from '../renderer-compatibility.ts';
 import type { ProjectConfig } from '../config.ts';
+import { toSeconds } from '../mix-schema.ts';
 
 export type ValidationKind = 'project' | 'live';
 export interface ValidationDiagnostic {
@@ -204,7 +205,7 @@ function summarize(
     width: project.width,
     height: project.height,
     fps: project.fps,
-    durationSeconds: project.mix ? project.mix.duration / 1_000_000 : null,
+    durationSeconds: project.mix ? toSeconds(project.mix.duration) : null,
     visualizers: project.visualizers.map((visualizer) => visualizer.name),
   };
 }

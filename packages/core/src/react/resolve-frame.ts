@@ -10,6 +10,7 @@ import { evaluateModulation } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
 import type { Timeline, MixState } from '../timeline.ts';
 import type { RenderFrame } from './frame.tsx';
+import { microseconds, toSeconds } from '../mix-schema.ts';
 
 export interface FrameRequest {
   project: ResolvedProject;
@@ -37,7 +38,7 @@ export function resolveFrame({
   const mix = timeline.at(timeSeconds);
   return assembleFrame(
     { project, analyzer, mix, frame, fps, width, height, announcements: project.announcements },
-    project.mix.duration / 1_000_000,
+    toSeconds(project.mix.duration),
   );
 }
 
@@ -76,7 +77,7 @@ export function resolveLiveFrame({
       `resolveLiveFrame() received frame=${frame}; use a nonnegative safe integer.`,
     );
   }
-  const time = Math.round((frame / project.fps) * 1_000_000);
+  const time = microseconds(frame / project.fps);
   const mix: MixState = {
     time,
     currentPlays: [],

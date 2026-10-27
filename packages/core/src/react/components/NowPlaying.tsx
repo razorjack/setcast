@@ -6,6 +6,7 @@ import type { CurrentPlay, MixState } from '../../timeline.ts';
 import { tracklistView } from '../../tracklist.ts';
 import { useFrame } from '../frame.tsx';
 import { labelLine } from './credit.ts';
+import { toSeconds } from '../../mix-schema.ts';
 
 type PanelTiming = NonNullable<ResolvedProject['panel']>;
 type PanelMotion = { show: number; presence: number; handedOver: number };
@@ -140,13 +141,13 @@ export function panelMotion(
   options: { timeSeconds: number; timing: PanelTiming; dj: boolean; listed: number | null },
 ): PanelMotion {
   const { timeSeconds, timing, dj, listed } = options;
-  const age = timeSeconds - run.from / 1_000_000;
+  const age = timeSeconds - toSeconds(run.from);
   const entrance = spring(age, { stiffness: 110, damping: 15 });
   const stays = stay(age, timing.dwell, timing.fade);
   const show = entrance * stays;
   if (!dj) return { show, presence: show, handedOver: 0 };
 
-  const exit = leave(run.until / 1_000_000 - timeSeconds);
+  const exit = leave(toSeconds(run.until) - timeSeconds);
   const handedOver = (listed ?? 0) * (1 - stays);
   return { show, presence: entrance * exit * (1 - handedOver), handedOver };
 }

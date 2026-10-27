@@ -2,6 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 import type { Page } from 'playwright';
 import {
+  defaultStillTime,
   framesWithinMix,
   SetcastError,
   type ResolvedProject,
@@ -20,7 +21,7 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
     throw new SetcastError(`Cannot write still ${options.out}.`, 'Use .png, .jpg or .webp.');
   const frame = Math.min(
     framesWithinMix(project.mix.duration, project.fps) - 1,
-    Math.max(0, Math.round((options.at ?? project.mix.duration / 4_000_000) * project.fps)),
+    Math.max(0, Math.round((options.at ?? defaultStillTime(project.mix)) * project.fps)),
   );
   if (!Number.isFinite(frame))
     throw new SetcastError(`Invalid still time ${options.at}.`, 'Use a finite time in seconds.');

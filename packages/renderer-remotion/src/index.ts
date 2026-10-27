@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderStill } from '@remotion/renderer';
 import {
+  defaultStillTime,
   readMixDocument,
   SetcastError,
   type GraphicsBackend,
@@ -136,7 +137,7 @@ async function stillIn(project: ResolvedProject, options: StillOptions): Promise
   const { serveUrl, composition, puppeteerInstance } = await prepare(project, options, report);
 
   const { fps, durationInFrames } = composition;
-  const at = options.at ?? durationInFrames / fps / 4;
+  const at = options.at ?? defaultStillTime(project.mix);
   const frame = Math.min(durationInFrames - 1, Math.max(0, Math.round(at * fps)));
 
   try {

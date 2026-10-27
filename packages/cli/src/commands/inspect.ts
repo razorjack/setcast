@@ -1,4 +1,4 @@
-import { Timeline, formatTimecode } from '@setcast/core';
+import { toSeconds, Timeline, formatTimecode } from '@setcast/core';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { load } from '../project.ts';
 
@@ -20,7 +20,7 @@ export async function run(argv: string[]): Promise<void> {
   const at =
     values.at === undefined
       ? undefined
-      : timeWithinAudio(parseAt(values.at), mix.duration / 1_000_000, '--at');
+      : timeWithinAudio(parseAt(values.at), toSeconds(mix.duration), '--at');
   const state = at === undefined ? undefined : new Timeline(mix).at(at);
   if (values.json) {
     process.stdout.write(`${JSON.stringify(state ?? mix, null, 2)}\n`);
@@ -30,8 +30,8 @@ export async function run(argv: string[]): Promise<void> {
     `${mix.recordings.length} recordings · ${mix.plays.length} plays · ${mix.listings.length} listings · ${project.presentation} presentation`,
   );
   for (const interval of mix.contributions) {
-    const from = formatTimecode(interval.from / 1_000_000);
-    const until = formatTimecode(interval.until / 1_000_000);
+    const from = formatTimecode(toSeconds(interval.from));
+    const until = formatTimecode(toSeconds(interval.until));
     console.log(
       `${interval.play} [${from}, ${until}) ${interval.origins.from.kind} (${interval.origins.from.path}) → ${interval.origins.until.kind} (${interval.origins.until.path})`,
     );

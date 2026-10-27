@@ -3,6 +3,7 @@ import type { SetEnvelope } from '../../analysis.ts';
 import { OverviewConfigSchema, type OverviewConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { linePath } from './svg.ts';
+import { toSeconds } from '../../mix-schema.ts';
 
 export { OverviewConfigSchema, type OverviewConfig };
 
@@ -52,9 +53,9 @@ export function Overview() {
           key={index}
           className="sc-overview-mark"
           data-type={event.kind}
-          x1={xAt(event.at / 1_000_000)}
+          x1={xAt(toSeconds(event.at))}
           y1={0}
-          x2={xAt(event.at / 1_000_000)}
+          x2={xAt(toSeconds(event.at))}
           y2={HEIGHT}
         />
       ))}

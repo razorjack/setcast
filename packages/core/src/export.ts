@@ -5,6 +5,7 @@ import type {
   VideoBitrate,
   X264Preset,
 } from './config.ts';
+import { toSeconds, type MixDocument } from './mix-schema.ts';
 import type { ResolvedProject } from './project.ts';
 
 export interface EncodingOptions {
@@ -56,7 +57,7 @@ export interface StillOptions {
   signal?: AbortSignal;
   projectDir: string;
   out: string;
-  /** Seconds into the set. Defaults to a quarter of the way in. */
+  /** Seconds into the set. Defaults to `defaultStillTime`. */
   at?: number;
   jpegQuality?: number;
   gl?: GraphicsBackend;
@@ -74,4 +75,13 @@ export interface Exporter {
   render(project: ResolvedProject, options: RenderOptions): Promise<RenderResult>;
   still(project: ResolvedProject, options: StillOptions): Promise<StillResult>;
   withRenderSession<T>(task: () => Promise<T>): Promise<T>;
+}
+
+/** The moment a still shows unless told otherwise: the first mix drop, or a quarter into the set. */
+export function defaultStillTime(mix: MixDocument): number {
+  const drop = mix.annotations.find(
+    (annotation) => annotation.kind === 'drop' && annotation.scope === 'mix',
+  );
+  if (drop) return toSeconds(drop.at);
+  return toSeconds(mix.duration) / 4;
 }

@@ -1,12 +1,13 @@
 import type { MixDocument } from './mix-schema.ts';
 import { formatChapterTime } from './time.ts';
+import { toSeconds } from './mix-schema.ts';
 
 export const MIN_CHAPTERS = 3;
 export const MIN_CHAPTER_SECONDS = 10;
 export type Chapter = MixDocument['chapters'][number];
 export const chapterList = (mix: MixDocument): Chapter[] => mix.chapters;
 export const chapters = (mix: MixDocument): string[] =>
-  mix.chapters.map((chapter) => `${formatChapterTime(chapter.at / 1_000_000)} ${chapter.title}`);
+  mix.chapters.map((chapter) => `${formatChapterTime(toSeconds(chapter.at))} ${chapter.title}`);
 
 export function chapterProblems(mix: MixDocument): string[] {
   const list = mix.chapters;
@@ -22,7 +23,7 @@ export function chapterProblems(mix: MixDocument): string[] {
     );
   for (const [index, chapter] of list.entries()) {
     const end = list[index + 1]?.at ?? mix.duration;
-    const seconds = Math.floor(end / 1_000_000) - Math.floor(chapter.at / 1_000_000);
+    const seconds = Math.floor(toSeconds(end)) - Math.floor(toSeconds(chapter.at));
     if (seconds < MIN_CHAPTER_SECONDS)
       problems.push(
         `"${chapter.title}" runs ${seconds}s in the exported timestamps, under YouTube's ${MIN_CHAPTER_SECONDS}s minimum. Merge it with a neighbour or move its timestamp.`,

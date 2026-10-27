@@ -3,6 +3,7 @@ import { withRenderSession, rendererName } from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
+  toSeconds,
   chapterProblems,
   formatTime,
   hms,
@@ -29,7 +30,6 @@ import {
   steel,
   warn,
 } from '../ui.ts';
-import { firstDrop } from './still.ts';
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
@@ -74,7 +74,7 @@ async function runCommand(
   let options = initial;
 
   const { dir } = loaded;
-  const duration = loaded.project.mix.duration / 1_000_000;
+  const duration = toSeconds(loaded.project.mix.duration);
   if (options.range) {
     options = { ...options, range: rangeWithinAudio(options.range, duration, 'Render range') };
   }
@@ -209,7 +209,6 @@ async function renderThumbnail(
   const options: StillOptions = {
     projectDir: dir,
     out,
-    at: firstDrop(project.mix.annotations),
     jpegQuality: output.jpegQuality,
     gl: output.gl,
     onProgress: ui.onProgress,
@@ -250,7 +249,7 @@ export const rangeName = (file: string, [start, end]: [number, number]) =>
 /** `0m30s`, `1h02m03s`. Filename-safe, so no colons. */
 const stamp = (seconds: number) => {
   const time = microseconds(seconds);
-  const { h, m, s } = hms(time / 1_000_000);
+  const { h, m, s } = hms(toSeconds(time));
   const fraction = String(time % 1_000_000)
     .padStart(6, '0')
     .replace(/0+$/, '');

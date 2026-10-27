@@ -1,5 +1,5 @@
 import { useMemo, useState, type PointerEvent } from 'react';
-import { clamp, formatTime, type MixDocument } from '@setcast/core';
+import { toSeconds, clamp, formatTime, type MixDocument } from '@setcast/core';
 
 export interface Segment {
   start: number;
@@ -9,9 +9,9 @@ export interface Segment {
 
 /** The set as chapters in seconds, covering it from start to end. */
 export function segmentsOf(mix: MixDocument): Segment[] {
-  const duration = mix.duration / 1_000_000;
+  const duration = toSeconds(mix.duration);
   const starts = mix.chapters.map((chapter) => ({
-    start: chapter.at / 1_000_000,
+    start: toSeconds(chapter.at),
     title: chapter.title,
   }));
   if (starts[0]?.start !== 0) starts.unshift({ start: 0, title: '' });
@@ -35,7 +35,7 @@ interface Marker {
 const markersOf = (mix: MixDocument): Marker[] =>
   mix.annotations
     .filter((annotation) => annotation.scope === 'mix' && MARKED.has(annotation.kind))
-    .map((annotation) => ({ kind: annotation.kind, at: annotation.at / 1_000_000 }));
+    .map((annotation) => ({ kind: annotation.kind, at: toSeconds(annotation.at) }));
 
 /**
  * A native range input does the seeking, so keyboard and assistive technology work as usual; the
@@ -52,7 +52,7 @@ export function Scrubber({
   time: number;
   seek: (seconds: number) => void;
 }) {
-  const duration = mix.duration / 1_000_000;
+  const duration = toSeconds(mix.duration);
   const [hover, setHover] = useState<number | null>(null);
   const markers = useMemo(() => markersOf(mix), [mix]);
   const pointer = (event: PointerEvent<HTMLInputElement>) => {

@@ -8,6 +8,7 @@ import { join, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import {
   normalizeMix,
+  toSeconds,
   type MixAuthoring,
   type ResolvedProject,
 } from '../packages/core/src/index.ts';
@@ -64,7 +65,7 @@ await withRenderSession(async () => {
 });
 
 async function grab(project: ResolvedProject, shot: Shot, outDir: string): Promise<string> {
-  const durationSeconds = project.mix.duration / 1_000_000;
+  const durationSeconds = toSeconds(project.mix.duration);
   const size = shot.portrait ? { width: 1080, height: 1920 } : {};
   const staged: ResolvedProject = {
     ...project,

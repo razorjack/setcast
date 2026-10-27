@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import {
+  toSeconds,
   formatTime,
   formatTimecode,
   importers,
@@ -129,7 +130,7 @@ async function replaceTracks(dir: string, tracks: ImportedPlay[], file: string):
     'plays',
     tracks.map((track) => ({ ...toYaml(track), evidence: [source] })),
   );
-  compileMix(ProjectConfigSchema.parse(doc.toJS()), loaded.project.mix.duration / 1_000_000);
+  compileMix(ProjectConfigSchema.parse(doc.toJS()), toSeconds(loaded.project.mix.duration));
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));
   return path;

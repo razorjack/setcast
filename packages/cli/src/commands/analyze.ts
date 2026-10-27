@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
+  toSeconds,
   beatOffset,
   clamp,
   detectSections,
@@ -199,7 +200,7 @@ function changesFor(loaded: LoadedProject, analysis: AnalysisDraft): AnalysisCha
       (event) =>
         event.scope === 'mix' &&
         event.kind === drafted.kind &&
-        Math.abs(event.at / 1_000_000 - drafted.at) < SAME_EVENT_SECONDS,
+        Math.abs(toSeconds(event.at) - drafted.at) < SAME_EVENT_SECONDS,
     );
 
   return {
@@ -237,7 +238,7 @@ async function updateProject(loaded: LoadedProject, changes: AnalysisChanges): P
     if (!doc.has('beatOffset')) doc.set('beatOffset', changes.offset);
   }
   appendAnnotations(doc, changes.annotations);
-  compileMix(ProjectConfigSchema.parse(doc.toJS()), loaded.project.mix.duration / 1_000_000);
+  compileMix(ProjectConfigSchema.parse(doc.toJS()), toSeconds(loaded.project.mix.duration));
 
   // padding off so rewriting one block does not reformat `[1, 1.06]` elsewhere in the file
   await writeFile(path, doc.toString({ flowCollectionPadding: false }));

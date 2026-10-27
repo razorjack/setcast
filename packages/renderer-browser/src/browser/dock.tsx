@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode, type RefObject } from 'react';
-import { formatTime, type ResolvedProject } from '@setcast/core';
+import { toSeconds, formatTime, type ResolvedProject } from '@setcast/core';
 import type { ThemeListing } from '../catalog.ts';
 import type { Transport } from '../transport.ts';
 import { ArtMenu } from './art.tsx';
@@ -124,7 +124,7 @@ function NowPlaying({
     <div className="sc-now">
       <span className="sc-now-time">
         {formatTime(snapshot.time)}
-        <span> / {formatTime(project.mix.duration / 1_000_000)}</span>
+        <span> / {formatTime(toSeconds(project.mix.duration))}</span>
       </span>
       <span className="sc-now-title" title={title}>
         {snapshot.waiting && snapshot.playing ? 'Preparing…' : title}

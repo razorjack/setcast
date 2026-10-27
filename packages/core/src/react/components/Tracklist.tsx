@@ -3,6 +3,7 @@ import { formatTime } from '../../time.ts';
 import { tracklistView, type TracklistRow, type TracklistCounts } from '../../tracklist.ts';
 import { useFrame } from '../frame.tsx';
 import { labelLine } from './credit.ts';
+import { toSeconds } from '../../mix-schema.ts';
 
 /** The listings around the current one; rows enter and leave through `--row-presence`. */
 export function Tracklist({ counts }: { counts: TracklistCounts }) {
@@ -49,7 +50,7 @@ function Row({
       style={tracklistRowVars(mix, row)}
     >
       <span className="sc-tracklist-index">{String(row.index + 1).padStart(digits, '0')}</span>
-      <span className="sc-tracklist-time">{formatTime(clockOffset + listing.at / 1_000_000)}</span>
+      <span className="sc-tracklist-time">{formatTime(clockOffset + toSeconds(listing.at))}</span>
       {recording.artist && <span className="sc-tracklist-artist">{recording.artist}</span>}
       <span className="sc-tracklist-title">{recording.title}</span>
       {label && <span className="sc-tracklist-label">{label}</span>}

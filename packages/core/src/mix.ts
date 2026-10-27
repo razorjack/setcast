@@ -1,5 +1,6 @@
 import { ConfigError, zodIssues } from './errors.ts';
 import {
+  toSeconds,
   microseconds,
   MixInputSchema,
   MixDocumentSchema,
@@ -182,7 +183,7 @@ export function mixWarnings(document: MixDocument): string[] {
     )
     .map(
       (listing) =>
-        `plays[${listing.order}].at (${listing.at / 1_000_000} s) lies outside its contributions; the editorial listing is preserved.`,
+        `plays[${listing.order}].at (${toSeconds(listing.at)} s) lies outside its contributions; the editorial listing is preserved.`,
     );
 }
 

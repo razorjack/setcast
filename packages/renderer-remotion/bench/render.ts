@@ -18,6 +18,7 @@ import { probeAudio } from '../src/probe.ts';
 import { resolveFrameRange } from '../src/range.ts';
 import { currentSession, withRenderSession } from '../src/session.ts';
 import { variants, type Variant } from './variants.ts';
+import { toSeconds } from '@setcast/core';
 
 const HELP = `vp run render-bench [project] [--theme name] [--from seconds] [--seconds N]
   [--variant baseline --variant jpeg-92] [--repeat N] [--out directory]
@@ -92,7 +93,7 @@ const loaded = await loadProject(request.projectDir, {
   theme: request.theme,
   probeDuration: (audio, dir) => probeAudio({ audio }, dir),
 });
-if (request.from + request.seconds > loaded.project.mix.duration / 1_000_000)
+if (request.from + request.seconds > toSeconds(loaded.project.mix.duration))
   throw new Error('The benchmark range exceeds the mix. Reduce --from or --seconds.');
 const project = readsWholeSet(loaded.project)
   ? await readWholeSet(loaded.project, request.projectDir)

@@ -22,6 +22,7 @@ import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.
 import { loadCss } from './css.ts';
 import { readImageSize } from './image-size.ts';
 import { loadScenes } from './scenes.ts';
+import { toSeconds } from '../mix-schema.ts';
 
 export const CONFIG_FILE = 'setcast.yaml';
 const BASE_CSS = fileURLToPath(new URL('../../css/base.css', import.meta.url));
@@ -66,7 +67,7 @@ export async function loadProject(
       'loadProject requires options.probeDuration(audio, root) to finalize finite mix intervals.',
     );
   const mix = compileMix(config, await probeDuration(config.audio, root));
-  requireAnnouncements(config.announcements, mix.duration / 1_000_000);
+  requireAnnouncements(config.announcements, toSeconds(mix.duration));
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
 
   const project = resolveProject(
@@ -76,7 +77,7 @@ export async function loadProject(
     await composeCss(theme, userCssFile, dependencies),
   );
   if (config.scenes && themeOverride === undefined)
-    project.scenes = await loadScenes(root, config, mix.duration / 1_000_000, {
+    project.scenes = await loadScenes(root, config, toSeconds(mix.duration), {
       themes,
       dependencies,
     });

@@ -1,7 +1,7 @@
 // Visual acceptance fixtures share the generated demo audio, never inferred per-play audio.
 import { mkdir } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { normalizeMix } from '../packages/core/src/index.ts';
+import { normalizeMix, toSeconds } from '../packages/core/src/index.ts';
 import { load, withWholeSet } from '../packages/cli/src/project.ts';
 import { still } from '../packages/renderer-remotion/src/index.ts';
 
@@ -29,7 +29,7 @@ const overflow = normalizeMix(
     })),
     focus: [{ at: 0, plays: ['layer-7'] }],
   },
-  project.mix.duration / 1_000_000,
+  toSeconds(project.mix.duration),
 );
 await still(
   { ...project, mix: overflow, width: 720, height: 1280 },

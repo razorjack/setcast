@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { clamp, ease, lerp } from './motion.ts';
 import type { Listing, MixDocument, Recording } from './mix-schema.ts';
 import type { CurrentPlay, MixState } from './timeline.ts';
+import { toSeconds } from './mix-schema.ts';
 
 /** How many listings the tracklist shows before and after the current listing group. */
 export type TracklistCounts = { before: number; after: number };
@@ -100,7 +101,7 @@ export function tracklistView(
   const previous = groups[currentIndex - 1] ?? beforeFirst;
   const next = groups[currentIndex + 1];
 
-  const sinceListing = (state.time - current.at) / 1_000_000;
+  const sinceListing = toSeconds(state.time - current.at);
   const glide = ease.inOut(clamp(sinceListing / TRACKLIST_GLIDE_SECONDS, 0, 1));
   const span = (group: ListingGroup) => ({
     anchor: group.start,
@@ -125,7 +126,7 @@ export function tracklistView(
   return {
     rows,
     sinceListing,
-    untilListing: next ? (next.at - state.time) / 1_000_000 : Infinity,
+    untilListing: next ? toSeconds(next.at - state.time) : Infinity,
   };
 }
 

@@ -50,6 +50,9 @@ export function microseconds(seconds: number): number {
   return time;
 }
 
+/** Seconds for a normalized mix time, which is integer microseconds. */
+export const toSeconds = (time: number): number => time / 1_000_000;
+
 export const MixTimeSchema = z
   .union([z.number(), z.string()], {
     error: 'Use nonnegative seconds or a timecode such as 1:23.5.',

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import { Timeline, type ResolvedProject } from '@setcast/core';
+import { toSeconds, Timeline, type ResolvedProject } from '@setcast/core';
 import {
   FrameProvider,
   RendererProvider,
@@ -76,7 +76,7 @@ export function mountExport(element: HTMLElement) {
 async function initialize() {
   const project: ResolvedProject = await (await fetch('/project.json')).json();
   const timeline = new Timeline(project.mix);
-  const analysis = await openAnalysis(assetUrl(project.audio), project.mix.duration / 1_000_000);
+  const analysis = await openAnalysis(assetUrl(project.audio), toSeconds(project.mix.duration));
   return { project, timeline, analysis };
 }
 

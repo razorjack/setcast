@@ -1,4 +1,5 @@
 import {
+  toSeconds,
   microseconds,
   type MixDocument,
   type Play,
@@ -97,7 +98,7 @@ export class Timeline {
     const time = microseconds(timeSeconds);
     if (time >= this.document.duration)
       throw new RangeError(
-        `Timeline.at(${timeSeconds}) is outside the mix; query 0 <= time < ${this.document.duration / 1_000_000} seconds.`,
+        `Timeline.at(${timeSeconds}) is outside the mix; query 0 <= time < ${toSeconds(this.document.duration)} seconds.`,
       );
     const currentPlays = this.document.plays.flatMap((play) => this.currentPlay(play, time));
     const local = Object.fromEntries(
@@ -272,7 +273,7 @@ export const sinceAnnotation = (
 ): number => {
   const cue = lastAnnotations(state, kind, scope)[0];
   if (run && cue && cue.at < run.from) return Infinity;
-  return cue ? (state.time - cue.at) / 1_000_000 : Infinity;
+  return cue ? toSeconds(state.time - cue.at) : Infinity;
 };
 export const untilAnnotation = (
   state: MixState,
@@ -283,7 +284,7 @@ export const untilAnnotation = (
   const cue = nextAnnotations(state, kind, scope)[0];
   if (run && cue && cue.at >= run.until && !(kind === 'rewind' && cue.at === run.until))
     return Infinity;
-  return cue ? (cue.at - state.time) / 1_000_000 : Infinity;
+  return cue ? toSeconds(cue.at - state.time) : Infinity;
 };
 
 function freezeDocument(document: unknown): void {

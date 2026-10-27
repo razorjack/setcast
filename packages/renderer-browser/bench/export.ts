@@ -3,6 +3,7 @@ import { resolve, join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { load, withWholeSet } from '../../cli/src/project.ts';
 import { render, type BrowserMetric } from '../src/export/index.ts';
+import { toSeconds } from '@setcast/core';
 
 const { positionals, values } = parseArgs({
   allowPositionals: true,
@@ -53,7 +54,7 @@ try {
   const result = await render(project, {
     projectDir: loaded.dir,
     out: join(out, 'profile.mp4'),
-    range: [at, Math.min(at + seconds, project.mix.duration / 1_000_000)],
+    range: [at, Math.min(at + seconds, toSeconds(project.mix.duration))],
     concurrency,
     onMetrics: measured,
   });
