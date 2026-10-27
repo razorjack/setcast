@@ -2,7 +2,7 @@ import { parseRendererFlag, preview, type PreviewOptions, type Renderer } from '
 import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
-import { browserPreview } from './browser-preview.ts';
+import { browserPreview } from '../browser-preview.ts';
 import { dim, intro, log, printError } from '../ui.ts';
 
 export const help = `setcast preview [dir] [--port N] [--theme name] [--renderer remotion|browser]

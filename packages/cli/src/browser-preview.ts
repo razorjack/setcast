@@ -1,8 +1,8 @@
 import { errorMessage, ConfigError, SetcastError } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { load, withWholeSet } from '../project.ts';
-import { watchInputs } from '../watch.ts';
-import { log, printError } from '../ui.ts';
+import { load, withWholeSet } from './project.ts';
+import { watchInputs } from './watch.ts';
+import { log, printError } from './ui.ts';
 
 export async function browserPreview(
   loaded: LoadedProject,
