@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { describe, expect, test } from 'vite-plus/test';
 import { CONFIGURATION_SCHEMA_KINDS, configurationSchema } from './configuration-schema.ts';
 import { ProjectConfigSchema } from './config.ts';
-import { LiveConfigSchema } from './live.ts';
+import { LiveConfigSchema } from './live-config.ts';
 import { resolveVisualizerConfigs, visualizers } from './visualizers.ts';
 
 const ajv = new Ajv2020({ strict: false, allErrors: true });

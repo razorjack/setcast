@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ResolvedProject } from '@setcast/core';
-import type { FramePreview } from './session.ts';
+import type { FramePreview } from './frame-preview.ts';
 import type { Reference } from './reference.tsx';
 
 export function PreviewViewport({

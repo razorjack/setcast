@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
 import { LiveAudio } from '../src/live/audio.ts';
-import { BeatTracker } from '../src/live/beat-tracker.ts';
+import { CaptureBeatTracker } from '../src/live/capture-beat-tracker.ts';
 
 const file = process.argv[2];
 if (!file) throw new Error('Usage: node bench/beat-audio.ts <audio> [minimum BPM] [maximum BPM]');
@@ -18,7 +18,7 @@ const pcm = new Float32Array(
   ),
 );
 const audio = new LiveAudio(8000);
-const tracker = new BeatTracker();
+const tracker = new CaptureBeatTracker();
 tracker.configure({ min: Number(process.argv[3] ?? 90), max: Number(process.argv[4] ?? 180) });
 const observations = [];
 const started = performance.now();

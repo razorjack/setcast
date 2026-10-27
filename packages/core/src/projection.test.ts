@@ -1,6 +1,6 @@
 import { expect, test } from 'vite-plus/test';
 import { ProjectionSchema, VenueSchema } from './projection.ts';
-import { LiveConfigSchema } from './live.ts';
+import { LiveConfigSchema } from './live-config.ts';
 
 test('projection defaults are opt-in and live config preserves validated geometry', () => {
   const defaults = ProjectionSchema.parse({});

@@ -1,4 +1,4 @@
-import { BeatTracker as CoreBeatTracker } from '@setcast/core';
+import { BeatTracker } from '@setcast/core';
 
 interface BeatAudio {
   capturedTime: number;
@@ -6,7 +6,7 @@ interface BeatAudio {
 }
 
 /** Maps the capture ring's stereo energy to the shared, explicit-hop evidence tracker. */
-export class BeatTracker extends CoreBeatTracker {
+export class CaptureBeatTracker extends BeatTracker {
   private previous = 0;
   private sourceHop: number | null = null;
 

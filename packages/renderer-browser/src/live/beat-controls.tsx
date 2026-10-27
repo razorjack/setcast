@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { LiveInput } from './input.ts';
 import type { Tempo } from './tempo.tsx';
-import { BeatTracker } from './beat-tracker.ts';
+import { CaptureBeatTracker } from './capture-beat-tracker.ts';
 import { validBeatRange, type BeatRange, type BeatTrackingConfig } from '@setcast/core';
 
 export function BeatControls({
@@ -74,7 +74,7 @@ function BeatRangeControls({
   );
 }
 
-function BeatStatus({ tracker }: { tracker: BeatTracker }) {
+function BeatStatus({ tracker }: { tracker: CaptureBeatTracker }) {
   const estimate = tracker.estimate;
   return (
     <div role="status">
@@ -93,7 +93,7 @@ function useBeatTracker(input: LiveInput, initial?: BeatTrackingConfig) {
   const [enabled, setEnabled] = useState(false);
   const [range, setRange] = useState<BeatRange>(initial?.range ?? { min: 90, max: 180 });
   const [tracker] = useState(() => {
-    const tracker = new BeatTracker();
+    const tracker = new CaptureBeatTracker();
     tracker.configure(range);
     return tracker;
   });

@@ -7,7 +7,7 @@ import {
   performanceAt,
 } from './performance.ts';
 import { SILENCE } from './audio.ts';
-import { replayEvents, type SessionHeader } from './session.ts';
+import { replayEvents, type SessionHeader } from './journal.ts';
 
 const from = DEFAULT_PERFORMANCE;
 const to = { intensity: 2, brightness: 0 };

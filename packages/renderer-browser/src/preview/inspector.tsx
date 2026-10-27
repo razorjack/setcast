@@ -1,5 +1,5 @@
-import type { FramePreview, Inspection } from './session.ts';
-import { useReadiness } from './session.ts';
+import type { FramePreview, Inspection } from './frame-preview.ts';
+import { useReadiness } from './frame-preview.ts';
 
 export function Inspector({ session }: { session: FramePreview }) {
   const status = useReadiness(session.driver);

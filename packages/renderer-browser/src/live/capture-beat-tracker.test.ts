@@ -1,5 +1,5 @@
 import { expect, test } from 'vite-plus/test';
-import { BeatTracker } from './beat-tracker.ts';
+import { CaptureBeatTracker } from './capture-beat-tracker.ts';
 import { LiveAudio } from './audio.ts';
 
 const pulse =
@@ -8,7 +8,12 @@ const pulse =
     const phase = (((((time - offset) * bpm) / 60) % 1) + 1) % 1;
     return phase < 0.06 ? 0.7 * Math.exp(-phase * 40) : 0.001;
   };
-function feed(tracker: BeatTracker, energyAt: (time: number) => number, from = 0, until = 12) {
+function feed(
+  tracker: CaptureBeatTracker,
+  energyAt: (time: number) => number,
+  from = 0,
+  until = 12,
+) {
   for (let hop = Math.round(from * 100); hop <= until * 100; hop += 10)
     tracker.update({ capturedTime: hop / 100, energyAt });
 }
@@ -19,7 +24,7 @@ const phaseError = (time: number, expected: number, bpm: number) => {
 
 test('locks stable beats and preserves absolute phase after hours on the capture clock', () => {
   for (const bpm of [100, 120, 128, 174]) {
-    const tracker = new BeatTracker();
+    const tracker = new CaptureBeatTracker();
     feed(tracker, pulse(bpm), 28800, 28812);
     expect(tracker.state, String(bpm)).toBe('locked');
     expect(tracker.estimate!.bpm).toBeCloseTo(bpm, 0);
@@ -28,7 +33,7 @@ test('locks stable beats and preserves absolute phase after hours on the capture
 });
 
 test('half/double-time competitors stay uncertain until the operator narrows the range', () => {
-  const tracker = new BeatTracker();
+  const tracker = new CaptureBeatTracker();
   tracker.configure({ min: 60, max: 180 });
   feed(tracker, pulse(120));
   expect(tracker.state).toBe('uncertain');
@@ -45,14 +50,14 @@ test('silence, constant levels and irregular noise do not establish a grid', () 
     () => 0.5,
     (t: number) => ((Math.imul(Math.round(t * 100), 1664525) >>> 0) % 997) / 997,
   ]) {
-    const tracker = new BeatTracker();
+    const tracker = new CaptureBeatTracker();
     feed(tracker, energy);
     expect(tracker.state).toBe('uncertain');
   }
 });
 
 test('silence, loss, routing reset and tempo changes discard an old lock', () => {
-  const tracker = new BeatTracker();
+  const tracker = new CaptureBeatTracker();
   feed(tracker, pulse(120));
   expect(tracker.state).toBe('locked');
   feed(tracker, () => 0, 12.1, 14);

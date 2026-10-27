@@ -1,5 +1,5 @@
 import { expect, test } from 'vite-plus/test';
-import { readSession, replayEvents, type SessionHeader, type SessionEvent } from './session.ts';
+import { readSession, replayEvents, type SessionHeader, type SessionEvent } from './journal.ts';
 
 const header: SessionHeader = {
   type: 'session',

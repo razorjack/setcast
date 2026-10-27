@@ -303,7 +303,7 @@ export type {
 } from './export.ts';
 export { defaultStillTime, exportSettings, type ExportSettings } from './export.ts';
 
-export { LiveConfigSchema, type LiveConfig } from './live.ts';
+export { LiveConfigSchema, type LiveConfig } from './live-config.ts';
 export {
   TEST_PATTERNS,
   TestPatternSchema,
@@ -320,7 +320,7 @@ export {
   replayEvents,
   type SessionHeader,
   type SessionEvent,
-} from './session.ts';
+} from './journal.ts';
 
 export {
   PerformanceSchema,
@@ -351,7 +351,7 @@ export {
   EnergyBandSchema,
   type EnergySelection,
   type EnergyBand,
-} from './energy.ts';
+} from './sequence.ts';
 
 export {
   configurationSchema,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { framesWithinMix, type ResolvedProject } from '@setcast/core';
 import { usePreviewRevision } from './revision.ts';
-import { useFramePreview } from './session.ts';
+import { useFramePreview } from './frame-preview.ts';
 import { Inspector } from './inspector.tsx';
 import { PreviewViewport } from './viewport.tsx';
 import { PreviewTransport } from './transport.tsx';

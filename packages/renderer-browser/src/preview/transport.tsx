@@ -1,4 +1,4 @@
-import type { FramePreview } from './session.ts';
+import type { FramePreview } from './frame-preview.ts';
 import { useShortcuts } from '../browser/keyboard.ts';
 
 type TransportProps = { session: FramePreview; count: number; fps: number };

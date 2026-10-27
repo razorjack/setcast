@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ProjectConfigSchema } from './config.ts';
-import { LiveConfigSchema } from './live.ts';
+import { LiveConfigSchema } from './live-config.ts';
 import { VenueSchema } from './projection.ts';
 import { TestPatternPresetSchema } from './test-pattern.ts';
 import { TimeSchema } from './time-schema.ts';
