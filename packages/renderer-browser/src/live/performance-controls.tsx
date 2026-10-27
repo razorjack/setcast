@@ -1,21 +1,22 @@
 import { SequenceControls } from './sequence-controls.tsx';
 import type { LiveSequence } from './sequence.ts';
 import { useEffect, useRef, useState } from 'react';
-import { SceneBank, type useSceneBank, type useSceneRecall } from './bank.tsx';
+import { ScenePads, type SceneBank, type SceneRecall } from './bank.tsx';
 import type { LivePerformance } from './performance.ts';
-import type { useMidi } from './midi.ts';
+import type { LiveMidi } from './midi.ts';
 import { MidiControls } from './midi-controls.tsx';
+import type { Report } from '../browser/report.ts';
 
 interface Props {
   sequence: LiveSequence;
   available: boolean;
   performance: LivePerformance;
-  midi: ReturnType<typeof useMidi>;
-  bank: ReturnType<typeof useSceneBank>;
-  recall: ReturnType<typeof useSceneRecall>;
+  midi: LiveMidi;
+  bank: SceneBank;
+  recall: SceneRecall;
   running: boolean;
   active: string | null;
-  report: (message: string) => void;
+  report: Report;
 }
 
 export function PerformanceControls(props: Props) {
@@ -45,7 +46,7 @@ export function PerformanceControls(props: Props) {
           {performance.blackout ? 'Restore output' : 'Blackout'}
         </button>
       </div>
-      <SceneBank {...props} />
+      <ScenePads {...props} />
       <SequenceControls {...props} />
       <MidiControls midi={midi} />
     </section>

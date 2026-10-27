@@ -2,18 +2,19 @@ import type { ResolvedLiveProject } from '@setcast/core';
 import { useSequence } from './sequence-session.ts';
 import { usePreparedScene } from './prepared-scene.ts';
 import { usePerformance } from './performance.ts';
-import { useSceneBank, useSceneRecall } from './bank.tsx';
+import { useSceneBank, useSceneRecall, type SceneBank, type SceneRecall } from './bank.tsx';
 import { useSessionJournal } from './journal.tsx';
 import { useMidi, type MidiAction } from './midi.ts';
 import type { useLiveScene } from './player.tsx';
 import type { LiveInput } from './input.ts';
 import { useAnnouncements } from './announcements.ts';
+import type { Report } from '../browser/report.ts';
 
 export function useLivePerformance(
   initial: ResolvedLiveProject,
   input: LiveInput,
   scene: ReturnType<typeof useLiveScene>,
-  report: (message: string) => void,
+  report: Report,
 ) {
   const performance = usePerformance(initial, input, {
     running: input.snapshot.status.phase === 'running',
@@ -68,8 +69,8 @@ function performanceMidi({
   input: LiveInput;
   scene: ReturnType<typeof useLiveScene>;
   performance: ReturnType<typeof usePerformance>;
-  bank: ReturnType<typeof useSceneBank>;
-  recall: ReturnType<typeof useSceneRecall>;
+  bank: SceneBank;
+  recall: SceneRecall;
 }) {
   const dispatch = (action: MidiAction, value: number) => {
     if (action === 'intensity') performance.change({ intensity: value * 2 });

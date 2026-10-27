@@ -3,12 +3,13 @@ import { backgroundKind, type SceneProject } from '@setcast/core';
 import type { Art } from './overrides.ts';
 import { assetUrl } from './url.ts';
 import { UploadIcon } from './icons.tsx';
+import type { Report } from './report.ts';
 
 /**
  * The art the viewer chose. A file stays in the browser as a blob URL; the project and its folder
  * are never changed. Files dropped anywhere on the page replace it too.
  */
-export function useArt(report: (message: string) => void) {
+export function useArt(report: Report) {
   const [art, setArt] = useState<Art>({ kind: 'project' });
 
   useEffect(() => {
@@ -32,6 +33,8 @@ export function useArt(report: (message: string) => void) {
 
   return { art, setArt, choose, dragging };
 }
+
+export type ArtSelection = ReturnType<typeof useArt>;
 
 /** Whether files are being dragged over the page; a dropped file goes to `drop`. */
 function useFileDrop(dropped: (file: File) => void) {

@@ -8,6 +8,7 @@ import {
   type MidiMapping,
 } from '@setcast/core';
 import { downloadJson } from './diagnostics.tsx';
+import type { Report } from '../browser/report.ts';
 
 const storageKey = 'setcast-midi-profile-v1';
 export function readMidiProfile(storage: Pick<Storage, 'getItem'>): {
@@ -29,7 +30,7 @@ export function readMidiProfile(storage: Pick<Storage, 'getItem'>): {
   return { config: { name: 'MIDI controls', mapping: { ...DEFAULT_MIDI } }, source: 'Defaults' };
 }
 
-export function useMidiProfile(initial: MidiConfig | undefined, report: (message: string) => void) {
+export function useMidiProfile(initial: MidiConfig | undefined, report: Report) {
   const [state, setState] = useState(() =>
     initial
       ? { config: initial, source: 'live.yaml' }
@@ -80,11 +81,7 @@ export function useMidiProfile(initial: MidiConfig | undefined, report: (message
   };
 }
 
-async function importProfile(
-  file: File,
-  report: (message: string) => void,
-  apply: (config: MidiConfig) => boolean,
-) {
+async function importProfile(file: File, report: Report, apply: (config: MidiConfig) => boolean) {
   try {
     if (file.size > 65536)
       throw new Error('MIDI profile exceeds 64 KiB. Import an exported mapping profile.');

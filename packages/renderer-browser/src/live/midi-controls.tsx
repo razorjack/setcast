@@ -1,9 +1,9 @@
 import { ProfileImport } from './profile-import.tsx';
 import { useState } from 'react';
 import { MIDI_ACTIONS, type MidiAction } from '@setcast/core';
-import type { useMidi } from './midi.ts';
+import type { LiveMidi } from './midi.ts';
 
-type Props = { midi: ReturnType<typeof useMidi> };
+type Props = { midi: LiveMidi };
 export function MidiControls({ midi }: Props) {
   return (
     <details className="sc-performance-midi">

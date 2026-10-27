@@ -11,11 +11,12 @@ import {
   type MidiConfig,
 } from '@setcast/core';
 import { useMidiProfile } from './midi-profile.ts';
+import type { Report } from '../browser/report.ts';
 export { midiMessage, midiKey, type MidiAction } from '@setcast/core';
 
 export function useMidi(
   dispatch: (action: MidiAction, value: number) => void,
-  report: (message: string) => void,
+  report: Report,
   initial?: MidiConfig,
 ) {
   const connection = useMidiConnection(report);
@@ -55,6 +56,8 @@ export function useMidi(
     },
   };
 }
+
+export type LiveMidi = ReturnType<typeof useMidi>;
 
 type MidiLatest = {
   current: {
@@ -102,7 +105,7 @@ function useMidiInput(
   }, [input, latest]);
 }
 
-function useMidiConnection(report: (message: string) => void) {
+function useMidiConnection(report: Report) {
   const [access, setAccess] = useState<MIDIAccess | null>(null);
   const [devices, setDevices] = useState<MIDIInput[]>([]);
   const [connecting, setConnecting] = useState(false);

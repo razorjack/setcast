@@ -5,23 +5,24 @@ import {
   type PerformanceState,
   type ResolvedLiveProject,
 } from '@setcast/core';
-import { ArtMenu, type useArt } from '../browser/art.tsx';
-import type { useThemes } from '../browser/themes.ts';
+import { ArtMenu, type ArtSelection } from '../browser/art.tsx';
+import type { ThemeSelection } from '../browser/themes.ts';
 import { SaveScene } from '../browser/save.tsx';
 import { useInputDevices, type LiveInput } from './input.ts';
+import type { Report } from '../browser/report.ts';
 
 interface DockProps {
   performance?: PerformanceState;
   preset?: string | null;
   input: LiveInput;
-  themes: ReturnType<typeof useThemes<ResolvedLiveProject>>;
-  art: ReturnType<typeof useArt>;
+  themes: ThemeSelection<ResolvedLiveProject>;
+  art: ArtSelection;
   project: ResolvedLiveProject;
   title: string;
   setTitle: (title: string) => void;
   clock: boolean;
   setClock: (clock: boolean) => void;
-  report: (message: string) => void;
+  report: Report;
   fullscreen: () => void;
   clean: () => void;
 }

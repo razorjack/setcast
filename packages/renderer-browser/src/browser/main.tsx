@@ -12,6 +12,7 @@ import { usePlayback, type PlaybackSnapshot } from './playback.ts';
 import { Scene, SceneBoundary } from './scene.tsx';
 import { fetchProject, requestedTheme, useThemes } from './themes.ts';
 import { useVolume } from './volume.ts';
+import type { Report } from './report.ts';
 
 export function mountPlayer(element: HTMLElement) {
   const root = createRoot(element);
@@ -103,7 +104,7 @@ function Player({
 }
 
 /** The project as the viewer adjusted it in the player: its theme, credits and art. */
-function useAdjustedProject(initial: ResolvedProject, report: (message: string) => void) {
+function useAdjustedProject(initial: ResolvedProject, report: Report) {
   const themes = useThemes(initial, report);
   const art = useArt(report);
   const [credits, setCredits] = useState<Credits | null>(null);
@@ -205,7 +206,7 @@ function useHeight(element: React.RefObject<HTMLElement | null>) {
   return height;
 }
 
-function useFullscreen(report: (message: string) => void) {
+function useFullscreen(report: Report) {
   const [active, setActive] = useState(Boolean(document.fullscreenElement));
   useEffect(() => {
     const change = () => setActive(Boolean(document.fullscreenElement));

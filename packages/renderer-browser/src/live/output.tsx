@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import type { useDiagnostics } from './diagnostics.tsx';
+import type { DiagnosticHistory } from './diagnostics.tsx';
 import type { LiveInput } from './input.ts';
 import { adaptQuality, fullQuality } from './quality.ts';
-import { useOutputDisplay } from './display.ts';
+import { useOutputDisplay, type OutputDisplay } from './display.ts';
+import type { Report } from '../browser/report.ts';
 
 export function useOutput(
   input: LiveInput,
-  diagnostics: ReturnType<typeof useDiagnostics>,
-  {
-    fps,
-    report,
-    cleanOutput,
-  }: { fps: number; report: (message: string) => void; cleanOutput: () => void },
+  diagnostics: DiagnosticHistory,
+  { fps, report, cleanOutput }: { fps: number; report: Report; cleanOutput: () => void },
 ) {
   const display = useOutputDisplay(report, cleanOutput);
   const [fallback, setFallback] = useState<'black' | 'ambient'>('black');
@@ -44,7 +41,9 @@ export function useOutput(
   };
 }
 
-export function OutputControls({ output }: { output: ReturnType<typeof useOutput> }) {
+export type LiveOutput = ReturnType<typeof useOutput>;
+
+export function OutputControls({ output }: { output: LiveOutput }) {
   const { display } = output;
   return (
     <details className="sc-output-settings">
@@ -85,7 +84,7 @@ export function OutputControls({ output }: { output: ReturnType<typeof useOutput
   );
 }
 
-function DisplayControls({ display }: { display: ReturnType<typeof useOutputDisplay> }) {
+function DisplayControls({ display }: { display: OutputDisplay }) {
   return (
     <>
       <button

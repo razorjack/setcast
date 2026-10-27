@@ -1,9 +1,9 @@
 import { ProfileImport } from './profile-import.tsx';
 import { ProjectionSchema, type Projection } from '@setcast/core';
-import type { useProjection } from './projection-settings.ts';
+import type { LiveProjection } from './projection-settings.ts';
 import { CornerEditor, FractionInput } from './projection-editor.tsx';
 
-type Settings = ReturnType<typeof useProjection>;
+type Settings = LiveProjection;
 export function ProjectionControls({ projection }: { projection: Settings }) {
   const { config, change } = projection;
   return (

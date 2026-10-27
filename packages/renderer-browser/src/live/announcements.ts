@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { endAnnouncement, messageAt, type Announcement } from '@setcast/core';
 import type { LiveInput } from './input.ts';
-import type { useSessionJournal } from './journal.tsx';
+import type { JournalRecorder } from './journal.tsx';
 
 /**
  * The session's announcements on the capture clock, like performance ramps. Only the latest
@@ -9,7 +9,7 @@ import type { useSessionJournal } from './journal.tsx';
  */
 export function useAnnouncements(
   input: LiveInput,
-  journal: Pick<ReturnType<typeof useSessionJournal>, 'event' | 'sample'>,
+  journal: Pick<JournalRecorder, 'event' | 'sample'>,
 ) {
   const [list, setList] = useState<Announcement[]>([]);
   const audio = input.capture.audio;

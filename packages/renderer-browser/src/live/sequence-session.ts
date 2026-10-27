@@ -2,17 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import type { ResolvedLiveProject } from '@setcast/core';
 import type { LiveInput } from './input.ts';
 import type { LivePerformance } from './performance.ts';
-import type { useSceneRecall } from './bank.tsx';
+import type { SceneRecall } from './bank.tsx';
 import { LiveSequence } from './sequence.ts';
+import type { Report } from '../browser/report.ts';
 
 export function useSequence(
   initial: ResolvedLiveProject,
   input: LiveInput,
   options: {
-    recall: ReturnType<typeof useSceneRecall>;
+    recall: SceneRecall;
     performance: LivePerformance;
     project: ResolvedLiveProject;
-    report: (message: string) => void;
+    report: Report;
   },
 ) {
   const [, update] = useState(0);

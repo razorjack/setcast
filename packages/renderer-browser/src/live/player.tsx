@@ -4,11 +4,11 @@ import type { ResolvedLiveProject } from '@setcast/core';
 import type { Art } from '../browser/overrides.ts';
 import { DropOverlay, useArt } from '../browser/art.tsx';
 import { useShortcuts } from '../browser/keyboard.ts';
-import { useThemes } from '../browser/themes.ts';
+import { useThemes, type ThemeSelection } from '../browser/themes.ts';
 import { LiveDock } from './controls.tsx';
 import { useLiveInput } from './input.ts';
 import { LiveViewport } from './scene.tsx';
-import { useOperatorWindow } from './operator.tsx';
+import { useOperatorWindow, type OperatorWindow } from './operator.tsx';
 import { LiveDiagnostics, useDiagnostics } from './diagnostics.tsx';
 import { LiveTempo, type Tempo } from './tempo.tsx';
 import { useLivePerformance } from './performance-session.ts';
@@ -21,8 +21,9 @@ import { useLiveBranding } from './branding.ts';
 import { BrandingControls } from './branding-controls.tsx';
 import { useTestPattern } from './test-pattern.ts';
 import { TestPatternControls } from './test-pattern-controls.tsx';
+import type { Report } from '../browser/report.ts';
 
-export function useLiveScene(initial: ResolvedLiveProject, report: (message: string) => void) {
+export function useLiveScene(initial: ResolvedLiveProject, report: Report) {
   const themes = useThemes(initial, report);
   const art = useArt(report);
   const [title, setTitle] = useState(initial.title);
@@ -66,10 +67,7 @@ export function useLiveScene(initial: ResolvedLiveProject, report: (message: str
 }
 
 /** Choosing a theme by hand leaves the recalled scene preset behind. */
-function manualThemes(
-  themes: ReturnType<typeof useThemes<ResolvedLiveProject>>,
-  leave: () => void,
-) {
+function manualThemes(themes: ThemeSelection<ResolvedLiveProject>, leave: () => void) {
   return {
     ...themes,
     step: (offset: number) => {
@@ -254,7 +252,7 @@ function OperatorButton({
   operator,
   setClean,
 }: {
-  operator: ReturnType<typeof useOperatorWindow>;
+  operator: OperatorWindow;
   setClean: (clean: boolean) => void;
 }) {
   return (

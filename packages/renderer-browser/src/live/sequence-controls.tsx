@@ -1,11 +1,11 @@
 import { SequenceEnergy, SceneEnergy } from './sequence-energy.tsx';
 import type { LiveSequence } from './sequence.ts';
-import type { useSceneBank } from './bank.tsx';
+import type { SceneBank } from './bank.tsx';
 import { downloadJson } from './diagnostics.tsx';
 
 interface Props {
   sequence: LiveSequence;
-  bank: ReturnType<typeof useSceneBank>;
+  bank: SceneBank;
   available: boolean;
   active: string | null;
 }

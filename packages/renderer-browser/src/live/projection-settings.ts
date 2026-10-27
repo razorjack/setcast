@@ -9,10 +9,11 @@ import {
 } from '@setcast/core';
 import { downloadJson } from './diagnostics.tsx';
 import type { LiveTestPattern } from './test-pattern.ts';
+import type { Report } from '../browser/report.ts';
 
 export function useProjection(
   initial: ResolvedLiveProject,
-  report: (message: string) => void,
+  report: Report,
   testPattern: LiveTestPattern,
 ) {
   const [config, setConfig] = useState(() => initial.live.projection ?? ProjectionSchema.parse({}));
@@ -61,8 +62,10 @@ export function useProjection(
   };
 }
 
+export type LiveProjection = ReturnType<typeof useProjection>;
+
 const storageKey = 'setcast-venues-v1';
-function useVenues(report: (message: string) => void) {
+function useVenues(report: Report) {
   const [saved, setSaved] = useState<Venue[]>([]);
   useEffect(() => {
     try {
@@ -103,11 +106,7 @@ function venueError(error: unknown) {
   return errorMessage(error);
 }
 
-async function importVenue(
-  file: File,
-  apply: (venue: Venue) => void,
-  report: (message: string) => void,
-) {
+async function importVenue(file: File, apply: (venue: Venue) => void, report: Report) {
   try {
     if (file.size > 32_768)
       throw new Error('Venue file exceeds 32 KiB. Import a Setcast venue JSON file.');

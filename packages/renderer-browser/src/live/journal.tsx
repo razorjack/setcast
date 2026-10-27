@@ -8,13 +8,14 @@ import {
 import type { Art } from '../browser/overrides.ts';
 import { playerWrite, uploadArt } from '../browser/save.tsx';
 import type { LiveInput } from './input.ts';
+import type { Report } from '../browser/report.ts';
 
 interface JournalProps {
   input: LiveInput;
   performance?: () => PerformanceEvent;
   selection: Omit<SceneSelection, 'art'>;
   art: Art;
-  report: (message: string) => void;
+  report: Report;
 }
 
 export function SessionJournal({
@@ -81,7 +82,7 @@ function JournalEntries({ journal }: { journal: JournalRecorder }) {
   );
 }
 
-class JournalRecorder {
+export class JournalRecorder {
   file: string | null = null;
   active = false;
   starting = false;

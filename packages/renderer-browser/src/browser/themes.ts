@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ResolvedProject, SceneProject } from '@setcast/core';
 import type { ThemeListing } from '../catalog.ts';
 import { errorMessage } from '@setcast/core';
+import type { Report } from './report.ts';
 
 export async function fetchProject<Project extends SceneProject = ResolvedProject>(
   theme: string | null,
@@ -19,10 +20,7 @@ export async function fetchProject<Project extends SceneProject = ResolvedProjec
 }
 
 /** The project with the selected theme. The URL keeps the choice, so a reload shows it again. */
-export function useThemes<Project extends SceneProject>(
-  initial: Project,
-  report: (message: string) => void,
-) {
+export function useThemes<Project extends SceneProject>(initial: Project, report: Report) {
   const [project, setProject] = useState(initial);
   const [listings, setListings] = useState<ThemeListing[]>([]);
   const [loading, setLoading] = useState<string | null>(null);
@@ -70,6 +68,8 @@ export function useThemes<Project extends SceneProject>(
   };
   return { project, listings, loading, select, step, adopt };
 }
+
+export type ThemeSelection<Project extends SceneProject> = ReturnType<typeof useThemes<Project>>;
 
 export const requestedTheme = () => new URLSearchParams(location.search).get('theme');
 

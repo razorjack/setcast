@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import type { Report } from '../browser/report.ts';
 
 /** React keeps capture in the output window; only its controls move into this document. */
-export function useOperatorWindow(report: (message: string) => void) {
+export function useOperatorWindow(report: Report) {
   const [operator, setOperator] = useState<Window | null>(null);
   const open = () => {
     if (operator && !operator.closed) {
@@ -37,3 +38,5 @@ export function useOperatorWindow(report: (message: string) => void) {
   }, [operator]);
   return { target: operator?.document.body ?? null, open, close: () => setOperator(null) };
 }
+
+export type OperatorWindow = ReturnType<typeof useOperatorWindow>;

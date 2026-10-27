@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BrandingSchema, type Branding, type BrandPosition } from '@setcast/core';
+import type { Report } from '../browser/report.ts';
 
 /** What the operator edits. An empty text field removes that line. */
 export interface BrandingEdit {
@@ -36,7 +37,7 @@ export function toggleBranding(
   return { ...current, messages: { ...current.messages, visible: !current.messages.visible } };
 }
 
-export function useLiveBranding(initial: Branding | null, report: (message: string) => void) {
+export function useLiveBranding(initial: Branding | null, report: Report) {
   const [value, set] = useState(initial);
   return {
     value,

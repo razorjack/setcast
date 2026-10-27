@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { errorMessage } from '@setcast/core';
+import type { Report } from '../browser/report.ts';
 
 interface Display extends Screen {
   left: number;
@@ -14,7 +15,7 @@ type DisplayChoice = Pick<Display, 'label' | 'width' | 'height'> & { key: string
 const screenKey = (screen: Display) =>
   `${screen.label}:${screen.left}:${screen.top}:${screen.width}:${screen.height}`;
 
-export function useOutputDisplay(report: (message: string) => void, cleanOutput: () => void) {
+export function useOutputDisplay(report: Report, cleanOutput: () => void) {
   const displays = useDisplays(report);
   const fullscreen = useFullscreen(report, cleanOutput, () => {
     if (!displays.selected) return undefined;
@@ -28,7 +29,9 @@ export function useOutputDisplay(report: (message: string) => void, cleanOutput:
   return { ...displays, ...fullscreen };
 }
 
-function useDisplays(report: (message: string) => void) {
+export type OutputDisplay = ReturnType<typeof useOutputDisplay>;
+
+function useDisplays(report: Report) {
   const [details, setDetails] = useState<Displays | null>(null);
   const [screens, setScreens] = useState<DisplayChoice[]>([]);
   const [selected, select] = useState('');
@@ -72,7 +75,7 @@ function useDisplays(report: (message: string) => void) {
 }
 
 function useFullscreen(
-  report: (message: string) => void,
+  report: Report,
   cleanOutput: () => void,
   selected: () => Display | undefined,
 ) {

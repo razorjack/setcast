@@ -52,6 +52,8 @@ export function useDiagnostics(input: LiveInput) {
   return { samples, sample };
 }
 
+export type DiagnosticHistory = ReturnType<typeof useDiagnostics>;
+
 function diagnosticSample(current: LiveInput, fps: number): Sample {
   return {
     seconds: current.capture.audio?.capturedTime ?? 0,
@@ -73,7 +75,7 @@ export function LiveDiagnostics({
 }: {
   input: LiveInput;
   fps: number;
-  diagnostics: ReturnType<typeof useDiagnostics>;
+  diagnostics: DiagnosticHistory;
 }) {
   const { samples, sample } = diagnostics;
   const download = () =>

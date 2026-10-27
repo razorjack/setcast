@@ -5,12 +5,13 @@ import {
   type SceneSequence,
 } from '@setcast/core';
 import { LiveEnergy } from './energy.ts';
+import type { Report } from '../browser/report.ts';
 
 type Entry = SceneSequence['scenes'][number];
 interface SequenceOptions {
   recall: (preset: string) => Promise<boolean>;
   cancel: () => void;
-  report: (message: string) => void;
+  report: Report;
   changed: () => void;
 }
 

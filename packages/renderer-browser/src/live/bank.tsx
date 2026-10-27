@@ -2,12 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ResolvedLiveProject } from '@setcast/core';
 import type { LivePerformance } from './performance.ts';
 import type { Tempo } from './tempo.tsx';
+import type { Report } from '../browser/report.ts';
 
 interface SceneListing {
   preset: string;
   title: string;
 }
-export function useSceneBank(report: (message: string) => void) {
+export function useSceneBank(report: Report) {
   const [scenes, setScenes] = useState<SceneListing[]>([]);
   const latest = useRef(0);
   const refresh = useCallback(() => {
@@ -27,6 +28,8 @@ export function useSceneBank(report: (message: string) => void) {
   return { scenes, refresh };
 }
 
+export type SceneBank = ReturnType<typeof useSceneBank>;
+
 async function sceneRequest<T>(path: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(path, { signal });
   const result = await response.json();
@@ -39,7 +42,7 @@ export function useSceneRecall(options: {
   capture: object | null;
   performance: LivePerformance;
   tempo: Tempo;
-  report: (message: string) => void;
+  report: Report;
 }) {
   const [duration, setDuration] = useState(1);
   const [quantized, setQuantized] = useState(true);
@@ -64,7 +67,9 @@ export function useSceneRecall(options: {
   };
 }
 
-function useSceneRequest(capture: object | null, report: (message: string) => void) {
+export type SceneRecall = ReturnType<typeof useSceneRecall>;
+
+function useSceneRequest(capture: object | null, report: Report) {
   const [loading, setLoading] = useState<string | null>(null);
   const controller = useRef<AbortController | null>(null);
   const cancel = () => {
@@ -97,15 +102,15 @@ function useSceneRequest(capture: object | null, report: (message: string) => vo
   return { loading, load, cancel };
 }
 
-export function SceneBank({
+export function ScenePads({
   bank,
   recall,
   performance,
   running,
   active,
 }: {
-  bank: ReturnType<typeof useSceneBank>;
-  recall: ReturnType<typeof useSceneRecall>;
+  bank: SceneBank;
+  recall: SceneRecall;
   performance: LivePerformance;
   running: boolean;
   active: string | null;
@@ -146,13 +151,7 @@ export function SceneBank({
   );
 }
 
-function SceneTiming({
-  recall,
-  refresh,
-}: {
-  recall: ReturnType<typeof useSceneRecall>;
-  refresh: () => void;
-}) {
+function SceneTiming({ recall, refresh }: { recall: SceneRecall; refresh: () => void }) {
   return (
     <div className="sc-performance-timing">
       <strong>Scenes</strong>

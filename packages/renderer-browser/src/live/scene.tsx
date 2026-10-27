@@ -21,6 +21,7 @@ import { LiveReadiness } from './readiness.ts';
 import { ProjectionFrame } from './projection-frame.tsx';
 import { LiveVideo } from './video.tsx';
 import { errorMessage } from '@setcast/core';
+import type { Report } from '../browser/report.ts';
 
 interface SceneProps {
   project: ResolvedLiveProject;
@@ -30,7 +31,7 @@ interface SceneProps {
   onFailure?: () => void;
   analyzer: AudioAnalyzer;
   frame: number;
-  report: (message: string) => void;
+  report: Report;
   renderScale?: number;
   black?: boolean;
   projection?: Projection;

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { errorMessage, silentAnalyzer, type ResolvedLiveProject } from '@setcast/core';
 import { LiveCapture } from './capture.ts';
+import type { Report } from '../browser/report.ts';
 
 export function useLiveInput(initial: ResolvedLiveProject) {
   const [capture] = useState(() => new LiveCapture());
@@ -41,7 +42,7 @@ export function useLiveInput(initial: ResolvedLiveProject) {
 
 export type LiveInput = ReturnType<typeof useLiveInput>;
 
-export function useInputDevices(report: (message: string) => void, phase: string) {
+export function useInputDevices(report: Report, phase: string) {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const refresh = useCallback(async () => {
     if (!navigator.mediaDevices) return;
