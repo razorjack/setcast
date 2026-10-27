@@ -7,7 +7,12 @@ import {
 import type { AudioAnalyzer } from '../audio.ts';
 import type { Announcement } from '../branding.ts';
 import { evaluateModulation } from '../modulation.ts';
-import type { ResolvedProject, ResolvedLiveProject, SceneProject } from '../project.ts';
+import {
+  sceneAppearance,
+  type ResolvedProject,
+  type ResolvedLiveProject,
+  type SceneProject,
+} from '../project.ts';
 import { emptyMixState, type Timeline, type MixState } from '../timeline.ts';
 import type { RenderFrame } from './frame.tsx';
 import { microseconds, toSeconds } from '../time.ts';
@@ -34,7 +39,7 @@ export function resolveFrame({
 }: FrameRequest): RenderFrame {
   const timeSeconds = frame / fps;
   const scene = project.scenes?.findLast((entry) => entry.at <= timeSeconds)?.scene;
-  const shown = scene ? sceneAt(project, scene) : project;
+  const shown = scene ? { ...project, ...sceneAppearance(scene) } : project;
   return assembleFrame({
     project: shown,
     analyzer,
@@ -46,22 +51,6 @@ export function resolveFrame({
     durationSeconds: toSeconds(project.mix.duration),
     announcements: shown.announcements,
   });
-}
-
-function sceneAt(project: ResolvedProject, scene: ResolvedLiveProject): ResolvedProject {
-  return {
-    ...project,
-    title: scene.title,
-    background: scene.background,
-    backgroundFit: scene.backgroundFit,
-    theme: scene.theme,
-    css: scene.css,
-    visualizers: scene.visualizers,
-    modulation: scene.modulation,
-    bpm: scene.bpm,
-    beatOffset: scene.beatOffset,
-    branding: scene.branding,
-  };
 }
 
 export function resolveLiveFrame({

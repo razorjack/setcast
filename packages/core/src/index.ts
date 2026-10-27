@@ -121,7 +121,13 @@ export {
   type SpringConfig,
 } from './motion.ts';
 export { ConfigError, SetcastError, errorMessage, zodIssues, type Issue } from './errors.ts';
-export type { ResolvedProject, ResolvedLiveProject, SceneProject } from './project.ts';
+export {
+  sceneAppearance,
+  type ResolvedProject,
+  type ResolvedLiveProject,
+  type SceneAppearance,
+  type SceneProject,
+} from './project.ts';
 export type { Theme } from './theme.ts';
 export { Registry } from './registry.ts';
 export {

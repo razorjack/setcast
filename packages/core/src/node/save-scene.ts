@@ -4,11 +4,13 @@ import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'nod
 import { basename, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { parse, stringify } from 'yaml';
 import { SceneSelectionSchema, type SceneSelection } from '../scene-selection.ts';
-import type { SceneProject } from '../project.ts';
+import { sceneAppearance, type SceneAppearance, type SceneProject } from '../project.ts';
 import { PANEL_DEFAULTS } from '../config.ts';
 import { TRACKLIST_DEFAULTS } from '../tracklist.ts';
 import { SetcastError } from '../errors.ts';
 import { parseConfigYaml } from './project.ts';
+
+type YamlConfig = Record<string, unknown>;
 
 /** Saves a self-contained copy; source YAML and media are never changed. */
 export async function saveScene(
@@ -35,83 +37,99 @@ export async function saveScene(
   }
 }
 
-async function sourceConfig(root: string, name: string): Promise<Record<string, unknown>> {
+async function sourceConfig(root: string, name: string): Promise<YamlConfig> {
   try {
-    return (parseConfigYaml(await readFile(join(root, name), 'utf8'), name) ?? {}) as Record<
-      string,
-      unknown
-    >;
+    return (parseConfigYaml(await readFile(join(root, name), 'utf8'), name) ?? {}) as YamlConfig;
   } catch (error) {
     if (name === 'live.yaml' && (error as NodeJS.ErrnoException).code === 'ENOENT') return {};
     throw error;
   }
 }
 
+/** Live setup and keys a saved scene must not carry over from the project it was saved from. */
+const SETUP_KEYS = ['css', 'sequence', 'projection', 'testPattern', 'beatTracking', 'midi'];
+
+/** The source YAML with the selected appearance, art and credits written over it. */
 function selectedConfig(
-  config: Record<string, unknown>,
+  config: YamlConfig,
   project: SceneProject,
   selected: SceneSelection,
-) {
-  const copy = { ...config };
-  delete copy.css;
-  delete copy.sequence;
-  delete copy.projection;
-  delete copy.testPattern;
-  delete copy.beatTracking;
-  delete copy.midi;
-  if (!project.scenes) delete copy.scenes;
-  copy.theme = `./${project.theme}.css`;
-  copy.title = selected.title ?? project.title;
-  copy.performance = selected.performance ?? project.performance;
-  copy.modulation = project.modulation;
-  copy.visualizer = project.visualizers;
-  copy.backgroundFit = project.backgroundFit;
-  copy.background = project.background ?? undefined;
-  copy.bpm = (selected.bpm === undefined ? project.bpm : selected.bpm) ?? undefined;
-  copy.beatOffset = selected.beatOffset ?? project.beatOffset;
-  copy.branding =
-    (selected.branding === undefined ? project.branding : selected.branding) ?? undefined;
-  copy.output = {
-    ...(config.output as object),
-    width: project.width,
-    height: project.height,
-    fps: project.fps,
+): YamlConfig {
+  const kept = Object.fromEntries(
+    Object.entries(config).filter(
+      ([key]) => !SETUP_KEYS.includes(key) && (key !== 'scenes' || project.scenes),
+    ),
+  );
+  return {
+    ...kept,
+    ...appearanceConfig(selectedAppearance(project, selected)),
+    performance: selected.performance ?? project.performance,
+    output: {
+      ...(config.output as object),
+      width: project.width,
+      height: project.height,
+      fps: project.fps,
+    },
+    ...selectedArt(kept, selected),
+    ...selectedCredits(project, selected),
   };
-  selectArt(copy, selected);
-  selectCredits(copy, project, selected);
-  return copy;
 }
 
-function selectArt(copy: Record<string, unknown>, selected: SceneSelection) {
-  if (selected.art !== 'project') {
-    copy.background = selected.art === 'file' ? selected.artwork : undefined;
-    if (selected.art === 'file' && !selected.artwork)
-      throw new Error('Upload the artwork before saving the scene.');
-    if (Array.isArray(copy.plays))
-      copy.plays = copy.plays.map(({ background: _background, ...play }) => play);
+/** A scene appearance as `setcast.yaml` / `live.yaml` keys, with its CSS saved as `<theme>.css`. */
+export function appearanceConfig(appearance: SceneAppearance): YamlConfig {
+  return {
+    theme: `./${appearance.theme}.css`,
+    title: appearance.title,
+    background: appearance.background ?? undefined,
+    backgroundFit: appearance.backgroundFit,
+    branding: appearance.branding ?? undefined,
+    bpm: appearance.bpm ?? undefined,
+    beatOffset: appearance.beatOffset,
+    visualizer: appearance.visualizers,
+    modulation: appearance.modulation,
+  };
+}
+
+/** The project's appearance with the player's title, tempo and branding; null removes a value. */
+function selectedAppearance(project: SceneProject, selected: SceneSelection): SceneAppearance {
+  const appearance = sceneAppearance(project);
+  return {
+    ...appearance,
+    title: selected.title ?? appearance.title,
+    bpm: selected.bpm === undefined ? appearance.bpm : selected.bpm,
+    beatOffset: selected.beatOffset ?? appearance.beatOffset,
+    branding: selected.branding === undefined ? appearance.branding : selected.branding,
+  };
+}
+
+/** Art chosen in the player replaces the project's art and every play's own. */
+function selectedArt(config: YamlConfig, selected: SceneSelection): YamlConfig {
+  if (selected.art === 'project') return {};
+  if (selected.art === 'file' && !selected.artwork)
+    throw new Error('Upload the artwork before saving the scene.');
+  const background = selected.art === 'file' ? selected.artwork : undefined;
+  if (!Array.isArray(config.plays)) return { background };
+  const plays = config.plays.map(({ background: _background, ...play }) => play);
+  return { background, plays };
+}
+
+function selectedCredits(project: SceneProject, selected: SceneSelection): YamlConfig {
+  if (!project.mix) {
+    return {
+      clock: selected.clock ?? project.live.clock,
+      input: selected.input ?? project.live.input,
+    };
   }
-}
-
-function selectCredits(
-  copy: Record<string, unknown>,
-  project: SceneProject,
-  selected: SceneSelection,
-) {
-  if (project.mix) {
-    copy.panel = project.panel ?? false;
-    copy.tracklist = project.tracklist ?? false;
-    if (selected.credits) {
-      copy.panel = selected.credits === 'tracklist' ? false : (project.panel ?? PANEL_DEFAULTS);
-      copy.tracklist =
-        selected.credits === 'panels' ? false : (project.tracklist ?? TRACKLIST_DEFAULTS);
-    }
-  } else {
-    copy.clock = selected.clock ?? project.live.clock;
-    copy.input = selected.input ?? project.live.input;
+  if (!selected.credits) {
+    return { panel: project.panel ?? false, tracklist: project.tracklist ?? false };
   }
+  return {
+    panel: selected.credits === 'tracklist' ? false : (project.panel ?? PANEL_DEFAULTS),
+    tracklist: selected.credits === 'panels' ? false : (project.tracklist ?? TRACKLIST_DEFAULTS),
+  };
 }
 
-async function copyMedia(root: string, output: string, config: Record<string, unknown>) {
+async function copyMedia(root: string, output: string, config: YamlConfig) {
   const copied = new Map<string, string>();
   await mkdir(join(output, 'assets'), { recursive: true });
   const copy = async (path: unknown) => {
@@ -148,7 +166,7 @@ async function copyMedia(root: string, output: string, config: Record<string, un
 async function copyScenes(
   root: string,
   output: string,
-  config: Record<string, unknown>,
+  config: YamlConfig,
   selection: SceneSelection,
 ) {
   if (!Array.isArray(config.scenes)) return;

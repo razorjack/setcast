@@ -90,3 +90,33 @@ export type ResolvedLiveProject = Omit<
 };
 
 export type SceneProject = ResolvedProject | ResolvedLiveProject;
+
+/** How a scene looks and moves: what a saved scene sets and recorded `scenes:` switch. */
+export type SceneAppearance = Pick<
+  ResolvedProject,
+  | 'title'
+  | 'background'
+  | 'backgroundFit'
+  | 'theme'
+  | 'css'
+  | 'visualizers'
+  | 'modulation'
+  | 'bpm'
+  | 'beatOffset'
+  | 'branding'
+>;
+
+export function sceneAppearance(scene: SceneProject): SceneAppearance {
+  return {
+    title: scene.title,
+    background: scene.background,
+    backgroundFit: scene.backgroundFit,
+    theme: scene.theme,
+    css: scene.css,
+    visualizers: scene.visualizers,
+    modulation: scene.modulation,
+    bpm: scene.bpm,
+    beatOffset: scene.beatOffset,
+    branding: scene.branding,
+  };
+}

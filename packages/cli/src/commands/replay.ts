@@ -1,8 +1,9 @@
 import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join } from 'node:path';
 import { parse, stringify } from 'yaml';
-import { readSession, replayEvents, SetcastError } from '@setcast/core';
+import { readSession, replayEvents, sceneAppearance, SetcastError } from '@setcast/core';
 import {
+  appearanceConfig,
   audioDuration,
   loadProject,
   sceneDirectory,
@@ -97,15 +98,7 @@ async function initialAppearance(root: string, preset: string) {
   const project = rebaseScene(loaded, preset);
   await writeFile(join(root, `${project.theme}.css`), project.css);
   return {
-    theme: `./${project.theme}.css`,
-    title: project.title,
-    background: project.background ?? undefined,
-    backgroundFit: project.backgroundFit,
-    branding: project.branding ?? undefined,
-    bpm: project.bpm ?? undefined,
-    beatOffset: project.beatOffset,
-    visualizer: project.visualizers,
-    modulation: project.modulation,
+    ...appearanceConfig(sceneAppearance(project)),
     performance: project.performance,
     output: { width: project.width, height: project.height, fps: project.fps, file: 'set.mp4' },
   };

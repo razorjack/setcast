@@ -11,7 +11,7 @@ import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { compileMix, mixWarnings } from '../mix.ts';
 import { Timeline } from '../timeline.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
-import type { ResolvedProject } from '../project.ts';
+import type { ResolvedProject, SceneAppearance } from '../project.ts';
 import type { Theme } from '../theme.ts';
 import {
   TracklistCountsSchema,
@@ -97,35 +97,51 @@ function resolveProject(
   mix: ResolvedProject['mix'],
   css: string,
 ): ResolvedProject {
-  const modulation = [...themeRoutes(theme), ...config.modulation];
   let presentation = config.presentation.mode;
   if (presentation === 'auto') presentation = new Timeline(mix).overlaps ? 'dj' : 'playlist';
   return {
-    title: config.title,
+    ...resolveAppearance(config, theme, css, resolveVisualizers(config.visualizer, theme)),
     clockOffset: config.clockOffset,
     clockTotal: config.clockTotal ?? null,
     audio: config.audio,
-    background: config.background ?? null,
-    backgroundFit: config.backgroundFit,
-    theme: theme.name,
-    css,
     width: config.output.width,
     height: config.output.height,
     fps: config.output.fps,
     mix,
     presentation,
-    modulation,
-    visualizers: resolveVisualizers(config.visualizer, theme),
     envelope: null,
     travel: null,
     panel: config.panel === false ? null : config.panel,
     tracklist: resolveProjectTracklist(config.tracklist, theme),
-    bpm: config.bpm ?? null,
-    beatOffset: config.beatOffset,
-    branding: config.branding ?? null,
     announcements: config.announcements,
     performance: config.performance,
     automation: config.automation,
+  };
+}
+
+type AppearanceSettings = Pick<
+  ProjectConfig,
+  'title' | 'background' | 'backgroundFit' | 'modulation' | 'bpm' | 'beatOffset' | 'branding'
+>;
+
+/** A scene's appearance from its YAML, its theme and its composed CSS. */
+export function resolveAppearance(
+  config: AppearanceSettings,
+  theme: Theme,
+  css: string,
+  visualizers: VisualizerConfig[],
+): SceneAppearance {
+  return {
+    title: config.title,
+    background: config.background ?? null,
+    backgroundFit: config.backgroundFit,
+    theme: theme.name,
+    css,
+    visualizers,
+    modulation: [...themeRoutes(theme), ...config.modulation],
+    bpm: config.bpm ?? null,
+    beatOffset: config.beatOffset,
+    branding: config.branding ?? null,
   };
 }
 

@@ -12,7 +12,7 @@ import {
   requireFile,
   resolveTheme,
   resolveVisualizers,
-  themeRoutes,
+  resolveAppearance,
   type LoadOptions,
 } from './project.ts';
 
@@ -70,26 +70,17 @@ function resolveLiveProject(
   selected: ResolvedLiveProject['visualizers'],
 ): ResolvedLiveProject {
   return {
-    title: config.title,
+    ...resolveAppearance(config, theme, css, selected),
     audio: null,
     mix: null,
     clockOffset: 0,
     clockTotal: null,
-    background: config.background ?? null,
-    backgroundFit: config.backgroundFit,
-    theme: theme.name,
-    css,
     ...config.output,
     presentation: 'playlist',
-    modulation: [...themeRoutes(theme), ...config.modulation],
-    visualizers: selected,
     envelope: null,
     travel: null,
     panel: null,
     tracklist: null,
-    bpm: config.bpm ?? null,
-    beatOffset: config.beatOffset,
-    branding: config.branding ?? null,
     performance: config.performance,
     live: {
       input: config.input,
