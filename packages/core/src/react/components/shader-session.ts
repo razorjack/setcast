@@ -2,7 +2,7 @@ import type { GpuCanvasConfig } from '../../gpu.ts';
 import type { RenderFrame } from '../frame.tsx';
 import type { RendererBindings, RendererDiagnostic } from '../renderer.tsx';
 import type { Shader } from './ShaderCanvas.tsx';
-import { createPainter } from './shader-painter.ts';
+import { createPainter, type ShaderPainter } from './shader-painter.ts';
 
 interface ShaderSessionOptions<C> {
   current: () => { frame: RenderFrame; config: C; resolution: number };
@@ -16,7 +16,7 @@ export class ShaderSession<C extends GpuCanvasConfig> {
   private canvas: HTMLCanvasElement;
   private shader: Shader<C>;
   private options: ShaderSessionOptions<C>;
-  private painter: ReturnType<typeof createPainter<C>> | null;
+  private painter: ShaderPainter<C> | null;
   private phase: 'ready' | 'recovering' | 'failed' | 'disposed' = 'ready';
   private release: (() => void) | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;

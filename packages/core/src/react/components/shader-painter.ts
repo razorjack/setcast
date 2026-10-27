@@ -2,7 +2,13 @@ import type { RenderFrame } from '../frame.tsx';
 import type { Shader, Uniforms } from './ShaderCanvas.tsx';
 import { cssColor, drawingSize, shaderContext, shaderProgram } from './shader-gl.ts';
 
-export function createPainter<C>(canvas: HTMLCanvasElement, shader: Shader<C>) {
+export interface ShaderPainter<C> {
+  /** Draws one frame; false when the context is lost. */
+  draw(frame: RenderFrame, config: C, resolution: number): boolean;
+  dispose(): void;
+}
+
+export function createPainter<C>(canvas: HTMLCanvasElement, shader: Shader<C>): ShaderPainter<C> {
   const gl = shaderContext(canvas, shader.name);
   const program = shaderProgram(gl, shader.name, shader.fragment);
   const uniforms: Uniforms = Object.fromEntries(

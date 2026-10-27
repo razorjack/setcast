@@ -5,7 +5,7 @@ import { useFrame, useHoldUntil, type VideoProps } from '@setcast/core/react';
 
 export function ExportVideo({ src, style, className, fit, loop }: VideoProps) {
   const { frame, fps, composition } = useFrame();
-  const decoder = useRef<Awaited<ReturnType<typeof openVideo>> | null>(null);
+  const decoder = useRef<VideoDecoder | null>(null);
   const [image, setImage] = useState<{ src: string; width: number; height: number } | null>(null);
   useEffect(
     () => () => {
@@ -44,7 +44,7 @@ export function ExportVideo({ src, style, className, fit, loop }: VideoProps) {
 }
 
 async function decodeFrame(
-  decoder: Awaited<ReturnType<typeof openVideo>>,
+  decoder: VideoDecoder,
   src: string,
   { frame, fps, loop }: { frame: number; fps: number; loop?: boolean },
 ) {
@@ -67,7 +67,13 @@ async function decodeFrame(
   return image;
 }
 
-async function openVideo(src: string) {
+interface VideoDecoder {
+  input: Input;
+  duration: number;
+  sink: CanvasSink;
+}
+
+async function openVideo(src: string): Promise<VideoDecoder> {
   const input = new Input({
     formats: ALL_FORMATS,
     source: new UrlSource(src, { maxCacheSize: 16 * 1024 * 1024 }),

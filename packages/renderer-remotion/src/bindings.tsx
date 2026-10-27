@@ -9,9 +9,9 @@ import {
   useVideoConfig,
 } from 'remotion';
 import { resolveFit } from '@setcast/core';
-import { videoInfo } from './media.ts';
+import { videoInfo, type VideoInfo } from './media.ts';
 
-const videos = new Map<string, Awaited<ReturnType<typeof videoInfo>>>();
+const videos = new Map<string, VideoInfo>();
 
 function RemotionVideo({ src, className, style, loop, muted, fit }: VideoProps) {
   const { fps, width, height } = useVideoConfig();

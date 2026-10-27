@@ -103,10 +103,7 @@ function resolveLiveProject(
   };
 }
 
-function resolveLiveVisualizers(
-  config: LiveConfig,
-  theme: Parameters<typeof resolveVisualizers>[1],
-) {
+function resolveLiveVisualizers(config: LiveConfig, theme: Theme) {
   try {
     return resolveVisualizers(config.visualizer, theme);
   } catch (error) {

@@ -42,7 +42,14 @@ export interface RendererDiagnosticReport {
   exitCode: 0 | 1;
 }
 
-export function diagnosticOptions(options: RendererDiagnosticOptions = {}) {
+/** Diagnostic options after validation, with defaults applied. */
+export interface DiagnosticSettings extends RendererDiagnosticOptions {
+  gl: GraphicsBackend;
+  require: RendererFeature[];
+  timeoutMs: number;
+}
+
+export function diagnosticOptions(options: RendererDiagnosticOptions = {}): DiagnosticSettings {
   const required = options.require ?? ['video'];
   if (!required.length || required.some((feature) => !RENDERER_FEATURES.includes(feature)))
     throw new SetcastError(

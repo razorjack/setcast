@@ -8,6 +8,7 @@ import {
   resolveFrame,
   Stage,
   type RenderFrame,
+  type RendererBindings,
 } from '@setcast/core/react';
 import { openAnalysis } from '../browser/decode.ts';
 import { SceneBoundary } from '../browser/scene.tsx';
@@ -94,7 +95,7 @@ function ExportFrame({ frame, readiness }: { frame: RenderFrame; readiness: Fram
   );
 }
 
-function exportBindings(readiness: FrameReadiness) {
+function exportBindings(readiness: FrameReadiness): RendererBindings {
   return {
     name: 'browser-export',
     Img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => <img {...props} />,
@@ -106,7 +107,7 @@ function exportBindings(readiness: FrameReadiness) {
 
 function drawFrame(
   root: Root,
-  bindings: ReturnType<typeof exportBindings>,
+  bindings: RendererBindings,
   readiness: FrameReadiness,
   frame: RenderFrame,
 ) {

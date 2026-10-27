@@ -4,6 +4,7 @@ import { errorMessage, SetcastError } from '../errors.ts';
 import {
   diagnosticOptions,
   rendererReadiness,
+  type DiagnosticSettings,
   type RendererCheck,
   type RendererDiagnosticOptions,
   type RendererDiagnosticReport,
@@ -17,7 +18,7 @@ export type DiagnosticCommand = (binary: 'ffmpeg' | 'ffprobe', args: string[]) =
 export class RendererDiagnostics {
   readonly capabilities: RendererCapabilities;
   readonly checks: RendererCheck[] = [];
-  readonly options: ReturnType<typeof diagnosticOptions>;
+  readonly options: DiagnosticSettings;
   constructor(capabilities: RendererCapabilities, options: RendererDiagnosticOptions = {}) {
     this.capabilities = capabilities;
     this.options = diagnosticOptions(options);

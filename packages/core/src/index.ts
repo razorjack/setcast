@@ -380,6 +380,7 @@ export type {
 export {
   RENDERER_FEATURES,
   diagnosticOptions,
+  type DiagnosticSettings,
   rendererReadiness,
   type RendererDiagnosticOptions,
   type RendererCheck,

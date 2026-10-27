@@ -21,9 +21,13 @@ export async function audioChannels(url: string): Promise<number> {
   }
 }
 
-export async function videoInfo(
-  url: string,
-): Promise<{ duration: number; width: number; height: number }> {
+export interface VideoInfo {
+  duration: number;
+  width: number;
+  height: number;
+}
+
+export async function videoInfo(url: string): Promise<VideoInfo> {
   const input = new Input({ formats: ALL_FORMATS, source: new UrlSource(url) });
   try {
     const video = await input.getPrimaryVideoTrack();
