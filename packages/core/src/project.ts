@@ -64,7 +64,7 @@ export type ResolvedProject = {
   scenes?: { at: number; scene: ResolvedLiveProject }[];
 };
 
-/** An open-ended performance. A live session has no recorded file or finite mix document. */
+/** A live session: open-ended, with no recorded file or finite mix document. */
 export type ResolvedLiveProject = Omit<
   ResolvedProject,
   'audio' | 'mix' | 'panel' | 'tracklist' | 'announcements'

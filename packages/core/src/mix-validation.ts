@@ -5,11 +5,14 @@ function fail(path: string, value: unknown, rule: string): never {
   throw new ConfigError('mix timeline', [{ path, message: `${JSON.stringify(value)}: ${rule}` }]);
 }
 
+/** The index key of mix-scoped annotations; play IDs key the play-scoped ones. */
+export const MIX_TARGET = '$mix';
+
 export function sectionTargets(annotation: Annotation): string[] {
   if (!['drop', 'breakdown', 'buildup', 'section_end'].includes(annotation.kind)) return [];
   if (annotation.scope !== 'mix') return annotation.scope.plays;
-  if (annotation.kind === 'drop') return ['$mix', ...(annotation.participants ?? [])];
-  return ['$mix'];
+  if (annotation.kind === 'drop') return [MIX_TARGET, ...(annotation.participants ?? [])];
+  return [MIX_TARGET];
 }
 
 export function validateMix(document: MixDocument): void {

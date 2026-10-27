@@ -7,7 +7,7 @@ import {
   type SectionKind,
 } from './mix-schema.ts';
 import { toSeconds, microseconds } from './time.ts';
-import { sectionTargets, validateMix } from './mix-validation.ts';
+import { MIX_TARGET, sectionTargets, validateMix } from './mix-validation.ts';
 
 export type ContributionRun = {
   id: string;
@@ -83,11 +83,13 @@ export class Timeline {
   readonly runs: ContributionRun[];
   readonly overlaps: boolean;
   private readonly recordings: Map<string, Recording>;
-  private readonly intervals: Map<string, Contribution[]>;
-  private readonly playRuns: Map<string, ContributionRun[]>;
-  private readonly cues = new Map<string, Map<string, Annotation[]>>();
-  private readonly sections = new Map<string, Annotation[]>();
-  private readonly directives: MixDocument['focus'];
+  private readonly contributionsByPlay: Map<string, Contribution[]>;
+  private readonly runsByPlay: Map<string, ContributionRun[]>;
+  /** Annotations by target (a play ID or `MIX_TARGET`), then by kind, in time order. */
+  private readonly annotationsByTarget = new Map<string, Map<string, Annotation[]>>();
+  /** Section annotations by target, in time order. */
+  private readonly sectionsByTarget = new Map<string, Annotation[]>();
+  private readonly focusPins: MixDocument['focus'];
 
   constructor(document: MixDocument) {
     validateMix(document);
@@ -96,11 +98,14 @@ export class Timeline {
     this.recordings = new Map(
       this.document.recordings.map((recording) => [recording.id, recording]),
     );
-    this.intervals = Map.groupBy(this.document.contributions, (interval) => interval.play);
+    this.contributionsByPlay = Map.groupBy(
+      this.document.contributions,
+      (contribution) => contribution.play,
+    );
     this.runs = compileRuns(this.document);
-    this.playRuns = Map.groupBy(this.runs, (run) => run.play);
+    this.runsByPlay = Map.groupBy(this.runs, (run) => run.play);
     this.overlaps = hasOverlap(this.runs);
-    this.directives = this.document.focus.toSorted((left, right) => left.at - right.at);
+    this.focusPins = this.document.focus.toSorted((left, right) => left.at - right.at);
     this.document.listings.sort((left, right) => left.at - right.at || left.order - right.order);
     this.document.plays.sort((left, right) => left.order - right.order);
     for (const annotation of this.document.annotations.toSorted(
@@ -126,11 +131,15 @@ export class Timeline {
       time,
       currentPlays,
       focusPlays: this.focusAt(currentPlays, time),
-      mixSection: this.sectionAt('$mix', time),
+      mixSection: this.sectionAt(MIX_TARGET, time),
       activeAnnotations: this.document.annotations.filter(
-        (cue) => 'until' in cue && cue.until !== undefined && cue.at <= time && time < cue.until,
+        (annotation) =>
+          'until' in annotation &&
+          annotation.until !== undefined &&
+          annotation.at <= time &&
+          time < annotation.until,
       ),
-      annotations: { mix: this.queryAnnotations('$mix', time), plays: local },
+      annotations: { mix: this.queryAnnotations(MIX_TARGET, time), plays: local },
       nextEntries: nextGroup(this.runs, time, byFrom),
       nextListings: nextGroup(this.document.listings, time, byAt),
       listings: this.document.listings,
@@ -142,10 +151,10 @@ export class Timeline {
   }
 
   private currentPlay(play: Play, time: number): CurrentPlay[] {
-    const intervals = this.intervals.get(play.id)!;
-    const contribution = intervals[upperBound(intervals, time, byFrom) - 1];
+    const contributions = this.contributionsByPlay.get(play.id)!;
+    const contribution = contributions[upperBound(contributions, time, byFrom) - 1];
     if (!contribution || time >= contribution.until) return [];
-    const runs = this.playRuns.get(play.id)!;
+    const runs = this.runsByPlay.get(play.id)!;
     const run = runs[upperBound(runs, time, byFrom) - 1]!;
     return [
       {
@@ -160,14 +169,11 @@ export class Timeline {
   }
 
   private focusAt(current: CurrentPlay[], time: number): CurrentPlay[] {
-    const directive = this.directives[upperBound(this.directives, time, byAt) - 1];
-    if (directive) {
-      const pinned = directive.plays.flatMap((id) =>
+    const pin = this.focusPins[upperBound(this.focusPins, time, byAt) - 1];
+    if (pin) {
+      const pinned = pin.plays.flatMap((id) =>
         current.filter(
-          (entry) =>
-            entry.play.id === id &&
-            entry.run.from <= directive.at &&
-            directive.at < entry.run.until,
+          (entry) => entry.play.id === id && entry.run.from <= pin.at && pin.at < entry.run.until,
         ),
       );
       if (pinned.length) return pinned;
@@ -182,40 +188,40 @@ export class Timeline {
   }
 
   private indexAnnotation(annotation: Annotation): void {
-    const targets = annotation.scope === 'mix' ? ['$mix'] : annotation.scope.plays;
+    const targets = annotation.scope === 'mix' ? [MIX_TARGET] : annotation.scope.plays;
     if (annotation.kind === 'drop' && annotation.scope === 'mix')
       targets.push(...(annotation.participants ?? []));
     for (const target of targets) {
-      const kinds = this.cues.get(target) ?? new Map<string, Annotation[]>();
-      const cues = kinds.get(annotation.kind) ?? [];
-      cues.push(annotation);
-      kinds.set(annotation.kind, cues);
-      this.cues.set(target, kinds);
+      const kinds = this.annotationsByTarget.get(target) ?? new Map<string, Annotation[]>();
+      const annotations = kinds.get(annotation.kind) ?? [];
+      annotations.push(annotation);
+      kinds.set(annotation.kind, annotations);
+      this.annotationsByTarget.set(target, kinds);
     }
     for (const target of sectionTargets(annotation)) {
-      const sections = this.sections.get(target) ?? [];
+      const sections = this.sectionsByTarget.get(target) ?? [];
       sections.push(annotation);
-      this.sections.set(target, sections);
+      this.sectionsByTarget.set(target, sections);
     }
   }
 
   private sectionAt(target: string, time: number, from = 0): Section | null {
-    const sections = this.sections.get(target) ?? [];
-    const cue = sections[upperBound(sections, time, byAt) - 1];
-    if (!cue || cue.at < from || cue.kind === 'section_end') return null;
-    return { kind: cue.kind as SectionKind, start: cue.at };
+    const sections = this.sectionsByTarget.get(target) ?? [];
+    const latest = sections[upperBound(sections, time, byAt) - 1];
+    if (!latest || latest.at < from || latest.kind === 'section_end') return null;
+    return { kind: latest.kind as SectionKind, start: latest.at };
   }
 
   private queryAnnotations(target: string, time: number): AnnotationQuery {
     const query: AnnotationQuery = { last: {}, next: {} };
-    for (const [kind, cues] of this.cues.get(target) ?? []) {
-      const next = upperBound(cues, time, byAt);
-      const lastTime = cues[next - 1]?.at;
-      const nextTime = cues[next]?.at;
+    for (const [kind, annotations] of this.annotationsByTarget.get(target) ?? []) {
+      const next = upperBound(annotations, time, byAt);
+      const lastTime = annotations[next - 1]?.at;
+      const nextTime = annotations[next]?.at;
       if (lastTime !== undefined)
-        query.last[kind] = cues.slice(upperBound(cues, lastTime - 1, byAt), next);
+        query.last[kind] = annotations.slice(upperBound(annotations, lastTime - 1, byAt), next);
       if (nextTime !== undefined)
-        query.next[kind] = cues.slice(next, upperBound(cues, nextTime, byAt));
+        query.next[kind] = annotations.slice(next, upperBound(annotations, nextTime, byAt));
     }
     return query;
   }
@@ -223,20 +229,20 @@ export class Timeline {
 
 function compileRuns(document: MixDocument): ContributionRun[] {
   const runs: ContributionRun[] = [];
-  for (const [play, intervals] of Map.groupBy(
+  for (const [play, contributions] of Map.groupBy(
     document.contributions,
-    (interval) => interval.play,
+    (contribution) => contribution.play,
   )) {
     let previous: ContributionRun | undefined;
     let count = 0;
-    for (const interval of intervals) {
-      if (previous?.until === interval.from) previous.until = interval.until;
+    for (const contribution of contributions) {
+      if (previous?.until === contribution.from) previous.until = contribution.until;
       else {
         previous = {
           id: `$run:${play}:${count}`,
           play,
-          from: interval.from,
-          until: interval.until,
+          from: contribution.from,
+          until: contribution.until,
           returning: count > 0,
         };
         runs.push(previous);
@@ -282,16 +288,16 @@ export function nextAnnotations(
     []
   );
 }
-/** Single-cue helpers select the first annotation in stable input order within a tied group. */
+/** Single-annotation helpers select the first annotation in stable input order within a tied group. */
 export const sinceAnnotation = (
   state: MixState,
   kind: string,
   scope: 'mix' | { play: string } = 'mix',
   run?: ContributionRun,
 ): number => {
-  const cue = lastAnnotations(state, kind, scope)[0];
-  if (run && cue && cue.at < run.from) return Infinity;
-  return cue ? toSeconds(state.time - cue.at) : Infinity;
+  const annotation = lastAnnotations(state, kind, scope)[0];
+  if (run && annotation && annotation.at < run.from) return Infinity;
+  return annotation ? toSeconds(state.time - annotation.at) : Infinity;
 };
 export const untilAnnotation = (
   state: MixState,
@@ -299,10 +305,11 @@ export const untilAnnotation = (
   scope: 'mix' | { play: string } = 'mix',
   run?: ContributionRun,
 ): number => {
-  const cue = nextAnnotations(state, kind, scope)[0];
-  if (run && cue && cue.at >= run.until && !(kind === 'rewind' && cue.at === run.until))
+  const annotation = nextAnnotations(state, kind, scope)[0];
+  if (!annotation) return Infinity;
+  if (run && annotation.at >= run.until && !(kind === 'rewind' && annotation.at === run.until))
     return Infinity;
-  return cue ? toSeconds(cue.at - state.time) : Infinity;
+  return toSeconds(annotation.at - state.time);
 };
 
 function freezeDocument(document: unknown): void {
