@@ -1,5 +1,5 @@
 import type { StillOptions, StillResult } from '@setcast/core';
-import { withRenderSession, rendererName } from '../renderer.ts';
+import { parseRendererFlag, still, withRenderSession, type Renderer } from '../renderer.ts';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
@@ -10,7 +10,6 @@ import {
   type SetEnvelope,
 } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { still } from '../renderer.ts';
 import { themes } from '@setcast/themes';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
@@ -33,7 +32,7 @@ interface StillCommandOptions {
   at: number | undefined;
   out: string | undefined;
   theme: string | undefined;
-  renderer: string | undefined;
+  renderer: Renderer | undefined;
 }
 
 type StillPlan = Omit<StillOptions, 'onProgress'> & { at: number };
@@ -47,7 +46,7 @@ export async function run(argv: string[]) {
   );
   await withRenderSession(
     () => runCommand(options, loaded),
-    rendererName(options.renderer, loaded.config.renderer),
+    options.renderer ?? loaded.config.renderer,
   );
 }
 
@@ -110,7 +109,7 @@ function parseOptions(argv: string[]): StillCommandOptions {
     at: values.at ? parseAt(values.at) : undefined,
     out: values.out,
     theme: values.theme,
-    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
+    renderer: parseRendererFlag(values.renderer),
   };
 }
 

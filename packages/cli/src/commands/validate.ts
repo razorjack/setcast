@@ -2,7 +2,7 @@ import { SetcastError } from '@setcast/core';
 import { validateProject, type ValidationReport } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { parseCommandArgs } from '../args.ts';
-import { rendererCapabilities, rendererName } from '../renderer.ts';
+import { rendererCapabilities, parseRendererFlag } from '../renderer.ts';
 
 export const help = `setcast validate [dir] [--live] [--renderer remotion|browser] [--json]
 
@@ -32,7 +32,7 @@ export async function run(argv: string[]): Promise<number> {
   const report = await validateProject(positionals[0] ?? '.', {
     kind: values.live ? 'live' : 'project',
     themes,
-    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
+    renderer: parseRendererFlag(values.renderer),
     rendererCapabilities,
   });
   if (values.json) process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);

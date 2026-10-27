@@ -6,7 +6,7 @@ import {
   type GraphicsBackend,
 } from '@setcast/core';
 import { parseCommandArgs, parseNumber } from '../args.ts';
-import { diagnoseRenderer, rendererCapabilities, rendererName } from '../renderer.ts';
+import { diagnoseRenderer, rendererCapabilities, parseRendererFlag } from '../renderer.ts';
 
 export const help = `setcast doctor [--renderer remotion|browser] [--require video,gpu] [--gl auto] [--json]
 
@@ -35,7 +35,7 @@ async function argumentsFor(argv: string[]) {
     help,
   );
   if (positionals.length) throw new SetcastError('doctor takes no project directory.', help);
-  const name = rendererName(values.renderer, 'remotion');
+  const name = parseRendererFlag(values.renderer) ?? 'remotion';
   const capabilities = await rendererCapabilities(name);
   const required = (values.require ?? 'video').split(',').map((value) => value.trim());
   if (required.some((feature) => !RENDERER_FEATURES.includes(feature as RendererFeature)))

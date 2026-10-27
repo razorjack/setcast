@@ -8,18 +8,19 @@ import {
 } from '@setcast/core';
 export type { PreviewOptions } from '@setcast/renderer-remotion';
 
-type Renderer = ProjectConfig['renderer'];
+export type Renderer = ProjectConfig['renderer'];
 const selected = new AsyncLocalStorage<{
   name: Renderer;
   exporter: Exporter;
   signal: AbortSignal;
 }>();
 
-export function rendererName(value: string | undefined, configured: Renderer): Renderer {
-  if (value === undefined) return configured;
-  if (value === 'remotion' || value === 'browser') return value;
+/** A `--renderer` value, checked before the project loads. */
+export function parseRendererFlag(text: string | undefined): Renderer | undefined {
+  if (text === undefined) return undefined;
+  if (text === 'remotion' || text === 'browser') return text;
   throw new SetcastError(
-    `Unknown renderer "${value}".`,
+    `Unknown renderer "${text}".`,
     'Use --renderer remotion or --renderer browser.',
   );
 }

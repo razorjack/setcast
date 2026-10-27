@@ -1,9 +1,8 @@
-import { withRenderSession, rendererName } from '../renderer.ts';
+import { parseRendererFlag, render, withRenderSession, type Renderer } from '../renderer.ts';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { toSeconds, formatTime, SetcastError, type Annotation } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
-import { render } from '../renderer.ts';
 import {
   parseAt,
   parseCommandArgs,
@@ -36,7 +35,7 @@ interface ClipOptions {
   all: boolean;
   out: string | undefined;
   theme: string | undefined;
-  renderer: string | undefined;
+  renderer: Renderer | undefined;
 }
 
 export async function run(argv: string[]) {
@@ -46,7 +45,7 @@ export async function run(argv: string[]) {
   const loaded = await load(options.dir, options.theme);
   await withRenderSession(
     () => runCommand(options, loaded),
-    rendererName(options.renderer, loaded.config.renderer),
+    options.renderer ?? loaded.config.renderer,
   );
 }
 
@@ -105,7 +104,7 @@ function parseOptions(argv: string[]): ClipOptions {
     all: values.all ?? false,
     out: values.out,
     theme: values.theme,
-    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
+    renderer: parseRendererFlag(values.renderer),
   };
 }
 

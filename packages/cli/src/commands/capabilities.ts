@@ -1,6 +1,6 @@
 import { SetcastError, type RendererCapabilities } from '@setcast/core';
 import { parseCommandArgs } from '../args.ts';
-import { rendererCapabilities, rendererName } from '../renderer.ts';
+import { rendererCapabilities, parseRendererFlag } from '../renderer.ts';
 
 export const help = `setcast capabilities [--renderer remotion|browser] [--json]
 
@@ -15,7 +15,7 @@ export async function run(argv: string[]) {
     help,
   );
   if (positionals.length) throw new SetcastError('capabilities takes no project directory.', help);
-  const report = await rendererCapabilities(rendererName(values.renderer, 'remotion'));
+  const report = await rendererCapabilities(parseRendererFlag(values.renderer) ?? 'remotion');
   process.stdout.write(values.json ? `${JSON.stringify(report, null, 2)}\n` : format(report));
 }
 

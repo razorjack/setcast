@@ -1,5 +1,5 @@
 import type { RenderOptions, StillOptions } from '@setcast/core';
-import { withRenderSession, rendererName } from '../renderer.ts';
+import { parseRendererFlag, render, still, withRenderSession, type Renderer } from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import {
@@ -13,7 +13,6 @@ import {
   type ProjectConfig,
   type ResolvedProject,
 } from '@setcast/core';
-import { render, still } from '../renderer.ts';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
 import { rangeName, stem } from '../paths.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
@@ -35,7 +34,7 @@ interface RenderCommandOptions {
   range: [number, number] | undefined;
   out: string | undefined;
   theme: string | undefined;
-  renderer: string | undefined;
+  renderer: Renderer | undefined;
   concurrency: number | undefined;
   bundle: boolean;
   resume: boolean;
@@ -46,7 +45,7 @@ export async function run(argv: string[]) {
   intro('render');
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
-  const renderer = rendererName(options.renderer, loaded.config.renderer);
+  const renderer = options.renderer ?? loaded.config.renderer;
   if (options.resume && renderer !== 'browser')
     throw new SetcastError(
       '--resume requires the browser renderer.',
@@ -131,7 +130,7 @@ function parseOptions(argv: string[]): RenderCommandOptions {
     range,
     out: values.out,
     theme: values.theme,
-    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
+    renderer: parseRendererFlag(values.renderer),
     concurrency,
     bundle: values.bundle ?? false,
     resume: values.resume ?? false,

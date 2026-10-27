@@ -1,4 +1,4 @@
-import { preview, rendererName, type PreviewOptions } from '../renderer.ts';
+import { parseRendererFlag, preview, type PreviewOptions, type Renderer } from '../renderer.ts';
 import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
@@ -16,7 +16,7 @@ interface PreviewCommandOptions {
   dir: string | undefined;
   port: number | undefined;
   theme: string | undefined;
-  renderer: 'remotion' | 'browser' | undefined;
+  renderer: Renderer | undefined;
 }
 
 export async function run(argv: string[]): Promise<void> {
@@ -25,7 +25,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('preview');
   const dependencies = new Set<string>();
   const initial = await load(options.dir, options.theme, dependencies);
-  if (rendererName(options.renderer, initial.config.renderer) === 'browser') {
+  if (options.renderer ?? initial.config.renderer === 'browser') {
     await browserPreview(initial, dependencies, options);
     return;
   }
@@ -78,6 +78,6 @@ function parseOptions(argv: string[]): PreviewCommandOptions {
     dir: positionals[0],
     port,
     theme: values.theme,
-    renderer: values.renderer === undefined ? undefined : rendererName(values.renderer, 'remotion'),
+    renderer: parseRendererFlag(values.renderer),
   };
 }
