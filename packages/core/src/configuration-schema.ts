@@ -108,7 +108,8 @@ const PROJECT_DESCRIPTIONS = {
     'Displayed clock offset only. Audio, annotations and render ranges stay clip-relative.',
   clockTotal: 'Displayed total only; does not change audio or render duration.',
   bpm: 'Explicit tempo grid in beats per minute. Speculative beat estimates do not change it.',
-  beatOffset: 'Seconds into the audio of a downbeat for the explicit beat/bar grid.',
+  beatOffset:
+    "Seconds into the audio of a bar's first beat for the explicit beat/bar grid. setcast analyze drafts the first detected beat, which may fall elsewhere in the bar.",
   branding:
     'Scene-owned logo, identity and rotating messages. Logo assets must stay inside the project.',
   announcements: 'Timed messages that temporarily replace rotating branding messages.',

@@ -263,7 +263,10 @@ export const ProjectConfigSchema = z
         .positive({ error: 'bpm must be greater than 0.' })
         .max(400, { error: 'bpm must be no more than 400.' })
         .optional(),
-      /** Seconds into the audio of a downbeat, so `--bar` lines up with the music. */
+      /**
+       * Seconds into the audio of a bar's first beat, so `--bar` lines up with the music.
+       * `setcast analyze` drafts the first beat it finds, which may fall elsewhere in the bar.
+       */
       beatOffset: TimeSchema.default(0),
       /** Logo, identity and rotating messages drawn over the scene. */
       branding: BrandingSchema.optional(),

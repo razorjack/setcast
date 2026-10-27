@@ -19,7 +19,7 @@ export interface PlayerOptions {
   themes?: ThemeCatalog;
   /** Internal export server: prebundled frame driver, with all writes disabled. */
   captureFiles?: Map<string, Buffer>;
-  /** Mutable, read-only preview revision supplied by the preview server. */
+  /** The preview server's current revision, which it updates in place; the player only reads it. */
   preview?: PreviewRevision;
 }
 export interface PlayerServer {

@@ -52,7 +52,7 @@ export type ResolvedProject = {
   tracklist: TracklistCounts | null;
   /** Tempo, or null when the project does not state one. */
   bpm: number | null;
-  /** Seconds into the audio of a downbeat. */
+  /** Seconds into the audio of a bar's first beat; `--bar` counts bars from it. */
   beatOffset: number;
   /** Logo, identity and rotating messages, or null when the project shows no branding. */
   branding: Branding | null;
