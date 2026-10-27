@@ -3,6 +3,7 @@ import { parseRendererFlag, render, still, withRenderSession, type Renderer } fr
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import {
+  exportSettings,
   toSeconds,
   chapterProblems,
   formatTime,
@@ -14,6 +15,7 @@ import {
   type ResolvedProject,
 } from '@setcast/core';
 import { parseCommandArgs, parseNumber, rangeWithinAudio } from '../args.ts';
+import type { LoadedProject } from '@setcast/core/node';
 import { rangeName, stem } from '../paths.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { bold, dim, intro, log, outro, RenderUi, formatPath, steel, warn } from '../ui.ts';
@@ -54,41 +56,27 @@ export async function run(argv: string[]) {
   await withRenderSession(() => runCommand(options, loaded), renderer);
 }
 
-async function runCommand(
-  initial: RenderCommandOptions,
-  loaded: Awaited<ReturnType<typeof load>>,
-): Promise<void> {
-  let options = initial;
-
+async function runCommand(options: RenderCommandOptions, loaded: LoadedProject): Promise<void> {
   const { dir } = loaded;
-  const duration = toSeconds(loaded.project.mix.duration);
-  if (options.range) {
-    options = { ...options, range: rangeWithinAudio(options.range, duration, 'Render range') };
-  }
-
-  const out = outputPath(options, dir, loaded.config.output.file);
+  const range = renderedRange(options.range, loaded.project);
+  const out = outputPath(options.out, range, resolve(dir, loaded.config.output.file));
   if (options.resume) log.info(`Resume checkpoints: ${out}.setcast-resume`);
   await mkdir(dirname(out), { recursive: true });
-  showProject(loaded.project, options.range);
+  showProject(loaded.project, range);
   const { config } = await withHardwareEncoding(loaded);
   const project = await withWholeSet(loaded);
 
   const started = Date.now();
   const ui = new RenderUi();
-  const job = renderOptions(options, {
+  const job: RenderOptions = {
+    ...exportSettings(config.output),
     projectDir: dir,
     out,
-    profile: config.output.profile,
-    crf: config.output.crf,
-    x264Preset: config.output.x264Preset,
-    parallelEncoding: config.output.parallelEncoding,
-    chunkSeconds: config.output.chunkSeconds,
-    hardwareAcceleration: config.output.hardwareAcceleration,
-    videoBitrate: config.output.videoBitrate,
-    jpegQuality: config.output.jpegQuality,
-    gl: config.output.gl,
+    range,
+    concurrency: options.concurrency,
+    resume: options.resume,
     onProgress: ui.onProgress,
-  });
+  };
 
   const result = await ui.run(() => render(project, job));
   const { size } = await stat(result.file);
@@ -146,11 +134,16 @@ function validateOptions(options: RenderCommandOptions): void {
   }
 }
 
-function outputPath(options: RenderCommandOptions, dir: string, configuredFile: string): string {
-  if (options.out) return resolve(options.out);
+/** The requested slice with its end clipped to the set, or the whole set when none was asked. */
+function renderedRange(range: [number, number] | undefined, project: ResolvedProject) {
+  if (!range) return undefined;
+  return rangeWithinAudio(range, toSeconds(project.mix.duration), 'Render range');
+}
 
-  const file = options.range ? rangeName(configuredFile, options.range) : configuredFile;
-  return resolve(dir, file);
+function outputPath(out: string | undefined, range: [number, number] | undefined, file: string) {
+  if (out) return resolve(out);
+  if (range) return rangeName(file, range);
+  return file;
 }
 
 function showProject(project: ResolvedProject, range: [number, number] | undefined): void {
@@ -162,15 +155,6 @@ function showProject(project: ResolvedProject, range: [number, number] | undefin
   ];
   log.info(summary.join(`  ${dim('·')}  `));
   if (range) log.info(`Range ${formatTime(range[0])} → ${formatTime(range[1])}`);
-}
-
-/** The command's flags layered over what the project's `output:` block already settled. */
-function renderOptions(command: RenderCommandOptions, base: RenderOptions): RenderOptions {
-  const options = { ...base };
-  if (command.range) options.range = command.range;
-  if (command.concurrency) options.concurrency = command.concurrency;
-  if (command.resume) options.resume = true;
-  return options;
 }
 
 /** The thumbnail and the description, so one command leaves everything the upload form asks for. */

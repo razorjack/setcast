@@ -1,7 +1,13 @@
 import { parseRendererFlag, render, withRenderSession, type Renderer } from '../renderer.ts';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
-import { toSeconds, formatTime, SetcastError, type Annotation } from '@setcast/core';
+import {
+  exportSettings,
+  toSeconds,
+  formatTime,
+  SetcastError,
+  type Annotation,
+} from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import {
   parseAt,
@@ -49,10 +55,7 @@ export async function run(argv: string[]) {
   );
 }
 
-async function runCommand(
-  options: ClipOptions,
-  loaded: Awaited<ReturnType<typeof load>>,
-): Promise<void> {
+async function runCommand(options: ClipOptions, loaded: LoadedProject): Promise<void> {
   const duration = toSeconds(loaded.project.mix.duration);
   const centers = clipCenters(loaded.project.mix.annotations, options).map((center) =>
     timeWithinAudio(center, duration, '--at'),
@@ -145,18 +148,10 @@ async function renderClip(
   const ui = new RenderUi();
   const result = await ui.run(() =>
     render(loaded.project, {
+      ...exportSettings(loaded.config.output),
       projectDir: loaded.dir,
       out,
       range,
-      profile: loaded.config.output.profile,
-      crf: loaded.config.output.crf,
-      x264Preset: loaded.config.output.x264Preset,
-      parallelEncoding: loaded.config.output.parallelEncoding,
-      chunkSeconds: loaded.config.output.chunkSeconds,
-      hardwareAcceleration: loaded.config.output.hardwareAcceleration,
-      videoBitrate: loaded.config.output.videoBitrate,
-      jpegQuality: loaded.config.output.jpegQuality,
-      gl: loaded.config.output.gl,
       onProgress: ui.onProgress,
     }),
   );

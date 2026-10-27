@@ -2,6 +2,7 @@ import type {
   ExportProfile,
   GraphicsBackend,
   HardwareAcceleration,
+  OutputConfig,
   VideoBitrate,
   X264Preset,
 } from './config.ts';
@@ -85,4 +86,21 @@ export function defaultStillTime(mix: MixDocument): number {
   );
   if (drop) return toSeconds(drop.at);
   return toSeconds(mix.duration) / 4;
+}
+
+/** What an exporter reads from a parsed `output:` block. */
+export type ExportSettings = Pick<RenderOptions, keyof EncodingOptions | 'chunkSeconds' | 'gl'>;
+
+export function exportSettings(output: OutputConfig): ExportSettings {
+  return {
+    profile: output.profile,
+    crf: output.crf,
+    x264Preset: output.x264Preset,
+    parallelEncoding: output.parallelEncoding,
+    chunkSeconds: output.chunkSeconds,
+    hardwareAcceleration: output.hardwareAcceleration,
+    videoBitrate: output.videoBitrate,
+    jpegQuality: output.jpegQuality,
+    gl: output.gl,
+  };
 }

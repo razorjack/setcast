@@ -295,7 +295,7 @@ export type {
   StillOptions,
   StillResult,
 } from './export.ts';
-export { defaultStillTime } from './export.ts';
+export { defaultStillTime, exportSettings, type ExportSettings } from './export.ts';
 
 export { LiveConfigSchema, type LiveConfig } from './live.ts';
 export {
