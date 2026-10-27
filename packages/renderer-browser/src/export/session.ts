@@ -9,7 +9,7 @@ import {
 } from '@setcast/core';
 import { bundlePlayer } from '../bundle.ts';
 import { captureBrowserArgs } from './graphics.ts';
-import { play } from '../index.ts';
+import { serveCapture } from '../server.ts';
 import { restrictResources, assertResources } from './resources.ts';
 import type {} from './scene.tsx';
 
@@ -75,11 +75,7 @@ interface Capture extends AsyncDisposable {
 async function openCapture(project: ResolvedProject, options: CaptureOptions): Promise<Capture> {
   options.signal?.throwIfAborted();
   const files = await captureBundle(options);
-  const server = await play(project, {
-    projectDir: options.projectDir,
-    port: 0,
-    captureFiles: files,
-  });
+  const server = await serveCapture(project, { projectDir: options.projectDir, files });
   let page: Page | undefined;
   const abort = () => {
     void page?.close().catch(() => {});

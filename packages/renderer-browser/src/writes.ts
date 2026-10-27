@@ -10,14 +10,31 @@ import {
   type SceneProject,
 } from '@setcast/core';
 import { saveScene } from '@setcast/core/node';
-import type { projectCatalog } from './catalog.ts';
+import type { ProjectCatalog } from './catalog.ts';
 import { savedScene } from './scenes.ts';
 import { startJournal, appendJournal } from './journal.ts';
 
+export interface WriteSite {
+  root: string;
+  catalog: ProjectCatalog;
+}
+
+type WriteRoute = (site: WriteSite, request: IncomingMessage, url: URL) => Promise<object>;
+
+/** The player's write requests by path; each returns what it wrote as JSON. */
+export const WRITE_ROUTES: Record<string, WriteRoute> = {
+  '/art': (site, request, url) =>
+    uploadArtwork(site.root, request, url.searchParams.get('name') ?? ''),
+  '/journal/start': async (site, request) => startJournal(site.root, await readJsonBody(request)),
+  '/journal/append': async (site, request) => appendJournal(site.root, await readJsonBody(request)),
+  '/save': (site, request) => saveSelectedScene(site, request, 'scene'),
+  '/journal/scene': (site, request) => saveSelectedScene(site, request, 'journal'),
+};
+
 /** Custom header and exact origin prevent unrelated sites from writing through localhost. */
-export async function saveRequest(
-  root: string,
-  catalog: ReturnType<typeof projectCatalog>,
+export async function respondToWrite(
+  site: WriteSite,
+  route: WriteRoute,
   request: IncomingMessage,
   response: ServerResponse,
 ) {
@@ -27,27 +44,8 @@ export async function saveRequest(
     return;
   }
   try {
-    const url = new URL(request.url!, origin);
-    let saved: object;
-    if (url.pathname === '/art') {
-      saved = await uploadArtwork(root, request, url.searchParams.get('name') ?? '');
-    } else if (url.pathname === '/journal/start') {
-      saved = await startJournal(root, await readSettings(request));
-    } else if (url.pathname === '/journal/append') {
-      saved = await appendJournal(root, await readSettings(request));
-    } else {
-      const selected = SceneSelectionSchema.parse(await readSettings(request));
-      const project: SceneProject = selected.preset
-        ? await savedScene(root, selected.preset)
-        : JSON.parse((await catalog.load(selected.theme)).toString());
-      saved = await saveScene(
-        root,
-        project,
-        selected,
-        url.pathname === '/journal/scene' ? 'journal' : 'scene',
-      );
-    }
-    response.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(saved));
+    const written = await route(site, request, new URL(request.url!, origin));
+    response.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(written));
   } catch (error) {
     response
       .writeHead(400, { 'Content-Type': 'application/json' })
@@ -55,16 +53,34 @@ export async function saveRequest(
   }
 }
 
-async function readSettings(request: IncomingMessage) {
+async function saveSelectedScene(
+  { root, catalog }: WriteSite,
+  request: IncomingMessage,
+  kind: 'scene' | 'journal',
+) {
+  const selected = SceneSelectionSchema.parse(await readJsonBody(request));
+  const project: SceneProject = selected.preset
+    ? await savedScene(root, selected.preset)
+    : JSON.parse((await catalog.load(selected.theme)).toString());
+  return saveScene(root, project, selected, kind);
+}
+
+const JSON_BODY_LIMIT = 32 * 1024;
+
+/** The request's JSON object body, read up to `JSON_BODY_LIMIT` bytes. */
+async function readJsonBody(request: IncomingMessage): Promise<Record<string, unknown>> {
   const chunks: Buffer[] = [];
   let size = 0;
   for await (const chunk of request) {
     size += chunk.length;
-    if (size > 32_768)
-      throw new Error('Scene settings exceed 32 KiB. Shorten the title and retry.');
+    if (size > JSON_BODY_LIMIT)
+      throw new Error('The request exceeds 32 KiB. Shorten long text such as the title and retry.');
     chunks.push(chunk);
   }
-  return JSON.parse(Buffer.concat(chunks).toString());
+  const body: unknown = JSON.parse(Buffer.concat(chunks).toString());
+  if (body === null || typeof body !== 'object' || Array.isArray(body))
+    throw new Error('The request body must be a JSON object.');
+  return body as Record<string, unknown>;
 }
 
 async function uploadArtwork(root: string, request: IncomingMessage, name: string) {

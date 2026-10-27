@@ -6,6 +6,7 @@ import { chromium, type Browser, type Page } from 'playwright';
 import { resolveVisualizerConfigs, type ResolvedProject } from '@setcast/core';
 import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
 import { play } from '../src/index.ts';
+import { serveCapture } from '../src/server.ts';
 import { bundlePlayer } from '../src/bundle.ts';
 import { prepareFrame, withCapture, withRenderSession } from '../src/export/session.ts';
 import { launchLiveBrowser, pageErrors } from './live-harness.ts';
@@ -471,8 +472,7 @@ async function softwareBenchmark(project: ResolvedProject) {
 
 async function withSoftwarePage<T>(project: ResolvedProject, task: (page: Page) => Promise<T>) {
   exportBundle ??= bundlePlayer('export.tsx');
-  const captureFiles = await exportBundle;
-  const server = await play(project, { projectDir: directory, port: 0, captureFiles });
+  const server = await serveCapture(project, { projectDir: directory, files: await exportBundle });
   try {
     const browser = await chromium.launch({
       args: ['--disable-frame-rate-limit', '--use-gl=angle', '--use-angle=swiftshader'],

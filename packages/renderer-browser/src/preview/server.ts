@@ -1,6 +1,6 @@
 import type { ResolvedProject } from '@setcast/core';
 import { bundlePlayer } from '../bundle.ts';
-import { play } from '../index.ts';
+import { serveCapture } from '../server.ts';
 
 export interface PreviewRevision {
   revision: number;
@@ -24,7 +24,7 @@ export async function preview(
     ),
   );
   const state: PreviewRevision = { revision: 0, project, error: null };
-  const server = await play(project, { ...options, captureFiles: controls, preview: state });
+  const server = await serveCapture(project, { ...options, files: controls, preview: state });
   return {
     ...server,
     update(next: ResolvedProject) {

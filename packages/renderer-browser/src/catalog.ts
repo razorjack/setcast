@@ -20,7 +20,15 @@ export interface ThemeListing extends ThemeChoice {
  * Serialized projects by theme, each resolved on its first request. The project's own theme is
  * listed first, so a `.css` theme the catalog does not know stays selectable.
  */
-export function projectCatalog(project: SceneProject, catalog?: ThemeCatalog) {
+export interface ProjectCatalog {
+  listings: ThemeListing[];
+  /** The serialized project with `theme`; throws a `SetcastError` for an unlisted theme. */
+  load: (theme: string) => Promise<Buffer>;
+  /** The theme the project was loaded with. */
+  theme: string;
+}
+
+export function projectCatalog(project: SceneProject, catalog?: ThemeCatalog): ProjectCatalog {
   const others = (catalog?.choices ?? []).filter((choice) => choice.name !== project.theme);
   const own = catalog?.choices.find((choice) => choice.name === project.theme);
   const listings: ThemeListing[] = [

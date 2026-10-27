@@ -7,7 +7,7 @@ import { expect, test, vi } from 'vite-plus/test';
 vi.mock('./bundle.ts', () => ({
   bundlePlayer: async () => new Map([['/player.js', Buffer.from('fixture')]]),
 }));
-const { play } = await import('./index.ts');
+const { play, serveCapture } = await import('./server.ts');
 const project: ResolvedProject = {
   title: 'Server fixture',
   audio: 'set.mp3',
@@ -156,7 +156,7 @@ test('scene writes require an exact origin and header, validate paths, and leave
 });
 
 test('export asset servers reject all player writes', async () => {
-  const server = await play(project, { projectDir: '.', port: 0, captureFiles: new Map() });
+  const server = await serveCapture(project, { projectDir: '.', files: new Map() });
   try {
     const response = await fetch(server.url + '/journal/start', {
       method: 'POST',
