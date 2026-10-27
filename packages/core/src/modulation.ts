@@ -1,9 +1,14 @@
 import { z } from 'zod';
-import { FEATURE_SOURCES, type AudioAnalyzer, type FeatureSource } from './audio.ts';
-import { ANNOTATION_KINDS, SECTION_KINDS } from './mix-schema.ts';
+import { FEATURE_SOURCES, type AudioAnalyzer, type FeatureSource } from './audio/audio.ts';
+import { ANNOTATION_KINDS, SECTION_KINDS } from './mix/mix-schema.ts';
 import { clamp } from './motion.ts';
 import { beatPhase } from './stage.ts';
-import { sinceAnnotation, untilAnnotation, type MixState, type CurrentPlay } from './timeline.ts';
+import {
+  sinceAnnotation,
+  untilAnnotation,
+  type MixState,
+  type CurrentPlay,
+} from './mix/timeline.ts';
 
 /** Shapes a 0..1 source into a 0..1 amount before `range` maps it onto the target. */
 export const CURVES = {

@@ -1,9 +1,9 @@
 import { createContext, useContext, type ReactNode } from 'react';
-import { historyTimes, SILENCE, type AudioAnalyzer, type AudioFeatures } from '../audio.ts';
+import { historyTimes, SILENCE, type AudioAnalyzer, type AudioFeatures } from '../audio/audio.ts';
 import type { Announcement } from '../branding.ts';
-import type { PerformanceState } from '../performance.ts';
+import type { PerformanceState } from '../live/performance.ts';
 import type { SceneProject } from '../project.ts';
-import type { MixState } from '../timeline.ts';
+import type { MixState } from '../mix/timeline.ts';
 
 export interface CompositionState {
   width: number;

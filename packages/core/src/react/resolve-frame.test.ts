@@ -1,10 +1,10 @@
 import { expect, test } from 'vite-plus/test';
-import { SILENCE, type AudioAnalyzer } from '../audio.ts';
-import { normalizeMix } from '../mix.ts';
+import { SILENCE, type AudioAnalyzer } from '../audio/audio.ts';
+import { normalizeMix } from '../mix/mix.ts';
 import { ModPatchSchema } from '../modulation.ts';
 import type { ResolvedProject, ResolvedLiveProject } from '../project.ts';
-import { Timeline } from '../timeline.ts';
-import { framesWithinMix } from '../frame-time.ts';
+import { Timeline } from '../mix/timeline.ts';
+import { framesWithinMix } from '../mix/frame-time.ts';
 import { BrandingSchema } from '../branding.ts';
 import { resolveFrame, resolveLiveFrame } from './resolve-frame.ts';
 

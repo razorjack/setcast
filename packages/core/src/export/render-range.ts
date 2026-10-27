@@ -1,5 +1,5 @@
-import { OutputSchema } from './config.ts';
-import { SetcastError } from './errors.ts';
+import { OutputSchema } from '../config.ts';
+import { SetcastError } from '../errors.ts';
 
 /** Inclusive absolute frame indices, after range validation. */
 export type FrameRange = [number, number];

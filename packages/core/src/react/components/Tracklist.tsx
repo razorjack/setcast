@@ -1,6 +1,6 @@
 import { tracklistRowVars, tracklistVars } from '../../stage.ts';
 import { formatTime, toSeconds } from '../../time.ts';
-import { tracklistView, type TracklistRow, type TracklistCounts } from '../../tracklist.ts';
+import { tracklistView, type TracklistRow, type TracklistCounts } from '../../mix/tracklist.ts';
 import { useFrame } from '../frame.tsx';
 import { labelLine } from './credit.ts';
 

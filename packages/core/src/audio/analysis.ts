@@ -1,5 +1,5 @@
 import type { Pcm } from './audio.ts';
-import { clamp, lerp } from './motion.ts';
+import { clamp, lerp } from '../motion.ts';
 export type DraftAnnotation =
   | { kind: 'drop'; at: number; intensity: number }
   | { kind: 'breakdown'; at: number };

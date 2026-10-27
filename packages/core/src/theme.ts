@@ -1,5 +1,5 @@
 import type { ModRouteInput } from './modulation.ts';
-import type { TracklistCountsInput } from './tracklist.ts';
+import type { TracklistCountsInput } from './mix/tracklist.ts';
 import type { VisualizerInput } from './visualizers.ts';
 
 /** A theme is CSS plus a default modulation patch. Built-in and npm themes implement this. */

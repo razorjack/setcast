@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import { BIN_COUNT, scaleLevel } from '../../audio.ts';
+import { BIN_COUNT, scaleLevel } from '../../audio/audio.ts';
 import { currentBackground } from '../../background.ts';
 import { SpectrogramConfigSchema, type SpectrogramConfig } from '../../visualizers.ts';
 import { useAudioHistory, useFrame, type AudioMoment } from '../frame.tsx';

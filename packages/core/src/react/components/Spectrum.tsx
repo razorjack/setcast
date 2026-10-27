@@ -1,5 +1,5 @@
 import { useId, useRef } from 'react';
-import { scaleLevel, sampleBins, segmentedLevel, type AudioFeatures } from '../../audio.ts';
+import { scaleLevel, sampleBins, segmentedLevel, type AudioFeatures } from '../../audio/audio.ts';
 import { SpectrumConfigSchema, type SpectrumConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { ArtReveal, type Outline } from './ArtReveal.tsx';

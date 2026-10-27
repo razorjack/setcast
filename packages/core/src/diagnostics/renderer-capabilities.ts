@@ -1,4 +1,4 @@
-import type { GraphicsBackend } from './config.ts';
+import type { GraphicsBackend } from '../config.ts';
 
 export type RendererName = 'remotion' | 'browser';
 export type RendererFeature = 'still' | 'webp' | 'video' | 'resume' | 'gpu' | 'hardwareEncoding';

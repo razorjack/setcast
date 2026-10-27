@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { AnnouncementsSchema, BrandingSchema } from './branding.ts';
-import { PerformanceSchema, AutomationSchema } from './performance.ts';
+import { PerformanceSchema, AutomationSchema } from './live/performance.ts';
 import { TimeSchema } from './time-schema.ts';
-import { MixInputShape } from './mix-schema.ts';
+import { MixInputShape } from './mix/mix-schema.ts';
 import { ModRouteSchema } from './modulation.ts';
-import { TracklistSchema } from './tracklist.ts';
+import { TracklistSchema } from './mix/tracklist.ts';
 
 /** A path relative to the project directory; `loadProject` checks that it stays inside it. */
 const relativePath = (what: string, required = `${what} must be a file path.`) =>

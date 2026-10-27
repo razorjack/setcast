@@ -4,7 +4,7 @@ import {
   WAVE_SECONDS,
   type AudioFeatures,
   type Wave,
-} from '../../audio.ts';
+} from '../../audio/audio.ts';
 import { audioHistory, useFrame } from '../frame.tsx';
 
 const MOMENTS_PER_SECOND = 30;

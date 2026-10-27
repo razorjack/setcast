@@ -1,5 +1,5 @@
-import type { RendererFeature } from '../renderer-capabilities.ts';
-import type { RendererCheck } from '../renderer-diagnostics.ts';
+import type { RendererFeature } from '../diagnostics/renderer-capabilities.ts';
+import type { RendererCheck } from '../diagnostics/renderer-diagnostics.ts';
 import { RendererDiagnostics, type DiagnosticEvidence } from './renderer-diagnostics.ts';
 
 type Details = NonNullable<RendererCheck['details']>;

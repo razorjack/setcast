@@ -3,8 +3,8 @@ import {
   performanceAt,
   performanceAnalyzer,
   type PerformanceState,
-} from '../performance.ts';
-import type { AudioAnalyzer } from '../audio.ts';
+} from '../live/performance.ts';
+import type { AudioAnalyzer } from '../audio/audio.ts';
 import type { Announcement } from '../branding.ts';
 import { evaluateModulation } from '../modulation.ts';
 import {
@@ -13,7 +13,7 @@ import {
   type ResolvedLiveProject,
   type SceneProject,
 } from '../project.ts';
-import { emptyMixState, type Timeline, type MixState } from '../timeline.ts';
+import { emptyMixState, type Timeline, type MixState } from '../mix/timeline.ts';
 import type { RenderFrame } from './frame.tsx';
 import { microseconds, toSeconds } from '../time.ts';
 

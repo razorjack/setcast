@@ -1,6 +1,6 @@
-import { isVideoFile } from './file-types.ts';
+import { isVideoFile } from './export/file-types.ts';
 import { clamp } from './motion.ts';
-import type { MixState } from './timeline.ts';
+import type { MixState } from './mix/timeline.ts';
 
 /**
  * Mean luma of the demo background, the dark backdrop every built-in theme is tuned against.

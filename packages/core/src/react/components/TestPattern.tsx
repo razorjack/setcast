@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { testPatternPhase, type TestPatternConfig } from '../../test-pattern.ts';
+import { testPatternPhase, type TestPatternConfig } from '../../live/test-pattern.ts';
 
 export interface TestPatternProps {
   config: TestPatternConfig;

@@ -7,11 +7,11 @@ import { probeAudio } from './media.ts';
 import { sceneDirectory } from './copy-scenes.ts';
 import { validationFailure } from './validation-report.ts';
 import { SetcastError } from '../errors.ts';
-import type { RendererName, RendererCapabilities } from '../renderer-capabilities.ts';
+import type { RendererName, RendererCapabilities } from '../diagnostics/renderer-capabilities.ts';
 import {
   rendererCompatibility,
   type RendererCompatibilityIssue,
-} from '../renderer-compatibility.ts';
+} from '../diagnostics/renderer-compatibility.ts';
 import type { ProjectConfig } from '../config.ts';
 import { toSeconds } from '../time.ts';
 

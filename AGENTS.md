@@ -36,6 +36,13 @@ Entry points of `@setcast/core`:
 - `@setcast/core/node` – Node only: `loadProject(dir)`, theme/CSS resolution, audio decoding,
   error formatting.
 
+Inside `packages/core/src`, modules are grouped by domain: `mix/` (schemas, normalization,
+timeline, tracklist, chapters), `audio/` (PCM, FFT, features, analysis, beats), `live/` (live
+config, journal, sequence, MIDI, performance, projection, test pattern), `export/`,
+`diagnostics/` (renderer capabilities, compatibility, diagnostics, configuration schemas),
+`importers/`, `react/` and `node/`. Project, theme, modulation, motion and visual helpers stay
+at the top level. Other packages import only the entry points.
+
 Packages point `exports` at `src/*.ts`; Node 26 runs TypeScript sources directly (type stripping),
 so there is no build step in development. `vp pack` builds `dist/` for publishing
 (`publishConfig.exports`). Do not reintroduce a dev build step.
@@ -287,7 +294,7 @@ current one, and a frame rendered in between would read clamped audio.
 
 ### AudioFeatures (the seam)
 
-`packages/core/src/audio.ts`. `AudioFeatures = { bass, mids, highs, rms, onset, bins[64], wave }`,
+`packages/core/src/audio/audio.ts`. `AudioFeatures = { bass, mids, highs, rms, onset, bins[64], wave }`,
 all 0..1 but `wave`; `bins` are log-spaced and tilt-flattened (raw FFT is bass-heavy). `wave` is
 `{ left, right }`, `WAVE_POINTS` (512) signed samples per channel covering the `WAVE_SECONDS`
 (1/30 s) that end at the frame, each the mean of the audio it covers (`waveSlice`), for scopes.
@@ -303,7 +310,7 @@ linked**; keeps MIT Setcast cleanly separate from (L)GPL FFmpeg builds.
 
 ### Offline analysis
 
-`packages/core/src/analysis.ts` (isomorphic, pure) reads decoded mono audio into an `Envelope`:
+`packages/core/src/audio/analysis.ts` (isomorphic, pure) reads decoded mono audio into an `Envelope`:
 one bass and one high value per ~11.6 ms hop, scaled so the loudest stretch of the set is 1. Two
 cascaded one-pole filters at 150 Hz do the band split, so there is no FFT and no dependency.
 `detectSections()` reads the bass envelope as loud and quiet stretches with hysteresis and returns

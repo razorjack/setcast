@@ -6,7 +6,7 @@ import {
   type Annotation,
   type SectionKind,
 } from './mix-schema.ts';
-import { toSeconds, microseconds } from './time.ts';
+import { toSeconds, microseconds } from '../time.ts';
 import { MIX_TARGET, sectionTargets, validateMix } from './mix-validation.ts';
 
 export type ContributionRun = {

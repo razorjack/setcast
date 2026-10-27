@@ -1,4 +1,4 @@
-import { scaleLevel } from '../../audio.ts';
+import { scaleLevel } from '../../audio/audio.ts';
 import { ConstellationConfigSchema, type ConstellationConfig } from '../../visualizers.ts';
 import { constellationFragment } from './constellation-shader.ts';
 import { constellationMotion } from './gpu-motion.ts';

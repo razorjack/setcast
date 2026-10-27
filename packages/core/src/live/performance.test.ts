@@ -6,7 +6,7 @@ import {
   performanceAnalyzer,
   performanceAt,
 } from './performance.ts';
-import { SILENCE } from './audio.ts';
+import { SILENCE } from '../audio/audio.ts';
 import { replayEvents, type SessionHeader } from './journal.ts';
 
 const from = DEFAULT_PERFORMANCE;

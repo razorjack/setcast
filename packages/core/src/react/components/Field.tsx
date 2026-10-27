@@ -1,4 +1,4 @@
-import { scaleLevel } from '../../audio.ts';
+import { scaleLevel } from '../../audio/audio.ts';
 import { FieldConfigSchema, type FieldConfig } from '../../visualizers.ts';
 import { fieldPhases } from './gpu-motion.ts';
 import { fieldFragment } from './field-shader.ts';

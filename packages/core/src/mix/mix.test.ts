@@ -3,7 +3,7 @@ import { parse } from 'yaml';
 import { describe, expect, test } from 'vite-plus/test';
 import { normalizeMix, readMixDocument, mixWarnings } from './mix.ts';
 import { Timeline, lastAnnotations } from './timeline.ts';
-import { ConfigError } from './errors.ts';
+import { ConfigError } from '../errors.ts';
 
 const timeline = (input: unknown, duration = 300) => new Timeline(normalizeMix(input, duration));
 const names = (mix: Timeline, time: number) =>
@@ -215,7 +215,7 @@ describe('finite mix normalization', () => {
   test('known inherited demo retains 77 and 44 second overlaps', () => {
     const fixture = parse(
       readFileSync(
-        new URL('../../../examples/demo/fixtures/knowledge-excerpt.yaml', import.meta.url),
+        new URL('../../../../examples/demo/fixtures/knowledge-excerpt.yaml', import.meta.url),
         'utf8',
       ),
     );

@@ -5,7 +5,7 @@ import {
   resolveFrameRange,
   splitFrameRange,
   resolveChunkSeconds,
-} from './index.ts';
+} from '../index.ts';
 
 test('every selected frame queries inside the finite mix after microsecond rounding', () => {
   for (const fps of [24, 25, 30, 60]) {

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { normalizeMix } from './mix.ts';
+import { normalizeMix } from './mix/mix.ts';
 import { beatVars, stageData, stageVars, travelVars } from './stage.ts';
-import { Timeline } from './timeline.ts';
+import { Timeline } from './mix/timeline.ts';
 
 const timeline = new Timeline(
   normalizeMix(

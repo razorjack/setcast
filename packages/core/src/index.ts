@@ -23,7 +23,7 @@ export {
   type Pcm,
   type Spectrum,
   type Wave,
-} from './audio.ts';
+} from './audio/audio.ts';
 export {
   BPM_RANGE,
   HOP_SECONDS,
@@ -42,7 +42,7 @@ export {
   type SectionOptions,
   type SetEnvelope,
   type SetTravel,
-} from './analysis.ts';
+} from './audio/analysis.ts';
 export {
   OutputSchema,
   PANEL_DEFAULTS,
@@ -68,10 +68,10 @@ export {
   type BeatRange,
   type BeatTrackingConfig,
   type BeatOnset,
-} from './beat.ts';
-export { estimateBeat, type BeatEstimate } from './beat-estimate.ts';
-export { BeatTracker, type BeatTrackingState } from './beat-tracker.ts';
-export { normalizeMix, compileMix, readMixDocument, mixWarnings } from './mix.ts';
+} from './audio/beat.ts';
+export { estimateBeat, type BeatEstimate } from './audio/beat-estimate.ts';
+export { BeatTracker, type BeatTrackingState } from './audio/beat-tracker.ts';
+export { normalizeMix, compileMix, readMixDocument, mixWarnings } from './mix/mix.ts';
 export {
   MixInputSchema,
   MixTimeSchema,
@@ -89,7 +89,7 @@ export {
   type Scope,
   type Origin,
   type SectionKind,
-} from './mix-schema.ts';
+} from './mix/mix-schema.ts';
 export { importers } from './importers/index.ts';
 export { cueImporter } from './importers/cue.ts';
 export { plainImporter, type Importer, type ImportedPlay } from './importers/plain.ts';
@@ -154,7 +154,7 @@ export {
   type TracklistView,
   type TracklistCounts,
   type TracklistCountsInput,
-} from './tracklist.ts';
+} from './mix/tracklist.ts';
 export {
   AnnouncementSchema,
   AnnouncementsSchema,
@@ -213,7 +213,7 @@ export {
   requireStillFormat,
   requireVideoOutput,
   type StillFormat,
-} from './file-types.ts';
+} from './export/file-types.ts';
 export {
   formatChapterTime,
   formatDuration,
@@ -235,7 +235,7 @@ export {
   type CurrentPlay,
   type ContributionRun,
   type Section,
-} from './timeline.ts';
+} from './mix/timeline.ts';
 export {
   MIN_CHAPTERS,
   MIN_CHAPTER_SECONDS,
@@ -244,7 +244,7 @@ export {
   chapters,
   youtubeDescription,
   type Chapter,
-} from './chapters.ts';
+} from './mix/chapters.ts';
 export {
   BloomConfigSchema,
   ConstellationConfigSchema,
@@ -279,16 +279,16 @@ export {
   type VisualizerSpec,
 } from './visualizers.ts';
 
-export { pcmAnalyzer, coversPcmLookback, type PcmWindow } from './pcm.ts';
-export { FFT_SIZE } from './spectrum.ts';
-export { framesWithinMix } from './frame-time.ts';
+export { pcmAnalyzer, coversPcmLookback, type PcmWindow } from './audio/pcm.ts';
+export { FFT_SIZE } from './audio/spectrum.ts';
+export { framesWithinMix } from './mix/frame-time.ts';
 
 export {
   resolveFrameRange,
   splitFrameRange,
   resolveChunkSeconds,
   type FrameRange,
-} from './render-range.ts';
+} from './export/render-range.ts';
 
 export type {
   EncodingOptions,
@@ -300,10 +300,10 @@ export type {
   RenderResult,
   StillOptions,
   StillResult,
-} from './export.ts';
-export { defaultStillTime, exportSettings, type ExportSettings } from './export.ts';
+} from './export/export.ts';
+export { defaultStillTime, exportSettings, type ExportSettings } from './export/export.ts';
 
-export { LiveConfigSchema, type LiveConfig } from './live-config.ts';
+export { LiveConfigSchema, type LiveConfig } from './live/live-config.ts';
 export {
   TEST_PATTERNS,
   TestPatternSchema,
@@ -311,8 +311,8 @@ export {
   testPatternPhase,
   type TestPatternConfig,
   type TestPatternPreset,
-} from './test-pattern.ts';
-export { SceneSelectionSchema, type SceneSelection } from './scene-selection.ts';
+} from './live/test-pattern.ts';
+export { SceneSelectionSchema, type SceneSelection } from './live/scene-selection.ts';
 export {
   SessionHeaderSchema,
   SessionEventSchema,
@@ -320,7 +320,7 @@ export {
   replayEvents,
   type SessionHeader,
   type SessionEvent,
-} from './journal.ts';
+} from './live/journal.ts';
 
 export {
   PerformanceSchema,
@@ -334,9 +334,9 @@ export {
   nextBar,
   type PerformanceState,
   type PerformanceEvent,
-} from './performance.ts';
+} from './live/performance.ts';
 
-export { SequenceSchema, type SceneSequence } from './sequence.ts';
+export { SequenceSchema, type SceneSequence } from './live/sequence.ts';
 
 export {
   ProjectionSchema,
@@ -344,20 +344,20 @@ export {
   type Projection,
   type ProjectionPoint,
   type Venue,
-} from './projection.ts';
+} from './live/projection.ts';
 
 export {
   EnergySelectionSchema,
   EnergyBandSchema,
   type EnergySelection,
   type EnergyBand,
-} from './sequence.ts';
+} from './live/sequence.ts';
 
 export {
   configurationSchema,
   CONFIGURATION_SCHEMA_KINDS,
   type ConfigurationSchemaKind,
-} from './configuration-schema.ts';
+} from './diagnostics/configuration-schema.ts';
 
 export {
   MIDI_ACTIONS,
@@ -374,15 +374,15 @@ export {
   type MidiMapping,
   type MidiConfig,
   type MidiProfile,
-} from './midi.ts';
+} from './live/midi.ts';
 
-export { MidiControlBuffer, type MidiControl } from './midi-buffer.ts';
+export { MidiControlBuffer, type MidiControl } from './live/midi-buffer.ts';
 
 export type {
   RendererName,
   RendererFeature,
   RendererCapabilities,
-} from './renderer-capabilities.ts';
+} from './diagnostics/renderer-capabilities.ts';
 
 export {
   RENDERER_FEATURES,
@@ -393,10 +393,10 @@ export {
   type RendererCheck,
   type RendererReadiness,
   type RendererDiagnosticReport,
-} from './renderer-diagnostics.ts';
+} from './diagnostics/renderer-diagnostics.ts';
 
 export {
   rendererCompatibility,
   type RendererCompatibilityOptions,
   type RendererCompatibilityIssue,
-} from './renderer-compatibility.ts';
+} from './diagnostics/renderer-compatibility.ts';

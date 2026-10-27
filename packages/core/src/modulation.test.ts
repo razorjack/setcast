@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { SILENCE, type AudioAnalyzer } from './audio.ts';
-import { normalizeMix } from './mix.ts';
+import { SILENCE, type AudioAnalyzer } from './audio/audio.ts';
+import { normalizeMix } from './mix/mix.ts';
 import { evaluateModulation, ModRouteSchema, modulationVars } from './modulation.ts';
-import { Timeline } from './timeline.ts';
+import { Timeline } from './mix/timeline.ts';
 
 const constant = (bass: number): AudioAnalyzer => ({ featuresAt: () => ({ ...SILENCE, bass }) });
 const route = (over: object) =>

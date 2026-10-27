@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vite-plus/test';
-import { computeEnvelope } from '../analysis.ts';
+import { computeEnvelope } from '../audio/analysis.ts';
 import { readWav, readEnvelope, decodeMono } from './audio.ts';
 
 type Variant = { format: number; bits: number; extensible?: boolean };

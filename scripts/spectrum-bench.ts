@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { cpus, platform, arch } from 'node:os';
-import { FFT_SIZE, spectrum } from '../packages/core/src/spectrum.ts';
+import { FFT_SIZE, spectrum } from '../packages/core/src/audio/spectrum.ts';
 
 const { values } = parseArgs({ options: { reference: { type: 'string' } } });
 const current = { FFT_SIZE, spectrum };

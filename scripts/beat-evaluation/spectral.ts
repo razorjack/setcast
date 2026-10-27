@@ -1,4 +1,4 @@
-import { FFT_SIZE, spectrum } from '../../packages/core/src/spectrum.ts';
+import { FFT_SIZE, spectrum } from '../../packages/core/src/audio/spectrum.ts';
 import { EVALUATION_RATE } from './constants.ts';
 
 const WINDOW = 512;

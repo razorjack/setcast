@@ -1,4 +1,4 @@
-import type { Wave } from '../../audio.ts';
+import type { Wave } from '../../audio/audio.ts';
 import { VectorscopeConfigSchema, type VectorscopeConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { useTrail } from './history.ts';

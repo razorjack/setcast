@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { beforeEach, afterEach, expect, test, vi } from 'vite-plus/test';
 import type { Theme } from '../theme.ts';
 import { validateProject } from './validate.ts';
-import { fixture } from '../renderer-diagnostics.fixture.ts';
+import { fixture } from '../diagnostics/renderer-diagnostics.fixture.ts';
 
 let root: string;
 let themes: Record<string, Theme>;

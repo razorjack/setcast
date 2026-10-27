@@ -1,4 +1,4 @@
-import { travelAt, type SetTravel } from './analysis.ts';
+import { travelAt, type SetTravel } from './audio/analysis.ts';
 import { backgroundKind } from './background.ts';
 import { clamp } from './motion.ts';
 import type { ResolvedProject } from './project.ts';
@@ -8,8 +8,8 @@ import {
   untilAnnotation,
   type MixState,
   type CurrentPlay,
-} from './timeline.ts';
-import type { TracklistRow, TracklistView } from './tracklist.ts';
+} from './mix/timeline.ts';
+import type { TracklistRow, TracklistView } from './mix/tracklist.ts';
 import { toSeconds } from './time.ts';
 
 export const SECONDS_CAP = 60;

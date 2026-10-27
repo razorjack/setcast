@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { expect, test, vi } from 'vite-plus/test';
-import { fixture } from '../renderer-diagnostics.fixture.ts';
+import { fixture } from '../diagnostics/renderer-diagnostics.fixture.ts';
 import { RendererDiagnostics, diagnosticCommand } from './renderer-diagnostics.ts';
 import { diagnoseCodecs } from './diagnostic-codecs.ts';
 import { diagnoseBrowserRuntime, type DiagnosticBrowser } from './diagnostic-browser-runtime.ts';

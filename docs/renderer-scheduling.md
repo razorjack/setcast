@@ -119,7 +119,7 @@ include every repetition, not only the median.
 Reproduce from the repository root:
 
 ```sh
-git show 5aedace:packages/core/src/spectrum.ts > /tmp/setcast-reference-spectrum.ts
+git show 5aedace:packages/core/src/audio/spectrum.ts > /tmp/setcast-reference-spectrum.ts
 node scripts/spectrum-bench.ts --reference /tmp/setcast-reference-spectrum.ts
 ```
 

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { AudioAnalyzer, AudioFeatures } from './audio.ts';
+import type { AudioAnalyzer, AudioFeatures } from '../audio/audio.ts';
 
 const level = (name: string, maximum: number) => {
   const error = `performance.${name} must be a number from 0 to ${maximum}.`;

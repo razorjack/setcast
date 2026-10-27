@@ -1,5 +1,10 @@
 import type { CSSProperties } from 'react';
-import { scaleLevel, segmentedLevel, type AudioFeatures, type FeatureSource } from '../../audio.ts';
+import {
+  scaleLevel,
+  segmentedLevel,
+  type AudioFeatures,
+  type FeatureSource,
+} from '../../audio/audio.ts';
 import { MetersConfigSchema, type MetersConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { usePeaks } from './history.ts';

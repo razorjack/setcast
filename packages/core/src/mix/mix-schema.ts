@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { microseconds, parseTime } from './time.ts';
+import { microseconds, parseTime } from '../time.ts';
 
 function object<S extends z.ZodRawShape>(shape: S) {
   return z.strictObject(shape, {

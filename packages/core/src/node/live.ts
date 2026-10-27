@@ -1,7 +1,7 @@
 import { readFile, stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
-import { LiveConfigSchema, type LiveConfig } from '../live-config.ts';
+import { LiveConfigSchema, type LiveConfig } from '../live/live-config.ts';
 import type { Theme } from '../theme.ts';
 import type { ResolvedLiveProject } from '../project.ts';
 import { visualizers } from '../visualizers.ts';

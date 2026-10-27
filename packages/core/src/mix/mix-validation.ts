@@ -1,4 +1,4 @@
-import { ConfigError } from './errors.ts';
+import { ConfigError } from '../errors.ts';
 import { type Annotation, type MixDocument } from './mix-schema.ts';
 
 function fail(path: string, value: unknown, rule: string): never {

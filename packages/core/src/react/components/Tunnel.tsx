@@ -1,4 +1,4 @@
-import { scaleLevel } from '../../audio.ts';
+import { scaleLevel } from '../../audio/audio.ts';
 import { TunnelConfigSchema, type TunnelConfig } from '../../visualizers.ts';
 import { tunnelMotion } from './gpu-motion.ts';
 import { ShaderCanvas, type Shader } from './ShaderCanvas.tsx';

@@ -1,4 +1,4 @@
-import { lerp } from './motion.ts';
+import { lerp } from '../motion.ts';
 
 /** Per-frame audio descriptors, normalized to 0..1 except the signed `wave`. */
 export interface AudioFeatures {

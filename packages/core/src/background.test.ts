@@ -9,8 +9,8 @@ import {
   resolveFit,
   type MeasuredArt,
 } from './background.ts';
-import { normalizeMix } from './mix.ts';
-import { Timeline } from './timeline.ts';
+import { normalizeMix } from './mix/mix.ts';
+import { Timeline } from './mix/timeline.ts';
 
 /** One row of pixels. */
 const measure = (...pixels: [number, number, number][]) =>

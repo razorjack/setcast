@@ -8,8 +8,11 @@ import {
   type RendererCheck,
   type RendererDiagnosticOptions,
   type RendererDiagnosticReport,
-} from '../renderer-diagnostics.ts';
-import type { RendererCapabilities, RendererFeature } from '../renderer-capabilities.ts';
+} from '../diagnostics/renderer-diagnostics.ts';
+import type {
+  RendererCapabilities,
+  RendererFeature,
+} from '../diagnostics/renderer-capabilities.ts';
 
 export type DiagnosticEvidence = Pick<RendererCheck, 'message' | 'details'>;
 export type DiagnosticCommand = (binary: 'ffmpeg' | 'ffprobe', args: string[]) => Promise<string>;

@@ -1,10 +1,10 @@
-import type { PerformanceState, PerformanceEvent } from './performance.ts';
-import type { SetEnvelope, SetTravel } from './analysis.ts';
+import type { PerformanceState, PerformanceEvent } from './live/performance.ts';
+import type { SetEnvelope, SetTravel } from './audio/analysis.ts';
 import type { BackgroundFit } from './background.ts';
 import type { Announcement, Branding } from './branding.ts';
-import type { MixDocument } from './mix-schema.ts';
+import type { MixDocument } from './mix/mix-schema.ts';
 import type { ModRoute } from './modulation.ts';
-import type { TracklistCounts } from './tracklist.ts';
+import type { TracklistCounts } from './mix/tracklist.ts';
 import type { VisualizerConfig } from './visualizers.ts';
 
 /**
@@ -74,11 +74,11 @@ export type ResolvedLiveProject = Omit<
   panel: null;
   tracklist: null;
   live: {
-    sequence?: import('./sequence.ts').SceneSequence;
-    projection?: import('./projection.ts').Projection;
-    testPattern?: import('./test-pattern.ts').TestPatternConfig;
-    beatTracking?: import('./beat.ts').BeatTrackingConfig;
-    midi?: import('./midi.ts').MidiConfig;
+    sequence?: import('./live/sequence.ts').SceneSequence;
+    projection?: import('./live/projection.ts').Projection;
+    testPattern?: import('./live/test-pattern.ts').TestPatternConfig;
+    beatTracking?: import('./audio/beat.ts').BeatTrackingConfig;
+    midi?: import('./live/midi.ts').MidiConfig;
     clock: boolean;
     input: {
       device?: string;

@@ -1,4 +1,4 @@
-import { SetcastError } from './errors.ts';
+import { SetcastError } from '../errors.ts';
 
 /** The extension of a path or URL in lowercase with its dot (`art.PNG` → `.png`), or ''. */
 export function fileExtension(path: string): string {

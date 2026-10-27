@@ -1,13 +1,13 @@
 import { z } from 'zod';
-import { ProjectConfigSchema } from './config.ts';
-import { LiveConfigSchema } from './live-config.ts';
-import { VenueSchema } from './projection.ts';
-import { TestPatternPresetSchema } from './test-pattern.ts';
-import { TimeSchema } from './time-schema.ts';
-import { MidiProfileSchema } from './midi.ts';
-import { GpuCanvasConfigSchema } from './gpu.ts';
-import { visualizers } from './visualizers.ts';
-import { SetcastError } from './errors.ts';
+import { ProjectConfigSchema } from '../config.ts';
+import { LiveConfigSchema } from '../live/live-config.ts';
+import { VenueSchema } from '../live/projection.ts';
+import { TestPatternPresetSchema } from '../live/test-pattern.ts';
+import { TimeSchema } from '../time-schema.ts';
+import { MidiProfileSchema } from '../live/midi.ts';
+import { GpuCanvasConfigSchema } from '../gpu.ts';
+import { visualizers } from '../visualizers.ts';
+import { SetcastError } from '../errors.ts';
 
 export const CONFIGURATION_SCHEMA_KINDS = [
   'project',

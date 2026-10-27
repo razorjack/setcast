@@ -3,13 +3,13 @@ import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml, YAMLParseError } from 'yaml';
 import { ProjectConfigSchema, type ProjectConfig, type ProjectConfigInput } from '../config.ts';
-import { FEATURE_SOURCES } from '../audio.ts';
+import { FEATURE_SOURCES } from '../audio/audio.ts';
 import { backgroundWarnings } from '../background.ts';
-import { isVideoFile } from '../file-types.ts';
+import { isVideoFile } from '../export/file-types.ts';
 import { logoEnlargement, type Announcement, type Branding } from '../branding.ts';
 import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
-import { compileMix, mixWarnings } from '../mix.ts';
-import { Timeline } from '../timeline.ts';
+import { compileMix, mixWarnings } from '../mix/mix.ts';
+import { Timeline } from '../mix/timeline.ts';
 import { ModPatchSchema, type ModRoute } from '../modulation.ts';
 import type { ResolvedProject, SceneAppearance } from '../project.ts';
 import type { Theme } from '../theme.ts';
@@ -18,7 +18,7 @@ import {
   resolveTracklist,
   type TracklistInput,
   type TracklistCounts,
-} from '../tracklist.ts';
+} from '../mix/tracklist.ts';
 import { resolveVisualizerConfigs, type VisualizerConfig } from '../visualizers.ts';
 import { loadCss } from './css.ts';
 import { readImageSize } from './image-size.ts';

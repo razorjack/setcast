@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AnnouncementSchema, endAnnouncement, type Announcement } from './branding.ts';
+import { AnnouncementSchema, endAnnouncement, type Announcement } from '../branding.ts';
 import { PerformanceRampSchema, rampAt, type PerformanceEvent } from './performance.ts';
 
 const sampleError =

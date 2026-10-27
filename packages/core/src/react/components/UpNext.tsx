@@ -1,4 +1,4 @@
-import type { MixDocument } from '../../mix-schema.ts';
+import type { MixDocument } from '../../mix/mix-schema.ts';
 import { useFrame } from '../frame.tsx';
 import { toSeconds } from '../../time.ts';
 

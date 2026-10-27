@@ -1,9 +1,9 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, test, vi } from 'vite-plus/test';
-import { SILENCE, type AudioAnalyzer } from '../audio.ts';
-import { normalizeMix } from '../mix.ts';
+import { SILENCE, type AudioAnalyzer } from '../audio/audio.ts';
+import { normalizeMix } from '../mix/mix.ts';
 import type { ResolvedProject } from '../project.ts';
-import { Timeline } from '../timeline.ts';
+import { Timeline } from '../mix/timeline.ts';
 import {
   audioHistory,
   FrameProvider,

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { scaleLevel, sampleBins } from '../../audio.ts';
+import { scaleLevel, sampleBins } from '../../audio/audio.ts';
 import { RadialConfigSchema, type RadialConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { ArtReveal, type Outline } from './ArtReveal.tsx';

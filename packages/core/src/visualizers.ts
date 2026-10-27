@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FEATURE_SOURCES, HISTORY_SECONDS } from './audio.ts';
+import { FEATURE_SOURCES, HISTORY_SECONDS } from './audio/audio.ts';
 import { ConfigError, zodIssues, type Issue } from './errors.ts';
 import type { ResolvedProject } from './project.ts';
 import { Registry } from './registry.ts';

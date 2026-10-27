@@ -1,7 +1,7 @@
 import { mkdtemp, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { RendererFeature } from '../renderer-capabilities.ts';
+import type { RendererFeature } from '../diagnostics/renderer-capabilities.ts';
 import { RendererDiagnostics, type DiagnosticCommand } from './renderer-diagnostics.ts';
 
 const videoFeatures: RendererFeature[] = ['video', 'resume'];

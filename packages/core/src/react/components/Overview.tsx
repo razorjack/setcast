@@ -1,5 +1,5 @@
 import { useId, useMemo } from 'react';
-import type { SetEnvelope } from '../../analysis.ts';
+import type { SetEnvelope } from '../../audio/analysis.ts';
 import { OverviewConfigSchema, type OverviewConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';
 import { linePath } from './svg.ts';

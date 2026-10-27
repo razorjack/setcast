@@ -1,5 +1,5 @@
 import { useId, useLayoutEffect, useRef } from 'react';
-import { scaleLevel, type AudioFeatures } from '../../audio.ts';
+import { scaleLevel, type AudioFeatures } from '../../audio/audio.ts';
 import { currentBackground, type Size } from '../../background.ts';
 import {
   colorAt,

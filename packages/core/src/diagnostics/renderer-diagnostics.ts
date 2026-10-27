@@ -1,5 +1,5 @@
-import { SetcastError } from './errors.ts';
-import type { GraphicsBackend } from './config.ts';
+import { SetcastError } from '../errors.ts';
+import type { GraphicsBackend } from '../config.ts';
 import type { RendererCapabilities, RendererFeature } from './renderer-capabilities.ts';
 
 export const RENDERER_FEATURES: readonly RendererFeature[] = [

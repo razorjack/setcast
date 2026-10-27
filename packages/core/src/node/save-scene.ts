@@ -3,10 +3,10 @@ import { constants } from 'node:fs';
 import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { basename, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { parse, stringify } from 'yaml';
-import { SceneSelectionSchema, type SceneSelection } from '../scene-selection.ts';
+import { SceneSelectionSchema, type SceneSelection } from '../live/scene-selection.ts';
 import { sceneAppearance, type SceneAppearance, type SceneProject } from '../project.ts';
 import { PANEL_DEFAULTS } from '../config.ts';
-import { TRACKLIST_DEFAULTS } from '../tracklist.ts';
+import { TRACKLIST_DEFAULTS } from '../mix/tracklist.ts';
 import { SetcastError } from '../errors.ts';
 import { parseConfigYaml } from './project.ts';
 

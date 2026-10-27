@@ -1,4 +1,4 @@
-import type { RenderOptions } from './export.ts';
+import type { RenderOptions } from '../export/export.ts';
 import type { RendererCapabilities } from './renderer-capabilities.ts';
 
 export type RendererCompatibilityOptions = Pick<

@@ -5,10 +5,10 @@ import type {
   OutputConfig,
   VideoBitrate,
   X264Preset,
-} from './config.ts';
-import { type MixDocument } from './mix-schema.ts';
-import { toSeconds } from './time.ts';
-import type { ResolvedProject } from './project.ts';
+} from '../config.ts';
+import { type MixDocument } from '../mix/mix-schema.ts';
+import { toSeconds } from '../time.ts';
+import type { ResolvedProject } from '../project.ts';
 
 export interface EncodingOptions {
   parallelEncoding?: boolean;

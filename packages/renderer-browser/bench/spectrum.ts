@@ -18,9 +18,11 @@ const revision = execFileSync(
   ['rev-parse', '--verify', '--end-of-options', `${values.reference}^{commit}`],
   { encoding: 'utf8' },
 ).trim();
-const path = 'packages/core/src/spectrum.ts';
-const reference = execFileSync('git', ['show', `${revision}:${path}`], { encoding: 'utf8' });
-const current = await readFile(new URL('../../core/src/spectrum.ts', import.meta.url), 'utf8');
+const reference = referenceSource(revision);
+const current = await readFile(
+  new URL('../../core/src/audio/spectrum.ts', import.meta.url),
+  'utf8',
+);
 const source = { reference: moduleUrl(reference), current: moduleUrl(current) };
 const node = await compare(source);
 const browser = await chromium.launch();
@@ -103,4 +105,18 @@ async function compare(source: { reference: string; current: string }) {
     }
   }
   return measurements;
+}
+
+/** Revisions before core's domain folders keep the module at its old path. */
+function referenceSource(revision: string): string {
+  const show = (path: string) =>
+    execFileSync('git', ['show', `${revision}:${path}`], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  try {
+    return show('packages/core/src/audio/spectrum.ts');
+  } catch {
+    return show('packages/core/src/spectrum.ts');
+  }
 }

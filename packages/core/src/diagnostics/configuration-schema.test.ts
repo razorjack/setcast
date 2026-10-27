@@ -5,9 +5,9 @@ import { parse } from 'yaml';
 import { z } from 'zod';
 import { describe, expect, test } from 'vite-plus/test';
 import { CONFIGURATION_SCHEMA_KINDS, configurationSchema } from './configuration-schema.ts';
-import { ProjectConfigSchema } from './config.ts';
-import { LiveConfigSchema } from './live-config.ts';
-import { resolveVisualizerConfigs, visualizers } from './visualizers.ts';
+import { ProjectConfigSchema } from '../config.ts';
+import { LiveConfigSchema } from '../live/live-config.ts';
+import { resolveVisualizerConfigs, visualizers } from '../visualizers.ts';
 
 const ajv = new Ajv2020({ strict: false, allErrors: true });
 
@@ -22,7 +22,7 @@ describe('authoring JSON Schema', () => {
   });
 
   test('accepts repository authoring examples before defaults and timecode normalization', async () => {
-    const root = new URL('../../../examples/', import.meta.url);
+    const root = new URL('../../../../examples/', import.meta.url);
     let count = 0;
     for (const entry of await readdir(root, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;

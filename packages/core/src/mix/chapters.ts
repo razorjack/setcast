@@ -1,5 +1,5 @@
 import type { MixDocument } from './mix-schema.ts';
-import { formatChapterTime, toSeconds } from './time.ts';
+import { formatChapterTime, toSeconds } from '../time.ts';
 
 export const MIN_CHAPTERS = 3;
 export const MIN_CHAPTER_SECONDS = 10;

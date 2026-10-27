@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { ProjectionSchema } from './projection.ts';
 import { TestPatternSchema } from './test-pattern.ts';
-import { BeatTrackingSchema } from './beat.ts';
+import { BeatTrackingSchema } from '../audio/beat.ts';
 import { MidiConfigSchema } from './midi.ts';
 import { SequenceSchema } from './sequence.ts';
-import { DisplaySchema, ProjectConfigSchema } from './config.ts';
+import { DisplaySchema, ProjectConfigSchema } from '../config.ts';
 
 const channel = z
   .number({ error: 'Use an input channel number, starting at 1.' })

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { BrandingSchema } from './branding.ts';
+import { BrandingSchema } from '../branding.ts';
 import { PerformanceSchema } from './performance.ts';
 import { LiveConfigSchema } from './live-config.ts';
-import { ProjectConfigSchema } from './config.ts';
+import { ProjectConfigSchema } from '../config.ts';
 
 export const SceneSelectionSchema = z.strictObject(
   {

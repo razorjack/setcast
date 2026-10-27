@@ -7,8 +7,8 @@ import {
   summarizeEnvelope,
   travelOf,
   type Envelope,
-} from '../analysis.ts';
-import type { Pcm } from '../audio.ts';
+} from '../audio/analysis.ts';
+import type { Pcm } from '../audio/audio.ts';
 import type { ResolvedProject } from '../project.ts';
 import { readsTravel } from '../stage.ts';
 import { drawsWholeSet } from '../visualizers.ts';

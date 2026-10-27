@@ -1,4 +1,4 @@
-import type { Wave } from '../../audio.ts';
+import type { Wave } from '../../audio/audio.ts';
 import { clamp } from '../../motion.ts';
 import { OscilloscopeConfigSchema, type OscilloscopeConfig } from '../../visualizers.ts';
 import { useFrame } from '../frame.tsx';

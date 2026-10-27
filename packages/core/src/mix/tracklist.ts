@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { clamp, ease, lerp } from './motion.ts';
+import { clamp, ease, lerp } from '../motion.ts';
 import type { Listing, MixDocument, Recording } from './mix-schema.ts';
 import type { CurrentPlay, MixState } from './timeline.ts';
-import { toSeconds } from './time.ts';
+import { toSeconds } from '../time.ts';
 
 /** How many listings the tracklist shows before and after the current listing group. */
 export type TracklistCounts = { before: number; after: number };

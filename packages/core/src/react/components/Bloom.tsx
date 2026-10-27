@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import { scaleLevel, type FeatureSource } from '../../audio.ts';
+import { scaleLevel, type FeatureSource } from '../../audio/audio.ts';
 import { currentBackground, type Size } from '../../background.ts';
 import { lightLayers } from '../../lights.ts';
 import { smoothedFeature } from '../../modulation.ts';
