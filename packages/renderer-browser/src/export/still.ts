@@ -13,11 +13,11 @@ import {
 } from '@setcast/core';
 import { prepareFrame, withCapture, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
-import { graphicsArgs } from './graphics.ts';
+import { validateGraphicsBackend } from './graphics.ts';
 import { captureWebp } from './webp.ts';
 
 export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
-  graphicsArgs(options.gl);
+  validateGraphicsBackend(options.gl);
   const format = requireStillFormat(options.out);
   const frame = Math.min(
     framesWithinMix(project.mix.duration, project.fps) - 1,

@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vite-plus/test';
 import { withCheckpoint, checkpointPath, parseManifest } from './checkpoint.ts';
-import { canonical, digest, projectAssets } from './fingerprint.ts';
+import { canonical, digest, projectAssets } from './identity.ts';
 import type { ResolvedProject } from '@setcast/core';
 
 test('checkpoints survive failure, exclude concurrent writers, validate bytes and clear after success', async () => {

@@ -5,73 +5,84 @@ import {
   framesWithinMix,
   resolveFrameRange,
   splitFrameRange,
+  type OutputConfig,
   type ResolvedProject,
   type RenderOptions,
   type RenderResult,
 } from '@setcast/core';
-import { prepareFrame, withCapture, withRenderSession } from './session.ts';
+import { prepareFrame, withCapturePages, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
-import { graphicsArgs } from './graphics.ts';
+import { validateGraphicsBackend } from './graphics.ts';
 import { assemble, exportEncoding, videoArgs, preflight } from './encoding.ts';
 import { measure, type MetricsReport } from './metrics.ts';
 import { ffmpeg } from './ffmpeg.ts';
-import { fingerprint } from './fingerprint.ts';
-import { withCheckpoint, type Checkpoint } from './checkpoint.ts';
-import { validateChunk } from './probe.ts';
+import { computeExportIdentity } from './identity.ts';
+import {
+  checkpointChunks,
+  DISPOSABLE_CHUNKS,
+  withCheckpoint,
+  type ChunkStore,
+} from './checkpoint.ts';
 import { pipeline } from './pipeline.ts';
 
 export type BrowserRenderOptions = RenderOptions & {
   onMetrics?: MetricsReport;
 };
 
+type FrameRange = [number, number];
+
 export function render(
   project: ResolvedProject,
   options: BrowserRenderOptions,
 ): Promise<RenderResult> {
-  graphicsArgs(options.gl);
+  validateGraphicsBackend(options.gl);
   requireVideoOutput(options.out);
   const encoding = exportEncoding(options);
+  const range = renderedFrames(project, options.range);
+  const job: RenderJob = {
+    project,
+    options,
+    encoding,
+    ranges: splitFrameRange(range, encoding.chunkSeconds * project.fps),
+    first: range[0],
+    frames: range[1] - range[0] + 1,
+  };
+  return withRenderSession(() => renderJob(job));
+}
+
+function renderedFrames(project: ResolvedProject, range: [number, number] | undefined) {
   const total = framesWithinMix(project.mix.duration, project.fps);
-  const range = options.range
-    ? resolveFrameRange(options.range, project.fps, total)
-    : ([0, total - 1] as [number, number]);
-  const ranges = splitFrameRange(range, encoding.chunkSeconds * project.fps);
-  const frames = range[1] - range[0] + 1;
-  return withRenderSession(() =>
-    renderJob({ project, options, encoding, ranges, frames, first: range[0] }),
-  );
+  if (!range) return [0, total - 1] satisfies FrameRange;
+  return resolveFrameRange(range, project.fps, total);
 }
 
 interface RenderJob {
   project: ResolvedProject;
   options: BrowserRenderOptions & { assetPaths?: readonly string[] };
-  encoding: ReturnType<typeof exportEncoding>;
-  ranges: [number, number][];
-  frames: number;
+  encoding: OutputConfig;
+  ranges: FrameRange[];
+  /** The first frame of the export. */
   first: number;
-  identity?: Awaited<ReturnType<typeof fingerprint>>;
-  checkpoint?: Checkpoint;
+  frames: number;
 }
 
 async function renderJob(job: RenderJob) {
   await preflight(job.options.signal);
-  if (!job.options.resume) return renderOutput(job);
-  const identity = await fingerprint(job.project, job.options, job.ranges);
+  if (!job.options.resume) return renderOutput(job, DISPOSABLE_CHUNKS);
+
+  job.options.onProgress?.({ stage: 'checkpoint', progress: 0 });
+  const identity = await computeExportIdentity(job.project, job.options, job.ranges);
+  const resumable = { ...job, options: { ...job.options, assetPaths: identity.paths } };
   return withCheckpoint(job.options.out, identity, (checkpoint) =>
-    renderOutput({
-      ...job,
-      identity,
-      checkpoint,
-      options: { ...job.options, assetPaths: identity.paths },
-    }),
+    renderOutput(resumable, checkpointChunks(checkpoint, identity, job.project)),
   );
 }
 
-function renderOutput(job: RenderJob) {
+function renderOutput(job: RenderJob, chunks: ChunkStore) {
   const { project, options, ranges, frames } = job;
   return atomicOutput(options.out, options.signal, async (output, directory) => {
-    await renderChunks(job, directory);
-    await job.identity?.unchanged();
+    await renderChunks(job, chunks, directory);
+    await chunks.assertInputsUnchanged();
     encodeProgress(options, frames, 0);
     await measure('mux', options.onMetrics, () =>
       assemble(project, options, {
@@ -81,70 +92,40 @@ function renderOutput(job: RenderJob) {
         duration: frames / project.fps,
       }),
     );
-    await job.identity?.unchanged();
+    await chunks.assertInputsUnchanged();
     encodeProgress(options, frames, 1);
     return { file: resolve(options.out), frames, durationSeconds: frames / project.fps };
   });
 }
 
-async function renderChunks(job: RenderJob, directory: string) {
-  const reusable: boolean[] = [];
+async function renderChunks(job: RenderJob, chunks: ChunkStore, directory: string) {
+  const reused: boolean[] = [];
   for (const [index, range] of job.ranges.entries()) {
-    const file = join(directory, `chunk-${index}.mp4`);
-    reusable.push((await job.checkpoint?.reuse(index, range, file, job.options.signal)) ?? false);
+    reused.push(await chunks.reuse(index, range, chunkFile(directory, index), job.options.signal));
   }
-  const capture = (pages: Page[]) => renderPreparedChunks(job, { directory, reusable }, pages);
-  if (reusable.every(Boolean)) await capture([]);
-  else await capturePool(job.project, job.options, [], capture);
-}
-
-async function renderPreparedChunks(
-  job: RenderJob,
-  prepared: { directory: string; reusable: boolean[] },
-  pages: Page[],
-) {
-  let reusedFrames = 0;
-  for (const [index, range] of job.ranges.entries()) {
-    await job.identity?.unchanged();
-    job.options.signal?.throwIfAborted();
-    const out = join(prepared.directory, `chunk-${index}.mp4`);
-    if (prepared.reusable[index]) {
-      reusedFrames += range[1] - range[0] + 1;
-      frameProgress(job, range[1] - job.first + 1, reusedFrames);
-      continue;
+  const workers = reused.every(Boolean) ? 0 : (job.options.concurrency ?? 1);
+  await withCapturePages(job.project, job.options, workers, async (pages) => {
+    let reusedFrames = 0;
+    for (const [index, range] of job.ranges.entries()) {
+      await chunks.assertInputsUnchanged();
+      job.options.signal?.throwIfAborted();
+      if (reused[index]) {
+        reusedFrames += range[1] - range[0] + 1;
+        frameProgress(job, range[1] - job.first + 1, reusedFrames);
+        continue;
+      }
+      const out = chunkFile(directory, index);
+      await encodeChunk(pages, range, { ...job, out, reusedFrames });
+      await chunks.assertInputsUnchanged();
+      await chunks.save(index, range, out, job.options.signal);
     }
-    await encodeChunk(pages, range, { ...job, out, reusedFrames });
-    await job.identity?.unchanged();
-    if (job.checkpoint) {
-      await validateChunk(
-        out,
-        { ...job.project, frames: range[1] - range[0] + 1 },
-        job.options.signal,
-      );
-      await job.checkpoint.save(index, range, out, job.options.signal);
-    }
-  }
+  });
 }
 
-function capturePool<T>(
-  project: ResolvedProject,
-  options: RenderJob['options'],
-  pages: Page[],
-  task: (pages: Page[]) => Promise<T>,
-): Promise<T> {
-  if (pages.length === (options.concurrency ?? 1)) return task(pages);
-  return withCapture(project, options, (page) =>
-    capturePool(project, options, [...pages, page], task),
-  );
-}
+const chunkFile = (directory: string, index: number) => join(directory, `chunk-${index}.mp4`);
 
-interface ChunkJob {
-  project: ResolvedProject;
-  options: BrowserRenderOptions;
-  encoding: ReturnType<typeof exportEncoding>;
+interface ChunkJob extends RenderJob {
   out: string;
-  first: number;
-  frames: number;
   reusedFrames: number;
 }
 

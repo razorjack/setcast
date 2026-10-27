@@ -19,7 +19,14 @@ export function canonical(value: unknown): string {
   );
 }
 
-export async function digestFile(file: string, signal?: AbortSignal) {
+export interface FileDigest {
+  sha256: string;
+  bytes: number;
+  /** Device, inode, size and times: changes when the file is replaced or written. */
+  stamp: string;
+}
+
+export async function digestFile(file: string, signal?: AbortSignal): Promise<FileDigest> {
   signal?.throwIfAborted();
   const handle = await open(file, constants.O_RDONLY | constants.O_NOFOLLOW);
   try {
@@ -68,33 +75,38 @@ function validateCss(css: string) {
     );
 }
 
-export async function fingerprint(
+/** What makes a resumed export produce the same chunks as the export that saved them. */
+export interface ExportIdentity {
+  /** Digest of the project, settings, runtime, host and every input asset. */
+  key: string;
+  /** Project-relative assets the export reads; capture blocks everything else. */
+  paths: string[];
+  /** Throws a `SetcastError` when an input asset changed after the identity was computed. */
+  assertInputsUnchanged(): Promise<void>;
+}
+
+interface InputAsset extends FileDigest {
+  path: string;
+  file: string;
+}
+
+/** Reads and hashes every input, the encoder, the browser runtime and this adapter's code. */
+export async function computeExportIdentity(
   project: ResolvedProject,
   options: RenderOptions,
   ranges: [number, number][],
-) {
+): Promise<ExportIdentity> {
   const root = await realpath(options.projectDir);
   const paths = projectAssets(project);
   const encoder = await encoderVersion(options.signal);
-  options.onProgress?.({ stage: 'checkpoint', progress: 0 });
-  const assets: ({ path: string; file: string } & Awaited<ReturnType<typeof digestFile>>)[] = [];
-  for (const path of paths) {
-    const file = await projectAsset(root, path);
-    if (!file)
-      throw new SetcastError(
-        `Resume asset leaves the project: ${path}.`,
-        'Move assets inside the project directory.',
-      );
-    assets.push({ path, file, ...(await digestFile(file, options.signal)) });
-  }
-  const runtime = await exportRuntime(options);
+  const assets = await digestAssets(root, paths, options.signal);
   const identity = {
     project,
     ranges,
     encoding: exportEncoding(options),
     concurrency: options.concurrency ?? 1,
     gl: options.gl ?? 'auto',
-    runtime,
+    runtime: await exportRuntime(options),
     platform: process.platform,
     arch: process.arch,
     os: release(),
@@ -108,15 +120,31 @@ export async function fingerprint(
   return {
     key: digest(canonical(identity)),
     paths: assets.map(({ path }) => path),
-    async unchanged() {
-      for (const asset of assets) {
-        options.signal?.throwIfAborted();
-        const file = await projectAsset(root, asset.path);
-        if (file !== asset.file || stamp(await stat(asset.file)) !== asset.stamp)
-          throw changedAsset(asset.path);
-      }
-    },
+    assertInputsUnchanged: () => assertAssetsUnchanged(root, assets, options.signal),
   };
+}
+
+async function digestAssets(root: string, paths: string[], signal?: AbortSignal) {
+  const assets: InputAsset[] = [];
+  for (const path of paths) {
+    const file = await projectAsset(root, path);
+    if (!file)
+      throw new SetcastError(
+        `Resume asset leaves the project: ${path}.`,
+        'Move assets inside the project directory.',
+      );
+    assets.push({ path, file, ...(await digestFile(file, signal)) });
+  }
+  return assets;
+}
+
+async function assertAssetsUnchanged(root: string, assets: InputAsset[], signal?: AbortSignal) {
+  for (const asset of assets) {
+    signal?.throwIfAborted();
+    const file = await projectAsset(root, asset.path);
+    if (file !== asset.file || stamp(await stat(asset.file)) !== asset.stamp)
+      throw changedAsset(asset.path);
+  }
 }
 
 async function adapterDigest() {

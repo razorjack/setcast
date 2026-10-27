@@ -3,6 +3,7 @@ import { extname, join, resolve } from 'node:path';
 import {
   OutputSchema,
   SetcastError,
+  type OutputConfig,
   type ResolvedProject,
   type RenderOptions,
 } from '@setcast/core';
@@ -48,11 +49,7 @@ export function exportEncoding(options: RenderOptions) {
   return encoding;
 }
 
-export function videoArgs(
-  fps: number,
-  encoding: ReturnType<typeof OutputSchema.parse>,
-  out: string,
-) {
+export function videoArgs(fps: number, encoding: OutputConfig, out: string) {
   const quality = encoding.videoBitrate
     ? ['-b:v', encoding.videoBitrate]
     : ['-crf', String(encoding.crf)];

@@ -51,6 +51,7 @@ export {
   type ExportProfile,
   type GraphicsBackend,
   type HardwareAcceleration,
+  type OutputConfig,
   type ProjectConfig,
   type ProjectConfigInput,
   type VideoBitrate,

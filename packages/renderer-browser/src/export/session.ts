@@ -23,7 +23,7 @@ type CaptureOptions = Pick<StillOptions, 'projectDir' | 'gl' | 'signal' | 'onPro
   assetPaths?: readonly string[];
 };
 
-async function captureFiles(options: CaptureOptions) {
+async function captureBundle(options: CaptureOptions) {
   const session = sessions.getStore()!;
   options.onProgress?.({ stage: 'bundle', progress: 0 });
   session.files ??= bundlePlayer('export.tsx');
@@ -44,7 +44,7 @@ async function captureBrowser(options: CaptureOptions) {
 }
 
 export async function exportRuntime(options: CaptureOptions) {
-  const files = await captureFiles(options);
+  const files = await captureBundle(options);
   const hash = createHash('sha256');
   for (const [path, bytes] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
     hash.update(path);
@@ -67,13 +67,14 @@ export async function withRenderSession<T>(task: () => Promise<T>): Promise<T> {
   }
 }
 
-export async function withCapture<T>(
-  project: ResolvedProject,
-  options: CaptureOptions,
-  task: (page: Page) => Promise<T>,
-) {
+/** A capture page showing `project`, served by its own read-only player server. */
+interface Capture extends AsyncDisposable {
+  page: Page;
+}
+
+async function openCapture(project: ResolvedProject, options: CaptureOptions): Promise<Capture> {
   options.signal?.throwIfAborted();
-  const files = await captureFiles(options);
+  const files = await captureBundle(options);
   const server = await play(project, {
     projectDir: options.projectDir,
     port: 0,
@@ -82,6 +83,14 @@ export async function withCapture<T>(
   let page: Page | undefined;
   const abort = () => {
     void page?.close().catch(() => {});
+  };
+  const close = async () => {
+    options.signal?.removeEventListener('abort', abort);
+    try {
+      await page?.close();
+    } finally {
+      await server.close();
+    }
   };
   try {
     const browser = await captureBrowser(options);
@@ -94,21 +103,50 @@ export async function withCapture<T>(
     if (options.assetPaths) await restrictResources(page, server.url, options.assetPaths, files);
     await page.goto(server.url);
     await page.waitForFunction(() => Boolean(window.setcastExport));
-    const result = await task(page);
-    assertResources(page);
-    return result;
+    return { page, [Symbol.asyncDispose]: close };
   } catch (error) {
-    options.signal?.throwIfAborted();
-    if (page) assertResources(page);
-    throw error;
-  } finally {
-    options.signal?.removeEventListener('abort', abort);
     try {
-      await page?.close();
+      throw captureFailure(error, options, page ? [page] : []);
     } finally {
-      await server.close();
+      await close();
     }
   }
+}
+
+/** Abort first, then a blocked resource, which usually explains why a page failed. */
+function captureFailure(error: unknown, options: CaptureOptions, pages: Page[]): unknown {
+  options.signal?.throwIfAborted();
+  for (const page of pages) assertResources(page);
+  return error;
+}
+
+/** Runs `task` with `count` capture pages open and closes them when it settles. */
+export async function withCapturePages<T>(
+  project: ResolvedProject,
+  options: CaptureOptions,
+  count: number,
+  task: (pages: Page[]) => Promise<T>,
+): Promise<T> {
+  await using captures = new AsyncDisposableStack();
+  const pages: Page[] = [];
+  for (let opened = 0; opened < count; opened++) {
+    pages.push(captures.use(await openCapture(project, options)).page);
+  }
+  try {
+    const result = await task(pages);
+    for (const page of pages) assertResources(page);
+    return result;
+  } catch (error) {
+    throw captureFailure(error, options, pages);
+  }
+}
+
+export function withCapture<T>(
+  project: ResolvedProject,
+  options: CaptureOptions,
+  task: (page: Page) => Promise<T>,
+): Promise<T> {
+  return withCapturePages(project, options, 1, ([page]) => task(page!));
 }
 
 async function launch(backend: GraphicsBackend) {

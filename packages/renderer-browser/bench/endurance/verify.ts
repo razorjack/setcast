@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { stat } from 'node:fs/promises';
 import { framesWithinMix, resolveFrameRange, type ResolvedProject } from '@setcast/core';
 import { AUDIO_CHECK, audioAlignment } from './audio-alignment.ts';
-import { digestFile } from '../../src/export/fingerprint.ts';
+import { digestFile } from '../../src/export/identity.ts';
 import { encoderVersion } from '../../src/export/probe.ts';
 import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';

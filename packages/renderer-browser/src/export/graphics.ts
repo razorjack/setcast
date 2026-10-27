@@ -10,12 +10,16 @@ export function captureBrowserArgs(backend: GraphicsBackend = 'auto'): string[] 
   ];
 }
 
+export function validateGraphicsBackend(backend: GraphicsBackend = 'auto'): void {
+  if (['auto', 'default', 'angle'].includes(backend)) return;
+  throw new SetcastError(
+    `Browser export does not yet support output.gl: ${backend}.`,
+    'Use auto, default or angle, or select --renderer remotion for the other graphics backends.',
+  );
+}
+
 export function graphicsArgs(backend: GraphicsBackend = 'auto'): string[] {
-  if (!['auto', 'default', 'angle'].includes(backend))
-    throw new SetcastError(
-      `Browser export does not yet support output.gl: ${backend}.`,
-      'Use auto, default or angle, or select --renderer remotion for the other graphics backends.',
-    );
+  validateGraphicsBackend(backend);
   if (backend === 'default' || (backend === 'auto' && process.platform === 'win32')) return [];
   return ['--use-gl=angle'];
 }

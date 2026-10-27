@@ -4,7 +4,8 @@ import { copyFile, lstat, mkdir, open, rename, rm } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { hostname } from 'node:os';
 import { SetcastError } from '@setcast/core';
-import { digestFile } from './fingerprint.ts';
+import { digestFile, type ExportIdentity } from './identity.ts';
+import { validateChunk } from './probe.ts';
 
 interface Chunk {
   first: number;
@@ -24,7 +25,7 @@ export const checkpointPath = (out: string) => `${resolve(out)}.setcast-resume`;
 /** A single writer owns this directory until final publication or interruption. */
 export async function withCheckpoint<T>(
   out: string,
-  identity: { key: string },
+  identity: Pick<ExportIdentity, 'key'>,
   task: (checkpoint: Checkpoint) => Promise<T>,
 ) {
   const directory = checkpointPath(out);
@@ -202,4 +203,39 @@ export class Checkpoint {
       await rm(temporary, { force: true });
     }
   }
+}
+
+type FrameRange = [number, number];
+
+/** Where an export's encoded chunks come from and go to, so the render loop has one path. */
+export interface ChunkStore {
+  /** Copies chunk `index` to `file` from an earlier identical export; false when there is none. */
+  reuse(index: number, range: FrameRange, file: string, signal?: AbortSignal): Promise<boolean>;
+  /** Keeps an encoded chunk for a later resumed export. */
+  save(index: number, range: FrameRange, file: string, signal?: AbortSignal): Promise<void>;
+  /** Throws when an input changed during the export. */
+  assertInputsUnchanged(): Promise<void>;
+}
+
+/** An export without `--resume`: every chunk is encoded, nothing is kept. */
+export const DISPOSABLE_CHUNKS: ChunkStore = {
+  reuse: async () => false,
+  save: async () => {},
+  assertInputsUnchanged: async () => {},
+};
+
+/** Chunks kept in a resume checkpoint, probed before they are kept. */
+export function checkpointChunks(
+  checkpoint: Checkpoint,
+  identity: ExportIdentity,
+  video: { width: number; height: number; fps: number },
+): ChunkStore {
+  return {
+    reuse: (index, range, file, signal) => checkpoint.reuse(index, range, file, signal),
+    async save(index, range, file, signal) {
+      await validateChunk(file, { ...video, frames: range[1] - range[0] + 1 }, signal);
+      await checkpoint.save(index, range, file, signal);
+    },
+    assertInputsUnchanged: () => identity.assertInputsUnchanged(),
+  };
 }

@@ -166,6 +166,9 @@ export const OutputSchema = z
     };
   });
 
+/** The `output:` block after defaults and profile settings are applied. */
+export type OutputConfig = z.output<typeof OutputSchema>;
+
 /** Panel timing when `panel:` is true or left out. */
 export const PANEL_DEFAULTS = { dwell: 14, fade: 1.2 };
 
