@@ -613,6 +613,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Browser H.264 capture is sRGB. Declare full-range BT.601/JPEG matrix separately from BT.709/sRGB
+  primaries and sRGB transfer with the adapter's SCREENSHOT_COLOR_FILTER before encoding. Matrix
+  metadata alone previously made Chromium playback shift saturated colors. Keep software/hardware
+  preflight and doctor on the same filter; do not replace metadata declaration with an unqualified
+  range or transfer conversion. See docs/renderer-color.md and bench/color.ts.
+
 - Independent preview plays the master through the existing `Transport` while requesting absolute
   frames from the export driver. Audio-clock requests may skip frames; the queue remains one active
   plus one latest pending request and reports completed frames during playback. Pause/seek settles

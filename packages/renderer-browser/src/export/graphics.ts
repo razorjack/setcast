@@ -2,6 +2,7 @@ import { SetcastError, type GraphicsBackend } from '@setcast/core';
 
 export function captureBrowserArgs(backend: GraphicsBackend = 'auto'): string[] {
   return [
+    '--force-color-profile=srgb',
     // Keep asset/React readiness; remove display refresh pacing only from offline capture.
     '--disable-frame-rate-limit',
     '--disable-background-timer-throttling',

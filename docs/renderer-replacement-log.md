@@ -543,3 +543,57 @@ and `/tmp/setcast-preview-exports-c.log`.
 The local Studio replacement workflow is now implemented. The overall renderer replacement is
 not complete: matched-quality throughput, automatic resource scheduling, selective edit reuse,
 output color qualification and Remotion-free distribution/default migration remain outstanding.
+
+## Color-contract investigation, started 2026-10-29
+
+ffprobe on the retained 900-frame current-upstream pair shows materially different color metadata.
+Browser output is `yuvj420p`, full range (`pc`), matrix `bt470bg`, with unspecified transfer and
+primaries, despite the encoder command requesting `-pix_fmt yuv420p`. Remotion 4.0.539 output is
+`yuv420p`, limited range (`tv`), unspecified matrix, sRGB transfer (`iec61966-2-1`) and BT.709
+primaries. Both use left chroma location. These are observations from the existing standard pair,
+not proof of a visible color error. Current system FFmpeg is 9.0.2.
+
+Before matched-quality performance claims, test known RGB patches, near-black ramps and fine type
+through actual capture, encoding, explicit decode and browser playback. Separate matrix/range
+conversion from metadata tagging and transfer-function conversion. Do not assume `-pix_fmt` alone
+specifies output range or copy the current Remotion metadata as an unquestionable reference.
+FFmpeg documents explicit matrix/range conversion in its scale filter:
+https://ffmpeg.org/ffmpeg-filters.html#scale . Remotion documents its color-space option separately:
+https://www.remotion.dev/docs/options/color-space . These were checked 2026-10-29; current online
+Remotion wording includes 5.0 defaults, so installed 4.0.539 source remains authoritative for its run.
+
+The initial chart probe found a visible saturated-color mismatch in Chromium playback even when
+FFmpeg's decoded RGB remained close to the source PNG. A metadata-only candidate explicitly sets
+full-range BT.601 matrix, BT.709/sRGB primaries and sRGB transfer on the decoded JPEG frames.
+For the 30-frame software chart, its complete decoded RGB hash exactly equals the current output
+(`c110868182a57934e552b1bad4196bf4f66457baa6c42d0cdaed0e24cbd19a25`), while playback's solid green
+patch changes from [63,251,0] to [0,255,1] for source [0,255,0]. Neutral patches remain close.
+This isolates a metadata interpretation issue rather than an altered capture or image transform.
+
+CLI-only color flags did not retain transfer/primaries through the tested FFmpeg scale paths;
+setparams on frames did. Matrix/range conversion and genuine sRGB-to-BT.709 transfer conversion
+produced distinct results, including lost near-black steps in the latter browser-playback probe.
+Do not select a policy from a global score alone. Playwright 1.64.1's installed Chromium launch
+switches already force the sRGB color profile, which supports declaring sRGB screenshot primaries
+and transfer. Production encoding is still unchanged; actual hardware encoding and moving-theme
+validation must precede promotion. Reports are retained under `examples/demo/out/color-contract-2026-10-29{,-b,-c}`.
+
+The metadata-only fix passed both production chart runs: every solid patch center remained within
+three RGB channel levels of the source in Chromium playback for software and VideoToolbox. The
+software thirty-frame RGB hash still matched the legacy path exactly. Both software/hardware export
+acceptance suites passed; hardware observed 18 actual VideoToolbox chunks. A separate check found
+the expected range, matrix, primaries and transfer on all sixteen assembled MP4 fixtures. Remotion
+acceptance also passed. Images were inspected, including the corrected saturated colors.
+
+Production now declares the screenshot frame properties through a shared adapter filter; it does
+not introduce pixel conversion. Software/hardware preflight and browser doctor exercise that filter.
+Capture explicitly forces sRGB (already the pinned Playwright default). The persistent-cache suite
+and installed-package smoke passed. Research and the exact SDR contract are retained under
+`docs/research/color-contract-2026-10-29/` and `docs/renderer-color.md`. A final baseline remains
+before committing. NVENC devices, other receiving apps/platforms, HDR and alpha remain unqualified.
+
+Final color baseline passed: 661 tests in 108 files, formatting/lint/types, dependency ban and
+fully decoded smoke export (`/tmp/setcast-color-ready.log`). Both exporter acceptance suites,
+actual VideoToolbox acceptance, persistent-cache recovery and installed-package checks passed.
+The sixteen assembled-output metadata checks and production chart assertions passed. This
+completes the current SDR H.264 color correction; broader receiving-app qualification remains open.

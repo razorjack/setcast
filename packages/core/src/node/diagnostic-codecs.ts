@@ -7,7 +7,11 @@ import { RendererDiagnostics, type DiagnosticCommand } from './renderer-diagnost
 const videoFeatures: RendererFeature[] = ['video', 'resume', 'cache'];
 const quiet = ['-hide_banner', '-loglevel', 'error', '-nostdin', '-y'];
 
-export async function diagnoseCodecs(session: RendererDiagnostics, command: DiagnosticCommand) {
+export async function diagnoseCodecs(
+  session: RendererDiagnostics,
+  command: DiagnosticCommand,
+  videoFilter?: string,
+) {
   const supported = (features: RendererFeature[]) =>
     features.filter((feature) => session.capabilities.features.includes(feature));
   const features = supported(videoFeatures);
@@ -36,12 +40,33 @@ export async function diagnoseCodecs(session: RendererDiagnostics, command: Diag
     session.skip('video.encode', features, 'FFmpeg is unavailable.');
     return;
   }
+  await diagnoseEncoding(session, command, {
+    features,
+    inspectionFeatures,
+    hint,
+    ffprobe,
+    videoFilter,
+  });
+}
+
+async function diagnoseEncoding(
+  session: RendererDiagnostics,
+  command: DiagnosticCommand,
+  options: {
+    features: RendererFeature[];
+    inspectionFeatures: RendererFeature[];
+    hint: string;
+    ffprobe: boolean;
+    videoFilter?: string;
+  },
+) {
+  const { features, inspectionFeatures, hint, ffprobe, videoFilter } = options;
   const directory = await mkdtemp(join(tmpdir(), 'setcast-doctor-'));
   try {
     await writeFixtures(directory);
     const video = await session.check('video.encode', features, hint, async () => {
       for (const container of session.capabilities.videoContainers)
-        await encodeFixture(command, directory, join(directory, `probe.${container}`));
+        await encodeFixture(command, directory, join(directory, `probe.${container}`), videoFilter);
       return { message: 'Encoded H.264 + AAC in MP4, MOV and MKV.' };
     });
     if (video && ffprobe)
@@ -99,7 +124,12 @@ function videoInput(directory: string) {
   ];
 }
 
-async function encodeFixture(command: DiagnosticCommand, directory: string, file: string) {
+async function encodeFixture(
+  command: DiagnosticCommand,
+  directory: string,
+  file: string,
+  videoFilter?: string,
+) {
   await command('ffmpeg', [
     ...quiet,
     ...videoInput(directory),
@@ -113,6 +143,7 @@ async function encodeFixture(command: DiagnosticCommand, directory: string, file
     'yuv420p',
     '-c:a',
     'aac',
+    ...(videoFilter ? ['-vf', videoFilter] : []),
     file,
   ]);
   if ((await stat(file)).size === 0) throw new Error('Encoder produced an empty fixture.');

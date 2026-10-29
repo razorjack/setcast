@@ -1,5 +1,6 @@
 import { SetcastError, type HardwareAcceleration, type VideoBitrate } from '@setcast/core';
 import { diagnosticCommand } from '@setcast/core/node';
+import { SCREENSHOT_COLOR_FILTER } from './color.ts';
 
 export type VideoEncoder = 'libx264' | 'h264_videotoolbox' | 'h264_nvenc';
 export interface HardwareProbe {
@@ -40,6 +41,8 @@ export async function probeHardware(encoder: VideoEncoder, options: HardwareProb
       ...hardwareArgs(encoder),
       '-b:v',
       options.videoBitrate ?? '1M',
+      '-vf',
+      SCREENSHOT_COLOR_FILTER,
       '-pix_fmt',
       'yuv420p',
       '-f',

@@ -17,6 +17,7 @@
     "cache.ts",
     "preview.ts",
     "preview-cli.ts",
-    "preview-exports.ts"
+    "preview-exports.ts",
+    "color.ts"
   ]
 }

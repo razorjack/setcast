@@ -183,3 +183,21 @@ test('missing ffprobe blocks resume without invalidating video encoding', async 
     },
   });
 });
+
+test('an unavailable adapter video filter fails encoding diagnostics before claiming video readiness', async () => {
+  const session = new RendererDiagnostics(fixture, { require: ['video'] });
+  await diagnoseCodecs(
+    session,
+    async (_binary, args) => {
+      if (args[0] === '-version') return 'fixture version';
+      if (args.includes('required-color-filter'))
+        throw new Error('No such filter: required-color-filter');
+      throw new Error('The required filter was not passed to the encoder probe');
+    },
+    'required-color-filter',
+  );
+  expect(session.report().features.video).toBe('unavailable');
+  expect(session.checks.find((check) => check.id === 'video.encode')?.message).toContain(
+    'No such filter: required-color-filter',
+  );
+});

@@ -1,0 +1,194 @@
+[
+  {
+    "adapter": "browser",
+    "file": "chunk-0.mp4",
+    "frames": "63",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "chunk-1.mp4",
+    "frames": "63",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "constellation-parallel.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "constellation-serial.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "field-parallel.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "field-serial.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "tunnel-parallel.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "browser",
+    "file": "tunnel-serial.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "chunk-0.mp4",
+    "frames": "63",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "chunk-1.mp4",
+    "frames": "63",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "constellation-parallel.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "constellation-serial.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "field-parallel.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "field-serial.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "tunnel-parallel.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  },
+  {
+    "adapter": "hardware",
+    "file": "tunnel-serial.mp4",
+    "frames": "45",
+    "metadata": {
+      "pix_fmt": "yuvj420p",
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "color_transfer": "iec61966-2-1",
+      "color_primaries": "bt709"
+    }
+  }
+]

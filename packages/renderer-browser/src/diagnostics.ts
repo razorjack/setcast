@@ -10,6 +10,7 @@ import {
   verifyDiagnosticImage,
   probeDiagnosticWebGL,
 } from '@setcast/core/node';
+import { SCREENSHOT_COLOR_FILTER } from './export/color.ts';
 import { capabilities } from './capabilities.ts';
 import { captureBrowserArgs } from './export/graphics.ts';
 import { captureWebp } from './export/webp.ts';
@@ -47,7 +48,16 @@ export async function diagnose(options: RendererDiagnosticOptions = {}) {
     },
     'Run `setcast browser-install` if Chromium is missing. Otherwise check browser system libraries, sandbox permissions or GPU drivers.',
   );
-  await diagnoseCodecs(session, (binary, args) => diagnosticCommand(binary, args, session.options));
+  await diagnoseCodecs(
+    session,
+    (binary, args) => diagnosticCommand(binary, args, session.options),
+    SCREENSHOT_COLOR_FILTER,
+  );
+  await diagnoseHardware(session);
+  return session.report();
+}
+
+async function diagnoseHardware(session: RendererDiagnostics) {
   await session.check(
     'hardware.encode',
     ['hardwareEncoding'],
@@ -60,5 +70,4 @@ export async function diagnose(options: RendererDiagnosticOptions = {}) {
       return { message: `Encoded a frame with ${encoder}.`, details: { encoder } };
     },
   );
-  return session.report();
 }

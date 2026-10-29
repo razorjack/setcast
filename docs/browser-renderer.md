@@ -328,3 +328,7 @@ Cache hits still compute input/runtime identity and encode one continuous master
 They do not skip browser startup or reuse audio. A fully cached job opens zero capture pages;
 progress reports reused frames. Successful repeat reuse and decoded equivalence are checked by
 `node packages/renderer-browser/bench/cache.ts --out NEW_DIRECTORY`.
+
+H.264 exports declare the [sRGB screenshot color contract](renderer-color.md), including separate
+YCbCr matrix, range, RGB primaries and transfer properties. Qualification and receiving-app limits
+are recorded with the retained color probe.

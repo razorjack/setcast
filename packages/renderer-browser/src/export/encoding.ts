@@ -9,6 +9,7 @@ import {
 } from '@setcast/core';
 import { runFfmpeg } from './ffmpeg.ts';
 import { hardwareArgs, type VideoEncoder } from './hardware.ts';
+import { SCREENSHOT_COLOR_FILTER } from './color.ts';
 
 export function exportEncoding(options: RenderOptions) {
   const {
@@ -70,6 +71,8 @@ export function videoArgs(
       ? ['-preset', encoding.x264Preset ?? 'medium']
       : hardwareArgs(encoder)),
     ...quality,
+    '-vf',
+    SCREENSHOT_COLOR_FILTER,
     '-pix_fmt',
     'yuv420p',
     '-video_track_timescale',
@@ -165,7 +168,21 @@ export async function encodeAudio(
 
 export function preflight(signal?: AbortSignal) {
   return runFfmpeg(
-    ['-f', 'lavfi', '-i', 'color=s=16x16', '-frames:v', '1', '-c:v', 'libx264', '-f', 'null', '-'],
+    [
+      '-f',
+      'lavfi',
+      '-i',
+      'color=s=16x16',
+      '-frames:v',
+      '1',
+      '-vf',
+      SCREENSHOT_COLOR_FILTER,
+      '-c:v',
+      'libx264',
+      '-f',
+      'null',
+      '-',
+    ],
     signal,
   );
 }
