@@ -20,6 +20,7 @@ import {
   projectAssets,
 } from '../packages/renderer-browser/src/export/identity.ts';
 import { measureLoad, verifyVideo, summarize } from './render-compare/measure.ts';
+import { measureProcesses } from './render-compare/process-monitor.ts';
 
 const controller = new AbortController();
 const HELP = `vp run render-compare [project] --out NEW_DIRECTORY
@@ -112,6 +113,7 @@ async function runArm(
   expectedFrames: number,
 ) {
   const file = join(config.out, `${index}-${renderer}.mp4`);
+  const processMonitoring = await measureProcesses();
   const monitoring = measureLoad();
   const started = performance.now();
   let firstFrameProgressSeconds: number | null = null;
@@ -126,6 +128,7 @@ async function runArm(
     });
     const wallSeconds = (performance.now() - started) / 1000;
     const observedLoad = monitoring.stop();
+    const processes = await processMonitoring.stop();
     if (result.frames !== expectedFrames)
       throw new Error(`Renderer returned ${result.frames} frames; expected ${expectedFrames}.`);
     const verification = await verifyVideo(
@@ -141,11 +144,13 @@ async function runArm(
       firstFrameProgressSeconds,
       result,
       load: observedLoad,
+      processes,
       verification,
       runtime,
     };
   } finally {
     monitoring.stop();
+    await processMonitoring.stop();
   }
 }
 
@@ -180,7 +185,7 @@ async function main() {
   await mkdir(config.out);
   const runs: Awaited<ReturnType<typeof runArm>>[] = [];
   const report = {
-    version: 2,
+    version: 3,
     config,
     identity,
     startedAt: new Date().toISOString(),

@@ -1,0 +1,16 @@
+{
+  "status": "available",
+  "error": null,
+  "samples": 5,
+  "intervals": 4,
+  "failedSamples": 0,
+  "seconds": 4.046842874999999,
+  "treeCpuSeconds": 1.95,
+  "externalCpuSeconds": 6.450000000001532,
+  "rssPeakBytes": 292274176,
+  "maxTreeCpuCores": 0.7194510584826521,
+  "maxExternalCpuCores": 2.6544471725732253,
+  "meanTreeCpuCores": 0.48185710694290307,
+  "meanExternalCpuCores": 1.5938350460422888,
+  "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+}

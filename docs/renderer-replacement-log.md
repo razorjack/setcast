@@ -313,3 +313,45 @@ Logs: `/tmp/setcast-runtime-input-*`. The current-upstream report, fault result 
 patch are retained in `docs/research/remotion-539-2026-10-29/`. The observation changes do not
 change capture or encoding decisions. Next: bounded process-tree measurements, because Node RSS
 and aggregate system CPU alone cannot attribute renderer resource use or competing load.
+
+Runtime-input observation and the current-upstream evidence were committed as `5d14808`.
+Process-tree monitoring now samples `ps` on macOS/Linux with a two-second subprocess timeout,
+one request in flight and no command arguments or process names. It separates sampled renderer
+CPU from other visible process CPU and records summed descendant RSS. `ps` is denied inside
+this sandbox; that becomes explicit unavailable data, not zero usage. Real monitoring checks
+therefore run with the same authorization needed by the browser benchmark. Windows remains
+unavailable for this sampler. RSS can double-count shared pages, and CPU deltas miss processes
+that start or exit between snapshots. External GPU/VideoToolbox services and OS work cannot be
+attributed to another project. These limits must remain in reports and benchmark interpretation.
+
+The process sampler's controlled child test passed (a 128 MiB allocation and busy loop were
+observed), and sandbox denial produced null/unavailable measurements. The first actual-export
+integration also decoded both 90-frame outputs, but its external CPU peak exceeded the machine's
+ten cores. That is a measurement anomaly, not credible instantaneous CPU utilization. Investigation
+is required before calling those CPU figures qualified; preserve the report at
+`examples/demo/out/process-monitor-integration-2026-10-29/report.json`. Memory samples and frame
+verification remain separate observations. No performance decision uses this diagnostic run.
+
+Source inspection found a timestamp-skew mechanism in the first sampler: asynchronous `ps`
+collects counters before its callback can run, but the sampler recorded the callback's later
+time. Synchronous bundling can delay that callback. The next sample can then show several
+seconds of accumulated CPU against a much shorter interval. A separate quiet ten-second counter
+check did not reproduce impossible deltas. The sampler now uses bounded synchronous `ps` and
+timestamps the midpoint of the call; its brief blocking overhead remains in export wall time.
+The first integration report remains invalid for CPU conclusions. A fresh integration run is
+checking the corrected sampler. This does not change renderer execution or output settings.
+
+Corrected process sampling passed the controlled child check, the two-adapter integration
+(90 fully decoded frames each), and `vp run ready` (614 tests in 103 files). Both the invalid
+asynchronous report and corrected report are committed under
+`docs/research/process-monitor-2026-10-29/`, along with the child-control measurements. Logs:
+`/tmp/setcast-process-monitor-ready-final.log` and `/tmp/setcast-process-monitor-integration-2.log`.
+These are harness checks, not timing qualification.
+
+Next implementation decision: persistent reuse starts with opt-in bounded encoded-chunk storage
+using the existing complete export identity. Identical successful exports should capture zero
+new frames. Any project/settings/runtime change initially invalidates all chunks; narrower edit
+dependencies need separate proof. Use a dedicated cache directory, atomic publication, checksums,
+a single-writer lock, eviction and inspect/clear operations. Keep interruption checkpoints separate.
+A cache hit still validates source identity and re-encodes one continuous master soundtrack; it
+does not imply browser-free startup or audio reuse.

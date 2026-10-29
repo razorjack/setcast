@@ -59,6 +59,7 @@ export default defineConfig({
       'scripts/export-acceptance/*.test.ts',
       'packages/renderer-browser/bench/endurance/*.test.ts',
       'scripts/beat-evaluation/*.test.ts',
+      'scripts/render-compare/*.test.ts',
     ],
   },
   run: {

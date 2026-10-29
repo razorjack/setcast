@@ -631,14 +631,16 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   render behavior. Keep observations separate from requested options: Remotion can decline
   parallel encoding. Browser identity/GL probes are opt-in and included in benchmark wall time;
   the WebGL renderer string does not measure GPU utilization. `render-compare` report version 2
-  retains these events. Record FFmpeg input format separately from output encoder; an input
+  and later versions retain these events. Record FFmpeg input format separately from output encoder; an input
   `-vcodec mjpeg` names the decoder. A browser-only probe reports capture as `not-observed`.
   Do not infer inter-chunk overlap from image-sequence encoding alone.
 
 - `vp run render-compare` compares the installed adapters with aligned loading-through-cleanup
   timing and fresh sessions, preserving project output settings. It hashes inputs, decodes outputs
   and retains failed/cancelled reports. System CPU includes concurrent projects; Node RSS is not
-  total memory. Runtime observation identifies active paths; the isolated 4.0.539 exercise is
+  total memory. Report version 3 adds bounded macOS/Linux process-tree sampling, with explicit
+  unavailable/partial states; summed RSS can double-count shared pages, and external services
+  are not attributable to another project. Runtime observation identifies active paths; the isolated 4.0.539 exercise is
   retained under `docs/research/remotion-539-2026-10-29`. Named POSIX-pool cleanup is not yet
   verified there; intact output and no temporary directories do not prove all-resource cleanup.
   See `docs/render-comparison.md`; do not treat its short harness checks as speed qualification.

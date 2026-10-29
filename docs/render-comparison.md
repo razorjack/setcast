@@ -65,8 +65,30 @@ utilization percentages. Node RSS excludes Chromium/FFmpeg and is not process-tr
 When another project runs end-to-end tests, retain that context with the report. Do not label a
 slow arm a renderer regression on these observations alone. Repeat suspicious pairs during a
 quiet interval, with the same settings and a new output directory. Do not selectively drop slow
-runs. Run correctness checks separately from performance measurements. The current command does
-not detect another project's tests, wait for idle, or attribute system CPU usage to that project.
+runs. Run correctness checks separately from performance measurements.
+
+Version 3 reports additionally sample Node and descendant processes once a second on macOS/Linux.
+The initial process snapshot precedes the measured export; periodic observation overhead is included.
+Each `ps` request is synchronous, has a two-second timeout and is timestamped at the midpoint
+of that call. This keeps process counters close to their sample time even while bundling blocks
+the Node event loop. Sampling blocks the benchmark process briefly and that cost is included.
+Delayed timer callbacks reduce sample frequency; they do not create concurrent requests. Reports retain only
+aggregate measurements, never process names or arguments:
+
+- Peak summed descendant RSS, including Node, Chromium and FFmpeg. Shared pages can be counted twice.
+- Mean and maximum sampled tree CPU, in cores (1 means one CPU-second per wall-second).
+- Mean and maximum other-visible-process CPU, also in cores, plus valid intervals and sample failures.
+
+CPU deltas require the same PID and process start identity in adjacent snapshots. New/exited or
+short-lived processes are missed, so sampled CPU can undercount work. OS, GPU and VideoToolbox
+services outside the process tree appear as external CPU even when rendering causes their work.
+External CPU therefore does not identify another project's tests. Permission failures, unsupported
+platforms (currently Windows), and malformed snapshots report `unavailable` or `partial`; absent
+memory/CPU values remain null. One successful snapshot can report RSS without a CPU interval.
+
+The command does not automatically wait for idle or discard results. Review external load alongside
+system CPU and elapsed times, repeat suspicious pairs after competing work settles, and retain both
+attempts. Neither process-tree membership nor an aggregate CPU threshold proves an idle machine.
 
 The initial two-pair, two-second exercise checked both adapter orders and decoded all four
 60-frame outputs. A separate SIGTERM exercise retained a cancelled report, an incorrect expected
@@ -77,7 +99,7 @@ These are harness checks under ordinary workstation load, not performance qualif
 
 This implements the first part of phase 0 in the [replacement plan](renderer-replacement-plan.md).
 It compares installed adapters only. The first [current-upstream exercise](research/remotion-539-2026-10-29/README.md) is retained. Chunk-overlap timing,
-process-tree resource measurements, controlled background-load attribution, the
+controlled background-load attribution beyond the sampled process tree, the
 full scene matrix, long workloads and matched-quality comparisons remain outstanding. Keep
 that scope explicit before using results to decide whether the replacement is faster.
 
