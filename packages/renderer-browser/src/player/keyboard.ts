@@ -3,7 +3,16 @@ import { useEffect, useRef } from 'react';
 export type Shortcuts = Record<string, (event: KeyboardEvent) => void>;
 
 /** Keys a focused control handles itself, such as Space on a button or arrows on a slider. */
-const CONTROL_KEYS = new Set([' ', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
+const CONTROL_KEYS = new Set([
+  ' ',
+  'Enter',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+]);
 
 /** Letters match either case; modified keys are left to the browser. */
 export function useShortcuts(shortcuts: Shortcuts) {

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { createRoot } from 'react-dom/client';
 import { framesWithinMix, type ResolvedProject } from '@setcast/core';
 import { usePreviewRevision } from './revision.ts';
 import { useFramePreview } from './frame-preview.ts';
+import { usePreviewPlayback, type PreviewPreferences } from './playback.ts';
 import { Inspector } from './inspector.tsx';
 import { PreviewViewport } from './viewport.tsx';
 import { PreviewTransport } from './transport.tsx';
@@ -14,6 +15,8 @@ export function mountPreview(element: HTMLElement) {
 function Preview() {
   const state = usePreviewRevision();
   const reference = useReference();
+  const position = useRef<number | null>(null);
+  const preferences = useRef<PreviewPreferences>({ mode: 'audio', volume: 1 });
   useEffect(() => {
     document.title = `${state.project?.title || 'Setcast'} · Browser preview`;
   }, [state.project?.title]);
@@ -38,6 +41,8 @@ function Preview() {
           key={`${state.revision}:${attempt}`}
           project={state.project}
           reference={reference}
+          position={position}
+          preferences={preferences}
         />
       ) : (
         <p className="sp-loading">Loading project…</p>
@@ -45,9 +50,20 @@ function Preview() {
     </main>
   );
 }
-function Workspace({ project, reference }: { project: ResolvedProject; reference: Reference }) {
+function Workspace({
+  project,
+  reference,
+  position,
+  preferences,
+}: {
+  project: ResolvedProject;
+  reference: Reference;
+  position: RefObject<number | null>;
+  preferences: RefObject<PreviewPreferences>;
+}) {
   const count = framesWithinMix(project.mix.duration, project.fps);
-  const session = useFramePreview(count, project.fps);
+  const frames = useFramePreview(count, project.fps, position);
+  const session = usePreviewPlayback(project, frames, preferences);
   return (
     <div
       className="sp-workspace"

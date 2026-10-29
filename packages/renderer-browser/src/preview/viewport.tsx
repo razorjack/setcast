@@ -41,7 +41,9 @@ export function PreviewViewport({
         />
         <ReferenceLayer project={project} reference={reference} />
       </div>
-      {session.busy && <div className="sp-preparing">Preparing frame {session.requested}</div>}
+      {session.busy && !session.playing && (
+        <div className="sp-preparing">Preparing frame {session.requested}</div>
+      )}
       {(session.error || loadError) && (
         <p className="sp-frame-error" role="alert">
           {session.error || loadError}

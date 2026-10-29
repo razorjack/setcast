@@ -6,14 +6,17 @@ export class PreviewQueue {
   private render: (frame: number) => Promise<unknown>;
   private ready: (frame: number) => void;
   private fail: (error: unknown) => void;
+  private reportIntermediate: boolean;
   constructor(
     render: (frame: number) => Promise<unknown>,
     ready: (frame: number) => void,
     fail: (error: unknown) => void,
+    reportIntermediate = false,
   ) {
     this.render = render;
     this.ready = ready;
     this.fail = fail;
+    this.reportIntermediate = reportIntermediate;
   }
   request(frame: number) {
     if (this.stopped) return;
@@ -31,7 +34,7 @@ export class PreviewQueue {
         const frame = this.pending;
         this.pending = null;
         await this.render(frame);
-        if (!this.stopped && this.pending === null) this.ready(frame);
+        if (!this.stopped && (this.reportIntermediate || this.pending === null)) this.ready(frame);
       }
     } catch (error) {
       this.pending = null;

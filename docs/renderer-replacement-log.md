@@ -402,3 +402,56 @@ inspection updates even while the iframe paints. Audible preview needs explicit 
 reporting, audio cleanup on project reload/retry, and exact settled inspection after pause/seek.
 Keep export-driven absolute-frame preparation and bounded media decoding; do not record real-time
 playback as an export. This is a design observation, not an implemented preview change.
+
+## Audible independent preview, implemented 2026-10-29
+
+Preview now plays the master audio through the existing finite Transport and requests absolute
+frames from the export driver. One active frame plus one latest pending request bounds work when
+rendering is slower than playback. The queue can report intermediate completed frames, so the
+inspector continues updating under load. Pause and explicit seek settle on the exact requested
+frame. Silent sequential inspection remains available, including after playback-media failure.
+
+Audio elements are paused, detached and cleared on project reload and frame retry. The workspace
+parent retains the latest requested frame, playback mode and volume across those in-page resets.
+A full page reload uses the frame URL and default audio preferences. Continuous playback writes
+the URL at most once per second; explicit seek/pause writes immediately. Audio errors and frame
+preparation errors remain separate. Home/End on focused selectors and sliders retain their native
+control behavior instead of seeking the mix.
+
+Real-browser coverage deliberately slows frame preparation by 120 ms. Audio keeps advancing,
+requests skip frames, and pause settles the frame corresponding to the audio clock. Checks also
+cover finite end, exact seek, silent playback, active-audio reload and cleanup, preference retention,
+media-only 404 recovery, reference overlays, video/background readiness, CLI file watching with
+Remotion imports forbidden, and the read-only server. Desktop and narrow screenshots were inspected.
+Physical speaker/display latency and audio-device routing are not qualified by these tests.
+
+The expanded end test initially waited only for HTMLMediaElement.ended and timed out with the
+preview already paused on its correct final frame. Transport can pause at finite mix duration
+before the browser exposes ended. The check now requires paused audio at finite duration (or
+native ended) plus the exact last frame. The failed test is retained locally in
+`/tmp/setcast-audible-preview-final.log` and
+`examples/demo/out/preview-check/audio-end-wait-failure.png`; it was a harness assumption, not a
+product fix. Subsequent full checks passed.
+
+A separate CLI bug was discovered: `options.renderer ?? initial.config.renderer === 'browser'`
+treats explicit `--renderer remotion` as a truthy string and opens browser preview. Compare the
+parenthesized selected renderer with browser. A subprocess regression test covers both configured
+defaults and both explicit overrides (six combinations) using stubbed adapter entry points.
+This fix is committed separately from audible preview.
+
+Final validation: `vp run ready` passed 627 tests in 106 files, formatting, lint, type checking,
+ban-check and the decoded smoke export. Both exporter acceptance suites and installed-package
+smoke with `--browser` passed. Final keyboard/playback integration passed. Local logs:
+`/tmp/setcast-audible-ready-commit.log`, `/tmp/setcast-audible-preview-keyboard.log`,
+`/tmp/setcast-audible-remotion-acceptance.log`, `/tmp/setcast-audible-browser-acceptance.log` and
+`/tmp/setcast-audible-package.log`.
+
+Pre-commit review caught an accidental working-copy overwrite of this log with AGENTS.md content.
+The committed log was restored in full, then this section reconstructed from retained code,
+validation logs and handoff notes. No committed research was lost. Check document diffs as well as
+code before committing subsequent work.
+
+Next: musical navigation and range selection, then a narrowly scoped local export-job API with
+explicit lifecycle ownership. Audible preview does not yet provide export controls. Current-upstream
+matched-quality performance, resource-aware scheduling, selective reuse, distribution independence
+and final platform/default migration remain incomplete.

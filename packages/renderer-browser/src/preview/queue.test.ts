@@ -9,6 +9,23 @@ function pending() {
   return { promise, resolve };
 }
 describe('preview seeks', () => {
+  test('audio-clock mode reports completed frames without growing the pending queue', async () => {
+    const first = pending();
+    const last = pending();
+    const render = vi.fn().mockReturnValueOnce(first.promise).mockReturnValueOnce(last.promise);
+    const ready = vi.fn();
+    const queue = new PreviewQueue(render, ready, vi.fn(), true);
+    queue.request(0);
+    queue.request(3);
+    queue.request(12);
+    first.resolve();
+    await first.promise;
+    expect(ready.mock.calls).toEqual([[0]]);
+    expect(render.mock.calls).toEqual([[0], [12]]);
+    last.resolve();
+    await last.promise;
+    expect(ready.mock.calls).toEqual([[0], [12]]);
+  });
   test('serializes rendering and publishes only the newest requested frame', async () => {
     const first = pending();
     const last = pending();

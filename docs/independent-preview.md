@@ -1,7 +1,7 @@
 # Independent renderer preview
 
-`setcast preview --renderer browser` opens an exact-frame inspector using the browser export
-renderer. Remotion Studio remains the default. A project with `renderer: browser` selects the
+`setcast preview --renderer browser` opens audible playback and an exact-frame inspector using
+the browser export renderer. Remotion Studio remains the default. A project with `renderer: browser` selects the
 independent preview without a command-line override.
 
 ```sh
@@ -19,16 +19,22 @@ when diagnosing a rendering regression.
 
 - The timeline and frame-number input seek to an exact integer frame. Arrow keys step one frame;
   Home and End select the first and last valid frame. Shortcuts do not intercept text editing.
-- Play frames, or Space, advances sequentially with no audio. It waits for each frame to become
-  ready, so complex scenes can run slower than the project frame rate. Use `setcast play` for
-  audio-synchronized playback.
+- Play mix, or Space, starts the master audio. Its media clock drives absolute frame requests;
+  slow scenes skip intermediate requests instead of slowing the soundtrack. Completed-frame
+  details can lag the audio while rendering is busy. Pause waits for the frame at the paused
+  audio position; frame navigation also pauses and seeks audio. Volume affects preview only.
+- Choose Frame sequence (silent) to advance sequentially through every frame. It waits for
+  readiness, so complex scenes can run slower than the project frame rate. This inspection mode
+  remains available if the browser cannot play the audio; Retry frame recreates both media and driver.
 - The inspector shows the completed frame's time, bounded PCM-window count, audio features and
   64 frequency bins, current credits and section, resolved theme, and modulation values.
 - Readiness reports the preparation phase and outstanding asset holds. Timings separate audio
   preparation, frame resolution, React commit and asset/paint readiness. Failed frames show an
   error; Retry frame recreates the isolated driver. Requests time out after 60 seconds.
-- The URL retains `?frame=N`, including across reloads. Invalid or out-of-range positions clamp
-  to the finite mix. The inspector identifies its completed frame while another is preparing.
+- The URL retains `?frame=N`. Explicit pauses/seeks update it immediately; continuous playback
+  updates it once per second, so a full page refresh can return up to a second earlier. In-page
+  project reloads and retries retain the latest requested frame. Invalid or out-of-range positions
+  clamp to the finite mix. The inspector identifies its completed frame while another is preparing.
 
 ## Reference comparison
 
@@ -45,7 +51,8 @@ This is a visual comparison tool, not a cross-browser pixel-equivalence guarante
 
 The CLI watches resolved project inputs, including YAML, theme/CSS and media. Valid edits publish
 one new project revision and recreate its frame driver at the selected frame, clamped to the new
-duration. Playback pauses on reload. Invalid edits display their errors and retain the last valid
+duration. Playback pauses on reload; the old audio element is stopped and removed. Volume and playback mode survive in-page
+reloads and retries. Invalid edits display their errors and retain the last valid
 project; fixing the files reloads automatically. Asset bytes remain live files, so replacing or
 removing a referenced asset can still make a retained project fail to render.
 
@@ -58,10 +65,14 @@ finite recorded projects; `setcast live` remains the mixer-input workflow.
 The composition renders in a fixed-size iframe, isolated from the inspector's CSS. It uses the
 same driver, bounded audio windows, explicit video-frame decoder and readiness handshake as
 browser export. One frame request runs at a time; intermediate queued seeks are discarded in
-favor of the latest request. A failed driver is replaced before reuse.
+favor of the latest request. During audio playback, the inspector receives each completed frame
+even when a newer request is pending. This avoids starving inspection updates on slow scenes.
+A failed driver is replaced before reuse. The audio element plays the master independently of
+the export driver's bounded analysis windows; no second PCM analyzer is created for playback.
 
-`node packages/renderer-browser/bench/preview.ts` checks actual controls, finite playback, backward
-seeks, export-driver pixel agreement (within one channel level from iframe compositing), audio
+`node packages/renderer-browser/bench/preview.ts` checks actual controls, audible and silent playback,
+unmuted media-clock progress, volume, deliberately slow frame preparation, exact pause/seek,
+finite endings, audio cleanup and failure recovery, backward seeks, export-driver pixel agreement (within one channel level from iframe compositing), audio
 inspection, video loops, reference imports, project updates, failed-asset retry and read-only
 endpoints. It also runs the CLI with Remotion imports forbidden, edits its YAML, verifies recovery
 and checks clean shutdown. Screenshots go to `examples/demo/out/preview-check/`.
@@ -71,8 +82,9 @@ Installed-package smoke bundles both preview entries. Shared export-driver chang
 both exporter acceptance suites and the same-page frame-order bench.
 
 Further work: live hardware and other operating systems remain separate qualification tasks.
-Audio-synchronized exact preview, export controls, numeric image-difference metrics and GPU timing
-are possible additions after this inspection workflow is qualified on real projects.
+Export controls, musical navigation, numeric image-difference metrics and GPU timing remain
+future additions. Audible playback checks verify browser media state and frame selection, not
+physical speaker/display latency or output routing.
 
 Validated locally: `vp run ready` (467 tests, dependency ban and Remotion smoke), both exporter
 acceptance suites, the preview and frame-order Chromium benches, and `vp run package-smoke

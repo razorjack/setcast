@@ -613,6 +613,14 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Independent preview plays the master through the existing `Transport` while requesting absolute
+  frames from the export driver. Audio-clock requests may skip frames; the queue remains one active
+  plus one latest pending request and reports completed frames during playback. Pause/seek settles
+  an exact frame. Silent sequence inspection remains available after playback-media failure. Stop
+  and remove audio on reload/retry; preserve the latest requested frame in the workspace parent.
+  Throttle continuous history writes rather than updating the URL at frame rate. Physical output
+  latency and routing are separate from browser-clock validation.
+
 - Persistent browser export reuse is opt-in through `render --cache <directory>` (default 2 GiB,
   `--cache-size` in MiB), separate from `--resume`. Cache identity initially includes the complete
   project/settings/runtime/host and all tracked assets. Only destination-path changes can reuse

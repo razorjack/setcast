@@ -1,11 +1,11 @@
-import type { FramePreview } from './frame-preview.ts';
+import type { MusicalPreview } from './playback.ts';
 import { useShortcuts } from '../player/keyboard.ts';
 
-type TransportProps = { session: FramePreview; count: number; fps: number };
+type TransportProps = { session: MusicalPreview; count: number; fps: number };
 export function PreviewTransport({ session, count, fps }: TransportProps) {
   const { requested, seek, playing, setPlaying, error } = session;
   const toggle = () => {
-    if (!error) setPlaying(!playing);
+    if (!error && (session.mode === 'frames' || !session.audioError)) setPlaying(!playing);
   };
   useShortcuts({
     ArrowLeft: () => seek(requested - 1),
@@ -30,23 +30,20 @@ export function PreviewTransport({ session, count, fps }: TransportProps) {
         <FrameNavigation session={session} count={count} toggle={toggle} />
         <FramePosition session={session} count={count} fps={fps} />
       </div>
+      <PlaybackOptions session={session} />
       <p>
-        Silent frame inspection. ← / → step · Home / End jump · Space plays. Use setcast play for
-        audio.
+        {session.mode === 'audio'
+          ? 'Audio drives playback; preview may skip frames. Pause for exact inspection.'
+          : 'Silent playback waits for every frame.'}{' '}
+        ← / → step · Home / End jump · Space plays.
       </p>
     </footer>
   );
 }
-function FrameNavigation({
-  session,
-  count,
-  toggle,
-}: {
-  session: FramePreview;
-  count: number;
-  toggle: () => void;
-}) {
+type NavigationProps = Pick<TransportProps, 'session' | 'count'> & { toggle: () => void };
+function FrameNavigation({ session, count, toggle }: NavigationProps) {
   const { requested, seek, playing, error } = session;
+  const playLabel = `${playing ? 'Pause' : 'Play'} ${session.mode === 'audio' ? 'mix' : 'frames'}`;
   return (
     <>
       <button aria-label="First frame" disabled={requested === 0} onClick={() => seek(0)}>
@@ -61,10 +58,14 @@ function FrameNavigation({
       </button>
       <button
         className="sp-play"
-        disabled={Boolean(error) || requested === count - 1}
+        disabled={
+          Boolean(error) ||
+          (session.mode === 'audio' && Boolean(session.audioError)) ||
+          (!playing && (session.busy || requested === count - 1))
+        }
         onClick={toggle}
       >
-        {playing ? 'Pause frames' : 'Play frames'}
+        {playLabel}
       </button>
       <button
         aria-label="Next frame"
@@ -105,5 +106,41 @@ function FramePosition({ session, count, fps }: TransportProps) {
         {(session.requested / fps).toFixed(3)} s <span>/ {((count - 1) / fps).toFixed(3)} s</span>
       </span>
     </>
+  );
+}
+
+function PlaybackOptions({ session }: { session: MusicalPreview }) {
+  return (
+    <div className="sp-playback-options">
+      <label>
+        Playback{' '}
+        <select
+          aria-label="Playback mode"
+          value={session.mode}
+          onChange={(event) =>
+            session.setMode(event.target.value === 'frames' ? 'frames' : 'audio')
+          }
+        >
+          <option value="audio">With audio</option>
+          <option value="frames">Frame sequence (silent)</option>
+        </select>
+      </label>
+      <label>
+        Volume{' '}
+        <input
+          aria-label="Preview volume"
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          value={session.volume}
+          onChange={(event) => session.setVolume(event.target.valueAsNumber)}
+        />
+      </label>
+      {session.audioWaiting && <span role="status">Buffering audio…</span>}
+      {session.audioError && (
+        <p role="alert">{session.audioError} Silent frame inspection remains available.</p>
+      )}
+    </div>
   );
 }

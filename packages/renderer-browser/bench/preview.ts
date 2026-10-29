@@ -37,16 +37,19 @@ try {
     element.scrollTop = 0;
   });
   await page.screenshot({ path: join(out, 'desktop.png') });
+  await checkAudiblePlayback();
   await checkPlayback();
   await checkReload();
+  await checkAudioReload();
   await checkVideo();
   await checkDelayedAsset();
+  await checkAudioFailure();
   await checkFailure();
   await checkPreviewCli(directory);
   assert.equal(errors.length, 0, errors.join('\n'));
   assert.equal((await fetch(new URL('/save', server.url), { method: 'POST' })).status, 405);
   process.stdout.write(
-    'Browser preview: PASS (frame parity, seeks, playback, reference, reload, video, failure recovery, read-only server, CLI watch without Remotion)\n',
+    'Browser preview: PASS (frame parity, audio clock with slow frames, exact pause/seek, silent playback, audio cleanup/failure, reference, reload, video, read-only server, CLI watch without Remotion)\n',
   );
 } catch (error) {
   await page.screenshot({ path: join(out, 'failure.png') });
@@ -119,6 +122,7 @@ async function checkReference() {
   await page.locator('style[data-preview-check]').evaluate((style) => style.remove());
 }
 async function checkPlayback() {
+  await page.getByLabel('Playback mode').selectOption('frames');
   await seek(92);
   await page.getByRole('button', { name: 'Play frames', exact: true }).click();
   await ready(94);
@@ -129,6 +133,79 @@ async function checkPlayback() {
   await page.getByLabel('Frame timeline').fill('69');
   await page.getByLabel('Frame timeline').fill('22');
   await ready(22);
+  await page.getByLabel('Playback mode').focus();
+  await page.keyboard.press('Home');
+  await page.keyboard.press('End');
+  assert.equal(await page.locator('.sp-workspace').getAttribute('data-requested'), '22');
+  await page.getByLabel('Preview volume').focus();
+  await page.keyboard.press('End');
+  assert.equal(await page.locator('.sp-workspace').getAttribute('data-requested'), '22');
+}
+
+async function checkAudiblePlayback() {
+  await seek(21);
+  await page.getByLabel('Preview volume').fill('0.4');
+  const media = page.locator('audio[data-setcast-preview-audio]');
+  assert.deepEqual(
+    await media.evaluate((audio: HTMLAudioElement) => ({
+      paused: audio.paused,
+      muted: audio.muted,
+      volume: audio.volume,
+    })),
+    { paused: true, muted: false, volume: 0.4 },
+  );
+  await delayPreviewFrames();
+  await page.getByRole('button', { name: 'Play mix', exact: true }).click();
+  await page.waitForFunction(() => {
+    const audio = document.querySelector<HTMLAudioElement>('audio[data-setcast-preview-audio]')!;
+    return !audio.paused && audio.currentTime > 1.5;
+  });
+  await page.getByRole('button', { name: 'Pause mix', exact: true }).click();
+  const at = await media.evaluate((audio: HTMLAudioElement) => Math.floor(audio.currentTime * 30));
+  await ready(at);
+  assert.equal(await media.evaluate((audio: HTMLAudioElement) => audio.paused), true);
+  assert.equal(new URL(page.url()).searchParams.get('frame'), String(at));
+  const rendered = await page.evaluate(() => {
+    const driver = document.querySelector('iframe')!.contentWindow!.setcastExport!;
+    return (driver as typeof driver & { previewTestFrames: number[] }).previewTestFrames;
+  });
+  assert(
+    rendered.some((frame, index) => index > 0 && frame > rendered[index - 1]! + 1),
+    'Slow preview did not skip frames to follow audio',
+  );
+  await seek(12);
+  assert.equal(await media.evaluate((audio: HTMLAudioElement) => audio.currentTime), 12 / 30);
+  await page.reload();
+  await ready(12);
+  assert.equal(await page.locator('audio[data-setcast-preview-audio]').count(), 1);
+  await seek(92);
+  await page.getByRole('button', { name: 'Play mix', exact: true }).click();
+  await page.waitForFunction((duration) => {
+    const audio = document.querySelector<HTMLAudioElement>('audio[data-setcast-preview-audio]')!;
+    return audio.paused && (audio.ended || audio.currentTime >= duration);
+  }, project.mix.duration / 1_000_000);
+  await ready(94);
+  await seek(12);
+}
+
+async function checkAudioFailure() {
+  await page.route('**/assets/tone.wav', (route) =>
+    route.request().resourceType() === 'media'
+      ? route.fulfill({ status: 404, body: 'missing audio' })
+      : route.continue(),
+  );
+  await page.reload();
+  await page.getByRole('alert').filter({ hasText: 'Cannot play tone.wav' }).waitFor();
+  await seek(7);
+  await page.getByLabel('Playback mode').selectOption('frames');
+  assert(await page.getByRole('button', { name: 'Play frames', exact: true }).isEnabled());
+  await page.unroute('**/assets/tone.wav');
+  await page.getByRole('button', { name: 'Retry frame' }).click();
+  await ready(7);
+  assert.equal(
+    await page.getByRole('alert').filter({ hasText: 'Cannot play tone.wav' }).count(),
+    0,
+  );
 }
 async function checkReload() {
   server.report('Invalid project edit');
@@ -145,6 +222,40 @@ async function checkReload() {
     'Narrow preview overflows',
   );
   await page.setViewportSize({ width: 1440, height: 900 });
+}
+
+async function checkAudioReload() {
+  await page.getByLabel('Playback mode').selectOption('audio');
+  await page.getByLabel('Preview volume').fill('0.35');
+  await seek(0);
+  const old = await page.locator('audio[data-setcast-preview-audio]').elementHandle();
+  assert(old);
+  await page.getByRole('button', { name: 'Play mix', exact: true }).click();
+  await page.waitForFunction(
+    () =>
+      document.querySelector<HTMLAudioElement>('audio[data-setcast-preview-audio]')!.currentTime >
+      0.3,
+  );
+  const before = Number(await page.locator('.sp-workspace').getAttribute('data-requested'));
+  server.update({ ...project, title: 'Audio reload' });
+  await page.getByRole('heading', { name: 'Audio reload', exact: true }).waitFor();
+  assert(
+    await old.evaluate((element) => !element.isConnected && (element as HTMLAudioElement).paused),
+    'Reload left the previous audio playing',
+  );
+  const after = Number(await page.locator('.sp-workspace').getAttribute('data-requested'));
+  assert(after >= before, 'Reload lost the live preview position');
+  await ready(after);
+  assert.equal(await page.locator('audio[data-setcast-preview-audio]').count(), 1);
+  assert.equal(await page.getByLabel('Preview volume').inputValue(), '0.35');
+  assert.equal(await page.getByLabel('Playback mode').inputValue(), 'audio');
+  assert(
+    await page
+      .locator('audio[data-setcast-preview-audio]')
+      .evaluate((element) => (element as HTMLAudioElement).paused),
+  );
+  await old.dispose();
+  await seek(22);
 }
 async function checkVideo() {
   createVideo(join(directory, 'loop.mp4'));
@@ -223,4 +334,20 @@ async function checkDelayedAsset() {
   }
   await ready(7);
   await page.unroute('**/assets/art.svg');
+}
+
+async function delayPreviewFrames() {
+  await page.evaluate(() => {
+    const driver = document.querySelector('iframe')!.contentWindow!.setcastExport!;
+    const original = driver.frame.bind(driver);
+    const requested: number[] = [];
+    Object.assign(driver, {
+      previewTestFrames: requested,
+      frame: async (frame: number) => {
+        await new Promise((done) => setTimeout(done, 120));
+        requested.push(frame);
+        return original(frame);
+      },
+    });
+  });
 }

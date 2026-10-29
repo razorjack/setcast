@@ -26,9 +26,7 @@ export async function browserPreview(
     },
   );
   log.info(`Open ${server.url} in your browser (Ctrl+C to stop)`);
-  log.info(
-    'Exact frame inspection with automatic project reload. Use setcast play for audio playback.',
-  );
+  log.info('Audible playback and exact frame inspection with automatic project reload.');
   try {
     await untilStopped();
   } finally {

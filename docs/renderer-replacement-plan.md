@@ -55,7 +55,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |
 | Resume completed chunks | Supported on `render` | Explicitly rejected |
-| Preview | Exact-frame inspector, silent sequential playback | Remotion Studio |
+| Preview | Audible playback, exact-frame inspector and silent sequential playback | Remotion Studio |
 | Runtime | Pinned Playwright Chromium, system FFmpeg for video | Remotion Chrome Headless Shell and packaged binaries |
 
 Both adapters already preserve absolute frame ranges and encode a continuous master soundtrack
@@ -184,7 +184,7 @@ as wall time. FFT improvements already benefit both exporters and do not prove e
   including concurrency and runtime/host identity, and removes checkpoints after success. It is
   interruption recovery, not a persistent cache for revisions or cross-machine artifacts.
 - [Preview](independent-preview.md) already shares the exact export driver, supports frame
-  inspection, project reload and reference overlays. Its playback is silent; it cannot launch
+  inspection, project reload and reference overlays. It now supports audible playback and silent sequential inspection; it cannot launch
   exports. Playback via `setcast play` exists separately and uses approximate running video sync.
 
 ## Contracts to preserve

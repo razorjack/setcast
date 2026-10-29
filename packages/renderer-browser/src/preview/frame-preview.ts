@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import type { RenderFrame } from '@setcast/core/react';
 import type { ExportDriver } from '../export/scene.tsx';
 import type { FrameTimings } from '../export/metrics.ts';
@@ -9,12 +9,19 @@ export interface Inspection {
   timings?: FrameTimings;
   windows: number;
 }
-export function useFramePreview(count: number, fps: number) {
+export function useFramePreview(count: number, fps: number, position: RefObject<number | null>) {
   const [driver, setDriver] = useState<ExportDriver | null>(null);
   const [requested, setRequested] = useState(() =>
-    previewFrame(Number(new URLSearchParams(location.search).get('frame')), count),
+    previewFrame(
+      position.current ?? Number(new URLSearchParams(location.search).get('frame')),
+      count,
+    ),
   );
   const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    position.current = requested;
+  }, [position, requested]);
+  useFrameUrl(requested);
   const { inspection, error, busy } = useFrameRequest(driver, requested);
   useEffect(() => {
     if (error) setPlaying(false);
@@ -22,8 +29,11 @@ export function useFramePreview(count: number, fps: number) {
   useFramePlayback({ playing, busy, error, requested, count, fps, setPlaying, setRequested });
   const seek = (frame: number) => {
     setPlaying(false);
-    setRequested(previewFrame(frame, count));
+    const next = previewFrame(frame, count);
+    setRequested(next);
+    frameUrl(next);
   };
+  const request = useCallback((frame: number) => setRequested(previewFrame(frame, count)), [count]);
   return {
     driver,
     setDriver,
@@ -31,12 +41,32 @@ export function useFramePreview(count: number, fps: number) {
     inspection,
     error,
     playing,
-    setPlaying,
+    setPlaying: (value: boolean) => {
+      setPlaying(value);
+      if (!value) frameUrl(requested);
+    },
     busy: busy || inspection?.frame.frame !== requested,
     seek,
+    request,
   };
 }
 export type FramePreview = ReturnType<typeof useFramePreview>;
+
+function frameUrl(frame: number) {
+  const url = new URL(location.href);
+  url.searchParams.set('frame', String(frame));
+  if (url.href !== location.href) history.replaceState(null, '', url);
+}
+
+/** Continuous playback must not call the browser history API at the project frame rate. */
+function useFrameUrl(frame: number) {
+  const latest = useRef(frame);
+  latest.current = frame;
+  useEffect(() => {
+    const timer = setInterval(() => frameUrl(latest.current), 1000);
+    return () => clearInterval(timer);
+  }, []);
+}
 
 export function useReadiness(driver: ExportDriver | null) {
   const [status, setStatus] = useState({ phase: 'initializing', labels: [] as string[] });
@@ -115,6 +145,7 @@ function useFrameRequest(driver: ExportDriver | null, requested: number) {
         setError(String(error));
         setBusy(false);
       },
+      true,
     );
     return () => {
       queue.current?.close();
@@ -126,9 +157,6 @@ function useFrameRequest(driver: ExportDriver | null, requested: number) {
     if (!driver) return;
     setBusy(true);
     queue.current!.request(requested);
-    const url = new URL(location.href);
-    url.searchParams.set('frame', String(requested));
-    history.replaceState(null, '', url);
   }, [driver, requested]);
   return { inspection, error, busy };
 }
