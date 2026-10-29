@@ -25,7 +25,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('preview');
   const dependencies = new Set<string>();
   const initial = await load(options.dir, options.theme, dependencies);
-  if (options.renderer ?? initial.config.renderer === 'browser') {
+  if ((options.renderer ?? initial.config.renderer) === 'browser') {
     await browserPreview(initial, dependencies, options);
     return;
   }
