@@ -140,8 +140,9 @@ pending asset; a separate watchdog bounds requests that stall during audio decod
 
 Background video uses Mediabunny to decode the requested frame into an image. It does not
 use the approximate native-video synchronization used by real-time playback. Chunk boundaries
-use core's shared range math. FFmpeg encodes one continuous master soundtrack, then muxes it
-with the silent video chunks. No full-set AudioFeatures sidecar is required.
+use core's shared range math. FFmpeg encodes one continuous master soundtrack alongside video
+capture, then muxes it with the silent video chunks after both finish. A failure cancels both
+tasks and waits for their cleanup before removing temporary files. No full-set AudioFeatures sidecar is required.
 
 ## Verification and comparison
 
@@ -194,7 +195,8 @@ node packages/renderer-browser/bench/export.ts examples/demo --seconds 10 --at 3
 This writes profile.mp4 and report.json. The browser adapter's optional `onMetrics` callback
 reports audio preparation, frame resolution, React commit, readiness, screenshot capture and
 captured bytes per frame. Separate measurements cover encoder write backpressure, final flush
-and muxing. Summed worker durations overlap and are not wall time. Encoder writes measure waiting
+master-audio encoding (`audio-encode`) and muxing. Mux timing now excludes audio encoding; older
+reports included it. Summed worker and audio durations overlap and are not wall time. Encoder writes measure waiting
 on the pipe, not encoder CPU. Audio timings exclude initial decoder setup. Peak Node RSS excludes
 Chromium and FFmpeg; use process-level tools for total memory.
 

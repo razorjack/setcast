@@ -6,11 +6,11 @@ export interface FrameTimings {
 }
 export type BrowserMetric =
   | ({ kind: 'frame'; frame: number; captureMs: number; bytes: number } & FrameTimings)
-  | { kind: 'encoder-write' | 'encoder-finish' | 'mux'; milliseconds: number };
+  | { kind: 'encoder-write' | 'encoder-finish' | 'audio-encode' | 'mux'; milliseconds: number };
 export type MetricsReport = (metric: BrowserMetric) => void;
 
 export async function measure<T>(
-  kind: 'encoder-write' | 'encoder-finish' | 'mux',
+  kind: 'encoder-write' | 'encoder-finish' | 'audio-encode' | 'mux',
   report: MetricsReport | undefined,
   task: () => Promise<T>,
 ): Promise<T> {

@@ -141,3 +141,40 @@ cancellation/resume checks and the required baseline before committing.
 Validation after restoring production: `vp run ready` passed all 595 tests, formatting, lint,
 types, ban-check and smoke. Log: `/tmp/setcast-video-research-ready.log`. The retained candidate
 fails qualification intentionally; it is archived as a patch and is not active production code.
+
+## Continuous audio overlap, implementation in progress
+
+The working exporter starts video capture and one continuous AAC master encode together. Assembly
+runs only after both finish. A failure in either task aborts its sibling and waits for cleanup
+before the temporary directory is removed. External cancellation reaches both, and a pre-aborted
+job starts neither. Rounded start time, duration, padding, stereo AAC settings and final stream-copy
+assembly are unchanged. Resumed video chunks still share one newly encoded continuous soundtrack.
+
+A dedicated track coordinator has tests for concurrent start, waiting for both successes, either
+failure cancelling its sibling while waiting for cleanup, and external/pre-start cancellation.
+The new `audio-encode` metric is separate from `mux`; historical mux timings included audio encoding
+and therefore are not directly comparable to the new mux-only timing.
+
+Audio-overlap validation passed: 599 tests in 100 files, ban-check, smoke, both export-acceptance
+suites and the resume integration harness. Resume covered cancelled jobs, corrupt chunks,
+changed assets/configuration/encoding, and reuse of all 75 cached frames. Logs are
+`/tmp/setcast-tracks-{ready,remotion-acceptance,browser-acceptance,resume}.log`.
+
+A separate 90-frame demo export requested 30.015–33.015 s and retained the shared rounded-range
+math. The continuous audio encode completed at 338 ms while video preparation was still running
+(zero captured frames); mux completed after all 90 frames at 3.140 s. Full decode/stream checks
+passed. This confirms scheduling and metrics, not a measured before/after speedup. The report is
+`examples/demo/out/audio-overlap-2026-10-29/report.json`.
+
+Final audio-overlap baseline also passed after simplifying the assembly parameters:
+`/tmp/setcast-tracks-ready-final.log`. Production frame rendering remains unchanged.
+
+## Hardware encoding investigation, next
+
+The installed FFmpeg lists `h264_videotoolbox` with `yuv420p` support and `allow_sw` defaulting to
+false. The [upstream VideoToolbox source documentation](https://www.ffmpeg.org/doxygen/trunk/videotoolboxenc_8c.html)
+confirms that switch. A required-hardware route should set it explicitly and probe a real encode,
+not rely on an encoder name being listed. [FFmpeg's NVENC documentation](https://www.ffmpeg.org/ffmpeg-codecs.html#NVENC-encoders)
+notes that available options depend on build headers and runtime support depends on GPU/driver;
+it also supports system-memory frames. Use the installed encoder help and a bounded actual encode
+probe for the supported route. Do not infer device availability from a compiled-in codec.

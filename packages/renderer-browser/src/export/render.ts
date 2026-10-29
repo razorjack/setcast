@@ -13,7 +13,7 @@ import {
 import { prepareFrame, withCapturePages, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
 import { validateGraphicsBackend } from './graphics.ts';
-import { assemble, exportEncoding, videoArgs, preflight } from './encoding.ts';
+import { assemble, encodeAudio, exportEncoding, videoArgs, preflight } from './encoding.ts';
 import { measure, type MetricsReport } from './metrics.ts';
 import { ffmpeg } from './ffmpeg.ts';
 import { computeExportIdentity } from './identity.ts';
@@ -24,6 +24,7 @@ import {
   type ChunkStore,
 } from './checkpoint.ts';
 import { pipeline } from './pipeline.ts';
+import { renderTracks } from './tracks.ts';
 
 export type BrowserRenderOptions = RenderOptions & {
   onMetrics?: MetricsReport;
@@ -81,17 +82,18 @@ async function renderJob(job: RenderJob) {
 function renderOutput(job: RenderJob, chunks: ChunkStore) {
   const { project, options, ranges, frames } = job;
   return atomicOutput(options.out, options.signal, async (output, directory) => {
-    await renderChunks(job, chunks, directory);
+    const assembly = { directory, output, ranges, duration: frames / project.fps };
+    await renderTracks(options.signal, {
+      video: (signal) =>
+        renderChunks({ ...job, options: { ...options, signal } }, chunks, directory),
+      audio: (signal) =>
+        measure('audio-encode', options.onMetrics, () =>
+          encodeAudio(project, { ...options, signal }, assembly),
+        ),
+    });
     await chunks.assertInputsUnchanged();
     encodeProgress(options, frames, 0);
-    await measure('mux', options.onMetrics, () =>
-      assemble(project, options, {
-        directory,
-        output,
-        ranges,
-        duration: frames / project.fps,
-      }),
-    );
+    await measure('mux', options.onMetrics, () => assemble(project, options, assembly));
     await chunks.assertInputsUnchanged();
     encodeProgress(options, frames, 1);
     return { file: resolve(options.out), frames, durationSeconds: frames / project.fps };

@@ -85,7 +85,6 @@ interface Assembly {
 
 export async function assemble(project: ResolvedProject, options: RenderOptions, job: Assembly) {
   const audio = join(job.directory, 'master.mp4');
-  await encodeAudio(project, options, audio, job);
   const manifest = join(job.directory, 'chunks.txt');
   await writeFile(
     manifest,
@@ -127,11 +126,10 @@ export async function assemble(project: ResolvedProject, options: RenderOptions,
   );
 }
 
-async function encodeAudio(
+export async function encodeAudio(
   project: ResolvedProject,
   options: RenderOptions,
-  audio: string,
-  job: Assembly,
+  job: Pick<Assembly, 'directory' | 'ranges' | 'duration'>,
 ) {
   await runFfmpeg(
     [
@@ -157,7 +155,7 @@ async function encodeAudio(
       '90000',
       '-map_metadata',
       '-1',
-      audio,
+      join(job.directory, 'master.mp4'),
     ],
     options.signal,
   );

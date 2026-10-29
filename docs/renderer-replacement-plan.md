@@ -170,9 +170,10 @@ as wall time. FFT improvements already benefit both exporters and do not prove e
 - [Scheduling](../packages/renderer-browser/src/export/pipeline.ts) assigns frames round-robin.
   Each page owns bounded analysis/decoder state. More workers can duplicate work and compete for
   GPU resources. More tabs are not automatically faster.
-- [Assembly](../packages/renderer-browser/src/export/encoding.ts) encodes master audio after
-  video chunks finish. The [Remotion adapter](../packages/renderer-remotion/src/chunks.ts) already
-  overlaps master-audio encoding with video work.
+- [Assembly](../packages/renderer-browser/src/export/encoding.ts) originally encoded master audio
+  after video chunks finished. The browser exporter now starts the continuous master-audio encode
+  alongside video work and shares failure cancellation. The [Remotion adapter](../packages/renderer-remotion/src/chunks.ts)
+  already uses this overlap. See the implementation log for validation.
 - [Resume](browser-renderer.md#resume-an-interrupted-export) requires an identical job fingerprint,
   including concurrency and runtime/host identity, and removes checkpoints after success. It is
   interruption recovery, not a persistent cache for revisions or cross-machine artifacts.

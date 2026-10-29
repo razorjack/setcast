@@ -609,6 +609,11 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Browser export encodes its continuous master soundtrack alongside video preparation/capture.
+  Both tasks share cancellation and must settle before temporary files are removed. Assembly
+  still waits for both. `audio-encode` measures the soundtrack separately; `mux` now excludes it,
+  so historical combined mux timings cannot be compared directly with the new mux-only metric.
+
 - Renderer-replacement discoveries and validation are recorded as work proceeds in
   `docs/renderer-replacement-log.md`. The first direct decoded-canvas candidate is archived under
   `docs/research/video-canvas-2026-10-29`: it failed fidelity checks and increased screenshot cost.
