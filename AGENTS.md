@@ -595,6 +595,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Roadmap (beyond v1)
 
+- The active renderer replacement sequence is `docs/renderer-replacement-plan.md`: comparative
+  benchmarks, direct video frames, capture without image compression, scheduling/hardware encoding,
+  persistent reuse, unified preview/export, fidelity and independent distribution. This is planned
+  work, not implemented support. Keep Remotion default until the documented release criteria pass.
 - Qualify and optimize the opt-in browser exporter across platforms and real projects. It uses
   bounded PCM windows; a full AudioFeatures sidecar is not a prerequisite.
 - Optional AudioFeatures sidecar/cache, justified by measured decode cost and reuse.
@@ -604,6 +608,13 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Generated per-project bundle entry so `plugins:` in `setcast.yaml` can pull npm plugins in.
 
 ## Decisions
+
+- Renderer replacement preserves the full CSS/RenderFrame contract and targets both first-export
+  throughput and reuse after successful exports. The plan in `docs/renderer-replacement-plan.md`
+  takes priority over broad plugin/effect expansion for this effort. Extend the existing native
+  capture feasibility fixtures; retain the documented 4.0.534 encoder-failure regression when
+  comparing current upstream. Faster capture is experimental until qualified. The 30% wall-time
+  objective is a target, not a measured gain; this documentation changes no runtime defaults.
 
 - Browser WebP stills use native CDP capture at quality 100. Verify the result uses lossless VP8L
   before writing it; do not silently accept a lossy fallback after a browser update. All browser

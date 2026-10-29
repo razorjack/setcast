@@ -5,7 +5,25 @@ Remotion as the default exporter while the independent renderer gains coverage a
 Live and offline output share scene components, audio features and explicit time. Operator actions
 must survive in the session journal so a recorded master can reproduce the performance.
 
-## Delivery order
+## Current renderer priority, 2026-10-29
+
+The [independent renderer replacement plan](renderer-replacement-plan.md) defines the next
+renderer work: a current comparative benchmark, direct decoded video frames, capture without
+intermediate image compression, resource-aware scheduling and hardware encoding, persistent
+reuse, unified musical preview/export, output fidelity and a Remotion-free distribution.
+Packaging and cross-platform qualification run throughout. This sequence takes priority over
+broad plugin infrastructure, additional effects and scene collections for the replacement effort.
+
+Keep Remotion as the production default until the plan's release criteria are met. The initial
+performance target is 30% lower wall time than tuned current Remotion on a predefined workload
+suite at matched quality; it is not an achieved result or a speedup forecast. Existing resume,
+independent preview, bounded pipelines and diagnostics are foundations already delivered.
+Live software stalls and physical-device qualification retain their separate requirements.
+
+## Original delivery order
+
+The sequence below records the original scope. Completed milestones and remaining product
+candidates follow; the renderer replacement sequence above sets the current renderer priority.
 
 1. **Live performance controls and replay.** Add visual intensity, master brightness and blackout,
    smooth timestamped changes, a scene bank, beat-aligned transitions and MIDI mapping. Preserve
@@ -55,8 +73,10 @@ Hardware encoding helps only when encoding is
 a meaningful cost. Shared analysis caching and contiguous worker assignments may reduce repeated
 decoding. Capture transport and image compression deserve measurement before a pipeline rewrite.
 
-WebCodecs supplies codec interfaces, not an HTML/CSS scene renderer. Experiment with it first
-for a canvas-only visualizer; do not assume it removes DOM screenshot capture.
+WebCodecs supplies codec interfaces, not an HTML/CSS scene renderer. Native HTML-in-canvas
+feasibility has already been sampled in [capture-feasibility.md](capture-feasibility.md).
+Extend those fixtures through the independent renderer as described in the replacement plan;
+preserve full CSS painting and verify the actual capture path before claiming an improvement.
 
 ## First milestone design
 
@@ -223,11 +243,12 @@ checks also pass. Operator and calibration screenshots were inspected. The outpu
 scopes artwork upload separately from venue import; CI includes the projector check. Physical
 projector alignment and sustained performance remain unqualified.
 
-### Next milestones
+### Remaining product candidates
 
-The configuration, rendering and host APIs are mapped in [platform.md](platform.md). The next
-software milestones should make those contracts useful outside this checkout. Keep Remotion as
-the default while qualifying and improving the independent renderer.
+The configuration, rendering and host APIs are mapped in [platform.md](platform.md). These
+candidates remain useful beyond the active [renderer replacement sequence](renderer-replacement-plan.md#delivery-sequence).
+The list is not the current renderer delivery order. Keep Remotion as the default while meeting
+the replacement plan's correctness, performance, workflow and installation criteria.
 
 1. **Explicit plugin loading in the stock CLI.** Load a configured visualizer package's schema
    before project validation and its component in each selected renderer bundle. Define package

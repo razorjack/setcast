@@ -5,6 +5,12 @@ its pinned Chromium runtime, and a system FFmpeg subprocess. Themes, visualizers
 queries, audio analysis and frame assembly use the same Setcast contracts in both exporters.
 The browser package has no Remotion dependency.
 
+The [independent renderer replacement plan](renderer-replacement-plan.md) records the current
+capability comparison, performance evidence, remaining experiments and release criteria. Its
+proposed faster capture, hardware encoding, persistent cache and preview/export workflow are
+not implemented by this guide. Remotion remains the default, and the CLI still depends on its
+adapter during migration.
+
 ## Run it
 
 Install FFmpeg on PATH, then install the pinned browser once:
