@@ -2,7 +2,7 @@ import { homedir } from 'node:os';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import * as p from '@clack/prompts';
 import { clamp, ConfigError, formatDuration, SetcastError } from '@setcast/core';
-import type { RenderProgress } from '@setcast/core';
+import type { RenderProgress, RenderRuntime } from '@setcast/core';
 import pc from 'picocolors';
 import { clearTabProgress, linkToFile, showTabBusy, showTabProgress } from './terminal.ts';
 
@@ -244,11 +244,16 @@ export class RenderUi {
   #frames: ProgressLine | undefined;
   #encode: ProgressLine | undefined;
   #reused = 0;
+  #captureWorkers: number | undefined;
 
   constructor() {
     this.#spin.start('Preparing browser');
     showTabBusy();
   }
+
+  readonly onRuntime = (event: RenderRuntime): void => {
+    if (event.kind === 'capture') this.#captureWorkers = event.workers;
+  };
 
   readonly onProgress = ({
     stage,
@@ -289,7 +294,7 @@ export class RenderUi {
   /** The first frame report is what tells us the bundle is done, so the spinner stops here. */
   #framesLine(): ProgressLine {
     if (!this.#frames) {
-      this.#spin.stop('Composition bundled');
+      this.#spin.stop(capturePreparationMessage(this.#captureWorkers));
       this.#frames = new ProgressLine('frames');
     }
     return this.#frames;
@@ -340,4 +345,10 @@ export class RenderUi {
     ];
     this.done(summary.join(`  ${dim('·')}  `));
   }
+}
+
+function capturePreparationMessage(workers: number | undefined): string {
+  if (workers === undefined) return 'Composition bundled';
+  if (workers === 0) return 'Reusing cached video chunks';
+  return `Composition ready · ${workers} capture worker${workers === 1 ? '' : 's'}`;
 }

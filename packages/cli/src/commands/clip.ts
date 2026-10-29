@@ -153,6 +153,7 @@ async function renderClip(
       out,
       range,
       onProgress: ui.onProgress,
+      onRuntime: ui.onRuntime,
     }),
   );
   const { size } = await stat(result.file);

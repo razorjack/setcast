@@ -86,6 +86,7 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
     resume: options.resume,
     cache: options.cache,
     onProgress: ui.onProgress,
+    onRuntime: ui.onRuntime,
   };
 
   const result = await ui.run(() => render(project, job));
