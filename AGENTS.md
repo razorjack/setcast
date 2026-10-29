@@ -609,6 +609,13 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Browser hardware encoding uses system FFmpeg: VideoToolbox on macOS, NVENC on Linux/Windows.
+  Probe a real frame before capture, using project dimensions/FPS/bitrate when available. Required
+  hardware must not silently use software (`-allow_sw 0` on VideoToolbox); optional failure reports
+  a reason and selects libx264. Resolve this before resume identity, and never switch encoders
+  inside a job. VideoToolbox passed local acceptance/resume on M1 Pro; NVENC device qualification
+  remains pending. Capability declarations are not platform qualification.
+
 - Browser export encodes its continuous master soundtrack alongside video preparation/capture.
   Both tasks share cancellation and must settle before temporary files are removed. Assembly
   still waits for both. `audio-encode` measures the soundtrack separately; `mux` now excludes it,

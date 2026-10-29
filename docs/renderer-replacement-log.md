@@ -14,8 +14,10 @@ this machine; repeat suspicious performance measurements when that load stops. D
 modify that other project.
 
 Remotion remains the default. Phase 0 is partial; the newer-upstream comparison, process-tree
-memory, quality matrix and platform qualification remain outstanding. The first direct decoded-canvas candidate was rejected and archived. Audio/video encoding overlap
-is next. Do not switch defaults because a short benchmark is faster.
+memory, quality matrix and platform qualification remain outstanding. The first direct decoded-canvas
+candidate was rejected and archived. Continuous audio overlap is committed. Hardware encoding is
+implemented and validated on this Mac; NVENC device qualification remains pending. Do not switch
+defaults because a short benchmark is faster.
 
 Completed commits:
 
@@ -23,6 +25,8 @@ Completed commits:
 - `b06a39f`: added the installed-adapter comparison runner with aligned timing, alternating
   order, input identities, cancellation reports and decoded-output validation.
 - `ca34684`: added opt-in `RenderOptions.onRuntime` and version 2 comparison reports.
+- `4ae0b24`: archived the rejected decoded-canvas candidate, full evidence and reproducible checks.
+- `fbfdd34`: overlapped continuous master-audio encoding with video work and shared cancellation.
 
 ## Runtime observations
 
@@ -178,3 +182,51 @@ not rely on an encoder name being listed. [FFmpeg's NVENC documentation](https:/
 notes that available options depend on build headers and runtime support depends on GPU/driver;
 it also supports system-memory frames. Use the installed encoder help and a bounded actual encode
 probe for the supported route. Do not infer device availability from a compiled-in codec.
+
+Audio overlap was committed as `fbfdd34`. Hardware encoding is now being implemented separately.
+The working browser adapter selects VideoToolbox on macOS or NVENC on Linux/Windows after a
+bounded actual encode probe. `required` fails before capture when the device cannot encode;
+`if-possible` falls back to libx264 and reports the reason. The CLI passes project dimensions,
+FPS and bitrate into its probe. The adapter repeats selection for library callers and fingerprints
+the resolved hardware setting for resume. No automatic mid-export encoder switch is planned.
+
+Hardware uses the existing explicit `videoBitrate` contract. It does not accept x264 presets or
+CRF, and VideoToolbox explicitly uses `-allow_sw 0`. Capability reporting declares implementation
+support, while `doctor` probes machine availability. Only this Mac can be qualified in the current
+session; Linux/Windows NVENC and hardware quality/performance claims remain unqualified.
+
+Hardware progress: the real 1920×1080, 30 fps, 12M VideoToolbox probe succeeded. Eight policy and
+argument tests passed, including unsupported platforms, cancellation, preservation of required-mode
+failure causes, and explicit rejection of VideoToolbox software fallback. The full hardware export
+acceptance suite passed with 18 observed VideoToolbox chunks, including timing, all current themes,
+GPU visualizers, pixel repeatability across workers, cancellation and failure cleanup. Log:
+`/tmp/setcast-hardware-acceptance.log`. Hardware resume and encoder-change invalidation checks are
+running next. No hardware speedup or matched-quality claim is being made from these checks.
+
+Hardware resume passed, including reuse of all 75 completed frames and invalidation after changing
+bitrate or switching from VideoToolbox to libx264. The CLI capability descriptor now declares
+hardware encoding; it still does not probe devices. Baseline/software acceptance, machine doctor
+and installed-package checks are next. Logs: `/tmp/setcast-hardware-resume.log`.
+
+The public browser `doctor --require video,hardwareEncoding --json` reported ready, including an
+actual VideoToolbox frame encode. The first baseline run caught an outdated CLI test expectation:
+missing tools now mean hardware encoding is `unavailable`, not `unsupported`. Updated that expected
+state; the implementation must continue distinguishing declared support from machine availability.
+The complete baseline and installed-package checks are being rerun.
+
+Final hardware validation passed: 607 tests in 101 files, formatting/lint/types, ban-check,
+smoke, both software export-acceptance suites, the required-VideoToolbox export suite, hardware
+resume and the installed-package smoke check. The public doctor reports all features ready on
+this Mac. Logs use `/tmp/setcast-hardware-*`. NVENC remains unqualified on real hardware.
+
+For the next upstream comparison, the public npm registry reported Remotion `4.0.539` on
+2026-10-29 (`npm view remotion version --json`, run outside this pnpm-managed repository).
+Production remains pinned to `4.0.513`. Keep any `4.0.539` installation and Chromium download in
+an isolated checkout. Do not disable shared-memory capture merely to reuse an older browser,
+and do not change process-wide unhandled-rejection behavior to hide the previously observed
+upstream encoder failure. Compare actual runtime decisions and preserve any failure evidence.
+
+The actual CLI also rendered a project configured with required hardware and 12M bitrate. Its
+60-frame output fully decoded as H.264/AAC at the expected dimensions/FPS. Evidence:
+`examples/demo/out/hardware-cli-2026-10-29`. This checks the project loader, CLI hardware policy,
+adapter and final export together, beyond the direct library acceptance harness.

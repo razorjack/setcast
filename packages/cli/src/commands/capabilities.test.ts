@@ -38,7 +38,7 @@ test('capability reports work outside a project without renderer dependencies', 
   expect(JSON.parse(remotion.stdout).features).toContain('hardwareEncoding');
   expect(JSON.parse(remotion.stdout).features).not.toContain('resume');
   expect(JSON.parse(browser.stdout).features).toContain('resume');
-  expect(JSON.parse(browser.stdout).features).not.toContain('hardwareEncoding');
+  expect(JSON.parse(browser.stdout).features).toContain('hardwareEncoding');
   expect(run('--renderer', 'browser').stdout).toContain('not a machine check');
 });
 

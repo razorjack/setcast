@@ -8,6 +8,7 @@ import {
   type RenderOptions,
 } from '@setcast/core';
 import { runFfmpeg } from './ffmpeg.ts';
+import { hardwareArgs, type VideoEncoder } from './hardware.ts';
 
 export function exportEncoding(options: RenderOptions) {
   const {
@@ -41,15 +42,15 @@ export function exportEncoding(options: RenderOptions) {
     videoBitrate,
     chunkSeconds,
   });
-  if (encoding.hardwareAcceleration !== 'disable')
-    throw new SetcastError(
-      'Browser export currently uses software H.264 encoding.',
-      'Set output.hardwareAcceleration: disable, or use --renderer remotion.',
-    );
   return encoding;
 }
 
-export function videoArgs(fps: number, encoding: OutputConfig, out: string) {
+export function videoArgs(
+  fps: number,
+  encoding: OutputConfig,
+  out: string,
+  encoder: VideoEncoder = 'libx264',
+) {
   const quality = encoding.videoBitrate
     ? ['-b:v', encoding.videoBitrate]
     : ['-crf', String(encoding.crf)];
@@ -64,9 +65,10 @@ export function videoArgs(fps: number, encoding: OutputConfig, out: string) {
     'pipe:0',
     '-an',
     '-c:v',
-    'libx264',
-    '-preset',
-    encoding.x264Preset ?? 'medium',
+    encoder,
+    ...(encoder === 'libx264'
+      ? ['-preset', encoding.x264Preset ?? 'medium']
+      : hardwareArgs(encoder)),
     ...quality,
     '-pix_fmt',
     'yuv420p',

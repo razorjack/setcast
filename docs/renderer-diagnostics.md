@@ -12,7 +12,7 @@ These lightweight entries are usable by configuration tools without importing a 
 
 The descriptor covers Setcast's current API, not the underlying library's full feature set.
 Both adapters support PNG/JPEG/WebP stills and H.264 + AAC in MP4/MOV/MKV. Browser export adds
-resume; Remotion supports hardware encoding when a compatible device works. Declared GPU support
+resume; both adapters support hardware encoding when a compatible device works. Declared GPU support
 means Setcast can render WebGL 2 visualizers, not that a hardware GPU is present or fast enough.
 `concurrency.max: null` means the adapter delegates its upper limit to the runtime, not unlimited
 workers. Graphics backend names describe accepted settings, not tested drivers.
@@ -39,7 +39,7 @@ setcast doctor --renderer remotion --require video,hardwareEncoding
 returns status 0 only if the requested features are ready. A failed optional check remains in
 both the human report and JSON. Request `still` for PNG/JPEG work, `webp` for WebP stills, `gpu`
 for WebGL 2 visualizers, and `resume` for the browser export checkpoint prerequisites.
-`hardwareEncoding` is the Remotion hardware H.264 path, separate from WebGL graphics.
+`hardwareEncoding` is the selected adapter's hardware H.264 path, separate from WebGL graphics.
 Unsupported requirements produce a report with status 1. Invalid flags produce a usage error
 with status 2. Interruption or an unexpected runtime error returns status 1.
 
@@ -72,13 +72,13 @@ Checks include:
   then decode/re-encode each fixture to check H.264/AAC decoding too.
 - `video.inspect`: verify MP4 codecs, dimensions and frame count. Browser export requires
   ffprobe for resume; missing ffprobe does not invalidate ordinary browser video export.
-- `hardware.encode`: Remotion's actual platform H.264 hardware encoder on one frame. An encoder
+- `hardware.encode`: the selected adapter's actual platform H.264 hardware encoder on one frame. An encoder
   name in FFmpeg's compiled list is insufficient evidence that a device works.
 
 For missing browser Chromium, run `setcast browser-install`. For missing Remotion Chrome, run
 one normal Remotion render or still with network access so the adapter can install it. System
 FFmpeg needs `libx264` and AAC for video. A missing optional encoder does not require changing
-renderer defaults. On Linux/Windows Remotion hardware encoding uses NVENC;
+renderer defaults. On Linux/Windows both adapters use NVENC for hardware encoding;
 on macOS it uses VideoToolbox. A GPU that renders WebGL does not necessarily support that encoder.
 
 ## Report contract and host API

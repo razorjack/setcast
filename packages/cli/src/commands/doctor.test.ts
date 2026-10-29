@@ -32,7 +32,7 @@ test('missing runtime tools yield one actionable JSON report without downloading
       version: 1,
       ready: false,
       exitCode: 1,
-      features: { video: 'unavailable', resume: 'unavailable', hardwareEncoding: 'unsupported' },
+      features: { video: 'unavailable', resume: 'unavailable', hardwareEncoding: 'unavailable' },
     });
     for (const id of ['browser.launch', 'ffmpeg', 'ffprobe'])
       expect(report.checks.find((check: { id: string }) => check.id === id)).toMatchObject({

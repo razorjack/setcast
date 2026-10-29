@@ -50,7 +50,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | Shared Setcast scene, timeline, audio and CSS contracts | Supported | Supported |
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
-| Hardware encoding | Not implemented | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
+| Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
 | Concurrency | Manual 1–8, default 1 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |

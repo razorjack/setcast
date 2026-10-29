@@ -7,7 +7,7 @@ The browser package has no Remotion dependency.
 
 The [independent renderer replacement plan](renderer-replacement-plan.md) records the current
 capability comparison, performance evidence, remaining experiments and release criteria. Its
-proposed faster capture, hardware encoding, persistent cache and preview/export workflow are
+proposed faster capture, scheduling, persistent cache and preview/export workflow are
 not implemented by this guide. Remotion remains the default, and the CLI still depends on its
 adapter during migration.
 
@@ -41,7 +41,8 @@ of this setting.
 ## Supported settings and limits
 
 The prototype writes PNG, JPEG and WebP stills, and H.264 video with AAC audio in MP4, MOV or
-MKV. Video requires FFmpeg with `libx264` and AAC. PNG, JPEG and lossless WebP need no system
+MKV. Video requires FFmpeg with AAC and the selected H.264 encoder; software encoding uses
+`libx264`. PNG, JPEG and lossless WebP need no system
 FFmpeg. Audio analysis accepts mono or stereo recordings supported by the pinned Chromium
 and Mediabunny decoder. Re-export an unsupported input as PCM WAV.
 
@@ -49,9 +50,21 @@ and Mediabunny decoder. Re-export an unsupported input as PCM WAV.
 with an explicit alternative before capture.
 
 Software encoding supports `crf`, `videoBitrate`, `x264Preset`, `jpegQuality`, profiles and
-`chunkSeconds`. `parallelEncoding` must be true. Hardware encoding is not implemented:
-`required` fails; the CLI reports software fallback for `if-possible`. Direct adapter calls
-must pass `hardwareAcceleration: disable` or omit it.
+`chunkSeconds`. `parallelEncoding` must be true. Hardware H.264 uses VideoToolbox on macOS and
+NVENC on Linux/Windows with a compatible NVIDIA device and driver. Set `hardwareAcceleration:
+if-possible` or `required` and an explicit `videoBitrate` such as `12M`; omit `crf` and `x264Preset`.
+Software encoding remains the default. A bounded one-frame encode checks the requested dimensions,
+FPS and bitrate before capture. VideoToolbox cannot silently use its software implementation.
+
+`required` fails if the probe cannot encode. `if-possible` falls back to libx264 at the requested
+bitrate; the CLI prints the reason. Library callers can inspect `onRuntime` encoding-selection
+events. A failure after capture begins fails the job atomically; it does not mix hardware and
+software chunks. Resume identity uses the resolved hardware setting. Run `setcast doctor
+--renderer browser --require hardwareEncoding` to check the current machine.
+
+VideoToolbox has passed the export acceptance suite on Apple M1 Pro. NVENC selection and failure
+behavior have unit coverage; Linux/Windows device qualification and matched-quality performance
+comparisons remain outstanding. Hardware bitrate equality does not establish equal visual quality.
 
 `--concurrency` accepts 1 through 8 and defaults to 1. Each worker retains its own bounded
 PCM windows and decoder cache, so more workers use more memory. Capture overlaps encoder writes

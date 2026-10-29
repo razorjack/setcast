@@ -4,13 +4,17 @@ import { existsSync, writeFileSync } from 'node:fs';
 import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { parseArgs } from 'node:util';
 import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
 import { render, type BrowserRenderOptions } from '../src/export/index.ts';
 import { checkpointPath } from '../src/export/checkpoint.ts';
 import type { ResolvedProject } from '@setcast/core';
 
+const { values } = parseArgs({ options: { hardware: { type: 'boolean' } } });
 const root = await mkdtemp(join(tmpdir(), 'setcast-resume-'));
-const artifacts = resolve('examples/demo/out/resume-check');
+const artifacts = resolve(
+  values.hardware ? 'examples/demo/out/resume-hardware-check' : 'examples/demo/out/resume-check',
+);
 await mkdir(artifacts, { recursive: true });
 const out = join(artifacts, 'resumed.mp4');
 const cache = checkpointPath(out);
@@ -22,6 +26,7 @@ const options: BrowserRenderOptions = {
   chunkSeconds: 1,
   concurrency: 1,
   resume: true,
+  ...(values.hardware ? ({ hardwareAcceleration: 'required', videoBitrate: '12M' } as const) : {}),
 };
 const sentinel = Buffer.from('existing output must survive interruption');
 const results: Record<string, { captured: number; reused: number }> = {};
@@ -121,7 +126,24 @@ try {
     0,
   );
   await restore();
-  assert.equal((await measured('changed encoder settings', project, { crf: 27 })).reused, 0);
+  assert.equal(
+    (
+      await measured(
+        'changed encoder settings',
+        project,
+        values.hardware ? { videoBitrate: '8M' } : { crf: 27 },
+      )
+    ).reused,
+    0,
+  );
+  if (values.hardware) {
+    await restore();
+    assert.equal(
+      (await measured('changed encoder backend', project, { hardwareAcceleration: 'disable' }))
+        .reused,
+      0,
+    );
+  }
   await restore();
   assert.equal(
     (

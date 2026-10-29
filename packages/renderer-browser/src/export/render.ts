@@ -25,6 +25,7 @@ import {
 } from './checkpoint.ts';
 import { pipeline } from './pipeline.ts';
 import { renderTracks } from './tracks.ts';
+import { resolveHardwareEncoding, type VideoEncoder } from './hardware.ts';
 
 export type BrowserRenderOptions = RenderOptions & {
   onMetrics?: MetricsReport;
@@ -44,6 +45,7 @@ export function render(
     project,
     options,
     encoding,
+    encoder: 'libx264',
     ranges: splitFrameRange(range, encoding.chunkSeconds * project.fps),
     first: range[0],
     frames: range[1] - range[0] + 1,
@@ -61,6 +63,7 @@ interface RenderJob {
   project: ResolvedProject;
   options: BrowserRenderOptions & { assetPaths?: readonly string[] };
   encoding: OutputConfig;
+  encoder: VideoEncoder;
   ranges: FrameRange[];
   /** The first frame of the export. */
   first: number;
@@ -68,7 +71,21 @@ interface RenderJob {
 }
 
 async function renderJob(job: RenderJob) {
-  await preflight(job.options.signal);
+  const hardware = await resolveHardwareEncoding(job.encoding.hardwareAcceleration, {
+    width: job.project.width,
+    height: job.project.height,
+    fps: job.project.fps,
+    videoBitrate: job.encoding.videoBitrate,
+    signal: job.options.signal,
+  });
+  const options = { ...job.options, hardwareAcceleration: hardware.hardwareAcceleration };
+  job = { ...job, options, encoding: exportEncoding(options), encoder: hardware.encoder };
+  options.onRuntime?.({
+    kind: 'encoding-selection',
+    encoder: hardware.encoder,
+    fallback: hardware.fallback ?? null,
+  });
+  if (hardware.encoder === 'libx264') await preflight(options.signal);
   if (!job.options.resume) return renderOutput(job, DISPOSABLE_CHUNKS);
 
   job.options.onProgress?.({ stage: 'checkpoint', progress: 0 });
@@ -134,9 +151,9 @@ interface ChunkJob extends RenderJob {
 
 async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob) {
   const { project, options, encoding } = job;
-  const encoder = ffmpeg(videoArgs(project.fps, encoding, job.out), options.signal);
+  const encoder = ffmpeg(videoArgs(project.fps, encoding, job.out, job.encoder), options.signal);
   try {
-    options.onRuntime?.({ kind: 'encoder', encoder: 'libx264', pipeline: 'stream' });
+    options.onRuntime?.({ kind: 'encoder', encoder: job.encoder, pipeline: 'stream' });
     await pipeline({
       range,
       workers: pages.length,

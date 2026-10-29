@@ -13,6 +13,7 @@ import {
 import { capabilities } from './capabilities.ts';
 import { captureBrowserArgs } from './export/graphics.ts';
 import { captureWebp } from './export/webp.ts';
+import { hardwareEncoder, probeHardware } from './export/hardware.ts';
 
 export async function diagnose(options: RendererDiagnosticOptions = {}) {
   const session = new RendererDiagnostics(capabilities, options);
@@ -47,5 +48,17 @@ export async function diagnose(options: RendererDiagnosticOptions = {}) {
     'Run `setcast browser-install` if Chromium is missing. Otherwise check browser system libraries, sandbox permissions or GPU drivers.',
   );
   await diagnoseCodecs(session, (binary, args) => diagnosticCommand(binary, args, session.options));
+  await session.check(
+    'hardware.encode',
+    ['hardwareEncoding'],
+    'Install FFmpeg with VideoToolbox on macOS or NVENC on an NVIDIA host, or use software encoding.',
+    async () => {
+      const encoder = hardwareEncoder(process.platform);
+      if (!encoder)
+        throw new Error(`No hardware H.264 encoder is configured for ${process.platform}.`);
+      await probeHardware(encoder, session.options);
+      return { message: `Encoded a frame with ${encoder}.`, details: { encoder } };
+    },
+  );
   return session.report();
 }

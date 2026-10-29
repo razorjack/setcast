@@ -13,7 +13,7 @@ vp run render-compare examples/demo --at 30 --seconds 6 --repeat 3 --concurrency
 Use a new output directory. Existing directories are rejected before capture. `--theme` overrides
 the project theme for both adapters. Ranges must fit the finite mix; invalid numeric arguments
 fail before browser work. Hardware encoding must be disabled and parallel encoding enabled,
-because those are the common supported settings. Other encoding options, including profiles,
+because this runner currently compares the software paths. Other encoding options, including profiles,
 JPEG quality, CRF/bitrate, chunk duration and graphics selection, come from the project's output
 configuration. Source assets and resolved project identity are checked before each run and after
 all runs. Self-contained local assets/CSS are required by the reused asset identity helpers.

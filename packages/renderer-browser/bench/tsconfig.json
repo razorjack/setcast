@@ -11,6 +11,8 @@
     "projection.ts",
     "midi.ts",
     "video-frames.ts",
-    "video-profile.ts"
+    "video-profile.ts",
+    "hardware.ts",
+    "resume.ts"
   ]
 }

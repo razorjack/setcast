@@ -44,6 +44,7 @@ export type RenderRuntime =
       capture: 'jpeg-screenshot';
     }
   | { kind: 'capture'; workers: number; parallelEncoding: boolean }
+  | { kind: 'encoding-selection'; encoder: string; fallback: string | null }
   | { kind: 'encoder'; encoder: string; pipeline: 'stream' | 'image-sequence' };
 
 export type RuntimeReport = (event: RenderRuntime) => void;

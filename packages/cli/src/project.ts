@@ -44,6 +44,12 @@ export async function withHardwareEncoding(loaded: LoadedProject): Promise<Loade
   const { output } = loaded.config;
   const { hardwareAcceleration, fallback } = await resolveHardwareEncoding(
     output.hardwareAcceleration,
+    {
+      width: loaded.project.width,
+      height: loaded.project.height,
+      fps: loaded.project.fps,
+      videoBitrate: output.videoBitrate,
+    },
   );
   if (fallback) warn(fallback);
   return { ...loaded, config: { ...loaded.config, output: { ...output, hardwareAcceleration } } };

@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
+import type { HardwareProbe } from '@setcast/renderer-browser/export';
 import {
   SetcastError,
   type Exporter,
@@ -78,21 +79,16 @@ function current() {
   return context.exporter;
 }
 
-export async function resolveHardwareEncoding(setting: HardwareAcceleration) {
+export async function resolveHardwareEncoding(
+  setting: HardwareAcceleration,
+  options?: HardwareProbe,
+) {
   if (selected.getStore()?.name !== 'browser')
     return (await import('@setcast/renderer-remotion')).resolveHardwareEncoding(setting);
-  if (setting === 'required')
-    throw new SetcastError(
-      'Browser export uses software H.264 encoding.',
-      'Set hardwareAcceleration: disable or if-possible, or select --renderer remotion.',
-    );
-  return {
-    hardwareAcceleration: 'disable' as const,
-    fallback:
-      setting === 'if-possible'
-        ? 'Browser export currently uses software H.264 encoding.'
-        : undefined,
-  };
+  return (await import('@setcast/renderer-browser/export')).resolveHardwareEncoding(setting, {
+    ...options,
+    signal: options?.signal ?? selected.getStore()?.signal,
+  });
 }
 
 export async function preview(

@@ -3,7 +3,7 @@ import type { RendererCapabilities } from '@setcast/core';
 export const capabilities: RendererCapabilities = {
   version: 1,
   renderer: 'browser',
-  features: ['still', 'webp', 'video', 'resume', 'gpu'],
+  features: ['still', 'webp', 'video', 'resume', 'gpu', 'hardwareEncoding'],
   stillFormats: ['png', 'jpeg', 'webp'],
   videoContainers: ['mp4', 'mov', 'mkv'],
   videoCodec: 'h264',
