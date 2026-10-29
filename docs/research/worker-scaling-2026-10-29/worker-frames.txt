@@ -1,0 +1,47 @@
+sterile-tech 1920x1080: identical
+sterile-tech 1080x1920: identical
+escapement 1920x1080: identical
+escapement 1080x1920: identical
+long-exposure 1920x1080: identical
+long-exposure 1080x1920: identical
+bristol 1920x1080: identical
+bristol 1080x1920: DIFFERENT
+patina 1920x1080: DIFFERENT
+patina 1080x1920: DIFFERENT
+quicksilver 1920x1080: DIFFERENT
+quicksilver 1080x1920: DIFFERENT
+bunker 1920x1080: identical
+bunker 1080x1920: identical
+vfd 1920x1080: identical
+vfd 1080x1920: identical
+interference 1920x1080: identical
+interference 1080x1920: identical
+pirate 1920x1080: DIFFERENT
+pirate 1080x1920: identical
+afterhours 1920x1080: DIFFERENT
+afterhours 1080x1920: DIFFERENT
+passe-partout 1920x1080: DIFFERENT
+passe-partout 1080x1920: DIFFERENT
+masthead 1920x1080: identical
+masthead 1080x1920: identical
+anamorphic 1920x1080: DIFFERENT
+anamorphic 1080x1920: identical
+relief 1920x1080: identical
+relief 1080x1920: identical
+darkroom 1920x1080: DIFFERENT
+darkroom 1080x1920: DIFFERENT
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Worker count changed decoded theme pixels; inspect retained outputs.
+    at file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/worker-frames.ts:38:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

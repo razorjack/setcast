@@ -66,7 +66,10 @@ VideoToolbox has passed the export acceptance suite on Apple M1 Pro. NVENC selec
 behavior have unit coverage; Linux/Windows device qualification and matched-quality performance
 comparisons remain outstanding. Hardware bitrate equality does not establish equal visual quality.
 
-`--concurrency` accepts 1 through 8 and defaults to 1. Each worker retains its own bounded
+`--concurrency` accepts 1 through 8 and defaults to 1. The CLI reports the actual capture-worker
+count when preparation completes, including zero workers when all chunks are reused. An automatic
+policy remains unqualified after moving-theme paint-history differences were found; see the
+[retained investigation](research/worker-scaling-2026-10-29/README.md). Each worker retains its own bounded
 PCM windows and decoder cache, so more workers use more memory. Capture overlaps encoder writes
 through a bounded queue: at most one pending capture per worker plus the image being written.
 Each worker prepares its next assigned frame after its previous capture is consumed; it does

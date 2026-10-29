@@ -1,0 +1,289 @@
+diff --git a/packages/core/src/export/export.ts b/packages/core/src/export/export.ts
+index c879217..c28997e 100644
+--- a/packages/core/src/export/export.ts
++++ b/packages/core/src/export/export.ts
+@@ -44,6 +44,14 @@ export type RenderRuntime =
+       capture: 'jpeg-screenshot' | 'not-observed';
+     }
+   | { kind: 'capture'; workers: number; parallelEncoding: boolean }
++  | {
++      kind: 'scheduling';
++      workers: number;
++      reason: 'explicit' | 'short-export' | 'resource-budget';
++      cpuCount: number;
++      memoryBudgetBytes: number;
++      estimatedMemoryBytes: number;
++    }
+   | { kind: 'encoding-selection'; encoder: string; fallback: string | null }
+   | {
+       kind: 'encoder';
+diff --git a/packages/renderer-browser/src/capabilities.ts b/packages/renderer-browser/src/capabilities.ts
+index 4e0c70c..fd183fd 100644
+--- a/packages/renderer-browser/src/capabilities.ts
++++ b/packages/renderer-browser/src/capabilities.ts
+@@ -10,6 +10,6 @@ export const capabilities: RendererCapabilities = {
+   audioCodec: 'aac',
+   graphicsBackends: ['auto', 'default', 'angle'],
+   parallelEncoding: [true],
+-  concurrency: { default: 1, min: 1, max: 8 },
++  concurrency: { default: 'auto', min: 1, max: 8 },
+   runtime: { browser: 'Playwright Chromium', ffmpeg: 'system' },
+ };
+diff --git a/packages/renderer-browser/src/export/render.ts b/packages/renderer-browser/src/export/render.ts
+index c25282a..d73df89 100644
+--- a/packages/renderer-browser/src/export/render.ts
++++ b/packages/renderer-browser/src/export/render.ts
+@@ -29,6 +29,7 @@ import { renderTracks } from './tracks.ts';
+ import { resolveHardwareEncoding, type VideoEncoder } from './hardware.ts';
+ import { DEFAULT_CACHE_BYTES, withRenderCache } from './cache.ts';
+ import { cachedChunks } from './cache-chunks.ts';
++import { captureResources, captureSchedule } from './concurrency.ts';
+ 
+ export type BrowserRenderOptions = RenderOptions & {
+   onMetrics?: MetricsReport;
+@@ -45,14 +46,20 @@ export function render(
+   requireVideoOutput(options.out);
+   const encoding = exportEncoding(options);
+   const range = renderedFrames(project, options.range);
++  const frames = range[1] - range[0] + 1;
++  const schedule = captureSchedule(
++    { ...project, frames, concurrency: options.concurrency },
++    captureResources(),
++  );
++  options.onRuntime?.({ kind: 'scheduling', ...schedule });
+   const job: RenderJob = {
+     project,
+-    options,
++    options: { ...options, concurrency: schedule.workers },
+     encoding,
+     encoder: 'libx264',
+     ranges: splitFrameRange(range, encoding.chunkSeconds * project.fps),
+     first: range[0],
+-    frames: range[1] - range[0] + 1,
++    frames,
+   };
+   return withRenderSession(() => renderJob(job));
+ }
+diff --git a/packages/renderer-browser/src/export/concurrency.ts b/packages/renderer-browser/src/export/concurrency.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/renderer-browser/src/export/concurrency.ts
+@@ -0,0 +1,55 @@
++import { availableParallelism, totalmem } from 'node:os';
++
++const MIB = 1024 * 1024;
++
++export interface CaptureResources {
++  cpuCount: number;
++  memoryBytes: number;
++}
++
++export function captureResources(): CaptureResources {
++  const constrained = process.constrainedMemory();
++  return {
++    cpuCount: availableParallelism(),
++    memoryBytes: constrained > 0 ? Math.min(totalmem(), constrained) : totalmem(),
++  };
++}
++
++export interface CaptureSchedule {
++  workers: number;
++  reason: 'explicit' | 'short-export' | 'resource-budget';
++  cpuCount: number;
++  memoryBudgetBytes: number;
++  estimatedMemoryBytes: number;
++}
++
++/** Stable host limits keep cache/checkpoint identities independent of transient system load. */
++export function captureSchedule(
++  request: { width: number; height: number; frames: number; concurrency?: number },
++  resources: CaptureResources,
++): CaptureSchedule {
++  const memoryBudgetBytes = Math.floor(resources.memoryBytes / 4);
++  // Browser/encoder overhead plus each page's DOM, PCM, decoder and multiple raster buffers.
++  // This is an estimate for selection, not a hard limit on native or GPU allocations.
++  const fixedBytes = 512 * MIB;
++  const workerBytes = 512 * MIB + request.width * request.height * 48;
++  const cpuLimit = Math.max(1, Math.floor(resources.cpuCount / 2));
++  const memoryLimit = Math.max(1, Math.floor((memoryBudgetBytes - fixedBytes) / workerBytes));
++  let workers = 1;
++  let reason: CaptureSchedule['reason'] = 'short-export';
++  if (request.concurrency !== undefined) {
++    workers = request.concurrency;
++    reason = 'explicit';
++  } else if (request.frames >= 300) {
++    workers = [4, 2, 1].find((count) => count <= cpuLimit && count <= memoryLimit)!;
++    reason = 'resource-budget';
++  }
++  workers = Math.min(workers, request.frames);
++  return {
++    workers,
++    reason,
++    cpuCount: resources.cpuCount,
++    memoryBudgetBytes,
++    estimatedMemoryBytes: fixedBytes + workers * workerBytes,
++  };
++}
+diff --git a/packages/renderer-browser/src/export/concurrency.test.ts b/packages/renderer-browser/src/export/concurrency.test.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/renderer-browser/src/export/concurrency.test.ts
+@@ -0,0 +1,46 @@
++import { expect, test } from 'vite-plus/test';
++import { captureSchedule } from './concurrency.ts';
++
++const frame = { width: 1920, height: 1080, frames: 900 };
++const host = { cpuCount: 10, memoryBytes: 32 * 1024 ** 3 };
++
++test('automatic capture bounds its pool by CPU capacity and memory estimates', () => {
++  for (const cpuCount of [1, 2, 3, 4, 6, 10, 64]) {
++    for (const memoryGiB of [1, 4, 8, 16, 32, 128]) {
++      for (const scale of [1, 2, 4]) {
++        const schedule = captureSchedule(
++          { ...frame, width: frame.width * scale, height: frame.height * scale },
++          { cpuCount, memoryBytes: memoryGiB * 1024 ** 3 },
++        );
++        expect([1, 2, 4]).toContain(schedule.workers);
++        expect(schedule.workers).toBeLessThanOrEqual(Math.max(1, Math.floor(cpuCount / 2)));
++        assertMemoryBudget(schedule);
++      }
++    }
++  }
++});
++
++test('short jobs avoid extra startup and explicit overrides retain their requested pool', () => {
++  expect(captureSchedule({ ...frame, frames: 299 }, host)).toMatchObject({
++    workers: 1,
++    reason: 'short-export',
++  });
++  expect(captureSchedule({ ...frame, frames: 299, concurrency: 3 }, host)).toMatchObject({
++    workers: 3,
++    reason: 'explicit',
++  });
++  expect(captureSchedule({ ...frame, frames: 1, concurrency: 8 }, host).workers).toBe(1);
++});
++
++test('resolution and memory constrain the pool without changing the explicit override', () => {
++  const limited = { cpuCount: 10, memoryBytes: 8 * 1024 ** 3 };
++  expect(captureSchedule(frame, limited).workers).toBe(2);
++  const large = { ...frame, width: 7680, height: 4320 };
++  expect(captureSchedule(large, limited).workers).toBe(1);
++  expect(captureSchedule({ ...large, concurrency: 4 }, limited).workers).toBe(4);
++});
++
++function assertMemoryBudget(schedule: ReturnType<typeof captureSchedule>) {
++  if (schedule.workers > 1)
++    expect(schedule.estimatedMemoryBytes).toBeLessThanOrEqual(schedule.memoryBudgetBytes);
++}
+diff --git a/packages/renderer-browser/bench/scheduling.ts b/packages/renderer-browser/bench/scheduling.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/renderer-browser/bench/scheduling.ts
+@@ -0,0 +1,107 @@
++import assert from 'node:assert/strict';
++import { execFileSync } from 'node:child_process';
++import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
++import { join, resolve } from 'node:path';
++import { parseArgs } from 'node:util';
++import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
++import { render, type BrowserRenderOptions } from '../src/export/index.ts';
++import type { RenderRuntime } from '@setcast/core';
++
++const { values } = parseArgs({ options: { out: { type: 'string' } } });
++if (!values.out) throw new Error('Pass --out NEW_DIRECTORY for scheduling validation.');
++const root = resolve(values.out);
++await mkdir(root);
++await createFixture(root);
++execFileSync('ffmpeg', [
++  '-v',
++  'error',
++  '-i',
++  join(root, 'tone.wav'),
++  '-af',
++  'apad',
++  '-t',
++  '10',
++  join(root, 'extended.wav'),
++]);
++await rename(join(root, 'extended.wav'), join(root, 'tone.wav'));
++const project = await fixtureProject(root, 'sterile-tech');
++const options: BrowserRenderOptions = {
++  projectDir: root,
++  out: join(root, 'automatic.mp4'),
++  range: [0, 10],
++  chunkSeconds: 1,
++};
++const reports: Record<string, { captured: number; reused: number; runtime: RenderRuntime[] }> = {};
++
++async function measured(name: string, overrides: Partial<BrowserRenderOptions>) {
++  const report = { captured: 0, reused: 0, runtime: [] as RenderRuntime[] };
++  await render(project, {
++    ...options,
++    ...overrides,
++    onMetrics: (metric) => {
++      if (metric.kind === 'frame') report.captured++;
++    },
++    onProgress: (event) => {
++      report.reused = Math.max(report.reused, event.reusedFrames ?? 0);
++    },
++    onRuntime: (event) => report.runtime.push(event),
++  });
++  reports[name] = report;
++  await writeFile(join(root, 'report.json'), JSON.stringify(reports, null, 2));
++  return report;
++}
++function decoded(file: string) {
++  return execFileSync(
++    'ffmpeg',
++    ['-v', 'error', '-xerror', '-i', file, '-map', '0:v', '-map', '0:a', '-f', 'framemd5', '-'],
++    { encoding: 'utf8' },
++  );
++}
++const cache = { directory: join(root, 'cache') };
++const initial = await measured('automatic', { cache });
++assert.equal(initial.captured, 300);
++const selected = initial.runtime.find((event) => event.kind === 'scheduling');
++assert(selected?.kind === 'scheduling');
++assert.equal(selected.reason, 'resource-budget');
++assert.deepEqual(
++  initial.runtime.find((event) => event.kind === 'capture'),
++  { kind: 'capture', workers: selected.workers, parallelEncoding: true },
++);
++const reference = decoded(options.out);
++const repeated = await measured('identical automatic repeat', { cache });
++assert.equal(repeated.captured, 0);
++assert.equal(repeated.reused, 300);
++assert.equal(decoded(options.out), reference);
++const explicit = await measured('explicit selected count', {
++  cache,
++  concurrency: selected.workers,
++});
++assert.equal(explicit.captured, 0);
++assert.equal(explicit.reused, 300);
++const fresh = join(root, 'fresh.mp4');
++await measured('fresh explicit count', { concurrency: selected.workers, out: fresh });
++assert.equal(decoded(fresh), reference);
++
++const resumed = join(root, 'resumed.mp4');
++await writeFile(resumed, 'existing output');
++const stop = new AbortController();
++await assert.rejects(
++  render(project, {
++    ...options,
++    out: resumed,
++    resume: true,
++    signal: stop.signal,
++    onProgress: (event) => {
++      if ((event.renderedFrames ?? 0) >= 33) stop.abort(new Error('automatic interruption'));
++    },
++  }),
++  /automatic interruption/,
++);
++assert.equal(await readFile(resumed, 'utf8'), 'existing output');
++const recovered = await measured('automatic resume', { out: resumed, resume: true });
++assert.equal(recovered.captured, 270);
++assert.equal(recovered.reused, 30);
++assert.equal(decoded(resumed), reference);
++process.stdout.write(
++  `Scheduling acceptance: PASS (${selected.workers} automatic workers, cache and resume pixels/audio identical)\n`,
++);

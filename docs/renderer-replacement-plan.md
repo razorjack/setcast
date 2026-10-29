@@ -312,6 +312,12 @@ experiment is a valid phase outcome; do not ship it to satisfy the schedule.
 
 ### Phase 3: schedule within the machine's resource budget
 
+The [2026-10-29 scheduling investigation](research/worker-scaling-2026-10-29/README.md) measured
+promising four-worker gains but did not qualify an automatic default. Moving-theme checks found
+paint-history differences in 13/32 cases. A repaint candidate passed thirteen comparisons before
+a screenshot timeout; the cause remains unresolved. Production retains one worker by default.
+Resolve deterministic multi-worker capture before promoting the archived automatic policy.
+
 Add short, bounded calibration across representative project moments, including costly scenes.
 Choose concurrency within explicit memory/resource limits and report the decision. Calibration
 cost belongs in end-to-end timings. Keep an explicit override and avoid retuning identical jobs

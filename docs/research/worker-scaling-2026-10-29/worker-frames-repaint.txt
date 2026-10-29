@@ -1,0 +1,33 @@
+sterile-tech 1920x1080: identical
+sterile-tech 1080x1920: identical
+escapement 1920x1080: identical
+escapement 1080x1920: identical
+long-exposure 1920x1080: identical
+long-exposure 1080x1920: identical
+bristol 1920x1080: identical
+bristol 1080x1920: identical
+patina 1920x1080: identical
+patina 1080x1920: identical
+quicksilver 1920x1080: identical
+quicksilver 1080x1920: identical
+bunker 1920x1080: identical
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Timeout 30000ms exceeded.
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at captureFrame (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:228:28) {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

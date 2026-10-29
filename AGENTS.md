@@ -110,6 +110,13 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Do not promote automatic browser concurrency from the three fast 1080p fixtures alone. The
+  2026-10-29 moving-theme check found worker-dependent decoded differences in 13/32 theme/aspect
+  cases. Direct JPEG controls isolated paint-history differences in Passe-Partout and Afterhours.
+  Forcing a full body repaint fixed early cases but the broader run timed out at Bunker portrait;
+  its cause is unresolved. Both candidates are archived, not production. See
+  docs/research/worker-scaling-2026-10-29/README.md and bench/worker-frames.ts.
+
 - Renderer benchmarks must load projects through public core/node and theme entry points, not
   CLI source helpers. Remotion's declaration build includes `bench`; importing CLI source from a
   benchmark can emit `.d.ts` files into `packages/cli/src` and break the next formatting check.

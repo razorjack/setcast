@@ -1,0 +1,428 @@
+{
+  "automatic": {
+    "captured": 300,
+    "reused": 0,
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "resource-budget",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 2728591360
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 4,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ]
+  },
+  "identical automatic repeat": {
+    "captured": 0,
+    "reused": 300,
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "resource-budget",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 2728591360
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 0,
+        "parallelEncoding": true
+      }
+    ]
+  },
+  "explicit selected count": {
+    "captured": 0,
+    "reused": 300,
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "explicit",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 2728591360
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 0,
+        "parallelEncoding": true
+      }
+    ]
+  },
+  "fresh explicit count": {
+    "captured": 300,
+    "reused": 0,
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "explicit",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 2728591360
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 4,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ]
+  },
+  "automatic resume": {
+    "captured": 270,
+    "reused": 30,
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "resource-budget",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 2728591360
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 4,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ]
+  }
+}

@@ -18,6 +18,9 @@
     "preview.ts",
     "preview-cli.ts",
     "preview-exports.ts",
-    "color.ts"
+    "color.ts",
+    "scaling.ts",
+    "worker-frames.ts",
+    "worker-capture.ts"
   ]
 }

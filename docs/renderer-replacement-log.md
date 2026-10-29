@@ -597,3 +597,109 @@ fully decoded smoke export (`/tmp/setcast-color-ready.log`). Both exporter accep
 actual VideoToolbox acceptance, persistent-cache recovery and installed-package checks passed.
 The sixteen assembled-output metadata checks and production chart assertions passed. This
 completes the current SDR H.264 color correction; broader receiving-app qualification remains open.
+
+## Worker scaling and resource scheduling, started 2026-10-29
+
+Color correction is committed as `c08c0b3`. Before choosing an automatic worker policy, compare
+1, 2 and 4 workers on identical input/settings with fresh sessions and rotating order. Retain
+full-video decode hashes, process-tree RSS and external CPU observations. Timings include the
+render call and session cleanup; project preparation and output verification are excluded, so
+these are scaling experiments, not the end-to-end replacement benchmark.
+
+Concurrency currently participates in both cache and checkpoint identity. Calibration must not
+silently change a resumed job's schedule or make identical exports miss their cache merely because
+host load changed. Any resource estimate must be described as an estimate, not an enforced browser
+memory limit. Worker calibration also needs to include encoding contention and expensive scene
+moments; screenshot-only microbenchmarks cannot establish the best complete-export setting.
+
+The new scaling harness initially could not resolve @setcast/themes from renderer-browser, which
+has no dependency on themes. It now reads the themes source entry directly, without importing CLI
+helpers or adding a production dependency. No renderer or asset change resulted from that failed
+launch. Production still defaults to one worker pending measurements.
+
+The first nine standard-scene runs all produced the same complete decoded video hash. External
+CPU varied materially (roughly 1.1–4.3 mean cores), so retain that exploration without treating its
+median as clean evidence. A requested repeat was started before its preceding idle result was
+inspected; the idle result showed 69.6% system busy. That repeat was stopped, its first completed
+run retained, and the harness now waits for a bounded low-CPU interval before each arm when
+--idle-busy is supplied. It does not stop or inspect the other project's commands.
+
+The candidate stable policy uses 1/2/4 workers, half available CPU count, and a quarter of the
+host/process memory limit with a conservative per-page raster/decoder estimate. Jobs below 300
+frames use one worker, and explicit counts remain supported. It reports the selected schedule and
+resolves it before cache/resume identity. This is a selection heuristic, not a hard native-memory
+or CPU-thread limit. Per-job calibration remains a candidate only if its total cost beats this
+policy; it must not destabilize stored-job identity. The baseline passed 664 tests in 109 files.
+
+The lower-load standard repeat uses --idle-busy .2, which requires a five-second pre-run average
+at or below 20% system CPU. Three alternating pairs are being retained. GPU tunnel and looping
+25 fps video workloads follow with identical 1080p30 output settings. The initial aborted run is
+not relabeled as a quiet measurement. Production default changes remain uncommitted pending the
+comparison and cache/resume/export/package verification.
+
+The three lower-load comparisons passed with complete decoded hashes identical within each case:
+standard median 9.721 → 6.375 s, GPU tunnel 10.255 → 7.682 s, looping video 21.258 → 11.422 s.
+Each uses three alternating one-worker/automatic-four-worker pairs, 300 frames, 1080p30, software
+H.264 and fresh sessions. Input loading/verification are excluded; this is not the current-upstream
+replacement benchmark. The GPU and video arms waited through load spikes before running. Video
+external CPU remained higher with four workers; reports retain that limit rather than attributing
+those processes to another project. Peak summed RSS increased, as expected. Retained evidence is
+under docs/research/worker-scaling-2026-10-29/.
+
+Automatic cache/resume verification passed: 300 captured initially, zero on successful repeat and
+when the selected count was supplied explicitly, then 270 captured/30 reused after cancellation.
+Decoded video and audio matched the fresh export. Both adapter acceptance suites passed. CLI
+render/clip now report actual capture workers when preparation ends. All-theme moving-frame checks
+and packed-package verification are running before the final baseline and commit.
+
+The expanded moving-theme check found decoded differences in thirteen of thirty-two theme/aspect
+cases when comparing one and four workers. This prevents treating the three performance fixtures
+as full theme qualification. The default change remains uncommitted. A direct-capture investigation
+now compares two fresh one-worker runs and a four-worker run before H.264 encoding, retaining each
+JPEG and hash. This distinguishes scheduling dependence from independent-page variability and
+encoder reference-frame propagation. The failing all-theme outputs are retained rather than hidden
+behind an aggregate score. The earlier exact matches remain valid for their named fixtures only.
+
+Direct JPEG capture isolated a paint-history discrepancy. Passe-Partout's two fresh one-worker
+runs matched exactly; four workers differed only at absolute frames 32–37. The changed area was
+a thin tracklist progress line (x=1408..1783, y=368..383 at 1920×1080), with whole-frame RMS
+0.024–0.035 RGB levels and maximum channel differences 3–11 after JPEG. H.264 inter-frame
+prediction propagated those small source differences across more decoded frames. Afterhours also
+matched between fresh one-worker runs but differed on nine frames with four workers.
+
+A local experiment removes and restores the body's layout box synchronously before capture,
+forcing fresh paint without remounting React or discarding decoded assets. It removed every
+Passe-Partout captured-frame difference in the experiment. The candidate is now in the shared
+export frame driver after readiness, with its cost included in readiness metrics; all themes,
+preview/media behavior and throughput must be rechecked. The original pre-repaint timing reports
+are retained and cannot be presented as final-policy performance if this fix ships.
+
+
+## Milestone closeout, 2026-10-29
+
+The user requested wrapping up this milestone without starting another item. The automatic-worker
+and full-repaint candidates are not promoted. The expanded comparison found thirteen differing
+theme/aspect cases. The repaint candidate made its first thirteen cases exact, then page.screenshot
+timed out after thirty seconds at Bunker portrait. Its cause is unisolated. Keep this failed run
+visible; do not increase the timeout or relax comparisons merely to declare success.
+
+Both candidates are preserved as applyable patches under docs/research/worker-scaling-2026-10-29/,
+along with full/partial reports, direct-capture controls, logs and sample JPEGs. Their production
+changes and candidate-only tests were removed from the working implementation. Browser default
+concurrency remains one, with manual 1–8 selection. The safe retained code change reports actual
+capture-worker counts in CLI render/clip progress. The standalone scaling and capture-investigation
+harnesses remain available; the scheduling acceptance harness is inside the candidate patch.
+
+Color correction c08c0b3 is implemented and validated. Automatic scheduling remains pending on
+deterministic capture qualification. Matched-quality current-upstream comparisons, selective edit
+reuse, Remotion-free distribution/default migration and broader platform/receiving-app qualification
+remain pending. The earlier preview/audio/range/export-queue and persistent-cache commits remain
+implemented. No new roadmap item was started during closeout.
+
+Final production closeout checks passed: `vp run ready` with 661 tests in 108 files, formatting,
+lint, type checks, dependency ban and decoded smoke; packed `package-smoke --browser` also passed
+on the exact reverted production state. Logs: `/tmp/setcast-closeout-ready.log` and
+`/tmp/setcast-closeout-package.log`. The three policy-only unit tests are retained inside the
+experimental patch, which explains the change from the candidate's 664-test count. Both archived
+patches pass `git apply --check` against the final production files. The all-theme research failure
+and partial repaint timeout remain documented failures, not passing release checks.
