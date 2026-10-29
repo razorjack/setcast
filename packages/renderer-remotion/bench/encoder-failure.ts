@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { load, withWholeSet } from '../../cli/src/project.ts';
+import { loadProject, probeAudio, readsWholeSet, readWholeSet } from '@setcast/core/node';
+import { themes } from '@setcast/themes';
 import { renderVideo } from '../src/chunks.ts';
 import { currentSession, withRenderSession } from '../src/session.ts';
 import { PACKAGE_ROOT } from '../src/paths.ts';
@@ -13,8 +14,13 @@ const { values } = parseArgs({
 });
 if (!values.out) throw new Error('Pass --out NEW_DIRECTORY to retain encoder-failure evidence.');
 const out = resolve(values.out);
-const loaded = await load(values.project);
-const project = await withWholeSet(loaded);
+const loaded = await loadProject(resolve(values.project ?? 'examples/demo'), {
+  themes,
+  probeDuration: (audio, root) => probeAudio({ audio }, root),
+});
+const project = readsWholeSet(loaded.project)
+  ? { ...loaded.project, ...(await readWholeSet(loaded.project, loaded.dir)) }
+  : loaded.project;
 await mkdir(out);
 const destination = join(out, 'destination.mp4');
 await writeFile(destination, 'previous export');
