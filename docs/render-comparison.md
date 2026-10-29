@@ -34,9 +34,17 @@ cold-machine or fully isolated-process benchmarks. `firstFrameProgressSeconds` m
 positive frame-progress notification, not a GPU timestamp or physical presentation.
 
 Reports identify the source revision, dirty-tree flag, package versions, requested output settings,
-resolved project hash and source-file hashes/stamps. Runtime pins are not observations of the
-active browser, graphics driver, encoder or Remotion overlap decision. Instrumenting those actual
-decisions remains phase 0 work. Preserve the working patch when retaining a dirty-tree experiment.
+resolved project hash and source-file hashes/stamps. Version 2 reports also retain runtime events:
+browser user agent, WebGL renderer/vendor/version, screenshot transport, actual worker count,
+Remotion's `parallelEncoding` decision and the video encoder selected in its FFmpeg arguments.
+Encoding events distinguish streaming input from image sequences. They do not measure overlap
+between separate chunks. Missing WebGL is recorded explicitly and does not fail a CSS-only export.
+
+Runtime observation is opt-in through `RenderOptions.onRuntime`. Browser export probes each
+capture page; Remotion probes a temporary page in its active browser. These probes describe a
+WebGL context in that browser, not GPU utilization or proof that every layer uses GPU rendering.
+Observation overhead is included in wall time. Preserve the working patch when retaining a
+dirty-tree experiment.
 
 Each successful output is fully decoded. Verification checks H.264/AAC stream presence, video
 size, frame rate and the expected frame count derived from core range math. A decoded-video hash
@@ -65,7 +73,13 @@ These are harness checks under ordinary workstation load, not performance qualif
 ## Remaining benchmark work
 
 This implements the first part of phase 0 in the [replacement plan](renderer-replacement-plan.md).
-It compares installed adapters only. Current-upstream isolation, actual capture/GPU/encoder
-observations, process-tree resource measurements, controlled background-load attribution, the
+It compares installed adapters only. Current-upstream isolation, chunk-overlap timing,
+process-tree resource measurements, controlled background-load attribution, the
 full scene matrix, long workloads and matched-quality comparisons remain outstanding. Keep
 that scope explicit before using results to decide whether the replacement is faster.
+
+The runtime-observation integration check rendered and fully decoded both one-second outputs.
+It observed Chromium 156.0.8078.4 and streaming libx264 for browser export, Chromium 149.0.7790.0
+and image-sequence libx264 for Remotion, two workers each, and Apple M1 Pro Metal for both.
+Remotion reported `parallelEncoding: false`. This validates reporting on this machine; it is not
+a speed or cross-platform result.

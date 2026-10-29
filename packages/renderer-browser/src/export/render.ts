@@ -104,6 +104,7 @@ async function renderChunks(job: RenderJob, chunks: ChunkStore, directory: strin
     reused.push(await chunks.reuse(index, range, chunkFile(directory, index), job.options.signal));
   }
   const workers = reused.every(Boolean) ? 0 : (job.options.concurrency ?? 1);
+  job.options.onRuntime?.({ kind: 'capture', workers, parallelEncoding: true });
   await withCapturePages(job.project, job.options, workers, async (pages) => {
     let reusedFrames = 0;
     for (const [index, range] of job.ranges.entries()) {
@@ -133,6 +134,7 @@ async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob
   const { project, options, encoding } = job;
   const encoder = ffmpeg(videoArgs(project.fps, encoding, job.out), options.signal);
   try {
+    options.onRuntime?.({ kind: 'encoder', encoder: 'libx264', pipeline: 'stream' });
     await pipeline({
       range,
       workers: pages.length,

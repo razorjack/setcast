@@ -7,14 +7,16 @@ import {
   SetcastError,
   type GraphicsBackend,
   type ResolvedProject,
+  type RuntimeReport,
 } from '@setcast/core';
+import { observeRenderBrowser } from '@setcast/core/node';
 import type { RenderProgress } from './index.ts';
 import { checkLocalServer } from './local-server.ts';
 import { ENTRY, PACKAGE_ROOT } from './paths.ts';
 import { probeAudio } from './probe.ts';
 import { graphicsOptions } from './graphics.ts';
 
-type Options = { projectDir: string; gl?: GraphicsBackend };
+type Options = { projectDir: string; gl?: GraphicsBackend; onRuntime?: RuntimeReport };
 type Report = (progress: RenderProgress) => void;
 type Browser = Awaited<ReturnType<typeof openBrowser>>;
 type Composition = Awaited<ReturnType<typeof selectComposition>>;
@@ -57,6 +59,7 @@ class RenderSession {
     }
     if (!this.resources.has(key)) this.resources.set(key, this.start(options, report));
     const resources = await this.resources.get(key)!;
+    if (options.onRuntime) await observeBrowser(resources.puppeteerInstance, options.onRuntime);
     if (!compositions.has(key))
       compositions.set(
         key,
@@ -98,6 +101,22 @@ class RenderSession {
           .map((path) => rm(path, { recursive: true, force: true })),
       );
     }
+  }
+}
+
+async function observeBrowser(browser: Browser, report: RuntimeReport) {
+  const page = await browser.newPage({
+    context: () => null,
+    logLevel: 'error',
+    indent: false,
+    pageIndex: 0,
+    onBrowserLog: null,
+    onLog: () => {},
+  });
+  try {
+    report(await page.evaluate(observeRenderBrowser));
+  } finally {
+    await page.close();
   }
 }
 

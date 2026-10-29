@@ -6,7 +6,7 @@ import {
   type RenderMediaOptions,
   type RenderMediaOnProgress,
 } from '@remotion/renderer';
-import { splitFrameRange, type FrameRange } from '@setcast/core';
+import { splitFrameRange, type FrameRange, type RuntimeReport } from '@setcast/core';
 export { splitFrameRange, resolveChunkSeconds } from '@setcast/core';
 import type { RenderProgress } from './index.ts';
 import { encodeMasterAudio, muxChunks } from './mux.ts';
@@ -21,10 +21,12 @@ interface ChunkOptions {
   audio: string | null;
   report: Report;
   signal?: AbortSignal;
+  onRuntime?: RuntimeReport;
 }
 
 export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise<void> {
   options.signal?.throwIfAborted();
+  job = observeEncoding(job, options.onRuntime);
   const { fps } = job.composition;
   const ranges = splitFrameRange(options.frameRange, options.chunkSeconds * fps);
   const totalFrames = options.frameRange[1] - options.frameRange[0] + 1;
@@ -63,6 +65,24 @@ export async function renderVideo(job: VideoJob, options: ChunkOptions): Promise
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
+}
+
+function observeEncoding(job: VideoJob, report?: RuntimeReport): VideoJob {
+  if (!report) return job;
+  return {
+    ...job,
+    ffmpegOverride: (command) => {
+      const args = job.ffmpegOverride?.(command) ?? command.args;
+      const index = args.findIndex((arg) => arg === '-c:v' || arg === '-vcodec');
+      if (index >= 0 && args[index + 1] !== 'copy')
+        report({
+          kind: 'encoder',
+          encoder: args[index + 1]!,
+          pipeline: command.type === 'pre-stitcher' ? 'stream' : 'image-sequence',
+        });
+      return args;
+    },
+  };
 }
 
 async function renderTracks(

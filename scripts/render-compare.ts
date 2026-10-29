@@ -5,6 +5,8 @@ import { execFileSync } from 'node:child_process';
 import { cpus, release } from 'node:os';
 import {
   type RenderReport,
+  type RenderRuntime,
+  type RuntimeReport,
   exportSettings,
   framesWithinMix,
   resolveFrameRange,
@@ -113,10 +115,14 @@ async function runArm(
   const monitoring = measureLoad();
   const started = performance.now();
   let firstFrameProgressSeconds: number | null = null;
+  const runtime: RenderRuntime[] = [];
   try {
-    const { project, result } = await exportArm(config, renderer, file, (progress) => {
-      if (firstFrameProgressSeconds === null && (progress.renderedFrames ?? 0) > 0)
-        firstFrameProgressSeconds = (performance.now() - started) / 1000;
+    const { project, result } = await exportArm(config, renderer, file, {
+      onProgress: (progress) => {
+        if (firstFrameProgressSeconds === null && (progress.renderedFrames ?? 0) > 0)
+          firstFrameProgressSeconds = (performance.now() - started) / 1000;
+      },
+      onRuntime: (event) => runtime.push(event),
     });
     const wallSeconds = (performance.now() - started) / 1000;
     const observedLoad = monitoring.stop();
@@ -136,6 +142,7 @@ async function runArm(
       result,
       load: observedLoad,
       verification,
+      runtime,
     };
   } finally {
     monitoring.stop();
@@ -146,7 +153,7 @@ async function exportArm(
   config: ReturnType<typeof options>,
   renderer: Renderer,
   file: string,
-  onProgress: RenderReport,
+  observers: { onProgress: RenderReport; onRuntime: RuntimeReport },
 ) {
   const loaded = await load(config.project, config.theme);
   const project = await withWholeSet(loaded);
@@ -159,7 +166,7 @@ async function exportArm(
         signal: controller.signal,
         concurrency: config.concurrency,
         range: [config.at, config.at + config.seconds],
-        onProgress,
+        ...observers,
       }),
     renderer,
   );
@@ -173,7 +180,7 @@ async function main() {
   await mkdir(config.out);
   const runs: Awaited<ReturnType<typeof runArm>>[] = [];
   const report = {
-    version: 1,
+    version: 2,
     config,
     identity,
     startedAt: new Date().toISOString(),
@@ -187,7 +194,7 @@ async function main() {
     },
     runtimePins: await runtimePins(),
     runtimeObservation:
-      'Package pins only; actual browser/GPU/encoder decisions are not instrumented.',
+      'Per-run browser user agent, WebGL identity, capture workers and encoder decisions. Optional observation overhead is included in wall time.',
     timing:
       'Fresh sessions, shared process and OS caches. Includes loading through cleanup; excludes identity and verification.',
     runs,

@@ -104,6 +104,12 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
         inputProps: project,
         concurrency: options.concurrency ?? null,
         chromiumOptions: graphicsOptions(options.gl),
+        onStart: (info) =>
+          options.onRuntime?.({
+            kind: 'capture',
+            workers: info.resolvedConcurrency,
+            parallelEncoding: info.parallelEncoding,
+          }),
       },
       {
         frameRange,
@@ -111,6 +117,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
         signal: options.signal,
         audio: project.audio ? resolve(options.projectDir, project.audio) : null,
         report,
+        onRuntime: options.onRuntime,
       },
     );
   } catch (cause) {

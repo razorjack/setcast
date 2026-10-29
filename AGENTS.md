@@ -609,6 +609,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- `RenderOptions.onRuntime` reports observations from active exports without changing default
+  render behavior. Keep observations separate from requested options: Remotion can decline
+  parallel encoding. Browser identity/GL probes are opt-in and included in benchmark wall time;
+  the WebGL renderer string does not measure GPU utilization. `render-compare` report version 2
+  retains these events. Do not infer inter-chunk overlap from image-sequence encoding alone.
+
 - `vp run render-compare` compares the installed adapters with aligned loading-through-cleanup
   timing and fresh sessions, preserving project output settings. It hashes inputs, decodes outputs
   and retains failed/cancelled reports. System CPU includes concurrent projects; Node RSS is not

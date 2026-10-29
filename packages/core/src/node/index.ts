@@ -38,5 +38,6 @@ export {
 } from './diagnostic-browser.ts';
 
 export { diagnoseBrowserRuntime, type DiagnosticBrowser } from './diagnostic-browser-runtime.ts';
+export { observeRenderBrowser } from './render-browser.ts';
 
 export { diagnoseLocalServer } from './diagnostic-server.ts';

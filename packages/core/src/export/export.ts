@@ -34,6 +34,20 @@ export interface RenderProgress {
 
 export type RenderReport = (progress: RenderProgress) => void;
 
+/** Observations from an active export, distinct from requested configuration. */
+export type RenderRuntime =
+  | {
+      kind: 'browser';
+      userAgent: string;
+      graphics: { renderer: string; vendor: string; version: string } | null;
+      graphicsError: string | null;
+      capture: 'jpeg-screenshot';
+    }
+  | { kind: 'capture'; workers: number; parallelEncoding: boolean }
+  | { kind: 'encoder'; encoder: string; pipeline: 'stream' | 'image-sequence' };
+
+export type RuntimeReport = (event: RenderRuntime) => void;
+
 export interface RenderOptions extends EncodingOptions {
   /** Browser exporter only: retain and validate completed chunks across interrupted jobs. */
   resume?: boolean;
@@ -47,6 +61,7 @@ export interface RenderOptions extends EncodingOptions {
   chunkSeconds?: number;
   gl?: GraphicsBackend;
   onProgress?: RenderReport;
+  onRuntime?: RuntimeReport;
 }
 
 export interface RenderResult {

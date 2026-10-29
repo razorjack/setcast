@@ -6,7 +6,9 @@ import {
   type GraphicsBackend,
   type ResolvedProject,
   type StillOptions,
+  type RuntimeReport,
 } from '@setcast/core';
+import { observeRenderBrowser } from '@setcast/core/node';
 import { bundlePlayer } from '../bundle.ts';
 import { captureBrowserArgs } from './graphics.ts';
 import { serveCapture } from '../server.ts';
@@ -21,6 +23,7 @@ const sessions = new AsyncLocalStorage<Session>();
 
 type CaptureOptions = Pick<StillOptions, 'projectDir' | 'gl' | 'signal' | 'onProgress'> & {
   assetPaths?: readonly string[];
+  onRuntime?: RuntimeReport;
 };
 
 async function captureBundle(options: CaptureOptions) {
@@ -99,6 +102,7 @@ async function openCapture(project: ResolvedProject, options: CaptureOptions): P
     if (options.assetPaths) await restrictResources(page, server.url, options.assetPaths, files);
     await page.goto(server.url);
     await page.waitForFunction(() => Boolean(window.setcastExport));
+    if (options.onRuntime) options.onRuntime(await page.evaluate(observeRenderBrowser));
     return { page, [Symbol.asyncDispose]: close };
   } catch (error) {
     try {

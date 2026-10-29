@@ -296,6 +296,8 @@ export type {
   RenderStage,
   RenderReport,
   RenderProgress,
+  RenderRuntime,
+  RuntimeReport,
   RenderOptions,
   RenderResult,
   StillOptions,
