@@ -662,3 +662,16 @@ landscape and portrait, with FFmpeg absent during capture. See [browser-renderer
 
 Validation: ready passed 594 tests, both exporter acceptance suites passed, and the WebP regression
 check passed with exact decoded pixels. Installed-package smoke passed, including WebP capture.
+
+## Renderer replacement: comparison tooling, 2026-10-29
+
+`vp run render-compare` now compares installed adapters through their actual export APIs with
+aligned timing boundaries, alternating run order, project output settings and fresh sessions.
+It retains input identity, package pins, system-load observations, completed runs and decoded
+video verification. Cancellation preserves a report; existing output directories are rejected.
+See [render-comparison.md](render-comparison.md) for commands, verification and limits.
+
+Phase 0 remains in progress. Short harness checks do not establish a speed advantage. Current
+upstream comparisons, actual runtime-path instrumentation, whole-process resource measurements,
+quality matching and broader workloads remain required. Other projects may generate background
+load; suspicious pairs must be repeated in a quiet interval without hiding the original results.

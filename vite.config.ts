@@ -65,6 +65,7 @@ export default defineConfig({
     tasks: {
       'package-smoke': { command: 'node scripts/package-smoke.ts', cache: false },
       'export-acceptance': { command: 'node scripts/export-acceptance.ts', cache: false },
+      'render-compare': { command: 'node scripts/render-compare.ts', cache: false },
       'render-bench': { command: 'node packages/renderer-remotion/bench/render.ts', cache: false },
       smoke: {
         command: 'node scripts/smoke.ts',

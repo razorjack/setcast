@@ -609,6 +609,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- `vp run render-compare` compares the installed adapters with aligned loading-through-cleanup
+  timing and fresh sessions, preserving project output settings. It hashes inputs, decodes outputs
+  and retains failed/cancelled reports. System CPU includes concurrent projects; Node RSS is not
+  total memory. Actual runtime paths and current upstream comparisons remain uninstrumented.
+  See `docs/render-comparison.md`; do not treat its short harness checks as speed qualification.
+
 - Renderer replacement preserves the full CSS/RenderFrame contract and targets both first-export
   throughput and reuse after successful exports. The plan in `docs/renderer-replacement-plan.md`
   takes priority over broad plugin/effect expansion for this effort. Extend the existing native

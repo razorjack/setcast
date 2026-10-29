@@ -197,7 +197,10 @@ renderer. Native capture availability alone does not prove correct pixels or har
 
 ## Delivery sequence
 
-All phases below are pending. They describe work to implement, not newly supported flags or APIs.
+Phase 0 is in progress; subsequent phases remain pending. The installed-adapter comparison
+runner is implemented as described in [render-comparison.md](render-comparison.md). Full upstream,
+quality and platform comparisons are still required. The phases describe implementation work,
+not newly supported renderer flags or APIs.
 Benchmarking and release qualification continue across phases. Color/fidelity fixtures begin in
 phase 0; the additional output formats arrive later.
 
