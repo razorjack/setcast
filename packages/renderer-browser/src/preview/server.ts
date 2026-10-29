@@ -1,6 +1,10 @@
-import type { ResolvedProject } from '@setcast/core';
+import type { ExportSettings, ResolvedProject } from '@setcast/core';
 import { bundlePlayer } from '../bundle.ts';
 import { serveCapture } from '../server.ts';
+import { PreviewJobs } from './jobs.ts';
+import { PreviewJobApi } from './jobs-http.ts';
+import type { PreviewExportOptions } from './jobs-contract.ts';
+export type { PreviewExportOptions } from './jobs-contract.ts';
 
 export interface PreviewRevision {
   revision: number;
@@ -10,7 +14,7 @@ export interface PreviewRevision {
 
 export async function preview(
   project: ResolvedProject,
-  options: { projectDir: string; port?: number },
+  options: { projectDir: string; port?: number; exports?: PreviewExportOptions },
 ) {
   const [controls, capture] = await Promise.all([
     bundlePlayer('preview.tsx'),
@@ -24,15 +28,33 @@ export async function preview(
     ),
   );
   const state: PreviewRevision = { revision: 0, project, error: null };
-  const server = await serveCapture(project, { ...options, files: controls, preview: state });
+  const jobs = options.exports
+    ? new PreviewJobs(state, { ...options.exports, projectDir: options.projectDir })
+    : undefined;
+  const server = await serveCapture(project, {
+    ...options,
+    files: controls,
+    preview: state,
+    exports: jobs ? new PreviewJobApi(jobs) : undefined,
+  });
   return {
     ...server,
-    update(next: ResolvedProject) {
+    async close() {
+      try {
+        await server.close();
+      } finally {
+        await jobs?.close();
+      }
+    },
+    update(next: ResolvedProject, settings?: ExportSettings) {
+      jobs?.invalidate('The project changed. Create a new export from the current preview.');
+      if (settings) jobs?.updateSettings(settings);
       state.project = next;
       state.revision++;
       state.error = null;
     },
     report(message: string) {
+      jobs?.invalidate('Project reload failed. Fix the reported error before exporting again.');
       state.error = message;
     },
   };

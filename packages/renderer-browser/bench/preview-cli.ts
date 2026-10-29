@@ -23,6 +23,7 @@ export async function checkPreviewCli(directory: string) {
   const url = `http://127.0.0.1:${port}/preview.json`;
   try {
     await pollRevision(url, (value) => value.project?.title === 'Export acceptance');
+    await checkExportQueue(url, directory);
     await writeFile(config, `${original}\nrenderer: browser\noutput: [invalid]\n`);
     const invalid = await pollRevision(url, (value) => Boolean(value.error));
     assert.equal(invalid.revision, 0);
@@ -103,4 +104,11 @@ function startPreview(directory: string, port: number) {
     { stdio: ['ignore', 'pipe', 'pipe'] },
   );
   return child;
+}
+
+async function checkExportQueue(url: string, directory: string) {
+  const queue = await (await fetch(new URL('/exports', url))).json();
+  assert.equal(queue.jobs.length, 0);
+  assert.equal(typeof queue.token, 'string');
+  assert.equal(queue.directory, join(directory, 'out', 'preview'));
 }

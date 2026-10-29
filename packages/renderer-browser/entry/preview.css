@@ -397,3 +397,32 @@ meter {
 .sp-range input {
   width: 100px;
 }
+
+.sp-exports p,
+.sp-exports li {
+  overflow-wrap: anywhere;
+}
+.sp-exports ol {
+  list-style: none;
+  padding: 0;
+}
+.sp-exports li {
+  border-top: 1px solid #ffffff16;
+  padding: 14px 0;
+}
+.sp-exports li > strong,
+.sp-exports li > span {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.sp-exports progress {
+  width: 100%;
+  accent-color: var(--sp-accent);
+}
+.sp-exports details {
+  margin-top: 10px;
+}
+.sp-exports a {
+  color: var(--sp-accent);
+}

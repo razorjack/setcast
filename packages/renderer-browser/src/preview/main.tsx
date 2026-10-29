@@ -6,6 +6,7 @@ import { useFramePreview } from './frame-preview.ts';
 import { usePreviewPlayback, type PreviewPreferences } from './playback.ts';
 import { MusicalNavigation, PreviewRange, usePreviewSelection } from './timeline.tsx';
 import type { PreviewSelection } from './navigation.ts';
+import { PreviewExports } from './exports.tsx';
 import { Inspector } from './inspector.tsx';
 import { PreviewViewport } from './viewport.tsx';
 import { PreviewTransport } from './transport.tsx';
@@ -47,6 +48,8 @@ function Preview() {
           position={position}
           preferences={preferences}
           selection={selection}
+          revision={state.revision}
+          invalid={Boolean(state.error)}
         />
       ) : (
         <p className="sp-loading">Loading project…</p>
@@ -60,12 +63,16 @@ function Workspace({
   position,
   preferences,
   selection,
+  revision,
+  invalid,
 }: {
   project: ResolvedProject;
   reference: Reference;
   position: RefObject<number | null>;
   preferences: RefObject<PreviewPreferences>;
   selection: RefObject<PreviewSelection | null>;
+  revision: number;
+  invalid: boolean;
 }) {
   const range = usePreviewSelection(project, selection);
   const count = framesWithinMix(project.mix.duration, project.fps);
@@ -90,6 +97,7 @@ function Workspace({
       <aside className="sp-inspector" aria-label="Frame inspector">
         <MusicalNavigation project={project} frame={session.requested} seek={session.seek} />
         <PreviewRange range={range} frame={session.requested} seek={session.seek} />
+        <PreviewExports revision={revision} range={range} invalid={invalid} />
         <Inspector session={session} />
         <ReferenceControls reference={reference} width={project.width} height={project.height} />
       </aside>

@@ -25,6 +25,43 @@ await requirePnpm();
 const temporary = await mkdtemp(join(tmpdir(), 'setcast-packages-'));
 const modules = join(temporary, 'node_modules');
 
+const previewExportSmokeSource = String.raw`import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { setTimeout } from 'node:timers/promises';
+import { preview } from '@setcast/renderer-browser/preview';
+import { loadProject, probeAudio } from '@setcast/core/node';
+import { themes } from '@setcast/themes';
+const projectDir = process.argv[2];
+const { project } = await loadProject(projectDir, { themes, probeDuration: (audio, root) => probeAudio({ audio }, root) });
+const directory = join(projectDir, 'out', 'preview');
+const server = await preview(project, { projectDir, port: 0, exports: { directory } });
+try {
+  const url = new URL('exports', server.url);
+  const initial = await (await fetch(url)).json();
+  assert.equal(initial.jobs.length, 0);
+  const response = await fetch(url, { method: 'POST', headers: { Origin: url.origin, 'Content-Type': 'application/json', 'X-Setcast-Export': initial.token }, body: JSON.stringify({ revision: 0, first: 0, last: 5 }) });
+  assert.equal(response.status, 200);
+  const job = await response.json();
+  let finished;
+  for (let attempt = 0; attempt < 600; attempt++) {
+    const state = await (await fetch(url)).json();
+    finished = state.jobs.find(entry => entry.id === job.id);
+    if (finished.status === 'complete' || finished.status === 'failed') break;
+    await setTimeout(100);
+  }
+  assert.equal(finished.status, 'complete', JSON.stringify(finished));
+  const file = join(directory, finished.filename);
+  const bytes = await readFile(file);
+  const downloaded = await fetch(new URL('exports/' + job.id + '/file', server.url));
+  assert(bytes.equals(Buffer.from(await downloaded.arrayBuffer())));
+  const decoded = execFileSync('ffmpeg', ['-v', 'error', '-xerror', '-i', file, '-map', '0:v', '-f', 'framemd5', '-'], { encoding: 'utf8' });
+  assert.equal(decoded.split('\n').filter(line => line && !line.startsWith('#')).length, 6);
+  console.log('  installed preview exporter: six decoded frames and completed-job download');
+} finally { await server.close(); }
+`;
+
 const playerSmokeSource = `import assert from 'node:assert/strict';
 import { play } from '@setcast/renderer-browser';
 import { preview } from '@setcast/renderer-browser/preview';
@@ -273,6 +310,7 @@ async function exerciseBrowser(
   const bytes = (await readFile(video)).toString('latin1');
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
   await exerciseCache(run, project);
+  await exercisePreviewExport(project);
   console.log('  installed browser exporter: PNG, lossless WebP and H.264 + AAC');
 }
 
@@ -318,4 +356,10 @@ async function exerciseCache(
   await run('cache', 'clear', cache);
   assert.equal(JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout).bytes, 0);
   console.log('  installed cache: repeat skips capture, decoded frames match, inspect/clear work');
+}
+
+async function exercisePreviewExport(projectDir: string) {
+  const script = join(temporary, 'preview-export-smoke.mjs');
+  await writeFile(script, previewExportSmokeSource);
+  await command(process.execPath, [script, projectDir], temporary);
 }

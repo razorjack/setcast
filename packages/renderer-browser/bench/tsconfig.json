@@ -16,6 +16,7 @@
     "resume.ts",
     "cache.ts",
     "preview.ts",
-    "preview-cli.ts"
+    "preview-cli.ts",
+    "preview-exports.ts"
   ]
 }

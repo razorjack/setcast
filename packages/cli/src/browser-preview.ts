@@ -1,4 +1,5 @@
-import { errorMessage, ConfigError, SetcastError } from '@setcast/core';
+import { join } from 'node:path';
+import { errorMessage, exportSettings, ConfigError, SetcastError } from '@setcast/core';
 import type { LoadedProject } from '@setcast/core/node';
 import { load, withWholeSet } from './project.ts';
 import { watchInputs } from './watch.ts';
@@ -13,12 +14,16 @@ export async function browserPreview(
   const server = await preview(await withWholeSet(loaded), {
     projectDir: loaded.dir,
     port: options.port,
+    exports: {
+      directory: join(loaded.dir, 'out', 'preview'),
+      settings: exportSettings(loaded.config.output),
+    },
   });
   const stopWatching = watchInputs(
     dependencies,
     async (files) => {
       const next = await load(loaded.dir, options.theme, files);
-      server.update(await withWholeSet(next));
+      server.update(await withWholeSet(next), exportSettings(next.config.output));
     },
     (error) => {
       printError(error);
@@ -26,6 +31,9 @@ export async function browserPreview(
     },
   );
   log.info(`Open ${server.url} in your browser (Ctrl+C to stop)`);
+  log.info(
+    'Exports save under out/preview; stopping preview cancels active work and retains checkpoints.',
+  );
   log.info('Audible playback and exact frame inspection with automatic project reload.');
   try {
     await untilStopped();

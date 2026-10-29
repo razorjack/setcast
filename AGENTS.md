@@ -823,7 +823,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   the browser export driver in a composition-sized iframe, serializes seeks and exposes completed
   RenderFrame/audio/readiness diagnostics. Silent playback waits for each frame. Resolved-input
   watching publishes valid revisions; failed edits retain the previous project. Reference images
-  stay local to the browser. Retry replaces a failed driver; the preview server rejects writes.
+  stay local to the browser. Retry replaces a failed driver. Library preview is read-only unless exports are enabled.
+  CLI preview enables a bounded serial export queue under out/preview, using token/origin checked
+  range requests and the existing resumable exporter. Project updates cancel stale jobs; shutdown
+  awaits cancellation cleanup. Generated destinations prevent overwriting normal project outputs.
   Preview uses the user's browser; offline export still uses pinned Chromium. See
   docs/independent-preview.md and renderer-browser/bench/preview.ts. Run both exporter acceptance
   suites for shared driver changes and package-smoke for preview entry/export changes.

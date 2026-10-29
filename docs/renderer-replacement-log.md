@@ -13,20 +13,29 @@ coherent validated change. No push or publication is authorized. Another project
 this machine; repeat suspicious performance measurements when that load stops. Do not stop or
 modify that other project.
 
-Remotion remains the default. Phase 0 is partial; the newer-upstream comparison, process-tree
-memory, quality matrix and platform qualification remain outstanding. The first direct decoded-canvas
-candidate was rejected and archived. Continuous audio overlap is committed. Hardware encoding is
-implemented and validated on this Mac; NVENC device qualification remains pending. Do not switch
-defaults because a short benchmark is faster.
+Remotion remains the default. Comparison tooling now records active capture/encoding, process-tree
+resources and external CPU load. A current-upstream 4.0.539 exercise is retained, but matched-quality
+performance across the full suite and platform qualification remain incomplete. The direct decoded-
+canvas candidate was rejected. Continuous audio overlap, hardware H.264, bounded persistent chunk
+reuse, audible preview, musical navigation and frame ranges are committed. Local preview exports
+passed real-browser, installed-package and acceptance checks. Do not change defaults
+because a short benchmark is faster.
 
 Completed commits:
 
-- `e7e71a3`: documented the replacement plan and reconciled the roadmap.
-- `b06a39f`: added the installed-adapter comparison runner with aligned timing, alternating
-  order, input identities, cancellation reports and decoded-output validation.
-- `ca34684`: added opt-in `RenderOptions.onRuntime` and version 2 comparison reports.
-- `4ae0b24`: archived the rejected decoded-canvas candidate, full evidence and reproducible checks.
-- `fbfdd34`: overlapped continuous master-audio encoding with video work and shared cancellation.
+- `e7e71a3`: replacement plan and roadmap reconciliation.
+- `b06a39f`: aligned installed-adapter comparison runner.
+- `ca34684`: active browser and encoding observations.
+- `4ae0b24`: rejected decoded-canvas candidate and evidence.
+- `fbfdd34`: continuous master-audio encoding overlap.
+- `e784714`: probed hardware H.264 encoding.
+- `5d14808`: distinguish capture inputs from output encoders.
+- `822c175`: process-tree and external-load sampling.
+- `1ea84c8`: self-contained benchmark failure-fixture loading.
+- `5f7d30f`: validated persistent chunks with bounded cache storage.
+- `255d58f`: explicit preview renderer-selection fix.
+- `96f2f7d`: audible preview with exact frame inspection.
+- `f7ff92e`: musical navigation and inclusive range selection.
 
 ## Runtime observations
 
@@ -479,3 +488,58 @@ crossed endpoint edits, last-frame inclusion and selection retention on reload. 
 Navigation final baseline passed: `vp run ready` completed 656 tests in 107 files, dependency ban,
 type/lint/format checks and decoded smoke. Logs: `/tmp/setcast-navigation-ready.log` and
 `/tmp/setcast-navigation-browser.log`. No export-driver behavior changed in this piece.
+
+## Local preview export workflow, design before implementation
+
+Keep library preview read-only unless its caller enables exports with a fixed destination root and
+trusted encoding settings. CLI preview enables exports under `out/preview`. Requests specify only
+revision and inclusive frame bounds, never paths, shell arguments, assets or arbitrary settings.
+Use a same-origin bootstrap token and custom-header POSTs with exact origin checks, bounded JSON,
+strict payload keys and no CORS. Downloads resolve only completed job IDs inside their job directory.
+
+Keep one active export, at most four waiting jobs and twenty session records. New jobs get unique
+reserved directories; resume uses the same output/checkpoints. Freeze project/settings per request,
+reject stale revisions, and cancel active/queued work when a valid revision changes or loading fails.
+Use existing resumable export identity checks to reject changed input bytes before publication.
+Run consecutive queued exports inside withRenderSession; close the session when the queue drains.
+Stopping preview cancels jobs and awaits their renderer cleanup before returning. Export files and
+interrupted checkpoints survive shutdown; this first queue does not persist its UI history across
+server restarts. Continue to offer ordinary CLI resume for those retained destinations.
+
+The first local export workflow check passed. UI-selected frames 32–94 produced 63 decoded frames;
+decoded video and audio matched a direct browser export with the same range/settings. Auth checks
+rejected foreign origin/Host, missing/wrong tokens, cross-site reads, stale revisions, injected paths,
+invalid ranges and oversized bodies without creating jobs. Replacing a completed output with a
+symlink outside its job directory made download fail. Cancelling after the first chunk, then resuming,
+reused 30 frames. Project updates cancelled active/queued jobs and rejected stale resume/create.
+Shutdown retained checkpoints, removed their writer lock and did not publish a partial MP4.
+Desktop and 390px UI screenshots were inspected without overflow.
+
+The first HTTP harness run incorrectly tried to override Host through Node fetch; the observed
+request retained its normal host and returned 200. A raw node:http request now sends the intended
+foreign Host and receives 403. This was a test transport correction. The queue also now retains
+reused-frame counts through final mux progress, so completed jobs show their actual reuse.
+Evidence: `examples/demo/out/preview-exports-2026-10-29-b/results.json` and
+`/tmp/setcast-preview-exports-b.log`. Baseline and existing preview checks passed. Both exporter
+acceptance suites and installed-package preview export are being checked next.
+
+Both exporter acceptance suites passed. The first installed-package preview check failed before
+running its export: an embedded smoke-script string interpreted a newline escape inside a quoted
+JavaScript string. The fixture now uses String.raw; this was packaging-test source generation,
+not an installed renderer failure. The complete package smoke is being repeated. The pre-existing
+read-only preview and CLI watcher check passed with the opt-in queue, and the baseline passed
+660 tests in 108 files. Source review also retained actionable setting hints in HTTP errors and
+added a directory-creation diagnostic for known filesystem failures.
+
+Final preview-export verification passed: `vp run ready` after packaging (660 tests in 108 files,
+ban-check and decoded smoke), both exporter acceptance suites, packed `package-smoke --browser`,
+the existing preview/CLI watcher check and a second export workflow run that uses the actual Cancel
+and Resume buttons. That repeat again reused 30 frames. No emitted declarations appeared in CLI
+source. Retained reports are under `docs/research/preview-exports-2026-10-29/`; local final logs are
+`/tmp/setcast-jobs-ready-final.log`, `/tmp/setcast-jobs-package-final.log`,
+`/tmp/setcast-jobs-{browser,remotion}-acceptance.log`, `/tmp/setcast-jobs-cli-preview-final.log`
+and `/tmp/setcast-preview-exports-c.log`.
+
+The local Studio replacement workflow is now implemented. The overall renderer replacement is
+not complete: matched-quality throughput, automatic resource scheduling, selective edit reuse,
+output color qualification and Remotion-free distribution/default migration remain outstanding.

@@ -1,0 +1,16 @@
+{
+  "requests": "Cross-origin, missing/wrong token, foreign Host, stale revision, path injection and invalid ranges rejected without jobs",
+  "exactRange": {
+    "first": 32,
+    "last": 94,
+    "decodedFrames": 63,
+    "referenceVideo": "equal",
+    "referenceAudio": "equal"
+  },
+  "resume": {
+    "reusedFrames": 30,
+    "filename": "d72f9c1c-39da-4ea8-8bf8-645ad723f0a4/frames-0-94.mp4"
+  },
+  "revisions": "Active and queued work cancelled; stale resume/create and invalid-project create rejected",
+  "shutdown": "Server closed, writer unlocked, checkpoint retained, no partial output"
+}

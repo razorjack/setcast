@@ -184,7 +184,7 @@ as wall time. FFT improvements already benefit both exporters and do not prove e
   including concurrency and runtime/host identity, and removes checkpoints after success. It is
   interruption recovery, not a persistent cache for revisions or cross-machine artifacts.
 - [Preview](independent-preview.md) already shares the exact export driver, supports frame
-  inspection, project reload and reference overlays. It now supports audible playback and silent sequential inspection; it supports musical navigation and frame-range selection, but cannot launch exports. Playback via `setcast play` exists separately and uses approximate running video sync.
+  inspection, project reload and reference overlays. It now supports audible playback and silent sequential inspection; it supports musical navigation, frame-range selection and a local export queue with cancellation/resume. Playback via `setcast play` exists separately and uses approximate running video sync.
 
 ## Contracts to preserve
 
@@ -375,8 +375,8 @@ queue, cancellation, progress and resume. Reuse CLI/core validation and renderer
 Show numeric reference differences and slow-frame details with actionable asset labels. Offer a
 pinned-runtime reference mode because a user's browser cannot promise export-identical pixels.
 
-The current preview server is read-only. Export controls require a separately designed local job
-API, origin/request checks, output-path validation and lifecycle ownership. Do not turn arbitrary
+The library preview remains read-only unless exports are enabled. The CLI now enables a scoped
+local job API with origin/token checks, bounded requests, reserved output paths and explicit lifecycle ownership. Do not turn arbitrary
 preview requests into filesystem writes or shell execution. No code editor or general NLE is
 required to remove Studio from Setcast's normal workflow.
 
@@ -472,7 +472,8 @@ iteration benefits. Track each requirement with the producing revision and retai
   behind an aggregate or redefine the suite after observing results.
 - [ ] Identical successful repeat exports avoid capture, and supported incremental edits match
   fresh renders while reusing unaffected work.
-- [ ] Users can hear a mix, inspect exact frames, select ranges and manage exports without Studio.
+- [x] Users can hear a mix, inspect exact frames, select ranges and manage exports without Studio
+  on the locally checked browser workflow. Physical playback latency and other platforms remain unqualified.
 - [ ] Capture, encoding, resource and fallback decisions appear in diagnostics; unsupported options
   fail before expensive work with a useful alternative.
 - [ ] Documentation distinguishes qualified offline support, experimental paths and live hardware

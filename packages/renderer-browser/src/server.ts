@@ -5,6 +5,7 @@ import { bundlePlayer } from './bundle.ts';
 import { mediaType, projectAsset, serveAsset } from './assets.ts';
 import { projectCatalog, type ProjectCatalog, type ThemeCatalog } from './catalog.ts';
 import { savedScene, savedScenes } from './scenes.ts';
+import type { PreviewJobApi } from './preview/jobs-http.ts';
 import type { PreviewRevision } from './preview/server.ts';
 import { respondToWrite, WRITE_ROUTES } from './writes.ts';
 
@@ -24,6 +25,7 @@ export interface CaptureServerOptions {
   port?: number;
   /** The preview server's current revision, which it updates in place. */
   preview?: PreviewRevision;
+  exports?: PreviewJobApi;
 }
 
 export interface PlayerServer {
@@ -44,13 +46,16 @@ export async function play(project: SceneProject, options: PlayerOptions): Promi
   return listen({ ...site, writable: true }, port);
 }
 
-/** A read-only server for a prebundled export or preview page. */
+/** Serves capture pages; preview may explicitly attach its scoped export-job API. */
 export async function serveCapture(
   project: SceneProject,
   options: CaptureServerOptions,
 ): Promise<PlayerServer> {
   const site = await siteFor(project, options.projectDir, options.files);
-  return listen({ ...site, writable: false, preview: options.preview }, options.port ?? 0);
+  return listen(
+    { ...site, writable: false, preview: options.preview, exports: options.exports },
+    options.port ?? 0,
+  );
 }
 
 interface Site {
@@ -59,6 +64,7 @@ interface Site {
   catalog: ProjectCatalog;
   writable: boolean;
   preview?: PreviewRevision;
+  exports?: PreviewJobApi;
 }
 
 async function siteFor(
@@ -126,6 +132,10 @@ async function respond(site: Site, request: IncomingMessage, response: ServerRes
     return;
   }
   const path = decodeURIComponent(url.pathname);
+  if (site.exports && (path === '/exports' || path.startsWith('/exports/'))) {
+    await site.exports.respond(path, request, response);
+    return;
+  }
   const write = WRITE_ROUTES[path];
   if (request.method === 'POST' && write && site.writable) {
     await respondToWrite(site, write, request, response);

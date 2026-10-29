@@ -52,7 +52,7 @@ The displayed duration is the selected video-frame count divided by fps.
 
 The selection survives in-page reload/retry. Duration changes fit it within the new mix; fps
 changes preserve its time boundaries to the nearest frame. A full page refresh resets the range.
-Range selection currently prepares an export choice; export controls are the next implementation.
+Export selected range submits these exact inclusive endpoints to the local export queue.
 
 ## Reference comparison
 
@@ -74,9 +74,42 @@ reloads and retries. Invalid edits display their errors and retain the last vali
 project; fixing the files reloads automatically. Asset bytes remain live files, so replacing or
 removing a referenced asset can still make a retained project fail to render.
 
-The server only accepts read requests. Stopping the command closes its watcher and server.
-Preview does not save scenes, encode exports or provide Studio's code editor. It is intended for
+Stopping the command closes its watcher and server and waits for export cancellation cleanup.
+Preview does not save scenes or provide Studio's code editor. It is intended for
 finite recorded projects; `setcast live` remains the mixer-input workflow.
+
+## Exporting from preview
+
+Export selected range creates an H.264/AAC MP4 with the project's current encoding settings. The
+CLI saves each job under `out/preview/<job-id>/frames-<first>-<last>.mp4`; existing project outputs
+are not overwritten. Export uses pinned Chromium and system FFmpeg, independently of the browser
+showing preview. Run `setcast doctor --renderer browser --require video,resume` to inspect setup,
+and `setcast browser-install` to provision Chromium. Unsupported encoding settings fail visibly.
+
+The queue runs one job at a time, with at most four waiting jobs and twenty jobs per preview
+session. It shows stage progress, completed-frame reuse, errors, actual runtime details and a
+Download MP4 link. Jobs use the project revision selected when submitted. Valid project edits or
+failed reloads cancel unfinished jobs; create a new job after fixing or changing the project.
+This prevents a queued old scene from exporting with newly replaced media.
+
+Cancel export retains completed resume chunks. Resume export retries the same destination while
+the project revision remains unchanged. Input hashes and runtime identity decide whether chunks
+can be reused. Consecutive jobs share a browser/bundle session; the browser closes when the queue
+empties. Audio is encoded once continuously for each export. Preview volume does not change it.
+
+Stopping preview cancels active and waiting work and waits for cleanup. Completed MP4s and
+interrupted checkpoints remain on disk; queue history is not restored after restarting the server.
+A CLI render with `--resume`, the same `--out`, encoding settings and exact range can reuse those
+checkpoints. Range end is `(last + 1) / fps`, including a partial final frame. The UI does not offer
+checkpoint deletion or automatic disk eviction; retained exports/checkpoints are ordinary local
+files under the displayed directory. Remove unwanted completed job directories when finished.
+
+The library `preview(project, options)` remains read-only unless the caller supplies
+`exports: {directory, settings?}`. `update(project, settings?)` publishes encoding-setting changes
+alongside a new project revision. Only the trusted caller chooses paths and settings. The HTTP
+API accepts bounded range/revision JSON, checks exact Origin plus a per-server token, and rejects
+cross-site requests. It offers no arbitrary file writes, shell arguments, scene saves or upload
+endpoint. Download routes resolve only completed job IDs within their reserved directories.
 
 ## Implementation and verification
 
@@ -97,11 +130,12 @@ and checks clean shutdown. Screenshots go to `examples/demo/out/preview-check/`.
 
 Unit tests cover queue serialization, failure/disposal, frame bounds, tied marks, tempo-span
 navigation, range conversion and revision publication.
-Installed-package smoke bundles both preview entries. Shared export-driver changes also require
+Installed-package smoke bundles both preview entries and, with `--browser`, exports and decodes
+six frames through the installed preview API. Shared export-driver changes also require
 both exporter acceptance suites and the same-page frame-order bench.
 
 Further work: live hardware and other operating systems remain separate qualification tasks.
-Export controls, numeric image-difference metrics and GPU timing remain
+Numeric image-difference metrics and GPU timing remain
 future additions. Audible playback checks verify browser media state and frame selection, not
 physical speaker/display latency or output routing.
 
@@ -109,3 +143,8 @@ Validated locally: `vp run ready` (467 tests, dependency ban and Remotion smoke)
 acceptance suites, the preview and frame-order Chromium benches, and `vp run package-smoke
 --browser`. Desktop and narrow screenshots were inspected. Physical hardware and other operating
 systems were not qualified in this change.
+
+The export workflow check is `node packages/renderer-browser/bench/preview-exports.ts --out NEW_DIR`.
+It exercises the actual UI, request rejection, decoded direct-export agreement, last-frame inclusion,
+partial-chunk recovery, stale project invalidation, symlink download rejection and shutdown cleanup.
+See [retained preview-export evidence](research/preview-exports-2026-10-29/README.md).
