@@ -46,6 +46,11 @@ export { withRenderSession } from './session.ts';
 const renderInPackage = serializeInDirectory(PACKAGE_ROOT);
 
 export function render(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+  if (options.cache)
+    throw new SetcastError(
+      'Remotion does not support the persistent render cache.',
+      'Use the browser renderer with cache, or omit the cache option.',
+    );
   if (options.resume)
     throw new SetcastError(
       'Remotion does not support resumable exports.',

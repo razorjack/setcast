@@ -13,6 +13,7 @@
     "video-frames.ts",
     "video-profile.ts",
     "hardware.ts",
-    "resume.ts"
+    "resume.ts",
+    "cache.ts"
   ]
 }

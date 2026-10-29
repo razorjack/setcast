@@ -57,6 +57,8 @@ export type RuntimeReport = (event: RenderRuntime) => void;
 export interface RenderOptions extends EncodingOptions {
   /** Browser exporter only: retain and validate completed chunks across interrupted jobs. */
   resume?: boolean;
+  /** Browser exporter only: bounded persistent reuse of validated video chunks. */
+  cache?: { directory: string; maxBytes?: number };
   signal?: AbortSignal;
   projectDir: string;
   out: string;

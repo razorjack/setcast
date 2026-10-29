@@ -110,6 +110,10 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Renderer benchmarks must load projects through public core/node and theme entry points, not
+  CLI source helpers. Remotion's declaration build includes `bench`; importing CLI source from a
+  benchmark can emit `.d.ts` files into `packages/cli/src` and break the next formatting check.
+
 - The live-audio cache-limit test makes 2,100 distinct queries, each materializing four FFTs.
   It has a local 30 s timeout: the default 5 s failed on GitHub's Ubuntu runner at 9.3 s even
   though it passed locally. Keep its full cache-overflow coverage and its timeout local.
@@ -608,6 +612,15 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Generated per-project bundle entry so `plugins:` in `setcast.yaml` can pull npm plugins in.
 
 ## Decisions
+
+- Persistent browser export reuse is opt-in through `render --cache <directory>` (default 2 GiB,
+  `--cache-size` in MiB), separate from `--resume`. Cache identity initially includes the complete
+  project/settings/runtime/host and all tracked assets. Only destination-path changes can reuse
+  without changing that identity; project edits invalidate conservatively. Store validated encoded
+  video chunks, verify copied hashes, keep one writer lock, bound video bytes/entry count, and use
+  `cache inspect`/`cache clear` for management. Never recursively clear unrecognized directories.
+  Cache hits still prepare runtime identity and re-encode continuous audio; zero capture pages is
+  the initial repeated-export benefit. See `docs/browser-renderer.md` for limits.
 
 - Browser hardware encoding uses system FFmpeg: VideoToolbox on macOS, NVENC on Linux/Windows.
   Probe a real frame before capture, using project dimensions/FPS/bitrate when available. Required

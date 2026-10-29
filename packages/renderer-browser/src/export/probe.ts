@@ -10,7 +10,7 @@ async function command(binary: string, args: string[], signal?: AbortSignal) {
   } catch (cause) {
     signal?.throwIfAborted();
     throw new SetcastError(
-      `Cannot validate resume checkpoints with ${binary}.`,
+      `Cannot validate stored render chunks with ${binary}.`,
       `Ensure ffmpeg and ffprobe are on PATH and support the encoded media. ${String(cause)}`,
       { cause },
     );
@@ -56,6 +56,6 @@ export async function validateChunk(
   )
     throw new SetcastError(
       `Incomplete or incompatible render chunk: ${file}.`,
-      'The chunk was not checkpointed. Rerun --resume to render it again.',
+      'The chunk was not stored. Rerun the export to render it again.',
     );
 }

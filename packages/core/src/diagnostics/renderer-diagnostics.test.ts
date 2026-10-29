@@ -27,6 +27,7 @@ test('readiness distinguishes absent evidence, prerequisites, optional failures 
     still: 'ready',
     video: 'ready',
     resume: 'unavailable',
+    cache: 'unsupported',
     gpu: 'unchecked',
     webp: 'unchecked',
     hardwareEncoding: 'unsupported',

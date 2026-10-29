@@ -3,7 +3,7 @@ import type { RendererCapabilities } from './renderer-capabilities.ts';
 
 export type RendererCompatibilityOptions = Pick<
   RenderOptions,
-  'gl' | 'parallelEncoding' | 'hardwareAcceleration' | 'concurrency' | 'resume'
+  'gl' | 'parallelEncoding' | 'hardwareAcceleration' | 'concurrency' | 'resume' | 'cache'
 >;
 export interface RendererCompatibilityIssue {
   level: 'error' | 'warning';
@@ -42,15 +42,38 @@ export function rendererCompatibility(
       `${renderer} does not support parallelEncoding: ${options.parallelEncoding}.`,
       `Choose ${capabilities.parallelEncoding.join(' or ')}.`,
     );
+  checkStoredChunks(capabilities, options, issues);
+  checkConcurrency(capabilities, options.concurrency, issues);
+  checkHardware(capabilities, options.hardwareAcceleration, issues);
+  return issues;
+}
+
+function checkStoredChunks(
+  capabilities: RendererCapabilities,
+  options: RendererCompatibilityOptions,
+  issues: RendererCompatibilityIssue[],
+) {
+  const { renderer } = capabilities;
+  const error = (path: RendererCompatibilityIssue['path'], message: string, hint: string) =>
+    issues.push({ level: 'error', path, message, hint });
   if (options.resume && !capabilities.features.includes('resume'))
     error(
       'resume',
       `${renderer} does not support resumable exports.`,
       'Select a renderer with resume support, or omit --resume.',
     );
-  checkConcurrency(capabilities, options.concurrency, issues);
-  checkHardware(capabilities, options.hardwareAcceleration, issues);
-  return issues;
+  if (options.cache && !capabilities.features.includes('cache'))
+    error(
+      'cache',
+      `${renderer} does not support persistent chunk caching.`,
+      'Select the browser renderer, or omit --cache.',
+    );
+  if (options.cache && options.resume)
+    error(
+      'cache',
+      'Persistent cache and resume checkpoints cannot be combined.',
+      'Use --cache or --resume.',
+    );
 }
 
 function checkConcurrency(

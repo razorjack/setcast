@@ -7,6 +7,7 @@ export const RENDERER_FEATURES: readonly RendererFeature[] = [
   'webp',
   'video',
   'resume',
+  'cache',
   'gpu',
   'hardwareEncoding',
 ];

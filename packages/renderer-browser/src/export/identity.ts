@@ -49,7 +49,7 @@ const stamp = (info: Stats) =>
 const changedAsset = (file: string) =>
   new SetcastError(
     `Render input changed while exporting: ${file}.`,
-    'Keep source files unchanged during export, then rerun --resume to validate the checkpoints.',
+    'Keep source files unchanged during export, then rerun to validate stored chunks.',
   );
 
 export function projectAssets(project: ResolvedProject): string[] {
@@ -70,8 +70,8 @@ function validateCss(css: string) {
     urls.some((match) => !/^(data:|#)/i.test((match[2] ?? match[3] ?? '').trim()))
   )
     throw new SetcastError(
-      'Resumable export requires self-contained theme CSS.',
-      'Use local relative url() references, which Setcast embeds, and remove @import. Or render without --resume.',
+      'Stored-chunk export requires self-contained theme CSS.',
+      'Use local relative url() references, which Setcast embeds, and remove @import. Or render without --resume and --cache.',
     );
 }
 
@@ -130,7 +130,7 @@ async function digestAssets(root: string, paths: string[], signal?: AbortSignal)
     const file = await projectAsset(root, path);
     if (!file)
       throw new SetcastError(
-        `Resume asset leaves the project: ${path}.`,
+        `Stored-chunk asset leaves the project: ${path}.`,
         'Move assets inside the project directory.',
       );
     assets.push({ path, file, ...(await digestFile(file, signal)) });

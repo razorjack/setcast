@@ -1,4 +1,4 @@
-import { join, resolve } from 'node:path';
+import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import type { Page } from 'playwright';
 import {
   requireVideoOutput,
@@ -9,6 +9,7 @@ import {
   type ResolvedProject,
   type RenderOptions,
   type RenderResult,
+  SetcastError,
 } from '@setcast/core';
 import { prepareFrame, withCapturePages, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
@@ -26,6 +27,8 @@ import {
 import { pipeline } from './pipeline.ts';
 import { renderTracks } from './tracks.ts';
 import { resolveHardwareEncoding, type VideoEncoder } from './hardware.ts';
+import { DEFAULT_CACHE_BYTES, withRenderCache } from './cache.ts';
+import { cachedChunks } from './cache-chunks.ts';
 
 export type BrowserRenderOptions = RenderOptions & {
   onMetrics?: MetricsReport;
@@ -38,6 +41,7 @@ export function render(
   options: BrowserRenderOptions,
 ): Promise<RenderResult> {
   validateGraphicsBackend(options.gl);
+  validateStorage(options);
   requireVideoOutput(options.out);
   const encoding = exportEncoding(options);
   const range = renderedFrames(project, options.range);
@@ -51,6 +55,32 @@ export function render(
     frames: range[1] - range[0] + 1,
   };
   return withRenderSession(() => renderJob(job));
+}
+
+function validateStorage(options: BrowserRenderOptions) {
+  if (options.cache && options.resume)
+    throw new SetcastError(
+      'Persistent cache and resume checkpoints cannot be combined.',
+      'Use --cache or --resume.',
+    );
+  if (!options.cache) return;
+  const { directory, maxBytes = DEFAULT_CACHE_BYTES } = options.cache;
+  if (
+    typeof directory !== 'string' ||
+    !directory.trim() ||
+    !Number.isSafeInteger(maxBytes) ||
+    maxBytes < 1
+  )
+    throw new SetcastError(
+      'Invalid persistent render cache settings.',
+      'Use a nonempty directory and a positive integer byte limit.',
+    );
+  const output = relative(resolve(directory), resolve(options.out));
+  if (output !== '..' && !output.startsWith(`..${sep}`) && !isAbsolute(output))
+    throw new SetcastError(
+      'Render output must be outside the cache directory.',
+      'Use a dedicated directory for --cache, separate from exported files.',
+    );
 }
 
 function renderedFrames(project: ResolvedProject, range: [number, number] | undefined) {
@@ -86,11 +116,17 @@ async function renderJob(job: RenderJob) {
     fallback: hardware.fallback ?? null,
   });
   if (hardware.encoder === 'libx264') await preflight(options.signal);
-  if (!job.options.resume) return renderOutput(job, DISPOSABLE_CHUNKS);
+  if (!job.options.resume && !job.options.cache) return renderOutput(job, DISPOSABLE_CHUNKS);
 
   job.options.onProgress?.({ stage: 'checkpoint', progress: 0 });
   const identity = await computeExportIdentity(job.project, job.options, job.ranges);
   const resumable = { ...job, options: { ...job.options, assetPaths: identity.paths } };
+  if (job.options.cache)
+    return withRenderCache(
+      job.options.cache.directory,
+      job.options.cache.maxBytes ?? DEFAULT_CACHE_BYTES,
+      (cache) => renderOutput(resumable, cachedChunks(cache, identity, job.project)),
+    );
   return withCheckpoint(job.options.out, identity, (checkpoint) =>
     renderOutput(resumable, checkpointChunks(checkpoint, identity, job.project)),
   );

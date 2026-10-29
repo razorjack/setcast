@@ -13,6 +13,7 @@ const commands: Record<string, () => Promise<Command>> = {
   preview: () => import('./commands/preview.ts'),
   play: () => import('./commands/play.ts'),
   render: () => import('./commands/render.ts'),
+  cache: () => import('./commands/cache.ts'),
   clip: () => import('./commands/clip.ts'),
   still: () => import('./commands/still.ts'),
   inspect: () => import('./commands/inspect.ts'),
@@ -36,6 +37,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('preview')}   open the configured renderer preview
   ${steel('play')}      play a recorded project in the browser (prototype)
   ${steel('render')}    render the MP4 (--range for a slice, --bundle adds thumbnail + description)
+  ${steel('cache')}     inspect or clear persistent browser-renderer chunks
   ${steel('clip')}      cut a promo clip around a drop (--all for every drop)
   ${steel('still')}     grab one frame as an image, for the thumbnail
   ${steel('inspect')}   inspect credits and boundary origins; --json exports the finite document

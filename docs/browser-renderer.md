@@ -280,3 +280,51 @@ CSS, field/constellation GPU visuals and looping video. A one-minute branded exp
 improved only 4.2%, which needs more repetitions before treating it as a reliable gain.
 See [renderer-scheduling.md](renderer-scheduling.md) for the complete matrix, reproduction,
 raw measurements and platform limitations.
+
+## Persistent reuse after successful exports
+
+`render --cache <directory>` retains validated video chunks after success and interruption. An
+identical export can reuse those chunks without capturing frames. Cache use is opt-in, supports
+only the browser renderer, and is separate from output-specific `--resume` checkpoints. The two
+options cannot be combined.
+
+```sh
+setcast render examples/demo --renderer browser --cache examples/demo/out/render-cache
+setcast render examples/demo --renderer browser --cache examples/demo/out/render-cache
+setcast cache inspect examples/demo/out/render-cache --json
+setcast cache clear examples/demo/out/render-cache
+```
+
+Use a new dedicated directory or an existing recognized Setcast render cache. Exported files must
+be outside it. Existing unmarked directories and symbolic directory links are rejected. The CLI
+resolves `--cache` relative to its working directory. `--cache-size 2048` sets the video-byte limit
+in MiB; 2048 MiB is the default. Lowering the limit evicts old entries when the next export opens
+the cache. Chunks larger than the entire limit are rendered but not retained. The index also has
+a 4096-entry limit. Eviction uses last-use timestamps; equal timestamps use a deterministic key order.
+A cache smaller than a job may therefore retain only some of its chunks.
+
+The limit covers managed video chunks, including a pending chunk copy after space is reserved.
+It excludes index/lock metadata, unrelated files, the export's working copies and final output.
+`inspect` reports indexed bytes and keys, not a recursive disk-usage or integrity audit. `clear`
+resets the index and removes managed chunk/temporary files while preserving unrelated files and
+unexpected directories. It also recovers a corrupt index. Only one export or management operation
+can hold the cache lock at a time. A killed process can leave `lock.json`; inspect its process/host
+before removing that file. Do not clear another active export's cache.
+
+Identity includes the complete resolved project, source-file contents, ranges, encoding, worker
+count, graphics choice, browser/bundle/adapter/FFmpeg versions, Node, OS and host. Changing these
+invalidates reuse conservatively. Changing only the destination path can reuse chunks. Cached
+exports require the same self-contained local inputs and resource restrictions as resumable
+exports. These are local caches; cross-host sharing and selective reuse after project edits are
+not qualified.
+
+Each stored chunk passes stream/frame-count validation before publication. Reuse copies the
+chunk into the export's temporary directory and checks its byte count and SHA-256. Missing or
+corrupt chunks are rendered again. Input changes during export still prevent publication, and
+cancellation preserves the previous destination. Cache write failures fail the export rather than
+silently claiming that work was retained; rerun without `--cache` or choose another directory.
+
+Cache hits still compute input/runtime identity and encode one continuous master soundtrack.
+They do not skip browser startup or reuse audio. A fully cached job opens zero capture pages;
+progress reports reused frames. Successful repeat reuse and decoded equivalence are checked by
+`node packages/renderer-browser/bench/cache.ts --out NEW_DIRECTORY`.

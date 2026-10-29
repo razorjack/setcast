@@ -259,7 +259,7 @@ export class RenderUi {
   }: RenderProgress): void => {
     const percent = Math.round(progress * 100);
     if (stage === 'checkpoint') {
-      this.#spin.message('Validating resume inputs and checkpoints');
+      this.#spin.message('Validating inputs and stored render chunks');
       return;
     }
     if (stage === 'browser') {

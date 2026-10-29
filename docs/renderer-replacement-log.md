@@ -355,3 +355,50 @@ dependencies need separate proof. Use a dedicated cache directory, atomic public
 a single-writer lock, eviction and inspect/clear operations. Keep interruption checkpoints separate.
 A cache hit still validates source identity and re-encodes one continuous master soundtrack; it
 does not imply browser-free startup or audio reuse.
+
+The persistent-cache implementation is in progress. `render --cache <directory>` uses a dedicated
+marked directory, a single writer lock, a 2 GiB default video-byte budget and at most 4096 indexed
+chunks. Atomic index/chunk publication and content hashes protect reuse; unrelated files and
+unexpected directories are not recursively removed. `cache inspect` and `cache clear` manage only
+recognized caches. Oversized chunks are not retained. Cache and output-specific `--resume` are
+mutually exclusive initially. The complete existing job identity includes assets, project, ranges,
+encoding, concurrency, host and runtime, so all such changes invalidate reuse. This first version
+does not implement selective project-edit invalidation. Unit and real-export checks are underway.
+
+The first real persistent-cache acceptance passed. A 75-frame, three-chunk fixture repeated with
+zero captured frames, 75 reused frames and zero capture pages. Decoded video and audio hashes
+matched the initial export, including chunk joins. A different destination also reused all frames.
+Corrupting or deleting one chunk recaptured 30 frames and reused 45. Project, encoder settings,
+art and audio changes each invalidated all frames; restoring original inputs reused all 75.
+Cancellation after 33 frames preserved the sentinel output and retained one completed chunk;
+recovery captured 45/reused 30. Mid-export source changes prevented publication. Clear removed
+managed chunks and the next export captured all frames. Evidence:
+`examples/demo/out/persistent-cache-2026-10-29/results.json`; log `/tmp/setcast-cache-acceptance.log`.
+The first baseline passed 622 tests in 104 files. Additional CLI/diagnostic coverage, both existing
+export acceptance suites and installed-package validation are running next.
+
+Installed-package validation exposed two harness issues. The new packed-cache assertion inspected
+stdout, but frame progress is intentionally written to stderr; a separate two-process CLI check
+confirmed six reused frames and zero new capture. The assertion now checks stderr. Separately,
+Remotion's declaration build includes its bench directory. The encoder-failure probe imported CLI
+project helpers, causing four generated `.d.ts` files to appear in CLI source and fail the next
+format check. The probe now uses the public core/node loader and theme entry point directly; only
+those four generated files were removed. Packaging is being repeated before final `ready` so the
+check also proves that declaration emission no longer contaminates source files.
+
+Final persistent-cache validation passed: `vp run ready` after packaging (625 tests in 105 files),
+both exporter acceptance suites, the dedicated cache fixture, default package smoke and package
+smoke with `--browser`. The installed CLI reused all six frames in a separate process, matched
+decoded video, and passed cache inspect/clear and doctor checks. No generated declarations remain
+in CLI source. The revised public-loader encoder-failure probe also passed. The benchmark loader
+fix was committed separately before the cache feature. Retained cache evidence is under
+`docs/research/persistent-cache-2026-10-29/`. Cross-platform and disk-exhaustion qualification,
+selective edit invalidation, prepared-asset caching and no-browser cache startup remain pending.
+
+Next workflow investigation: the independent inspector currently advances silent frames only.
+Its bounded latest-request queue can be reused for audio-clock playback, but it reports completion
+only when no newer request is pending. Continuous audio-clock requests could therefore starve
+inspection updates even while the iframe paints. Audible preview needs explicit intermediate-frame
+reporting, audio cleanup on project reload/retry, and exact settled inspection after pause/seek.
+Keep export-driven absolute-frame preparation and bounded media decoding; do not record real-time
+playback as an export. This is a design observation, not an implemented preview change.

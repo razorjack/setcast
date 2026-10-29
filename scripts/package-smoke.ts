@@ -232,17 +232,26 @@ async function exercisePlayer(projectDir: string): Promise<void> {
 }
 
 async function exerciseBrowser(
-  run: (...args: string[]) => Promise<{ stdout: string }>,
+  run: (...args: string[]) => Promise<{ stdout: string; stderr: string }>,
   project: string,
 ) {
   assert((await run('browser-install', '--help')).stdout.includes('pinned Chromium'));
   await run('browser-install');
   const doctor = JSON.parse(
-    (await run('doctor', '--renderer', 'browser', '--require', 'still,webp,video,resume', '--json'))
-      .stdout,
+    (
+      await run(
+        'doctor',
+        '--renderer',
+        'browser',
+        '--require',
+        'still,webp,video,resume,cache',
+        '--json',
+      )
+    ).stdout,
   );
   assert.equal(doctor.ready, true);
   assert.equal(doctor.features.resume, 'ready');
+  assert.equal(doctor.features.cache, 'ready');
   for (const extension of ['png', 'webp']) {
     const still = join(temporary, `browser.${extension}`);
     await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
@@ -263,5 +272,50 @@ async function exerciseBrowser(
   assert(!existsSync(`${video}.setcast-resume`), 'Successful resume export left checkpoints');
   const bytes = (await readFile(video)).toString('latin1');
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
+  await exerciseCache(run, project);
   console.log('  installed browser exporter: PNG, lossless WebP and H.264 + AAC');
+}
+
+async function exerciseCache(
+  run: (...args: string[]) => Promise<{ stdout: string; stderr: string }>,
+  project: string,
+) {
+  const cache = join(temporary, 'render-cache');
+  const first = join(temporary, 'cached-first.mp4');
+  const second = join(temporary, 'cached-second.mp4');
+  const args = ['render', project, '--renderer', 'browser', '--range', '0-0.2', '--cache', cache];
+  await run(...args, '--out', first);
+  const repeated = await run(...args, '--out', second);
+  assert(
+    repeated.stderr.includes('6 reused, 0 newly rendered'),
+    'Installed cache did not skip capture',
+  );
+  const before = JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout);
+  assert.equal(before.entries.length, 1);
+  assert(before.bytes > 0);
+  const hashes = await Promise.all(
+    [first, second].map(
+      async (file) =>
+        (
+          await command('ffmpeg', [
+            '-v',
+            'error',
+            '-xerror',
+            '-i',
+            file,
+            '-map',
+            '0:v',
+            '-f',
+            'hash',
+            '-hash',
+            'sha256',
+            '-',
+          ])
+        ).stdout,
+    ),
+  );
+  assert.equal(hashes[0], hashes[1], 'Installed cached video differs after decoding');
+  await run('cache', 'clear', cache);
+  assert.equal(JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout).bytes, 0);
+  console.log('  installed cache: repeat skips capture, decoded frames match, inspect/clear work');
 }

@@ -44,3 +44,15 @@ test('concurrency respects adapter bounds without pretending to know runtime lim
     { path: 'concurrency' },
   ]);
 });
+
+test('persistent cache requires declared support and cannot be combined with resume', () => {
+  const cache = { directory: '/cache' };
+  expect(rendererCompatibility(fixture, { cache })).toMatchObject([
+    { level: 'error', path: 'cache' },
+  ]);
+  const browser = { ...fixture, features: [...fixture.features, 'cache' as const] };
+  expect(rendererCompatibility(browser, { cache })).toEqual([]);
+  expect(rendererCompatibility(browser, { cache, resume: true })).toMatchObject([
+    { level: 'error', path: 'cache' },
+  ]);
+});

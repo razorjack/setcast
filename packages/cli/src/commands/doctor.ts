@@ -13,7 +13,7 @@ export const help = `setcast doctor [--renderer remotion|browser] [--require vid
 Check this machine with the selected renderer. Defaults to Remotion; does not read a project.
 Runs small browser, screenshot, WebGL and codec probes. No downloads or configuration changes.
   --require  comma-separated features that must work (default video):
-             still, webp, video, resume, gpu, hardwareEncoding
+             still, webp, video, resume, cache, gpu, hardwareEncoding
   --gl       graphics backend to probe (default auto)
   --timeout  probe timeout in seconds, 1–60 (default 15)
   --json     one versioned report, including failed and skipped checks

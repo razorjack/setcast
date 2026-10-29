@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import type { RendererFeature } from '../diagnostics/renderer-capabilities.ts';
 import { RendererDiagnostics, type DiagnosticCommand } from './renderer-diagnostics.ts';
 
-const videoFeatures: RendererFeature[] = ['video', 'resume'];
+const videoFeatures: RendererFeature[] = ['video', 'resume', 'cache'];
 const quiet = ['-hide_banner', '-loglevel', 'error', '-nostdin', '-y'];
 
 export async function diagnoseCodecs(session: RendererDiagnostics, command: DiagnosticCommand) {
@@ -12,7 +12,9 @@ export async function diagnoseCodecs(session: RendererDiagnostics, command: Diag
     features.filter((feature) => session.capabilities.features.includes(feature));
   const features = supported(videoFeatures);
   const system = session.capabilities.runtime.ffmpeg === 'system';
-  const inspectionFeatures = supported(system ? ['resume'] : ['video', 'hardwareEncoding']);
+  const inspectionFeatures = supported(
+    system ? ['resume', 'cache'] : ['video', 'hardwareEncoding'],
+  );
   const hint = system
     ? 'Install FFmpeg on PATH with libx264 and AAC encoding support.'
     : 'Reinstall the selected Setcast/Remotion packages for this operating system and architecture.';
@@ -26,7 +28,7 @@ export async function diagnoseCodecs(session: RendererDiagnostics, command: Diag
     'ffprobe',
     inspectionFeatures,
     system
-      ? 'Install ffprobe on PATH (normally supplied with FFmpeg). It is required for resume.'
+      ? 'Install ffprobe on PATH (normally supplied with FFmpeg). It is required for resume and persistent cache.'
       : hint,
     async () => ({ message: (await command('ffprobe', ['-version'])).split('\n')[0]! }),
   );

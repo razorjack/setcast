@@ -29,6 +29,8 @@ Renders the project in <dir> (default: current directory) to an MP4.
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
   --concurrency  parallel browser tabs (default: Remotion chooses; browser uses 1)
   --resume       browser only: retain completed chunks and reuse valid checkpoints after interruption
+  --cache        browser only: persistent chunk cache directory (separate from --resume)
+  --cache-size   maximum cached video MiB (default: 2048); requires --cache
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
 interface RenderCommandOptions {
@@ -40,6 +42,7 @@ interface RenderCommandOptions {
   concurrency: number | undefined;
   bundle: boolean;
   resume: boolean;
+  cache: RenderOptions['cache'];
 }
 
 export async function run(argv: string[]) {
@@ -53,6 +56,11 @@ export async function run(argv: string[]) {
       '--resume requires the browser renderer.',
       'Use --renderer browser --resume, or omit --resume for Remotion.',
     );
+  if (options.cache && renderer !== 'browser')
+    throw new SetcastError(
+      '--cache requires the browser renderer.',
+      'Use --renderer browser --cache <directory>, or omit --cache.',
+    );
   await withRenderSession(() => runCommand(options, loaded), renderer);
 }
 
@@ -61,6 +69,7 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
   const range = renderedRange(options.range, loaded.project);
   const out = outputPath(options.out, range, resolve(dir, loaded.config.output.file));
   if (options.resume) log.info(`Resume checkpoints: ${out}.setcast-resume`);
+  if (options.cache) log.info(`Persistent render cache: ${options.cache.directory}`);
   await mkdir(dirname(out), { recursive: true });
   showProject(loaded.project, range);
   const { config } = await withHardwareEncoding(loaded);
@@ -75,6 +84,7 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
     range,
     concurrency: options.concurrency,
     resume: options.resume,
+    cache: options.cache,
     onProgress: ui.onProgress,
   };
 
@@ -102,6 +112,8 @@ function parseOptions(argv: string[]): RenderCommandOptions {
       concurrency: { type: 'string' },
       bundle: { type: 'boolean' },
       resume: { type: 'boolean' },
+      cache: { type: 'string' },
+      'cache-size': { type: 'string' },
     },
     help,
   );
@@ -122,16 +134,53 @@ function parseOptions(argv: string[]): RenderCommandOptions {
     concurrency,
     bundle: values.bundle ?? false,
     resume: values.resume ?? false,
+    cache: parseCacheOptions(values.cache, values['cache-size']),
   };
 }
 
 function validateOptions(options: RenderCommandOptions): void {
+  if (options.cache && options.resume)
+    throw new SetcastError(
+      '--cache and --resume cannot be combined.',
+      'Use --cache for persistent chunk reuse, or --resume for output-specific interruption checkpoints.',
+    );
   if (options.bundle && options.range) {
     throw new SetcastError(
       '--bundle renders the whole set',
       'Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.',
     );
   }
+}
+
+export function parseCacheOptions(
+  directory: string | undefined,
+  size: string | undefined,
+): RenderOptions['cache'] {
+  if (directory === undefined) {
+    if (size !== undefined)
+      throw new SetcastError(
+        '--cache-size requires --cache.',
+        'Pass --cache <directory>, or omit --cache-size.',
+      );
+    return undefined;
+  }
+  if (!directory.trim())
+    throw new SetcastError('Cache directory must not be empty.', 'Pass --cache <directory>.');
+  const mib =
+    size === undefined
+      ? 2048
+      : parseNumber('cache-size', size, {
+          min: 1,
+          integer: true,
+          hint: 'Use a positive integer MiB value, e.g. --cache-size 2048.',
+        });
+  const maxBytes = mib * 1024 * 1024;
+  if (!Number.isSafeInteger(maxBytes))
+    throw new SetcastError(
+      'Cache size exceeds safe byte accounting.',
+      'Use a smaller integer MiB value.',
+    );
+  return { directory: resolve(directory), maxBytes };
 }
 
 /** The requested slice with its end clipped to the set, or the whole set when none was asked. */

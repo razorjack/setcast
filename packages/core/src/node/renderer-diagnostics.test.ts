@@ -5,6 +5,19 @@ import { RendererDiagnostics, diagnosticCommand } from './renderer-diagnostics.t
 import { diagnoseCodecs } from './diagnostic-codecs.ts';
 import { diagnoseBrowserRuntime, type DiagnosticBrowser } from './diagnostic-browser-runtime.ts';
 
+test('persistent cache is unavailable when its ffprobe prerequisite fails', async () => {
+  const session = new RendererDiagnostics(
+    { ...fixture, features: [...fixture.features, 'cache'] },
+    { require: ['cache'] },
+  );
+  await diagnoseCodecs(session, async (binary) => {
+    if (binary === 'ffprobe') throw new Error('ffprobe missing');
+    return 'fake ffmpeg version';
+  });
+  expect(session.report().features.cache).toBe('unavailable');
+  expect(session.report().ready).toBe(false);
+});
+
 test('optional tool failure does not fail a still-only setup and all missing tools are reported', async () => {
   const session = new RendererDiagnostics(fixture, { require: ['still'] });
   await session.check('capture', ['still'], '', async () => ({ message: 'captured' }));

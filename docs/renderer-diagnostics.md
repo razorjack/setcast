@@ -120,3 +120,8 @@ A successful report covers these small fixtures on the selected runtime. It does
 render a user's project, test asset/font readiness, prove checkpoint recovery, measure sustained
 throughput, qualify a physical device, or establish cross-driver pixel identity. Keep
 `setcast validate`, exporter acceptance and the longer qualification workflows as separate checks.
+
+Persistent browser caching is declared as the `cache` feature. Its machine prerequisites include
+Chromium, local serving, H.264/AAC encoding and ffprobe, like resumable export. `doctor --require
+cache` checks those runtime prerequisites; it does not inspect or write the chosen cache directory.
+Use `setcast cache inspect <directory>` to read an existing cache index.

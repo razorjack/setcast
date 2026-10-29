@@ -337,6 +337,11 @@ the current small pipe waits do not predict the next bottleneck.
 
 ### Phase 4: persist useful work after a successful export
 
+The initial implementation adds opt-in bounded video-chunk reuse for identical jobs, with explicit
+inspection/clearing and conservative whole-job invalidation. See the implementation log for checks
+and [browser cache usage](browser-renderer.md#persistent-reuse-after-successful-exports). Selective
+reuse after edits, prepared-asset caching and broader batch reuse remain pending.
+
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
 Start with identical completed chunks and validated prepared assets. Retain proven identity,
 checksums, atomic publication, writer coordination and input-change checks. Add size limits,

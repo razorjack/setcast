@@ -1,7 +1,7 @@
 import { expect, test } from 'vite-plus/test';
 import { clipFile, clipRange } from './clip.ts';
 import { rangeName } from '../paths.ts';
-import { parseRange } from './render.ts';
+import { parseCacheOptions, parseRange } from './render.ts';
 
 test('rangeName stamps a slice without colons', () => {
   expect(rangeName('out/set.mp4', [30, 45])).toBe('out/set.0m30s-0m45s.mp4');
@@ -16,6 +16,16 @@ test('parseRange accepts timecodes and seconds, rejects nonsense', () => {
   expect(parseRange('60-90.5')).toEqual([60, 90.5]);
   expect(() => parseRange('1:30-1:00')).toThrow(/Invalid --range/);
   expect(() => parseRange('abc')).toThrow(/Invalid --range/);
+});
+
+test('persistent-cache flags require explicit directory and bounded positive MiB', () => {
+  expect(parseCacheOptions(undefined, undefined)).toBeUndefined();
+  expect(parseCacheOptions('cache', undefined)?.maxBytes).toBe(2 * 1024 ** 3);
+  expect(parseCacheOptions('cache', '1')?.maxBytes).toBe(1024 ** 2);
+  expect(() => parseCacheOptions(undefined, '1')).toThrow('requires');
+  expect(() => parseCacheOptions('', '1')).toThrow('empty');
+  for (const size of ['0', '-1', '1.5', 'Infinity', '1000000000000000'])
+    expect(() => parseCacheOptions('cache', size)).toThrow();
 });
 
 test('clipRange puts the drop a third of the way in, never before the set', () => {
