@@ -370,3 +370,30 @@ meter {
   background: #050607;
   z-index: 1;
 }
+
+.sp-navigation label,
+.sp-range label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 11px;
+}
+.sp-navigation > select {
+  width: 100%;
+  margin: 8px 0;
+}
+.sp-navigation-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.sp-navigation-row button {
+  font-size: 11px;
+  flex: 1;
+}
+.sp-range input {
+  width: 100px;
+}

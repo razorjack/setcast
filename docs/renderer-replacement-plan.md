@@ -184,8 +184,7 @@ as wall time. FFT improvements already benefit both exporters and do not prove e
   including concurrency and runtime/host identity, and removes checkpoints after success. It is
   interruption recovery, not a persistent cache for revisions or cross-machine artifacts.
 - [Preview](independent-preview.md) already shares the exact export driver, supports frame
-  inspection, project reload and reference overlays. It now supports audible playback and silent sequential inspection; it cannot launch
-  exports. Playback via `setcast play` exists separately and uses approximate running video sync.
+  inspection, project reload and reference overlays. It now supports audible playback and silent sequential inspection; it supports musical navigation and frame-range selection, but cannot launch exports. Playback via `setcast play` exists separately and uses approximate running video sync.
 
 ## Contracts to preserve
 

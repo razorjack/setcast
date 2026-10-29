@@ -4,6 +4,8 @@ import { framesWithinMix, type ResolvedProject } from '@setcast/core';
 import { usePreviewRevision } from './revision.ts';
 import { useFramePreview } from './frame-preview.ts';
 import { usePreviewPlayback, type PreviewPreferences } from './playback.ts';
+import { MusicalNavigation, PreviewRange, usePreviewSelection } from './timeline.tsx';
+import type { PreviewSelection } from './navigation.ts';
 import { Inspector } from './inspector.tsx';
 import { PreviewViewport } from './viewport.tsx';
 import { PreviewTransport } from './transport.tsx';
@@ -15,6 +17,7 @@ export function mountPreview(element: HTMLElement) {
 function Preview() {
   const state = usePreviewRevision();
   const reference = useReference();
+  const selection = useRef<PreviewSelection | null>(null);
   const position = useRef<number | null>(null);
   const preferences = useRef<PreviewPreferences>({ mode: 'audio', volume: 1 });
   useEffect(() => {
@@ -43,6 +46,7 @@ function Preview() {
           reference={reference}
           position={position}
           preferences={preferences}
+          selection={selection}
         />
       ) : (
         <p className="sp-loading">Loading project…</p>
@@ -55,12 +59,15 @@ function Workspace({
   reference,
   position,
   preferences,
+  selection,
 }: {
   project: ResolvedProject;
   reference: Reference;
   position: RefObject<number | null>;
   preferences: RefObject<PreviewPreferences>;
+  selection: RefObject<PreviewSelection | null>;
 }) {
+  const range = usePreviewSelection(project, selection);
   const count = framesWithinMix(project.mix.duration, project.fps);
   const frames = useFramePreview(count, project.fps, position);
   const session = usePreviewPlayback(project, frames, preferences);
@@ -81,6 +88,8 @@ function Workspace({
         <PreviewTransport session={session} count={count} fps={project.fps} />
       </div>
       <aside className="sp-inspector" aria-label="Frame inspector">
+        <MusicalNavigation project={project} frame={session.requested} seek={session.seek} />
+        <PreviewRange range={range} frame={session.requested} seek={session.seek} />
         <Inspector session={session} />
         <ReferenceControls reference={reference} width={project.width} height={project.height} />
       </aside>

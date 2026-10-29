@@ -33,6 +33,7 @@ try {
   await seek(46);
   await compareExport();
   await checkReference();
+  await checkMusicalNavigation();
   await page.locator('.sp-inspector').evaluate((element) => {
     element.scrollTop = 0;
   });
@@ -350,4 +351,50 @@ async function delayPreviewFrames() {
       },
     });
   });
+}
+
+async function checkMusicalNavigation() {
+  await seek(0);
+  assert(await page.getByRole('button', { name: 'Next beat', exact: true }).isDisabled());
+  await page.getByRole('button', { name: 'Next mark', exact: true }).click();
+  await ready(45);
+  await page.getByRole('button', { name: 'Set in here' }).click();
+  await page.getByLabel('Navigation kind').selectOption('annotation');
+  await page.getByRole('button', { name: 'Next mark', exact: true }).click();
+  await ready(75);
+  await page.getByLabel('Timeline mark').selectOption('45');
+  await ready(45);
+  await seek(94);
+  await page.getByRole('button', { name: 'Set out here' }).click();
+  assert.equal(await page.getByLabel('In frame', { exact: true }).inputValue(), '45');
+  assert.equal(await page.getByLabel('Out frame', { exact: true }).inputValue(), '94');
+  await page
+    .locator('.sp-range')
+    .getByText('50 frames · 1.667 s. Both endpoints included.')
+    .waitFor();
+  await page.getByRole('button', { name: 'Go to in' }).click();
+  await ready(45);
+  await page.getByRole('button', { name: 'Go to out' }).click();
+  await ready(94);
+  server.update({ ...project, title: 'Navigation tempo', bpm: 174, beatOffset: 0.1 });
+  await page.getByRole('heading', { name: 'Navigation tempo', exact: true }).waitFor();
+  await ready(94);
+  assert.equal(await page.getByLabel('In frame', { exact: true }).inputValue(), '45');
+  assert.equal(await page.getByLabel('Out frame', { exact: true }).inputValue(), '94');
+  await seek(3);
+  await page.getByRole('button', { name: 'Next beat', exact: true }).click();
+  await ready(14);
+  await page.getByRole('button', { name: 'Previous beat', exact: true }).click();
+  await ready(3);
+  await page.getByRole('button', { name: 'Next bar', exact: true }).click();
+  await ready(45);
+  await page.getByLabel('In frame', { exact: true }).fill('92');
+  await page.getByLabel('Out frame', { exact: true }).fill('7');
+  assert.equal(await page.getByLabel('In frame', { exact: true }).inputValue(), '7');
+  await page.getByRole('button', { name: 'Whole mix' }).click();
+  assert.equal(await page.getByLabel('Out frame', { exact: true }).inputValue(), '94');
+  server.update(project);
+  await page.getByRole('heading', { name: project.title, exact: true }).waitFor();
+  await ready(45);
+  await seek(12);
 }

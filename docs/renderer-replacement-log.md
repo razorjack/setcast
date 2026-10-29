@@ -455,3 +455,27 @@ Next: musical navigation and range selection, then a narrowly scoped local expor
 explicit lifecycle ownership. Audible preview does not yet provide export controls. Current-upstream
 matched-quality performance, resource-aware scheduling, selective reuse, distribution independence
 and final platform/default migration remain incomplete.
+
+Musical navigation design: keep listing/annotation/scene marks distinct, including ties, and seek
+with the existing exact-frame operation. Beat/bar stepping should compute neighboring positions
+from tempo spans without allocating every beat in a long mix; saved scenes can change tempo or
+remove it. Navigation targets the first frame that reaches a mark. Range selection stores inclusive
+frame endpoints. In particular, converting its final exclusive boundary to the audio duration is
+incorrect for a partial final frame: 3.1415 seconds at 30 fps includes frame 94, but rounding the
+clamped end seconds through resolveFrameRange would exclude it. Export must use `(last + 1) / fps`
+and let the existing renderer clip to its finite frame count. This observation precedes implementation.
+
+Musical navigation and range controls are implemented. Named listing/annotation/scene targets
+retain ties, previous/next skips the current frame, and scoped annotation labels remain visible.
+Beat/bar navigation computes one candidate per tempo span rather than materializing an hour's
+beats. It follows scene tempo changes and skips tempo-free spans. Unit comparisons enumerate
+independent grids at 24/30/60 fps, 120/174/299 bpm and three offsets; all frames/directions agree.
+An initial test caught negative zero at the opening beat; targets now normalize zero.
+
+The actual preview check passed navigation controls, non-frame-aligned beats, inclusive ranges,
+crossed endpoint edits, last-frame inclusion and selection retention on reload. Desktop and
+390px screenshots were inspected without overflow. The full baseline is running before commit.
+
+Navigation final baseline passed: `vp run ready` completed 656 tests in 107 files, dependency ban,
+type/lint/format checks and decoded smoke. Logs: `/tmp/setcast-navigation-ready.log` and
+`/tmp/setcast-navigation-browser.log`. No export-driver behavior changed in this piece.

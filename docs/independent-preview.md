@@ -36,6 +36,24 @@ when diagnosing a rendering regression.
   project reloads and retries retain the latest requested frame. Invalid or out-of-range positions
   clamp to the finite mix. The inspector identifies its completed frame while another is preparing.
 
+## Musical navigation and ranges
+
+Choose listings, annotations or scene recalls, then jump to a named moment or its previous/next
+mark. Tied marks remain listed separately; previous/next advances to a different frame. A mark
+between frame times selects the first frame that reaches it. Display-clock offsets do not move
+these targets. Beat and bar buttons follow the project's tempo and each recalled scene's tempo;
+a bar is four beats, as in the existing stage contract. Tempo-free spans have no beat targets.
+
+Set in here and Set out here use the requested frame, including while its exact preparation is
+pending. Both endpoints are included. Numeric inputs accept only valid integer frame indices;
+moving one endpoint past the other moves the other endpoint with it. Go to in/out pauses playback
+and inspects that endpoint. Whole mix restores every frame, including a partial final frame.
+The displayed duration is the selected video-frame count divided by fps.
+
+The selection survives in-page reload/retry. Duration changes fit it within the new mix; fps
+changes preserve its time boundaries to the nearest frame. A full page refresh resets the range.
+Range selection currently prepares an export choice; export controls are the next implementation.
+
 ## Reference comparison
 
 Choose a PNG, JPEG or WebP with the composition's exact dimensions, up to 32 MiB. The browser
@@ -77,12 +95,13 @@ inspection, video loops, reference imports, project updates, failed-asset retry 
 endpoints. It also runs the CLI with Remotion imports forbidden, edits its YAML, verifies recovery
 and checks clean shutdown. Screenshots go to `examples/demo/out/preview-check/`.
 
-Unit tests cover queue serialization, failure/disposal, frame bounds and revision publication.
+Unit tests cover queue serialization, failure/disposal, frame bounds, tied marks, tempo-span
+navigation, range conversion and revision publication.
 Installed-package smoke bundles both preview entries. Shared export-driver changes also require
 both exporter acceptance suites and the same-page frame-order bench.
 
 Further work: live hardware and other operating systems remain separate qualification tasks.
-Export controls, musical navigation, numeric image-difference metrics and GPU timing remain
+Export controls, numeric image-difference metrics and GPU timing remain
 future additions. Audible playback checks verify browser media state and frame selection, not
 physical speaker/display latency or output routing.
 
