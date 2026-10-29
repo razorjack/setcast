@@ -1,0 +1,244 @@
+{
+  "runs": [
+    {
+      "pair": 0,
+      "mode": "canvas",
+      "wallSeconds": 7.87410175,
+      "stats": {
+        "audioMs": 4.899999976158142,
+        "resolveMs": 31.50000011920929,
+        "commitMs": 55.200000286102295,
+        "readinessMs": 3872.099999845028,
+        "captureMs": 2956.1071230000016,
+        "bytes": 20073755,
+        "encoder-write": 91.65075499999625,
+        "encoder-finish": 347.3113750000002,
+        "mux": 116.68933300000026
+      },
+      "load": {
+        "samples": 7,
+        "meanSystemBusy": 0.28295602802757275,
+        "maxSystemBusy": 0.3256048387096774,
+        "initialLoadAverage": [
+          3.1904296875,
+          5.2890625,
+          5.388671875
+        ],
+        "finalLoadAverage": [
+          3.3349609375,
+          5.2841796875,
+          5.38623046875
+        ],
+        "nodeRssPeak": 419872768,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 90,
+        "bytes": 2955776,
+        "decodedVideoHash": "SHA256=0e8ccbe208564cf9047926a1a45d6037faad513c8f61e26c3b3013c60fb2d5c7",
+        "seconds": 1.300547708,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    },
+    {
+      "pair": 0,
+      "mode": "image",
+      "wallSeconds": 6.951581875,
+      "stats": {
+        "audioMs": 5.100000023841858,
+        "resolveMs": 33.000000059604645,
+        "commitMs": 62.60000002384186,
+        "readinessMs": 4094.2000001072884,
+        "captureMs": 1823.564330000001,
+        "bytes": 20031573,
+        "encoder-write": 94.63083699999515,
+        "encoder-finish": 339.635624999999,
+        "mux": 117.36249999999927
+      },
+      "load": {
+        "samples": 6,
+        "meanSystemBusy": 0.343655230496067,
+        "maxSystemBusy": 0.37777777777777777,
+        "initialLoadAverage": [
+          3.14794921875,
+          5.212890625,
+          5.3603515625
+        ],
+        "finalLoadAverage": [
+          2.9755859375,
+          5.142578125,
+          5.33447265625
+        ],
+        "nodeRssPeak": 492470272,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 90,
+        "bytes": 2949313,
+        "decodedVideoHash": "SHA256=27a3fadf252c9875cebc7fcc5cf700a4f95540de065926abc95a08d77858e72e",
+        "seconds": 1.2904832500000012,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    },
+    {
+      "pair": 1,
+      "mode": "image",
+      "wallSeconds": 6.967160416999999,
+      "stats": {
+        "audioMs": 4.799999952316284,
+        "resolveMs": 32.89999997615814,
+        "commitMs": 61.89999997615814,
+        "readinessMs": 4093.69999986887,
+        "captureMs": 1833.3892890000025,
+        "bytes": 20031573,
+        "encoder-write": 91.31729299999279,
+        "encoder-finish": 344.52841700000135,
+        "mux": 116.86716700000034
+      },
+      "load": {
+        "samples": 6,
+        "meanSystemBusy": 0.3451258526866144,
+        "maxSystemBusy": 0.44120603015075377,
+        "initialLoadAverage": [
+          2.9755859375,
+          5.142578125,
+          5.33447265625
+        ],
+        "finalLoadAverage": [
+          2.7451171875,
+          5.02197265625,
+          5.2890625
+        ],
+        "nodeRssPeak": 538722304,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 90,
+        "bytes": 2949313,
+        "decodedVideoHash": "SHA256=27a3fadf252c9875cebc7fcc5cf700a4f95540de065926abc95a08d77858e72e",
+        "seconds": 1.3046452500000014,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    },
+    {
+      "pair": 1,
+      "mode": "canvas",
+      "wallSeconds": 7.812025750000001,
+      "stats": {
+        "audioMs": 5.099999904632568,
+        "resolveMs": 32.29999977350235,
+        "commitMs": 55.599999845027924,
+        "readinessMs": 3816.5000004172325,
+        "captureMs": 2964.740911999994,
+        "bytes": 20073755,
+        "encoder-write": 90.13099800000418,
+        "encoder-finish": 352.58508399999846,
+        "mux": 120.65458399999625
+      },
+      "load": {
+        "samples": 7,
+        "meanSystemBusy": 0.28758744604436426,
+        "maxSystemBusy": 0.34510595358224017,
+        "initialLoadAverage": [
+          2.7451171875,
+          5.02197265625,
+          5.2890625
+        ],
+        "finalLoadAverage": [
+          3.93359375,
+          5.20166015625,
+          5.349609375
+        ],
+        "nodeRssPeak": 570916864,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 90,
+        "bytes": 2955776,
+        "decodedVideoHash": "SHA256=0e8ccbe208564cf9047926a1a45d6037faad513c8f61e26c3b3013c60fb2d5c7",
+        "seconds": 1.2905537079999994,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    },
+    {
+      "pair": 2,
+      "mode": "canvas",
+      "wallSeconds": 7.819312415999994,
+      "stats": {
+        "audioMs": 4.899999976158142,
+        "resolveMs": 32.40000021457672,
+        "commitMs": 55.3999999165535,
+        "readinessMs": 3820.4999999403954,
+        "captureMs": 2955.4749959999826,
+        "bytes": 20073755,
+        "encoder-write": 89.20488399999158,
+        "encoder-finish": 351.17383300000074,
+        "mux": 120.61345799999981
+      },
+      "load": {
+        "samples": 7,
+        "meanSystemBusy": 0.2706983621788244,
+        "maxSystemBusy": 0.3057517658930373,
+        "initialLoadAverage": [
+          3.93359375,
+          5.20166015625,
+          5.349609375
+        ],
+        "finalLoadAverage": [
+          3.8583984375,
+          5.1650390625,
+          5.33544921875
+        ],
+        "nodeRssPeak": 606339072,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 90,
+        "bytes": 2955776,
+        "decodedVideoHash": "SHA256=0e8ccbe208564cf9047926a1a45d6037faad513c8f61e26c3b3013c60fb2d5c7",
+        "seconds": 1.2901408329999977,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    },
+    {
+      "pair": 2,
+      "mode": "image",
+      "wallSeconds": 6.976857375,
+      "stats": {
+        "audioMs": 5,
+        "resolveMs": 31.99999976158142,
+        "commitMs": 63.200000047683716,
+        "readinessMs": 4105.800000071526,
+        "captureMs": 1835.1804610000327,
+        "bytes": 20031573,
+        "encoder-write": 91.1529140000348,
+        "encoder-finish": 339.80354200000147,
+        "mux": 116.765625
+      },
+      "load": {
+        "samples": 6,
+        "meanSystemBusy": 0.3658608825228557,
+        "maxSystemBusy": 0.38492462311557785,
+        "initialLoadAverage": [
+          3.62939453125,
+          5.095703125,
+          5.3095703125
+        ],
+        "finalLoadAverage": [
+          3.65869140625,
+          5.0771484375,
+          5.3017578125
+        ],
+        "nodeRssPeak": 650215424,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 90,
+        "bytes": 2949313,
+        "decodedVideoHash": "SHA256=27a3fadf252c9875cebc7fcc5cf700a4f95540de065926abc95a08d77858e72e",
+        "seconds": 1.3037022090000028,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    }
+  ]
+}

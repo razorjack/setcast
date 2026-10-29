@@ -9,6 +9,8 @@
     "camera.ts",
     "gpu.ts",
     "projection.ts",
-    "midi.ts"
+    "midi.ts",
+    "video-frames.ts",
+    "video-profile.ts"
   ]
 }

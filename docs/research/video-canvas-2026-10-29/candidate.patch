@@ -1,0 +1,149 @@
+--- a/packages/renderer-browser/src/export/video.tsx
++++ b/packages/renderer-browser/src/export/video.tsx
+@@ -1,30 +1,38 @@
+-import { useEffect, useRef, useState } from 'react';
++import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+ import { ALL_FORMATS, CanvasSink, Input, UrlSource } from 'mediabunny';
+ import { resolveFit } from '@setcast/core';
+ import { useFrame, useHoldUntil, type VideoProps } from '@setcast/core/react';
++import { needsImageElement } from './video-css.ts';
+ 
+-export function ExportVideo({ src, style, className, fit, loop }: VideoProps) {
++export function ExportVideo(props: VideoProps) {
++  return <DecodedVideo key={props.src} {...props} />;
++}
++
++type DecodedFrame = { canvas: HTMLCanvasElement | OffscreenCanvas; src: string | null };
++
++function DecodedVideo({ src, style, className, fit, loop }: VideoProps) {
+   const { frame, fps, composition } = useFrame();
+-  const decoder = useRef<VideoDecoder | null>(null);
+-  const [image, setImage] = useState<{ src: string; width: number; height: number } | null>(null);
++  const decoder = useRef<Promise<VideoDecoder> | null>(null);
++  const [image, setImage] = useState<DecodedFrame | null>(null);
+   useEffect(
+     () => () => {
+-      decoder.current?.input.dispose();
+-      decoder.current = null;
++      void decoder.current?.then(({ input }) => input.dispose()).catch(() => {});
+     },
+-    [src],
++    [],
+   );
+   const ready = useHoldUntil(`video:${src}:${frame}`, async () => {
+-    if (!decoder.current) decoder.current = await openVideo(src);
+-    setImage(await decodeFrame(decoder.current, src, { frame, fps, loop }));
++    decoder.current ??= openVideo(src);
++    const canvas = await decodeFrame(await decoder.current, src, { frame, fps, loop });
++    const legacy = needsImageElement(document);
++    setImage({ canvas, src: legacy ? imageUrl(canvas) : null });
+   });
+-  if (!ready || !image) return null;
+-  const objectFit = fit ? resolveFit(fit, image, composition) : undefined;
++  if (!image || (image.src && !ready)) return null;
++  const objectFit = fit ? resolveFit(fit, image.canvas, composition) : undefined;
+   return (
+     <>
+       {objectFit === 'contain' && (
+-        <img
+-          src={image.src}
++        <VideoImage
++          image={image}
+           className={className}
+           style={{
+             ...style,
+@@ -34,13 +42,42 @@
+           }}
+         />
+       )}
+-      <img
+-        src={image.src}
++      <VideoImage
++        image={image}
+         className={className}
+         style={{ ...style, ...(objectFit ? { objectFit } : {}) }}
+       />
+     </>
+   );
++}
++
++function VideoImage({
++  image,
++  ...props
++}: {
++  image: DecodedFrame;
++  className?: string;
++  style?: CSSProperties;
++}) {
++  const target = useRef<HTMLCanvasElement>(null);
++  useLayoutEffect(() => {
++    const canvas = target.current;
++    if (!canvas || image.src) return;
++    // Copy before frame acknowledgement: the decoder reuses its one-canvas pool on the next seek.
++    const context = canvas.getContext('2d')!;
++    context.clearRect(0, 0, canvas.width, canvas.height);
++    context.drawImage(image.canvas, 0, 0);
++  }, [image]);
++  if (image.src) return <img src={image.src} {...props} />;
++  return <canvas ref={target} width={image.canvas.width} height={image.canvas.height} {...props} />;
++}
++
++function imageUrl(source: HTMLCanvasElement | OffscreenCanvas) {
++  const canvas = document.createElement('canvas');
++  canvas.width = source.width;
++  canvas.height = source.height;
++  canvas.getContext('2d')!.drawImage(source, 0, 0);
++  return canvas.toDataURL('image/png');
+ }
+ 
+ async function decodeFrame(
+@@ -55,16 +92,7 @@
+     : Math.min(frame / fps, Math.max(0, duration - 0.000001));
+   const decoded = await sink.getCanvas(time);
+   if (!decoded) throw new Error(`No decoded video frame for ${src} at ${time}s.`);
+-  const canvas = document.createElement('canvas');
+-  canvas.width = decoded.canvas.width;
+-  canvas.height = decoded.canvas.height;
+-  canvas.getContext('2d')!.drawImage(decoded.canvas, 0, 0);
+-  const image = {
+-    src: canvas.toDataURL('image/png'),
+-    width: canvas.width,
+-    height: canvas.height,
+-  };
+-  return image;
++  return decoded.canvas;
+ }
+ 
+ interface VideoDecoder {
+--- /dev/null
++++ b/packages/renderer-browser/src/export/video-css.ts
+@@ -0,0 +1,29 @@
++/** Preserve selectors whose meaning changes when a decoded video becomes a canvas. */
++export function needsImageElement(document: Document): boolean {
++  try {
++    return [...document.styleSheets, ...document.adoptedStyleSheets].some((sheet) =>
++      rulesNeedImage(sheet.cssRules),
++    );
++  } catch {
++    // A cross-origin stylesheet cannot be inspected. Keep its existing element contract.
++    return true;
++  }
++}
++
++function rulesNeedImage(rules: CSSRuleList): boolean {
++  for (const rule of rules) {
++    if (
++      rule instanceof CSSImportRule &&
++      rule.styleSheet &&
++      rulesNeedImage(rule.styleSheet.cssRules)
++    )
++      return true;
++    if (
++      rule instanceof CSSStyleRule &&
++      /(^|[^\w-])(img|canvas)(?![\w-])|of-type|\\/i.test(rule.selectorText)
++    )
++      return true;
++    if ('cssRules' in rule && rulesNeedImage(rule.cssRules as CSSRuleList)) return true;
++  }
++  return false;
++}

@@ -1,5 +1,8 @@
 # Independent renderer replacement plan
 
+Ongoing observations, failed experiments and validation results are recorded in
+[renderer-replacement-log.md](renderer-replacement-log.md).
+
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: proposed implementation sequence; no renderer or dependency change is made by this plan.
 Remotion remains the default until the release criteria below are met.
@@ -245,6 +248,11 @@ across encoders, or one global SSIM value, do not establish matched quality. Kee
 decoded-frame, chunk-boundary and stereo-alignment verification separate from image quality.
 
 ### Phase 1: remove video-frame PNG serialization
+
+The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was
+slower in two alternating benchmark series. See the [experiment and retained evidence](research/video-canvas-2026-10-29/README.md).
+Production retains the PNG image path. Revisit decoded-frame representation with a different
+capture transport; do not promote the rejected candidate or assume fewer conversions are faster.
 
 Measure the existing conversion stages, then replace PNG serialization and image decoding with
 a persistent drawable canvas or equivalent decoded-frame representation. Keep frame ownership

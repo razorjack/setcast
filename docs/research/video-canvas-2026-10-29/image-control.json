@@ -1,0 +1,206 @@
+{
+  "results": [
+    {
+      "theme": "escapement",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "escapement",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "escapement",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "escapement",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "IMG"
+    }
+  ],
+  "differences": [
+    {
+      "name": "escapement-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    }
+  ],
+  "failures": []
+}

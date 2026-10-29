@@ -1,0 +1,2853 @@
+{
+  "results": [
+    {
+      "theme": "sterile-tech",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "sterile-tech",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "sterile-tech",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "sterile-tech",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "long-exposure",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "long-exposure",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "long-exposure",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "long-exposure",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bristol",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bristol",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bristol",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bristol",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "patina",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "patina",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "patina",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "patina",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bunker",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bunker",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bunker",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "bunker",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "vfd",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "vfd",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "vfd",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "vfd",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "interference",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "interference",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "interference",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "interference",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "pirate",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "pirate",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "pirate",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "pirate",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "afterhours",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "afterhours",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "afterhours",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "afterhours",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "passe-partout",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "passe-partout",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "passe-partout",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "passe-partout",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "masthead",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "masthead",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "masthead",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "masthead",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "anamorphic",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "anamorphic",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "anamorphic",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "anamorphic",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "relief",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "relief",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "relief",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "relief",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "darkroom",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "darkroom",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "darkroom",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "darkroom",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    }
+  ],
+  "differences": [
+    {
+      "name": "sterile-tech-640-cover",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.05213396990740741,
+      "rms": 0.2361958589736414
+    },
+    {
+      "name": "sterile-tech-640-cover",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.05138310185185185,
+      "rms": 0.233605991488359
+    },
+    {
+      "name": "sterile-tech-640-cover",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.056331018518518516,
+      "rms": 0.2444760080632014
+    },
+    {
+      "name": "sterile-tech-640-cover",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.05581452546296296,
+      "rms": 0.24551827739913182
+    },
+    {
+      "name": "sterile-tech-640-cover",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.05213396990740741,
+      "rms": 0.2361958589736414
+    },
+    {
+      "name": "sterile-tech-640-contain",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.05213396990740741,
+      "rms": 0.2361958589736414
+    },
+    {
+      "name": "sterile-tech-640-contain",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.05138310185185185,
+      "rms": 0.233605991488359
+    },
+    {
+      "name": "sterile-tech-640-contain",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.056331018518518516,
+      "rms": 0.2444760080632014
+    },
+    {
+      "name": "sterile-tech-640-contain",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.05581452546296296,
+      "rms": 0.24551827739913182
+    },
+    {
+      "name": "sterile-tech-640-contain",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.05213396990740741,
+      "rms": 0.2361958589736414
+    },
+    {
+      "name": "sterile-tech-360-cover",
+      "frame": 29,
+      "max": 2,
+      "mean": 0.03036747685185185,
+      "rms": 0.1746441487817548
+    },
+    {
+      "name": "sterile-tech-360-cover",
+      "frame": 36,
+      "max": 2,
+      "mean": 0.02845920138888889,
+      "rms": 0.16913536245662328
+    },
+    {
+      "name": "sterile-tech-360-cover",
+      "frame": 7,
+      "max": 2,
+      "mean": 0.029730902777777776,
+      "rms": 0.17303794274560025
+    },
+    {
+      "name": "sterile-tech-360-cover",
+      "frame": 0,
+      "max": 2,
+      "mean": 0.032209201388888886,
+      "rms": 0.17976724277263106
+    },
+    {
+      "name": "sterile-tech-360-cover",
+      "frame": 29,
+      "max": 2,
+      "mean": 0.03036747685185185,
+      "rms": 0.1746441487817548
+    },
+    {
+      "name": "sterile-tech-360-contain",
+      "frame": 29,
+      "max": 86,
+      "mean": 0.36800347222222224,
+      "rms": 2.12690954508248
+    },
+    {
+      "name": "sterile-tech-360-contain",
+      "frame": 36,
+      "max": 82,
+      "mean": 0.3841984953703704,
+      "rms": 2.2035463052644126
+    },
+    {
+      "name": "sterile-tech-360-contain",
+      "frame": 7,
+      "max": 85,
+      "mean": 0.33414351851851853,
+      "rms": 1.8956997816207706
+    },
+    {
+      "name": "sterile-tech-360-contain",
+      "frame": 0,
+      "max": 82,
+      "mean": 0.34617332175925924,
+      "rms": 1.8802645998044472
+    },
+    {
+      "name": "sterile-tech-360-contain",
+      "frame": 29,
+      "max": 86,
+      "mean": 0.36800347222222224,
+      "rms": 2.12690954508248
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 36,
+      "max": 47,
+      "mean": 0.08173032407407407,
+      "rms": 0.8853243415917212
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 7,
+      "max": 51,
+      "mean": 0.08362847222222222,
+      "rms": 0.9315723093740993
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 0,
+      "max": 47,
+      "mean": 0.08060185185185186,
+      "rms": 0.8836035357179901
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 36,
+      "max": 47,
+      "mean": 0.08173032407407407,
+      "rms": 0.8853243415917212
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 7,
+      "max": 51,
+      "mean": 0.08362991898148148,
+      "rms": 0.9315730858885157
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 0,
+      "max": 47,
+      "mean": 0.08060185185185186,
+      "rms": 0.8836035357179901
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.11695023148148148,
+      "rms": 1.5990756154960508
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 36,
+      "max": 134,
+      "mean": 0.11440393518518518,
+      "rms": 1.577355308267138
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 7,
+      "max": 120,
+      "mean": 0.11921440972222222,
+      "rms": 1.6419094398889045
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 0,
+      "max": 44,
+      "mean": 0.0616869212962963,
+      "rms": 0.8388773913855218
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.11695023148148148,
+      "rms": 1.5990756154960508
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.16570167824074075,
+      "rms": 1.7596505565078875
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 36,
+      "max": 134,
+      "mean": 0.14976707175925927,
+      "rms": 1.7411154264553343
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 7,
+      "max": 120,
+      "mean": 0.14950520833333333,
+      "rms": 1.7241862680804059
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 0,
+      "max": 44,
+      "mean": 0.09083188657407408,
+      "rms": 0.9614961395600551
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.16570167824074075,
+      "rms": 1.7596505565078875
+    },
+    {
+      "name": "long-exposure-640-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.10763310185185185,
+      "rms": 0.345305822585011
+    },
+    {
+      "name": "long-exposure-640-cover",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.10706452546296297,
+      "rms": 0.34291143508902533
+    },
+    {
+      "name": "long-exposure-640-cover",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.10708188657407407,
+      "rms": 0.34186774232258405
+    },
+    {
+      "name": "long-exposure-640-cover",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.10597800925925926,
+      "rms": 0.3388134592739568
+    },
+    {
+      "name": "long-exposure-640-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.10763310185185185,
+      "rms": 0.345305822585011
+    },
+    {
+      "name": "long-exposure-640-contain",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.10763310185185185,
+      "rms": 0.345305822585011
+    },
+    {
+      "name": "long-exposure-640-contain",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.10706452546296297,
+      "rms": 0.34291143508902533
+    },
+    {
+      "name": "long-exposure-640-contain",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.10708188657407407,
+      "rms": 0.34186774232258405
+    },
+    {
+      "name": "long-exposure-640-contain",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.10597800925925926,
+      "rms": 0.3388134592739568
+    },
+    {
+      "name": "long-exposure-640-contain",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.10763310185185185,
+      "rms": 0.345305822585011
+    },
+    {
+      "name": "long-exposure-360-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.10187065972222223,
+      "rms": 0.32836355966339326
+    },
+    {
+      "name": "long-exposure-360-cover",
+      "frame": 36,
+      "max": 3,
+      "mean": 0.10072916666666666,
+      "rms": 0.326616351000284
+    },
+    {
+      "name": "long-exposure-360-cover",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.10140335648148148,
+      "rms": 0.3277130350372614
+    },
+    {
+      "name": "long-exposure-360-cover",
+      "frame": 0,
+      "max": 3,
+      "mean": 0.10096354166666667,
+      "rms": 0.32571591376762893
+    },
+    {
+      "name": "long-exposure-360-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.10187065972222223,
+      "rms": 0.32836355966339326
+    },
+    {
+      "name": "long-exposure-360-contain",
+      "frame": 29,
+      "max": 65,
+      "mean": 0.28844907407407405,
+      "rms": 1.3963711650401391
+    },
+    {
+      "name": "long-exposure-360-contain",
+      "frame": 36,
+      "max": 61,
+      "mean": 0.304916087962963,
+      "rms": 1.4698444503869563
+    },
+    {
+      "name": "long-exposure-360-contain",
+      "frame": 7,
+      "max": 65,
+      "mean": 0.27875,
+      "rms": 1.323123890156815
+    },
+    {
+      "name": "long-exposure-360-contain",
+      "frame": 0,
+      "max": 66,
+      "mean": 0.2899493634259259,
+      "rms": 1.3619705690720776
+    },
+    {
+      "name": "long-exposure-360-contain",
+      "frame": 29,
+      "max": 65,
+      "mean": 0.28844907407407405,
+      "rms": 1.3963711650401391
+    },
+    {
+      "name": "bristol-640-cover",
+      "frame": 29,
+      "max": 8,
+      "mean": 0.014920428240740741,
+      "rms": 0.1354914323517939
+    },
+    {
+      "name": "bristol-640-cover",
+      "frame": 36,
+      "max": 5,
+      "mean": 0.015063657407407408,
+      "rms": 0.12962508259220912
+    },
+    {
+      "name": "bristol-640-cover",
+      "frame": 7,
+      "max": 5,
+      "mean": 0.015811631944444446,
+      "rms": 0.13328449626436095
+    },
+    {
+      "name": "bristol-640-cover",
+      "frame": 0,
+      "max": 5,
+      "mean": 0.017216435185185185,
+      "rms": 0.13966104801745308
+    },
+    {
+      "name": "bristol-640-cover",
+      "frame": 29,
+      "max": 8,
+      "mean": 0.014920428240740741,
+      "rms": 0.1354914323517939
+    },
+    {
+      "name": "bristol-640-contain",
+      "frame": 29,
+      "max": 8,
+      "mean": 0.014920428240740741,
+      "rms": 0.1354914323517939
+    },
+    {
+      "name": "bristol-640-contain",
+      "frame": 36,
+      "max": 5,
+      "mean": 0.015063657407407408,
+      "rms": 0.12962508259220912
+    },
+    {
+      "name": "bristol-640-contain",
+      "frame": 7,
+      "max": 5,
+      "mean": 0.015811631944444446,
+      "rms": 0.13328449626436095
+    },
+    {
+      "name": "bristol-640-contain",
+      "frame": 0,
+      "max": 5,
+      "mean": 0.017216435185185185,
+      "rms": 0.13966104801745308
+    },
+    {
+      "name": "bristol-640-contain",
+      "frame": 29,
+      "max": 8,
+      "mean": 0.014920428240740741,
+      "rms": 0.1354914323517939
+    },
+    {
+      "name": "bristol-360-cover",
+      "frame": 29,
+      "max": 1,
+      "mean": 0.0004788773148148148,
+      "rms": 0.021883265634151015
+    },
+    {
+      "name": "bristol-360-cover",
+      "frame": 36,
+      "max": 1,
+      "mean": 0.0005685763888888889,
+      "rms": 0.023844839879707494
+    },
+    {
+      "name": "bristol-360-cover",
+      "frame": 7,
+      "max": 2,
+      "mean": 0.0005859375,
+      "rms": 0.02426584056896687
+    },
+    {
+      "name": "bristol-360-cover",
+      "frame": 0,
+      "max": 1,
+      "mean": 0.0007161458333333333,
+      "rms": 0.02676090120555235
+    },
+    {
+      "name": "bristol-360-cover",
+      "frame": 29,
+      "max": 1,
+      "mean": 0.0004788773148148148,
+      "rms": 0.021883265634151015
+    },
+    {
+      "name": "bristol-360-contain",
+      "frame": 29,
+      "max": 80,
+      "mean": 0.20071180555555557,
+      "rms": 1.9783667974329697
+    },
+    {
+      "name": "bristol-360-contain",
+      "frame": 36,
+      "max": 80,
+      "mean": 0.19889033564814815,
+      "rms": 1.904649449495356
+    },
+    {
+      "name": "bristol-360-contain",
+      "frame": 7,
+      "max": 65,
+      "mean": 0.20155671296296296,
+      "rms": 2.0618110521613797
+    },
+    {
+      "name": "bristol-360-contain",
+      "frame": 0,
+      "max": 64,
+      "mean": 0.20710069444444446,
+      "rms": 2.035847716781863
+    },
+    {
+      "name": "bristol-360-contain",
+      "frame": 29,
+      "max": 80,
+      "mean": 0.20071180555555557,
+      "rms": 1.9783667974329697
+    },
+    {
+      "name": "patina-640-cover",
+      "frame": 29,
+      "max": 18,
+      "mean": 0.10486111111111111,
+      "rms": 0.34322982528178253
+    },
+    {
+      "name": "patina-640-cover",
+      "frame": 36,
+      "max": 18,
+      "mean": 0.11073061342592593,
+      "rms": 0.3563027901107999
+    },
+    {
+      "name": "patina-640-cover",
+      "frame": 7,
+      "max": 18,
+      "mean": 0.0773654513888889,
+      "rms": 0.29449275678069964
+    },
+    {
+      "name": "patina-640-cover",
+      "frame": 0,
+      "max": 18,
+      "mean": 0.07779224537037037,
+      "rms": 0.29579909817557165
+    },
+    {
+      "name": "patina-640-cover",
+      "frame": 29,
+      "max": 18,
+      "mean": 0.1091015625,
+      "rms": 0.35310502647544145
+    },
+    {
+      "name": "patina-640-contain",
+      "frame": 29,
+      "max": 31,
+      "mean": 0.20049623842592593,
+      "rms": 0.7840394645325224
+    },
+    {
+      "name": "patina-640-contain",
+      "frame": 36,
+      "max": 45,
+      "mean": 0.20444878472222222,
+      "rms": 0.8951022533663299
+    },
+    {
+      "name": "patina-640-contain",
+      "frame": 7,
+      "max": 32,
+      "mean": 0.1862427662037037,
+      "rms": 0.7119992961268888
+    },
+    {
+      "name": "patina-640-contain",
+      "frame": 0,
+      "max": 40,
+      "mean": 0.19035590277777778,
+      "rms": 0.739273213541015
+    },
+    {
+      "name": "patina-640-contain",
+      "frame": 29,
+      "max": 31,
+      "mean": 0.20230324074074074,
+      "rms": 0.7857582885105082
+    },
+    {
+      "name": "patina-360-cover",
+      "frame": 29,
+      "max": 21,
+      "mean": 0.08434751157407408,
+      "rms": 0.31287708730308017
+    },
+    {
+      "name": "patina-360-cover",
+      "frame": 36,
+      "max": 21,
+      "mean": 0.08599537037037037,
+      "rms": 0.31736035132415735
+    },
+    {
+      "name": "patina-360-cover",
+      "frame": 7,
+      "max": 22,
+      "mean": 0.0852589699074074,
+      "rms": 0.3146523103186895
+    },
+    {
+      "name": "patina-360-cover",
+      "frame": 0,
+      "max": 22,
+      "mean": 0.08549045138888889,
+      "rms": 0.31512554449980135
+    },
+    {
+      "name": "patina-360-cover",
+      "frame": 29,
+      "max": 21,
+      "mean": 0.08434027777777778,
+      "rms": 0.31296724328653047
+    },
+    {
+      "name": "patina-360-contain",
+      "frame": 29,
+      "max": 43,
+      "mean": 0.24020109953703703,
+      "rms": 1.3039420067412677
+    },
+    {
+      "name": "patina-360-contain",
+      "frame": 36,
+      "max": 42,
+      "mean": 0.2495732060185185,
+      "rms": 1.3587225711906619
+    },
+    {
+      "name": "patina-360-contain",
+      "frame": 7,
+      "max": 48,
+      "mean": 0.2597265625,
+      "rms": 1.4808963869212108
+    },
+    {
+      "name": "patina-360-contain",
+      "frame": 0,
+      "max": 51,
+      "mean": 0.26049479166666667,
+      "rms": 1.5769718696849915
+    },
+    {
+      "name": "patina-360-contain",
+      "frame": 29,
+      "max": 43,
+      "mean": 0.25160011574074076,
+      "rms": 1.3080026563711842
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 29,
+      "max": 54,
+      "mean": 0.02070601851851852,
+      "rms": 0.3352721393247691
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 36,
+      "max": 54,
+      "mean": 0.02068431712962963,
+      "rms": 0.3348425037458877
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 7,
+      "max": 54,
+      "mean": 0.02129050925925926,
+      "rms": 0.3489733620312694
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 0,
+      "max": 54,
+      "mean": 0.021241319444444445,
+      "rms": 0.3486415436030622
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 29,
+      "max": 54,
+      "mean": 0.021264467592592592,
+      "rms": 0.34870378360967597
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 29,
+      "max": 96,
+      "mean": 0.12617476851851853,
+      "rms": 1.5546934615091361
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 36,
+      "max": 82,
+      "mean": 0.12561487268518517,
+      "rms": 1.5329063226373234
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 7,
+      "max": 90,
+      "mean": 0.12986689814814814,
+      "rms": 1.5633895615924702
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 0,
+      "max": 82,
+      "mean": 0.12618778935185185,
+      "rms": 1.5360337219304163
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 29,
+      "max": 96,
+      "mean": 0.12674913194444445,
+      "rms": 1.5577775858396616
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 29,
+      "max": 35,
+      "mean": 0.034638310185185185,
+      "rms": 0.3136598845057304
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 36,
+      "max": 35,
+      "mean": 0.034564525462962965,
+      "rms": 0.3135699276669194
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 7,
+      "max": 35,
+      "mean": 0.034618055555555555,
+      "rms": 0.3136183691710061
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 0,
+      "max": 35,
+      "mean": 0.03456741898148148,
+      "rms": 0.3137728706434829
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 29,
+      "max": 35,
+      "mean": 0.03453269675925926,
+      "rms": 0.3097588107436709
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 29,
+      "max": 71,
+      "mean": 0.17259403935185186,
+      "rms": 1.453591994852751
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 36,
+      "max": 70,
+      "mean": 0.17257957175925925,
+      "rms": 1.4394335828206357
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 7,
+      "max": 56,
+      "mean": 0.17451533564814814,
+      "rms": 1.4364725595540806
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 0,
+      "max": 70,
+      "mean": 0.1725810185185185,
+      "rms": 1.439479313656311
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 29,
+      "max": 71,
+      "mean": 0.1724927662037037,
+      "rms": 1.4528283996385452
+    },
+    {
+      "name": "bunker-640-cover",
+      "frame": 29,
+      "max": 28,
+      "mean": 0.4812268518518519,
+      "rms": 0.7715162140347528
+    },
+    {
+      "name": "bunker-640-cover",
+      "frame": 36,
+      "max": 28,
+      "mean": 0.48235243055555554,
+      "rms": 0.7728520862508054
+    },
+    {
+      "name": "bunker-640-cover",
+      "frame": 7,
+      "max": 28,
+      "mean": 0.4865335648148148,
+      "rms": 0.7758936752998895
+    },
+    {
+      "name": "bunker-640-cover",
+      "frame": 0,
+      "max": 28,
+      "mean": 0.5091652199074074,
+      "rms": 0.7945588617102085
+    },
+    {
+      "name": "bunker-640-cover",
+      "frame": 29,
+      "max": 28,
+      "mean": 0.4812109375,
+      "rms": 0.7715040250369067
+    },
+    {
+      "name": "bunker-640-contain",
+      "frame": 29,
+      "max": 28,
+      "mean": 0.4812268518518519,
+      "rms": 0.7715162140347528
+    },
+    {
+      "name": "bunker-640-contain",
+      "frame": 36,
+      "max": 28,
+      "mean": 0.48235243055555554,
+      "rms": 0.7728520862508054
+    },
+    {
+      "name": "bunker-640-contain",
+      "frame": 7,
+      "max": 28,
+      "mean": 0.4865335648148148,
+      "rms": 0.7758936752998895
+    },
+    {
+      "name": "bunker-640-contain",
+      "frame": 0,
+      "max": 28,
+      "mean": 0.5091652199074074,
+      "rms": 0.7945588617102085
+    },
+    {
+      "name": "bunker-640-contain",
+      "frame": 29,
+      "max": 28,
+      "mean": 0.4812109375,
+      "rms": 0.7715040250369067
+    },
+    {
+      "name": "bunker-360-cover",
+      "frame": 29,
+      "max": 55,
+      "mean": 0.04935329861111111,
+      "rms": 0.5287358810828374
+    },
+    {
+      "name": "bunker-360-cover",
+      "frame": 36,
+      "max": 55,
+      "mean": 0.04963107638888889,
+      "rms": 0.5300394704904322
+    },
+    {
+      "name": "bunker-360-cover",
+      "frame": 7,
+      "max": 55,
+      "mean": 0.049895833333333334,
+      "rms": 0.5288658374995251
+    },
+    {
+      "name": "bunker-360-cover",
+      "frame": 0,
+      "max": 55,
+      "mean": 0.04946903935185185,
+      "rms": 0.5309530760636777
+    },
+    {
+      "name": "bunker-360-cover",
+      "frame": 29,
+      "max": 55,
+      "mean": 0.04935329861111111,
+      "rms": 0.5287358810828374
+    },
+    {
+      "name": "bunker-360-contain",
+      "frame": 29,
+      "max": 46,
+      "mean": 0.21463541666666666,
+      "rms": 1.3793544266283626
+    },
+    {
+      "name": "bunker-360-contain",
+      "frame": 36,
+      "max": 49,
+      "mean": 0.2334490740740741,
+      "rms": 1.4649443406820262
+    },
+    {
+      "name": "bunker-360-contain",
+      "frame": 7,
+      "max": 49,
+      "mean": 0.21,
+      "rms": 1.246476515504285
+    },
+    {
+      "name": "bunker-360-contain",
+      "frame": 0,
+      "max": 53,
+      "mean": 0.2161545138888889,
+      "rms": 1.2515326252387657
+    },
+    {
+      "name": "bunker-360-contain",
+      "frame": 29,
+      "max": 46,
+      "mean": 0.21463541666666666,
+      "rms": 1.3793544266283626
+    },
+    {
+      "name": "vfd-640-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.0857740162037037,
+      "rms": 0.3072875470533651
+    },
+    {
+      "name": "vfd-640-cover",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.08865306712962963,
+      "rms": 0.31180710219858926
+    },
+    {
+      "name": "vfd-640-cover",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.08215277777777778,
+      "rms": 0.2990968271931968
+    },
+    {
+      "name": "vfd-640-cover",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.10770688657407407,
+      "rms": 0.3475755147100065
+    },
+    {
+      "name": "vfd-640-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.0963816550925926,
+      "rms": 0.3293094802709091
+    },
+    {
+      "name": "vfd-640-contain",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.0857740162037037,
+      "rms": 0.3072875470533651
+    },
+    {
+      "name": "vfd-640-contain",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.08865306712962963,
+      "rms": 0.31180710219858926
+    },
+    {
+      "name": "vfd-640-contain",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.08215277777777778,
+      "rms": 0.2990968271931968
+    },
+    {
+      "name": "vfd-640-contain",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.10770688657407407,
+      "rms": 0.3475755147100065
+    },
+    {
+      "name": "vfd-640-contain",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.0963816550925926,
+      "rms": 0.3293094802709091
+    },
+    {
+      "name": "vfd-360-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.1235402199074074,
+      "rms": 0.3615628851353626
+    },
+    {
+      "name": "vfd-360-cover",
+      "frame": 36,
+      "max": 3,
+      "mean": 0.12395833333333334,
+      "rms": 0.3622564635315295
+    },
+    {
+      "name": "vfd-360-cover",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.05660445601851852,
+      "rms": 0.2519972304741992
+    },
+    {
+      "name": "vfd-360-cover",
+      "frame": 0,
+      "max": 3,
+      "mean": 0.09848234953703704,
+      "rms": 0.3257536667313031
+    },
+    {
+      "name": "vfd-360-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.1235402199074074,
+      "rms": 0.3615628851353626
+    },
+    {
+      "name": "vfd-360-contain",
+      "frame": 29,
+      "max": 87,
+      "mean": 0.3694849537037037,
+      "rms": 1.7187554713717628
+    },
+    {
+      "name": "vfd-360-contain",
+      "frame": 36,
+      "max": 83,
+      "mean": 0.41000868055555556,
+      "rms": 1.7753015523712732
+    },
+    {
+      "name": "vfd-360-contain",
+      "frame": 7,
+      "max": 87,
+      "mean": 0.31885850694444445,
+      "rms": 1.7143445223185751
+    },
+    {
+      "name": "vfd-360-contain",
+      "frame": 0,
+      "max": 83,
+      "mean": 0.36506510416666665,
+      "rms": 1.7400398602554419
+    },
+    {
+      "name": "vfd-360-contain",
+      "frame": 29,
+      "max": 87,
+      "mean": 0.3694849537037037,
+      "rms": 1.7187554713717628
+    },
+    {
+      "name": "interference-640-cover",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.11326244212962963,
+      "rms": 0.35024586271910746
+    },
+    {
+      "name": "interference-640-cover",
+      "frame": 36,
+      "max": 5,
+      "mean": 0.11404658564814815,
+      "rms": 0.3514211392754136
+    },
+    {
+      "name": "interference-640-cover",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.11449797453703704,
+      "rms": 0.3514211392754136
+    },
+    {
+      "name": "interference-640-cover",
+      "frame": 0,
+      "max": 5,
+      "mean": 0.11707320601851852,
+      "rms": 0.36177489740014973
+    },
+    {
+      "name": "interference-640-cover",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.11326244212962963,
+      "rms": 0.35024586271910746
+    },
+    {
+      "name": "interference-640-contain",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.11326244212962963,
+      "rms": 0.35024586271910746
+    },
+    {
+      "name": "interference-640-contain",
+      "frame": 36,
+      "max": 5,
+      "mean": 0.11404658564814815,
+      "rms": 0.3514211392754136
+    },
+    {
+      "name": "interference-640-contain",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.11449797453703704,
+      "rms": 0.3514211392754136
+    },
+    {
+      "name": "interference-640-contain",
+      "frame": 0,
+      "max": 5,
+      "mean": 0.11707320601851852,
+      "rms": 0.36177489740014973
+    },
+    {
+      "name": "interference-640-contain",
+      "frame": 29,
+      "max": 5,
+      "mean": 0.11326244212962963,
+      "rms": 0.35024586271910746
+    },
+    {
+      "name": "interference-360-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.09881655092592592,
+      "rms": 0.3200748610351439
+    },
+    {
+      "name": "interference-360-cover",
+      "frame": 36,
+      "max": 3,
+      "mean": 0.09879774305555555,
+      "rms": 0.31995053509473526
+    },
+    {
+      "name": "interference-360-cover",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.09806857638888888,
+      "rms": 0.3188543765199498
+    },
+    {
+      "name": "interference-360-cover",
+      "frame": 0,
+      "max": 3,
+      "mean": 0.0981394675925926,
+      "rms": 0.3188974785912423
+    },
+    {
+      "name": "interference-360-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.09881655092592592,
+      "rms": 0.3200748610351439
+    },
+    {
+      "name": "interference-360-contain",
+      "frame": 29,
+      "max": 83,
+      "mean": 0.3831076388888889,
+      "rms": 1.8721336114869738
+    },
+    {
+      "name": "interference-360-contain",
+      "frame": 36,
+      "max": 79,
+      "mean": 0.39639756944444443,
+      "rms": 1.9566075433524486
+    },
+    {
+      "name": "interference-360-contain",
+      "frame": 7,
+      "max": 82,
+      "mean": 0.35130208333333335,
+      "rms": 1.693401033478244
+    },
+    {
+      "name": "interference-360-contain",
+      "frame": 0,
+      "max": 79,
+      "mean": 0.3603385416666667,
+      "rms": 1.7093611406777853
+    },
+    {
+      "name": "interference-360-contain",
+      "frame": 29,
+      "max": 83,
+      "mean": 0.3831076388888889,
+      "rms": 1.8721336114869738
+    },
+    {
+      "name": "pirate-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "pirate-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "afterhours-640-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.16392939814814814,
+      "rms": 0.4121666722828773
+    },
+    {
+      "name": "afterhours-640-cover",
+      "frame": 36,
+      "max": 3,
+      "mean": 0.16514033564814815,
+      "rms": 0.41340214201007536
+    },
+    {
+      "name": "afterhours-640-cover",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.16639033564814815,
+      "rms": 0.4152319047498906
+    },
+    {
+      "name": "afterhours-640-cover",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.17305989583333334,
+      "rms": 0.4242350823453815
+    },
+    {
+      "name": "afterhours-640-cover",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.16392939814814814,
+      "rms": 0.4121666722828773
+    },
+    {
+      "name": "afterhours-640-contain",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.16392939814814814,
+      "rms": 0.4121666722828773
+    },
+    {
+      "name": "afterhours-640-contain",
+      "frame": 36,
+      "max": 3,
+      "mean": 0.16514033564814815,
+      "rms": 0.41340214201007536
+    },
+    {
+      "name": "afterhours-640-contain",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.16639033564814815,
+      "rms": 0.4152319047498906
+    },
+    {
+      "name": "afterhours-640-contain",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.17305989583333334,
+      "rms": 0.4242350823453815
+    },
+    {
+      "name": "afterhours-640-contain",
+      "frame": 29,
+      "max": 3,
+      "mean": 0.16392939814814814,
+      "rms": 0.4121666722828773
+    },
+    {
+      "name": "afterhours-360-cover",
+      "frame": 29,
+      "max": 2,
+      "mean": 0.1368894675925926,
+      "rms": 0.37337223879622294
+    },
+    {
+      "name": "afterhours-360-cover",
+      "frame": 36,
+      "max": 2,
+      "mean": 0.13460792824074075,
+      "rms": 0.3702769702833572
+    },
+    {
+      "name": "afterhours-360-cover",
+      "frame": 7,
+      "max": 2,
+      "mean": 0.1372164351851852,
+      "rms": 0.37397235736625517
+    },
+    {
+      "name": "afterhours-360-cover",
+      "frame": 0,
+      "max": 2,
+      "mean": 0.1496701388888889,
+      "rms": 0.39071249020219456
+    },
+    {
+      "name": "afterhours-360-cover",
+      "frame": 29,
+      "max": 2,
+      "mean": 0.1368894675925926,
+      "rms": 0.37337223879622294
+    },
+    {
+      "name": "afterhours-360-contain",
+      "frame": 29,
+      "max": 70,
+      "mean": 0.3765870949074074,
+      "rms": 1.6120490863942214
+    },
+    {
+      "name": "afterhours-360-contain",
+      "frame": 36,
+      "max": 67,
+      "mean": 0.4000289351851852,
+      "rms": 1.6686229837914366
+    },
+    {
+      "name": "afterhours-360-contain",
+      "frame": 7,
+      "max": 70,
+      "mean": 0.3692578125,
+      "rms": 1.4794732663462808
+    },
+    {
+      "name": "afterhours-360-contain",
+      "frame": 0,
+      "max": 67,
+      "mean": 0.39014178240740743,
+      "rms": 1.4836571119790198
+    },
+    {
+      "name": "afterhours-360-contain",
+      "frame": 29,
+      "max": 70,
+      "mean": 0.3765870949074074,
+      "rms": 1.6120490863942214
+    },
+    {
+      "name": "passe-partout-640-cover",
+      "frame": 29,
+      "max": 73,
+      "mean": 0.22093460648148147,
+      "rms": 1.859820499851173
+    },
+    {
+      "name": "passe-partout-640-cover",
+      "frame": 36,
+      "max": 73,
+      "mean": 0.21544126157407406,
+      "rms": 1.8317239621763732
+    },
+    {
+      "name": "passe-partout-640-cover",
+      "frame": 7,
+      "max": 73,
+      "mean": 0.2178443287037037,
+      "rms": 1.8170050971717575
+    },
+    {
+      "name": "passe-partout-640-cover",
+      "frame": 0,
+      "max": 73,
+      "mean": 0.21544126157407406,
+      "rms": 1.8317239621763732
+    },
+    {
+      "name": "passe-partout-640-cover",
+      "frame": 29,
+      "max": 73,
+      "mean": 0.22093460648148147,
+      "rms": 1.859820499851173
+    },
+    {
+      "name": "passe-partout-640-contain",
+      "frame": 29,
+      "max": 73,
+      "mean": 0.2684056712962963,
+      "rms": 1.8725655492161313
+    },
+    {
+      "name": "passe-partout-640-contain",
+      "frame": 36,
+      "max": 73,
+      "mean": 0.26254195601851854,
+      "rms": 1.844566674120992
+    },
+    {
+      "name": "passe-partout-640-contain",
+      "frame": 7,
+      "max": 73,
+      "mean": 0.2636501736111111,
+      "rms": 1.829596491513705
+    },
+    {
+      "name": "passe-partout-640-contain",
+      "frame": 0,
+      "max": 73,
+      "mean": 0.26234230324074076,
+      "rms": 1.8445094167354976
+    },
+    {
+      "name": "passe-partout-640-contain",
+      "frame": 29,
+      "max": 73,
+      "mean": 0.2684056712962963,
+      "rms": 1.8725655492161313
+    },
+    {
+      "name": "passe-partout-360-cover",
+      "frame": 29,
+      "max": 84,
+      "mean": 0.21928096064814814,
+      "rms": 2.0084741623053426
+    },
+    {
+      "name": "passe-partout-360-cover",
+      "frame": 36,
+      "max": 85,
+      "mean": 0.21537760416666665,
+      "rms": 2.008635509194313
+    },
+    {
+      "name": "passe-partout-360-cover",
+      "frame": 7,
+      "max": 85,
+      "mean": 0.21942274305555556,
+      "rms": 1.9901889712295422
+    },
+    {
+      "name": "passe-partout-360-cover",
+      "frame": 0,
+      "max": 85,
+      "mean": 0.21537760416666665,
+      "rms": 2.008635509194313
+    },
+    {
+      "name": "passe-partout-360-cover",
+      "frame": 29,
+      "max": 84,
+      "mean": 0.21928096064814814,
+      "rms": 2.0084741623053426
+    },
+    {
+      "name": "passe-partout-360-contain",
+      "frame": 29,
+      "max": 84,
+      "mean": 0.22581741898148147,
+      "rms": 2.0101143986931027
+    },
+    {
+      "name": "passe-partout-360-contain",
+      "frame": 36,
+      "max": 85,
+      "mean": 0.2230888310185185,
+      "rms": 2.010569942343602
+    },
+    {
+      "name": "passe-partout-360-contain",
+      "frame": 7,
+      "max": 85,
+      "mean": 0.2258420138888889,
+      "rms": 1.9918242906013646
+    },
+    {
+      "name": "passe-partout-360-contain",
+      "frame": 0,
+      "max": 85,
+      "mean": 0.22260416666666666,
+      "rms": 2.010458045054889
+    },
+    {
+      "name": "passe-partout-360-contain",
+      "frame": 29,
+      "max": 84,
+      "mean": 0.22581741898148147,
+      "rms": 2.0101143986931027
+    },
+    {
+      "name": "masthead-640-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.06408420138888889,
+      "rms": 0.26224359170223566
+    },
+    {
+      "name": "masthead-640-cover",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.06491608796296296,
+      "rms": 0.2631275567307824
+    },
+    {
+      "name": "masthead-640-cover",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.06682870370370371,
+      "rms": 0.26654728230410396
+    },
+    {
+      "name": "masthead-640-cover",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.046773726851851855,
+      "rms": 0.22850282638660438
+    },
+    {
+      "name": "masthead-640-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.06408420138888889,
+      "rms": 0.26224359170223566
+    },
+    {
+      "name": "masthead-640-contain",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.06408420138888889,
+      "rms": 0.26224359170223566
+    },
+    {
+      "name": "masthead-640-contain",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.06491608796296296,
+      "rms": 0.2631275567307824
+    },
+    {
+      "name": "masthead-640-contain",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.06682870370370371,
+      "rms": 0.26654728230410396
+    },
+    {
+      "name": "masthead-640-contain",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.046773726851851855,
+      "rms": 0.22850282638660438
+    },
+    {
+      "name": "masthead-640-contain",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.06408420138888889,
+      "rms": 0.26224359170223566
+    },
+    {
+      "name": "masthead-360-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.052052951388888886,
+      "rms": 0.23043525141043977
+    },
+    {
+      "name": "masthead-360-cover",
+      "frame": 36,
+      "max": 3,
+      "mean": 0.0491015625,
+      "rms": 0.22272837322788658
+    },
+    {
+      "name": "masthead-360-cover",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.045454282407407405,
+      "rms": 0.2142965991503538
+    },
+    {
+      "name": "masthead-360-cover",
+      "frame": 0,
+      "max": 3,
+      "mean": 0.020988136574074074,
+      "rms": 0.1459572885901646
+    },
+    {
+      "name": "masthead-360-cover",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.052052951388888886,
+      "rms": 0.23043525141043977
+    },
+    {
+      "name": "masthead-360-contain",
+      "frame": 29,
+      "max": 88,
+      "mean": 0.38925491898148146,
+      "rms": 2.118038365139712
+    },
+    {
+      "name": "masthead-360-contain",
+      "frame": 36,
+      "max": 84,
+      "mean": 0.4082421875,
+      "rms": 2.1956827773602217
+    },
+    {
+      "name": "masthead-360-contain",
+      "frame": 7,
+      "max": 87,
+      "mean": 0.35342881944444443,
+      "rms": 1.9031824894010987
+    },
+    {
+      "name": "masthead-360-contain",
+      "frame": 0,
+      "max": 84,
+      "mean": 0.3351837384259259,
+      "rms": 1.8790977598847016
+    },
+    {
+      "name": "masthead-360-contain",
+      "frame": 29,
+      "max": 88,
+      "mean": 0.38925491898148146,
+      "rms": 2.118038365139712
+    },
+    {
+      "name": "anamorphic-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "anamorphic-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "relief-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "darkroom-640-cover",
+      "frame": 29,
+      "max": 1,
+      "mean": 0.06270688657407407,
+      "rms": 0.250413431297273
+    },
+    {
+      "name": "darkroom-640-cover",
+      "frame": 36,
+      "max": 1,
+      "mean": 0.0034186921296296296,
+      "rms": 0.05846958294386603
+    },
+    {
+      "name": "darkroom-640-cover",
+      "frame": 7,
+      "max": 1,
+      "mean": 0.04094039351851852,
+      "rms": 0.20233732606347876
+    },
+    {
+      "name": "darkroom-640-cover",
+      "frame": 0,
+      "max": 1,
+      "mean": 0.0003949652777777778,
+      "rms": 0.019873733362853033
+    },
+    {
+      "name": "darkroom-640-cover",
+      "frame": 29,
+      "max": 1,
+      "mean": 0.06270688657407407,
+      "rms": 0.250413431297273
+    },
+    {
+      "name": "darkroom-640-contain",
+      "frame": 29,
+      "max": 12,
+      "mean": 0.05195601851851852,
+      "rms": 0.37091525312394474
+    },
+    {
+      "name": "darkroom-640-contain",
+      "frame": 36,
+      "max": 13,
+      "mean": 0.07105034722222223,
+      "rms": 0.42082645758959525
+    },
+    {
+      "name": "darkroom-640-contain",
+      "frame": 7,
+      "max": 3,
+      "mean": 0.027991898148148148,
+      "rms": 0.16811006921172322
+    },
+    {
+      "name": "darkroom-640-contain",
+      "frame": 0,
+      "max": 2,
+      "mean": 0.011780960648148148,
+      "rms": 0.10885956592138604
+    },
+    {
+      "name": "darkroom-640-contain",
+      "frame": 29,
+      "max": 12,
+      "mean": 0.05195601851851852,
+      "rms": 0.37091525312394474
+    },
+    {
+      "name": "darkroom-360-cover",
+      "frame": 29,
+      "max": 2,
+      "mean": 0.044636863425925925,
+      "rms": 0.21372536136966197
+    },
+    {
+      "name": "darkroom-360-cover",
+      "frame": 36,
+      "max": 1,
+      "mean": 0.003219039351851852,
+      "rms": 0.056736578605445113
+    },
+    {
+      "name": "darkroom-360-cover",
+      "frame": 7,
+      "max": 1,
+      "mean": 0.07176070601851851,
+      "rms": 0.2678818881867875
+    },
+    {
+      "name": "darkroom-360-cover",
+      "frame": 0,
+      "max": 1,
+      "mean": 0.00028356481481481483,
+      "rms": 0.016839382851364087
+    },
+    {
+      "name": "darkroom-360-cover",
+      "frame": 29,
+      "max": 2,
+      "mean": 0.044636863425925925,
+      "rms": 0.21372536136966197
+    },
+    {
+      "name": "darkroom-360-contain",
+      "frame": 29,
+      "max": 14,
+      "mean": 0.05532262731481481,
+      "rms": 0.4183870732414609
+    },
+    {
+      "name": "darkroom-360-contain",
+      "frame": 36,
+      "max": 14,
+      "mean": 0.07523148148148148,
+      "rms": 0.47698173348051187
+    },
+    {
+      "name": "darkroom-360-contain",
+      "frame": 7,
+      "max": 6,
+      "mean": 0.028899016203703703,
+      "rms": 0.2358464611579761
+    },
+    {
+      "name": "darkroom-360-contain",
+      "frame": 0,
+      "max": 5,
+      "mean": 0.0164453125,
+      "rms": 0.16729482320254374
+    },
+    {
+      "name": "darkroom-360-contain",
+      "frame": 29,
+      "max": 14,
+      "mean": 0.05532262731481481,
+      "rms": 0.4183870732414609
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.058359375,
+      "rms": 0.24958298553119895
+    },
+    {
+      "name": "60fps",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.059350405092592595,
+      "rms": 0.25589406173909807
+    },
+    {
+      "name": "60fps",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.05748119212962963,
+      "rms": 0.24583039075451701
+    },
+    {
+      "name": "60fps",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.05581452546296296,
+      "rms": 0.24551827739913182
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.058359375,
+      "rms": 0.24958298553119895
+    }
+  ],
+  "failures": [
+    "sterile-tech-360-contain:29",
+    "sterile-tech-360-contain:36",
+    "sterile-tech-360-contain:7",
+    "sterile-tech-360-contain:0",
+    "sterile-tech-360-contain:29",
+    "escapement-640-cover:29",
+    "escapement-640-cover:36",
+    "escapement-640-cover:7",
+    "escapement-640-cover:0",
+    "escapement-640-cover:29",
+    "escapement-640-contain:29",
+    "escapement-640-contain:36",
+    "escapement-640-contain:7",
+    "escapement-640-contain:0",
+    "escapement-640-contain:29",
+    "escapement-360-cover:29",
+    "escapement-360-cover:36",
+    "escapement-360-cover:7",
+    "escapement-360-cover:0",
+    "escapement-360-cover:29",
+    "escapement-360-contain:29",
+    "escapement-360-contain:36",
+    "escapement-360-contain:7",
+    "escapement-360-contain:0",
+    "escapement-360-contain:29",
+    "long-exposure-640-cover:29",
+    "long-exposure-640-cover:36",
+    "long-exposure-640-cover:7",
+    "long-exposure-640-cover:0",
+    "long-exposure-640-cover:29",
+    "long-exposure-640-contain:29",
+    "long-exposure-640-contain:36",
+    "long-exposure-640-contain:7",
+    "long-exposure-640-contain:0",
+    "long-exposure-640-contain:29",
+    "long-exposure-360-cover:29",
+    "long-exposure-360-cover:36",
+    "long-exposure-360-cover:7",
+    "long-exposure-360-cover:0",
+    "long-exposure-360-cover:29",
+    "long-exposure-360-contain:29",
+    "long-exposure-360-contain:36",
+    "long-exposure-360-contain:7",
+    "long-exposure-360-contain:0",
+    "long-exposure-360-contain:29",
+    "bristol-360-contain:29",
+    "bristol-360-contain:36",
+    "bristol-360-contain:7",
+    "bristol-360-contain:0",
+    "bristol-360-contain:29",
+    "patina-640-cover:29",
+    "patina-640-cover:36",
+    "patina-640-cover:7",
+    "patina-640-cover:0",
+    "patina-640-cover:29",
+    "patina-640-contain:29",
+    "patina-640-contain:36",
+    "patina-640-contain:7",
+    "patina-640-contain:0",
+    "patina-640-contain:29",
+    "patina-360-cover:29",
+    "patina-360-cover:36",
+    "patina-360-cover:7",
+    "patina-360-cover:0",
+    "patina-360-cover:29",
+    "patina-360-contain:29",
+    "patina-360-contain:36",
+    "patina-360-contain:7",
+    "patina-360-contain:0",
+    "patina-360-contain:29",
+    "quicksilver-640-cover:29",
+    "quicksilver-640-cover:36",
+    "quicksilver-640-cover:7",
+    "quicksilver-640-cover:0",
+    "quicksilver-640-cover:29",
+    "quicksilver-640-contain:29",
+    "quicksilver-640-contain:36",
+    "quicksilver-640-contain:7",
+    "quicksilver-640-contain:0",
+    "quicksilver-640-contain:29",
+    "quicksilver-360-cover:29",
+    "quicksilver-360-cover:36",
+    "quicksilver-360-cover:7",
+    "quicksilver-360-cover:0",
+    "quicksilver-360-cover:29",
+    "quicksilver-360-contain:29",
+    "quicksilver-360-contain:36",
+    "quicksilver-360-contain:7",
+    "quicksilver-360-contain:0",
+    "quicksilver-360-contain:29",
+    "bunker-640-cover:29",
+    "bunker-640-cover:36",
+    "bunker-640-cover:7",
+    "bunker-640-cover:0",
+    "bunker-640-cover:29",
+    "bunker-640-contain:29",
+    "bunker-640-contain:36",
+    "bunker-640-contain:7",
+    "bunker-640-contain:0",
+    "bunker-640-contain:29",
+    "bunker-360-cover:29",
+    "bunker-360-cover:36",
+    "bunker-360-cover:7",
+    "bunker-360-cover:0",
+    "bunker-360-cover:29",
+    "bunker-360-contain:29",
+    "bunker-360-contain:36",
+    "bunker-360-contain:7",
+    "bunker-360-contain:0",
+    "bunker-360-contain:29",
+    "vfd-640-cover:0",
+    "vfd-640-contain:0",
+    "vfd-360-cover:29",
+    "vfd-360-cover:36",
+    "vfd-360-cover:29",
+    "vfd-360-contain:29",
+    "vfd-360-contain:36",
+    "vfd-360-contain:7",
+    "vfd-360-contain:0",
+    "vfd-360-contain:29",
+    "interference-640-cover:29",
+    "interference-640-cover:36",
+    "interference-640-cover:7",
+    "interference-640-cover:0",
+    "interference-640-cover:29",
+    "interference-640-contain:29",
+    "interference-640-contain:36",
+    "interference-640-contain:7",
+    "interference-640-contain:0",
+    "interference-640-contain:29",
+    "interference-360-contain:29",
+    "interference-360-contain:36",
+    "interference-360-contain:7",
+    "interference-360-contain:0",
+    "interference-360-contain:29",
+    "afterhours-640-cover:29",
+    "afterhours-640-cover:36",
+    "afterhours-640-cover:7",
+    "afterhours-640-cover:0",
+    "afterhours-640-cover:29",
+    "afterhours-640-contain:29",
+    "afterhours-640-contain:36",
+    "afterhours-640-contain:7",
+    "afterhours-640-contain:0",
+    "afterhours-640-contain:29",
+    "afterhours-360-cover:29",
+    "afterhours-360-cover:36",
+    "afterhours-360-cover:7",
+    "afterhours-360-cover:0",
+    "afterhours-360-cover:29",
+    "afterhours-360-contain:29",
+    "afterhours-360-contain:36",
+    "afterhours-360-contain:7",
+    "afterhours-360-contain:0",
+    "afterhours-360-contain:29",
+    "passe-partout-640-cover:29",
+    "passe-partout-640-cover:36",
+    "passe-partout-640-cover:7",
+    "passe-partout-640-cover:0",
+    "passe-partout-640-cover:29",
+    "passe-partout-640-contain:29",
+    "passe-partout-640-contain:36",
+    "passe-partout-640-contain:7",
+    "passe-partout-640-contain:0",
+    "passe-partout-640-contain:29",
+    "passe-partout-360-cover:29",
+    "passe-partout-360-cover:36",
+    "passe-partout-360-cover:7",
+    "passe-partout-360-cover:0",
+    "passe-partout-360-cover:29",
+    "passe-partout-360-contain:29",
+    "passe-partout-360-contain:36",
+    "passe-partout-360-contain:7",
+    "passe-partout-360-contain:0",
+    "passe-partout-360-contain:29",
+    "masthead-360-contain:29",
+    "masthead-360-contain:36",
+    "masthead-360-contain:7",
+    "masthead-360-contain:0",
+    "masthead-360-contain:29",
+    "darkroom-640-contain:29",
+    "darkroom-640-contain:36",
+    "darkroom-640-contain:29",
+    "darkroom-360-contain:29",
+    "darkroom-360-contain:36",
+    "darkroom-360-contain:29"
+  ]
+}

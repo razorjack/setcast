@@ -609,6 +609,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 ## Decisions
 
+- Renderer-replacement discoveries and validation are recorded as work proceeds in
+  `docs/renderer-replacement-log.md`. The first direct decoded-canvas candidate is archived under
+  `docs/research/video-canvas-2026-10-29`: it failed fidelity checks and increased screenshot cost.
+  Production retains the PNG image path. Do not assume removing PNG conversion improves total
+  export time; rerun the retained matrix and alternating profiles for a different candidate.
+
 - `RenderOptions.onRuntime` reports observations from active exports without changing default
   render behavior. Keep observations separate from requested options: Remotion can decline
   parallel encoding. Browser identity/GL probes are opt-in and included in benchmark wall time;

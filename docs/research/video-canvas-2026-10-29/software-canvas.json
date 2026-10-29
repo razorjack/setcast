@@ -1,0 +1,227 @@
+{
+  "results": [
+    {
+      "theme": "escapement",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "CANVAS"
+    },
+    {
+      "theme": "escapement",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "CANVAS"
+    }
+  ],
+  "differences": [
+    {
+      "name": "escapement-640-cover",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 36,
+      "max": 47,
+      "mean": 0.08173032407407407,
+      "rms": 0.8853243415917212
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 7,
+      "max": 51,
+      "mean": 0.08362847222222222,
+      "rms": 0.9315723093740993
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 0,
+      "max": 47,
+      "mean": 0.08060185185185186,
+      "rms": 0.8836035357179901
+    },
+    {
+      "name": "escapement-640-cover",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 36,
+      "max": 47,
+      "mean": 0.08173032407407407,
+      "rms": 0.8853243415917212
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 7,
+      "max": 51,
+      "mean": 0.08362991898148148,
+      "rms": 0.9315730858885157
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 0,
+      "max": 47,
+      "mean": 0.08060185185185186,
+      "rms": 0.8836035357179901
+    },
+    {
+      "name": "escapement-640-contain",
+      "frame": 29,
+      "max": 51,
+      "mean": 0.08466001157407407,
+      "rms": 0.9290537736599813
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.11695023148148148,
+      "rms": 1.5990756154960508
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 36,
+      "max": 134,
+      "mean": 0.11440393518518518,
+      "rms": 1.577355308267138
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 7,
+      "max": 120,
+      "mean": 0.11921730324074074,
+      "rms": 1.6419288249506139
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 0,
+      "max": 44,
+      "mean": 0.0616869212962963,
+      "rms": 0.8388773913855218
+    },
+    {
+      "name": "escapement-360-cover",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.11695023148148148,
+      "rms": 1.5990756154960508
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.16570167824074075,
+      "rms": 1.7596505565078875
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 36,
+      "max": 134,
+      "mean": 0.14976707175925927,
+      "rms": 1.7411154264553343
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 7,
+      "max": 120,
+      "mean": 0.14950810185185184,
+      "rms": 1.724204728112194
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 0,
+      "max": 44,
+      "mean": 0.09083188657407408,
+      "rms": 0.9614961395600551
+    },
+    {
+      "name": "escapement-360-contain",
+      "frame": 29,
+      "max": 134,
+      "mean": 0.16570167824074075,
+      "rms": 1.7596505565078875
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.058359375,
+      "rms": 0.24958298553119895
+    },
+    {
+      "name": "60fps",
+      "frame": 36,
+      "max": 4,
+      "mean": 0.059350405092592595,
+      "rms": 0.25589406173909807
+    },
+    {
+      "name": "60fps",
+      "frame": 7,
+      "max": 4,
+      "mean": 0.05748119212962963,
+      "rms": 0.24583039075451701
+    },
+    {
+      "name": "60fps",
+      "frame": 0,
+      "max": 4,
+      "mean": 0.05581452546296296,
+      "rms": 0.24551827739913182
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 4,
+      "mean": 0.058359375,
+      "rms": 0.24958298553119895
+    }
+  ],
+  "failures": [
+    "escapement-640-cover:29",
+    "escapement-640-cover:36",
+    "escapement-640-cover:7",
+    "escapement-640-cover:0",
+    "escapement-640-cover:29",
+    "escapement-640-contain:29",
+    "escapement-640-contain:36",
+    "escapement-640-contain:7",
+    "escapement-640-contain:0",
+    "escapement-640-contain:29",
+    "escapement-360-cover:29",
+    "escapement-360-cover:36",
+    "escapement-360-cover:7",
+    "escapement-360-cover:0",
+    "escapement-360-cover:29",
+    "escapement-360-contain:29",
+    "escapement-360-contain:36",
+    "escapement-360-contain:7",
+    "escapement-360-contain:0",
+    "escapement-360-contain:29"
+  ]
+}

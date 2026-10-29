@@ -1,0 +1,143 @@
+# Renderer replacement implementation log
+
+This log records observations as work proceeds. Architecture, priorities and release criteria
+are in [renderer-replacement-plan.md](renderer-replacement-plan.md). An experiment is not a
+supported feature or completed milestone unless explicitly marked as such. Retain failures and
+limitations when adding results. Update this file before context handoffs and include it in each
+relevant implementation commit.
+
+## Current state, 2026-10-29
+
+The user authorized autonomous implementation through renderer replacement, with a commit for each
+coherent validated change. No push or publication is authorized. Another project can run tests on
+this machine; repeat suspicious performance measurements when that load stops. Do not stop or
+modify that other project.
+
+Remotion remains the default. Phase 0 is partial; the newer-upstream comparison, process-tree
+memory, quality matrix and platform qualification remain outstanding. The first direct decoded-canvas candidate was rejected and archived. Audio/video encoding overlap
+is next. Do not switch defaults because a short benchmark is faster.
+
+Completed commits:
+
+- `e7e71a3`: documented the replacement plan and reconciled the roadmap.
+- `b06a39f`: added the installed-adapter comparison runner with aligned timing, alternating
+  order, input identities, cancellation reports and decoded-output validation.
+- `ca34684`: added opt-in `RenderOptions.onRuntime` and version 2 comparison reports.
+
+## Runtime observations
+
+The integration run in `examples/demo/out/runtime-observation-2026-10-29/report.json` rendered and
+fully decoded one second with each adapter. Browser export used Chromium 156.0.8078.4, two capture
+workers and streaming libx264. Remotion used Chromium 149.0.7790.0, two workers and image-sequence
+libx264. Both WebGL contexts reported ANGLE Metal on Apple M1 Pro. Remotion reported
+`parallelEncoding: false` despite parallel encoding being requested. These facts validate the
+observer; the short run is not performance qualification.
+
+`onRuntime` probes the active browser only when requested. Remotion uses a temporary page in its
+existing browser; browser export probes each capture page. Observation overhead is inside the
+comparison timing. WebGL identity is not GPU utilization, and image-sequence input does not reveal
+whether separate chunks overlap. FFmpeg stream-copy operations are not reported as encoders.
+
+Validation for `ca34684`: `vp run ready` passed, including 595 tests, ban-check and smoke. Both
+Remotion and browser export-acceptance suites passed. Logs are in
+`/tmp/setcast-runtime-{ready,remotion-acceptance,browser-acceptance}.log` on this machine.
+
+## Direct decoded video experiment, rejected candidate
+
+The existing implementation obtains a Mediabunny canvas, copies it, encodes a PNG data URL, then
+waits for image decoding before capture. The working change draws decoded frames into persistent
+canvases in a React layout effect. The decoder retains a one-canvas pool; displayed canvases
+receive their own copy before frame acknowledgement. No full-video frame cache is added.
+
+Changing an image to a canvas can alter selectors. The working compatibility check traverses the
+document's stylesheet rules, including nested and imported rules. Image/canvas type selectors,
+type-order selectors and escaped selectors retain the PNG image path. Unreadable cross-origin
+stylesheets also retain it. Class selectors remain usable for direct canvases. This check is
+conservative: an unrelated `img` selector can retain PNG conversion for the whole document.
+
+Two discoveries from the first checks:
+
+1. Canvas and image capture are not exactly pixel-identical under Chromium's scaled rendering.
+   The first 640×360 sterile-tech cover frame differed by at most 5/255 per RGB channel, with mean
+   absolute difference 0.052/255. Its SSIM was 0.999743. Both images were inspected; no elements
+   were missing. This does not establish that all themes or sizes are acceptable.
+2. Keeping an old image mounted during an asynchronous frame update can make `image.decode()`
+   reject when its source changes. The working change keeps canvases mounted, but preserves the
+   previous image behavior of hiding images while the frame is held. The source is keyed so a
+   replaced decoder is disposed, including an asynchronously opened decoder.
+
+`packages/renderer-browser/bench/video-frames.ts` currently compares both paths for all 16 themes,
+landscape/portrait, cover/contain, shuffled seeks and a 25 fps source at 30/60 fps. It retains
+per-frame differences and failing images in `examples/demo/out/video-frames`. The exploratory
+threshold is maximum channel difference 8, mean absolute difference 0.1 and RMS 0.5, all on a
+0–255 scale. These are not approved output tolerances or a reason to ignore visible errors.
+Review the complete result before accepting or rejecting the path.
+
+Next: finish this matrix, inspect failures, measure alternating video workloads with
+`bench/video-profile.ts`, and verify seeks, loops, source changes, readiness and cleanup.
+Neither the optimization nor its speedup has been accepted or committed yet.
+
+## Local workflow details
+
+Use `PATH="$PWD/node_modules/.bin:$PATH" ./node_modules/.bin/vp` in this checkout. The `vp` on PATH
+is a mismatched global npm installation and can split the Vitest runner state. Do not change
+production code to compensate. Browser/server checks need localhost access outside the execution
+sandbox. Run `vp run ready` before implementation commits and both export acceptance suites after
+exporter/media/readiness changes.
+
+Do not delete ignored artifacts while investigating failures. Temporary logs and ignored MP4/PNG
+reports are local evidence; record conclusions here so later sessions do not depend on those files
+still existing.
+
+The first full matrix attempt stopped making progress during pirate image decoding. Process
+inspection showed the benchmark's FFmpeg PNG-from-stdin comparison child idle, not a busy renderer
+or another project's tests. Stopped only that owned child. The harness now writes comparison PNGs
+and decodes files with a 10-second subprocess timeout, and persists partial reports after each
+case. This was a test-harness stall; it does not establish a production decoder failure.
+
+The broader matrix found differences substantially larger than the first sample. Escapement
+portrait frame 29 reached 134/255 maximum and RMS 1.60/255. Inspection localized differences to
+text and thin dial lines as well as the video. Therefore the direct path is not qualified for a
+default change. The next isolated test mounts canvases only after decoding, matching the old
+image mount/paint lifecycle, to distinguish compositing-history differences from image scaling.
+Do not relax the thresholds simply to pass this result.
+
+The complete persistent-canvas matrix finished: 64 theme/shape/fit cases plus one 60 fps case,
+325 frame comparisons, 186 exceeding the exploratory tolerance. Pirate and anamorphic took the
+conservative image compatibility path. Worst RMS was 2.204/255 (sterile-tech portrait contain,
+frame 36). Remounting the canvas after each decode did not fix escapement: 20 of 25 comparisons
+still failed, with the same 134/255 maximum on its portrait text/lines. A software-backed display
+canvas (`willReadFrequently`) also failed. An image-to-image control is the next check before
+attributing these differences solely to the new rendering path.
+
+The image-to-image control passed all 25 escapement/60 fps comparisons. The differences therefore
+belong to the canvas change under this harness, not an inherent failure to repeat the reference.
+The direct-canvas default is rejected for now. Retain a reproducible patch and its matrix harness
+as research, then restore production's PNG image path. Measure the candidate separately so the
+next investigation knows whether resolving the fidelity issue is worthwhile. Frame ownership,
+selector compatibility and mount lifecycle alone are insufficient to establish identical output.
+
+The first three alternating 1080p30 video pairs also rejected the speed assumption. For a
+three-second, 90-frame sterile-tech workload with a 25 fps 1920×1080 looping test pattern and one
+worker, median wall time was 7.803 s for canvas and 6.899 s for PNG images. Canvas reduced total
+readiness from roughly 4.07 s to 3.83 s but increased screenshot time from about 1.81 s to 2.95 s.
+Every output fully decoded with the expected streams and 90 frames. CPU samples include the
+renderer and other applications; this is one short workload on this machine. A second alternating
+series is running without concurrent validation to check the counterintuitive result.
+
+The repeat series confirmed the slowdown: canvas median 7.819 s, PNG image median 6.967 s.
+Canvas was slower in all six paired comparisons across the two series. Production `video.tsx`
+was restored to the committed implementation and the selector helper removed from production.
+The [research archive](research/video-canvas-2026-10-29/README.md) contains the patch, full fidelity
+reports, both profiles, reproduction commands and limitations. The patch applies cleanly with
+`git apply --check`. The standalone benchmark TypeScript project passes type checking.
+
+Next implementation: start the one continuous master-audio encode alongside video chunk capture.
+Share cancellation between both tasks, await both before assembly, retain atomic output and the
+existing rounded range/audio padding semantics. Keep the completed audio inside the job's temporary
+directory so a failed/cancelled job cleans it up. Verify both export-acceptance suites, explicit
+cancellation/resume checks and the required baseline before committing.
+
+Validation after restoring production: `vp run ready` passed all 595 tests, formatting, lint,
+types, ban-check and smoke. Log: `/tmp/setcast-video-research-ready.log`. The retained candidate
+fails qualification intentionally; it is archived as a patch and is not active production code.
