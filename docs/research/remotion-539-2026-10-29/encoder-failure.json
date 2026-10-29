@@ -1,0 +1,7 @@
+{
+  "injected": true,
+  "encoderCalls": 2,
+  "caughtFailure": "Error: FFmpeg closed its Remotion shared-memory ACK pipe with 1 frame(s) pending.",
+  "destinationIntact": true,
+  "temporaryDirectories": []
+}

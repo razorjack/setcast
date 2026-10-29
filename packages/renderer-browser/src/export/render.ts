@@ -153,7 +153,12 @@ async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob
   const { project, options, encoding } = job;
   const encoder = ffmpeg(videoArgs(project.fps, encoding, job.out, job.encoder), options.signal);
   try {
-    options.onRuntime?.({ kind: 'encoder', encoder: job.encoder, pipeline: 'stream' });
+    options.onRuntime?.({
+      kind: 'encoder',
+      encoder: job.encoder,
+      inputFormat: 'image2pipe',
+      pipeline: 'stream',
+    });
     await pipeline({
       range,
       workers: pages.length,

@@ -35,9 +35,12 @@ positive frame-progress notification, not a GPU timestamp or physical presentati
 
 Reports identify the source revision, dirty-tree flag, package versions, requested output settings,
 resolved project hash and source-file hashes/stamps. Version 2 reports also retain runtime events:
-browser user agent, WebGL renderer/vendor/version, screenshot transport, actual worker count,
+browser user agent, WebGL renderer/vendor/version, observed capture transport, actual worker count,
 Remotion's `parallelEncoding` decision and the video encoder selected in its FFmpeg arguments.
-Encoding events distinguish streaming input from image sequences. They do not measure overlap
+Encoding events distinguish streaming input from image sequences and retain FFmpeg's input format
+(`image2pipe`, `image2`, `remotionshm`, or `auto` when unspecified). The output encoder is read
+after the final input; an input `-vcodec mjpeg` is a decoder, not the output codec. A browser-only
+identity probe reports capture as `not-observed`; its user agent cannot establish frame transport. They do not measure overlap
 between separate chunks. Missing WebGL is recorded explicitly and does not fail a CSS-only export.
 
 Runtime observation is opt-in through `RenderOptions.onRuntime`. Browser export probes each
@@ -73,7 +76,7 @@ These are harness checks under ordinary workstation load, not performance qualif
 ## Remaining benchmark work
 
 This implements the first part of phase 0 in the [replacement plan](renderer-replacement-plan.md).
-It compares installed adapters only. Current-upstream isolation, chunk-overlap timing,
+It compares installed adapters only. The first [current-upstream exercise](research/remotion-539-2026-10-29/README.md) is retained. Chunk-overlap timing,
 process-tree resource measurements, controlled background-load attribution, the
 full scene matrix, long workloads and matched-quality comparisons remain outstanding. Keep
 that scope explicit before using results to decide whether the replacement is faster.

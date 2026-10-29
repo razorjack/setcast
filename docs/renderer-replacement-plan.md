@@ -4,7 +4,7 @@ Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
-Status: proposed implementation sequence; no renderer or dependency change is made by this plan.
+Status: implementation in progress; completed pieces and validation are tracked in the log.
 Remotion remains the default until the release criteria below are met.
 
 Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
@@ -113,6 +113,12 @@ macOS. It is neither a shared-memory benchmark nor proof that a current upstream
 has the failure. Keep production pinned until a deliberate upgrade passes failure tests. A new
 upstream comparison must include that regression without changing Node's rejection policy.
 
+The [current 4.0.539 exercise](research/remotion-539-2026-10-29/README.md) passes export acceptance
+and the caught-error/destination checks using shared-memory capture. Named pool cleanup and the
+full matched-quality comparison remain unverified. Additional native and 4.0.535 research at
+`prototype/native-capture` commit `308b1cc` is summarized there, including per-play layout limits
+and intermittent POSIX-pool leaks in the older upstream version.
+
 The same report records Linux/NVIDIA results for the Remotion adapter. Those do not qualify the
 independent browser adapter on Linux. Platform claims must identify the adapter and runtime.
 
@@ -201,7 +207,8 @@ renderer. Native capture availability alone does not prove correct pixels or har
 
 ## Delivery sequence
 
-Phase 0 is in progress; subsequent phases remain pending. The installed-adapter comparison
+Phase 0 is in progress. Phase 1's first candidate was rejected; phase 3 audio overlap and hardware
+encoding are implemented. The remaining deliverables below are still pending. The installed-adapter comparison
 runner and opt-in browser/graphics/encoding observations are implemented as described in [render-comparison.md](render-comparison.md). Full upstream,
 quality and platform comparisons are still required. The phases describe implementation work,
 not newly supported renderer flags or APIs.

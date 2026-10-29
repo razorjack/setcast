@@ -78,7 +78,7 @@ async function inputs(config: ReturnType<typeof options>) {
     throw new Error('Requested range exceeds the mix duration. Shorten --seconds or change --at.');
   if (loaded.config.output.hardwareAcceleration !== 'disable')
     throw new Error(
-      'Comparison requires output.hardwareAcceleration: disable; browser hardware encoding is not implemented.',
+      'Comparison requires output.hardwareAcceleration: disable; this runner compares software encoding.',
     );
   if (!loaded.config.output.parallelEncoding)
     throw new Error('Comparison requires output.parallelEncoding: true for browser export.');

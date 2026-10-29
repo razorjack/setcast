@@ -41,11 +41,16 @@ export type RenderRuntime =
       userAgent: string;
       graphics: { renderer: string; vendor: string; version: string } | null;
       graphicsError: string | null;
-      capture: 'jpeg-screenshot';
+      capture: 'jpeg-screenshot' | 'not-observed';
     }
   | { kind: 'capture'; workers: number; parallelEncoding: boolean }
   | { kind: 'encoding-selection'; encoder: string; fallback: string | null }
-  | { kind: 'encoder'; encoder: string; pipeline: 'stream' | 'image-sequence' };
+  | {
+      kind: 'encoder';
+      encoder: string;
+      inputFormat: string;
+      pipeline: 'stream' | 'image-sequence';
+    };
 
 export type RuntimeReport = (event: RenderRuntime) => void;
 

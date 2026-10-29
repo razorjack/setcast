@@ -5,7 +5,7 @@ export function observeRenderBrowser(): Extract<RenderRuntime, { kind: 'browser'
   const result: Extract<RenderRuntime, { kind: 'browser' }> = {
     kind: 'browser',
     userAgent: navigator.userAgent,
-    capture: 'jpeg-screenshot',
+    capture: 'not-observed',
     graphics: null,
     graphicsError: null,
   };

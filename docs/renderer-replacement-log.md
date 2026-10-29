@@ -230,3 +230,86 @@ The actual CLI also rendered a project configured with required hardware and 12M
 60-frame output fully decoded as H.264/AAC at the expected dimensions/FPS. Evidence:
 `examples/demo/out/hardware-cli-2026-10-29`. This checks the project loader, CLI hardware policy,
 adapter and final export together, beyond the direct library acceptance harness.
+
+Hardware encoding was committed as `e784714` after all validation above passed.
+
+## Current-upstream qualification, in progress
+
+Created detached worktree `/private/tmp/setcast-remotion-4.0.539-20261029` at `e784714`. Only its
+Remotion catalog entries and adapter peer pins are changed from 4.0.513 to 4.0.539 before installing
+with pnpm. The main checkout's production pins remain unchanged. Use this checkout's own modules
+and pinned browser; do not symlink its renderer dependencies to the production adapter. Source
+projects may be shared read-only, but benchmark reports must retain the isolated dirty-tree state,
+exact pins and runtime observations. Installation log: `/tmp/setcast-remotion-539-install.log`.
+
+The isolated 4.0.539 dependency install and initial type/lint checks passed. Inspection found that
+its shared-memory route feeds FFmpeg with `-f remotionshm`. Therefore browser identity alone must
+not label Remotion capture as JPEG. Runtime reporting is being tightened to record FFmpeg's input
+format and mark capture unobserved in a browser-only probe. Another observer bug was found: the
+first `-vcodec` can select the MJPEG input decoder, not the output encoder. Output codec inspection
+now starts after the final input, with dedicated tests for JPEG, shared memory, image sequences and
+stream-copy assembly. The same observation patch is copied into the isolated checkout; it changes
+no capture, memory heuristics or encoding arguments.
+
+The first isolated 4.0.539 comparison succeeded with its downloaded Chromium 157.0.8080.0.
+Remotion reported parallel encoding and FFmpeg `remotionshm` input; browser export used Chromium
+156.0.8078.4 and `image2pipe`. Both fully decoded 60 expected frames. The 30.114 s Remotion wall
+measurement includes its initial browser download and cold setup, so it is explicitly excluded
+from speed conclusions. Report: `examples/demo/out/remotion-539-first-2026-10-29/report.json`.
+The current upstream comparison is now a real shared-memory path, unlike the historical
+4.0.534 experiment with shared-memory capture disabled and Chromium 149.
+
+The isolated 4.0.539 export-acceptance suite passed: rounded ranges, A/V pulse alignment, media
+readiness, theme repeatability, GPU frames across workers/chunks, failed assets and cancellation.
+Log: `/tmp/setcast-remotion-539-acceptance.log`. A separate fault-injection harness is testing the
+historical invalid-encoder-argument failure in the second one-second chunk under normal Node
+rejection policy. Ordinary cancellation alone does not cover that historical failure mechanism.
+
+The first new failure harness did not inject anything: current Remotion's parallel encoder writes
+an intermediate `pre-encode` filename, so matching `chunk-1.mp4` was incorrect. Its report explicitly
+has `injected: false` and is not evidence about encoder-failure handling. The harness now counts
+actual video-encoder commands (excluding stream-copy assembly) and fails the second encode. A new
+output directory retains the corrected run separately from the invalid first attempt.
+
+The corrected 4.0.539 injected-failure check passed under Node's normal rejection policy. The
+second encoder failed with `FFmpeg closed its Remotion shared-memory ACK pipe with 1 frame(s)
+pending.` The caller caught it, the sentinel destination remained intact, and no temporary chunk
+directories remained. Evidence: `examples/demo/out/remotion-539-encoder-failure-2/report.json` and
+`/tmp/setcast-remotion-539-encoder-failure-2.log`. Do not carry the 4.0.534 crash forward as a claim
+about this qualified 4.0.539 shared-memory configuration.
+
+A three-pair, alternating comparison now measures the 90–120 s demo interval at its unchanged
+1920×1080/30 fps standard settings and two workers. Remotion's browser is already installed;
+no validation suites run concurrently from this session. System load is recorded, but the runner
+still lacks process-tree attribution. Output: `examples/demo/out/remotion-539-standard-2026-10-29`.
+
+The three-pair run finished. Browser median was 21.508 s (20.934–21.672), versus 34.011 s
+(33.706–36.265) for Remotion 4.0.539; all six outputs decoded to 900 frames. This is one
+standard-profile scene at two workers. Files differ substantially in size (browser about 13.65 MB,
+Remotion about 8.68 MB), capture transport and browser version. Equal CRF does not establish
+equal quality. Do not generalize this result to the replacement's matched-quality speed target.
+System CPU samples also lack attribution to the other project.
+
+Read-only inspection found additional committed research in the clean local branch
+`prototype/native-capture` at `308b1cc`, including `docs/native-capture-results.md` and
+`docs/shared-memory-capture-results.md`. The latter tested Remotion 4.0.535, not today's 4.0.539.
+It found named POSIX frame-pool leaks on some injected encoder failures, even when the destination
+and temporary-directory checks passed. The current 4.0.539 fault check covers those filesystem
+properties and caught errors only; it has not yet checked named shared-memory allocation cleanup.
+The harness's success wording is being narrowed accordingly. Do not infer the old leak persists
+or that complete cleanup has been qualified without inspecting pool lifetimes.
+
+That branch also records a native HTML-in-canvas/WebCodecs prototype. It did not beat the
+practical parallel JPEG baseline at its tested quality settings and rejected per-play backgrounds
+because adaptive panel positions differed. It is useful prior evidence, not an independent
+production renderer: it still depends on Remotion for browser/bundle/orchestration. Its parallel
+benchmark overrides a private memory eligibility helper; do not import that override into the
+new fair comparison. Preserve those branch commits and consult their detailed results before
+repeating the native experiment.
+
+Runtime-input reporting validation passed: `vp run ready` (610 tests in 102 files), both
+export-acceptance suites, and the injected encoder-failure control on installed Remotion 4.0.513.
+Logs: `/tmp/setcast-runtime-input-*`. The current-upstream report, fault result and exact isolated
+patch are retained in `docs/research/remotion-539-2026-10-29/`. The observation changes do not
+change capture or encoding decisions. Next: bounded process-tree measurements, because Node RSS
+and aggregate system CPU alone cannot attribute renderer resource use or competing load.

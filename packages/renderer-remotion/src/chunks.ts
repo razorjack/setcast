@@ -12,6 +12,7 @@ import type { RenderProgress } from './index.ts';
 import { encodeMasterAudio, muxChunks } from './mux.ts';
 import { cancellable } from './cancellation.ts';
 import { canPipeline, renderChunkPipeline, type ChunkJob } from './chunk-pipeline.ts';
+import { encodingRuntime } from './encoding-runtime.ts';
 
 type VideoJob = RenderMediaOptions & { outputLocation: string };
 type Report = (progress: RenderProgress) => void;
@@ -73,13 +74,8 @@ function observeEncoding(job: VideoJob, report?: RuntimeReport): VideoJob {
     ...job,
     ffmpegOverride: (command) => {
       const args = job.ffmpegOverride?.(command) ?? command.args;
-      const index = args.findIndex((arg) => arg === '-c:v' || arg === '-vcodec');
-      if (index >= 0 && args[index + 1] !== 'copy')
-        report({
-          kind: 'encoder',
-          encoder: args[index + 1]!,
-          pipeline: command.type === 'pre-stitcher' ? 'stream' : 'image-sequence',
-        });
+      const observation = encodingRuntime(args, command.type);
+      if (observation) report(observation);
       return args;
     },
   };

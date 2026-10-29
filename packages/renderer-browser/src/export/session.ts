@@ -102,7 +102,11 @@ async function openCapture(project: ResolvedProject, options: CaptureOptions): P
     if (options.assetPaths) await restrictResources(page, server.url, options.assetPaths, files);
     await page.goto(server.url);
     await page.waitForFunction(() => Boolean(window.setcastExport));
-    if (options.onRuntime) options.onRuntime(await page.evaluate(observeRenderBrowser));
+    if (options.onRuntime)
+      options.onRuntime({
+        ...(await page.evaluate(observeRenderBrowser)),
+        capture: 'jpeg-screenshot',
+      });
     return { page, [Symbol.asyncDispose]: close };
   } catch (error) {
     try {

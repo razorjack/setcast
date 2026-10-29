@@ -1,0 +1,560 @@
+{
+  "version": 2,
+  "config": {
+    "project": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo",
+    "out": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29",
+    "at": 90,
+    "seconds": 30,
+    "repeat": 3,
+    "concurrency": 2
+  },
+  "identity": {
+    "frames": 900,
+    "projectHash": "ad49d9997df4212fff5f05d1b1db31c0df8d30d4b6a14360f63fe02eb64750c8",
+    "assets": [
+      {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/assets/bg.png",
+        "sha256": "1a31d21f5fc9d211f7bc1cefce7de7aede07fcee0be210ce48817cba1ec3b201",
+        "bytes": 3049362,
+        "stamp": "16777229:122037541:3049362:1790858626099.3613:1792008823376.6401"
+      },
+      {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/assets/demo-set.wav",
+        "sha256": "b91642b751283fea92a1fb4958e52d9bf87fe5ce4da210b062c8feb70f651aed",
+        "bytes": 27250804,
+        "stamp": "16777229:99869254:27250804:1793285035324.3271:1793285035324.3271"
+      },
+      {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/setcast.yaml",
+        "sha256": "9b95c2b8116b974a8bb4d422f27a06dcf8bb609b1841779068b141f0c24c4cd3",
+        "bytes": 1726,
+        "stamp": "16777229:102799305:1726:1791550403675.3267:1791550403675.3267"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/core/css/base.css",
+        "sha256": "25dfb210b4914b4eb1ee7edba13216ab0fef205e8e7c0871934be5c64dbace81",
+        "bytes": 16741,
+        "stamp": "16777229:163277539:16741:1793290930754.4097:1793290930754.4097"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/BarlowCondensed-500-latin-ext.woff2",
+        "sha256": "d6c474644e6a96f801aa3bebb00186a313578ee3f4358becab48db20952942bb",
+        "bytes": 6584,
+        "stamp": "16777229:163277973:6584:1793290930879.3516:1793290930879.3516"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/BarlowCondensed-500-latin.woff2",
+        "sha256": "31ff5e6e96a096fde4d78bc838719e69b093db2d0b062b96e423c065a6d1b2b1",
+        "bytes": 14680,
+        "stamp": "16777229:163277974:14680:1793290930879.4395:1793290930879.4395"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/BarlowCondensed-600-latin-ext.woff2",
+        "sha256": "5fc394b4e782a16d27c157006e24c39dd39dab539d81e8204ce73d446c767af8",
+        "bytes": 6588,
+        "stamp": "16777229:163277975:6588:1793290930879.6838:1793290930879.6838"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/BarlowCondensed-600-latin.woff2",
+        "sha256": "5bc49d41f32810a114765314392332ce2acae2276635eee265a50319a12c1b49",
+        "bytes": 14844,
+        "stamp": "16777229:163277976:14844:1793290930879.7627:1793290930879.7627"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/BarlowCondensed-700-latin-ext.woff2",
+        "sha256": "f0da93f04334dda1e199a38f9b211907a862b83ecd0875120fe99d16f76de2e8",
+        "bytes": 6620,
+        "stamp": "16777229:163277977:6620:1793290930879.8442:1793290930879.8442"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/BarlowCondensed-700-latin.woff2",
+        "sha256": "e3e520cb7468f2efd60bc2ce96694567c3312f4ef414fffbe605e3ad146b24e6",
+        "bytes": 14888,
+        "stamp": "16777229:163277978:14888:1793290930879.9248:1793290930879.9248"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/JetBrainsMono-100-800-latin-ext.woff2",
+        "sha256": "9541a1dbd48b9c9fab226f6b0b10911a0a8cc10ba9927f473905312f0f119556",
+        "bytes": 11548,
+        "stamp": "16777229:163278007:11548:1793290930884.5625:1793290930884.5625"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/fonts/JetBrainsMono-100-800-latin.woff2",
+        "sha256": "1e06740a02a443fb7f3eeda8fcaa685a0f6c620e3f01e6666e847295469ce3ad",
+        "bytes": 40480,
+        "stamp": "16777229:163278008:40480:1793290930884.786:1793290930884.786"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/sterile-tech/theme.css",
+        "sha256": "c97c97059c6f545949702f9c5d66a5ce12c8ec1d7980ce66260b45c49919606d",
+        "bytes": 35794,
+        "stamp": "16777229:163278068:35794:1793290930894.9602:1793290930894.9602"
+      },
+      {
+        "path": "/private/tmp/setcast-remotion-4.0.539-20261029/packages/themes/textures/grain.png",
+        "sha256": "6432a61de5554ab3f7f9545c8239237e6c5c33e6f981f241a87993091adcd2f9",
+        "bytes": 753061,
+        "stamp": "16777229:163278070:753061:1793290930898.2334:1793290930898.2334"
+      }
+    ],
+    "output": {
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "file": "out/demo.mp4",
+      "gl": "auto",
+      "profile": "standard",
+      "parallelEncoding": true,
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "disable",
+      "crf": 18,
+      "jpegQuality": 95,
+      "x264Preset": "medium"
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "startedAt": "2026-10-29T16:36:53.446Z",
+  "revision": "e7847141f9bbab826b57ebbf489bc62d546fa30c",
+  "dirty": true,
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "os": "27.0.0",
+    "cpu": "Apple M1 Pro"
+  },
+  "runtimePins": {
+    "playwright": "1.64.1",
+    "@remotion/renderer": "4.0.539",
+    "mediabunny": "1.50.8"
+  },
+  "runtimeObservation": "Per-run browser user agent, WebGL identity, capture workers and encoder decisions. Optional observation overhead is included in wall time.",
+  "timing": "Fresh sessions, shared process and OS caches. Includes loading through cleanup; excludes identity and verification.",
+  "runs": [
+    {
+      "renderer": "browser",
+      "index": 0,
+      "status": "passed",
+      "wallSeconds": 21.671617791999996,
+      "firstFrameProgressSeconds": 1.268924709,
+      "result": {
+        "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29/0-browser.mp4",
+        "frames": 900,
+        "durationSeconds": 30
+      },
+      "load": {
+        "samples": 21,
+        "meanSystemBusy": 0.7159633488124177,
+        "maxSystemBusy": 0.9869608826479438,
+        "initialLoadAverage": [
+          5.7919921875,
+          6.13916015625,
+          6.15625
+        ],
+        "finalLoadAverage": [
+          7.16943359375,
+          6.43603515625,
+          6.26171875
+        ],
+        "nodeRssPeak": 501710848,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 900,
+        "bytes": 13652227,
+        "decodedVideoHash": "SHA256=dcc298e73da238253b2fdb7278b1eaf58adc4e6441a9eb63c0f1945b2f5060b2",
+        "seconds": 11.564606332999997,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "runtime": [
+        {
+          "kind": "encoding-selection",
+          "encoder": "libx264",
+          "fallback": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "remotion",
+      "index": 0,
+      "status": "passed",
+      "wallSeconds": 36.264553416,
+      "firstFrameProgressSeconds": 5.015957916,
+      "result": {
+        "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29/0-remotion.mp4",
+        "frames": 900,
+        "durationSeconds": 30
+      },
+      "load": {
+        "samples": 35,
+        "meanSystemBusy": 0.49682950584177865,
+        "maxSystemBusy": 0.8018018018018018,
+        "initialLoadAverage": [
+          6.75537109375,
+          6.37158203125,
+          6.240234375
+        ],
+        "finalLoadAverage": [
+          7.662109375,
+          6.5498046875,
+          6.3056640625
+        ],
+        "nodeRssPeak": 972881920,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 900,
+        "bytes": 8678695,
+        "decodedVideoHash": "SHA256=3adc3906a1638d3c37ebce0b2a5d0ce8acb3ac9e4d36e0d1c20574795692e2d1",
+        "seconds": 10.620730374999999,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "runtime": [
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8080.0 Safari/537.36",
+          "capture": "not-observed",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "remotionshm",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "remotion",
+      "index": 1,
+      "status": "passed",
+      "wallSeconds": 33.706167875,
+      "firstFrameProgressSeconds": 4.167583375000002,
+      "result": {
+        "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29/1-remotion.mp4",
+        "frames": 900,
+        "durationSeconds": 30
+      },
+      "load": {
+        "samples": 33,
+        "meanSystemBusy": 0.4534299836762081,
+        "maxSystemBusy": 0.60481444332999,
+        "initialLoadAverage": [
+          6.791015625,
+          6.3994140625,
+          6.2548828125
+        ],
+        "finalLoadAverage": [
+          6.39892578125,
+          6.33056640625,
+          6.23388671875
+        ],
+        "nodeRssPeak": 965115904,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 900,
+        "bytes": 8678695,
+        "decodedVideoHash": "SHA256=3adc3906a1638d3c37ebce0b2a5d0ce8acb3ac9e4d36e0d1c20574795692e2d1",
+        "seconds": 10.563619250000004,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "runtime": [
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8080.0 Safari/537.36",
+          "capture": "not-observed",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "remotionshm",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "browser",
+      "index": 1,
+      "status": "passed",
+      "wallSeconds": 20.933824124999983,
+      "firstFrameProgressSeconds": 0.9578040420000034,
+      "result": {
+        "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29/1-browser.mp4",
+        "frames": 900,
+        "durationSeconds": 30
+      },
+      "load": {
+        "samples": 20,
+        "meanSystemBusy": 0.748418849355914,
+        "maxSystemBusy": 0.9551345962113659,
+        "initialLoadAverage": [
+          5.43017578125,
+          6.1181640625,
+          6.1591796875
+        ],
+        "finalLoadAverage": [
+          5.80615234375,
+          6.158203125,
+          6.17236328125
+        ],
+        "nodeRssPeak": 594280448,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 900,
+        "bytes": 13652227,
+        "decodedVideoHash": "SHA256=dcc298e73da238253b2fdb7278b1eaf58adc4e6441a9eb63c0f1945b2f5060b2",
+        "seconds": 11.82868974999999,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "runtime": [
+        {
+          "kind": "encoding-selection",
+          "encoder": "libx264",
+          "fallback": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "browser",
+      "index": 2,
+      "status": "passed",
+      "wallSeconds": 21.508368749999995,
+      "firstFrameProgressSeconds": 0.7601808329999913,
+      "result": {
+        "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29/2-browser.mp4",
+        "frames": 900,
+        "durationSeconds": 30
+      },
+      "load": {
+        "samples": 21,
+        "meanSystemBusy": 0.7502323251412603,
+        "maxSystemBusy": 1,
+        "initialLoadAverage": [
+          5.67529296875,
+          6.119140625,
+          6.15771484375
+        ],
+        "finalLoadAverage": [
+          6.66455078125,
+          6.33251953125,
+          6.234375
+        ],
+        "nodeRssPeak": 560611328,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 900,
+        "bytes": 13652227,
+        "decodedVideoHash": "SHA256=dcc298e73da238253b2fdb7278b1eaf58adc4e6441a9eb63c0f1945b2f5060b2",
+        "seconds": 11.660574958000012,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "runtime": [
+        {
+          "kind": "encoding-selection",
+          "encoder": "libx264",
+          "fallback": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "remotion",
+      "index": 2,
+      "status": "passed",
+      "wallSeconds": 34.01070879100001,
+      "firstFrameProgressSeconds": 4.351142541000009,
+      "result": {
+        "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/remotion-539-standard-2026-10-29/2-remotion.mp4",
+        "frames": 900,
+        "durationSeconds": 30
+      },
+      "load": {
+        "samples": 33,
+        "meanSystemBusy": 0.44573285660373596,
+        "maxSystemBusy": 0.6623246492985972,
+        "initialLoadAverage": [
+          5.9267578125,
+          6.18505859375,
+          6.18310546875
+        ],
+        "finalLoadAverage": [
+          6.6142578125,
+          6.29638671875,
+          6.22119140625
+        ],
+        "nodeRssPeak": 1106231296,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "verification": {
+        "frames": 900,
+        "bytes": 8678695,
+        "decodedVideoHash": "SHA256=3adc3906a1638d3c37ebce0b2a5d0ce8acb3ac9e4d36e0d1c20574795692e2d1",
+        "seconds": 10.376795291000017,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "runtime": [
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8080.0 Safari/537.36",
+          "capture": "not-observed",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "remotionshm",
+          "pipeline": "stream"
+        }
+      ]
+    }
+  ],
+  "status": "passed",
+  "error": null,
+  "summary": {
+    "browser": {
+      "runs": 3,
+      "medianSeconds": 21.508368749999995,
+      "minSeconds": 20.933824124999983,
+      "maxSeconds": 21.671617791999996
+    },
+    "remotion": {
+      "runs": 3,
+      "medianSeconds": 34.01070879100001,
+      "minSeconds": 33.706167875,
+      "maxSeconds": 36.264553416
+    }
+  }
+}
