@@ -26,7 +26,7 @@ jobs:
           vp run demo-assets
           vp run smoke
       - name: Exporter acceptance (timing, readiness, themes, failure recovery)
-        run: vp run export-acceptance
+        run: vp run export-acceptance --gl swangle
       - name: Install browser exporter runtime
         run: vp exec --filter @setcast/renderer-browser playwright install --with-deps chromium
       - name: Browser exporter acceptance and resume recovery

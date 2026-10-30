@@ -31,10 +31,10 @@ async function check(name: string) {
     visualizers: resolveVisualizerConfigs({ name, seed: 42 }),
   };
   const reference = join(out, `${name}-reference.png`);
-  await still(project, { projectDir, out: reference, at: 20 });
+  await still(project, { projectDir, gl: 'swangle', out: reference, at: 20 });
   const { puppeteerInstance: browser } = await currentSession().prepare(
     project,
-    { projectDir },
+    { projectDir, gl: 'swangle' },
     () => {},
   );
   const newPage = browser.newPage.bind(browser);
@@ -52,7 +52,7 @@ async function check(name: string) {
   };
   try {
     const recovered = join(out, `${name}-recovered.png`);
-    await still(project, { projectDir, out: recovered, at: 20 });
+    await still(project, { projectDir, gl: 'swangle', out: recovered, at: 20 });
     assert(events > 0, 'The Remotion test never restored a lost context');
     assert(pixels(reference).equals(pixels(recovered)), `${name} recovery changed Remotion pixels`);
     const failing = {
@@ -60,7 +60,7 @@ async function check(name: string) {
       visualizers: resolveVisualizerConfigs({ name, recoverySeconds: 0.1 }),
     };
     await assert.rejects(
-      still(failing, { projectDir, out: join(out, `${name}-failure.png`), at: 20 }),
+      still(failing, { projectDir, gl: 'swangle', out: join(out, `${name}-failure.png`), at: 20 }),
       /lost its WebGL context/,
     );
   } finally {

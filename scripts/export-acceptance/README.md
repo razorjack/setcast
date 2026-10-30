@@ -6,7 +6,8 @@ the normal smoke render. All source media is generated locally; there are no ext
 except a possible first-time browser download by the adapter.
 
 The suite calls only Setcast's `Exporter` interface: `render`, `still`, and `withRenderSession`.
-Remotion is the default adapter. To test a replacement and compare its representative theme
+Remotion is the default adapter. Use `--gl swangle` for software WebGL on headless machines,
+as CI does; `--gl` accepts the output graphics-backend values supported by the selected adapter. To test a replacement and compare its representative theme
 stills against Remotion:
 
 ```sh
