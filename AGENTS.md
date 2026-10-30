@@ -110,6 +110,10 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Resume checkpoint equality uses the deterministic acceptance marker scene. Animated theme
+  paint history can differ when a fresh page starts at a resumed chunk, so theme qualification
+  is separate from exact checkpoint frame comparisons. Keep the frame-hash assertion.
+
 - Headless CI has no hardware WebGL backend. Run Remotion exporter acceptance with
   `--gl swangle`; the GPU recovery fixture also selects swangle explicitly. Automatic ANGLE
   can render ordinary CSS while failing WebGL 2 context creation.

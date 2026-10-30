@@ -65,7 +65,7 @@ async function measured(
 
 try {
   await createFixture(root);
-  const project = await fixtureProject(root, 'sterile-tech');
+  const project = await fixtureProject(root);
   const reference = join(artifacts, 'reference.mp4');
   await render(project, { ...options, resume: false, out: reference });
   await writeFile(out, sentinel);
