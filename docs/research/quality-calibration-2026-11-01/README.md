@@ -45,3 +45,15 @@ ranges, not only equal project JSON. Separate modified-asset, shifted-range and 
 reports are rejected before scoring. Both input video files are hashed again after scoring.
 `content-reference.json`, `content-export.json` and `content-check/` retain the final successful
 contract; the earlier identity-only records remain as discovery history.
+
+## Higher-quality calibration
+
+The `crf16/` follow-up captures a new reference using the final asset/project/range identity
+contract. Browser JPEG 100 / CRF 16 and Remotion 4.0.539 / CRF 18 both use x264 medium. Browser
+meets or exceeds Remotion in all recorded mean, fifth-percentile and minimum full-frame and
+credit-region RGB PSNR/SSIM and VMAF NEG scores for this one-second sample. Full RGB SSIM means
+are 0.981091 and 0.978405; credit-region means are 0.990251 and 0.988795; VMAF NEG means are
+96.0162 and 95.8027. Encoded files are 499,286 and 302,772 bytes including audio and container.
+The additional fidelity costs file size and may cost export time. No speed claim follows from
+these calibration runs, which ran alongside correctness checks. These settings are candidates
+for the representative suite, not new production defaults or proof of universal quality parity.

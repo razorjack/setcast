@@ -962,3 +962,64 @@ Final quality-tool ready passed all 667 tests in 111 files, formatting/lint/type
 isolation and decoded smoke. Both lossless RGB controls and all identity/mismatch checks passed.
 Logs: `/tmp/setcast-quality-{commit-check,final-ready,content-final}.log`. This completes the
 measurement-tool milestone, not the broader matched-quality speed qualification.
+
+Quality measurement committed as 979582c. The fifth quiet-period worker attempt performed no
+exports; some samples fell to 15.5–17.4%, but none met the unchanged 15% threshold. Its report/log
+are retained as `worker-scaling-2026-10-31/busy-standard-retry4.*`.
+
+Browser-first distribution is being prepared on branch `renderer/browser-first-candidate` in
+`/private/tmp/setcast-browser-first-candidate`, starting at 979582c. This is an isolated migration
+candidate, not promotion of the production default. It can qualify physical Remotion-free
+installation and compatibility diagnostics while final timing/platform criteria remain pending.
+The main branch remains on Remotion by default. Keep the candidate commits and test results
+linked here before any context handoff.
+
+The sixth worker attempt also performed no exports because its pre-run CPU checks stayed above
+15%. The isolated distribution candidate now changes configuration/CLI/scaffold defaults, makes
+the Remotion adapter an optional peer, and preserves explicit Studio hardware selection. Its
+package smoke is being converted from workspace dependency symlinks to a fresh pnpm tarball
+installation. Root development tooling pins pnpm and invokes both pnpm and local vp through
+Node entry points, avoiding Windows .cmd execution and global-vp ambiguity. This is candidate
+work only; package and platform checks have not yet passed.
+
+Browser-first candidate local checks now pass: both adapter acceptance suites, 667 tests,
+decoded browser smoke, a fresh browser-only installation with all default commands, and a fresh
+installation with the optional Remotion adapter. The final candidate commit is being prepared;
+platform CI jobs are implemented but unexecuted. Main retains its existing default.
+
+The one-second quality follow-up found JPEG 100 / CRF 16 meets or exceeds current Remotion
+4.0.539 CRF 18 across all measured full/credit-region mean, p05 and minimum PSNR/SSIM and VMAF
+NEG scores. The encoded browser file is larger. This identifies settings for broader testing,
+not a speed or whole-suite fidelity result. Final project/asset/frame/output identities match;
+raw metrics and comparisons are retained in `quality-calibration-2026-11-01/crf16/`.
+
+The browser-first candidate is committed as **755fa71** on branch
+`renderer/browser-first-candidate` in `/private/tmp/setcast-browser-first-candidate`. It includes
+browser defaults, optional Remotion compatibility, fresh tarball verification, all default
+workflow checks, migration/rollback documentation, retained macOS reports, and an unexecuted
+Linux/macOS/Windows CI matrix. Both adapter acceptance suites and final ready passed. Do not
+merge this candidate merely because its installation checks pass; performance and supported-
+platform evidence remain outstanding. Main remains at its existing renderer default.
+
+The seventh final-driver worker attempt admitted four exports after pre-run samples below 15%,
+then stopped when later load checks remained busy for a minute. Two one-worker runs took
+10.487/10.985 seconds and two automatic-worker runs took 6.798/6.898 seconds. These are partial
+runs, not the required three complete pairs; the report status remains failed. All four videos
+passed decoded verification. `worker-scaling-2026-10-31/partial-standard-retry6.*` retains the
+full report and load history. The candidate automatic policy remains unpromoted.
+
+A portable corpus generator now fixes concrete workloads for the plan's CSS, three GPU, looping
+video, editorial/art/branding, portrait, 60 fps, 4K and chunk-boundary categories before their
+comparative results. Definitions and constraints are in `research/replacement-corpus-v1.md`.
+The long local master remains a separate requirement; no existing workload is silently removed.
+
+All eleven corpus projects generated and passed public project loading, finite timeline and
+asset resolution. The generated manifest with exact configs and content digests is retained as
+`research/replacement-corpus-v1.json`. No comparative run of these cases has started before this
+manifest is frozen. Local free disk is about 14 GiB, so full lossless references should be
+processed one case at a time; retain measurements, identities and inspection crops before
+removing only newly generated bulk references. Never remove user source media or old evidence.
+
+Corpus/calibration milestone ready passed all 667 tests in 111 files, formatting/lint/types,
+Remotion isolation and decoded smoke. Log: `/tmp/setcast-corpus-ready.log`. The frozen corpus
+and higher-fidelity calibration are now ready for broader per-case output comparison.

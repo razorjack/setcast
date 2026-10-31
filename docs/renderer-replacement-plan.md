@@ -233,6 +233,10 @@ packages. Keep upstream experiments isolated from production dependencies. Recor
 transport, graphics backend, encoder, concurrency and overlap decisions. Do not force private
 memory heuristics or ignore failure behavior to manufacture a faster reference.
 
+The [portable corpus v1](research/replacement-corpus-v1.md) fixes project definitions and ranges
+for these categories before their comparative results. Generate it with
+`node packages/renderer-browser/bench/replacement-corpus.ts --out NEW_DIRECTORY`.
+
 Use CSS-heavy typography/filter scenes, field/tunnel/constellation, looping video, changing art,
 branding, DJ overlaps and portrait layouts. Include 1080p30, representative 60 fps and 4K stress
 cases, short clips, chunk-boundary cases and a long real master. Extend correctness checks to all
