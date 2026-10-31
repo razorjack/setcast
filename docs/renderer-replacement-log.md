@@ -6,7 +6,7 @@ supported feature or completed milestone unless explicitly marked as such. Retai
 limitations when adding results. Update this file before context handoffs and include it in each
 relevant implementation commit.
 
-## Current state, 2026-10-29
+## Current state, 2026-11-01
 
 The user authorized autonomous implementation through renderer replacement, with a commit for each
 coherent validated change. No push or publication is authorized. Another project can run tests on
@@ -898,3 +898,40 @@ also pass. Logs: `/tmp/setcast-incremental-{ready,cache,acceptance,remotion,pack
 The recreated upstream environment is `/private/tmp/setcast-upstream-539-final`, based on c3127fd
 with only Remotion package/catalog pins changed to 4.0.539. A one-second paired warmup completed,
 including browser provisioning; those times are excluded from performance conclusions.
+
+Selective cache reuse committed as 584972f. The fourth quiet-period attempt again made no
+exports: pre-run busy samples rose from 29–43% to sustained 100%. Retain it as
+`worker-scaling-2026-10-31/busy-standard-retry3.*`. The automatic policy candidate is now applied
+only in the isolated upstream comparison checkout, keeping production at one worker while
+independent CLI migration work proceeds. No machine processes were stopped.
+
+CLI migration preparation removes the PreviewOptions type dependency on the Remotion adapter
+and adds a narrow missing-adapter diagnostic. Missing dependencies inside an installed adapter
+retain their original errors. This preparation deliberately leaves package dependencies and
+default selection unchanged until independent-install qualification is ready.
+
+The first CLI-loader ready run hit the existing five-second limits in preview selection and
+cache management during heavy system load. Both failures are retained in
+`/tmp/setcast-optional-ready.log`; no timeout was increased. A fresh complete ready run passed
+all 667 tests in 111 files, dependency isolation and decoded smoke
+(`/tmp/setcast-optional-ready-retry.log`).
+
+Packed CLI/browser smoke also passes after the optional-loader preparation. Remotion remains a
+required CLI dependency and the default in this commit; only the compatibility boundary is ready
+for a later dependency change. Log: `/tmp/setcast-optional-package.log`.
+
+Quality-tool work in progress: a one-second 1080p30 reference stores lossless FFV1 and verifies
+its complete decoded RGB24 hash against a separate hash of every captured PNG. The identical
+reference control gives PSNR infinity and SSIM 1 in both the full frame and credits region.
+The fixed VMAF v0.6.1 NEG model returns about 97.49 even for identical input, so do not assume
+that a perfect reference scores 100. The metric is supplemental to RGB region comparisons.
+See the primary [FFmpeg filter documentation](https://ffmpeg.org/ffmpeg-filters.html#libvmaf) and
+[Netflix's NEG model notes](https://github.com/Netflix/vmaf/blob/master/resource/doc/models_v0.md).
+
+Initial calibration at seconds 90–91: browser JPEG 95 / CRF 18 has credits RGB SSIM 0.98518;
+current Remotion 4.0.539 / CRF 18 has 0.98880. Browser JPEG 100 raises that to 0.98977 and also
+improves full-frame RGB PSNR/SSIM. VMAF means are 95.64, 95.80 and 95.65 respectively. This is
+one calibration scene, not matched-quality qualification or a speed claim. Production settings
+are unchanged. Remotion's current output now declares limited range and sRGB transfer/BT.709
+primaries but omits the YCbCr matrix; the metric tool records that and uses FFmpeg's default
+matrix interpretation. Receiving applications may interpret missing metadata differently.

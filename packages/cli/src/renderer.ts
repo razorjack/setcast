@@ -6,8 +6,19 @@ import {
   type ProjectConfig,
   type HardwareAcceleration,
   type RendererDiagnosticOptions,
+  type EncodingOptions,
+  type GraphicsBackend,
+  type ResolvedProject,
 } from '@setcast/core';
-export type { PreviewOptions } from '@setcast/renderer-remotion';
+import { loadRemotion } from './optional-remotion.ts';
+
+export interface PreviewOptions extends EncodingOptions {
+  watch?: (update: (project: ResolvedProject) => Promise<void>) => () => Promise<void>;
+  projectDir: string;
+  port?: number;
+  gl?: GraphicsBackend;
+  jpegQuality?: number;
+}
 
 export type Renderer = ProjectConfig['renderer'];
 const selected = new AsyncLocalStorage<{
@@ -30,7 +41,7 @@ export async function rendererCapabilities(name: Renderer) {
   const adapter =
     name === 'browser'
       ? await import('@setcast/renderer-browser/capabilities')
-      : await import('@setcast/renderer-remotion/capabilities');
+      : await loadRemotion(() => import('@setcast/renderer-remotion/capabilities'));
   return adapter.capabilities;
 }
 
@@ -38,7 +49,7 @@ export async function diagnoseRenderer(name: Renderer, options: RendererDiagnost
   const adapter =
     name === 'browser'
       ? await import('@setcast/renderer-browser/diagnostics')
-      : await import('@setcast/renderer-remotion/diagnostics');
+      : await loadRemotion(() => import('@setcast/renderer-remotion/diagnostics'));
   return adapter.diagnose(options);
 }
 
@@ -46,7 +57,7 @@ export async function withRenderSession<T>(task: () => Promise<T>, name: Rendere
   const exporter =
     name === 'browser'
       ? await import('@setcast/renderer-browser/export')
-      : await import('@setcast/renderer-remotion');
+      : await loadRemotion(() => import('@setcast/renderer-remotion'));
   const controller = new AbortController();
   const stop = () =>
     controller.abort(
@@ -84,15 +95,15 @@ export async function resolveHardwareEncoding(
   options?: HardwareProbe,
 ) {
   if (selected.getStore()?.name !== 'browser')
-    return (await import('@setcast/renderer-remotion')).resolveHardwareEncoding(setting);
+    return (await loadRemotion(() => import('@setcast/renderer-remotion'))).resolveHardwareEncoding(
+      setting,
+    );
   return (await import('@setcast/renderer-browser/export')).resolveHardwareEncoding(setting, {
     ...options,
     signal: options?.signal ?? selected.getStore()?.signal,
   });
 }
 
-export async function preview(
-  ...args: Parameters<typeof import('@setcast/renderer-remotion').preview>
-) {
-  return (await import('@setcast/renderer-remotion')).preview(...args);
+export async function preview(project: ResolvedProject, options: PreviewOptions) {
+  return (await loadRemotion(() => import('@setcast/renderer-remotion'))).preview(project, options);
 }
