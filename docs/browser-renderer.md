@@ -1,14 +1,15 @@
-# Experimental browser exporter
+# Browser exporter
 
-Remotion remains Setcast's default renderer. The opt-in `browser` exporter uses Playwright,
+The default `browser` exporter uses Playwright,
 its pinned Chromium runtime, and a system FFmpeg subprocess. Themes, visualizers, timeline
 queries, audio analysis and frame assembly use the same Setcast contracts in both exporters.
 The browser package has no Remotion dependency.
 
 The [independent renderer replacement plan](renderer-replacement-plan.md) records the current
 capability comparison, performance evidence, remaining experiments and release criteria. Its
-completed features and pending qualification are tracked separately. Remotion remains the default,
-and the CLI still depends on its adapter during migration.
+completed features and pending qualification are tracked separately. This isolated browser-first
+candidate removes Remotion from the CLI required dependency graph. Promotion to main still needs
+the remaining qualification. See [migration and rollback](browser-first-migration.md).
 
 ## Run it
 
@@ -31,15 +32,15 @@ To select the exporter for a project:
 renderer: browser
 ```
 
-Omitting `renderer` selects `remotion`. `--renderer` overrides the YAML for `render`, `still`,
+Omitting `renderer` selects `browser`. `--renderer` overrides the YAML for `render`, `still`,
 `clip` and `preview`, including bundled thumbnails and batches. Failure is reported without switching
 exporters. `preview --renderer browser` opens the [independent frame inspector](independent-preview.md);
-Remotion Studio remains the default preview. `play` and `live` use browser playback independently
+Remotion Studio is available with the optional adapter and `--renderer remotion`. `play` and `live` use browser playback independently
 of this setting.
 
 ## Supported settings and limits
 
-The prototype writes PNG, JPEG and WebP stills, and H.264 video with AAC audio in MP4, MOV or
+The exporter writes PNG, JPEG and WebP stills, and H.264 video with AAC audio in MP4, MOV or
 MKV. Video requires FFmpeg with AAC and the selected H.264 encoder; software encoding uses
 `libx264`. PNG, JPEG and lossless WebP need no system
 FFmpeg. Audio analysis accepts mono or stereo recordings supported by the pinned Chromium

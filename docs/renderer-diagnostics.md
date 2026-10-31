@@ -1,7 +1,7 @@
 # Renderer capabilities and setup diagnostics
 
 `setcast capabilities --renderer browser` describes the Setcast adapter's declared support.
-Add `--json` for a versioned descriptor. Omit `--renderer` to select Remotion, the default.
+Add `--json` for a versioned descriptor. Omit `--renderer` to select browser, the default.
 This command does not read project configuration, load rendering dependencies, start processes,
 download executables or check installed devices.
 
@@ -35,7 +35,7 @@ setcast doctor --renderer browser --require still,video,gpu,resume --json
 setcast doctor --renderer remotion --require video,hardwareEncoding
 ```
 
-`doctor` defaults to Remotion and requires `video`. It probes all supported features, then
+`doctor` defaults to browser and requires `video`. It probes all supported features, then
 returns status 0 only if the requested features are ready. A failed optional check remains in
 both the human report and JSON. Request `still` for PNG/JPEG work, `webp` for WebP stills, `gpu`
 for WebGL 2 visualizers, and `resume` for the browser export checkpoint prerequisites.

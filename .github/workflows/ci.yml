@@ -20,6 +20,8 @@ jobs:
       - run: vp check
       - run: vp test
       - run: vp run ban-check
+      - name: Install browser exporter runtime
+        run: vp exec --filter @setcast/renderer-browser playwright install --with-deps chromium
       - name: Smoke render (3 s of the demo, validates h264 + aac + motion)
         run: |
           sudo apt-get install -y -qq ffmpeg > /dev/null
@@ -27,8 +29,6 @@ jobs:
           vp run smoke
       - name: Exporter acceptance (timing, readiness, themes, failure recovery)
         run: vp run export-acceptance --gl swangle
-      - name: Install browser exporter runtime
-        run: vp exec --filter @setcast/renderer-browser playwright install --with-deps chromium
       - name: Browser exporter acceptance and resume recovery
         run: |
           vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out examples/demo/out/browser-acceptance
@@ -61,3 +61,40 @@ jobs:
         run: node packages/renderer-browser/bench/midi.ts
       - name: Decoded export qualification and timing failures
         run: node packages/renderer-browser/bench/export-verification.ts
+
+  installed-browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-manager: false
+          run-install: false
+      - run: vp install --frozen-lockfile
+      - name: Install FFmpeg (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install FFmpeg (macOS)
+        if: runner.os == 'macOS'
+        run: brew list ffmpeg || brew install ffmpeg
+      - name: Install FFmpeg (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ffmpeg --yes --no-progress
+      - name: Install pinned Chromium and system dependencies
+        run: vp exec --filter @setcast/renderer-browser playwright install --with-deps chromium
+      - name: Fresh browser-only installation and default workflows
+        run: vp run package-smoke --browser --report out/installed-browser.json
+      - name: Preserve runtime and installation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installed-browser-${{ matrix.os }}
+          path: out/installed-browser.json
+          if-no-files-found: warn

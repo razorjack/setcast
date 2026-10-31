@@ -27,8 +27,8 @@ function run(...args: string[]) {
 }
 
 test('capability reports work outside a project without renderer dependencies', () => {
-  const remotion = run('--json');
-  const browser = run('--renderer', 'browser', '--json');
+  const remotion = run('--renderer', 'remotion', '--json');
+  const browser = run('--json');
   for (const result of [remotion, browser]) {
     expect(result.status, result.stderr).toBe(0);
     expect(result.stderr).toBe('');

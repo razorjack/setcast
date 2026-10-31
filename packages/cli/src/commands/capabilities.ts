@@ -15,7 +15,7 @@ export async function run(argv: string[]) {
     help,
   );
   if (positionals.length) throw new SetcastError('capabilities takes no project directory.', help);
-  const report = await rendererCapabilities(parseRendererFlag(values.renderer) ?? 'remotion');
+  const report = await rendererCapabilities(parseRendererFlag(values.renderer) ?? 'browser');
   process.stdout.write(values.json ? `${JSON.stringify(report, null, 2)}\n` : format(report));
 }
 

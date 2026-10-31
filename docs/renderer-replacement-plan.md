@@ -5,7 +5,9 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation in progress; completed pieces and validation are tracked in the log.
-Remotion remains the default until the release criteria below are met.
+Main retains Remotion until the release criteria below are met. This isolated browser-first
+candidate implements the default and distribution migration; see
+[browser-first-migration.md](browser-first-migration.md) for validation boundaries and rollback.
 
 Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
 contracts, finishes first exports faster, reuses work across revisions, and connects musical
@@ -63,9 +65,10 @@ for audible exports. Browser capture overlaps ordered encoder writes with bounde
 `withRenderSession` already reuses a browser and bundle across multiple operations; batch reuse
 must extend that implementation rather than add another session abstraction.
 
-The browser package has no Remotion dependency. The
-[CLI package](../packages/cli/package.json) still directly depends on the Remotion adapter.
-Import-free browser execution therefore does not establish a Remotion-free installation.
+The browser package has no Remotion dependency. In this isolated candidate the
+[CLI package](../packages/cli/package.json) treats the Remotion adapter as an optional peer.
+The fresh tarball smoke checks physical dependency absence as well as default workflows.
+Main still retains the adapter as a required dependency until promotion.
 
 ### Upstream comparison, checked 2026-10-29
 
@@ -455,8 +458,8 @@ diagnostic before the default changes; they must never be silently ignored.
 Keep Remotion as a comparison/compatibility option during qualification. Then change the default
 and remove it from required installation. Retain an optional adapter only if there is a concrete
 compatibility need; deleting its code can follow independently. Update scaffolds, README, help,
-CI and package tests in the same migration. This planning document changes no production defaults
-or dependencies.
+CI and package tests in the same migration. The isolated candidate implements these changes and documents local evidence. Promotion and
+supported-platform qualification remain pending.
 
 ## Live reliability remains a separate qualification
 
@@ -499,7 +502,8 @@ Replacement requires correctness, installation independence and supported workfl
 Claiming that the renderer is better and faster additionally requires measured throughput and
 iteration benefits. Track each requirement with the producing revision and retained reports.
 
-- [ ] Existing Setcast render/still/clip/preview/bundle workflows work without Remotion installed.
+- [x] Existing Setcast render/still/clip/preview/bundle workflows work without Remotion installed
+  in the local macOS candidate tarball check. Other platforms remain under the installed-package criterion.
 - [ ] Required theme/CSS, frame, audio, video-loop and readiness checks pass on supported runtimes.
 - [ ] Real capture/encoder failures, cancellation and resume preserve existing output and clean up
   active resources; corrupt/stale cache entries cannot produce a successful stale export.

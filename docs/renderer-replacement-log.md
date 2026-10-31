@@ -13,7 +13,7 @@ coherent validated change. No push or publication is authorized. Another project
 this machine; repeat suspicious performance measurements when that load stops. Do not stop or
 modify that other project.
 
-Remotion remains the default. Comparison tooling now records active capture/encoding, process-tree
+The main branch retains Remotion as the default. This isolated migration candidate selects browser. Comparison tooling now records active capture/encoding, process-tree
 resources and external CPU load. A current-upstream 4.0.539 exercise is retained, but matched-quality
 performance across the full suite and platform qualification remain incomplete. The direct decoded-
 canvas candidate was rejected. Continuous audio overlap, hardware H.264, bounded persistent chunk
@@ -962,3 +962,57 @@ Final quality-tool ready passed all 667 tests in 111 files, formatting/lint/type
 isolation and decoded smoke. Both lossless RGB controls and all identity/mismatch checks passed.
 Logs: `/tmp/setcast-quality-{commit-check,final-ready,content-final}.log`. This completes the
 measurement-tool milestone, not the broader matched-quality speed qualification.
+
+## Browser-first migration candidate, 1 November 2026
+
+This branch starts at main commit 979582c and is isolated from production defaults. Configuration,
+CLI helpers, doctor/capabilities and scaffolds now select browser. Remotion is an optional CLI
+peer and remains a workspace development dependency for compatibility checks. Studio explicitly
+selects Remotion's hardware resolver, preserving renderer overrides in both directions.
+
+The package smoke now installs packed tarballs into a fresh pnpm dependency tree. Browser mode
+installs only the CLI as a root dependency and uses local tarball overrides for its Setcast
+dependencies; it asserts that no Remotion package appears in the virtual store. Library smoke
+scripts run from the installed CLI's dependency context so root-level development links cannot
+hide undeclared dependencies. Compatibility mode explicitly installs the optional adapter too.
+Pinned local pnpm and vp are executed through Node entry points for portable Windows execution.
+
+Initial lint/types pass. The first unit run passed 662 tests and failed five HTTP-server tests
+because sandboxed localhost listening returned EPERM. The authorized unsandboxed ready run is
+now checking the same tests without changing their limits. No default has been promoted to main.
+
+Candidate ready passes all 667 tests in 111 files, required dependency isolation including CLI,
+and the default browser smoke (90 decoded H.264 frames, AAC audio and motion). The first fresh
+tarball install failed because pnpm 11.22.0 ignores `package.json`'s `pnpm.overrides`; it attempted
+to fetch unpublished Setcast dependencies. Overrides now live in `pnpm-workspace.yaml`, as
+[pnpm documents](https://pnpm.io/settings). Retry is in progress. The failure is retained in
+`/tmp/setcast-browser-first-package.log`; it was not a renderer or dependency-isolation failure.
+
+The expanded fresh browser-only tarball retry passed with no Remotion packages physically
+installed. Default render, all theme stills, diagnostics/validation, playback, preview export,
+persistent cache decoded equality, missing-adapter errors, default CLI preview, clipped short
+output and bundled video/thumbnail/description all passed. Reports retain actual platform/runtime
+details and the fresh installation lock digest. CI is prepared for independent Linux/macOS/Windows
+installed checks, but no CI runs have been claimed or started. Migration and rollback are documented
+in `docs/browser-first-migration.md`; the plan distinguishes candidate defaults from main. Browser
+export acceptance passed; Remotion acceptance and optional-adapter installation are next.
+
+Both export acceptance suites passed, including fractional timing, delayed assets, video loops,
+GPU fixtures, cancellation, recovery and destination preservation. Candidate ready passed all
+667 tests in 111 files, lint/types/formatting, the expanded dependency check and the decoded
+90-frame browser smoke. Optional-adapter packaging also passed: explicit Remotion validation
+and six decoded export frames work alongside the browser default. Its initial report writer
+shadowed the report variable with a validation response and failed after export; that test-harness
+bug is fixed and the failed log is retained. Final package assertions resolve actual installed
+package directories through the CLI context, so absent root-level transitive links cannot make
+source-isolation assertions pass vacuously.
+
+Reports are retained in `docs/research/browser-first-2026-11-01/`. Linux and Windows CI jobs are
+prepared but unexecuted. Main defaults and production concurrency remain unchanged. No matched-
+quality speed target or cross-platform release criterion is marked complete by these local runs.
+
+Final candidate package checks pass in both modes; the final browser-only check also verifies
+actual resolved package `dist` directories and absence of `src`. Final ready again passes all
+667 tests and decoded browser smoke. Retained evidence includes both harness failures and
+successful install/acceptance reports. This candidate is ready for review and platform execution,
+not production promotion.

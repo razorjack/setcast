@@ -23,7 +23,7 @@ import { bold, dim, intro, log, outro, RenderUi, formatPath, steel, warn } from 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
 Renders the project in <dir> (default: current directory) to an MP4.
-  --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
+  --renderer  browser (default) or remotion (optional adapter); overrides renderer: in YAML
   --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:

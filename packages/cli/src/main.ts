@@ -48,7 +48,7 @@ ${bold('Usage')}  setcast <command> [options]
   ${steel('chapters')}  print YouTube chapters + description
   ${steel('live')}      visualize a live audio input in the browser
   ${steel('replay')}    turn a session journal and recorded master into a project
-  ${steel('browser-install')}  install Chromium for the experimental browser exporter
+  ${steel('browser-install')}  install pinned Chromium for the browser exporter
 
 Run ${bold('setcast <command> --help')} for details.
 `;

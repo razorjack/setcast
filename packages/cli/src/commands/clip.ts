@@ -27,7 +27,7 @@ const MAX_SECONDS = 120;
 export const help = `setcast clip [dir] [--at MM:SS] [--seconds 45] [--all] [--out clip.mp4] [--theme name]
 
 Cuts a promo clip around a drop, for socials. The drop lands a third of the way in.
-  --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
+  --renderer  browser (default) or remotion (optional adapter); overrides renderer: in YAML
   --at       the drop to cut around; defaults to the first drop
   --seconds  clip length, ${MIN_SECONDS} to ${MAX_SECONDS}; clips at the set end (default ${DEFAULT_SECONDS})
   --all      one clip per drop

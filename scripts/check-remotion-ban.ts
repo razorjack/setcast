@@ -1,26 +1,34 @@
 // Proves the renderer seam: no Remotion package may appear in the dependency graph of any
-// plugin-facing package (everything except @setcast/renderer-remotion and the CLI that loads it).
+// plugin-facing package or the CLI's required installation. Its optional compatibility adapter
+// is the only permitted exception.
 // Complements the Oxlint no-restricted-imports rule in vite.config.ts. Run: vp run ban-check
 import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const PLUGIN_FACING = ['packages/core', 'packages/themes', 'packages/renderer-browser'];
+const INDEPENDENT = [
+  'packages/core',
+  'packages/themes',
+  'packages/renderer-browser',
+  'packages/cli',
+];
 
-const isRemotion = (name: string) => name === 'remotion' || name.startsWith('@remotion/');
+const isRemotion = (name: string) =>
+  name === 'remotion' || name.startsWith('@remotion/') || name === '@setcast/renderer-remotion';
 
 interface PackageJson {
   name: string;
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
+  peerDependenciesMeta?: Record<string, { optional?: boolean }>;
 }
 
 const readPackage = (dir: string): PackageJson =>
   JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
 
 let failed = false;
-for (const packagePath of PLUGIN_FACING) {
+for (const packagePath of INDEPENDENT) {
   const offenders = walk(join(root, packagePath));
   if (offenders.length === 0) {
     console.log(`✓ ${packagePath}: no Remotion in its dependency graph`);
@@ -45,6 +53,13 @@ function walk(dir: string, seen = new Set<string>(), trail: string[] = []): stri
   const pkg = readPackage(dir);
   const offenders: string[] = [];
   for (const dependency of Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies })) {
+    if (
+      pkg.name === '@setcast/cli' &&
+      dependency === '@setcast/renderer-remotion' &&
+      !pkg.dependencies?.[dependency] &&
+      pkg.peerDependenciesMeta?.[dependency]?.optional
+    )
+      continue;
     if (isRemotion(dependency)) {
       offenders.push([...trail, pkg.name, dependency].join(' → '));
       continue;

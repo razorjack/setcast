@@ -75,12 +75,14 @@ a path to your own `.css`.
 ## Get started
 
 Setcast is not on npm yet, so you run it from a clone of this repository. You need Node 26 and
-[Vite+](https://vite.plus):
+[Vite+](https://vite.plus), plus FFmpeg on PATH for video export:
 
 ```sh
 curl -fsSL https://vite.plus | bash       # installs vp
 git clone https://github.com/razorjack/setcast && cd setcast
 vp install
+node packages/cli/bin/setcast.js browser-install
+node packages/cli/bin/setcast.js doctor
 ```
 
 Try the demo set first:
@@ -90,10 +92,10 @@ vp run demo-assets                        # generates the demo audio
 cd examples/demo && vp run render
 ```
 
-That renders `examples/demo/out/demo.mp4` (2:34, 1080p30, h264 + aac). The first render
-downloads Chrome Headless Shell (about 100 MB) once. On Linux it needs the usual browser
-libraries, which desktop installs already have; on a minimal server or container, install the
-packages listed in Remotion's [Linux dependencies](https://www.remotion.dev/docs/miscellaneous/linux-dependencies).
+That renders `examples/demo/out/demo.mp4` (2:34, 1080p30, H.264 + AAC). Browser installation
+is explicit and downloads the pinned Chromium runtime once. On Linux, install its system
+libraries with `vp exec --filter @setcast/renderer-browser playwright install --with-deps chromium`.
+`doctor` checks the installed browser and FFmpeg before an export.
 
 Then start your own project:
 
@@ -192,12 +194,10 @@ validation and evidence. [Theme and plugin APIs](docs/theme-plugin-contract.md) 
 renderer and CSS contracts. `setcast inspect --at 4:20` explains the resolved credits and
 boundary origins; `--json` exports the finite document with IDs.
 
-`output.gl: auto` uses ANGLE on macOS and Linux and lets Chromium choose its backend elsewhere.
-ANGLE renders on the GPU where one is available and falls back to software rendering otherwise.
-Set `gl: default` to use Chromium's choice on any platform, or select `angle`, `egl`,
-`swiftshader`, `swangle`, `vulkan` or `angle-egl` explicitly. This applies to renders,
-clips, stills and Studio's render settings. Software backends can be useful on machines
-without a GPU, but can make glows and other effects slower.
+The browser exporter accepts `output.gl: auto`, `default` and `angle`. Chromium uses a GPU
+where available and can fall back to software graphics. The optional Remotion adapter also
+accepts `egl`, `swiftshader`, `swangle`, `vulkan` and `angle-egl`. Unsupported settings fail
+before capture. Software graphics can make glows and other effects slower.
 
 Video encoding uses software H.264 with `crf: 18` by default. To try hardware encoding
 (VideoToolbox on macOS, NVENC on supported NVIDIA systems), configure a bitrate instead:
@@ -215,7 +215,7 @@ rendering, Setcast encodes one test frame with the hardware encoder. If it canno
 `if-possible` warns and encodes in software at the same bitrate; `required` stops with an error.
 On Linux and Windows the hardware encoder is NVENC, which needs an NVIDIA GPU and its driver.
 A driver failure after encoding has started can still stop an export. These settings apply to
-renders, clips and Studio's render settings.
+renders, clips and preview exports.
 
 Hardware encoding speeds up compression, while frame rendering still uses Chromium. A bitrate
 of `12M` is a starting point for 1080p/30 fps, not a quality equivalent to CRF 18. Compare a short
@@ -231,12 +231,14 @@ output:
 The `fast` profile uses `jpegQuality: 92` and `x264Preset: veryfast`, keeping resolution,
 frame rate and CRF unchanged. The default `standard` profile uses JPEG quality 95 and
 the `medium` preset. Explicit `jpegQuality`, `x264Preset` and `crf` settings take precedence.
-These settings apply to renders, clips and Studio exports. With hardware encoding, `fast`
+These settings apply to renders, clips and preview exports. With hardware encoding, `fast`
 changes only JPEG quality; omit `x264Preset`, which configures software encoding only.
-The [rendering benchmarks](docs/render-performance.md) measured 14–25% shorter exports
+Historical [Remotion rendering benchmarks](docs/render-performance.md) measured 14–25% shorter exports
 with this combination on the tested clips. Actual gains depend on the theme and machine.
 
-For long software exports, if Remotion selects serial encoding and at least two chunks remain,
+The browser exporter streams frames into FFmpeg with bounded backpressure and requires
+`output.parallelEncoding: true` (the default). For long software exports with the optional
+Remotion adapter, if Remotion selects serial encoding and at least two chunks remain,
 Setcast captures the next chunk while encoding the preceding one. This retains at most two
 JPEG sequences. Set `output.parallelEncoding: false` to serialize these stages when memory or
 temporary disk space is limited. This also disables Remotion's optional parallel encoder for
@@ -271,7 +273,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 | `setcast init`     | scaffolds a project; `--demo` includes a generated demo track                                    |
 | `setcast import`   | turns a tracklist file (plain text or `.cue`) into `plays:` with source evidence; `--write` replaces that list after validation |
 | `setcast analyze`  | reads the audio and drafts mix drop and breakdown annotations plus tempo, without snapping; `--write` accepts and merges them |
-| `setcast preview`  | opens Remotion Studio; `--renderer browser` selects the independent frame inspector                                                                 |
+| `setcast preview`  | opens audible playback and the exact-frame inspector; `--renderer remotion` selects optional Studio                                                                 |
 | `setcast play`     | prototype: plays a recorded project in a local browser and switches themes, credits and art while it plays |
 | `setcast render`   | renders the MP4; `--range A-B` renders a slice, `--bundle` also writes the thumbnail and description |
 | `setcast clip`     | cuts a 45 s promo clip around a drop; `--at 1:04` picks one, `--all` cuts one per drop            |
@@ -288,7 +290,7 @@ SVG sources remain in the repository. After changing them, regenerate the shippe
 
 The [independent preview](docs/independent-preview.md) provides exact frame stepping, audio-feature
 and readiness inspection, local reference-image comparison and automatic project reload.
-`renderer: browser` also selects it for `preview`; Remotion remains the default.
+Browser is the default for exports and preview. `--renderer remotion` selects the optional compatibility adapter.
 
 `play`, `preview`, `render`, `clip` and `still` take `--theme <name>` to try a theme without editing
 `setcast.yaml`, e.g. `setcast still --theme bristol --out bristol.jpg`. Run
@@ -495,12 +497,17 @@ cues and saved scene changes; `setcast replay` maps them onto a separately recor
 
 ## Renderer
 
-Setcast v1 renders with [Remotion](https://www.remotion.dev), isolated in one adapter package.
-Nothing else in the project imports Remotion (the linter and a dependency-graph check enforce
-it). An experimental Playwright + pinned Chromium + FFmpeg exporter is selectable with
-`renderer: browser` or `--renderer browser`; Remotion remains the default. See the
-[browser exporter guide](docs/browser-renderer.md) for installation, supported options and
-verification limits. Remotion has its own [license terms](https://www.remotion.dev/license); check whether they apply to you.
+Setcast renders with its own Playwright + pinned Chromium + FFmpeg adapter. The required CLI,
+core, theme and browser dependency graphs contain no Remotion packages. Setcast owns the frame
+clock, readiness, audio analysis and plugin contracts. See the [browser renderer guide](docs/browser-renderer.md)
+for capabilities and limits and the [migration guide](docs/browser-first-migration.md) for setup,
+compatibility and rollback.
+
+The optional `@setcast/renderer-remotion` adapter supports existing Remotion workflows and Studio.
+It must be installed alongside the CLI in the same local or global installation. Remotion has its
+own [license terms](https://www.remotion.dev/license). This isolated migration candidate has not
+been promoted to the main branch: matched-quality performance and supported-platform
+qualification are still pending. No general speed advantage is claimed.
 
 For long browser exports, add `setcast render --renderer browser --resume` from the first attempt.
 Completed chunks survive interruption and are validated before reuse; successful output removes

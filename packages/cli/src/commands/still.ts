@@ -19,7 +19,7 @@ import { bold, intro, outro, RenderUi, formatPath } from '../ui.ts';
 export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme name|all]
 
 Renders one frame as an image, ready to upload as the YouTube thumbnail.
-  --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
+  --renderer  browser (default) or remotion (optional adapter); overrides renderer: in YAML
   --at     the moment to grab; defaults to the first drop, or a quarter into the set
   --out    output file; .png, .jpg or .webp (default: output.file with a .jpg extension)
   --theme  a built-in theme or a .css file to use instead of setcast.yaml's theme:;

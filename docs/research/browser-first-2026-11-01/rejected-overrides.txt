@@ -1,0 +1,41 @@
+$ node scripts/package-smoke.ts --browser ⊘ cache disabled
+Progress: resolved 0, reused 0, downloaded 1, added 0
+[ERR_PNPM_FETCH_404] GET https://registry.npmjs.org/@setcast%2Frenderer-browser: Not Found - 404
+
+This error happened while installing the dependencies of @setcast/cli@0.1.0
+
+@setcast/renderer-browser is not in the npm registry, or you have no permission to fetch it.
+
+No authorization header was set for the request.
+ [WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /private/tmp/setcast-browser-first-candidate/node_modules/pnpm/bin/pnpm.mjs install --ignore-scripts --prefer-offline --no-frozen-lockfile
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:20)
+    at maybeClose (node:internal/child_process:1125:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: '/Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /private/tmp/setcast-browser-first-candidate/node_modules/pnpm/bin/pnpm.mjs install --ignore-scripts --prefer-offline --no-frozen-lockfile',
+  stdout: 'Progress: resolved 0, reused 0, downloaded 1, added 0\n' +
+    '[ERR_PNPM_FETCH_404] GET https://registry.npmjs.org/@setcast%2Frenderer-browser: Not Found - 404\n' +
+    '\n' +
+    'This error happened while installing the dependencies of @setcast/cli@0.1.0\n' +
+    '\n' +
+    '@setcast/renderer-browser is not in the npm registry, or you have no permission to fetch it.\n' +
+    '\n' +
+    'No authorization header was set for the request.\n',
+  stderr: '[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.\n'
+}
+
+Node.js v26.7.0
+

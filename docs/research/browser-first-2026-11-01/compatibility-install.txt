@@ -1,0 +1,7 @@
+$ node scripts/package-smoke.ts --report docs/research/browser-first-2026-11-01/installed-compatibility-macos.json ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+  installed optional Remotion adapter: validation and six decoded export frames
+package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)
+

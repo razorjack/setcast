@@ -239,7 +239,7 @@ export const ProjectConfigSchema = z
         .enum(['remotion', 'browser'], {
           error: 'renderer must be remotion or browser.',
         })
-        .default('remotion'),
+        .default('browser'),
       output: OutputSchema.prefault({}),
       ...MixInputShape,
       presentation: z

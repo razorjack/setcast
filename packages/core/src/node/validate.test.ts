@@ -187,7 +187,9 @@ test('renderer incompatibilities keep their authored paths and do not stop scene
 });
 
 test('renderer selection is explicit in reports and overrides do not rewrite configuration', async () => {
-  await recorded('output: {hardwareAcceleration: if-possible, videoBitrate: 12M}');
+  await recorded(
+    'renderer: remotion\noutput: {hardwareAcceleration: if-possible, videoBitrate: 12M}',
+  );
   const unchecked = await validateProject(root, { themes, probeDuration: async () => 60 });
   expect(unchecked.renderer).toEqual({ name: 'remotion', checked: false });
   const report = await validateProject(root, {

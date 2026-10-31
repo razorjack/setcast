@@ -1,12 +1,40 @@
 import assert from 'node:assert/strict';
-import { execFile, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { checkInstalledPreview } from './package-smoke-preview.ts';
+import { execFile } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdir, mkdtemp, readFile, realpath, rm, stat, symlink, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  realpath,
+  rm,
+  stat,
+  symlink,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
+import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify, parseArgs } from 'node:util';
-const { values } = parseArgs({ options: { browser: { type: 'boolean', default: false } } });
+const { values } = parseArgs({
+  options: { browser: { type: 'boolean', default: false }, report: { type: 'string' } },
+});
+const report = {
+  version: 1,
+  status: 'running',
+  node: process.version,
+  platform: process.platform,
+  arch: process.arch,
+  browserOnly: values.browser,
+  packages: [] as string[],
+  lockSha256: '',
+  diagnostics: [] as unknown[],
+  completed: [] as string[],
+  error: null as string | null,
+};
 
 const BRANDING_LOGO =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="200" height="200"><circle cx="5" cy="5" r="4" fill="#fff"/></svg>';
@@ -20,8 +48,15 @@ announcements:
 
 const execute = promisify(execFile);
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const names = ['core', 'themes', 'renderer-remotion', 'renderer-browser', 'cli'];
-await requirePnpm();
+const names = [
+  'core',
+  'themes',
+  ...(!values.browser ? ['renderer-remotion'] : []),
+  'renderer-browser',
+  'cli',
+];
+const pnpmBin = await packageBin('pnpm', 'pnpm');
+const vpBin = await packageBin('vite-plus', 'vp');
 const temporary = await mkdtemp(join(tmpdir(), 'setcast-packages-'));
 const modules = join(temporary, 'node_modules');
 
@@ -122,23 +157,29 @@ try {
 
 try {
   await buildAndPack();
-  await extractPackages();
+  report.completed.push('build and pack');
+  await installPackages();
+  report.completed.push('fresh tarball installation');
   await reuseBrowser();
   await exerciseCli();
+  report.status = 'passed';
   console.log('package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)');
+} catch (error) {
+  report.status = 'failed';
+  report.error = String(error);
+  throw error;
 } finally {
+  if (values.report) {
+    await mkdir(dirname(values.report), { recursive: true });
+    await writeFile(values.report, JSON.stringify(report, null, 2) + '\n');
+  }
   await rm(temporary, { recursive: true, force: true });
 }
 
-/** `vp` installs with pnpm but cannot run `pnpm pack`, so pnpm itself must be on PATH. */
-async function requirePnpm(): Promise<void> {
-  if (spawnSync('pnpm', ['--version'], { stdio: 'ignore' }).status === 0) return;
-  const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
-  const { version } = manifest.devEngines.packageManager;
-  console.error(
-    `package-smoke: FAIL – pnpm is not on PATH. It packs the workspace packages. Install pnpm ${version} (for example \`mise use -g pnpm@${version}\` or \`npm install -g pnpm@${version}\`), then run vp run package-smoke again.`,
-  );
-  process.exit(1);
+async function packageBin(name: string, bin: string) {
+  const directory = join(root, 'node_modules', name);
+  const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
+  return join(directory, manifest.bin[bin]);
 }
 
 async function command(file: string, args: string[], cwd = root) {
@@ -153,11 +194,17 @@ async function command(file: string, args: string[], cwd = root) {
 
 async function buildAndPack(): Promise<void> {
   await Promise.all(
+    names.map((name) => command(process.execPath, [vpBin, 'pack'], join(root, 'packages', name))),
+  );
+  await Promise.all(
     names.map((name) =>
-      command(join(root, 'node_modules/.bin/vp'), ['pack'], join(root, 'packages', name)),
+      command(
+        process.execPath,
+        [pnpmBin, 'pack', '--pack-destination', temporary],
+        join(root, 'packages', name),
+      ),
     ),
   );
-  await command('pnpm', ['--filter', '@setcast/*', '-r', 'pack', '--pack-destination', temporary]);
 }
 
 interface Manifest {
@@ -165,43 +212,106 @@ interface Manifest {
   version: string;
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
+  peerDependenciesMeta?: Record<string, { optional?: boolean }>;
   bin?: { setcast: string };
 }
 
-/** Only Setcast tarballs are copied. Third-party runtime dependencies reuse the installed versions. */
-async function extractPackages(): Promise<void> {
+/** Install published artifacts into a fresh dependency tree; no workspace dependency links. */
+async function installPackages(): Promise<void> {
+  const overrides = await packageOverrides();
+  const dependencies = {
+    '@setcast/cli': overrides['@setcast/cli'],
+    ...(!values.browser
+      ? { '@setcast/renderer-remotion': overrides['@setcast/renderer-remotion'] }
+      : {}),
+  };
+  await writeFile(
+    join(temporary, 'package.json'),
+    JSON.stringify({ private: true, type: 'module', dependencies }, null, 2),
+  );
+  await writeFile(join(temporary, 'pnpm-workspace.yaml'), JSON.stringify({ overrides }, null, 2));
+  await command(
+    process.execPath,
+    [pnpmBin, 'install', '--ignore-scripts', '--prefer-offline', '--no-frozen-lockfile'],
+    temporary,
+  );
+  report.packages = (await readdir(join(modules, '.pnpm'))).filter(
+    (name) => name !== 'node_modules' && name !== 'lock.yaml',
+  );
+  report.lockSha256 = createHash('sha256')
+    .update(await readFile(join(temporary, 'pnpm-lock.yaml')))
+    .digest('hex');
+  await assertPackedSources();
+  if (values.browser) await assertIndependentInstall();
+}
+
+async function assertPackedSources() {
+  const cliManifest = join(modules, '@setcast/cli/package.json');
+  const require = createRequire(await realpath(cliManifest));
+  for (const name of names) {
+    const manifest =
+      name === 'cli' ? cliManifest : require.resolve(`@setcast/${name}/package.json`);
+    const directory = dirname(manifest);
+    assert(existsSync(join(directory, 'dist')), `Missing packed dist for ${name}`);
+    assert(!existsSync(join(directory, 'src')), `Packed ${name} exposes workspace source files`);
+  }
+}
+
+async function packageOverrides() {
+  const overrides: Record<string, string> = {};
   for (const name of names) {
     const source = join(root, 'packages', name);
     const manifest: Manifest = JSON.parse(await readFile(join(source, 'package.json'), 'utf8'));
-    const target = join(modules, '@setcast', name);
-    await mkdir(target, { recursive: true });
-    await command('tar', [
-      '-xzf',
+    overrides[manifest.name] = pathToFileURL(
       join(temporary, `setcast-${name}-${manifest.version}.tgz`),
-      '--strip-components=1',
-      '-C',
-      target,
-    ]);
-    assert(!existsSync(join(target, 'src')), 'Package smoke must not have workspace source files');
+    ).href;
     for (const dependency of Object.keys({
       ...manifest.dependencies,
       ...manifest.peerDependencies,
     })) {
-      if (dependency.startsWith('@setcast/')) continue;
-      const link = join(modules, dependency);
-      if (existsSync(link)) continue;
-      await mkdir(dirname(link), { recursive: true });
-      await symlink(await realpath(join(source, 'node_modules', dependency)), link);
+      if (
+        dependency.startsWith('@setcast/') ||
+        manifest.peerDependenciesMeta?.[dependency]?.optional
+      )
+        continue;
+      const installed = JSON.parse(
+        await readFile(join(source, 'node_modules', dependency, 'package.json'), 'utf8'),
+      );
+      overrides[dependency] =
+        installed.name === dependency
+          ? installed.version
+          : `npm:${installed.name}@${installed.version}`;
     }
   }
+  return overrides;
+}
+
+async function assertIndependentInstall() {
+  assert(!existsSync(join(modules, '@setcast/renderer-remotion')));
+  const installed = await readdir(join(modules, '.pnpm'));
+  assert(
+    !installed.some((name) => /^(remotion@|@remotion\+|@setcast\+renderer-remotion@)/.test(name)),
+    'Remotion appeared in the fresh browser installation',
+  );
+  const cli: Manifest = JSON.parse(
+    await readFile(join(modules, '@setcast/cli/package.json'), 'utf8'),
+  );
+  assert(!cli.dependencies?.['@setcast/renderer-remotion']);
+  assert.equal(cli.peerDependenciesMeta?.['@setcast/renderer-remotion']?.optional, true);
+  console.log('  fresh tarball installation: no Remotion packages');
 }
 
 async function reuseBrowser(): Promise<void> {
+  if (values.browser) return;
   const installed = join(root, 'packages/renderer-remotion/node_modules/.remotion');
   if (!existsSync(installed)) return;
   const target = join(modules, '@setcast/renderer-remotion/node_modules');
   await mkdir(target, { recursive: true });
-  await symlink(installed, join(target, '.remotion'));
+  await symlink(
+    installed,
+    join(target, '.remotion'),
+    process.platform === 'win32' ? 'junction' : 'dir',
+  );
 }
 
 async function exerciseCli(): Promise<void> {
@@ -212,7 +322,9 @@ async function exerciseCli(): Promise<void> {
   assert((await readFile(cli, 'utf8')).startsWith('#!/usr/bin/env node'));
   const run = (...args: string[]) => command(process.execPath, [cli, ...args], temporary);
   assert.equal((await run('--version')).stdout.trim(), manifest.version);
+  await run('browser-install');
   await exerciseTooling(run);
+  if (values.browser) await assertMissingAdapter(cli);
   const project = join(temporary, 'project');
   await run('init', project, '--demo', '--yes');
   const configFile = join(project, 'setcast.yaml');
@@ -225,7 +337,7 @@ async function exerciseCli(): Promise<void> {
   assert(inspected.plays.length > 0);
   const validated = JSON.parse((await run('validate', project, '--json')).stdout);
   assert.equal(validated.valid, true);
-  assert.deepEqual(validated.renderer, { name: 'remotion', checked: true });
+  assert.deepEqual(validated.renderer, { name: 'browser', checked: true });
   const browserValidation = JSON.parse(
     (await run('validate', project, '--renderer', 'browser', '--json')).stdout,
   );
@@ -240,11 +352,14 @@ async function exerciseCli(): Promise<void> {
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
   assert((await run('play', '--help')).stdout.includes('setcast play'));
   await exercisePlayer(project);
-  if (values.browser) await exerciseBrowser(run, project);
+  await exerciseBrowser(run, project);
+  await exerciseDefaultCommands(run, cli);
+  report.completed.push('default preview, clip and bundled export');
+  if (!values.browser) await exerciseCompatibility(run, project);
 }
 
 async function exerciseTooling(run: (...args: string[]) => Promise<{ stdout: string }>) {
-  for (const renderer of ['remotion', 'browser']) {
+  for (const renderer of values.browser ? ['browser'] : ['browser', 'remotion']) {
     const capabilities = JSON.parse(
       (await run('capabilities', '--renderer', renderer, '--json')).stdout,
     );
@@ -252,7 +367,8 @@ async function exerciseTooling(run: (...args: string[]) => Promise<{ stdout: str
     assert.equal(capabilities.renderer, renderer);
     assert(capabilities.features.includes('video'));
   }
-  const doctor = JSON.parse((await run('doctor', '--renderer', 'remotion', '--json')).stdout);
+  const doctor = JSON.parse((await run('doctor', '--json')).stdout);
+  report.diagnostics.push(doctor);
   assert.equal(doctor.version, 1);
   assert.equal(doctor.ready, true);
   assert.equal(doctor.features.video, 'ready');
@@ -263,7 +379,7 @@ async function exerciseTooling(run: (...args: string[]) => Promise<{ stdout: str
 }
 
 async function exercisePlayer(projectDir: string): Promise<void> {
-  const script = join(temporary, 'player-smoke.mjs');
+  const script = join(modules, '@setcast/cli', 'player-smoke.mjs');
   await writeFile(script, playerSmokeSource);
   await command(process.execPath, [script, projectDir], temporary);
 }
@@ -273,7 +389,6 @@ async function exerciseBrowser(
   project: string,
 ) {
   assert((await run('browser-install', '--help')).stdout.includes('pinned Chromium'));
-  await run('browser-install');
   const doctor = JSON.parse(
     (
       await run(
@@ -289,6 +404,7 @@ async function exerciseBrowser(
   assert.equal(doctor.ready, true);
   assert.equal(doctor.features.resume, 'ready');
   assert.equal(doctor.features.cache, 'ready');
+  report.diagnostics.push(doctor);
   for (const extension of ['png', 'webp']) {
     const still = join(temporary, `browser.${extension}`);
     await run('still', project, '--renderer', 'browser', '--at', '1', '--out', still);
@@ -311,6 +427,7 @@ async function exerciseBrowser(
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
   await exerciseCache(run, project);
   await exercisePreviewExport(project);
+  report.completed.push('all themes, playback, stills, video, cache, resume and preview export');
   console.log('  installed browser exporter: PNG, lossless WebP and H.264 + AAC');
 }
 
@@ -359,7 +476,123 @@ async function exerciseCache(
 }
 
 async function exercisePreviewExport(projectDir: string) {
-  const script = join(temporary, 'preview-export-smoke.mjs');
+  const script = join(modules, '@setcast/cli', 'preview-export-smoke.mjs');
   await writeFile(script, previewExportSmokeSource);
   await command(process.execPath, [script, projectDir], temporary);
+}
+
+async function assertMissingAdapter(cli: string) {
+  await assert.rejects(
+    execute(process.execPath, [cli, 'capabilities', '--renderer', 'remotion'], { cwd: temporary }),
+    (error: unknown) => {
+      const failure = error as { code: number; stderr: string };
+      return (
+        failure.code === 2 &&
+        failure.stderr.includes('Remotion renderer is not installed') &&
+        failure.stderr.includes('alongside @setcast/cli')
+      );
+    },
+  );
+}
+
+async function exerciseCompatibility(
+  run: (...args: string[]) => Promise<{ stdout: string }>,
+  project: string,
+) {
+  const validation = JSON.parse(
+    (await run('validate', project, '--renderer', 'remotion', '--json')).stdout,
+  );
+  assert.deepEqual(validation.renderer, { name: 'remotion', checked: true });
+  const out = join(temporary, 'compatibility.mp4');
+  await run(
+    'render',
+    project,
+    '--renderer',
+    'remotion',
+    '--range',
+    '0-0.2',
+    '--concurrency',
+    '1',
+    '--out',
+    out,
+  );
+  const decoded = (
+    await command('ffmpeg', [
+      '-v',
+      'error',
+      '-xerror',
+      '-i',
+      out,
+      '-map',
+      '0:v',
+      '-f',
+      'framemd5',
+      '-',
+    ])
+  ).stdout;
+  assert.equal(decoded.split('\n').filter((line) => line && !line.startsWith('#')).length, 6);
+  report.completed.push('optional Remotion validation and decoded export');
+  console.log('  installed optional Remotion adapter: validation and six decoded export frames');
+}
+
+async function exerciseDefaultCommands(
+  run: (...args: string[]) => Promise<{ stdout: string }>,
+  cli: string,
+) {
+  const project = join(temporary, 'short-project');
+  await mkdir(project);
+  await command('ffmpeg', [
+    '-v',
+    'error',
+    '-f',
+    'lavfi',
+    '-i',
+    'sine=frequency=440:sample_rate=48000',
+    '-t',
+    '0.2',
+    join(project, 'audio.wav'),
+  ]);
+  await writeFile(join(project, 'art.svg'), BRANDING_LOGO);
+  await writeFile(
+    join(project, 'setcast.yaml'),
+    `title: Installed default commands
+audio: audio.wav
+background: art.svg
+plays: [{at: 0, title: Short fixture}]
+output: {width: 640, height: 360, fps: 30}
+`,
+  );
+  await checkInstalledPreview(cli, project);
+  const clip = join(project, 'clip.mp4');
+  await run('clip', project, '--at', '0', '--seconds', '10', '--out', clip);
+  const bundle = join(project, 'bundle.mp4');
+  await run('render', project, '--bundle', '--out', bundle);
+  await assertVideoFrames(clip, 6);
+  await assertVideoFrames(bundle, 6);
+  assert((await stat(join(project, 'bundle.jpg'))).size > 0);
+  assert((await readFile(join(project, 'bundle.txt'), 'utf8')).includes('Short fixture'));
+  console.log(
+    '  installed defaults: CLI preview, clip and bundled video, thumbnail and description',
+  );
+}
+
+async function assertVideoFrames(file: string, expected: number) {
+  const decoded = (
+    await command('ffmpeg', [
+      '-v',
+      'error',
+      '-xerror',
+      '-i',
+      file,
+      '-map',
+      '0:v',
+      '-f',
+      'framemd5',
+      '-',
+    ])
+  ).stdout;
+  assert.equal(
+    decoded.split('\n').filter((line) => line && !line.startsWith('#')).length,
+    expected,
+  );
 }

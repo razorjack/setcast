@@ -43,7 +43,7 @@ interface ProjectContent {
 export const help = `setcast init [dir] [--demo] [--yes]
 
 Scaffolds a project: setcast.yaml, a background, and (with --demo) a generated demo track so
-\`setcast render\` works immediately. Interactive unless --yes.`;
+\`setcast render\` works after browser and FFmpeg setup. Interactive unless --yes.`;
 
 export async function run(argv: string[]): Promise<void> {
   const options = parseOptions(argv);
@@ -167,7 +167,7 @@ function configFor(answers: InitAnswers, project: ProjectContent): Record<string
     audio: project.audio || 'CHANGE-ME.wav',
     background: 'assets/bg.png',
     theme: answers.theme,
-    renderer: 'remotion',
+    renderer: 'browser',
     output: { width: 1920, height: 1080, fps: answers.fps, file: 'out/set.mp4' },
   };
   if (project.bpm) config.bpm = project.bpm;
@@ -183,6 +183,9 @@ function showNextSteps(dir: string, audio: string): void {
     log.warn(`Set ${bold('audio:')} in ${CONFIG_FILE} to your mix file before rendering.`);
   }
 
+  log.info(
+    'Before exporting, run setcast browser-install and provide FFmpeg on PATH. Check setup with setcast doctor.',
+  );
   const commands = `${bold('setcast preview')} ${dim('or')} ${bold('setcast render')}`;
   if (dir === process.cwd()) {
     outro(`Next: ${commands}`);
@@ -238,7 +241,7 @@ function promptAudio(demoDefault: boolean) {
       {
         value: 'demo',
         label: 'Generate a demo track',
-        hint: '40 s of synthesized drum & bass, renders immediately',
+        hint: '40 s of synthesized drum & bass, ready for rendering',
       },
       { value: 'file', label: 'I have a mix file', hint: 'you will point audio: at it' },
     ],
