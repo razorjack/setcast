@@ -104,12 +104,19 @@ async function captureReference() {
   const sourceHash = ffmpeg(hashArgs, control.signal);
   try {
     await withCapture(project, options, async (page) => {
+      const cdp = await page.context().newCDPSession(page);
       for (let frame = range[0]; frame <= range[1]; frame++) {
         await prepareFrame(page, frame);
-        const image = await page.screenshot({ type: 'png' });
+        const screenshot = await cdp.send('Page.captureScreenshot', {
+          format: 'png',
+          optimizeForSpeed: true,
+          captureBeyondViewport: false,
+        });
+        const image = Buffer.from(screenshot.data, 'base64');
         await Promise.all([lossless.write(image), sourceHash.write(image)]);
         mergeRegions(await measureRegions(page));
       }
+      await cdp.detach();
     });
     await Promise.all([lossless.finish(), sourceHash.finish()]);
     await identity.assertInputsUnchanged();
@@ -157,6 +164,7 @@ async function saveReference(identity: string) {
     file,
     fileDigest: await digestFile(file),
     sourceRgbHash: decoded.trim(),
+    capture: 'png-cdp-optimize-for-speed',
     regions,
     scope:
       'Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range.',

@@ -1,0 +1,65 @@
+{
+  "scope": "Exact PNG decode comparison; timings are diagnostic under shared load.",
+  "results": [
+    {
+      "theme": "sterile-tech",
+      "portrait": false,
+      "at": 30,
+      "equal": true,
+      "normalMs": 532.592458,
+      "fastMs": 76.60733299999993,
+      "normalBytes": 2381150,
+      "fastBytes": 2903212
+    },
+    {
+      "theme": "sterile-tech",
+      "portrait": false,
+      "at": 90,
+      "equal": true,
+      "normalMs": 481.40266700000006,
+      "fastMs": 73.63595899999973,
+      "normalBytes": 2263539,
+      "fastBytes": 2784063
+    },
+    {
+      "theme": "sterile-tech",
+      "portrait": false,
+      "at": 110.4,
+      "equal": true,
+      "normalMs": 467.4094170000003,
+      "fastMs": 76.10158299999966,
+      "normalBytes": 2362552,
+      "fastBytes": 2872760
+    },
+    {
+      "theme": "sterile-tech",
+      "portrait": true,
+      "at": 30,
+      "equal": true,
+      "normalMs": 252.68683299999975,
+      "fastMs": 50.401834000000235,
+      "normalBytes": 1178725,
+      "fastBytes": 1638815
+    },
+    {
+      "theme": "sterile-tech",
+      "portrait": true,
+      "at": 90,
+      "equal": true,
+      "normalMs": 256.4656249999998,
+      "fastMs": 48.29820800000016,
+      "normalBytes": 1093438,
+      "fastBytes": 1541091
+    },
+    {
+      "theme": "sterile-tech",
+      "portrait": true,
+      "at": 110.4,
+      "equal": true,
+      "normalMs": 259.076916,
+      "fastMs": 51.749665999999706,
+      "normalBytes": 1232665,
+      "fastBytes": 1734604
+    }
+  ]
+}

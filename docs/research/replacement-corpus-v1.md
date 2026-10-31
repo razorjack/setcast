@@ -59,3 +59,34 @@ long lossless references: sequential FFV1 can be much larger than the delivery e
 reference windows do not establish whole-master pixel fidelity and must be labelled as samples.
 
 No result, platform qualification or speed target is implied by this corpus definition.
+
+## Running the quality pass
+
+The definitions and initial manifest were committed in 9838b84 before corpus comparisons.
+Use the sequential coordinator to capture references, export both implementations and compute
+full-frame and regional metrics:
+
+```sh
+node scripts/corpus-quality.ts \
+  --manifest examples/demo/out/replacement-corpus-v1/manifest.json \
+  --upstream /path/to/current-remotion-checkout \
+  --out examples/demo/out/corpus-quality-v1 \
+  --discard-reference
+```
+
+`--case NAME` restricts a diagnostic retry; retain both the full attempt and the retry. This
+coordinator deliberately runs one pair per case without a quiet-period requirement. Its export
+times are calibration data and must not be used as performance evidence. Its current candidate
+is browser JPEG 100 / CRF 16 against the authored Remotion CRF 18, both with one capture worker.
+A report status of `measured` means the tools completed, not that perceptual parity is established.
+`allAtLeastReference` compares every recorded mean, p05 and minimum RGB PSNR/SSIM and VMAF NEG;
+false results remain visible for investigation. Visual review remains required.
+
+The coordinator checks the frozen authored configuration and reference project/asset digests,
+then the metric tool checks both export identities. It requires enough free space for a
+conservative uncompressed RGB reference plus reserve before each case. With `--discard-reference`,
+it removes only that new case's bulk FFV1 after both metrics finish and three lossless sample
+PNGs are saved and hashed. Full source/decoded hashes, per-frame metrics, encoded videos and
+first/middle/final PNGs remain. Without this explicit option, all references remain. A failed
+case retains its reference. Regenerate a removed bulk reference when deeper visual inspection
+requires frames outside the retained samples.

@@ -1023,3 +1023,31 @@ removing only newly generated bulk references. Never remove user source media or
 Corpus/calibration milestone ready passed all 667 tests in 111 files, formatting/lint/types,
 Remotion isolation and decoded smoke. Log: `/tmp/setcast-corpus-ready.log`. The frozen corpus
 and higher-fidelity calibration are now ready for broader per-case output comparison.
+
+Corpus definitions and calibration evidence committed as 9838b84. A sequential quality
+coordinator is now running all frozen cases against current Remotion 4.0.539 with browser
+JPEG 100 / CRF 16, one worker per adapter. This pass deliberately excludes performance claims.
+It records all metrics and identity checks and bounds disk use by retaining three lossless
+reference samples before deleting only each newly generated bulk reference after successful
+measurement. Failed cases retain their reference. Logs: `/tmp/setcast-corpus-quality.log`.
+
+Lossless-reference generation exposed a tooling bottleneck: Chromium's normal PNG screenshot
+compression dominated the reference process. A separate exact-RGBA experiment compared normal
+Playwright PNG against CDP PNG with `optimizeForSpeed: true`. All 120 cases matched exactly:
+16 themes x two orientations x three absolute moments, plus field/tunnel/constellation/looping
+video x two orientations x three moments. The reference tool now uses this lossless compression
+mode and records it in each new manifest. Production screenshots and encoding are unchanged.
+The first corpus reference used the original PNG mode; subsequent references use the verified
+mode. Every reference still verifies complete source-to-FFV1 decoded RGB equality. Probe timings
+ran under shared load and are diagnostic, not replacement performance evidence.
+
+The first complete frozen-corpus case (standard, 300 frames) measured successfully. Browser
+JPEG 100 / CRF 16 meets or exceeds current Remotion CRF 18 for every recorded full/credit-region
+mean, minimum and p05 metric. Native-size midpoint credit crops were inspected for all three
+reference/browser/Remotion images; no missing content or placement difference was observed.
+This is one case, not completion of the corpus. Afterhours is in progress. PNG experiment
+reports are retained under `research/png-reference-2026-11-01/`.
+
+The corpus coordinator and faster lossless-reference tooling passed final ready: 667 tests,
+111 files, lint/types/formatting, dependency isolation and decoded smoke. The ongoing corpus
+measurement remains separate from this tooling milestone. Log: `/tmp/setcast-corpus-tools-ready.log`.
