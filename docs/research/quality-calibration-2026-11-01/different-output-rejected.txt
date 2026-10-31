@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Video changed after timed export
++ actual - expected
+
++ 'different-video'
+- '5172a098b377dfec4a17f8eea7c875c7e7f200ccf6b1dde7033edd730ef4b71e'
+
+    at file:///Users/razorjack/Projects/OpenSource/setcast/scripts/render-quality.ts:104:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'different-video',
+  expected: '5172a098b377dfec4a17f8eea7c875c7e7f200ccf6b1dde7033edd730ef4b71e',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

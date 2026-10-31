@@ -257,6 +257,29 @@ text, dark gradients, glows and edges, and report encoded quality and size. Equa
 across encoders, or one global SSIM value, do not establish matched quality. Keep timestamp,
 decoded-frame, chunk-boundary and stereo-alignment verification separate from image quality.
 
+The qualification tools now separate lossless reference capture from timed export. Run
+`node packages/renderer-browser/bench/quality-reference.ts PROJECT --at 90 --seconds 10 --out NEW_DIRECTORY`
+to capture PNG frames into lossless FFV1, with complete source/decoded RGB hash equality. The
+manifest records the resolved project digest and unions of credit, branding and tracklist bounds
+across all captured frames. Reference capture is never included in export timing.
+
+`node scripts/render-quality.ts --reference reference.json --video output.mp4 --comparison report.json --out NEW_DIRECTORY`
+checks absolute frame ranges and exact project/asset/output identity against comparison report
+version 4, dimensions, frame
+count and FPS. It records per-frame RGB PSNR/SSIM for the full frame and each text region, plus a
+pinned VMAF NEG model and low-percentile scores. Raw metric logs remain beside the report. Missing
+color metadata remains visible; matrix/range interpretation follows FFmpeg, without display transfer
+conversion. These measurements do not replace visual review, timing/audio acceptance or receiving-app
+checks. An identical reference can score below 100 in VMAF. See
+[FFmpeg's metric filters](https://ffmpeg.org/ffmpeg-filters.html#libvmaf) and
+[Netflix's model notes](https://github.com/Netflix/vmaf/blob/master/resource/doc/models_v0.md).
+
+The comparison runner accepts separate `--browser-concurrency` / `--remotion-concurrency`
+(including `auto`), `--browser-crf` / `--remotion-crf`, and JPEG-quality overrides. Every run records
+its effective settings. Use `--idle-busy .15` for final timing; the pre-run check waits at most a
+minute, then retains a failed report for a later retry. Keep observing external CPU during export.
+These options enable quality matching; their existence does not establish it.
+
 ### Phase 1: remove video-frame PNG serialization
 
 The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was
@@ -317,7 +340,8 @@ experiment is a valid phase outcome; do not ship it to satisfy the schedule.
 
 The [2026-10-29 scheduling investigation](research/worker-scaling-2026-10-29/README.md) found
 paint-history differences in 13/32 cases. The [31 October follow-up](research/paint-history-2026-10-31/README.md)
-is qualifying a complete paint reset before readiness. Applying invalidation after readiness
+qualifies the committed complete paint reset before readiness across repeated theme/aspect and
+worker-count comparisons. Applying invalidation after readiness
 caused capture stalls; outline invalidation preserved layout but exceeded the explicit source
 precision limit in Afterhours. Keep both rejected approaches and exact hash results visible.
 
@@ -484,7 +508,7 @@ iteration benefits. Track each requirement with the producing revision and retai
   30% lower median wall time than tuned current Remotion on the predefined core workload suite
   at matched quality. Report every workload, spread and any regression; do not hide slow classes
   behind an aggregate or redefine the suite after observing results.
-- [ ] Identical successful repeat exports avoid capture, and supported incremental edits match
+- [x] Identical successful repeat exports avoid capture, and supported incremental edits match
   fresh renders while reusing unaffected work.
 - [x] Users can hear a mix, inspect exact frames, select ranges and manage exports without Studio
   on the locally checked browser workflow. Physical playback latency and other platforms remain unqualified.

@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Reference and export used different resolved projects
++ actual - expected
+
++ 'different-project'
+- 'd8e26ac51496a374dae0cc1b45e5ac9507b54fb0cf3b3be8cb8e8932e3b74bc6'
+
+    at file:///Users/razorjack/Projects/OpenSource/setcast/scripts/render-quality.ts:84:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'different-project',
+  expected: 'd8e26ac51496a374dae0cc1b45e5ac9507b54fb0cf3b3be8cb8e8932e3b74bc6',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

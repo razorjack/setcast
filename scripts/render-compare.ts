@@ -6,6 +6,7 @@ import { cpus, release } from 'node:os';
 import {
   type RenderReport,
   type RenderRuntime,
+  type RenderOptions,
   type RuntimeReport,
   exportSettings,
   framesWithinMix,
@@ -21,46 +22,56 @@ import {
 } from '../packages/renderer-browser/src/export/identity.ts';
 import { measureLoad, verifyVideo, summarize } from './render-compare/measure.ts';
 import { measureProcesses } from './render-compare/process-monitor.ts';
+import { waitForIdle } from './render-compare/idle.ts';
+import { projectContent } from './render-compare/content.ts';
 
 const controller = new AbortController();
 const HELP = `vp run render-compare [project] --out NEW_DIRECTORY
   [--at 30] [--seconds 6] [--repeat 3] [--concurrency 2] [--theme NAME]
+  [--browser-concurrency auto|N] [--remotion-concurrency auto|N] [--idle-busy 0.15]
+  [--browser-crf N] [--remotion-crf N] [--browser-jpeg-quality N] [--remotion-jpeg-quality N]
 Compare installed Setcast adapters sequentially with alternating order and fresh render sessions.
-Project encoding settings are preserved; hardware encoding must be disabled for both arms.
+Project encoding settings are preserved unless explicitly overridden; CRF overrides clear bitrate.
+Hardware encoding must be disabled for both arms. Quality measurement is a separate command.
 Timings include loading, whole-set analysis, browser/bundle setup, rendering and session cleanup.
 Input hashing and decoded-video verification are outside the measured interval.
 This is not a current-upstream benchmark or a matched-perceptual-quality claim.
 System CPU samples include this job and other projects; do not attribute differences without review.`;
 
+const flags = {
+  out: { type: 'string' },
+  at: { type: 'string', default: '30' },
+  seconds: { type: 'string', default: '6' },
+  repeat: { type: 'string', default: '3' },
+  concurrency: { type: 'string', default: '2' },
+  theme: { type: 'string' },
+  help: { type: 'boolean' },
+  'idle-busy': { type: 'string', default: '1' },
+  'browser-concurrency': { type: 'string' },
+  'remotion-concurrency': { type: 'string' },
+  'browser-crf': { type: 'string' },
+  'remotion-crf': { type: 'string' },
+  'browser-jpeg-quality': { type: 'string' },
+  'remotion-jpeg-quality': { type: 'string' },
+} as const;
+
 function options() {
-  const { values, positionals } = parseArgs({
-    allowPositionals: true,
-    options: {
-      out: { type: 'string' },
-      at: { type: 'string', default: '30' },
-      seconds: { type: 'string', default: '6' },
-      repeat: { type: 'string', default: '3' },
-      concurrency: { type: 'string', default: '2' },
-      theme: { type: 'string' },
-      help: { type: 'boolean' },
-    },
-  });
+  const { values, positionals } = parseArgs({ allowPositionals: true, options: flags });
   if (values.help) {
     process.stdout.write(`${HELP}\n`);
     process.exit(0);
   }
   const at = Number(values.at),
     seconds = Number(values.seconds);
-  const repeat = Number(values.repeat),
-    concurrency = Number(values.concurrency);
+  const repeat = integerFlag(values.repeat, 'repeat', 1, 100),
+    concurrency = integerFlag(values.concurrency, 'concurrency', 1, 8);
   if (!values.out || positionals.length > 1)
     throw new Error(`Specify --out NEW_DIRECTORY and at most one project.\n${HELP}`);
   if (!Number.isFinite(at) || at < 0 || !Number.isFinite(seconds) || seconds <= 0)
     throw new Error('--at must be nonnegative and --seconds positive finite seconds.');
-  if (!Number.isSafeInteger(repeat) || repeat < 1 || repeat > 100)
-    throw new Error('--repeat must be an integer from 1 to 100.');
-  if (!Number.isSafeInteger(concurrency) || concurrency < 1 || concurrency > 8)
-    throw new Error('--concurrency must be an integer from 1 to 8 for both adapters.');
+  const idleBusy = Number(values['idle-busy']);
+  if (!Number.isFinite(idleBusy) || idleBusy <= 0 || idleBusy > 1)
+    throw new Error('--idle-busy must be greater than zero and at most one.');
   return {
     project: resolve(positionals[0] ?? 'examples/demo'),
     out: resolve(values.out),
@@ -69,7 +80,42 @@ function options() {
     repeat,
     concurrency,
     theme: values.theme,
+    idleBusy,
+    overrides: {
+      browser: adapterOverrides('browser', values, concurrency),
+      remotion: adapterOverrides('remotion', values, concurrency),
+    },
   };
+}
+
+function adapterOverrides(
+  name: Renderer,
+  values: Record<string, string | boolean | undefined>,
+  concurrency: number,
+) {
+  const result: Pick<RenderOptions, 'concurrency' | 'crf' | 'videoBitrate' | 'jpegQuality'> = {
+    concurrency,
+  };
+  const workerFlag = `${name}-concurrency`,
+    crfFlag = `${name}-crf`,
+    jpegFlag = `${name}-jpeg-quality`;
+  if (values[workerFlag] !== undefined)
+    result.concurrency =
+      values[workerFlag] === 'auto' ? undefined : integerFlag(values[workerFlag], workerFlag, 1, 8);
+  if (values[crfFlag] !== undefined) {
+    result.crf = integerFlag(values[crfFlag], crfFlag, 1, 51);
+    result.videoBitrate = undefined;
+  }
+  if (values[jpegFlag] !== undefined)
+    result.jpegQuality = integerFlag(values[jpegFlag], jpegFlag, 1, 100);
+  return result;
+}
+
+function integerFlag(value: unknown, name: string, min: number, max: number) {
+  const number = Number(value);
+  if (!Number.isSafeInteger(number) || number < min || number > max)
+    throw new Error(`--${name} must be an integer from ${min} to ${max}.`);
+  return number;
 }
 
 async function inputs(config: ReturnType<typeof options>) {
@@ -119,7 +165,7 @@ async function runArm(
   let firstFrameProgressSeconds: number | null = null;
   const runtime: RenderRuntime[] = [];
   try {
-    const { project, result } = await exportArm(config, renderer, file, {
+    const { project, result, settings } = await exportArm(config, renderer, file, {
       onProgress: (progress) => {
         if (firstFrameProgressSeconds === null && (progress.renderedFrames ?? 0) > 0)
           firstFrameProgressSeconds = (performance.now() - started) / 1000;
@@ -143,9 +189,12 @@ async function runArm(
       wallSeconds,
       firstFrameProgressSeconds,
       result,
+      settings,
       load: observedLoad,
       processes,
       verification,
+      ...(await projectContent(project, config.project, controller.signal)),
+      outputDigest: (await digestFile(file, controller.signal)).sha256,
       runtime,
     };
   } finally {
@@ -162,20 +211,20 @@ async function exportArm(
 ) {
   const loaded = await load(config.project, config.theme);
   const project = await withWholeSet(loaded);
+  const settings = { ...exportSettings(loaded.config.output), ...config.overrides[renderer] };
   const result = await withRenderSession(
     () =>
       render(project, {
-        ...exportSettings(loaded.config.output),
+        ...settings,
         projectDir: loaded.dir,
         out: file,
         signal: controller.signal,
-        concurrency: config.concurrency,
         range: [config.at, config.at + config.seconds],
         ...observers,
       }),
     renderer,
   );
-  return { project, result };
+  return { project, result, settings };
 }
 
 async function main() {
@@ -185,7 +234,7 @@ async function main() {
   await mkdir(config.out);
   const runs: Awaited<ReturnType<typeof runArm>>[] = [];
   const report = {
-    version: 3,
+    version: 4,
     config,
     identity,
     startedAt: new Date().toISOString(),
@@ -234,6 +283,7 @@ async function compare(
   for (let index = 0; index < config.repeat; index++) {
     const order: Renderer[] = index % 2 ? ['remotion', 'browser'] : ['browser', 'remotion'];
     for (const renderer of order) {
+      await waitForIdle(config.idleBusy, controller.signal);
       if (JSON.stringify(await inputs(config)) !== JSON.stringify(identity))
         throw new Error(
           'Project inputs changed during comparison. Start a new comparison with stable inputs.',

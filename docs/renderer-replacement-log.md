@@ -935,3 +935,30 @@ one calibration scene, not matched-quality qualification or a speed claim. Produ
 are unchanged. Remotion's current output now declares limited range and sRGB transfer/BT.709
 primaries but omits the YCbCr matrix; the metric tool records that and uses FFmpeg's default
 matrix interpretation. Receiving applications may interpret missing metadata differently.
+
+The quality harness also rejects a 29-frame video against a 30-frame reference. Erasing the
+credits lowers their region SSIM from 1 to 0.000198 while full-frame SSIM remains about 0.903,
+confirming why a global score alone is insufficient. Native-size credit crops from reference,
+browser 95, Remotion and browser 100 were inspected: content and placement are preserved in
+that sampled frame. Exact project/output digests are now being added to prevent comparisons
+against a reference from a different resolved scene or a modified encoded file.
+
+Quality-harness identity verification passes for the same resolved project/export. A comparison
+report with a different project digest is rejected before scoring. Calibration JSON, per-frame
+metrics, identity reports, negative controls and inspected credit crops are retained under
+`docs/research/quality-calibration-2026-11-01/`. The short paired runs only exercise tooling;
+their times are not performance evidence. Current upstream was rechecked on 1 November local
+time: registry version 4.0.539 and integrity are unchanged.
+
+CLI compatibility preparation committed as e2684a2. During quality-tool review, project JSON
+alone was insufficient: the same paths can hold different asset bytes, and equal-length ranges
+can cover different absolute frames. The final comparison verifies all tracked asset contents,
+absolute frame bounds, resolved project and encoded file digest. Separate negative controls for
+asset, range and output mismatches are rejected before scoring; both video inputs are rehashed
+after scoring. The final successful six-frame content check is retained beside the calibration
+records. Production capture/encoding settings and renderer default remain unchanged.
+
+Final quality-tool ready passed all 667 tests in 111 files, formatting/lint/types, dependency
+isolation and decoded smoke. Both lossless RGB controls and all identity/mismatch checks passed.
+Logs: `/tmp/setcast-quality-{commit-check,final-ready,content-final}.log`. This completes the
+measurement-tool milestone, not the broader matched-quality speed qualification.

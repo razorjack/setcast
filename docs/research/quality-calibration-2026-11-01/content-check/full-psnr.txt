@@ -1,0 +1,7 @@
+psnr_log_version:2 fields:n,mse_avg,mse_r,mse_g,mse_b,psnr_avg,psnr_r,psnr_g,psnr_b
+n:1 mse_avg:4.11 mse_r:5.56 mse_g:2.05 mse_b:4.72 psnr_avg:41.99 psnr_r:40.68 psnr_g:45.01 psnr_b:41.39 
+n:2 mse_avg:4.08 mse_r:5.54 mse_g:2.01 mse_b:4.67 psnr_avg:42.03 psnr_r:40.69 psnr_g:45.09 psnr_b:41.43 
+n:3 mse_avg:4.08 mse_r:5.57 mse_g:2.00 mse_b:4.67 psnr_avg:42.03 psnr_r:40.67 psnr_g:45.12 psnr_b:41.44 
+n:4 mse_avg:4.08 mse_r:5.56 mse_g:2.01 mse_b:4.66 psnr_avg:42.03 psnr_r:40.68 psnr_g:45.09 psnr_b:41.45 
+n:5 mse_avg:4.09 mse_r:5.56 mse_g:2.02 mse_b:4.68 psnr_avg:42.02 psnr_r:40.68 psnr_g:45.07 psnr_b:41.43 
+n:6 mse_avg:4.14 mse_r:5.60 mse_g:2.09 mse_b:4.73 psnr_avg:41.96 psnr_r:40.65 psnr_g:44.93 psnr_b:41.39 

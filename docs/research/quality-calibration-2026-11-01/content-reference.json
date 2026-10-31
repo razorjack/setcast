@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo",
+  "range": [
+    2700,
+    2705
+  ],
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "frames": 6,
+  "identity": "08b7e4835814c0e205ff2f5c6a661063bf80c1be8f0d6007682275a550af9818",
+  "projectDigest": "d8e26ac51496a374dae0cc1b45e5ac9507b54fb0cf3b3be8cb8e8932e3b74bc6",
+  "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33",
+  "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quality-content-reference-2026-11-01/reference.mkv",
+  "fileDigest": {
+    "sha256": "cdadc791b9da5617d215731e335128e43173eaede3b9143e3b1076f668989064",
+    "bytes": 8609366,
+    "stamp": "16777229:167816992:8609366:1793488368806.0818:1793488368806.0818"
+  },
+  "sourceRgbHash": "SHA256=6819f04349f0426de6088202d0b35d22b578d15fba4715e9f892188c34f03f74",
+  "regions": {
+    "credits": {
+      "x": 65,
+      "y": 154,
+      "right": 680,
+      "bottom": 466
+    }
+  },
+  "scope": "Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range."
+}

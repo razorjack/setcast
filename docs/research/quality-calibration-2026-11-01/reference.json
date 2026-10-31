@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo",
+  "range": [
+    2700,
+    2729
+  ],
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "frames": 30,
+  "identity": "650d2a4630fc0acebf150f6bd5c84c69247c8db9ff3f75dbccce7296b94f3b9a",
+  "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quality-warmup-reference-2026-11-01/reference.mkv",
+  "fileDigest": {
+    "sha256": "35c733783e358c51b339e4ecfb5c7b8b6e3c9e1a337a9acfa4ea9d3fb20d43a5",
+    "bytes": 43053905,
+    "stamp": "16777229:167803139:43053905:1793487683590.878:1793487683590.878"
+  },
+  "sourceRgbHash": "SHA256=be6adb29f1da57e8c179a19662191ae91dcde2939b1d01927ec6e689eeb4bf5a",
+  "regions": {
+    "credits": {
+      "x": 65,
+      "y": 154,
+      "right": 680,
+      "bottom": 466
+    }
+  },
+  "scope": "Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range."
+}

@@ -1,0 +1,24 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Reference and export cover different absolute frames
++ actual - expected
+
+  [
++   2730,
++   2735
+-   2700,
+-   2705
+  ]
+
+    at file:///Users/razorjack/Projects/OpenSource/setcast/scripts/render-quality.ts:83:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [ 2730, 2735 ],
+  expected: [ 2700, 2705 ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0
