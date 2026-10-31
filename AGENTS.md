@@ -118,12 +118,11 @@ Gotchas:
   `--gl swangle`; the GPU recovery fixture also selects swangle explicitly. Automatic ANGLE
   can render ordinary CSS while failing WebGL 2 context creation.
 
-- Do not promote automatic browser concurrency from the three fast 1080p fixtures alone. The
-  2026-10-29 moving-theme check found worker-dependent decoded differences in 13/32 theme/aspect
-  cases. Direct JPEG controls isolated paint-history differences in Passe-Partout and Afterhours.
-  Forcing a full body repaint fixed early cases but the broader run timed out at Bunker portrait;
-  its cause is unresolved. Both candidates are archived, not production. See
-  docs/research/worker-scaling-2026-10-29/README.md and bench/worker-frames.ts.
+- Paint invalidation must run before `FrameReadiness.settle`, so stable callbacks finish the
+  repaint. Applying display, visibility or outline invalidation after readiness caused intermittent
+  screenshot stalls. Keep the Bunker repeated-export reproducer and all-theme worker comparison.
+  The 2026-10-29 fast-fixture timings omit repaint cost and cannot qualify the final policy. See
+  docs/research/paint-history-2026-10-31/README.md and the retained 2026-10-29 worker study.
 
 - Renderer benchmarks must load projects through public core/node and theme entry points, not
   CLI source helpers. Remotion's declaration build includes `bench`; importing CLI source from a

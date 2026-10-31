@@ -5,6 +5,7 @@ import { parseArgs } from 'node:util';
 import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
 import { prepareFrame, withCapturePages, withRenderSession } from '../src/export/session.ts';
 import { pipeline } from '../src/export/pipeline.ts';
+import type { Page } from 'playwright';
 
 const { values } = parseArgs({
   options: {
@@ -13,6 +14,7 @@ const { values } = parseArgs({
     portrait: { type: 'boolean' },
     png: { type: 'boolean' },
     repaint: { type: 'boolean' },
+    inspect: { type: 'string' },
   },
 });
 if (!values.out) throw new Error('Pass --out NEW_DIRECTORY for captured-frame investigation.');
@@ -50,7 +52,15 @@ await withRenderSession(async () => {
               document.body.style.display = display;
               void document.body.offsetHeight;
             });
-          return page.screenshot(values.png ? { type: 'png' } : { type: 'jpeg', quality: 95 });
+          const image = await page.screenshot(
+            values.png ? { type: 'png' } : { type: 'jpeg', quality: 95 },
+          );
+          if (frame === Number(values.inspect))
+            await writeFile(
+              join(directory, `${frame}-state.json`),
+              JSON.stringify(await captureState(page), null, 2),
+            );
+          return image;
         },
         write: async (image, frame) => {
           hashes.push(createHash('sha256').update(image).digest('hex'));
@@ -68,4 +78,47 @@ for (const name of ['one-b', 'four']) {
     hash === reports['one-a']![index] ? [] : [index + 30],
   );
   process.stdout.write(`${name}: changed absolute frames ${JSON.stringify(changed)}\n`);
+}
+
+function captureState(page: Page) {
+  return page.evaluate(() => {
+    const resolved = window.setcastExport!.resolved!;
+    const nodes = [...document.querySelectorAll('.setcast, .setcast *')].filter(
+      (node) => node.tagName !== 'STYLE',
+    );
+    const properties = [
+      'transform',
+      'translate',
+      'scale',
+      'rotate',
+      'opacity',
+      'filter',
+      'background-image',
+      'color',
+      'font',
+      'width',
+      'height',
+      'top',
+      'left',
+    ];
+    return {
+      audio: resolved.audio,
+      mix: resolved.mix,
+      modulation: resolved.modulation,
+      nodes: nodes.map((node) => {
+        const style = getComputedStyle(node);
+        return {
+          tag: node.tagName,
+          class: node.getAttribute('class'),
+          rect: node.getBoundingClientRect().toJSON(),
+          attributes: Object.fromEntries(
+            [...node.attributes].map((attribute) => [attribute.name, attribute.value]),
+          ),
+          style: Object.fromEntries(
+            properties.map((property) => [property, style.getPropertyValue(property)]),
+          ),
+        };
+      }),
+    };
+  });
 }

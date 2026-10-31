@@ -1,0 +1,22 @@
+Starting 0-bunker 1920x1080, 1 workers
+Failed 0-bunker 1920x1080, 1 workers; last captured frame 60
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Timeout 30000ms exceeded.
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at captureFrame (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:221:28) {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

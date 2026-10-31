@@ -1,0 +1,22 @@
+Pre-run system CPU busy: 36.7%
+Pre-run system CPU busy: 33.5%
+Pre-run system CPU busy: 37.4%
+Pre-run system CPU busy: 36.8%
+Pre-run system CPU busy: 31.0%
+Pre-run system CPU busy: 31.0%
+Pre-run system CPU busy: 29.4%
+Pre-run system CPU busy: 31.2%
+Pre-run system CPU busy: 35.4%
+Pre-run system CPU busy: 31.5%
+Pre-run system CPU busy: 32.1%
+Pre-run system CPU busy: 35.9%
+file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/scaling.ts:197
+  throw new Error(
+        ^
+
+Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory.
+    at waitForIdle (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/scaling.ts:197:9)
+    at async run (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/scaling.ts:132:3)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/scaling.ts:115:38
+
+Node.js v26.7.0

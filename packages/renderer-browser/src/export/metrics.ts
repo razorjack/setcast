@@ -1,6 +1,7 @@
 export interface FrameTimings {
   audioMs: number;
   resolveMs: number;
+  /** React commit and synchronous paint invalidation; excludes stable paint callbacks. */
   commitMs: number;
   readinessMs: number;
 }

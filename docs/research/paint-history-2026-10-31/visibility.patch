@@ -1,0 +1,28 @@
+diff --git a/packages/renderer-browser/src/export/scene.tsx b/packages/renderer-browser/src/export/scene.tsx
+index b0d609f..9f3cc72 100644
+--- a/packages/renderer-browser/src/export/scene.tsx
++++ b/packages/renderer-browser/src/export/scene.tsx
+@@ -56,6 +56,7 @@ export function mountExport(element: HTMLElement) {
+       const committed = performance.now();
+       window.setcastExport!.phase = 'assets';
+       await readiness.settle(frame);
++      repaintScene();
+       window.setcastExport!.resolved = resolved;
+       window.setcastExport!.windows = analysis.windows.size;
+       window.setcastExport!.phase = 'ready';
+@@ -125,3 +126,15 @@ function drawFrame(
+     ),
+   );
+ }
++
++/** Chromium can reuse fractional gradient/text paint from a page's previous frame. */
++function repaintScene() {
++  const { body } = document;
++  const visibility = body.style.getPropertyValue('visibility');
++  const priority = body.style.getPropertyPriority('visibility');
++  body.style.setProperty('visibility', 'hidden', 'important');
++  void body.offsetHeight;
++  if (visibility) body.style.setProperty('visibility', visibility, priority);
++  else body.style.removeProperty('visibility');
++  void body.offsetHeight;
++}

@@ -53,6 +53,7 @@ export function mountExport(element: HTMLElement) {
       const resolvedAt = performance.now();
       window.setcastExport!.phase = 'rendering';
       drawFrame(root, bindings, readiness, resolved);
+      repaintScene();
       const committed = performance.now();
       window.setcastExport!.phase = 'assets';
       await readiness.settle(frame);
@@ -124,4 +125,16 @@ function drawFrame(
       </SceneBoundary>,
     ),
   );
+}
+
+/** Discard cached gradient/text paint. Rebuild layout before the stable paint callbacks. */
+function repaintScene() {
+  const { body } = document;
+  const display = body.style.getPropertyValue('display');
+  const priority = body.style.getPropertyPriority('display');
+  body.style.setProperty('display', 'none', 'important');
+  void body.offsetHeight;
+  if (display) body.style.setProperty('display', display, priority);
+  else body.style.removeProperty('display');
+  void body.offsetHeight;
 }

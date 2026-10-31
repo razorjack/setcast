@@ -1,0 +1,58 @@
+Starting sterile-tech 1920x1080, 1 workers
+Starting sterile-tech 1920x1080, 4 workers
+sterile-tech 1920x1080: identical
+Starting sterile-tech 1080x1920, 1 workers
+Starting sterile-tech 1080x1920, 4 workers
+sterile-tech 1080x1920: identical
+Starting escapement 1920x1080, 1 workers
+Starting escapement 1920x1080, 4 workers
+escapement 1920x1080: identical
+Starting escapement 1080x1920, 1 workers
+Starting escapement 1080x1920, 4 workers
+escapement 1080x1920: identical
+Starting long-exposure 1920x1080, 1 workers
+Starting long-exposure 1920x1080, 4 workers
+long-exposure 1920x1080: identical
+Starting long-exposure 1080x1920, 1 workers
+Starting long-exposure 1080x1920, 4 workers
+long-exposure 1080x1920: identical
+Starting bristol 1920x1080, 1 workers
+Starting bristol 1920x1080, 4 workers
+bristol 1920x1080: identical
+Starting bristol 1080x1920, 1 workers
+Starting bristol 1080x1920, 4 workers
+bristol 1080x1920: identical
+Starting patina 1920x1080, 1 workers
+Starting patina 1920x1080, 4 workers
+patina 1920x1080: identical
+Starting patina 1080x1920, 1 workers
+Starting patina 1080x1920, 4 workers
+patina 1080x1920: identical
+Starting quicksilver 1920x1080, 1 workers
+Starting quicksilver 1920x1080, 4 workers
+quicksilver 1920x1080: identical
+Starting quicksilver 1080x1920, 1 workers
+Starting quicksilver 1080x1920, 4 workers
+quicksilver 1080x1920: identical
+Starting bunker 1920x1080, 1 workers
+Failed bunker 1920x1080, 1 workers; last captured frame 63
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Timeout 30000ms exceeded.
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at captureFrame (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:221:28) {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

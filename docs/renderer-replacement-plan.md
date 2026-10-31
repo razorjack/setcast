@@ -51,7 +51,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
 | Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
-| Concurrency | Manual 1–8, default 1 | Automatic or explicit |
+| Concurrency | Manual 1–8, default 1; automatic policy awaiting final timing qualification | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |
 | Resume completed chunks | Supported on `render` | Explicitly rejected |
@@ -249,7 +249,10 @@ label it accordingly and use platform memory/GPU tools where available. Preserve
 but do not present Node-only RSS as total render memory.
 
 Use exact pre-encode pixel comparisons for transformations intended to preserve pixels in a
-matching runtime. For changed capture/encoding, compare against lossless references, inspect
+matching runtime. Keep exact hash failures visible. The paint-history investigation additionally
+reports a predefined sparse source-rounding budget: at most one 8-bit channel level on at most
+`ceil(width * height * 0.00001)` pixels per frame. Larger differences fail; this budget does not
+weaken exact checkpoint, timeline, audio or readiness checks. For changed capture/encoding, compare against lossless references, inspect
 text, dark gradients, glows and edges, and report encoded quality and size. Equal CRF values
 across encoders, or one global SSIM value, do not establish matched quality. Keep timestamp,
 decoded-frame, chunk-boundary and stereo-alignment verification separate from image quality.
@@ -312,16 +315,19 @@ experiment is a valid phase outcome; do not ship it to satisfy the schedule.
 
 ### Phase 3: schedule within the machine's resource budget
 
-The [2026-10-29 scheduling investigation](research/worker-scaling-2026-10-29/README.md) measured
-promising four-worker gains but did not qualify an automatic default. Moving-theme checks found
-paint-history differences in 13/32 cases. A repaint candidate passed thirteen comparisons before
-a screenshot timeout; the cause remains unresolved. Production retains one worker by default.
-Resolve deterministic multi-worker capture before promoting the archived automatic policy.
+The [2026-10-29 scheduling investigation](research/worker-scaling-2026-10-29/README.md) found
+paint-history differences in 13/32 cases. The [31 October follow-up](research/paint-history-2026-10-31/README.md)
+is qualifying a complete paint reset before readiness. Applying invalidation after readiness
+caused capture stalls; outline invalidation preserved layout but exceeded the explicit source
+precision limit in Afterhours. Keep both rejected approaches and exact hash results visible.
 
-Add short, bounded calibration across representative project moments, including costly scenes.
-Choose concurrency within explicit memory/resource limits and report the decision. Calibration
-cost belongs in end-to-end timings. Keep an explicit override and avoid retuning identical jobs
-without invalidating the calibration's runtime/project identity.
+The candidate automatic policy chooses 1/2/4 workers from stable CPU and memory estimates, using
+one below 300 frames and retaining explicit 1–8 overrides. It resolves selection before cache/resume
+identity and reports its reason and estimate. Allocation estimates are not enforced memory limits.
+The selected count and encoded checkpoint contents must remain stable across identical jobs.
+Per-job calibration remains deferred until its complete-export benefit exceeds its preparation
+cost on representative moments. Qualification and new timings must include paint invalidation;
+the older three-fixture measurements cannot qualify the changed driver.
 
 Compare round-robin frames with contiguous blocks or independent chunk workers. Investigate
 decode locality, GPU contention, head-of-line waiting, page startup and encoder contention.

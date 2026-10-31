@@ -1,0 +1,98 @@
+[
+  {
+    "theme": "bunker",
+    "round": 0,
+    "width": 1920,
+    "height": 1080,
+    "hashes": [
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e",
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 0,
+    "width": 1080,
+    "height": 1920,
+    "hashes": [
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29",
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 1,
+    "width": 1920,
+    "height": 1080,
+    "hashes": [
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e",
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 1,
+    "width": 1080,
+    "height": 1920,
+    "hashes": [
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29",
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 2,
+    "width": 1920,
+    "height": 1080,
+    "hashes": [
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e",
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 2,
+    "width": 1080,
+    "height": 1920,
+    "hashes": [
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29",
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 3,
+    "width": 1920,
+    "height": 1080,
+    "hashes": [
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e",
+      "SHA256=12d1716fbd56f83b440fe2f70aa57f792e377cab2792fe439d3e9ebb3333a51e"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "bunker",
+    "round": 3,
+    "width": 1080,
+    "height": 1920,
+    "hashes": [
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29",
+      "SHA256=6bedaf06d039e009802a742fc2cf4cb00f9abdd0133856299456fa6d11cdab29"
+    ],
+    "equal": true,
+    "qualified": true
+  }
+]

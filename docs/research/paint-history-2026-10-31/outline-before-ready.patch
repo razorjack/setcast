@@ -1,0 +1,26 @@
+diff --git a/packages/renderer-browser/src/export/scene.tsx b/packages/renderer-browser/src/export/scene.tsx
+index b0d609f..f06297a 100644
+--- a/packages/renderer-browser/src/export/scene.tsx
++++ b/packages/renderer-browser/src/export/scene.tsx
+@@ -53,6 +53,7 @@ export function mountExport(element: HTMLElement) {
+       const resolvedAt = performance.now();
+       window.setcastExport!.phase = 'rendering';
+       drawFrame(root, bindings, readiness, resolved);
++      repaintScene();
+       const committed = performance.now();
+       window.setcastExport!.phase = 'assets';
+       await readiness.settle(frame);
+@@ -125,3 +126,13 @@ function drawFrame(
+     ),
+   );
+ }
++
++/** Invalidate cached gradient/text paint without hiding the scene. Readiness must follow. */
++function repaintScene() {
++  const style = document.createElement('style');
++  style.textContent = '*, *::before, *::after { outline: 1px solid transparent !important; }';
++  document.head.append(style);
++  void document.body.offsetHeight;
++  style.remove();
++  void document.body.offsetHeight;
++}

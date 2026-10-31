@@ -703,3 +703,162 @@ on the exact reverted production state. Logs: `/tmp/setcast-closeout-ready.log` 
 experimental patch, which explains the change from the candidate's 664-test count. Both archived
 patches pass `git apply --check` against the final production files. The all-theme research failure
 and partial repaint timeout remain documented failures, not passing release checks.
+
+## Renderer replacement resumed, 2026-10-31
+
+Resumed at a7cbe6d after the user's instruction to continue to completion. The intervening commits
+select software WebGL for headless Remotion acceptance and keep exact checkpoint equality on the
+deterministic marker fixture; neither resolves animated-theme paint history. The working tree was
+clean. Begin with an isolated Bunker portrait repaint run, then investigate the prior shared-session
+screenshot timeout without increasing its timeout or weakening frame comparisons. Continue to
+retain performance measurements separately from correctness checks and concurrent project load.
+
+The isolated Bunker portrait repaint run passed: fresh single-worker repeats and four-worker
+captures were byte-identical. The full shared-session replay completed all 32 cases without the
+prior timeout. Repainting made 31 comparisons exact; Pirate landscape still differed. Direct
+Pirate JPEG capture matched between fresh single-worker repeats but differed with four workers
+at absolute frames 52 and 56. The timeout remains unreproduced, not explained. Inspect resolved
+frame inputs and DOM geometry at frame 52 before treating the remaining difference as raster-only.
+
+Pirate frame 52 has identical resolved audio, mix and modulation, and identical DOM attributes,
+computed properties and all 26 element rectangles across capture schedules. The remaining JPEG
+differences are small: frame 52 changes 88 pixels (maximum two channel levels, RMS 0.00529), and
+frame 56 changes 58 pixels (maximum two, RMS 0.00581). They lie around the transformed DJ panels.
+Waiting for two additional stable callbacks after repaint did not remove them; that extra wait
+was removed. CPU rasterization is being tested as a diagnostic, not adopted. Do not change font
+positioning merely to make comparisons pass: Chromium explicitly documents that its disabling
+switch changes glyph sharpness, kerning, hinting and layout:
+https://chromium.googlesource.com/chromium/src/+/c46abcfee2e9cc108441ea9fba406548671840ed/ui/gfx/switches.cc .
+
+Lossless PNG inspection narrows the remaining Pirate difference to rounding: one to six pixels
+per affected 1920x1080 frame, each differing by exactly one 8-bit channel level. CPU rasterization
+did not remove it and was reverted. Frame inputs and measured DOM geometry are identical. Extra
+paint callbacks also did not help. Full-repaint qualification must distinguish this bounded source
+rounding from the earlier history-dependent gradients/text; encoded hashes amplify tiny source
+changes through lossy prediction and are not a sufficient visual severity measure.
+
+Acceptance decision for the next qualification run: retain exact decoded hash results, then
+inspect every source PNG when hashes differ. Permit at most one channel level on no more than
+0.001% of pixels in a frame (21 pixels at 1080p); reject larger differences. Keep both fresh-page
+repeat controls and complete-frame comparisons. This is an explicit source-pixel precision budget,
+not a claim of byte identity or a relaxed timeline/readiness/checkpoint rule. Missing content,
+visible shifts, accumulated color errors and the earlier large paint differences remain failures.
+The bound must hold across all themes/aspects before automatic scheduling is considered.
+
+The repeated full-theme run reproduced the screenshot stall on Bunker landscape with one worker,
+after frame 63. Font loading had completed. Both adapter acceptance suites, shared-driver seeks,
+preview and exact marker-fixture resume passed. This separates the long theme-session failure
+from ordinary readiness/recovery behavior. Do not promote automatic scheduling yet. Next isolate
+whether removing layout boxes is necessary for paint invalidation; a visibility change may reset
+paint without destroying layout objects. This is a candidate, not an established fix.
+
+The visibility candidate passes the original Passe-Partout direct JPEG reproducer exactly across
+fresh single-worker repeats and four workers. It retains layout objects and restores the previous
+inline visibility and priority before returning. A two-round all-theme shared-session run is now
+checking both pixel precision and the intermittent screenshot stall. The original display-toggle
+failure remains retained. Chromium's layout/paint implementation supports visibility-driven paint
+invalidation, but that is mechanism evidence, not proof that a particular stall is fixed:
+https://chromium.googlesource.com/chromium/src/+/refs/heads/main/third_party/blink/renderer/core/layout/layout_object.cc .
+
+Visibility invalidation also stalled during the first full pass at Bunker portrait. It is not a
+reliability fix. Before the stall, all completed comparisons passed the source precision bound;
+Long Exposure landscape and Quicksilver portrait had sparse one-level differences. Isolate
+repeated Bunker exports next, then compare with the unchanged frame driver. Avoid attributing a
+browser stall to unrelated system load without a controlled reproduction.
+
+The isolated Bunker visibility run also stalls, so preceding theme history is not required.
+The unchanged-paint control is progressing through repeated landscape/portrait runs. Test a
+transparent outline style that is applied and removed synchronously with style/layout flushes:
+it invalidates paint without hiding the scene or removing layout boxes. This remains experimental.
+No screenshot timeout has been increased and no automatic retry has been added.
+
+The unchanged frame driver passed all four Bunker landscape/portrait repetitions (eight comparisons,
+720 captured frames), with exact worker-count hashes. The transparent-outline candidate fixes
+Passe-Partout's original direct JPEG discrepancy; its Bunker repetition is running. These controls
+support rejecting visibility/display toggles rather than blaming shared-session resource use.
+
+The outline candidate also stalls (Bunker landscape after frame 60), so preserving visibility
+alone is insufficient. All three candidates invalidate paint after the original stable callbacks.
+Test an additional readiness settlement after invalidation, before capture; the prior extra-callback
+experiment only checked Pirate rounding and did not exercise Bunker's reliability reproducer.
+
+Settling readiness after outline invalidation is progressing through the Bunker reproducer without
+a stall. The earlier candidates dirtied paint after they had already declared readiness. Move
+invalidation immediately after the React commit and before the existing two stable callbacks;
+this preserves the readiness contract and avoids an extra pair of callbacks. Re-run Bunker and
+all themes on that exact ordering before drawing a reliability conclusion.
+
+Selective-cache design note for the following milestone: announcement text is a plausible first
+local edit because `brandMessageAt` reads only the currently displayed announcement. Preserve
+announcement positions, times, durations, list length and all other project/asset/runtime identity.
+A chunk may omit only text whose display interval cannot intersect any captured frame in that
+chunk. Retain active text, index and conservative overlap dependencies; additions, removals or
+retiming should initially invalidate the complete job. Keep the existing whole-job identity for
+resume and input mutation checks. A separate chunk identity can share the invariant hash, avoiding
+re-hashing large project analysis arrays for every chunk. This requires an explicit built-in-only
+dependency contract and fresh-versus-incremental frame/audio comparisons; future plugin code may
+inspect arbitrary project fields and must invalidate conservatively. This is design, not yet code.
+
+Outline invalidation before readiness passed Bunker but exceeded the predefined source precision
+bound in Afterhours landscape: frames 52, 60, 62 and 64 reach two channel levels on a few pixels.
+Keep that failure rather than changing the bound. The full display reset previously made
+Afterhours exact, so test that reset before readiness using the now-isolated Bunker reproducer.
+This distinguishes paint completeness from readiness ordering.
+
+The full display reset before readiness passed four Bunker repetitions in both orientations,
+with exact worker hashes. The all-theme two-round qualification is now running. The outline
+candidate is retained as rejected for source precision even though its readiness ordering fixed
+the isolated Bunker stall. In the retained ordering, synchronous invalidation belongs to commitMs;
+readinessMs still measures the stable callbacks and asset waits. No extra callbacks are added.
+
+The final full-reset candidate passed its first complete 32-case theme pass. The repeated pass,
+and a separate one-versus-two-worker pass, are running. Automatic scheduling acceptance selected
+four workers, captured 300 initial frames, reused all 300 on a repeat and on the equivalent explicit
+count, and recovered an interrupted job with 270 captured/30 reused frames. Decoded video and
+audio match the fresh reference. Packed browser-package smoke, shared-driver seeking, preview,
+marker resume and exporter acceptance pass. GPU failure/recovery checks pass; that harness also
+prints timing samples, which ran under concurrent correctness load and are not performance evidence.
+
+Distribution audit note for the later migration: CLI currently requires the Remotion adapter and
+re-exports its PreviewOptions type. Make compatibility loading optional with an actionable missing
+adapter error, and own the preview option shape outside that dependency. Optional peer installation
+must work alongside the CLI: a global CLI cannot assume it can resolve an adapter installed only
+inside a project. Document local, global and npx installation forms explicitly. Browser package
+smoke currently packs/installs all five packages, so its browser mode must be changed to physically
+exclude the Remotion adapter and packages, rather than only blocking imports. Coordinate core
+configuration defaults, renderer helper defaults, doctor/capabilities, scaffolds, README, CI and
+required dependency traversal. Explicit legacy-only options must still fail with migration advice.
+Browser export needs separately provisioned Chromium and system FFmpeg; read-only doctor must not
+silently download either. These are audit findings, not completed migration work.
+
+Current upstream was rechecked against https://registry.npmjs.org/remotion/latest on 31 October:
+4.0.539 remains latest (integrity sha512-CC97/XczqcJDJq0za0lU/kc7XnOocs8L9ADHFPWPMEXLm2aOxzdy3E0qnNNwqcW6q98JoKovtxc6YHQGZsZY/Q==).
+The isolated 4.0.539 comparison environment can therefore be reused for the next comparison;
+production remains pinned to 4.0.513 until a separate dependency decision.
+
+Final one/four-worker theme qualification passed both complete shared-session rounds: 64 cases,
+5,760 encoded/captured frames, 62 exact decoded hashes. Both Pirate landscape cases have only
+one-level differences on one to five source pixels in frames 52–56; fresh single-worker controls
+are exact. No capture timeout occurred. The separate one/two-worker run is completing. Reports
+and rejected-candidate evidence are retained in docs/research/paint-history-2026-10-31/.
+
+The one/two-worker pass also passed all 32 cases: 31 exact decoded hashes; Pirate landscape has
+one-level source differences on at most three pixels per frame. Final ready passed all 665 tests
+in 110 files, formatting, lint, types, dependency isolation and decoded smoke. The earlier CLI
+cache-test timeout occurred during concurrent suites and did not recur in this sequential check.
+All correctness workloads have finished before timing. Fresh one/automatic comparisons now use
+three alternating repetitions for standard, tunnel and looping-video fixtures, with a 15% system
+CPU busy ceiling over five seconds before each arm. Actual background CPU remains recorded.
+
+The first final-policy timing attempt performed no exports: all twelve five-second pre-run CPU
+samples exceeded the 15% threshold (roughly 29–37%). Its empty failed report and log are retained
+under docs/research/worker-scaling-2026-10-31/busy-standard.*. Process inspection showed macOS
+background services and another project's browser/Ruby workload, not remaining Setcast render jobs.
+Wait for a quieter interval instead of using this load for a speed claim.
+
+A second quiet-period attempt also made no exports and is retained as busy-standard-retry.*.
+Commit the fully validated paint correction separately. Automatic production integration is
+removed for this commit; the updated candidate patch and its successful scheduling acceptance
+report are retained. Production concurrency therefore remains one until new timings are usable.
+The policy's three unit tests are inside that patch, so the production-only ready count returns
+to 662 tests in 109 files. Continue timing qualification after this coherent commit.

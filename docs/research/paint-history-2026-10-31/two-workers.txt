@@ -1,0 +1,97 @@
+Starting 0-sterile-tech 1920x1080, 1 workers
+Starting 0-sterile-tech 1920x1080, 2 workers
+sterile-tech 1920x1080: identical
+Starting 0-sterile-tech 1080x1920, 1 workers
+Starting 0-sterile-tech 1080x1920, 2 workers
+sterile-tech 1080x1920: identical
+Starting 0-escapement 1920x1080, 1 workers
+Starting 0-escapement 1920x1080, 2 workers
+escapement 1920x1080: identical
+Starting 0-escapement 1080x1920, 1 workers
+Starting 0-escapement 1080x1920, 2 workers
+escapement 1080x1920: identical
+Starting 0-long-exposure 1920x1080, 1 workers
+Starting 0-long-exposure 1920x1080, 2 workers
+long-exposure 1920x1080: identical
+Starting 0-long-exposure 1080x1920, 1 workers
+Starting 0-long-exposure 1080x1920, 2 workers
+long-exposure 1080x1920: identical
+Starting 0-bristol 1920x1080, 1 workers
+Starting 0-bristol 1920x1080, 2 workers
+bristol 1920x1080: identical
+Starting 0-bristol 1080x1920, 1 workers
+Starting 0-bristol 1080x1920, 2 workers
+bristol 1080x1920: identical
+Starting 0-patina 1920x1080, 1 workers
+Starting 0-patina 1920x1080, 2 workers
+patina 1920x1080: identical
+Starting 0-patina 1080x1920, 1 workers
+Starting 0-patina 1080x1920, 2 workers
+patina 1080x1920: identical
+Starting 0-quicksilver 1920x1080, 1 workers
+Starting 0-quicksilver 1920x1080, 2 workers
+quicksilver 1920x1080: identical
+Starting 0-quicksilver 1080x1920, 1 workers
+Starting 0-quicksilver 1080x1920, 2 workers
+quicksilver 1080x1920: identical
+Starting 0-bunker 1920x1080, 1 workers
+Starting 0-bunker 1920x1080, 2 workers
+bunker 1920x1080: identical
+Starting 0-bunker 1080x1920, 1 workers
+Starting 0-bunker 1080x1920, 2 workers
+bunker 1080x1920: identical
+Starting 0-vfd 1920x1080, 1 workers
+Starting 0-vfd 1920x1080, 2 workers
+vfd 1920x1080: identical
+Starting 0-vfd 1080x1920, 1 workers
+Starting 0-vfd 1080x1920, 2 workers
+vfd 1080x1920: identical
+Starting 0-interference 1920x1080, 1 workers
+Starting 0-interference 1920x1080, 2 workers
+interference 1920x1080: identical
+Starting 0-interference 1080x1920, 1 workers
+Starting 0-interference 1080x1920, 2 workers
+interference 1080x1920: identical
+Starting 0-pirate 1920x1080, 1 workers
+Starting 0-pirate 1920x1080, 2 workers
+pirate 1920x1080: source rounding within precision budget
+Starting 0-pirate 1080x1920, 1 workers
+Starting 0-pirate 1080x1920, 2 workers
+pirate 1080x1920: identical
+Starting 0-afterhours 1920x1080, 1 workers
+Starting 0-afterhours 1920x1080, 2 workers
+afterhours 1920x1080: identical
+Starting 0-afterhours 1080x1920, 1 workers
+Starting 0-afterhours 1080x1920, 2 workers
+afterhours 1080x1920: identical
+Starting 0-passe-partout 1920x1080, 1 workers
+Starting 0-passe-partout 1920x1080, 2 workers
+passe-partout 1920x1080: identical
+Starting 0-passe-partout 1080x1920, 1 workers
+Starting 0-passe-partout 1080x1920, 2 workers
+passe-partout 1080x1920: identical
+Starting 0-masthead 1920x1080, 1 workers
+Starting 0-masthead 1920x1080, 2 workers
+masthead 1920x1080: identical
+Starting 0-masthead 1080x1920, 1 workers
+Starting 0-masthead 1080x1920, 2 workers
+masthead 1080x1920: identical
+Starting 0-anamorphic 1920x1080, 1 workers
+Starting 0-anamorphic 1920x1080, 2 workers
+anamorphic 1920x1080: identical
+Starting 0-anamorphic 1080x1920, 1 workers
+Starting 0-anamorphic 1080x1920, 2 workers
+anamorphic 1080x1920: identical
+Starting 0-relief 1920x1080, 1 workers
+Starting 0-relief 1920x1080, 2 workers
+relief 1920x1080: identical
+Starting 0-relief 1080x1920, 1 workers
+Starting 0-relief 1080x1920, 2 workers
+relief 1080x1920: identical
+Starting 0-darkroom 1920x1080, 1 workers
+Starting 0-darkroom 1920x1080, 2 workers
+darkroom 1920x1080: identical
+Starting 0-darkroom 1080x1920, 1 workers
+Starting 0-darkroom 1080x1920, 2 workers
+darkroom 1080x1920: identical
+Worker frames: PASS (32 cases, workers 1,2, all 45 frames per export)

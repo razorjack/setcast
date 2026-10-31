@@ -66,15 +66,21 @@ VideoToolbox has passed the export acceptance suite on Apple M1 Pro. NVENC selec
 behavior have unit coverage; Linux/Windows device qualification and matched-quality performance
 comparisons remain outstanding. Hardware bitrate equality does not establish equal visual quality.
 
-`--concurrency` accepts 1 through 8 and defaults to 1. The CLI reports the actual capture-worker
-count when preparation completes, including zero workers when all chunks are reused. An automatic
-policy remains unqualified after moving-theme paint-history differences were found; see the
-[retained investigation](research/worker-scaling-2026-10-29/README.md). Each worker retains its own bounded
-PCM windows and decoder cache, so more workers use more memory. Capture overlaps encoder writes
-through a bounded queue: at most one pending capture per worker plus the image being written.
-Each worker prepares its next assigned frame after its previous capture is consumed; it does
-not wait for the other workers to finish a batch. Frames still reach FFmpeg in exact order with
-backpressure. Start at 1 or 2 and measure your project. Independence is not a speed guarantee.
+`--concurrency` accepts 1 through 8 and defaults to 1. The CLI reports actual capture workers
+when preparation completes, including zero when all chunks are reused. Each worker retains bounded
+PCM windows and decoder state. Capture overlaps encoder writes through a bounded queue: at most
+one pending capture per worker plus the image being written. Frames reach FFmpeg in order with
+backpressure. Measure your project before raising concurrency; independence is not a speed guarantee.
+
+A resource-aware automatic policy has passed cache/resume acceptance but awaits new throughput
+measurements with the corrected paint driver. The [candidate and timing record](research/worker-scaling-2026-10-31/README.md)
+remain separate from the production default.
+
+The shared export/preview driver resets cached paint immediately after React commits, before
+waiting for stable paint and assets. This resets frame-dependent cached gradient and text paint. It restores body display synchronously, preserving React and decoded
+assets. See the [paint investigation](research/paint-history-2026-10-31/README.md) for exact hash
+results, the explicit source precision budget and rejected approaches. Existing cache/checkpoint
+identities include the driver bundle, so a driver change invalidates old chunks automatically.
 
 Ctrl+C or SIGTERM cancels a CLI export. Programmatic `render` and `still` accept an
 `AbortSignal`. Preparation may need to finish before cancellation is observed. Video output
@@ -209,7 +215,7 @@ node packages/renderer-browser/bench/export.ts examples/demo --seconds 10 --at 3
 ```
 
 This writes profile.mp4 and report.json. The browser adapter's optional `onMetrics` callback
-reports audio preparation, frame resolution, React commit, readiness, screenshot capture and
+reports audio preparation, frame resolution, React commit with paint invalidation, readiness, screenshot capture and
 captured bytes per frame. Separate measurements cover encoder write backpressure, final flush
 master-audio encoding (`audio-encode`) and muxing. Mux timing now excludes audio encoding; older
 reports included it. Summed worker and audio durations overlap and are not wall time. Encoder writes measure waiting
