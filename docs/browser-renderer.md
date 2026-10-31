@@ -7,9 +7,8 @@ The browser package has no Remotion dependency.
 
 The [independent renderer replacement plan](renderer-replacement-plan.md) records the current
 capability comparison, performance evidence, remaining experiments and release criteria. Its
-proposed faster capture, scheduling, persistent cache and preview/export workflow are
-not implemented by this guide. Remotion remains the default, and the CLI still depends on its
-adapter during migration.
+completed features and pending qualification are tracked separately. Remotion remains the default,
+and the CLI still depends on its adapter during migration.
 
 ## Run it
 
@@ -320,12 +319,18 @@ unexpected directories. It also recovers a corrupt index. Only one export or man
 can hold the cache lock at a time. A killed process can leave `lock.json`; inspect its process/host
 before removing that file. Do not clear another active export's cache.
 
-Identity includes the complete resolved project, source-file contents, ranges, encoding, worker
-count, graphics choice, browser/bundle/adapter/FFmpeg versions, Node, OS and host. Changing these
-invalidates reuse conservatively. Changing only the destination path can reuse chunks. Cached
-exports require the same self-contained local inputs and resource restrictions as resumable
-exports. These are local caches; cross-host sharing and selective reuse after project edits are
-not qualified.
+Identity includes source-file contents, ranges, encoding, worker count, graphics choice,
+browser/bundle/adapter/FFmpeg versions, Node, OS and host. Project changes invalidate reuse except
+for announcement text outside a chunk's captured frame range. With the built-in visualizers,
+editing only an announcement's text recaptures intersecting chunks and reuses the others.
+Announcement timing, duration, ordering, additions/removals and every other project setting remain
+global dependencies. Unknown visualizers in the project or a saved scene disable local reuse.
+Future plugins that inspect arbitrary project fields require their own dependency contract.
+
+Changing only the destination path also reuses chunks. Cached exports require the same
+self-contained local inputs and resource restrictions as resumable exports. Resume checkpoints
+still use the complete project identity, including every announcement text. Cross-host sharing
+and other selective project edits are not qualified.
 
 Each stored chunk passes stream/frame-count validation before publication. Reuse copies the
 chunk into the export's temporary directory and checks its byte count and SHA-256. Missing or
@@ -336,7 +341,9 @@ silently claiming that work was retained; rerun without `--cache` or choose anot
 Cache hits still compute input/runtime identity and encode one continuous master soundtrack.
 They do not skip browser startup or reuse audio. A fully cached job opens zero capture pages;
 progress reports reused frames. Successful repeat reuse and decoded equivalence are checked by
-`node packages/renderer-browser/bench/cache.ts --out NEW_DIRECTORY`.
+`node packages/renderer-browser/bench/cache.ts --out NEW_DIRECTORY`. Announcement edits, fractional
+chunk boundaries, global invalidation and exact fresh-versus-incremental video/audio are checked by
+`node packages/renderer-browser/bench/incremental.ts --out NEW_DIRECTORY`.
 
 H.264 exports declare the [sRGB screenshot color contract](renderer-color.md), including separate
 YCbCr matrix, range, RGB primaries and transfer properties. Qualification and receiving-app limits

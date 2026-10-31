@@ -642,9 +642,12 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   latency and routing are separate from browser-clock validation.
 
 - Persistent browser export reuse is opt-in through `render --cache <directory>` (default 2 GiB,
-  `--cache-size` in MiB), separate from `--resume`. Cache identity initially includes the complete
-  project/settings/runtime/host and all tracked assets. Only destination-path changes can reuse
-  without changing that identity; project edits invalidate conservatively. Store validated encoded
+  `--cache-size` in MiB), separate from `--resume`. Cache identity includes
+  project/settings/runtime/host and all tracked assets. Built-in visualizers permit announcement
+  text edits to reuse chunks outside the announcement interval; metadata and all other project
+  fields remain global. Unknown root/scene visualizers disable local reuse. Future plugin loading
+  must disable this optimization until arbitrary project reads have a dependency contract. Resume
+  checkpoints retain complete project identity. Store validated encoded
   video chunks, verify copied hashes, keep one writer lock, bound video bytes/entry count, and use
   `cache inspect`/`cache clear` for management. Never recursively clear unrecognized directories.
   Cache hits still prepare runtime identity and re-encode continuous audio; zero capture pages is

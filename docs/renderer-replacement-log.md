@@ -789,7 +789,7 @@ this preserves the readiness contract and avoids an extra pair of callbacks. Re-
 all themes on that exact ordering before drawing a reliability conclusion.
 
 Selective-cache design note for the following milestone: announcement text is a plausible first
-local edit because `brandMessageAt` reads only the currently displayed announcement. Preserve
+local edit because `messageAt` reads only the currently displayed announcement. Preserve
 announcement positions, times, durations, list length and all other project/asset/runtime identity.
 A chunk may omit only text whose display interval cannot intersect any captured frame in that
 chunk. Retain active text, index and conservative overlap dependencies; additions, removals or
@@ -862,3 +862,39 @@ removed for this commit; the updated candidate patch and its successful scheduli
 report are retained. Production concurrency therefore remains one until new timings are usable.
 The policy's three unit tests are inside that patch, so the production-only ready count returns
 to 662 tests in 109 files. Continue timing qualification after this coherent commit.
+
+Paint correction committed as c3127fd. The automatic policy candidate is reapplied but uncommitted.
+A third timing attempt was rejected without rendering, with sustained samples around 97–100% CPU;
+busy-standard-retry2.* retains it. Continue independent incremental-cache work while timing is
+unusable. Keep timed exports paused until other workloads subside; no default-policy commit yet.
+
+Dependency audit: Branding calls `messageAt(branding, composition.announcements, timeSeconds)`.
+Only that component reads announcement text in the built-in export entry. Recorded scene changes
+preserve the global announcement list. The new cache scope must preserve all announcement metadata
+and list positions, use the exact subtraction-based expiry comparison from messageAt, and limit
+local reuse to an explicit audited set of built-in visualizers in the root and scene appearances.
+Unknown visualizers retain whole-job identity. Future plugin/custom-entry loading must disable this
+optimization until its arbitrary project-field reads have a dependency contract.
+
+Selective announcement reuse passed its integration fixture: a visible edit captured 30 of 75
+frames and reused 45; an edit outside the export captured zero; a fractional interval across a
+chunk boundary captured 60 and reused 15. Each incremental result exactly matches a fresh decoded
+video and continuous soundtrack. The visible edit changes the original video, preventing a vacuous
+hidden-text test. Metadata/CSS changes reuse nothing; a changed announcement also invalidates
+interruption checkpoints completely. Unknown visualizers retain global identity. The automatic
+policy candidate is removed again for this separate cache commit, pending quiet timing evidence.
+
+The selective cache change passes ready (665 tests in 110 files), existing persistent-cache
+corruption/input-mutation/interruption checks and browser exporter acceptance. Its retained
+frame-count evidence is [incremental-cache-2026-10-31.json](research/incremental-cache-2026-10-31.json).
+No wall-time claim is inferred from these correctness runs under concurrent machine load.
+
+The earlier temporary upstream comparison checkout has disappeared; git lists its worktree as
+prunable. The committed 4.0.539 trial patch and reports remain intact. Recreate an isolated
+comparison environment before using that baseline again; do not assume the old path still exists.
+
+Compatibility exporter acceptance (swangle) and packed-package smoke with browser export/cache
+also pass. Logs: `/tmp/setcast-incremental-{ready,cache,acceptance,remotion,package}.log`.
+The recreated upstream environment is `/private/tmp/setcast-upstream-539-final`, based on c3127fd
+with only Remotion package/catalog pins changed to 4.0.539. A one-second paired warmup completed,
+including browser provisioning; those times are excluded from performance conclusions.

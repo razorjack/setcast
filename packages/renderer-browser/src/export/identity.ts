@@ -9,6 +9,7 @@ import { projectAsset } from '../assets.ts';
 import { exportEncoding } from './encoding.ts';
 import { exportRuntime } from './session.ts';
 import { encoderVersion } from './probe.ts';
+import { announcementDependencies } from './cache-dependencies.ts';
 
 export const digest = (bytes: string | Buffer) => createHash('sha256').update(bytes).digest('hex');
 export function canonical(value: unknown): string {
@@ -75,10 +76,12 @@ function validateCss(css: string) {
     );
 }
 
-/** What makes a resumed export produce the same chunks as the export that saved them. */
+/** Input identities for exact resume and conservative persistent chunk reuse. */
 export interface ExportIdentity {
   /** Digest of the project, settings, runtime, host and every input asset. */
   key: string;
+  /** Persistent cache only: includes text displayed in this absolute inclusive frame range. */
+  chunkKey(range: [number, number]): string;
   /** Project-relative assets the export reads; capture blocks everything else. */
   paths: string[];
   /** Throws a `SetcastError` when an input asset changed after the identity was computed. */
@@ -117,8 +120,15 @@ export async function computeExportIdentity(
     encoder,
     assets: assets.map(({ path, sha256, bytes }) => ({ path, sha256, bytes })),
   };
+  const key = digest(canonical(identity));
+  const local = announcementDependencies(project);
+  const base = local
+    ? digest(canonical({ ...identity, project: { ...project, announcements: local.metadata } }))
+    : key;
   return {
-    key: digest(canonical(identity)),
+    key,
+    chunkKey: (range) =>
+      local ? digest(canonical({ base, range, texts: local.texts(range) })) : key,
     paths: assets.map(({ path }) => path),
     assertInputsUnchanged: () => assertAssetsUnchanged(root, assets, options.signal),
   };

@@ -10,7 +10,7 @@ export function cachedChunks(
   project: ResolvedProject,
 ): ChunkStore {
   const key = (index: number, range: [number, number]) =>
-    digest(JSON.stringify({ version: 1, job: identity.key, index, range }));
+    digest(JSON.stringify({ version: 2, job: identity.chunkKey(range), index, range }));
   return {
     reuse: (index, range, file, signal) => cache.reuse(key(index, range), file, signal),
     async save(index, range, file, signal) {

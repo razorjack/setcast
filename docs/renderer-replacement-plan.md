@@ -350,8 +350,10 @@ the current small pipe waits do not predict the next bottleneck.
 
 The initial implementation adds opt-in bounded video-chunk reuse for identical jobs, with explicit
 inspection/clearing and conservative whole-job invalidation. See the implementation log for checks
-and [browser cache usage](browser-renderer.md#persistent-reuse-after-successful-exports). Selective
-reuse after edits, prepared-asset caching and broader batch reuse remain pending.
+and [browser cache usage](browser-renderer.md#persistent-reuse-after-successful-exports). Announcement
+text edits now reuse unaffected chunks for audited built-in visualizers; fresh-versus-incremental
+video and audio comparisons cover visible edits and fractional chunk boundaries. Metadata and
+other project changes remain global. Prepared-asset caching and broader batch reuse remain pending.
 
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
 Start with identical completed chunks and validated prepared assets. Retain proven identity,

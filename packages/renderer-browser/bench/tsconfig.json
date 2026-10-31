@@ -15,6 +15,7 @@
     "hardware.ts",
     "resume.ts",
     "cache.ts",
+    "incremental.ts",
     "preview.ts",
     "preview-cli.ts",
     "preview-exports.ts",
