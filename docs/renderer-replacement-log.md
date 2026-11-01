@@ -1652,3 +1652,13 @@ files, dependency isolation and decoded smoke. The first sandboxed attempt faile
 tests with `listen EPERM`; rerunning with localhost access passed. Runbook relative links and
 directly invoked TypeScript paths were checked. These results validate the documentation change
 against the existing checkout; they are not Linux qualification evidence.
+
+## Linux execution started, 1 November 2026
+
+The supplied bundle verifies; production starts at 55a7b67 and both handoff branches
+are restored locally without overwriting master. Fedora 44 x64 exposes a Ryzen
+9 5950X, 64 GiB RAM and an RTX 3070 Ti PCI device, but nvidia-smi cannot communicate
+with the driver. No hardware qualification is inferred. Initial ready fails on
+an incomplete pre-existing dependency tree; frozen installation is being repaired
+before source defects are assessed. Original failures and commands are retained in
+[Linux evidence](research/linux-qualification-2026-11-01/README.md).

@@ -1,0 +1,50 @@
+Sun Nov  1 20:54:03 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 615.78.08              KMD Version: 615.78.08     CUDA UMD Version: 13.4     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3070 Ti     Off |   00000000:53:00.0  On |                  N/A |
+|  0%   39C    P5             20W /  310W |    2047MiB /   8192MiB |     18%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            2964    C+G   /usr/bin/kwin_wayland                    54MiB |
+|    0   N/A  N/A            3042      G   /usr/bin/plasma-keyboard                262MiB |
+|    0   N/A  N/A            3050      G   /usr/bin/Xwayland                         7MiB |
+|    0   N/A  N/A            3107      G   /usr/bin/plasmashell                    135MiB |
+|    0   N/A  N/A            3386      G   /usr/bin/xwaylandvideobridge              3MiB |
+|    0   N/A  N/A            3794    C+G   ...rack-uuid=3190708988185955192         24MiB |
+|    0   N/A  N/A            4379    C+G   ...rack-uuid=3190708988185955192        422MiB |
+|    0   N/A  N/A            6814      G   ghostty                                  76MiB |
+|    0   N/A  N/A            7886    C+G   ...rack-uuid=3190708988185955192        259MiB |
++-----------------------------------------------------------------------------------------+
+crw-rw-rw-. 1 root root 195,   0 Nov  1 20:41 /dev/nvidia0
+crw-rw-rw-. 1 root root 195, 255 Nov  1 20:41 /dev/nvidiactl
+crw-rw-rw-. 1 root root 195, 254 Nov  1 20:41 /dev/nvidia-modeset
+crw-rw-rw-. 1 root root 508,   0 Nov  1 20:41 /dev/nvidia-uvm
+crw-rw-rw-. 1 root root 508,   1 Nov  1 20:41 /dev/nvidia-uvm-tools
+
+/dev/dri:
+total 0
+drwxr-xr-x. 2 root root        100 Nov  1 20:41 by-path
+crw-rw----+ 1 root video  226,   1 Nov  1 20:41 card1
+crw-rw-rw-. 1 root render 226, 128 Nov  1 20:41 renderD128
+
+/dev/nvidia-caps:
+total 0
+cr--------. 1 root root 511, 1 Nov  1 20:41 nvidia-cap1
+cr--r--r--. 1 root root 511, 2 Nov  1 20:41 nvidia-cap2
+none
+0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-t3code.slice/app-t3code-agents.slice/app-t3code-agents-488e54da2676.slice/t3code-codex-7d7d694b.scope
+v26.7.0
+11.22.0
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs            32G   27M   32G   1% /dev/shm

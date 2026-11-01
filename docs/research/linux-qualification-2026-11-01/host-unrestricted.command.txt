@@ -1,0 +1,1 @@
+bash -c nvidia-smi\;\ ls\ -l\ /dev/dri\ /dev/nvidia\*\;\ systemd-detect-virt\;\ cat\ /proc/self/cgroup\;\ find\ /sys/fs/cgroup\ -maxdepth\ 1\ -name\ \"\*.max\"\ -exec\ cat\ \{\}\ \\\;\;\ node\ --version\;\ /home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/bin/pnpm\ --version\;\ df\ -h\ /dev/shm 
