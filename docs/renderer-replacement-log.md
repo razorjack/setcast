@@ -1280,3 +1280,16 @@ Reference inspection validation passes: ready (676 tests in 113 files, lint/type
 isolation and decoded smoke), interactive preview and reference/export workflow checks, both
 exporter acceptance suites, and packed-browser smoke. Final desktop/narrow screenshots were
 inspected. The full evidence is in `docs/research/preview-reference-2026-11-01`.
+
+### Corrected long corpus completed
+
+The full 63-second chunk-boundary comparison completed against committed upstream 6c373c0 with
+the shared readiness correction. Every recorded quality comparison still passes at browser
+JPEG 100 / CRF 16 versus Remotion CRF 18. A full decoded scan finds no black frames in either
+output. `docs/research/corpus-quality-2026-11-01/chunk-corrected` retains provenance, metric
+reports and sample hashes. The original faulty arm remains archived. All eleven frozen cases
+now have valid numerical quality arms. Default quality and the 30% speed target remain unqualified;
+these runs overlapped other validation and cannot establish throughput.
+
+The corrected long comparison preserves the previous lossless reference RGB hash. Baseline
+validation passes: 676 tests in 113 files, lint/types/formatting, isolation and decoded smoke.

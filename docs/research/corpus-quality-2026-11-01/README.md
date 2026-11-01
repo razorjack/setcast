@@ -64,3 +64,18 @@ does not remove the transition failure. The measurements do not qualify default 
 automatic workers, the bitmap candidate, a long real master, other platforms or matched-quality
 speed. No production renderer/default migration follows from this
 milestone. All performance and promotion work stops here at the user's request.
+
+## Corrected long comparison after resumption
+
+The resumed 63-second comparison includes the shared readiness correction in both adapters.
+`chunk-corrected/` retains the complete reports, runtime identities, metric summaries, source
+hashes and sample manifest. Every recorded full/regional mean, minimum and p05 comparison still
+meets or exceeds current Remotion at browser JPEG 100 / CRF 16 versus Remotion CRF 18. A scan of
+every decoded output frame finds no black frame in either adapter, including the prior failure
+at absolute frame 3150. The original failed comparison remains retained above.
+
+This completes a valid numerical quality arm for every frozen corpus case, with the corrected
+portrait and long arms replacing the failed original arms for interpretation. It does not
+qualify the default JPEG 95 settings, tuned worker counts or throughput. Measurements overlapped
+correctness checks; their timings cannot support a performance claim. Three lossless reference
+samples remain in ignored output; the newly generated bulk FFV1 was removed after validation.
