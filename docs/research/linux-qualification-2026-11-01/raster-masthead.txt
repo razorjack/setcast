@@ -1,0 +1,36 @@
+Starting 0-masthead 1920x1080, 1 workers
+Starting 0-masthead 1920x1080, 2 workers
+Starting 0-masthead 1920x1080, 4 workers
+masthead 1920x1080: identical
+Starting 0-masthead 1080x1920, 1 workers
+Starting 0-masthead 1080x1920, 2 workers
+Starting 0-masthead 1080x1920, 4 workers
+masthead 1080x1920: identical
+Starting 1-masthead 1920x1080, 1 workers
+Starting 1-masthead 1920x1080, 2 workers
+Starting 1-masthead 1920x1080, 4 workers
+masthead 1920x1080: identical
+Starting 1-masthead 1080x1920, 1 workers
+Starting 1-masthead 1080x1920, 2 workers
+Starting 1-masthead 1080x1920, 4 workers
+Failed 1-masthead 1080x1920, 4 workers; last captured frame 63
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Timeout 30000ms exceeded.
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at captureFrame (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/render.ts:269:20) {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

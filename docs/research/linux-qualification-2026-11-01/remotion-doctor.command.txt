@@ -1,0 +1,1 @@
+node packages/cli/bin/setcast.js doctor --renderer remotion --gl swangle --require still\,video\,gpu --json 

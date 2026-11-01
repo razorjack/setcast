@@ -1,0 +1,22 @@
+Scope: all 7 workspace projects
+? Verifying lockfile against supply-chain policies (463 entries)...
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +320
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are copied from the content-addressable store to the virtual store.
+  Content-addressable store is at: /tmp/.pnpm-store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 320, reused 0, downloaded 224, added 223
+Progress: resolved 320, reused 0, downloaded 320, added 320, done
+✓ Lockfile passes supply-chain policies (463 entries in 1.8s)
+
+devDependencies:
++ @setcast/cli 0.1.0 <- packages/cli
++ @types/node 26.2.0
++ pnpm 11.22.0
++ typescript 7.0.2
++ vite <- @voidzero-dev/vite-plus-core 0.2.9
++ vite-plus 0.2.9
+
+Done in 2.2s using pnpm v11.22.0

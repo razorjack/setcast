@@ -1,0 +1,41 @@
+[
+  {
+    "config": {
+      "name": "field",
+      "resolution": 0.5
+    },
+    "backend": "SwiftShader",
+    "width": 1920,
+    "height": 1080,
+    "captureFrameMs": 46.7495974999998
+  },
+  {
+    "config": {
+      "name": "tunnel",
+      "resolution": 0.5
+    },
+    "backend": "SwiftShader",
+    "width": 1920,
+    "height": 1080,
+    "captureFrameMs": 48.713822699999945
+  },
+  {
+    "config": {
+      "name": "constellation",
+      "resolution": 0.5
+    },
+    "backend": "SwiftShader",
+    "width": 1920,
+    "height": 1080,
+    "captureFrameMs": 168.42415265000017
+  },
+  {
+    "config": {
+      "name": "spectrum"
+    },
+    "backend": "SwiftShader",
+    "width": 1920,
+    "height": 1080,
+    "captureFrameMs": 39.52411475000008
+  }
+]

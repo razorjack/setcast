@@ -1662,3 +1662,19 @@ with the driver. No hardware qualification is inferred. Initial ready fails on
 an incomplete pre-existing dependency tree; frozen installation is being repaired
 before source defects are assessed. Original failures and commands are retained in
 [Linux evidence](research/linux-qualification-2026-11-01/README.md).
+
+Frozen dependency installation restores the baseline: all 688 tests and decoded smoke
+pass. Host device access also resolves the apparent NVIDIA failure; the sandbox had
+hidden device nodes. The provisioned browser doctor identifies Chromium 156.0.8078.4
+with NVIDIA ANGLE and passes all requested features, including a real NVENC probe.
+Remotion's required swangle doctor passes using Chromium 149 and SwiftShader.
+Neither probe alone qualifies full exports or hardware endurance. No real master
+is present in the checkout.
+
+The Linux worker matrix discovers source-precision failures on NVIDIA ANGLE:
+Pirate landscape differs at up to 35 pixels by one level (budget 21), and
+Afterhours landscape differs across repeated one-worker pages as well as worker
+counts. The original PNGs and reports remain retained. These failures prevent
+claiming complete production fidelity despite both short acceptance suites passing.
+Investigation will distinguish graphics rasterization from frame/readiness behavior;
+thresholds remain unchanged.

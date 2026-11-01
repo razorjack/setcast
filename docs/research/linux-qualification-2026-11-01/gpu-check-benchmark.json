@@ -1,0 +1,136 @@
+[
+  {
+    "config": {
+      "name": "field",
+      "resolution": 0.5
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.3634976179999976,
+    "framesPerSecond": 25.38610555096403,
+    "commitMs": 0.8600000000054328,
+    "captureMs": 37.3387064999999
+  },
+  {
+    "config": {
+      "name": "field",
+      "resolution": 1
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.422135212000001,
+    "framesPerSecond": 24.771532036172708,
+    "commitMs": 0.8600000000131938,
+    "captureMs": 38.43073699999992
+  },
+  {
+    "config": {
+      "name": "tunnel",
+      "resolution": 0.5
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.4302902369999972,
+    "framesPerSecond": 24.688409263440608,
+    "commitMs": 0.8666666666938302,
+    "captureMs": 38.46233616666668
+  },
+  {
+    "config": {
+      "name": "tunnel",
+      "resolution": 1
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.4687563609999996,
+    "framesPerSecond": 24.30373484716664,
+    "commitMs": 0.7949999999798213,
+    "captureMs": 39.183836733333195
+  },
+  {
+    "config": {
+      "name": "constellation",
+      "resolution": 0.5
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.410630411999999,
+    "framesPerSecond": 24.889754854714756,
+    "commitMs": 0.8583333333449749,
+    "captureMs": 38.136090933333435
+  },
+  {
+    "config": {
+      "name": "constellation",
+      "resolution": 1
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.411614086999998,
+    "framesPerSecond": 24.87960255475156,
+    "commitMs": 0.8716666666829648,
+    "captureMs": 38.28025829999988
+  },
+  {
+    "config": {
+      "name": "spectrum"
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.2910914390000032,
+    "framesPerSecond": 26.188391689066897,
+    "commitMs": 1.1150000000062088,
+    "captureMs": 35.92451058333305
+  },
+  {
+    "config": {
+      "name": "radial"
+    },
+    "runtime": {
+      "chromium": "156.0.8078.4",
+      "node": "v26.7.0",
+      "platform": "linux",
+      "arch": "x64",
+      "gpu": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)"
+    },
+    "seconds": 2.315088281999997,
+    "framesPerSecond": 25.91693822931288,
+    "commitMs": 1.0250000000271635,
+    "captureMs": 36.35918840000013
+  }
+]

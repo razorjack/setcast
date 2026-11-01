@@ -1,0 +1,16 @@
+npm error code EBADDEVENGINES
+npm error EBADDEVENGINES The developer of this package has specified the following through devEngines
+npm error EBADDEVENGINES Invalid devEngines.packageManager
+npm error EBADDEVENGINES Invalid name "pnpm" does not match "npm" for "packageManager"
+npm error EBADDEVENGINES {
+npm error EBADDEVENGINES   current: { name: 'npm', version: '11.19.0' },
+npm error EBADDEVENGINES   required: { name: 'pnpm', version: '11.22.0', onFail: 'download' }
+npm error EBADDEVENGINES }
+{
+  "error": {
+    "code": "EBADDEVENGINES",
+    "summary": "The developer of this package has specified the following through devEngines\nInvalid devEngines.packageManager\nInvalid name \"pnpm\" does not match \"npm\" for \"packageManager\"",
+    "detail": "[object Object]"
+  }
+}
+npm error A complete log of this run can be found in: /home/razorjack/.npm/_logs/2026-11-01T19_57_20_146Z-debug-0.log

@@ -1,0 +1,1 @@
+Analysis cache: PASS (fresh/reused summaries and decoded video/audio identical, shared inspection/clear)
