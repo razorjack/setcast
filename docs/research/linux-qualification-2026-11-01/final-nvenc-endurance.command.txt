@@ -1,0 +1,1 @@
+node packages/renderer-browser/bench/endurance.ts --config /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo.json --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-nvenc-endurance 

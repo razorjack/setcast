@@ -1,0 +1,982 @@
+{
+  "scope": "Read-only /dev/shm/rmshm-* polling at 100 ms and output-line boundaries. No unrelated resources deleted. Unlinked mappings and short-lived pools between polls are not measured.",
+  "command": [
+    "node",
+    "scripts/export-acceptance.ts",
+    "--gl",
+    "swangle",
+    "--out",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/shm-acceptance-artifacts"
+  ],
+  "cwd": "/tmp/setcast-linux-current-upstream",
+  "exitCode": 0,
+  "capacityBytes": 33644695552,
+  "freeBytesAfter": 32875970560,
+  "before": {
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "observed": {
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-3121260286089722932": {
+      "inode": 5024,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-464428394327259079": {
+      "inode": 5023,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-14855303609665170436": {
+      "inode": 5030,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-2944102230654241764": {
+      "inode": 5029,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-9135050270638446743": {
+      "inode": 5032,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-11818417287107852314": {
+      "inode": 5031,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-5483771867661001629": {
+      "inode": 5034,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-6718825768393051009": {
+      "inode": 5033,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-8705337742518765259": {
+      "inode": 5045,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-7434185543934360159": {
+      "inode": 5068,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-14816123637162006580": {
+      "inode": 5072,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-779893355758240682": {
+      "inode": 5075,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-12945817871046316814": {
+      "inode": 5074,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-17728996723250824157": {
+      "inode": 5077,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-6804506574863937212": {
+      "inode": 5076,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-3502489097868301575": {
+      "inode": 5083,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-10159767444187639447": {
+      "inode": 5084,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-14118955066050573482": {
+      "inode": 5090,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-14359061440967676082": {
+      "inode": 5089,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-5045102561893696067": {
+      "inode": 5092,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-4471352457411590856": {
+      "inode": 5091,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-12538261970582279321": {
+      "inode": 5094,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-12570798046049424850": {
+      "inode": 5103,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-2553758797230845569": {
+      "inode": 5105,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-11764693030031401004": {
+      "inode": 5104,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-6537516158875820003": {
+      "inode": 5107,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-5640175447139203438": {
+      "inode": 5106,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-12793235820501523752": {
+      "inode": 5109,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-11370242475416009296": {
+      "inode": 5108,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-2586053140895842578": {
+      "inode": 5115,
+      "bytes": 921664,
+      "uid": 1000
+    },
+    "rmshm-2211130654165436742": {
+      "inode": 5114,
+      "bytes": 921664,
+      "uid": 1000
+    }
+  },
+  "after": {
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "remainingNewPools": {},
+  "snapshots": [
+    {
+      "seconds": 0.0009117889994740835,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 2.808622939000088,
+      "pools": {
+        "rmshm-3121260286089722932": {
+          "inode": 5024,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-464428394327259079": {
+          "inode": 5023,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 3.00922628599983,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 5.114969438999651,
+      "pools": {
+        "rmshm-14855303609665170436": {
+          "inode": 5030,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-2944102230654241764": {
+          "inode": 5029,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 5.215219208000235,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 6.117476352999802,
+      "pools": {
+        "rmshm-9135050270638446743": {
+          "inode": 5032,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11818417287107852314": {
+          "inode": 5031,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 6.217770366999503,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 7.120327322999401,
+      "pools": {
+        "rmshm-5483771867661001629": {
+          "inode": 5034,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-6718825768393051009": {
+          "inode": 5033,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 7.220608442999946,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 14.340657355000076,
+      "pools": {
+        "rmshm-8705337742518765259": {
+          "inode": 5045,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 14.5414285629995,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 28.881715581000208,
+      "pools": {
+        "rmshm-7434185543934360159": {
+          "inode": 5068,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 29.082252090999646,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 30.586200329999883,
+      "pools": {
+        "rmshm-14816123637162006580": {
+          "inode": 5072,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 30.78673746200002,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 31.6892540609997,
+      "pools": {
+        "rmshm-779893355758240682": {
+          "inode": 5075,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-12945817871046316814": {
+          "inode": 5074,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 31.78958006599987,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 32.79239852399951,
+      "pools": {
+        "rmshm-17728996723250824157": {
+          "inode": 5077,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-6804506574863937212": {
+          "inode": 5076,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 32.89264749299946,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 35.39955001999988,
+      "pools": {
+        "rmshm-3502489097868301575": {
+          "inode": 5083,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 35.49982512799943,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 37.10411315900001,
+      "pools": {
+        "rmshm-10159767444187639447": {
+          "inode": 5084,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 37.20441885499986,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 38.20719514299981,
+      "pools": {
+        "rmshm-14118955066050573482": {
+          "inode": 5090,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-14359061440967676082": {
+          "inode": 5089,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 38.30747955900006,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 39.209925633999774,
+      "pools": {
+        "rmshm-5045102561893696067": {
+          "inode": 5092,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-4471352457411590856": {
+          "inode": 5091,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 39.41050925299987,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 42.01804638399972,
+      "pools": {
+        "rmshm-12538261970582279321": {
+          "inode": 5094,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 42.11836550599946,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 43.722935935999885,
+      "pools": {
+        "rmshm-12570798046049424850": {
+          "inode": 5103,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 43.923557918999904,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 44.826125495999804,
+      "pools": {
+        "rmshm-2553758797230845569": {
+          "inode": 5105,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11764693030031401004": {
+          "inode": 5104,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 45.12702770600026,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 46.12998493899977,
+      "pools": {
+        "rmshm-6537516158875820003": {
+          "inode": 5107,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-5640175447139203438": {
+          "inode": 5106,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 46.33061032899968,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 47.43380453699956,
+      "pools": {
+        "rmshm-12793235820501523752": {
+          "inode": 5109,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11370242475416009296": {
+          "inode": 5108,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 47.53407907400015,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 48.03547516300023,
+      "pools": {
+        "rmshm-2586053140895842578": {
+          "inode": 5115,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-2211130654165436742": {
+          "inode": 5114,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 48.236091394999676,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    }
+  ],
+  "outputEvents": [
+    {
+      "seconds": 0.5810289290002402,
+      "line": "export-acceptance: /tmp/setcast-linux-current-upstream/packages/renderer-remotion/src/index.ts",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 4.776054574000227,
+      "line": "  A/V pulses aligned within 5 ms: 0.433, 1.433 s",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 4.776319017999413,
+      "line": "  fractional range and partial final frame: chunkSeconds=0",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 7.588382980999995,
+      "line": "  A/V pulses aligned within 5 ms: 0.433, 1.433 s",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 7.5886125689994515,
+      "line": "  fractional range and partial final frame: chunkSeconds=1",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 13.870179376000124,
+      "line": "  delayed font and logo match loaded ones; image, font and logo differ from missing-asset controls",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 16.839128517999598,
+      "line": "  art change: every decoded frame contains the expected prepared background",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 18.57260503299949,
+      "line": "  video background seeks and loops at the requested frame",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 20.544350076999763,
+      "line": "  performance automation: blackout, mid-ramp brightness and backward seeks",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 23.02877026599981,
+      "line": "  sterile-tech: repeatable pixels",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 25.030708606999724,
+      "line": "  darkroom: repeatable pixels",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 27.042065695999554,
+      "line": "  relief: repeatable pixels",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 33.51111315700018,
+      "line": "  field: repeatable stills and identical decoded frames across workers/chunks",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 40.01721926299979,
+      "line": "  tunnel: repeatable stills and identical decoded frames across workers/chunks",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 46.995729620999555,
+      "line": "  constellation: repeatable stills and identical decoded frames across workers/chunks",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 47.45121441900028,
+      "line": "[http://localhost:3000/public/missing-image.png] Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "pools": {
+        "rmshm-12793235820501523752": {
+          "inode": 5109,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11370242475416009296": {
+          "inode": 5108,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 47.45770287599953,
+      "line": "[http://localhost:3000/public/missing-image.png] Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "pools": {
+        "rmshm-12793235820501523752": {
+          "inode": 5109,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11370242475416009296": {
+          "inode": 5108,
+          "bytes": 921664,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 47.80143621299976,
+      "line": "  failed chunked export preserves destination, cleans up, and permits another job",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 48.51764785100022,
+      "line": "  cancellation preserves destination, cleans up, and permits another job",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 50.369680728000276,
+      "line": "export-acceptance: PASS (artifacts: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/shm-acceptance-artifacts)",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    }
+  ],
+  "status": "passed"
+}

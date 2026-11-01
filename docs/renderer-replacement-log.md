@@ -1708,3 +1708,7 @@ The automatic backend is observed SwiftShader. Final browser-first installation
 and resource checks are now being repeated with this committed implementation.
 
 Linux final candidate `a61a0b1` passed ready, both acceptance suites and both independent fresh tarball installations after the graphics fix. Browser-only inventory remains Remotion-free; explicit optional compatibility renders six decoded frames. See the Linux evidence `final-installed-*` reports. Production and candidate defaults remain scoped to their existing branches.
+
+Final Linux NVENC checks pass after the graphics fix: required encoder, 19 acceptance chunks, color, resume identity, and a 120-second/3,600-frame decoded synthetic export with four zero-lag stereo windows and cleanup. Reports retain separate SwiftShader graphics and NVENC encoder identities. Full-master assets remain absent.
+
+Linux current Remotion 4.0.539 leaks an 8,294,464-byte named POSIX pool after injected encoder failure, reproduced twice. The existing encoder-failure harness passes destination/temp-directory checks; an independent `/dev/shm/rmshm-*` observer fails. Normal/cancellation acceptance creates and removes its new pools. A library teardown race is under investigation; successful-export comparisons do not erase this cleanup failure. Evidence: Linux `shm-observed-failure.json`.

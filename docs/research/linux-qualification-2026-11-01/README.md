@@ -187,3 +187,25 @@ acceptance and fresh-install repetition. Production remains Remotion-default.
 ### Final candidate installation
 
 Candidate `a61a0b1da1566b1c9638334d480f0b37829ff655` includes the committed Linux graphics fix. Its `ready`, browser acceptance and Remotion acceptance pass. Fresh browser-only tarball installation contains no Remotion packages and passes default workflows, themes, video, cache/resume and ProRes. The separate compatibility installation passes explicit optional Remotion with six decoded frames. Retained `final-candidate-*` and `final-installed-*` reports supersede the earlier candidate checks for the final implementation.
+
+### Final NVENC implementation
+
+After `29e7dbc`, required-hardware diagnostics, all 19 acceptance chunks, production color assertions and resume/invalidation checks pass. The 120-second synthetic NVENC workload also passes: 3,600 decoded frames, four stereo windows with zero measured lag, and temporary-directory cleanup. Active export identities report SwiftShader graphics and `h264_nvenc` encoding. Peak sampled process-tree RSS is 4117929984 bytes across 34 samples. Summed RSS double-counts shared pages. These loaded checks are not throughput measurements and do not replace a real full-length master.
+
+### Current upstream preparation
+
+The isolated `renderer/linux-current-upstream` branch is committed at `2a7381a448326aa8e2003b1838a88a6e319ef70a`, based on final production implementation `29e7dbc`. Registry verification still reports Remotion 4.0.539. Only its six Remotion package pins and lockfile change; production dependencies are unchanged. Ready (688 tests), both acceptance suites and injected encoder failure pass. Current Remotion downloads Chromium 157.0.8080.0. Resource repeats overlap this correctness preparation; none of these timings count as throughput evidence.
+
+A read-only shared-memory observer initially had a Python string-literal syntax error and exited before launching its child. The failed command and original wrapper are retained; the corrected wrapper is being rerun. Initial and post-acceptance/failure `/dev/shm` listings contain unrelated pre-existing pools, which are left untouched. Specific Remotion `rmshm-*` observations follow.
+
+### Current upstream shared-memory failure
+
+The observed acceptance repeat passes and creates/removes 31 new Remotion POSIX pools (32 observed including one pre-existing pool from the first encoder-failure run). Named pools do not remain after its normal/cancellation paths. Injected encoder failure reproduces a leak: a new `rmshm-13983776585987463118` pool, inode 5148, 8,294,464 bytes remains after child exit. The earlier unobserved failure left `rmshm-11411021668764671149`, inode 4965, the same size. The exporter harness reports PASS for destination and temporary-directory cleanup, but the independent observer correctly fails. Both failed observations remain; no shared memory was deleted.
+
+Inspection of installed Remotion 4.0.539 finds that `render-media.js` rejects its public happy-path promise before its asynchronous `finally` disposes shared memory. `render-frames.js` starts page closure in an unawaited `finally`. A teardown race is the working explanation; no production code change is justified by this third-party inspection alone. This remains a current-upstream cleanup qualification failure even if normal-export fidelity/timing measurements succeed.
+
+### Quality orchestration
+
+The initial serial quality coordinator completed standard with every recorded browser metric at least Remotion. It was deliberately interrupted during CSS-filter reference capture to resume the ten remaining independent cases in three validation processes. The SIGINT/AbortError attempt remains under `quality`; it is an orchestration interruption, not a renderer failure. `quality-index.json` maps the accepted case directories. These loaded measurements, including their recorded export wall times, are not performance evidence. Both standard arms identify SwiftShader; current Remotion reports `remotionshm` streaming and browser reports `image2pipe` streaming.
+
+Final bitmap video-memory repeat passes all 3,000 captures and close: created/revoked 3,000/3,000 URLs, peak two, final zero. Peak sampled process-tree RSS is 2380480512 bytes. Four 750-capture interval medians are 2322743296, 2327584768, 2284146688, 2286047232.0 bytes. The bounded end-state and interval samples show no monotonic growth in this fixture; they do not establish full-master resource behavior. See `final-video-memory-summary.json`.

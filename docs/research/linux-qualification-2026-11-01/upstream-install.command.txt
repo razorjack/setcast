@@ -1,0 +1,1 @@
+bash -c cd\ /tmp/setcast-linux-current-upstream\ \&\&\ /home/razorjack/Projects/opensource/setcast/node_modules/.bin/vp\ install 

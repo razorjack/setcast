@@ -613,9 +613,13 @@ broader live hardware support can ship independently after the core replacement 
    path, not Remotion. Requalify tuned upstream output and compare the final implementation.
    Standard/GPU export needs further optimization if the target is retained. The rejected
    experiments do not supply a safe faster capture path.
-2. Execute the prepared browser-only installation matrix and exporter/resource qualification
-   on Linux and Windows, recording actual capture, graphics and encoder paths. A Linux machine
-   is available for a follow-up session; use the [Linux runbook](linux-renderer-qualification.md).
+2. Complete supported-platform exporter/resource qualification, recording actual capture,
+   graphics and encoder paths. The [Linux follow-up](research/linux-qualification-2026-11-01/README.md)
+   passes fresh browser-only and optional-Remotion installations, production correctness and
+   short decoded NVENC export on Fedora x64. Linux automatic browser graphics now use the
+   qualified Chromium default (observed SwiftShader); explicit NVIDIA ANGLE failed pixel/stall
+   checks. Full real-master Linux assets are still missing. Continue with the
+   [Linux runbook](linux-renderer-qualification.md).
    Windows access is unavailable for now and its qualification remains pending. Do not count prepared
    CI jobs as successful runs or advertise an untested hardware backend as qualified.
 3. After those requirements pass, promote `renderer/browser-first-candidate`, recheck migration

@@ -1,0 +1,28 @@
+Quality corpus: standard
+Quality corpus: css-filters
+node:child_process:776
+      child.emit('error', new AbortError(undefined, { cause: reason }));
+                          ^
+
+AbortError: The operation was aborted
+    at abortChildProcess (node:child_process:776:27)
+    at AbortSignal.onAbortListener (node:child_process:846:7)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+    at AbortSignal.dispatchEvent (node:internal/event_target:789:26)
+    at runAbort (node:internal/abort_controller:554:10)
+    at abortSignal (node:internal/abort_controller:518:3)
+    at AbortController.abort (node:internal/abort_controller:573:5)
+    at process.<anonymous> (file:///home/razorjack/Projects/opensource/setcast/scripts/corpus-quality.ts:43:38)
+    at process.wrapper (node:events:639:12)
+    at process.emit (node:events:526:24) {
+  code: 'ABORT_ERR',
+  cmd: '/home/razorjack/.local/share/mise/installs/node/26.7.0/bin/node packages/renderer-browser/bench/quality-reference.ts /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/css-filters --at 90 --seconds 10 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality/css-filters/reference',
+  stdout: '',
+  stderr: '',
+  [cause]: Error: Stopped by SIGINT
+      at process.<anonymous> (file:///home/razorjack/Projects/opensource/setcast/scripts/corpus-quality.ts:43:44)
+      at process.wrapper (node:events:639:12)
+      at process.emit (node:events:526:24)
+}
+
+Node.js v26.7.0

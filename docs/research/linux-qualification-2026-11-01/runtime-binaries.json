@@ -1,0 +1,32 @@
+[
+  {
+    "path": "/home/razorjack/.local/share/mise/installs/node/26.7.0/bin/node",
+    "bytes": 147870928,
+    "sha256": "ad19784f7e90ba789a099eccba77ede8dc90a778c424f1c10a70fed3ff903fdc"
+  },
+  {
+    "path": "/usr/bin/ffmpeg",
+    "bytes": 416936,
+    "sha256": "c71eb1c6b9d57114ea567b1525c393295285df3ad21b17ad8144e02832d8ed92"
+  },
+  {
+    "path": "/usr/bin/ffprobe",
+    "bytes": 189920,
+    "sha256": "f21cb84ff7cbdd97940118b2c7e23c3075ee0172d065fb5b05f16c2d333d50ef"
+  },
+  {
+    "path": "/home/razorjack/Projects/opensource/setcast/packages/renderer-remotion/node_modules/.remotion/chrome-headless-shell/linux64/chrome-headless-shell-linux64/chrome-headless-shell",
+    "bytes": 219155520,
+    "sha256": "47e823e3a14b431ffa8dc88f97db6a854cd92e04800c01fc765c16a18d393d72"
+  },
+  {
+    "path": "/tmp/setcast-linux-current-upstream/packages/renderer-remotion/node_modules/.remotion/chrome-headless-shell/linux64/chrome-headless-shell-linux64/chrome-headless-shell",
+    "bytes": 241241320,
+    "sha256": "6499ae333be19f27484c73a61da262754a02ab3d82bbba856f44bef785ec3e62"
+  },
+  {
+    "path": "/home/razorjack/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell",
+    "bytes": 207474000,
+    "sha256": "4fa61f0ba0b4f89b7bec242c32ca16d3bccf69dbfef0651924a9ba8fede5f9d6"
+  }
+]
