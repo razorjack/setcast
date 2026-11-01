@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+for attempt in 1 2 3 4; do
+  bash "$root/run.sh" "quicksilver-promote-repeat-$attempt" node "$root/quicksilver-layer-probe.mjs" promote --image-only --theme quicksilver --out "$root/quicksilver-promote-repeat-$attempt"
+done

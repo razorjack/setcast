@@ -1,0 +1,209 @@
+{
+  "results": [
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "IMG"
+    }
+  ],
+  "differences": [
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 7,
+      "max": 90,
+      "mean": 0.027112268518518518,
+      "rms": 0.8840618719968182
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 36,
+      "max": 64,
+      "mean": 0.017291666666666667,
+      "rms": 0.5437327051315101
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    }
+  ],
+  "failures": [
+    "quicksilver-640-cover:7",
+    "quicksilver-360-contain:36"
+  ]
+}

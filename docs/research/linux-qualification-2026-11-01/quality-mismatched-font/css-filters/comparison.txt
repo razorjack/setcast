@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 47.668418368000005,
+    "minSeconds": 47.668418368000005,
+    "maxSeconds": 47.668418368000005
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 40.60215292,
+    "minSeconds": 40.60215292,
+    "maxSeconds": 40.60215292
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-css-filters/css-filters/comparison/report.json

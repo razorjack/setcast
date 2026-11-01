@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 223.90860232400001,
+    "minSeconds": 223.90860232400001,
+    "maxSeconds": 223.90860232400001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 208.996121026,
+    "minSeconds": 208.996121026,
+    "maxSeconds": 208.996121026
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-chunk-boundary/chunk-boundary/comparison/report.json

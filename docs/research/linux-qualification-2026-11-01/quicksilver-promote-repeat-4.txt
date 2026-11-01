@@ -1,0 +1,2 @@
+  quicksilver: canvas/image comparison complete in both shapes and fits
+Video frames: PASS (4 theme/shape/fit cases, shuffled seeks, 25-to-30/60 fps, selector fallback)

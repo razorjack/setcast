@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run font-frames node packages/renderer-browser/bench/frames.ts
+run font-workers node packages/renderer-browser/bench/worker-frames.ts --workers 1,2,4 --out "$root/font-workers"
+run font-bitmap node packages/renderer-browser/bench/bitmap.ts --out "$root/font-bitmap"
+run font-video-frames node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/font-video-frames"
+run font-color node packages/renderer-browser/bench/color.ts --out "$root/font-color"
+run font-webp node packages/renderer-browser/bench/webp.ts
+run font-gpu node packages/renderer-browser/bench/gpu.ts
+run font-remotion-gpu node packages/renderer-remotion/bench/gpu-recovery.ts
+run font-resume node packages/renderer-browser/bench/resume.ts
+run font-cache node packages/renderer-browser/bench/cache.ts --out "$root/font-cache"
+run font-incremental node packages/renderer-browser/bench/incremental.ts --out "$root/font-incremental"
+run font-preparation node packages/renderer-browser/bench/analysis-cache.ts --out "$root/font-preparation"
+run font-preview node packages/renderer-browser/bench/preview.ts
+run font-preview-exports node packages/renderer-browser/bench/preview-exports.ts --out "$root/font-preview-exports"
+run font-prores node packages/renderer-browser/bench/prores.ts --out "$root/font-prores"
+run font-decoded-verifier node packages/renderer-browser/bench/export-verification.ts

@@ -1,0 +1,20 @@
+import { chromium } from '../../../../packages/renderer-browser/node_modules/playwright/index.mjs';
+const launch = chromium.launch.bind(chromium);
+const mode = process.argv[2];
+process.argv.splice(2, 1);
+chromium.launch = async (options = {}) => {
+  const extra = mode === 'compositing' ? ['--disable-gpu-compositing'] : mode === 'gpu' ? ['--disable-gpu'] : [];
+  const browser = await launch({ ...options, args: [...(options.args ?? []), ...extra] });
+  const newPage = browser.newPage.bind(browser);
+  browser.newPage = async options => {
+    const page = await newPage(options);
+    if (mode === 'promote') await page.route('**/project.json', async route => {
+      const response = await route.fetch(); const project = await response.json();
+      project.css += '\n.theme-quicksilver .sc-bg-img { will-change: transform; }';
+      await route.fulfill({ response, json: project });
+    });
+    return page;
+  };
+  return browser;
+};
+await import('../../../../packages/renderer-browser/bench/video-frames.ts');

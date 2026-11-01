@@ -1,0 +1,18 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 44.310045232,
+    "minSeconds": 44.310045232,
+    "maxSeconds": 44.310045232
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 43.355425421,
+    "minSeconds": 43.355425421,
+    "maxSeconds": 43.355425421
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-4k/4k/comparison/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.

@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+import json,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+mode=sys.argv[1]
+assert mode in ('calibration','tune','timing')
+font_index=json.loads((ROOT/'font-quality-index.json').read_text())
+paths=[Path(p)/'comparison/report.json' for p in font_index.values()] if mode=='calibration' else sorted(ROOT.glob(mode+'-*/report.json'))
+def checks(browser,remotion):
+    assert browser['status']==remotion['status']=='measured'
+    assert browser['regions'].keys()==remotion['regions'].keys()
+    pairs=[(region,metric,browser['regions'][region][metric],remotion['regions'][region][metric]) for region in browser['regions'] for metric in ('psnr','ssim')]
+    pairs.append(('full','vmafNeg',browser['vmaf']['percentiles'],remotion['vmaf']['percentiles']))
+    result=[]
+    for region,metric,b,r in pairs:
+        for stat in ('min','p05','mean'):
+            bv,rv=b[stat],r[stat]
+            result.append(dict(region=region,metric=metric,stat=stat,browser=bv,remotion=rv,passed=(float('inf') if bv=='infinity' else bv)>=(float('inf') if rv=='infinity' else rv)))
+    return result
+results=[]
+for path in paths:
+    report=json.loads(path.read_text());name=Path(report['config']['project']).name
+    pairs=[]
+    for index in sorted(set(r['index'] for r in report['runs'])):
+        if mode=='calibration':
+            quality={a:Path(font_index[name])/a/'report.json' for a in ('browser','remotion')}
+        else:
+            quality={a:ROOT/(path.parent.name+f'-quality-{index}-{a}')/'report.json' for a in ('browser','remotion')}
+        if not all(p.exists() for p in quality.values()):
+            pairs.append(dict(index=index,status='incomplete',paths={a:str(p) for a,p in quality.items()}));continue
+        metrics={a:json.loads(p.read_text()) for a,p in quality.items()}
+        rows=checks(metrics['browser'],metrics['remotion'])
+        pairs.append(dict(index=index,status='passed' if all(c['passed'] for c in rows) else 'failed',checks=rows,paths={a:str(p) for a,p in quality.items()}))
+    summaries=report['summary']
+    b=summaries.get('browser',{}).get('medianSeconds');r=summaries.get('remotion',{}).get('medianSeconds')
+    reduction=1-b/r if b and r else None
+    results.append(dict(case=name,report=str(path),status=report['status'],revision=report['revision'],dirty=report['dirty'],config=report['config'],summary=summaries,reduction=reduction,targetMet=reduction>=.30 if reduction is not None else None,quality=pairs,qualityPassed=len(pairs)==report['config']['repeat'] and all(p['status']=='passed' for p in pairs),runs=[{k:run[k] for k in ('renderer','index','wallSeconds','settings','verification','processes','load','runtime')} for run in report['runs']]))
+output=ROOT/(mode+'-summary.json')
+output.write_text(json.dumps(dict(scope='All retained comparison reports, including incomplete or failed attempts. Quality requires every full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG to meet the corresponding Remotion arm. Calibration times are loaded and are not throughput evidence.',results=results),indent=2)+'\n')
+for r in results: print(r['case'],Path(r['report']).parent.name,r['status'],'quality',r['qualityPassed'],'reduction',round(100*r['reduction'],2) if r['reduction'] is not None else None)

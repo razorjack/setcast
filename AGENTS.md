@@ -132,6 +132,11 @@ Gotchas:
   Pirate/Afterhours source precision and Masthead capture reliability. Explicit `angle` remains
   opt-in and unqualified on that driver. This does not change Remotion's graphics policy or NVENC.
 
+- Quicksilver's circular video clip needs `will-change: transform` on `.sc-bg-img`.
+  Without a stable compositor layer, Linux Chromium changes clip-edge antialiasing between
+  shuffled seeks (up to 84 levels), even with SwiftShader. Keep the video-frame comparison
+  and its per-seek artifacts; disabling font hinting or GPU rasterization does not fix it.
+
 - Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
   Exact image/encoded parity, URL checks, full-master resources and one/automatic-worker quiet

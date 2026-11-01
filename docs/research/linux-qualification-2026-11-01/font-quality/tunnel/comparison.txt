@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 55.583869388,
+    "minSeconds": 55.583869388,
+    "maxSeconds": 55.583869388
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 49.841163158,
+    "minSeconds": 49.841163158,
+    "maxSeconds": 49.841163158
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-tunnel/tunnel/comparison/report.json

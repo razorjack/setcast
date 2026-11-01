@@ -19,7 +19,14 @@ const { values } = parseArgs({
 if (values.theme && !themes[values.theme]) throw new Error(`Unknown theme ${values.theme}.`);
 const directory = await mkdtemp(join(tmpdir(), 'setcast-video-frames-'));
 const out = resolve(values.out);
-const differences: { name: string; frame: number; max: number; mean: number; rms: number }[] = [];
+const differences: {
+  name: string;
+  seek: number;
+  frame: number;
+  max: number;
+  mean: number;
+  rms: number;
+}[] = [];
 const failures: string[] = [];
 const results: { theme: string; shape: string; fit: string; element: string }[] = [];
 await mkdir(out, { recursive: true });
@@ -103,7 +110,7 @@ async function compare(project: ResolvedProject, name: string) {
   return withCapture(project, { projectDir: directory }, (page) =>
     withCapture(fallback, { projectDir: directory }, async (reference) => {
       let element = '';
-      for (const frame of [29, 36, 7, 0, 29]) {
+      for (const [seek, frame] of [29, 36, 7, 0, 29].entries()) {
         await prepareFrame(page, frame);
         await prepareFrame(reference, frame);
         element = await page
@@ -119,16 +126,14 @@ async function compare(project: ResolvedProject, name: string) {
         );
         const actual = await page.screenshot();
         const expected = await reference.screenshot();
-        const actualFile = join(out, `${name}-${frame}-canvas.png`);
-        const expectedFile = join(out, `${name}-${frame}-image.png`);
+        const actualFile = join(out, `${name}-${seek}-${frame}-canvas.png`);
+        const expectedFile = join(out, `${name}-${seek}-${frame}-image.png`);
         await writeFile(actualFile, actual);
         await writeFile(expectedFile, expected);
         const difference = pixelDifference(actualFile, expectedFile);
-        differences.push({ name, frame, ...difference });
+        differences.push({ name, seek, frame, ...difference });
         if (difference.max > 8 || difference.mean > 0.1 || difference.rms > 0.5) {
-          await writeFile(join(out, `${name}-${frame}-canvas.png`), actual);
-          await writeFile(join(out, `${name}-${frame}-image.png`), expected);
-          failures.push(`${name}:${frame}`);
+          failures.push(`${name}:seek-${seek}:frame-${frame}`);
         }
       }
       return element;

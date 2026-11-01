@@ -1,0 +1,608 @@
+{
+  "version": 1,
+  "status": "passed",
+  "config": {
+    "version": 1,
+    "mode": "export",
+    "seconds": 120,
+    "sampleSeconds": 5,
+    "changeSeconds": 30,
+    "restartSeconds": 600,
+    "project": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo",
+    "at": 0,
+    "concurrency": 4,
+    "scenes": [
+      {
+        "title": "field",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "field",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "tunnel",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "tunnel",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "constellation",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "constellation",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      }
+    ],
+    "gpuRecovery": null,
+    "verification": "decoded",
+    "audioAt": [
+      5,
+      33,
+      79,
+      110
+    ],
+    "graphics": "auto",
+    "operatorWindow": false
+  },
+  "runtime": {
+    "node": "v26.7.0",
+    "platform": "linux",
+    "release": "7.2.13-200.fc44.x86_64",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+    "revision": "8eca0d3d15002b6cb7107bf63c25b487ae21e5ce",
+    "dirty": true
+  },
+  "startedAt": "2026-11-01T21:45:33.007Z",
+  "wallSeconds": 240.854540354,
+  "samples": 43,
+  "actions": {
+    "audio-verification": 4
+  },
+  "details": {
+    "settings": {
+      "codec": "h264",
+      "profile": "standard",
+      "parallelEncoding": true,
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "required",
+      "videoBitrate": "12M",
+      "jpegQuality": 95,
+      "gl": "auto",
+      "concurrency": 4
+    },
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "explicit",
+        "cpuCount": 32,
+        "memoryBudgetBytes": 16822347776,
+        "estimatedMemoryBytes": 3082485760
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "h264_nvenc",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 4,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "h264_nvenc",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "h264_nvenc",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ],
+    "result": {
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-nvenc-endurance/export.mp4",
+      "frames": 3600,
+      "durationSeconds": 120
+    },
+    "stats": {
+      "audioMs": {
+        "count": 3600,
+        "sum": 1458.500000002794,
+        "max": 46.10000000055879
+      },
+      "resolveMs": {
+        "count": 3600,
+        "sum": 3709.4000000003725,
+        "max": 5
+      },
+      "commitMs": {
+        "count": 3600,
+        "sum": 30093.000000002794,
+        "max": 57.5
+      },
+      "readinessMs": {
+        "count": 3600,
+        "sum": 45755.19999995362,
+        "max": 266.1000000005588
+      },
+      "captureMs": {
+        "count": 3600,
+        "sum": 680420.6241600015,
+        "max": 473.37744100001873
+      },
+      "bytes": {
+        "count": 3600,
+        "sum": 1061651355,
+        "max": 378902
+      },
+      "encoder-write": {
+        "count": 3600,
+        "sum": 2789.0865800001043,
+        "max": 257.5299980000127
+      },
+      "audio-encode": {
+        "count": 1,
+        "sum": 7753.591749000001,
+        "max": 7753.591749000001
+      },
+      "encoder-finish": {
+        "count": 2,
+        "sum": 307.10318400002143,
+        "max": 162.7213290000218
+      },
+      "mux": {
+        "count": 1,
+        "sum": 449.24356199998874,
+        "max": 449.24356199998874
+      }
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frames": 3600,
+    "renderWallSeconds": 213.210632079,
+    "finalStorage": {
+      "bytes": 183413584,
+      "freeBytes": 806075461632,
+      "temporaryDirectories": [],
+      "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+    },
+    "verification": {
+      "mode": "decoded",
+      "expected": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "frames": 3600,
+        "sourceAt": 0
+      },
+      "phase": "complete",
+      "video": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "Main",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.4d4028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1088,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
+            "level": 40,
+            "color_range": "pc",
+            "color_space": "bt470bg",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 10800000,
+            "duration": "120.000000",
+            "bit_rate": "11943697",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "3600",
+            "nb_read_frames": "3600",
+            "extradata_size": 58,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 5760000,
+            "duration": "120.000000",
+            "bit_rate": "270980",
+            "nb_frames": "5626",
+            "nb_read_frames": "5625",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          }
+        ],
+        "errors": []
+      },
+      "audio": [
+        {
+          "at": 5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9984554136118762,
+            "sourceRms": 0.0655111992047667,
+            "outputRms": 0.06536992108316295,
+            "zeroLagCorrelation": 0.9984554136118762,
+            "margin": 0.19778377395277225,
+            "levelRatio": 0.9978434508401813,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9985585230436542,
+                "sourceRms": 0.06551119920476665,
+                "outputRms": 0.06537163663907627,
+                "levelRatio": 0.9978696380560192,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9983522994556158,
+                "sourceRms": 0.06551119920476665,
+                "outputRms": 0.0653682054822254,
+                "levelRatio": 0.9978172629370696,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 33,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9993482848583188,
+            "sourceRms": 0.36574869282444045,
+            "outputRms": 0.36401203271315774,
+            "zeroLagCorrelation": 0.9993482848583188,
+            "margin": 0.23223875329849952,
+            "levelRatio": 0.9952517667312175,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9993998623954571,
+                "sourceRms": 0.3657486928244445,
+                "outputRms": 0.36401211161369007,
+                "levelRatio": 0.9952519824545539,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9992967072988274,
+                "sourceRms": 0.3657486928244445,
+                "outputRms": 0.36401195381261786,
+                "levelRatio": 0.9952515510078385,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 79,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9990361711461783,
+            "sourceRms": 0.05713497339010689,
+            "outputRms": 0.057022118666453965,
+            "zeroLagCorrelation": 0.9990361711461783,
+            "margin": 0.20510006354546106,
+            "levelRatio": 0.9980247698221127,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9990203276452817,
+                "sourceRms": 0.057134973390106335,
+                "outputRms": 0.05702379101020404,
+                "levelRatio": 0.9980540398760115,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9990520164357972,
+                "sourceRms": 0.057134973390106335,
+                "outputRms": 0.05702044627365559,
+                "levelRatio": 0.9979954989097697,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 110,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9992284192553269,
+            "sourceRms": 0.33599019393222684,
+            "outputRms": 0.3344728442799354,
+            "zeroLagCorrelation": 0.9992284192553269,
+            "margin": 0.28185699727313107,
+            "levelRatio": 0.9954839466160208,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9992372631910906,
+                "sourceRms": 0.33599019393223367,
+                "outputRms": 0.33447310948910236,
+                "levelRatio": 0.9954847359520341,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9992195753061017,
+                "sourceRms": 0.33599019393223367,
+                "outputRms": 0.33447257907056377,
+                "levelRatio": 0.995483157279358,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "audioAt": [
+        5,
+        33,
+        79,
+        110
+      ],
+      "wallSeconds": 27.59114455300002
+    },
+    "identity": {
+      "ffmpeg": "ffmpeg version 8.1.3 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 8.1.3 Copyright (c) 2007-2026 the FFmpeg developers",
+      "output": {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-nvenc-endurance/export.mp4",
+        "sha256": "6d886c9288a54fd9d1169562e2a79d6d1fdd8b60d719108653c05c497ef49d79",
+        "bytes": 183354560,
+        "stamp": "54:1944738:183354560:1793569746198.058:1793569746205.0583"
+      },
+      "source": {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo/assets/demo-set.wav",
+        "sha256": "b91642b751283fea92a1fb4958e52d9bf87fe5ce4da210b062c8feb70f651aed",
+        "bytes": 27250804,
+        "stamp": "54:1902994:27250804:1793564502756.598:1793564502756.598"
+      }
+    }
+  },
+  "errors": []
+}

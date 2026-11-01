@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "projectDir": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/portrait",
+  "range": [
+    3060,
+    3359
+  ],
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "frames": 300,
+  "identity": "b43a8eb946c17d827038febc03cb261dabab24436b56ede3c938067547afb0e2",
+  "projectDigest": "76f2ea3f319e6850063e3606f0cd5c97dfa780749d9bee562c92d6d92ad4f3bd",
+  "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933",
+  "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-portrait/portrait/reference/reference.mkv",
+  "fileDigest": {
+    "sha256": "4f988e74b7800bce9bc9995e96f68356a668fb880b94588f8ca7e2d023eb70fb",
+    "bytes": 268076018,
+    "stamp": "54:1941643:268076018:1793568419840.7432:1793568419840.7432"
+  },
+  "sourceRgbHash": "SHA256=be4f01c2b10fce6f7f9f5dcde4cb01d2011a358e3f182a00bbcecf8959d96680",
+  "capture": "png-cdp-optimize-for-speed",
+  "minimumFreeBytes": 2164072448,
+  "regions": {
+    "branding": {
+      "x": 418,
+      "y": 518,
+      "right": 1044,
+      "bottom": 1884
+    },
+    "tracklist": {
+      "x": 36,
+      "y": 123,
+      "right": 1044,
+      "bottom": 1748
+    },
+    "credits": {
+      "x": 37,
+      "y": 1727,
+      "right": 1043,
+      "bottom": 1920
+    }
+  },
+  "scope": "Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range."
+}

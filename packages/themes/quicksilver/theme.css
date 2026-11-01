@@ -167,6 +167,10 @@
 .theme-quicksilver[data-background='image'] .sc-bg-img {
   display: none;
 }
+.theme-quicksilver .sc-bg-img {
+  /* Keep Chromium's circular video clip on a stable compositor layer across seeks. */
+  will-change: transform;
+}
 .theme-quicksilver :is(.sc-art, .sc-bg-img) {
   --art-size: calc(var(--orb) * (2.5 + var(--mod-orb, 0) * 0.05));
   --reach: calc(var(--art-size) / 2 - var(--orb));

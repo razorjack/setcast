@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "projectDir": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/dj-art-branding",
+  "range": [
+    3060,
+    3359
+  ],
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "frames": 300,
+  "identity": "e47191c52042e35baccad71fe98b6e91b9a46a3c9036f8714c6e8e501982aa94",
+  "projectDigest": "2e1d00e1e2fcce41d7893047133a96b8bb779be64c17413b21e01be902a34cd4",
+  "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933",
+  "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-dj-art-branding/dj-art-branding/reference/reference.mkv",
+  "fileDigest": {
+    "sha256": "194d059fc0964045f3268a1f641cdc379eb198bb10afcfaf6de0d1bc9aab11cd",
+    "bytes": 277049384,
+    "stamp": "54:1947206:277049384:1793570507844.8381:1793570507844.8381"
+  },
+  "sourceRgbHash": "SHA256=80f57ef73eb58463434bbbb4fcd33d9c0b1451707890efc032a42e213ec31fd4",
+  "capture": "png-cdp-optimize-for-speed",
+  "minimumFreeBytes": 2164072448,
+  "regions": {
+    "branding": {
+      "x": 844,
+      "y": 119,
+      "right": 1855,
+      "bottom": 950
+    },
+    "tracklist": {
+      "x": 1374,
+      "y": 140,
+      "right": 1855,
+      "bottom": 490
+    },
+    "credits": {
+      "x": 65,
+      "y": 141,
+      "right": 680,
+      "bottom": 274
+    }
+  },
+  "scope": "Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range."
+}

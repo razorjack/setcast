@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+import json,shutil
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+DEST=Path('/home/razorjack/Projects/opensource/setcast/docs/research/linux-qualification-2026-11-01')
+for status in ROOT.glob('*.exit.txt'):
+    label=status.name.removesuffix('.exit.txt')
+    for source in ROOT.glob(label+'.*'):
+        if source.is_file() and source.suffix in ('.txt','.json'):shutil.copy2(source,DEST/source.name)
+    directory=ROOT/label
+    if (directory/'report.json').exists():shutil.copy2(directory/'report.json',DEST/(label+'.json'))
+    if (directory/'samples.jsonl').exists():shutil.copy2(directory/'samples.jsonl',DEST/(label+'-samples.jsonl'))
+    runtimes={p.name:json.loads(p.read_text()) for p in directory.glob('*.runtime.json')}
+    if runtimes:(DEST/(label+'-runtime.json')).write_text(json.dumps(runtimes,indent=2)+'\n')
+for index_file,subdirectory in [('quality-index.json','quality-mismatched-font'),('font-quality-index.json','font-quality')]:
+    path=ROOT/index_file
+    if not path.exists():continue
+    for name,directory in json.loads(path.read_text()).items():
+        directory=Path(directory)
+        metric_paths=[directory/a/'report.json' for a in ('browser','remotion')]
+        if not all(p.exists() and json.loads(p.read_text())['status']=='measured' for p in metric_paths):continue
+        destination=DEST/subdirectory/name;destination.mkdir(parents=True,exist_ok=True)
+        for source in [directory.parent/'report.json',directory/'comparison/report.json',directory/'reference/reference.json',*metric_paths]:
+            if source.exists():shutil.copy2(source,destination/(('coordinator' if source.parent==directory.parent else source.parent.name)+'.json'))
+        for source in directory.glob('*.log'):shutil.copy2(source,destination/(source.stem+'.txt'))
+        for source in directory.glob('*command.json'):shutil.copy2(source,destination/source.name)
+for source in ROOT.glob('*.py'):shutil.copy2(source,DEST/'reproduction'/(source.name+'.txt'))
+for source in ROOT.glob('*.sh'):shutil.copy2(source,DEST/'reproduction'/(source.name+'.txt'))

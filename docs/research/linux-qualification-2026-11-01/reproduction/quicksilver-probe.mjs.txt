@@ -1,0 +1,13 @@
+import { chromium } from '../../../../packages/renderer-browser/node_modules/playwright/index.mjs';
+const launch = chromium.launch.bind(chromium);
+const mode = process.argv[2];
+process.argv.splice(2, 1);
+chromium.launch = (options = {}) => {
+  let args = options.args ?? [];
+  if (mode === 'raster') args = [...args, '--disable-gpu-rasterization'];
+  else if (mode === 'hinting') args = args.filter(arg => arg !== '--font-render-hinting=none');
+  else if (mode === 'paced') args = args.filter(arg => arg !== '--disable-frame-rate-limit');
+  else throw new Error(mode);
+  return launch({ ...options, args });
+};
+await import('../../../../packages/renderer-browser/bench/video-frames.ts');
