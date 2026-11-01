@@ -64,6 +64,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | Shared Setcast scene, timeline, audio and CSS contracts | Supported | Supported |
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
+| Transparent/editing output | ProRes 4444 + PCM in MOV; transparent PNG stills; locally checked | Not exposed by the Setcast adapter |
 | Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
 | Concurrency | Automatic 1/2/4 from stable CPU/memory limits; explicit 1–8 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
@@ -225,7 +226,8 @@ Current-upstream quiet timings miss the release speed target. Automatic scheduli
 local VideoToolbox qualification, persistent chunk reuse, scoped preparation reuse and the local
 preview/export workflow are implemented. Bitmap video and direct CDP capture remain isolated
 candidates under qualification. Native DOM capture was rejected. H.264 color handling is qualified
-locally; transparent/editing outputs and cross-platform installed qualification remain pending.
+locally. ProRes 4444 and transparent Stage are implemented with local FFmpeg/AVFoundation checks;
+receiving-editor workflows and cross-platform installed qualification remain pending.
 The phases describe implementation and evidence, not newly supported renderer flags or APIs.
 Benchmarking and release qualification continue across phases. Color/fidelity fixtures begin in
 phase 0; the additional output formats arrive later.
@@ -481,6 +483,14 @@ After H.264 parity, add a qualified transparent-overlay output and editing inter
 investigating VP9 alpha and ProRes 4444. An alpha codec alone does not make an opaque theme
 transparent: define a stage/background mode and supported composition behavior. Extend configuration,
 capability descriptors, validation and diagnostics together. Test with intended receiving apps.
+
+The initial implementation uses ProRes 4444 for both compositing and editing, plus transparent
+PNG stills. It retains continuous PCM audio, chunking, cache/resume and the preview queue.
+[Decoded and native receiver qualification](research/prores-alpha-2026-11-01/README.md) passes
+63 moving alpha/color frames, exact source audio, joins, cache/recovery and brightness checks.
+All sixteen theme samples contain alpha. AVFoundation identifies straight alpha and the intended
+color tags. Specific editor/OBS workflows, other platforms and sustained ProRes resources remain
+unqualified; VP9 alpha is deferred pending independent chunk-boundary evidence.
 
 These outputs support OBS overlays and compositing with filmed performances. They are useful
 parity and workflow features, not evidence of faster H.264 export. Do not make an exhaustive codec

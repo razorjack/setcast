@@ -1,0 +1,39 @@
+$ node scripts/package-smoke.ts --browser ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+ ┌   setcast  render
+│
+■  --bundle renders the whole set
+│
+│  Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.
+
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-6MSG2J/node_modules/@setcast/cli/dist/main.mjs render /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-6MSG2J/project --renderer browser --range 0-0.2 --bundle --out /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-6MSG2J/overlay.mov
+┌   setcast  render
+│
+■  --bundle renders the whole set
+│
+│  Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:20)
+    at maybeClose (node:internal/child_process:1125:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5) {
+  code: 2,
+  killed: false,
+  signal: null,
+  cmd: '/Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-6MSG2J/node_modules/@setcast/cli/dist/main.mjs render /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-6MSG2J/project --renderer browser --range 0-0.2 --bundle --out /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-6MSG2J/overlay.mov',
+  stdout: '',
+  stderr: '┌   setcast  render\n' +
+    '│\n' +
+    '■  --bundle renders the whole set\n' +
+    '│\n' +
+    '│  Drop --range, or render the slice on its own and run `setcast still` and `setcast chapters` for the rest.\n'
+}
+
+Node.js v26.7.0
+

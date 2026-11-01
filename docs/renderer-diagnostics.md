@@ -1,5 +1,14 @@
 # Renderer capabilities and setup diagnostics
 
+Browser `alpha` and `prores` features describe the opt-in
+[ProRes 4444 output](compositing-output.md). `doctor --renderer browser --require alpha,prores`
+checks browser capture and an actual PNG → ProRes → RGBA probe, including partial alpha and PCM
+audio. ProRes failures remain optional for the default H.264 requirement. The additive
+`videoFormats` capability field describes codec/container/audio/alpha combinations; legacy
+`videoCodec` and `audioCodec` fields continue to describe H.264/AAC defaults. Cache diagnostics
+check the default H.264 path; using ProRes with stored chunks additionally requires its encoder
+and ffprobe, which the export itself checks.
+
 `setcast capabilities --renderer browser` describes the Setcast adapter's declared support.
 Add `--json` for a versioned descriptor. Omit `--renderer` to select Remotion, the default.
 This command does not read project configuration, load rendering dependencies, start processes,

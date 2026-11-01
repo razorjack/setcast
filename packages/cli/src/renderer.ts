@@ -2,6 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import type { HardwareProbe } from '@setcast/renderer-browser/export';
 import {
   SetcastError,
+  rendererCompatibility,
   type Exporter,
   type ProjectConfig,
   type HardwareAcceleration,
@@ -43,6 +44,18 @@ export async function rendererCapabilities(name: Renderer) {
       ? await import('@setcast/renderer-browser/capabilities')
       : await loadRemotion(() => import('@setcast/renderer-remotion/capabilities'));
   return adapter.capabilities;
+}
+
+export async function requireRendererFormat(
+  name: Renderer,
+  output: { codec?: EncodingOptions['codec']; transparent?: boolean },
+) {
+  const issues = rendererCompatibility(await rendererCapabilities(name), {
+    codec: output.codec,
+    transparent: output.transparent,
+  });
+  const failure = issues.find((issue) => issue.level === 'error');
+  if (failure) throw new SetcastError(failure.message, failure.hint);
 }
 
 export async function diagnoseRenderer(name: Renderer, options: RendererDiagnosticOptions) {

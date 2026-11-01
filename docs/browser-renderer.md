@@ -5,6 +5,10 @@ its pinned Chromium runtime, and a system FFmpeg subprocess. Themes, visualizers
 queries, audio analysis and frame assembly use the same Setcast contracts in both exporters.
 The browser package has no Remotion dependency.
 
+For transparent overlays and editing intermediates, use
+[`output.codec: prores-4444`](compositing-output.md). This opt-in MOV format preserves straight
+alpha through PNG capture and uses continuous PCM audio. H.264/AAC remains the default.
+
 The [independent renderer replacement plan](renderer-replacement-plan.md) records the current
 capability comparison, performance evidence, remaining experiments and release criteria. Its
 completed features and pending qualification are tracked separately. Remotion remains the default,

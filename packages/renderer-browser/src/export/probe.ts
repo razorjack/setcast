@@ -26,7 +26,13 @@ export async function encoderVersion(signal?: AbortSignal) {
 
 export async function validateChunk(
   file: string,
-  expected: { width: number; height: number; fps: number; frames: number },
+  expected: {
+    width: number;
+    height: number;
+    fps: number;
+    frames: number;
+    codec?: 'h264' | 'prores-4444';
+  },
   signal?: AbortSignal,
 ) {
   const text = await command(
@@ -35,7 +41,7 @@ export async function validateChunk(
       '-v',
       'error',
       '-show_entries',
-      'stream=codec_name,codec_type,width,height,nb_frames,avg_frame_rate',
+      'stream=codec_name,codec_type,width,height,nb_frames,avg_frame_rate,profile,pix_fmt',
       '-of',
       'json',
       file,
@@ -48,7 +54,9 @@ export async function validateChunk(
   if (
     streams?.length !== 1 ||
     stream.codec_type !== 'video' ||
-    stream.codec_name !== 'h264' ||
+    stream.codec_name !== (expected.codec === 'prores-4444' ? 'prores' : 'h264') ||
+    (expected.codec === 'prores-4444' &&
+      (stream.profile !== '4444' || !/^yuva444p/.test(stream.pix_fmt))) ||
     stream.width !== expected.width ||
     stream.height !== expected.height ||
     Number(stream.nb_frames) !== expected.frames ||

@@ -23,6 +23,7 @@
     "preview-cli.ts",
     "preview-exports.ts",
     "color.ts",
+    "prores.ts",
     "scaling.ts",
     "scheduling.ts",
     "worker-frames.ts",

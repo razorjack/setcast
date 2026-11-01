@@ -245,6 +245,7 @@ export class RenderUi {
   #encode: ProgressLine | undefined;
   #reused = 0;
   #captureWorkers: number | undefined;
+  #encoding = 'h264 + aac';
 
   constructor() {
     this.#spin.start('Preparing browser');
@@ -253,6 +254,8 @@ export class RenderUi {
 
   readonly onRuntime = (event: RenderRuntime): void => {
     if (event.kind === 'capture') this.#captureWorkers = event.workers;
+    if (event.kind === 'encoding-selection')
+      this.#encoding = event.encoder === 'prores_ks' ? 'ProRes 4444 + PCM' : 'h264 + aac';
   };
 
   readonly onProgress = ({
@@ -287,7 +290,7 @@ export class RenderUi {
       showTabProgress(progress);
       return;
     }
-    this.#encodeLine(totalFrames).update(progress, 'h264 + aac');
+    this.#encodeLine(totalFrames).update(progress, this.#encoding);
     showTabProgress(progress);
   };
 

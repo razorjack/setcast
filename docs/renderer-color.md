@@ -3,7 +3,9 @@
 Browser H.264 exports declare the sRGB colors captured from Chromium. The capture browser is
 forced to sRGB. JPEG frames use the full-range BT.601 YCbCr matrix; RGB primaries and transfer
 are declared separately as BT.709/sRGB primaries and sRGB transfer. The output remains opaque,
-eight-bit 4:2:0 SDR. This contract does not provide HDR, wide-gamut video or alpha export.
+eight-bit 4:2:0 SDR. This H.264 contract does not provide HDR, wide-gamut video or alpha export.
+The separate [ProRes 4444 contract](compositing-output.md) uses straight-alpha PNG capture and
+limited-range BT.709 YUV; its matrix must not be substituted into this JPEG path.
 
 | Property | Encoded value |
 | --- | --- |

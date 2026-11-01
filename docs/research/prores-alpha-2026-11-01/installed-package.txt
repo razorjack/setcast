@@ -1,0 +1,6 @@
+$ node scripts/package-smoke.ts --browser ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)
+

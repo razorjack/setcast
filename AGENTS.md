@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- ProRes 4444 uses straight-alpha PNG capture and limited-range BT.709 YUV with sRGB transfer;
+  H.264 retains the qualified JPEG color path. Do not apply the JPEG matrix to PNG input.
+  Transparent Stage removes art/root decorations and fades opacity. Foreground components can
+  still be opaque. See docs/compositing-output.md and the decoded/native receiver qualification.
+
 - Browser `render --cache` shares its byte budget and writer lock between video chunks and
   whole-set preparation. Index v2 adds explicit payload kinds and migrates v1 video entries.
   Preparation identity includes core/producer code and source content; do not key it only by

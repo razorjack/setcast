@@ -45,7 +45,16 @@ export { withRenderSession } from './session.ts';
 
 const renderInPackage = serializeInDirectory(PACKAGE_ROOT);
 
+function requireSupportedOutput(project: ResolvedProject, codec?: RenderOptions['codec']) {
+  if (project.transparent || (codec !== undefined && codec !== 'h264'))
+    throw new SetcastError(
+      'The Setcast Remotion adapter supports opaque H.264 output only.',
+      'Select renderer: browser for ProRes 4444 or transparent output.',
+    );
+}
+
 export function render(project: ResolvedProject, options: RenderOptions): Promise<RenderResult> {
+  requireSupportedOutput(project, options.codec);
   if (options.cache)
     throw new SetcastError(
       'Remotion does not support the persistent render cache.',
@@ -134,6 +143,7 @@ async function renderIn(project: ResolvedProject, options: RenderOptions): Promi
 
 /** Renders a single frame as an image, for a thumbnail. */
 export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
+  requireSupportedOutput(project);
   return withRenderSession(() => renderInPackage(() => stillIn(project, options)));
 }
 
@@ -213,6 +223,7 @@ export interface PreviewOptions extends EncodingOptions {
 
 /** Opens Remotion Studio on the project. Resolves when Studio exits. */
 export async function preview(project: ResolvedProject, options: PreviewOptions): Promise<void> {
+  requireSupportedOutput(project, options.codec);
   readMixDocument(project.mix);
   const { hardwareAcceleration } = await resolveHardwareEncoding(
     encodingOptions(options).hardwareAcceleration,
@@ -224,6 +235,7 @@ export async function preview(project: ResolvedProject, options: PreviewOptions)
     await writeFile(propsFile, JSON.stringify(project));
     let revision = 0;
     stop = options.watch?.(async (next) => {
+      requireSupportedOutput(next, options.codec);
       readMixDocument(next.mix);
       await writeFile(`${propsFile}.tmp`, JSON.stringify({ ...next, previewRevision: ++revision }));
       await rename(`${propsFile}.tmp`, propsFile);

@@ -7,7 +7,7 @@ import type { RenderCache } from './cache.ts';
 export function cachedChunks(
   cache: RenderCache,
   identity: ExportIdentity,
-  project: ResolvedProject,
+  project: ResolvedProject & { codec?: 'h264' | 'prores-4444' },
 ): ChunkStore {
   const key = (index: number, range: [number, number]) =>
     digest(JSON.stringify({ version: 2, job: identity.chunkKey(range), index, range }));

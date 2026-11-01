@@ -19,6 +19,11 @@ import { captureWebp } from './webp.ts';
 export function still(project: ResolvedProject, options: StillOptions): Promise<StillResult> {
   validateGraphicsBackend(options.gl);
   const format = requireStillFormat(options.out);
+  if (project.transparent && format !== 'png')
+    throw new SetcastError(
+      `Transparent still output requires PNG: ${options.out}.`,
+      'Use a .png output path, or disable output.transparent.',
+    );
   const frame = Math.min(
     framesWithinMix(project.mix.duration, project.fps) - 1,
     Math.max(0, Math.round((options.at ?? defaultStillTime(project.mix)) * project.fps)),
@@ -29,7 +34,10 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
     atomicOutput(options.out, options.signal, async (temporary) => {
       await withCapture(project, options, async (page) => {
         await prepareFrame(page, frame);
-        await captureImage(page, temporary, format, options.jpegQuality);
+        await captureImage(page, temporary, format, {
+          jpegQuality: options.jpegQuality,
+          transparent: project.transparent,
+        });
       });
       options.onProgress?.({ stage: 'frames', progress: 1, renderedFrames: 1, totalFrames: 1 });
       return { file: resolve(options.out), timeSeconds: frame / project.fps };
@@ -37,7 +45,12 @@ export function still(project: ResolvedProject, options: StillOptions): Promise<
   );
 }
 
-async function captureImage(page: Page, temporary: string, format: StillFormat, jpegQuality = 95) {
+async function captureImage(
+  page: Page,
+  temporary: string,
+  format: StillFormat,
+  { jpegQuality = 95, transparent = false }: { jpegQuality?: number; transparent?: boolean },
+) {
   if (format === 'webp') {
     await writeFile(temporary, await captureWebp(page));
     return;
@@ -45,6 +58,7 @@ async function captureImage(page: Page, temporary: string, format: StillFormat, 
   await page.screenshot({
     path: temporary,
     type: format,
+    omitBackground: transparent,
     quality: format === 'jpeg' ? jpegQuality : undefined,
   });
 }

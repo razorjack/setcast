@@ -8,7 +8,9 @@ export type RendererFeature =
   | 'resume'
   | 'cache'
   | 'gpu'
-  | 'hardwareEncoding';
+  | 'hardwareEncoding'
+  | 'alpha'
+  | 'prores';
 
 /** Declared Setcast support, independent of installed executables and available devices. */
 export interface RendererCapabilities {
@@ -19,6 +21,13 @@ export interface RendererCapabilities {
   videoContainers: readonly ('mp4' | 'mov' | 'mkv')[];
   videoCodec: 'h264';
   audioCodec: 'aac';
+  /** Additional formats; videoCodec/audioCodec continue to describe the default. */
+  videoFormats?: readonly {
+    codec: 'h264' | 'prores-4444';
+    containers: readonly ('mp4' | 'mov' | 'mkv')[];
+    audioCodec: 'aac' | 'pcm_s24le';
+    alpha: boolean;
+  }[];
   graphicsBackends: readonly GraphicsBackend[];
   parallelEncoding: readonly boolean[];
   concurrency: { default: number | 'auto'; min: number; max: number | null };

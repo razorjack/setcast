@@ -1398,3 +1398,59 @@ in `docs/research/preparation-cache-2026-11-01`. Functional reuse is complete; n
 is claimed. The full-master bitmap resource run is now active at committed candidate 8c3cafc,
 with 1080p30 looping video, the existing 3,372-second real audio/timeline, sampled process memory,
 disk reserve and decoded/audio verification. Concurrent external load makes it resource evidence only.
+
+### Transparent output and editing intermediates in progress
+
+The next implementation adds `output.codec: prores-4444` and `output.transparent: true`, with MOV,
+lossless PNG frame capture and one continuous 48 kHz stereo PCM soundtrack. H.264 remains the
+default. Transparent Stage omits project/per-play art and root backdrop decorations; foreground
+panels, visualizers and branding keep their own CSS. Brightness fades the foreground's opacity.
+Transparent stills require PNG. Configuration, capabilities, diagnostics and preview jobs now
+carry the format explicitly; unsupported Remotion settings fail before preparation.
+
+The first local qualification passes 63 moving chart frames with text, glow, masks and four alpha
+levels. FFmpeg decode has maximum alpha error 1/255 and maximum black/white composite error
+2.957/255, against limits fixed before the run (alpha 1, composite mean 1.5, maximum 12). Chunked
+and continuous exports decode identically; repeat cache exports capture zero frames; interrupted
+export reuses 30 frames and matches a fresh video/audio result. All sixteen landscape theme
+stills contain transparent and partial-alpha pixels. Native AVFoundation reports `StraightAlpha`,
+recognizes the sRGB/BT.709 metadata and decodes 63 frames at exact 30 fps timestamps. Its composite
+maximum is 3.004/255 and mean 0.109/255. This checks the macOS receiving API, not a particular
+editor's project color settings or OBS playback.
+
+Raw development evidence is under `examples/demo/out/prores-alpha-2026-11-01-r2`. The initial
+run used an explicit range ending at 3.1415 seconds but expected the existing acceptance harness's
+clamped final-frame count. It correctly returned 62 frames. The corrected harness uses the
+established `[1.05, 8]` range and expects 63; no range contract changed. The first test run also
+failed localhost binding in the sandbox. An escalated ready run passed formatting/types but hit
+the existing five-second cache/preview CLI test timeouts while native compilation and the
+full-master export were running. Those failures remain logged; validation must pass before commit.
+
+VP9 alpha remains a separate investigation. Remotion's current transparent-video documentation
+describes possible alpha differences at independently encoded chunk boundaries, so it cannot
+inherit the H.264 join qualification. ProRes 4444 supplies both a transparent compositing file and
+an editing intermediate without that temporal alpha dependency. OBS's documented portable mode
+does not support macOS; no user OBS profile was modified for this work.
+
+
+The native receiver, source-slice PCM and brightness checks pass in the expanded third ProRes
+run. Both exporter acceptance suites pass. The installed package exercise initially combined
+`--bundle` with `--range`, which the CLI correctly rejects; the corrected tiny full-set fixture
+then used a subminimum `clip --seconds` value. Both harness mistakes are retained in the research
+folder. The final installed run uses an allowed ten-second clip request clamped to the 0.3-second
+fixture and passes render, clip, PNG still, bundle, validation and alpha/ProRes diagnostics.
+
+Ready passed all 688 tests after giving the four-process cache and six-process preview checks
+local 30-second budgets. Cache subprocesses now have an explicit ten-second deadline too. That
+independent test fix is committed as 64bb62d. A subsequent ready run overlapping package
+validation hit five-second doctor/validation CLI test deadlines; no assertions failed and those
+tests were not relaxed. Final validation is rerun without another own validation job. The
+full-master resource export remains active; none of these elapsed times qualify performance.
+
+
+ProRes integration is ready to commit. Final ready passes 688 tests in 115 files, formatting,
+lint/types, dependency isolation and the decoded H.264 smoke render. Both adapter acceptance
+suites and the corrected fresh installed-package checks pass. Evidence, including failed harness
+attempts, is retained in `docs/research/prores-alpha-2026-11-01`. The production H.264 defaults
+and quality settings are unchanged. The native receiving API is qualified locally; specific
+editing applications, OBS and other platforms remain explicit limits.

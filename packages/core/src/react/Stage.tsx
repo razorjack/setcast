@@ -26,6 +26,8 @@ import { resolveVisualizer } from './visualizers.ts';
  */
 export function Stage() {
   const { composition } = useFrame();
+  const transparent = composition.project.transparent;
+  const brightness = composition.performance?.brightness ?? 1;
   return (
     <div
       className="sc-output"
@@ -34,12 +36,13 @@ export function Stage() {
         isolation: 'isolate',
         width: composition.width,
         height: composition.height,
+        opacity: transparent ? brightness : undefined,
       }}
     >
       <div style={{ position: 'relative', zIndex: 0 }}>
         <SceneStage />
       </div>
-      <OutputDimmer brightness={composition.performance?.brightness ?? 1} />
+      {!transparent && <OutputDimmer brightness={brightness} />}
     </div>
   );
 }
@@ -48,7 +51,7 @@ function SceneStage() {
   const { composition, mix, modulation, timeSeconds } = useFrame();
   const { project, width, height } = composition;
   useFontsReady(project.css);
-  const background = currentBackground(mix, project.background);
+  const background = project.transparent ? null : currentBackground(mix, project.background);
   const backgroundArt = useBackgroundArt(background);
   // Themes lay the stage out by the art (data-bg-calm, --bg-*). Chrome does not repaint text in a
   // composited element that moves by a fraction of a pixel, so text painted before the art is
@@ -80,13 +83,14 @@ function SceneStage() {
       className={`setcast sc-stage theme-${project.theme}`}
       {...stageData(mix, background)}
       data-mode={project.mix === null ? 'live' : 'recorded'}
+      data-transparent={project.transparent}
       data-bg-calm={backgroundArt?.stats.calm.anchor}
       data-presentation={project.presentation}
       data-brand-position={showsIdentity(project.branding) ? project.branding.position : undefined}
       style={style}
     >
       <style>{project.css}</style>
-      <Background />
+      <StageBackground transparent={project.transparent} />
       {visualizers.map(({ Component, config }, index) => (
         <Component key={index} config={config} />
       ))}
@@ -97,6 +101,14 @@ function SceneStage() {
     </div>
   );
 }
+
+function StageBackground({ transparent }: { transparent?: boolean }) {
+  if (transparent) return <style>{TRANSPARENT_STAGE_CSS}</style>;
+  return <Background />;
+}
+
+const TRANSPARENT_STAGE_CSS = `.sc-stage[data-transparent] { background: transparent !important; }
+.sc-stage[data-transparent]::before, .sc-stage[data-transparent]::after { display: none !important; }`;
 
 /** The elements whose text a theme may need to keep legible over bright or busy parts of the art. */
 const MEASURED_ELEMENTS =

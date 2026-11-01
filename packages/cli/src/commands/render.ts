@@ -1,9 +1,17 @@
 import type { RenderOptions, StillOptions } from '@setcast/core';
-import { parseRendererFlag, render, still, withRenderSession, type Renderer } from '../renderer.ts';
+import {
+  requireRendererFormat,
+  parseRendererFlag,
+  render,
+  still,
+  withRenderSession,
+  type Renderer,
+} from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import {
   exportSettings,
+  requireVideoOutput,
   toSeconds,
   chapterProblems,
   formatTime,
@@ -22,7 +30,7 @@ import { bold, dim, intro, log, outro, RenderUi, formatPath, steel, warn } from 
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
-Renders the project in <dir> (default: current directory) to an MP4.
+Renders the project in <dir> (default: current directory) using output.codec and output.file.
   --renderer  remotion (default) or browser (experimental); overrides renderer: in YAML
   --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
@@ -31,7 +39,7 @@ Renders the project in <dir> (default: current directory) to an MP4.
   --resume       browser only: retain completed chunks and reuse valid checkpoints after interruption
   --cache        browser only: persistent chunk and audio-preparation cache directory (separate from --resume)
   --cache-size   maximum cached payload MiB (default: 2048); requires --cache
-  --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
+  --bundle       also write the thumbnail (.png for transparency, otherwise .jpg) and description (.txt)`;
 
 interface RenderCommandOptions {
   dir: string | undefined;
@@ -51,6 +59,7 @@ export async function run(argv: string[]) {
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
   const renderer = options.renderer ?? loaded.config.renderer;
+  await requireRendererFormat(renderer, loaded.config.output);
   if (options.resume && renderer !== 'browser')
     throw new SetcastError(
       '--resume requires the browser renderer.',
@@ -68,6 +77,7 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
   const { dir } = loaded;
   const range = renderedRange(options.range, loaded.project);
   const out = outputPath(options.out, range, resolve(dir, loaded.config.output.file));
+  requireVideoOutput(out, loaded.config.output.codec);
   checkCacheOutput(out, options.cache);
   if (options.resume) log.info(`Resume checkpoints: ${out}.setcast-resume`);
   if (options.cache) log.info(`Persistent render cache: ${options.cache.directory}`);
@@ -226,7 +236,12 @@ async function sideOutputs(
   output: ProjectConfig['output'],
 ): Promise<string[]> {
   const base = stem(video);
-  const thumbnail = await renderThumbnail(project, dir, `${base}.jpg`, output);
+  const thumbnail = await renderThumbnail(
+    project,
+    dir,
+    `${base}.${project.transparent ? 'png' : 'jpg'}`,
+    output,
+  );
   const description = await writeDescription(project, `${base}.txt`);
   return [thumbnail, description];
 }

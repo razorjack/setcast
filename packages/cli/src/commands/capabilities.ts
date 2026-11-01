@@ -25,11 +25,28 @@ function format(report: RendererCapabilities) {
     `${report.renderer}: declared Setcast capabilities (not a machine check)`,
     `Features: ${report.features.join(', ')}`,
     `Stills: ${report.stillFormats.join(', ')}`,
-    `Video: ${report.videoCodec} + ${report.audioCodec}; ${report.videoContainers.join(', ')}`,
+    `Video: ${videoDescription(report)}`,
     `Graphics: ${report.graphicsBackends.join(', ')}`,
     `Parallel encoding: ${report.parallelEncoding.join(', ')}`,
     `Concurrency: ${concurrency.min}–${concurrency.max ?? 'runtime limit'}; default ${concurrency.default}`,
     `Runtime: ${runtime.browser}; ${runtime.ffmpeg} FFmpeg`,
     '',
   ].join('\n');
+}
+
+function videoDescription(report: RendererCapabilities) {
+  const formats = report.videoFormats ?? [
+    {
+      codec: report.videoCodec,
+      audioCodec: report.audioCodec,
+      containers: report.videoContainers,
+      alpha: false,
+    },
+  ];
+  return formats
+    .map((format) => {
+      const alpha = format.alpha ? ' (alpha)' : '';
+      return `${format.codec} + ${format.audioCodec}; ${format.containers.join(', ')}${alpha}`;
+    })
+    .join(' / ');
 }

@@ -2,6 +2,20 @@ import { expect, test } from 'vite-plus/test';
 import { rendererCompatibility } from './renderer-compatibility.ts';
 import { fixture } from './renderer-diagnostics.fixture.ts';
 
+test('transparent editing outputs require explicit adapter support', () => {
+  expect(rendererCompatibility(fixture, { codec: 'prores-4444', transparent: true })).toMatchObject(
+    [
+      { level: 'error', path: 'codec', hint: expect.stringContaining('browser') },
+      { level: 'error', path: 'transparent', hint: expect.stringContaining('browser') },
+    ],
+  );
+  const browser = {
+    ...fixture,
+    features: [...fixture.features, 'alpha' as const, 'prores' as const],
+  };
+  expect(rendererCompatibility(browser, { codec: 'prores-4444', transparent: true })).toEqual([]);
+});
+
 test('compatibility accumulates adapter limitations without probing the machine', () => {
   const issues = rendererCompatibility(fixture, {
     gl: 'egl',

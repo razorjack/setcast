@@ -15,6 +15,7 @@ import { capabilities } from './capabilities.ts';
 import { captureBrowserArgs } from './export/graphics.ts';
 import { captureWebp } from './export/webp.ts';
 import { hardwareEncoder, probeHardware } from './export/hardware.ts';
+import { probeProres } from './export/prores.ts';
 
 export async function diagnose(options: RendererDiagnosticOptions = {}) {
   const session = new RendererDiagnostics(capabilities, options);
@@ -54,6 +55,7 @@ export async function diagnose(options: RendererDiagnosticOptions = {}) {
     SCREENSHOT_COLOR_FILTER,
   );
   await diagnoseHardware(session);
+  await diagnoseProres(session);
   return session.report();
 }
 
@@ -68,6 +70,20 @@ async function diagnoseHardware(session: RendererDiagnostics) {
         throw new Error(`No hardware H.264 encoder is configured for ${process.platform}.`);
       await probeHardware(encoder, session.options);
       return { message: `Encoded a frame with ${encoder}.`, details: { encoder } };
+    },
+  );
+}
+
+async function diagnoseProres(session: RendererDiagnostics) {
+  await session.check(
+    'prores.encode',
+    ['alpha', 'prores'],
+    'Install FFmpeg with prores_ks, PNG, PCM and MOV support.',
+    async () => {
+      await probeProres(session.options);
+      return {
+        message: 'Encoded and decoded three ProRes 4444 frames with straight alpha and PCM audio.',
+      };
     },
   );
 }
