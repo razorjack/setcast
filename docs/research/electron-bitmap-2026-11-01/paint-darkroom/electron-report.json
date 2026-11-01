@@ -1,0 +1,369 @@
+{
+  "capture": "paint",
+  "versions": {
+    "node": "24.22.1",
+    "acorn": "8.18.0",
+    "ada": "4.0.0",
+    "amaro": "1.1.11",
+    "ares": "1.34.9",
+    "brotli": "1.2.0",
+    "cldr": "48.0",
+    "icu": "78.2",
+    "llhttp": "9.4.3",
+    "merve": "1.2.2",
+    "modules": "150",
+    "napi": "10",
+    "nbytes": "0.1.4",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.70.0",
+    "nghttp3": "",
+    "ngtcp2": "",
+    "openssl": "0.0.0",
+    "simdjson": "4.6.11",
+    "simdutf": "7.7.0",
+    "sqlite": "3.53.4",
+    "tz": "2026e",
+    "undici": "7.30.1",
+    "unicode": "17.0",
+    "uv": "1.52.1",
+    "uvwasi": "0.0.23",
+    "v8": "15.6.75.25-electron.0",
+    "zlib": "1.3.2.1-motley",
+    "zstd": "1.6.0",
+    "electron": "45.2.1",
+    "chrome": "156.0.8078.75"
+  },
+  "samples": [
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.870290999999952,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 2.3229579999999714,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.7400839999995696,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.66924999999992,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.8119999999998981,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.8263749999996435,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 6,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.8367499999994834,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 7,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 2.4386249999997744,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 8,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.967916999999943,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 9,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.356999999999971,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 10,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.538457999999082,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 11,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.6905409999999392,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 12,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.9506669999991573,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 13,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 2.2993750000005093,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 14,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.8013329999994312,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.9563340000004246,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.816041000000041,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.8680830000012065,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.6254589999989548,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.8704170000000886,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.7984579999974812,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 6,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.6475829999981215,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 7,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.890625,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 8,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.9767910000009579,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 9,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.700749999999971,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 10,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.483541999998124,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 11,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 2.0383340000007593,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 12,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.6739589999997406,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 13,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.4516250000015134,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 14,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 2.037750000003143,
+      "bytes": 8294400
+    }
+  ],
+  "status": "measured"
+}

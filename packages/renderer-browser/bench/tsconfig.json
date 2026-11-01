@@ -26,12 +26,14 @@
     "prores.ts",
     "scaling.ts",
     "scheduling.ts",
+    "chunk-scheduling.ts",
     "worker-frames.ts",
     "worker-capture.ts",
     "worker-pixels.ts",
     "worker-pixels.test.ts",
     "video-stills.ts",
     "video-memory.ts",
-    "native-capture.ts"
+    "native-capture.ts",
+    "electron-capture.ts"
   ]
 }

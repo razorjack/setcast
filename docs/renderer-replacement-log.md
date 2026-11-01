@@ -1454,3 +1454,57 @@ suites and the corrected fresh installed-package checks pass. Evidence, includin
 attempts, is retained in `docs/research/prores-alpha-2026-11-01`. The production H.264 defaults
 and quality settings are unchanged. The native receiving API is qualified locally; specific
 editing applications, OBS and other platforms remain explicit limits.
+
+
+### Native bitmap host and current distribution integration
+
+ProRes 4444 is committed as e8061ce. The browser-first candidate now merges that milestone and
+persistent preparation reuse. Its first baseline attempt overlapped another check process and
+hit the existing five-second doctor/validate subprocess deadlines. The second baseline passes
+all 688 tests and the decoded smoke render. Fresh browser-only and optional-adapter installation
+checks must pass before the integration commit.
+
+An isolated Electron 45.2.1 runtime is evaluating full browser paint through `capturePage()`
+and `NativeImage.toBitmap()`. This is a CPU bitmap readback experiment, not the rejected
+HTML-in-canvas path or a shared GPU texture implementation. Production dependencies are unchanged.
+The initial four sterile-tech landscape/portrait samples match both same-host CDP PNG and the
+pinned Playwright PNG byte for byte after RGB decoding. All-theme qualification is running;
+no throughput claim follows from four samples.
+
+The pilot retains three harness failures: npm installation had not fetched the runtime binary;
+awaiting `app.whenReady()` at module evaluation prevented startup; and closing the first fixture
+window exited the app before portrait capture. The corrected host starts its asynchronous run
+without blocking module evaluation and owns shutdown explicitly across fixture windows. The
+controller checks that the native report contains every requested frame. Electron's ESM startup
+requirements are documented at https://www.electronjs.org/docs/latest/tutorial/esm.
+
+The full-master bitmap resource export remains active, beyond 87,000 of 101,160 frames. Its
+sampled summed process RSS remains around 4.5 GB at this point. This is provisional resource
+evidence under concurrent correctness/external load, not a completed memory or speed claim.
+
+
+Browser-first integration is committed as 9b4a82e. Both fresh installations pass, with browser-only
+package inventory proving that Remotion is absent. Its evidence is mirrored on main under
+`docs/research/browser-first-prores-2026-11-01`.
+
+Electron `capturePage()` passes 191 of 192 all-theme/aspect/seek comparisons. Darkroom landscape
+at absolute frame 3029 after a backward seek returns stale and partly missing content, including
+the old elapsed timer. Its same-host CDP PNG and pinned Playwright PNG agree. The native maximum
+channel difference is 244/255. This capture path is rejected for production; the original PNGs
+and measurements are retained. A separate `invalidate()` / `paint` event experiment tests whether
+explicit compositor repaint fixes the synchronization problem. It does not weaken pixel limits.
+
+A bench-only chunk scheduling comparison is also checking four pages sharing each sequential
+chunk against four independent page/encoder workers. Both arms use identical absolute ranges,
+chunk boundaries, JPEG quality, encoding settings and a single continuous master soundtrack.
+Only exact decoded video/audio equality can permit subsequent quiet timing. Production still
+uses the qualified round-robin scheduler.
+
+
+The explicit Electron repaint attempt also fails: 30/30 Darkroom reproducer samples and 191/192
+all-theme samples differ from both PNG references. The original `capturePage()` failure is exactly
+the preceding frame's decoded RGB, proving stale output. Both handshakes are rejected, with
+reports and representative images in `docs/research/electron-bitmap-2026-11-01`. No native runtime
+or fast path enters production. Research harnesses pass ready (688 tests), lint/types and smoke.
+The chunk-worker pilot passes exact 360-frame video and audio equality; its loaded timings remain
+unqualified. Its report is in `docs/research/chunk-scheduling-2026-11-01`.

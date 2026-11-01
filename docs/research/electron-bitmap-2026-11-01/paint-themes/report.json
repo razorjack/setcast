@@ -1,0 +1,3660 @@
+{
+  "version": 1,
+  "capture": "paint",
+  "revision": "e8061ce95d449557d282421141d8fd729233e106",
+  "dirty": true,
+  "scope": "Pixel feasibility only. Native Electron bitmap versus same-host CDP PNG and pinned Playwright PNG. Stage timings are not quiet throughput measurements.",
+  "results": [
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 31.574191092497937,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 31.574191092497937,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 243,
+        "rms": 5.760948965761727,
+        "changedPixels": 331919,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 243,
+        "rms": 5.760948965761727,
+        "changedPixels": 331919,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 130,
+        "rms": 1.216747523949417,
+        "changedPixels": 231840,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 130,
+        "rms": 1.216747523949417,
+        "changedPixels": 231840,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 243,
+        "rms": 6.902580328702249,
+        "changedPixels": 1905052,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 243,
+        "rms": 6.902580328702249,
+        "changedPixels": 1905052,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 213,
+        "rms": 1.4708818583958485,
+        "changedPixels": 217695,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 213,
+        "rms": 1.4708818583958485,
+        "changedPixels": 217695,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 232,
+        "rms": 5.073843015023309,
+        "changedPixels": 1816078,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 232,
+        "rms": 5.073843015023309,
+        "changedPixels": 1816078,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 28.226348724437045,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 28.226348724437045,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 242,
+        "rms": 6.421641014205732,
+        "changedPixels": 235739,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 242,
+        "rms": 6.421641014205732,
+        "changedPixels": 235739,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 131,
+        "rms": 0.9985792376307253,
+        "changedPixels": 36146,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 131,
+        "rms": 0.9985792376307253,
+        "changedPixels": 36146,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 242,
+        "rms": 6.8161860945483586,
+        "changedPixels": 810744,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 242,
+        "rms": 6.8161860945483586,
+        "changedPixels": 810744,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 219,
+        "rms": 1.4956445038831536,
+        "changedPixels": 16553,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 219,
+        "rms": 1.4956445038831536,
+        "changedPixels": 16553,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 219,
+        "rms": 3.7040509241176465,
+        "changedPixels": 606616,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 219,
+        "rms": 3.7040509241176465,
+        "changedPixels": 606616,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 242,
+        "rms": 203.85755373896544,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 242,
+        "rms": 203.85755373896544,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 242,
+        "rms": 5.231858045280575,
+        "changedPixels": 112450,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 242,
+        "rms": 5.231858045280575,
+        "changedPixels": 112450,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 3.687163878801131,
+        "changedPixels": 129804,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 3.687163878801131,
+        "changedPixels": 129804,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 242,
+        "rms": 8.354872857378679,
+        "changedPixels": 578882,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 242,
+        "rms": 8.354872857378679,
+        "changedPixels": 578882,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 3.560867907314679,
+        "changedPixels": 81497,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 3.560867907314679,
+        "changedPixels": 81497,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 8.133759612149891,
+        "changedPixels": 578496,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 8.133759612149891,
+        "changedPixels": 578496,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 242,
+        "rms": 218.9388708184395,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 242,
+        "rms": 218.9388708184395,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 6.856467832500732,
+        "changedPixels": 69585,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 6.856467832500732,
+        "changedPixels": 69585,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 4.243590486526167,
+        "changedPixels": 80104,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 4.243590486526167,
+        "changedPixels": 80104,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 10.140643327086865,
+        "changedPixels": 353499,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 10.140643327086865,
+        "changedPixels": 353499,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 3.5441666013532926,
+        "changedPixels": 51829,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 3.5441666013532926,
+        "changedPixels": 51829,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 10.077128956346108,
+        "changedPixels": 353357,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 10.077128956346108,
+        "changedPixels": 353357,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 12,
+        "rms": 0.15329825064971672,
+        "changedPixels": 7673,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 12,
+        "rms": 0.15329825064971672,
+        "changedPixels": 7673,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 254,
+        "rms": 13.372616574010257,
+        "changedPixels": 279194,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 254,
+        "rms": 13.372616574010257,
+        "changedPixels": 279194,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 211,
+        "rms": 6.162154424508669,
+        "changedPixels": 239988,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 211,
+        "rms": 6.162154424508669,
+        "changedPixels": 239988,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 254,
+        "rms": 13.8928350296848,
+        "changedPixels": 832370,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 254,
+        "rms": 13.8928350296848,
+        "changedPixels": 832370,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 226,
+        "rms": 5.742517860762197,
+        "changedPixels": 197683,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 226,
+        "rms": 5.742517860762197,
+        "changedPixels": 197683,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 225,
+        "rms": 8.242908250501344,
+        "changedPixels": 780161,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 225,
+        "rms": 8.242908250501344,
+        "changedPixels": 780161,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 11,
+        "rms": 0.09047254630993022,
+        "changedPixels": 2446,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 11,
+        "rms": 0.09047254630993022,
+        "changedPixels": 2446,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 254,
+        "rms": 14.227557564739397,
+        "changedPixels": 134240,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 254,
+        "rms": 14.227557564739397,
+        "changedPixels": 134240,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 213,
+        "rms": 3.302805982770575,
+        "changedPixels": 72281,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 213,
+        "rms": 3.302805982770575,
+        "changedPixels": 72281,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 254,
+        "rms": 14.46323049980479,
+        "changedPixels": 331122,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 254,
+        "rms": 14.46323049980479,
+        "changedPixels": 331122,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 223,
+        "rms": 3.3132782589909433,
+        "changedPixels": 53787,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 223,
+        "rms": 3.3132782589909433,
+        "changedPixels": 53787,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 4.862067085233048,
+        "changedPixels": 267927,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 4.862067085233048,
+        "changedPixels": 267927,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 246,
+        "rms": 106.18060896584419,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 246,
+        "rms": 106.18060896584419,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 218,
+        "rms": 21.974980486754962,
+        "changedPixels": 245651,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 218,
+        "rms": 21.974980486754962,
+        "changedPixels": 245651,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 217,
+        "rms": 14.565429215588214,
+        "changedPixels": 194670,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 217,
+        "rms": 14.565429215588214,
+        "changedPixels": 194670,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 215,
+        "rms": 29.97526003209596,
+        "changedPixels": 1619373,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 215,
+        "rms": 29.97526003209596,
+        "changedPixels": 1619373,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 214,
+        "rms": 5.908350406020189,
+        "changedPixels": 146207,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 214,
+        "rms": 5.908350406020189,
+        "changedPixels": 146207,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 216,
+        "rms": 29.335158809969332,
+        "changedPixels": 1589415,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 216,
+        "rms": 29.335158809969332,
+        "changedPixels": 1589415,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 246,
+        "rms": 131.81479293090237,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 246,
+        "rms": 131.81479293090237,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 201,
+        "rms": 15.264411119238423,
+        "changedPixels": 59078,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 201,
+        "rms": 15.264411119238423,
+        "changedPixels": 59078,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 201,
+        "rms": 11.945791947300924,
+        "changedPixels": 48296,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 201,
+        "rms": 11.945791947300924,
+        "changedPixels": 48296,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 201,
+        "rms": 23.941280951733244,
+        "changedPixels": 161514,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 201,
+        "rms": 23.941280951733244,
+        "changedPixels": 161514,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 147,
+        "rms": 2.6389038133106233,
+        "changedPixels": 3715,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 147,
+        "rms": 2.6389038133106233,
+        "changedPixels": 3715,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 201,
+        "rms": 24.04711816964063,
+        "changedPixels": 148127,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 201,
+        "rms": 24.04711816964063,
+        "changedPixels": 148127,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 216,
+        "rms": 60.518157467777826,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 216,
+        "rms": 60.518157467777826,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 5.294080313131141,
+        "changedPixels": 877155,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 5.294080313131141,
+        "changedPixels": 877155,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 164,
+        "rms": 4.217858864119774,
+        "changedPixels": 850232,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 164,
+        "rms": 4.217858864119774,
+        "changedPixels": 850232,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 4.558928995996206,
+        "changedPixels": 858189,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 4.558928995996206,
+        "changedPixels": 858189,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 3.9028015024980753,
+        "changedPixels": 253237,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 3.9028015024980753,
+        "changedPixels": 253237,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 7.107169532531645,
+        "changedPixels": 880906,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 7.107169532531645,
+        "changedPixels": 880906,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 216,
+        "rms": 64.91411905500803,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 216,
+        "rms": 64.91411905500803,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 4.200987890260484,
+        "changedPixels": 745823,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 4.200987890260484,
+        "changedPixels": 745823,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 163,
+        "rms": 2.515157368735836,
+        "changedPixels": 731498,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 163,
+        "rms": 2.515157368735836,
+        "changedPixels": 731498,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 4.303175230609279,
+        "changedPixels": 736612,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 4.303175230609279,
+        "changedPixels": 736612,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 2.690945489711901,
+        "changedPixels": 275175,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 2.690945489711901,
+        "changedPixels": 275175,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 205,
+        "rms": 6.830881565766967,
+        "changedPixels": 745654,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 205,
+        "rms": 6.830881565766967,
+        "changedPixels": 745654,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 233.4371150579954,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 233.4371150579954,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 198,
+        "rms": 5.7891419412683485,
+        "changedPixels": 171550,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 198,
+        "rms": 5.7891419412683485,
+        "changedPixels": 171550,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 176,
+        "rms": 6.24989030253526,
+        "changedPixels": 173693,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 176,
+        "rms": 6.24989030253526,
+        "changedPixels": 173693,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 222,
+        "rms": 9.399227294479152,
+        "changedPixels": 112708,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 222,
+        "rms": 9.399227294479152,
+        "changedPixels": 112708,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 171,
+        "rms": 1.0163268981682663,
+        "changedPixels": 32512,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 171,
+        "rms": 1.0163268981682663,
+        "changedPixels": 32512,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 207,
+        "rms": 4.808728614173778,
+        "changedPixels": 144196,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 207,
+        "rms": 4.808728614173778,
+        "changedPixels": 144196,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 215.92672846586692,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 215.92672846586692,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 197,
+        "rms": 7.17703324043154,
+        "changedPixels": 378800,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 197,
+        "rms": 7.17703324043154,
+        "changedPixels": 378800,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 176,
+        "rms": 6.604837685464909,
+        "changedPixels": 353518,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 176,
+        "rms": 6.604837685464909,
+        "changedPixels": 353518,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 215,
+        "rms": 10.305598794458557,
+        "changedPixels": 212066,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 215,
+        "rms": 10.305598794458557,
+        "changedPixels": 212066,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 171,
+        "rms": 1.5702270868966273,
+        "changedPixels": 71316,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 171,
+        "rms": 1.5702270868966273,
+        "changedPixels": 71316,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 207,
+        "rms": 7.69956621052426,
+        "changedPixels": 357231,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 207,
+        "rms": 7.69956621052426,
+        "changedPixels": 357231,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 40.88609463541059,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 40.88609463541059,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 247,
+        "rms": 9.606418710749853,
+        "changedPixels": 840765,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 247,
+        "rms": 9.606418710749853,
+        "changedPixels": 840765,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 11.31891167656696,
+        "changedPixels": 693855,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 11.31891167656696,
+        "changedPixels": 693855,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 247,
+        "rms": 15.204255097537256,
+        "changedPixels": 1510968,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 247,
+        "rms": 15.204255097537256,
+        "changedPixels": 1510968,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 163,
+        "rms": 0.7447290992885671,
+        "changedPixels": 126646,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 163,
+        "rms": 0.7447290992885671,
+        "changedPixels": 126646,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 167,
+        "rms": 2.5528196846497777,
+        "changedPixels": 1384256,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 167,
+        "rms": 2.5528196846497777,
+        "changedPixels": 1384256,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 40.62183565746821,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 40.62183565746821,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 247,
+        "rms": 11.745778213677772,
+        "changedPixels": 703635,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 247,
+        "rms": 11.745778213677772,
+        "changedPixels": 703635,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 238,
+        "rms": 13.603727010175808,
+        "changedPixels": 537914,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 238,
+        "rms": 13.603727010175808,
+        "changedPixels": 537914,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 247,
+        "rms": 18.14227476942063,
+        "changedPixels": 1286474,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 247,
+        "rms": 18.14227476942063,
+        "changedPixels": 1286474,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 165,
+        "rms": 0.7894697221107531,
+        "changedPixels": 25272,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 165,
+        "rms": 0.7894697221107531,
+        "changedPixels": 25272,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 165,
+        "rms": 1.77696279424172,
+        "changedPixels": 1056104,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 165,
+        "rms": 1.77696279424172,
+        "changedPixels": 1056104,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 49.170837169780924,
+        "changedPixels": 2070043,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 49.170837169780924,
+        "changedPixels": 2070043,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 6.459519094152934,
+        "changedPixels": 240555,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 6.459519094152934,
+        "changedPixels": 240555,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 223,
+        "rms": 1.3006791193655327,
+        "changedPixels": 242055,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 223,
+        "rms": 1.3006791193655327,
+        "changedPixels": 242055,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 7.735000938528251,
+        "changedPixels": 1633607,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 7.735000938528251,
+        "changedPixels": 1633607,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 235,
+        "rms": 2.526721899946803,
+        "changedPixels": 184082,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 235,
+        "rms": 2.526721899946803,
+        "changedPixels": 184082,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 231,
+        "rms": 6.224063235207705,
+        "changedPixels": 1630693,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 231,
+        "rms": 6.224063235207705,
+        "changedPixels": 1630693,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 42.16883052649155,
+        "changedPixels": 2072038,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 42.16883052649155,
+        "changedPixels": 2072038,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 235,
+        "rms": 9.545524155893746,
+        "changedPixels": 125757,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 235,
+        "rms": 9.545524155893746,
+        "changedPixels": 125757,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 226,
+        "rms": 9.898643322614651,
+        "changedPixels": 286431,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 226,
+        "rms": 9.898643322614651,
+        "changedPixels": 286431,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 14.683918095979497,
+        "changedPixels": 855822,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 14.683918095979497,
+        "changedPixels": 855822,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 239,
+        "rms": 2.84891768624941,
+        "changedPixels": 20203,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 239,
+        "rms": 2.84891768624941,
+        "changedPixels": 20203,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 236,
+        "rms": 6.857993122590302,
+        "changedPixels": 680507,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 236,
+        "rms": 6.857993122590302,
+        "changedPixels": 680507,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 49.914348469750884,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 49.914348469750884,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 12.390749683789817,
+        "changedPixels": 747160,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 12.390749683789817,
+        "changedPixels": 747160,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 250,
+        "rms": 14.429488205990928,
+        "changedPixels": 484022,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 250,
+        "rms": 14.429488205990928,
+        "changedPixels": 484022,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 250,
+        "rms": 17.74419645984008,
+        "changedPixels": 1962873,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 250,
+        "rms": 17.74419645984008,
+        "changedPixels": 1962873,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 3.662734283016383,
+        "changedPixels": 294565,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 3.662734283016383,
+        "changedPixels": 294565,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 253,
+        "rms": 9.59041900390826,
+        "changedPixels": 1941968,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 253,
+        "rms": 9.59041900390826,
+        "changedPixels": 1941968,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 40.89034505563985,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 40.89034505563985,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 250,
+        "rms": 11.221271732758794,
+        "changedPixels": 435161,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 250,
+        "rms": 11.221271732758794,
+        "changedPixels": 435161,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 250,
+        "rms": 16.135529323583157,
+        "changedPixels": 262899,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 250,
+        "rms": 16.135529323583157,
+        "changedPixels": 262899,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 250,
+        "rms": 18.66024907852471,
+        "changedPixels": 1100892,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 250,
+        "rms": 18.66024907852471,
+        "changedPixels": 1100892,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 3.3381519232358015,
+        "changedPixels": 63842,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 3.3381519232358015,
+        "changedPixels": 63842,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 249,
+        "rms": 7.470404193760766,
+        "changedPixels": 921843,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 249,
+        "rms": 7.470404193760766,
+        "changedPixels": 921843,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 170.2069692370577,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 170.2069692370577,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 236,
+        "rms": 23.830201551391426,
+        "changedPixels": 151291,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 236,
+        "rms": 23.830201551391426,
+        "changedPixels": 151291,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 230,
+        "rms": 14.481257637232881,
+        "changedPixels": 50902,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 230,
+        "rms": 14.481257637232881,
+        "changedPixels": 50902,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 229,
+        "rms": 10.991317347545973,
+        "changedPixels": 25285,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 229,
+        "rms": 10.991317347545973,
+        "changedPixels": 25285,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 230,
+        "rms": 18.620673896694147,
+        "changedPixels": 59685,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 230,
+        "rms": 18.620673896694147,
+        "changedPixels": 59685,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 218.79460806817903,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 218.79460806817903,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 228,
+        "rms": 14.279416085165455,
+        "changedPixels": 148773,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 228,
+        "rms": 14.279416085165455,
+        "changedPixels": 148773,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 220,
+        "rms": 12.905405086733035,
+        "changedPixels": 47589,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 220,
+        "rms": 12.905405086733035,
+        "changedPixels": 47589,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 20.669923022433917,
+        "changedPixels": 159577,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 20.669923022433917,
+        "changedPixels": 159577,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 228,
+        "rms": 6.111546491224892,
+        "changedPixels": 8907,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 228,
+        "rms": 6.111546491224892,
+        "changedPixels": 8907,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 228,
+        "rms": 10.644917318833164,
+        "changedPixels": 20506,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 228,
+        "rms": 10.644917318833164,
+        "changedPixels": 20506,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 6,
+        "rms": 0.10094716052523219,
+        "changedPixels": 7561,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 6,
+        "rms": 0.10094716052523219,
+        "changedPixels": 7561,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 9.439658024259625,
+        "changedPixels": 1408875,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 9.439658024259625,
+        "changedPixels": 1408875,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 155,
+        "rms": 4.733998337398066,
+        "changedPixels": 831048,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 155,
+        "rms": 4.733998337398066,
+        "changedPixels": 831048,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 9.194228459544965,
+        "changedPixels": 1782616,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 9.194228459544965,
+        "changedPixels": 1782616,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 225,
+        "rms": 4.621622473777305,
+        "changedPixels": 232464,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 225,
+        "rms": 4.621622473777305,
+        "changedPixels": 232464,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 226,
+        "rms": 7.406309275517688,
+        "changedPixels": 1636199,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 226,
+        "rms": 7.406309275517688,
+        "changedPixels": 1636199,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 22.35972897298557,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 22.35972897298557,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 246,
+        "rms": 8.55798883710167,
+        "changedPixels": 1165690,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 246,
+        "rms": 8.55798883710167,
+        "changedPixels": 1165690,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 154,
+        "rms": 3.460797245332709,
+        "changedPixels": 688831,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 154,
+        "rms": 3.460797245332709,
+        "changedPixels": 688831,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 246,
+        "rms": 8.49235178862422,
+        "changedPixels": 964827,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 246,
+        "rms": 8.49235178862422,
+        "changedPixels": 964827,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 231,
+        "rms": 3.174647543299406,
+        "changedPixels": 62114,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 231,
+        "rms": 3.174647543299406,
+        "changedPixels": 62114,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 231,
+        "rms": 4.375524512944075,
+        "changedPixels": 581401,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 231,
+        "rms": 4.375524512944075,
+        "changedPixels": 581401,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 23.430919906221117,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 23.430919906221117,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 198,
+        "rms": 0.7341240213367928,
+        "changedPixels": 16329,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 198,
+        "rms": 0.7341240213367928,
+        "changedPixels": 16329,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 198,
+        "rms": 0.9948375781209533,
+        "changedPixels": 87446,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 198,
+        "rms": 0.9948375781209533,
+        "changedPixels": 87446,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 198,
+        "rms": 1.102803505740557,
+        "changedPixels": 99320,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 198,
+        "rms": 1.102803505740557,
+        "changedPixels": 99320,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 111,
+        "rms": 0.494015269679951,
+        "changedPixels": 6806,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 111,
+        "rms": 0.494015269679951,
+        "changedPixels": 6806,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 171,
+        "rms": 0.8156630619991789,
+        "changedPixels": 150140,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 171,
+        "rms": 0.8156630619991789,
+        "changedPixels": 150140,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 25.25002537636748,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 25.25002537636748,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 208,
+        "rms": 5.470991119272677,
+        "changedPixels": 38248,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 208,
+        "rms": 5.470991119272677,
+        "changedPixels": 38248,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 208,
+        "rms": 8.40416276464773,
+        "changedPixels": 345066,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 208,
+        "rms": 8.40416276464773,
+        "changedPixels": 345066,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 209,
+        "rms": 8.7176291648689,
+        "changedPixels": 356943,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 209,
+        "rms": 8.7176291648689,
+        "changedPixels": 356943,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 167,
+        "rms": 0.6072124164773641,
+        "changedPixels": 23575,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 167,
+        "rms": 0.6072124164773641,
+        "changedPixels": 23575,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 169,
+        "rms": 1.1496409799220144,
+        "changedPixels": 501814,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 169,
+        "rms": 1.1496409799220144,
+        "changedPixels": 501814,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 6,
+        "rms": 0.08773300839089511,
+        "changedPixels": 7418,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 6,
+        "rms": 0.08773300839089511,
+        "changedPixels": 7418,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 239,
+        "rms": 5.01973516498064,
+        "changedPixels": 229469,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 239,
+        "rms": 5.01973516498064,
+        "changedPixels": 229469,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 3,
+        "rms": 0.206221160223359,
+        "changedPixels": 217233,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 3,
+        "rms": 0.206221160223359,
+        "changedPixels": 217233,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 239,
+        "rms": 5.636009045563799,
+        "changedPixels": 1896115,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 239,
+        "rms": 5.636009045563799,
+        "changedPixels": 1896115,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 235,
+        "rms": 0.980856009209542,
+        "changedPixels": 221340,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 235,
+        "rms": 0.980856009209542,
+        "changedPixels": 221340,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 235,
+        "rms": 2.942486027602127,
+        "changedPixels": 1889895,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 235,
+        "rms": 2.942486027602127,
+        "changedPixels": 1889895,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 250,
+        "rms": 26.344474734232865,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 250,
+        "rms": 26.344474734232865,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 240,
+        "rms": 6.003302176650527,
+        "changedPixels": 31403,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 240,
+        "rms": 6.003302176650527,
+        "changedPixels": 31403,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 3,
+        "rms": 0.054390267356647294,
+        "changedPixels": 14615,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 3,
+        "rms": 0.054390267356647294,
+        "changedPixels": 14615,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 240,
+        "rms": 6.134937178647943,
+        "changedPixels": 559968,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 240,
+        "rms": 6.134937178647943,
+        "changedPixels": 559968,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 240,
+        "rms": 1.2462797003737909,
+        "changedPixels": 15027,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 240,
+        "rms": 1.2462797003737909,
+        "changedPixels": 15027,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 239,
+        "rms": 1.819303164574181,
+        "changedPixels": 542696,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 239,
+        "rms": 1.819303164574181,
+        "changedPixels": 542696,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 243,
+        "rms": 24.708367957942137,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 243,
+        "rms": 24.708367957942137,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 138,
+        "rms": 4.109410250165669,
+        "changedPixels": 156269,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 138,
+        "rms": 4.109410250165669,
+        "changedPixels": 156269,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 138,
+        "rms": 2.4987171348431674,
+        "changedPixels": 145822,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 138,
+        "rms": 2.4987171348431674,
+        "changedPixels": 145822,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 145,
+        "rms": 4.58858462147605,
+        "changedPixels": 1219657,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 145,
+        "rms": 4.58858462147605,
+        "changedPixels": 1219657,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 2.5813912079372314,
+        "changedPixels": 147729,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 2.5813912079372314,
+        "changedPixels": 147729,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 146,
+        "rms": 4.889491426990036,
+        "changedPixels": 1218472,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 146,
+        "rms": 4.889491426990036,
+        "changedPixels": 1218472,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 243,
+        "rms": 15.185902254481444,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 243,
+        "rms": 15.185902254481444,
+        "changedPixels": 2073600,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 2.8253096777076596,
+        "changedPixels": 16765,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 2.8253096777076596,
+        "changedPixels": 16765,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 1.557517622135081,
+        "changedPixels": 12487,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 1.557517622135081,
+        "changedPixels": 12487,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 3.022119218654231,
+        "changedPixels": 311798,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 3.022119218654231,
+        "changedPixels": 311798,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 134,
+        "rms": 1.7025493491424653,
+        "changedPixels": 12018,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 134,
+        "rms": 1.7025493491424653,
+        "changedPixels": 12018,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 3.1642350760104954,
+        "changedPixels": 309458,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 3.1642350760104954,
+        "changedPixels": 309458,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 243,
+        "rms": 41.90311269377505,
+        "changedPixels": 318973,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 243,
+        "rms": 41.90311269377505,
+        "changedPixels": 318973,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 245,
+        "rms": 36.14375308659753,
+        "changedPixels": 331645,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 245,
+        "rms": 36.14375308659753,
+        "changedPixels": 331645,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 245,
+        "rms": 35.90716103517468,
+        "changedPixels": 326288,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 245,
+        "rms": 35.90716103517468,
+        "changedPixels": 326288,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 246,
+        "rms": 36.55689497723788,
+        "changedPixels": 318517,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 246,
+        "rms": 36.55689497723788,
+        "changedPixels": 318517,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 38.83717399740792,
+        "changedPixels": 343496,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 38.83717399740792,
+        "changedPixels": 343496,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 243,
+        "rms": 34.47532074518726,
+        "changedPixels": 288159,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 243,
+        "rms": 34.47532074518726,
+        "changedPixels": 288159,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 245,
+        "rms": 27.967374035054966,
+        "changedPixels": 163682,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 245,
+        "rms": 27.967374035054966,
+        "changedPixels": 163682,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 245,
+        "rms": 23.65527568175295,
+        "changedPixels": 161121,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 245,
+        "rms": 23.65527568175295,
+        "changedPixels": 161121,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 238,
+        "rms": 24.22376417296256,
+        "changedPixels": 164596,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 238,
+        "rms": 24.22376417296256,
+        "changedPixels": 164596,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 238,
+        "rms": 25.25417016759627,
+        "changedPixels": 168195,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 238,
+        "rms": 25.25417016759627,
+        "changedPixels": 168195,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 234,
+        "rms": 23.855514150711667,
+        "changedPixels": 158125,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 234,
+        "rms": 23.855514150711667,
+        "changedPixels": 158125,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 245,
+        "rms": 22.974864118625167,
+        "changedPixels": 150154,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 245,
+        "rms": 22.974864118625167,
+        "changedPixels": 150154,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 19.742084160291352,
+        "changedPixels": 1622765,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 19.742084160291352,
+        "changedPixels": 1622765,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.353152021795493,
+        "changedPixels": 1397693,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.353152021795493,
+        "changedPixels": 1397693,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 231,
+        "rms": 29.600094631155386,
+        "changedPixels": 115726,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 231,
+        "rms": 29.600094631155386,
+        "changedPixels": 115726,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 7.843275064318981,
+        "changedPixels": 1115033,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 7.843275064318981,
+        "changedPixels": 1115033,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    }
+  ],
+  "qualified": false,
+  "status": "measured",
+  "error": null
+}

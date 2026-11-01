@@ -5,8 +5,8 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (fad4bb2), with local clean-install coverage but no default
-promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (8c3cafc; implementation cc10be9),
+on `renderer/browser-first-candidate` (9b4a82e), with local clean-install coverage through cache and ProRes integration but no default
+promotion. See the [updated installation evidence](research/browser-first-prores-2026-11-01/README.md). The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (8c3cafc; implementation cc10be9),
 with exact-frame/encoded parity and a passed 3,000-capture resource check; one-worker quiet throughput is qualified; full-master resources and automatic-worker throughput
 remain unqualified.
 The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
@@ -335,6 +335,8 @@ workloads improve without incorrect frames or unbounded memory.
 The independent-driver native experiment is complete and rejected for this milestone. All 252
 sampled theme/GPU/video/art frames exceed the existing pixel allowance; Chromium 157 repeats
 the Pirate defects. Production keeps screenshot capture. See the [retained qualification](research/native-browser-capture-2026-11-01/README.md).
+The [Electron bitmap investigation](research/electron-bitmap-2026-11-01/README.md) also rejects both
+`capturePage()` and next-paint handshakes because they can return an older frame.
 The alternative capture work below remains a future optimization, with a new proof required
 before production use; no incomplete fast path is needed to ship independent H.264 export.
 

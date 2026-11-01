@@ -1,0 +1,56 @@
+$ vp check ⊘ cache disabled
+[1m[94mpass:[39m[0m All 589 files are correctly formatted [2m(300ms, 10 threads)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 527 files [2m(5.8s, 10 threads)[0m
+
+$ vp test ⊘ cache disabled
+
+ RUN  v4.1.10 /private/tmp/setcast-browser-first-candidate
+
+ ❯ packages/cli/src/commands/doctor.test.ts (2 tests | 1 failed) 8223ms
+   × doctor rejects invalid flags before starting runtime probes 5208ms
+ ❯ packages/cli/src/commands/validate.test.ts (3 tests | 1 failed) 10814ms
+   × validation CLI returns clean JSON for defaults, warnings and configuration failures 5966ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/cli/src/commands/doctor.test.ts > doctor rejects invalid flags before starting runtime probes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ packages/cli/src/commands/doctor.test.ts:51:1
+     49| });
+     50|
+     51| test('doctor rejects invalid flags before starting runtime probes', ()…
+       | ^
+     52|   for (const args of [
+     53|     ['project'],
+ ❯ VitestModuleRunner.directRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1274:59
+ ❯ VitestModuleRunner.cachedRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1181:73
+ ❯ VitestModuleRunner.import node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1135:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/cli/src/commands/validate.test.ts > validation CLI returns clean JSON for defaults, warnings and configuration failures
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ packages/cli/src/commands/validate.test.ts:12:1
+     10|   spawnSync(process.execPath, [cli, 'validate', ...args], { encoding: …
+     11|
+     12| test('validation CLI returns clean JSON for defaults, warnings and con…
+       | ^
+     13|   const root = await mkdtemp(join(tmpdir(), 'setcast-validate-cli-'));
+     14|   try {
+ ❯ VitestModuleRunner.directRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1274:59
+ ❯ VitestModuleRunner.cachedRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1181:73
+ ❯ VitestModuleRunner.import node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1135:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 113 passed (115)
+      Tests  2 failed | 686 passed (688)
+   Start at  12:34:30
+   Duration  27.89s (transform 11.66s, setup 0ms, import 77.09s, tests 117.01s, environment 11ms)
+
+
+---
+vp run: 0/2 cache hit (0%), 1 failed. (Run `vp run --last-details` for full details)

@@ -1,0 +1,8 @@
+$ node scripts/package-smoke.ts --browser --report /tmp/setcast-browser-first-prores-browser.json ⊘ cache disabled
+  fresh tarball installation: no Remotion packages
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)
+
