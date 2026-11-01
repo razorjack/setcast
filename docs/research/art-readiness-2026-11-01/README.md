@@ -37,3 +37,8 @@ Browser video hashes are identical across all six original/corrected repeats:
 `bba3e0e852e0f3b48a2c899d9e4e14cf41420455f7b11063caf5254fd9fe4fc5`.
 Both exporter acceptance suites pass, including missing assets, cancellation and recovery;
 the same-page scene/font/backward-seek/video-loop checks pass too.
+
+A complete ten-second corrected portrait output was also scanned and visually inspected at the
+formerly black frame. Both outputs have content throughout, and the corrected Remotion sample
+is retained as `corrected-remotion-offset90.png`. The valid quality comparison is retained under
+`../corpus-quality-2026-11-01/portrait-corrected/`.

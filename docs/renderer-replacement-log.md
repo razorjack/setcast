@@ -1158,3 +1158,75 @@ Commit-readiness milestone final ready passed: 667 tests in 111 files, lint/type
 dependency isolation and decoded smoke. Logs: `/tmp/setcast-commit-hold-ready.log`,
 `/tmp/setcast-commit-hold-browser-acceptance.log`, `/tmp/setcast-commit-hold-remotion-acceptance.log`
 and `/tmp/setcast-commit-hold-frames.log`.
+
+Main commits now include 543bc50 (reference reserve and bitmap evidence), 53551f0 (shared
+commit-readiness correction), and e7c4f34 (ten-case quality reports). Bitmap production code
+remains isolated at cc10be9. A 3,000-capture PNG/BMP resource comparison is running with repeated
+100–110 second seeks and source changes, natural garbage collection, browser heap/DOM counts,
+process-tree RSS and explicit bitmap URL ownership. These concurrent runs are not speed tests.
+
+User requested completion of the current item, then commit and stop. Scope is now limited to
+closing the in-flight quality/resource milestone: final corpus case, corrected portrait metrics,
+3,000-frame PNG/BMP memory probes and final checks. No new performance tuning or promotion.
+The BMP resource run completed all 3,000 JPEG captures across repeated source switches, with
+one live URL per sampled ready frame, at most two transiently, and all 3,000 URLs revoked on
+close. Natural-GC heap/process samples are retained; no complete-export speed claim is made.
+Packed-browser smoke for the shared readiness correction also passed.
+
+Both 3,000-capture resource runs passed and closed. Later sampled JS heap and process-tree RSS
+fluctuated without sustained growth; all bitmap URLs were revoked. Raw PNG/BMP reports are
+retained. The final ready runs overlapped CPU-heavy quality analysis and failed only five-second
+CLI subprocess test timeouts (cache on main, cache/preview on candidate). Those logs are retained;
+checks will run sequentially after analysis, with unchanged test limits.
+
+The corrected full ten-second portrait comparison passes all numerical quality checks with no
+black frames in either output. Its lossless reference RGB hash matches the original reference.
+The failed original comparison remains retained; `corpus-quality-2026-11-01/portrait-corrected`
+contains the valid quality arm. Only final chunk metrics and sequential final checks remain
+before committing and stopping as requested.
+
+Sequential final ready passes on main and the bitmap candidate with unchanged test limits:
+667 tests in 111 files, formatting/lint/types, isolation and decoded smoke in each checkout.
+The earlier parallel-load timeout logs remain archived. The comparison runtime's final check
+is running next, sequentially.
+
+The bitmap resource milestone is committed as 728e2f0 on `renderer/bitmap-video-candidate`
+(implementation cc10be9). The current-upstream research runtime is now committed as 6c373c0
+on `renderer/upstream-539-comparison`, replacing the previously dirty detached checkout. Its
+final ready passed 665 tests in 110 files, lint/types/formatting, isolation and decoded smoke.
+No automatic policy or Remotion dependency upgrade was promoted to main. The browser-first
+candidate remains clean at 755fa71.
+
+## Stop checkpoint, 1 November 2026
+
+The final chunk-boundary case completed all quality measurements. All eleven frozen cases have
+numerical reports at browser JPEG 100 / CRF 16 versus current Remotion CRF 18, one worker each.
+The corrected portrait arm removes the original black-frame defect and still meets every
+recorded metric comparison. The chunk retry also meets every recorded metric comparison, but its original-code Remotion
+arm contains the same black transition at offset 510 (absolute 3150), found by the final frame
+scan. Browser has none. A corrected 63-second rerun is pending; this failed arm cannot qualify
+matched quality or speed. The user requested stopping after this item, so no new rerun starts.
+These are output calibration results under shared load, not throughput evidence or changed
+defaults. All original failures remain in the research records.
+
+The current item is finished. Main includes the readiness fix, disk-reserve guard, typed video
+resource probe and durable quality/resource findings. The bitmap implementation and resource
+evidence remain isolated at `renderer/bitmap-video-candidate` 728e2f0. The browser-first
+installation candidate remains at 755fa71, and the exact current-upstream research runtime is
+committed as `renderer/upstream-539-comparison` 6c373c0. No further work starts in this period.
+
+Remaining before promotion: repeat the 63-second comparison with the committed readiness fix;
+integrate the shared readiness fix into the isolated feature
+candidates; run complete quiet alternating worker/video/current-upstream timings; qualify
+full-master process memory and supported installed platforms/backends; then integrate the
+browser-first distribution with its migration/rollback documentation. Automatic workers and
+bitmap video remain unpromoted. The 30% speed target is unproven. Native capture qualification,
+prepared-asset/batch reuse and transparent/editing outputs remain planned work as scoped in the
+replacement plan. No CI execution, external publication or default switch was performed.
+
+Validation: main and bitmap each pass 667 tests in 111 files plus lint/types/formatting,
+isolation and decoded smoke. The upstream snapshot passes 665 tests in 110 files and the same
+baseline checks. Both exporter acceptance suites, same-page media checks and packed-browser
+smoke pass for the shared readiness correction. Each video resource run completed 3,000 JPEG
+captures and closed; all 3,000 bitmap URLs were revoked. Earlier load-related test timeout logs
+are retained, followed by successful sequential reruns with unchanged limits.

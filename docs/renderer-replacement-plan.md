@@ -4,7 +4,17 @@ Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
-Status: implementation in progress; completed pieces and validation are tracked in the log.
+Status: implementation and qualification in progress. The browser-first distribution is committed
+on `renderer/browser-first-candidate` (755fa71), with local clean-install coverage but no default
+promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (728e2f0; implementation cc10be9),
+with exact-frame/encoded parity and a passed 3,000-capture resource check; full-master resources
+and quiet throughput remain unqualified.
+The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
+cases, including a corrected portrait comparison and the final-case retry. The final Remotion
+chunk output still contains the original art-transition failure and needs a corrected rerun.
+The original black frames and storage interruption remain preserved.
+The shared [commit-readiness fix](research/art-readiness-2026-11-01/README.md), committed as 53551f0,
+removes that repeatable black transition frame. Completed pieces and validation are tracked in the log.
 Remotion remains the default until the release criteria below are met.
 
 Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
@@ -285,6 +295,13 @@ minute, then retains a failed report for a later retry. Keep observing external 
 These options enable quality matching; their existence does not establish it.
 
 ### Phase 1: remove video-frame PNG serialization
+
+The second candidate retains the image DOM and serializes lossless BMP V4 blob URLs. It matches
+288 theme/orientation/seek samples and a complete 300-frame source-switch export, including audio.
+The first BMP data-URL variant was slower in its diagnostic and is archived. The blob candidate
+passes a 3,000-capture resource check; full-master memory and quiet complete-export timings
+remain required before promotion. See
+[bitmap-video evidence](research/bitmap-video-2026-11-01/README.md).
 
 The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was
 slower in two alternating benchmark series. See the [experiment and retained evidence](research/video-canvas-2026-10-29/README.md).

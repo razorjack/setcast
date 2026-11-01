@@ -1,0 +1,221 @@
+{
+  "allAtLeastReference": true,
+  "checks": [
+    {
+      "region": "full",
+      "metric": "psnr",
+      "stat": "min",
+      "browser": 43.85,
+      "remotion": 34.82,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "psnr",
+      "stat": "p05",
+      "browser": 44.72,
+      "remotion": 34.93,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "psnr",
+      "stat": "mean",
+      "browser": 45.69763333333332,
+      "remotion": 37.4229,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "ssim",
+      "stat": "min",
+      "browser": 0.99026,
+      "remotion": 0.946322,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "ssim",
+      "stat": "p05",
+      "browser": 0.991136,
+      "remotion": 0.958933,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "ssim",
+      "stat": "mean",
+      "browser": 0.9928463733333335,
+      "remotion": 0.9788574100000001,
+      "atLeastReference": true
+    },
+    {
+      "region": "branding",
+      "metric": "psnr",
+      "stat": "min",
+      "browser": 44.72,
+      "remotion": 31.71,
+      "atLeastReference": true
+    },
+    {
+      "region": "branding",
+      "metric": "psnr",
+      "stat": "p05",
+      "browser": 44.83,
+      "remotion": 31.73,
+      "atLeastReference": true
+    },
+    {
+      "region": "branding",
+      "metric": "psnr",
+      "stat": "mean",
+      "browser": 46.432366666666624,
+      "remotion": 34.922166666666655,
+      "atLeastReference": true
+    },
+    {
+      "region": "branding",
+      "metric": "ssim",
+      "stat": "min",
+      "browser": 0.989489,
+      "remotion": 0.960002,
+      "atLeastReference": true
+    },
+    {
+      "region": "branding",
+      "metric": "ssim",
+      "stat": "p05",
+      "browser": 0.990638,
+      "remotion": 0.970272,
+      "atLeastReference": true
+    },
+    {
+      "region": "branding",
+      "metric": "ssim",
+      "stat": "mean",
+      "browser": 0.9926829400000002,
+      "remotion": 0.9806083699999993,
+      "atLeastReference": true
+    },
+    {
+      "region": "tracklist",
+      "metric": "psnr",
+      "stat": "min",
+      "browser": 44.74,
+      "remotion": 37.78,
+      "atLeastReference": true
+    },
+    {
+      "region": "tracklist",
+      "metric": "psnr",
+      "stat": "p05",
+      "browser": 45.14,
+      "remotion": 37.81,
+      "atLeastReference": true
+    },
+    {
+      "region": "tracklist",
+      "metric": "psnr",
+      "stat": "mean",
+      "browser": 45.73660000000001,
+      "remotion": 38.38493333333332,
+      "atLeastReference": true
+    },
+    {
+      "region": "tracklist",
+      "metric": "ssim",
+      "stat": "min",
+      "browser": 0.989956,
+      "remotion": 0.945441,
+      "atLeastReference": true
+    },
+    {
+      "region": "tracklist",
+      "metric": "ssim",
+      "stat": "p05",
+      "browser": 0.990956,
+      "remotion": 0.959803,
+      "atLeastReference": true
+    },
+    {
+      "region": "tracklist",
+      "metric": "ssim",
+      "stat": "mean",
+      "browser": 0.9926026433333344,
+      "remotion": 0.9787852533333338,
+      "atLeastReference": true
+    },
+    {
+      "region": "credits",
+      "metric": "psnr",
+      "stat": "min",
+      "browser": 39.09,
+      "remotion": 26.95,
+      "atLeastReference": true
+    },
+    {
+      "region": "credits",
+      "metric": "psnr",
+      "stat": "p05",
+      "browser": 41.46,
+      "remotion": 27.07,
+      "atLeastReference": true
+    },
+    {
+      "region": "credits",
+      "metric": "psnr",
+      "stat": "mean",
+      "browser": 44.79569999999999,
+      "remotion": 34.66066666666668,
+      "atLeastReference": true
+    },
+    {
+      "region": "credits",
+      "metric": "ssim",
+      "stat": "min",
+      "browser": 0.981542,
+      "remotion": 0.949961,
+      "atLeastReference": true
+    },
+    {
+      "region": "credits",
+      "metric": "ssim",
+      "stat": "p05",
+      "browser": 0.986157,
+      "remotion": 0.962168,
+      "atLeastReference": true
+    },
+    {
+      "region": "credits",
+      "metric": "ssim",
+      "stat": "mean",
+      "browser": 0.9911399399999999,
+      "remotion": 0.977761410000001,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "vmafNeg",
+      "stat": "min",
+      "browser": 95.036187,
+      "remotion": 91.445924,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "vmafNeg",
+      "stat": "p05",
+      "browser": 95.350261,
+      "remotion": 91.803467,
+      "atLeastReference": true
+    },
+    {
+      "region": "full",
+      "metric": "vmafNeg",
+      "stat": "mean",
+      "browser": 95.85909393999998,
+      "remotion": 92.64628698999992,
+      "atLeastReference": true
+    }
+  ]
+}
