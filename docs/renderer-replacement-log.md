@@ -1333,3 +1333,9 @@ Automatic scheduling integration passes ready (679 tests in 114 files), scheduli
 with four selected workers and exact cached/resumed video and audio, both exporter acceptance
 suites, preview reference workflows and packed-browser installation. The scheduler is now enabled
 on main. No quality setting or renderer default changed.
+
+Endurance measurement correction passes a ten-second real-master export with 300 frames, the
+project's nondefault JPEG 90 / CRF 22 settings, decoded verification and audio checks. All six
+process samples are available; final temporary directories are empty. Evidence is retained in
+`docs/research/endurance-monitor-2026-11-01`. This validates instrumentation only; a corrected
+full-master run remains required. Shared working-tree ready and exporter checks pass.

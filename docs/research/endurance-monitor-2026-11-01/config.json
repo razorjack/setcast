@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "mode": "export",
+  "project": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-master-project",
+  "at": 90,
+  "seconds": 10,
+  "concurrency": 4,
+  "sampleSeconds": 1,
+  "verification": "decoded",
+  "audioAt": [
+    1,
+    5,
+    8
+  ]
+}
