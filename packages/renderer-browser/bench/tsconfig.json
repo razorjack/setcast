@@ -25,6 +25,9 @@
     "worker-frames.ts",
     "worker-capture.ts",
     "worker-pixels.ts",
-    "worker-pixels.test.ts"
+    "worker-pixels.test.ts",
+    "bitmap.ts",
+    "video-stills.ts",
+    "video-memory.ts"
   ]
 }

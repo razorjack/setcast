@@ -2,8 +2,8 @@
 
 The isolated `renderer/bitmap-video-candidate` branch retains the existing image elements,
 object-fit, dimensions and contain blur, but replaces canvas PNG serialization with a BMP V4
-blob URL. Production main still uses PNG. Exact pixels and short resource ownership checks
-pass; complete-export speed and sustained memory remain unqualified.
+blob URL. Production main still uses PNG. Exact pixels and a 3,000-capture resource check
+pass; complete-export speed and full-master memory remain unqualified.
 
 ## Representation and ownership
 
@@ -50,8 +50,27 @@ sample for each theme/orientation. Input media and previous research were preser
 
 ## Remaining qualification
 
-Run alternating complete exports in an idle window, then sustained process-tree memory and
-cleanup checks. Short URL counts prove explicit URL ownership only; they do not prove bounded
-Chromium image-cache or decoder memory over a full master. Do not merge the production change
+Run alternating complete exports in an idle window, then full-master process-tree memory and
+cleanup checks. The repeated-capture resource check does not prove bounded Chromium image-cache
+or decoder memory over a full master. Do not merge the production change
 or claim faster exports until those checks pass. No quality threshold or default setting was
 changed by this experiment.
+
+## Sustained capture resources
+
+`memory-png.json` and `memory-bitmap.json` retain 3,000 JPEG captures each with natural garbage
+collection. Each run repeatedly traverses absolute frames 3000–3299, exercising looped video and
+source changes over ten passes. The bitmap branch is cc10be9; the PNG control includes the shared
+commit-readiness fix. The six original/corrected browser transition exports had identical decoded
+hashes, but these runs are resource observations, not an isolated speed comparison.
+
+All 3,000 bitmap URLs were revoked. Every sampled ready frame owned one URL, replacement peaked
+at two, and explicit scene close left zero. Later browser JS heap and summed process-tree RSS
+fluctuated without sustained growth during these runs. Raw samples include heap size, DOM counts,
+RSS and URL counters. RSS can double-count shared pages and excludes external GPU services.
+
+The helper samples resource counts every 150 frames and performs real JPEG screenshots without
+retaining their bytes. It does not encode a full output or traverse a long real master. This
+establishes bounded observed behavior for the repeated source-switch workload only. Full-master
+endurance and quiet complete-export timings remain pending. The CLI fixture boundary and signal
+cleanup were added to the helper after these runs started; the capture/resource loop is unchanged.

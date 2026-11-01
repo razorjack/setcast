@@ -1065,3 +1065,21 @@ Ready passed 667 tests in 111 files, lint/types/formatting, isolation and decode
 acceptance, Remotion acceptance with swangle and packed-browser smoke passed. The final hash
 helper uses saved files, bounded threads and a 30-second hard timeout. Complete-export quiet
 speed and sustained process memory remain unqualified. Do not promote this branch yet.
+
+The 3,000-capture resource follow-up completed with ten repeated source-switch passes, natural
+GC, real JPEG capture, JS heap/DOM samples and process-tree RSS. Every sampled ready frame owns
+one BMP URL, peak replacement owns two, and close revokes all 3,000. Later heap/RSS fluctuate
+without sustained growth within this workload. Reports and the PNG control are retained under
+`research/bitmap-video-2026-11-01`. This is not full-master or speed qualification. The final ready
+attempt under concurrent quality-analysis load hit cache/preview CLI test timeouts; the failed
+log is retained and a sequential rerun is required before committing.
+
+Main also contains the shared commit-readiness correction at 53551f0. This isolated candidate
+has not incorporated it yet; integrate it before any future promotion and rerun acceptance.
+The user requested completion of this item, commit and stop, so no further tuning or promotion
+is authorized in this work period.
+
+Sequential final ready passed with unchanged test limits: 667 tests in 111 files, formatting,
+lint/types, dependency isolation and decoded smoke. The resource helper is included in the
+benchmark TypeScript project. This closes the resource-check milestone; speed and full-master
+qualification remain pending, and the candidate is not promoted.
