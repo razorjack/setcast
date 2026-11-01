@@ -1230,3 +1230,34 @@ baseline checks. Both exporter acceptance suites, same-page media checks and pac
 smoke pass for the shared readiness correction. Each video resource run completed 3,000 JPEG
 captures and closed; all 3,000 bitmap URLs were revoked. Earlier load-related test timeout logs
 are retained, followed by successful sequential reruns with unchanged limits.
+
+## Resumed roadmap completion, 1 November 2026
+
+The user resumed autonomous work through the renderer-replacement roadmap. The previous stop
+checkpoint is historical. Main begins at 65d78fa; isolated candidates are bitmap 728e2f0,
+browser-first 755fa71, and upstream 6c373c0. The corrected 63-second corpus rerun has started
+against the committed upstream runtime, with the same frozen inputs and quality settings.
+Integrate the shared readiness correction into both feature candidates before further qualification.
+Keep timing runs separate from these correctness jobs and preserve the 15% pre-run CPU limit.
+
+### Whole-set preparation reuse
+
+Inspection confirmed that render bundles and clip batches already share analysis and browser
+preparation. Preview reloads repeated whole-set decoding after unrelated edits, and all-theme
+stills reused only the overview envelope, which could omit travel needed by later themes.
+`WholeSetReader` now owns the latest audio source's summaries for one preview or theme batch.
+It coalesces concurrent requests, resolves source aliases, checks device/inode/size and nanosecond
+modification/change timestamps before and after decoding, evicts failed work, and copies returned
+arrays. It retains summaries rather than PCM; retained travel still scales with source duration.
+It is not a persistent or cross-command cache, and timestamp identity is not a content digest.
+Projects without whole-set consumers do not access audio. Browser and Remotion previews share the
+same implementation. Six focused tests cover reuse, isolation, source edits/replacement, bounded
+source retention and recovery. The initial test expected an unresolved macOS temporary-directory
+alias; correcting the fixture to its real path made the error-path assertion portable.
+
+Whole-set reuse validation passes: 673 tests in 112 files, formatting/lint/types, isolation,
+decoded smoke, and packed-browser CLI/all-theme still smoke. Direct and reused demo summaries
+are deeply equal, including after a title edit. Candidate readiness integrations are committed
+as bitmap 1db55ff and browser-first eb40319; both pass ready, both exporter acceptance suites,
+frame-driver checks and installed browser smoke. Browser-first also passes the optional Remotion
+compatibility installation. No throughput claim follows from these shared-load checks.

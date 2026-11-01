@@ -398,7 +398,9 @@ inspection/clearing and conservative whole-job invalidation. See the implementat
 and [browser cache usage](browser-renderer.md#persistent-reuse-after-successful-exports). Announcement
 text edits now reuse unaffected chunks for audited built-in visualizers; fresh-versus-incremental
 video and audio comparisons cover visible edits and fractional chunk boundaries. Metadata and
-other project changes remain global. Prepared-asset caching and broader batch reuse remain pending.
+other project changes remain global. Preview reloads and all-theme still batches now share bounded
+whole-set preparation through `WholeSetReader`. Render bundles and clip batches already prepare
+analysis once and share a render session. Cross-command prepared-asset persistence remains pending.
 
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
 Start with identical completed chunks and validated prepared assets. Retain proven identity,

@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- `WholeSetReader` belongs to one preview or theme batch. It shares the latest audio revision's
+  envelope and travel preparation, validates file identity before and after decoding, and returns
+  independent arrays. Reuse both summaries across theme changes; an envelope-only shortcut can
+  omit travel required by a later theme. This is in-memory reuse, not a persistent audio cache.
+
 - `useHoldUntil` must hold through the React commit that exposes matching ready state, not only
   through promise completion. Prepared art hides Stage until then; current Remotion captured a
   black portrait frame at an art change without the commit hold. Keep the portrait reproducer
