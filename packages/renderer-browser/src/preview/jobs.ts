@@ -49,8 +49,9 @@ const exporter: PreviewExporter = {
   render,
   withRenderSession,
   async still(project, options) {
+    const runtime = await exportRuntime(options);
     const result = await still(project, options);
-    return { ...result, runtime: await exportRuntime(options) };
+    return { ...result, runtime };
   },
 };
 

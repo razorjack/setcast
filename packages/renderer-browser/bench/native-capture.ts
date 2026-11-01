@@ -79,7 +79,9 @@ try {
 interface NativeCanvas extends HTMLCanvasElement {
   requestPaint(): void;
 }
-type NativeContext = CanvasRenderingContext2D;
+type NativeContext = CanvasRenderingContext2D & {
+  drawElementImage(element: HTMLElement, x: number, y: number): unknown;
+};
 declare global {
   interface Window {
     nativeCaptureProbe: { canvas: NativeCanvas; context: NativeContext; target: HTMLElement };
