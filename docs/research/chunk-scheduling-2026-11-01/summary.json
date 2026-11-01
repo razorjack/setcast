@@ -1,0 +1,44 @@
+{
+  "standard": {
+    "frames": {
+      "median": 9.518259917000004,
+      "min": 9.372294624999995,
+      "max": 9.583617209,
+      "peakSummedRssBytes": 3017670656
+    },
+    "chunks": {
+      "median": 9.438287292,
+      "min": 9.416608375,
+      "max": 9.450944000000003,
+      "peakSummedRssBytes": 5066162176
+    }
+  },
+  "tunnel": {
+    "frames": {
+      "median": 10.730102916000003,
+      "min": 10.621643666999997,
+      "max": 10.904420541,
+      "peakSummedRssBytes": 2875490304
+    },
+    "chunks": {
+      "median": 10.501602875000012,
+      "min": 9.9604565,
+      "max": 10.740929208,
+      "peakSummedRssBytes": 4910006272
+    }
+  },
+  "looping-video": {
+    "frames": {
+      "median": 17.728855417000002,
+      "min": 17.53744466699999,
+      "max": 17.833064041999982,
+      "peakSummedRssBytes": 4213522432
+    },
+    "chunks": {
+      "median": 16.820220333999984,
+      "min": 16.108467124999997,
+      "max": 17.074235209000005,
+      "peakSummedRssBytes": 6222970880
+    }
+  }
+}

@@ -1,0 +1,15 @@
+Pre-run system CPU busy: 11.0%
+frames: 9.584 s, exact decoded video/audio
+Pre-run system CPU busy: 14.3%
+chunks: 9.417 s, exact decoded video/audio
+Pre-run system CPU busy: 36.6%
+Pre-run system CPU busy: 33.1%
+Pre-run system CPU busy: 32.4%
+Pre-run system CPU busy: 14.1%
+chunks: 9.438 s, exact decoded video/audio
+Pre-run system CPU busy: 8.0%
+frames: 9.518 s, exact decoded video/audio
+Pre-run system CPU busy: 14.1%
+frames: 9.372 s, exact decoded video/audio
+Pre-run system CPU busy: 13.0%
+chunks: 9.451 s, exact decoded video/audio

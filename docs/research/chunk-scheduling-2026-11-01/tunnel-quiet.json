@@ -1,0 +1,591 @@
+{
+  "revision": "a00ece322bb8b963890064ba75baa41cad6b99ad",
+  "dirty": false,
+  "identity": "62e1241e96757f094a084a6e4acdc6ef12e8fb58ee82d9032a045abe59cb5094",
+  "range": [
+    2700,
+    3059
+  ],
+  "ranges": [
+    [
+      2700,
+      2789
+    ],
+    [
+      2790,
+      2879
+    ],
+    [
+      2880,
+      2969
+    ],
+    [
+      2970,
+      3059
+    ]
+  ],
+  "encoding": {
+    "codec": "h264",
+    "transparent": false,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "gl": "auto",
+    "profile": "standard",
+    "parallelEncoding": true,
+    "x264Preset": "medium",
+    "chunkSeconds": 3,
+    "hardwareAcceleration": "disable",
+    "crf": 18,
+    "jpegQuality": 95,
+    "file": "out/set.mp4"
+  },
+  "idleBusy": 0.15,
+  "scope": "Four capture pages. Identical chunk boundaries and settings; round-robin frames per sequential chunk versus one page and encoder per concurrent chunk. Includes preflight, session setup, continuous master audio, capture, encoding, mux and cleanup; excludes project preparation and verification.",
+  "runtime": [
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    },
+    {
+      "kind": "browser",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+      "capture": "jpeg-screenshot",
+      "graphics": {
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+        "vendor": "Google Inc. (Apple)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "graphicsError": null
+    }
+  ],
+  "results": [
+    {
+      "round": 0,
+      "mode": "frames",
+      "wallSeconds": 10.904420541,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 11436092,
+        "decodedVideoHash": "SHA256=f2bd414d3d8ef32ee434d84428f31b5d7f77763f36e4067f5a63f158a4830a74",
+        "seconds": 5.400697875000001,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 10,
+        "meanSystemBusy": 0.7138583841329191,
+        "maxSystemBusy": 0.9950544015825915,
+        "initialLoadAverage": [
+          4.87109375,
+          5.5654296875,
+          7.5869140625
+        ],
+        "finalLoadAverage": [
+          4.890625,
+          5.54638671875,
+          7.55615234375
+        ],
+        "nodeRssPeak": 492994560,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 11,
+        "intervals": 10,
+        "failedSamples": 0,
+        "seconds": 10.046354854500002,
+        "treeCpuSeconds": 42.77000000000001,
+        "externalCpuSeconds": 9.259999999999753,
+        "rssPeakBytes": 2640035840,
+        "maxTreeCpuCores": 9.086024168079534,
+        "maxExternalCpuCores": 1.2600829177833663,
+        "meanTreeCpuCores": 4.257265507682352,
+        "meanExternalCpuCores": 0.9217273462973467,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    },
+    {
+      "round": 0,
+      "mode": "chunks",
+      "wallSeconds": 9.9604565,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 11436092,
+        "decodedVideoHash": "SHA256=f2bd414d3d8ef32ee434d84428f31b5d7f77763f36e4067f5a63f158a4830a74",
+        "seconds": 5.383295207999996,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 9,
+        "meanSystemBusy": 0.7325905730941893,
+        "maxSystemBusy": 1,
+        "initialLoadAverage": [
+          4.298828125,
+          5.38720703125,
+          7.4638671875
+        ],
+        "finalLoadAverage": [
+          5.04638671875,
+          5.5068359375,
+          7.4814453125
+        ],
+        "nodeRssPeak": 572686336,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 10,
+        "intervals": 9,
+        "failedSamples": 0,
+        "seconds": 9.127127104,
+        "treeCpuSeconds": 54.86,
+        "externalCpuSeconds": 7.439999999999586,
+        "rssPeakBytes": 4789518336,
+        "maxTreeCpuCores": 10.264583276023549,
+        "maxExternalCpuCores": 1.2675713982183197,
+        "meanTreeCpuCores": 6.010653667347022,
+        "meanExternalCpuCores": 0.8151524477772394,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    },
+    {
+      "round": 1,
+      "mode": "chunks",
+      "wallSeconds": 10.740929208,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 11436092,
+        "decodedVideoHash": "SHA256=f2bd414d3d8ef32ee434d84428f31b5d7f77763f36e4067f5a63f158a4830a74",
+        "seconds": 5.353055874999991,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 10,
+        "meanSystemBusy": 0.7250994373488227,
+        "maxSystemBusy": 1,
+        "initialLoadAverage": [
+          4.1748046875,
+          5.2783203125,
+          7.35302734375
+        ],
+        "finalLoadAverage": [
+          8.14501953125,
+          6.091796875,
+          7.6171875
+        ],
+        "nodeRssPeak": 628031488,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 11,
+        "intervals": 10,
+        "failedSamples": 0,
+        "seconds": 10.067756916500004,
+        "treeCpuSeconds": 55.81000000000001,
+        "externalCpuSeconds": 10.800000000000681,
+        "rssPeakBytes": 4846829568,
+        "maxTreeCpuCores": 8.771746143346778,
+        "maxExternalCpuCores": 1.307910240122302,
+        "meanTreeCpuCores": 5.54343936418779,
+        "meanExternalCpuCores": 1.0727315021184716,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    },
+    {
+      "round": 1,
+      "mode": "frames",
+      "wallSeconds": 10.730102916000003,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 11436092,
+        "decodedVideoHash": "SHA256=f2bd414d3d8ef32ee434d84428f31b5d7f77763f36e4067f5a63f158a4830a74",
+        "seconds": 5.344734790999995,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 10,
+        "meanSystemBusy": 0.6449729980425838,
+        "maxSystemBusy": 0.9950347567030785,
+        "initialLoadAverage": [
+          7.193359375,
+          5.9560546875,
+          7.55078125
+        ],
+        "finalLoadAverage": [
+          8.0107421875,
+          6.1884765625,
+          7.60498046875
+        ],
+        "nodeRssPeak": 664649728,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 11,
+        "intervals": 10,
+        "failedSamples": 0,
+        "seconds": 10.05315904150001,
+        "treeCpuSeconds": 44.3,
+        "externalCpuSeconds": 2.910000000000034,
+        "rssPeakBytes": 2823208960,
+        "maxTreeCpuCores": 9.457166555492453,
+        "maxExternalCpuCores": 0.6330600756215,
+        "meanTreeCpuCores": 4.406575069301807,
+        "meanExternalCpuCores": 0.2894612517306639,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    },
+    {
+      "round": 2,
+      "mode": "frames",
+      "wallSeconds": 10.621643666999997,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 11436092,
+        "decodedVideoHash": "SHA256=f2bd414d3d8ef32ee434d84428f31b5d7f77763f36e4067f5a63f158a4830a74",
+        "seconds": 5.3496593330000035,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 10,
+        "meanSystemBusy": 0.6586084207707557,
+        "maxSystemBusy": 0.995049504950495,
+        "initialLoadAverage": [
+          7.0126953125,
+          6.03369140625,
+          7.533203125
+        ],
+        "finalLoadAverage": [
+          7.69873046875,
+          6.212890625,
+          7.5791015625
+        ],
+        "nodeRssPeak": 683245568,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 11,
+        "intervals": 10,
+        "failedSamples": 0,
+        "seconds": 10.0582808335,
+        "treeCpuSeconds": 47.1,
+        "externalCpuSeconds": 2.8500000000005468,
+        "rssPeakBytes": 2875490304,
+        "maxTreeCpuCores": 9.347967650944272,
+        "maxExternalCpuCores": 0.4176751503614458,
+        "meanTreeCpuCores": 4.682708782909427,
+        "meanExternalCpuCores": 0.28334862062196237,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    },
+    {
+      "round": 2,
+      "mode": "chunks",
+      "wallSeconds": 10.501602875000012,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 11436092,
+        "decodedVideoHash": "SHA256=f2bd414d3d8ef32ee434d84428f31b5d7f77763f36e4067f5a63f158a4830a74",
+        "seconds": 5.408978959,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 10,
+        "meanSystemBusy": 0.7030954777113749,
+        "maxSystemBusy": 1,
+        "initialLoadAverage": [
+          6.21435546875,
+          5.95654296875,
+          7.46337890625
+        ],
+        "finalLoadAverage": [
+          12.9873046875,
+          7.36865234375,
+          7.94384765625
+        ],
+        "nodeRssPeak": 714899456,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 11,
+        "intervals": 10,
+        "failedSamples": 0,
+        "seconds": 10.064477812500002,
+        "treeCpuSeconds": 58.25,
+        "externalCpuSeconds": 6.840000000000177,
+        "rssPeakBytes": 4910006272,
+        "maxTreeCpuCores": 9.758213098310476,
+        "maxExternalCpuCores": 1.1798697470987969,
+        "meanTreeCpuCores": 5.787682290645418,
+        "meanExternalCpuCores": 0.6796179719831019,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    }
+  ],
+  "status": "passed",
+  "error": null
+}
