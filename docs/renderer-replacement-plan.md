@@ -5,10 +5,10 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (eb40319), with local clean-install coverage but no default
-promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (1db55ff; implementation cc10be9),
-with exact-frame/encoded parity and a passed 3,000-capture resource check; full-master resources
-and quiet throughput remain unqualified.
+on `renderer/browser-first-candidate` (fad4bb2), with local clean-install coverage but no default
+promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (8c3cafc; implementation cc10be9),
+with exact-frame/encoded parity and a passed 3,000-capture resource check; one-worker quiet throughput is qualified; full-master resources and automatic-worker throughput
+remain unqualified.
 The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
 cases, including corrected portrait and long comparisons with no black transition frames.
 The original black frames and storage interruption remain preserved.
@@ -220,11 +220,13 @@ renderer. Native capture availability alone does not prove correct pixels or har
 
 ## Delivery sequence
 
-Phase 0 is in progress. Phase 1's first candidate was rejected; phase 3 audio overlap and hardware
-encoding are implemented. The remaining deliverables below are still pending. The installed-adapter comparison
-runner and opt-in browser/graphics/encoding observations are implemented as described in [render-comparison.md](render-comparison.md). Full upstream,
-quality and platform comparisons are still required. The phases describe implementation work,
-not newly supported renderer flags or APIs.
+The regression corpus and numerical quality calibration are complete for eleven frozen cases.
+Current-upstream quiet timings miss the release speed target. Automatic scheduling, audio overlap,
+local VideoToolbox qualification, persistent chunk reuse, scoped preparation reuse and the local
+preview/export workflow are implemented. Bitmap video and direct CDP capture remain isolated
+candidates under qualification. Native DOM capture was rejected. H.264 color handling is qualified
+locally; transparent/editing outputs and cross-platform installed qualification remain pending.
+The phases describe implementation and evidence, not newly supported renderer flags or APIs.
 Benchmarking and release qualification continue across phases. Color/fidelity fixtures begin in
 phase 0; the additional output formats arrive later.
 
@@ -303,8 +305,9 @@ These options enable quality matching; their existence does not establish it.
 The second candidate retains the image DOM and serializes lossless BMP V4 blob URLs. It matches
 288 theme/orientation/seek samples and a complete 300-frame source-switch export, including audio.
 The first BMP data-URL variant was slower in its diagnostic and is archived. The blob candidate
-passes a 3,000-capture resource check; full-master memory and quiet complete-export timings
-remain required before promotion. See
+passes a 3,000-capture resource check and [quiet one-worker timing](research/bitmap-video-timing-2026-11-01/README.md)
+with exact decoded output. Full-master memory and automatic-worker throughput remain required
+before promotion. See
 [bitmap-video evidence](research/bitmap-video-2026-11-01/README.md).
 
 The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was

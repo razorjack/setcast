@@ -1353,3 +1353,17 @@ decoded video hashes and input identities. Median wall time falls from 34.248 to
 (23.1%). This isolates video preparation at JPEG 95 / CRF 18, not current-Remotion performance.
 Reports are in `docs/research/bitmap-video-timing-2026-11-01`; automatic-worker throughput and
 full-master resources remain required before promotion.
+
+The integrated bitmap candidate is committed as 8c3cafc after ready, exporter acceptance and
+packed-browser checks. It now includes main's automatic scheduler and corrected endurance
+instrumentation. A separate full-master workload retains the existing real audio/timeline and
+uses the portable looping-video fixture; it does not modify the original project or master.
+Direct JPEG and fast PNG each pass 192 independent-page exact pixel samples and encoded
+color-chart playback checks in the isolated direct-capture candidate. Further recovery, GPU/video
+and complete-export timing qualification is pending; no production capture mode changed.
+
+The browser-first integration is committed as fad4bb2. Ready and both fresh installation paths
+pass with current main workflows, including preview, clips, bundled outputs and reuse. The
+browser-only dependency tree physically excludes Remotion. Evidence is mirrored on main in
+`docs/research/browser-first-merged-2026-11-01`; Linux/Windows and release speed criteria remain
+unqualified. No package was published and production defaults remain unchanged.
