@@ -1,10 +1,13 @@
 # Browser-first migration candidate
 
-This branch makes Setcast's browser renderer the default and removes the Remotion adapter
+The `renderer/browser-first-candidate` branch makes the browser renderer the default and removes the Remotion adapter
 from the CLI's required dependencies. The candidate is isolated from main until the remaining
 release criteria in [the replacement plan](renderer-replacement-plan.md) are satisfied. Local
 macOS validation is evidence for that machine only; the new Linux/macOS/Windows CI matrix has
 not yet run. Matched-quality performance qualification remains open.
+
+Main still defaults to Remotion. The commands and default behavior below describe the candidate;
+on main, select the browser renderer explicitly.
 
 ## Set up the browser renderer
 
@@ -58,6 +61,11 @@ invocation, provide both packages to `npm exec --package ... --package ... -- se
 A globally installed CLI cannot resolve an adapter installed only in a project. Missing adapter
 errors explain this and offer browser selection. Other module-loading failures retain their
 original errors. Remotion's own license terms continue to apply when using its adapter.
+
+Transparent ProRes projects cannot use the Remotion compatibility adapter with those output
+settings. For an opaque H.264 rollback, set `output.codec: h264`, `output.transparent: false` and
+an MP4 `output.file`, then select `renderer: remotion`. Keep the original ProRes output if its
+alpha channel is needed. See [compositing output](compositing-output.md) for the format contract.
 
 ## Verification and release boundaries
 

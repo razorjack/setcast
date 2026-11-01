@@ -1,0 +1,8 @@
+{
+  "medians": {
+    "computed": 2.622462167000005,
+    "cached": 0.8587502500000119
+  },
+  "wallReduction": 0.6725404618582587,
+  "scope": "Three alternating warm preparation pairs, 15% pre-run CPU limit. Includes source hashing and cache validation for reuse. Excludes project loading, browser capture, encoding and CLI startup. Same process and warm filesystem; not end-to-end export speed."
+}
