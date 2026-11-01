@@ -25,7 +25,14 @@ const STILL_FORMATS: Record<string, StillFormat> = {
   '.webp': 'webp',
 };
 
-export function requireVideoOutput(out: string): void {
+export function requireVideoOutput(out: string, codec: 'h264' | 'prores-4444' = 'h264'): void {
+  if (codec === 'prores-4444') {
+    if (fileExtension(out) === '.mov') return;
+    throw new SetcastError(
+      `Cannot write ProRes 4444 to ${out}`,
+      'Use a .mov file name for ProRes 4444 video with PCM audio.',
+    );
+  }
   if (VIDEO_OUTPUT_EXTENSIONS.includes(fileExtension(out))) return;
   throw new SetcastError(
     `Cannot write video to ${out}`,

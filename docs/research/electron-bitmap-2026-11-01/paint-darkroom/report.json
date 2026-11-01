@@ -1,0 +1,582 @@
+{
+  "version": 1,
+  "capture": "paint",
+  "revision": "e8061ce95d449557d282421141d8fd729233e106",
+  "dirty": true,
+  "scope": "Pixel feasibility only. Native Electron bitmap versus same-host CDP PNG and pinned Playwright PNG. Stage timings are not quiet throughput measurements.",
+  "results": [
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 255,
+        "rms": 19.742084160291352,
+        "changedPixels": 1622765,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 255,
+        "rms": 19.742084160291352,
+        "changedPixels": 1622765,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.353152021795493,
+        "changedPixels": 1397693,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.353152021795493,
+        "changedPixels": 1397693,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 6,
+      "nativeVsCdp": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 7,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 8,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 9,
+      "nativeVsCdp": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 10,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.353152021795493,
+        "changedPixels": 1397693,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.353152021795493,
+        "changedPixels": 1397693,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 11,
+      "nativeVsCdp": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 215,
+        "rms": 7.6214823039223845,
+        "changedPixels": 388871,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 12,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 7.744884821705987,
+        "changedPixels": 246544,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 13,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 14,
+      "nativeVsCdp": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 220,
+        "rms": 7.745481143083371,
+        "changedPixels": 229015,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 237,
+        "rms": 14.674780796397782,
+        "changedPixels": 1376658,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 237,
+        "rms": 14.674780796397782,
+        "changedPixels": 1376658,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 7.843275064318981,
+        "changedPixels": 1115033,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 7.843275064318981,
+        "changedPixels": 1115033,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 6,
+      "nativeVsCdp": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 7,
+      "nativeVsCdp": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 8,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 9,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 10,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 7.843275064318981,
+        "changedPixels": 1115033,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 7.843275064318981,
+        "changedPixels": 1115033,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 11,
+      "nativeVsCdp": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 166,
+        "rms": 4.67213118387987,
+        "changedPixels": 171696,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 12,
+      "nativeVsCdp": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 155,
+        "rms": 4.629922045163409,
+        "changedPixels": 140803,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 13,
+      "nativeVsCdp": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 227,
+        "rms": 8.0677423082875,
+        "changedPixels": 1122733,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 14,
+      "nativeVsCdp": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 137,
+        "rms": 4.619702783360025,
+        "changedPixels": 124431,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    }
+  ],
+  "qualified": false,
+  "status": "measured",
+  "error": null
+}

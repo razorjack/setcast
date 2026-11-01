@@ -15,14 +15,18 @@
     "hardware.ts",
     "resume.ts",
     "cache.ts",
+    "analysis-cache.ts",
+    "preparation-timing.ts",
     "incremental.ts",
     "quality-reference.ts",
     "preview.ts",
     "preview-cli.ts",
     "preview-exports.ts",
     "color.ts",
+    "prores.ts",
     "scaling.ts",
     "scheduling.ts",
+    "chunk-scheduling.ts",
     "worker-frames.ts",
     "worker-capture.ts",
     "worker-pixels.ts",
@@ -30,6 +34,7 @@
     "bitmap.ts",
     "video-stills.ts",
     "video-memory.ts",
-    "native-capture.ts"
+    "native-capture.ts",
+    "electron-capture.ts"
   ]
 }

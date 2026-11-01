@@ -25,6 +25,8 @@ export type ResolvedProject = {
   /** Base CSS + theme CSS (fonts inlined) + user CSS, in that order. */
   css: string;
   width: number;
+  /** Omit the stage backdrop and preserve foreground alpha for compositing. */
+  transparent?: boolean;
   height: number;
   fps: number;
   mix: MixDocument;

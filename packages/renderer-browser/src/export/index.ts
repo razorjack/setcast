@@ -7,3 +7,4 @@ export { inspectRenderCache, clearRenderCache, DEFAULT_CACHE_BYTES } from './cac
 
 export type { BrowserRenderOptions } from './render.ts';
 export type { BrowserMetric, FrameTimings, MetricsReport } from './metrics.ts';
+export { prepareProject } from './analysis-cache.ts';

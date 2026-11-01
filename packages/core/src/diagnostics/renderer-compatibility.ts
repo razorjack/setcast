@@ -3,8 +3,8 @@ import type { RendererCapabilities } from './renderer-capabilities.ts';
 
 export type RendererCompatibilityOptions = Pick<
   RenderOptions,
-  'gl' | 'parallelEncoding' | 'hardwareAcceleration' | 'concurrency' | 'resume' | 'cache'
->;
+  'codec' | 'gl' | 'parallelEncoding' | 'hardwareAcceleration' | 'concurrency' | 'resume' | 'cache'
+> & { transparent?: boolean };
 export interface RendererCompatibilityIssue {
   level: 'error' | 'warning';
   path: keyof RendererCompatibilityOptions | '';
@@ -21,6 +21,18 @@ export function rendererCompatibility(
   const { renderer } = capabilities;
   const error = (path: RendererCompatibilityIssue['path'], message: string, hint: string) =>
     issues.push({ level: 'error', path, message, hint });
+  if (options.codec === 'prores-4444' && !capabilities.features.includes('prores'))
+    error(
+      'codec',
+      `${renderer} does not support ProRes 4444 export.`,
+      'Select renderer: browser, or codec: h264 without transparency.',
+    );
+  if (options.transparent && !capabilities.features.includes('alpha'))
+    error(
+      'transparent',
+      `${renderer} does not support transparent output.`,
+      'Select renderer: browser, or disable output.transparent.',
+    );
   if (!capabilities.features.includes('video'))
     error(
       '',

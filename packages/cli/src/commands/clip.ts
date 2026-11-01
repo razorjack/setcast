@@ -1,8 +1,15 @@
-import { parseRendererFlag, render, withRenderSession, type Renderer } from '../renderer.ts';
+import {
+  requireRendererFormat,
+  parseRendererFlag,
+  render,
+  withRenderSession,
+  type Renderer,
+} from '../renderer.ts';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import {
   exportSettings,
+  requireVideoOutput,
   toSeconds,
   formatTime,
   SetcastError,
@@ -49,6 +56,8 @@ export async function run(argv: string[]) {
   intro('clip');
 
   const loaded = await load(options.dir, options.theme);
+  await requireRendererFormat(options.renderer ?? loaded.config.renderer, loaded.config.output);
+  if (options.out) requireVideoOutput(options.out, loaded.config.output.codec);
   await withRenderSession(
     () => runCommand(options, loaded),
     options.renderer ?? loaded.config.renderer,

@@ -228,7 +228,7 @@ export const DISPOSABLE_CHUNKS: ChunkStore = {
 export function checkpointChunks(
   checkpoint: Checkpoint,
   identity: ExportIdentity,
-  video: { width: number; height: number; fps: number },
+  video: { width: number; height: number; fps: number; codec?: 'h264' | 'prores-4444' },
 ): ChunkStore {
   return {
     reuse: (index, range, file, signal) => checkpoint.reuse(index, range, file, signal),

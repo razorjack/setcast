@@ -1,0 +1,2151 @@
+{
+  "capture": "paint",
+  "versions": {
+    "node": "24.22.1",
+    "acorn": "8.18.0",
+    "ada": "4.0.0",
+    "amaro": "1.1.11",
+    "ares": "1.34.9",
+    "brotli": "1.2.0",
+    "cldr": "48.0",
+    "icu": "78.2",
+    "llhttp": "9.4.3",
+    "merve": "1.2.2",
+    "modules": "150",
+    "napi": "10",
+    "nbytes": "0.1.4",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.70.0",
+    "nghttp3": "",
+    "ngtcp2": "",
+    "openssl": "0.0.0",
+    "simdjson": "4.6.11",
+    "simdutf": "7.7.0",
+    "sqlite": "3.53.4",
+    "tz": "2026e",
+    "undici": "7.30.1",
+    "unicode": "17.0",
+    "uv": "1.52.1",
+    "uvwasi": "0.0.23",
+    "v8": "15.6.75.25-electron.0",
+    "zlib": "1.3.2.1-motley",
+    "zstd": "1.6.0",
+    "electron": "45.2.1",
+    "chrome": "156.0.8078.75"
+  },
+  "samples": [
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0880409999999756,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.3552500000000691,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.303957999999966,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.97137500000008,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9242919999996957,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.916334000000461,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.5333749999999782,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9865419999996448,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9545410000000629,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2260419999993246,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.0764589999998861,
+      "bytes": 8294400
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9034580000006827,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.050375000000713,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.4586249999993015,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0457079999996495,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.7675420000014128,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9692080000004353,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9150419999987207,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1229590000002645,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2173339999990276,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9807920000002923,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.0452920000006998,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2760830000006536,
+      "bytes": 8294400
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.0814169999994192,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9343750000007276,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.1405409999988478,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.1259579999987182,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9310000000004948,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9828749999996944,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9437500000003638,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.0357079999994312,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1589999999996508,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.7977910000008706,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.5681669999976293,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.245874999996886,
+      "bytes": 8294400
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.012790999997378,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.943583000000217,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8577500000028522,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0911250000026484,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0201250000027358,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8884580000012647,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8756250000005821,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9487090000002354,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9949579999993148,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.02258399999846,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8497500000012224,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9182089999994787,
+      "bytes": 8294400
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1140830000003916,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8381250000020373,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.1552919999994629,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.2259160000030533,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.3565420000013546,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.3366669999995793,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8862090000002354,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2122920000001614,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9028749999997672,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8845000000001164,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9061670000010054,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9372500000026776,
+      "bytes": 8294400
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9422500000000582,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.3481670000001031,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0180839999993623,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9535839999989548,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8824580000000424,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9012499999989814,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9267500000023574,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.016458000001876,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9790830000019923,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9779170000001614,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1027919999978621,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.033000000003085,
+      "bytes": 8294400
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1230419999992591,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0342920000039157,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0152499999967404,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.1750410000022384,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9901669999962905,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8877499999944121,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.5012500000011642,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1209579999995185,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.250040999999328,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1595830000005662,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.6191670000043814,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8945830000011483,
+      "bytes": 8294400
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.13633299999492,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.2050830000007409,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9728329999998095,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8723749999990105,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.7381250000034925,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.0104589999973541,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.1467499999998836,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.244542000000365,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8797500000000582,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.089750000006461,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2501249999986612,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1421660000050906,
+      "bytes": 8294400
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.5621249999967404,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.2972500000032596,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.4099580000038259,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.2154589999991003,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.2188749999986612,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.552958000000217,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9272500000006403,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.4865419999987353,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2099159999997937,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.1542910000061966,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.058499999999185,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.460917000003974,
+      "bytes": 8294400
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2307499999951688,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 4.817582999996375,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.9145839999982854,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.777709000001778,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.5815000000002328,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 2.497625000003609,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 1.8655829999916023,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8924159999878611,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8647909999999683,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 1.2862920000043232,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8813330000120914,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9660420000000158,
+      "bytes": 8294400
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8467079999973066,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8379579999891575,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8110000000015134,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7671670000127051,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8113330000051064,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8165000000008149,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7992080000112765,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8654579999856651,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.948792000010144,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8352500000037253,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8826249999983702,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9814170000026934,
+      "bytes": 8294400
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8624999999883585,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8585420000017621,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8680000000022119,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8690829999977723,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8046249999897555,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7661669999943115,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8049580000079004,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9105419999978039,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.884250000002794,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7951669999893056,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7785830000066198,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7810420000023441,
+      "bytes": 8294400
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8391250000131549,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8982500000129221,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8220839999994496,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8293330000014976,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9879579999978887,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8457909999997355,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9013750000012806,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8433340000046883,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7778340000077151,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9101250000094296,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8312500000029104,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7869579999969574,
+      "bytes": 8294400
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8198330000013812,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9104999999981374,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7948749999923166,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8437919999996666,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9033749999944121,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7635410000075353,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8287910000071861,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8268340000067838,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8583329999964917,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9254170000058366,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7796250000101281,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8481670000037411,
+      "bytes": 8294400
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9072080000041751,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.796875,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8055830000084825,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8659579999948619,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7839999999996508,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8305410000029951,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8312909999949625,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7932089999958407,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8208329999906709,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.806125000002794,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9138329999987036,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8880000000062864,
+      "bytes": 8294400
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7971249999973224,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8306660000089323,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.9009159999986878,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7999589999963064,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8268339999922318,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.8979160000017146,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "captureMs": 0.7527079999999842,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8528750000114087,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8867500000051223,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8132920000061858,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.7688749999942956,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.8255000000062864,
+      "bytes": 8294400
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "size": {
+        "width": 1080,
+        "height": 1920
+      },
+      "captureMs": 0.9510420000005979,
+      "bytes": 8294400
+    }
+  ],
+  "status": "measured"
+}

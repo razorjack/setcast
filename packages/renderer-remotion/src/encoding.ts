@@ -2,6 +2,11 @@ import { OutputSchema, SetcastError, type EncodingOptions } from '@setcast/core'
 export type { EncodingOptions } from '@setcast/core';
 
 export function encodingOptions(options: EncodingOptions) {
+  if (options.codec && options.codec !== 'h264')
+    throw new SetcastError(
+      'The Setcast Remotion adapter does not support ProRes 4444.',
+      'Use renderer: browser, or codec: h264.',
+    );
   const parsed = OutputSchema.safeParse({
     parallelEncoding: options.parallelEncoding,
     profile: options.profile,

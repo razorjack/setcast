@@ -502,6 +502,10 @@ it). An experimental Playwright + pinned Chromium + FFmpeg exporter is selectabl
 [browser exporter guide](docs/browser-renderer.md) for installation, supported options and
 verification limits. Remotion has its own [license terms](https://www.remotion.dev/license); check whether they apply to you.
 
+The browser renderer also supports [ProRes 4444 editing output and transparent overlays](docs/compositing-output.md).
+Set `output.codec: prores-4444` for MOV with PCM audio and add `output.transparent: true` to omit
+the stage backdrop. Transparent stills and bundled thumbnails use PNG. H.264 remains the default.
+
 For long browser exports, add `setcast render --renderer browser --resume` from the first attempt.
 Completed chunks survive interruption and are validated before reuse; successful output removes
 the checkpoints. See [resume behavior](docs/browser-renderer.md#resume-an-interrupted-export).

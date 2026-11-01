@@ -41,7 +41,7 @@ const cleanups: (() => Promise<void>)[] = [];
 afterEach(async () => {
   for (const close of cleanups.splice(0).reverse()) await close();
 });
-async function fixture() {
+async function fixture(settings: { codec?: 'h264' | 'prores-4444' } = {}) {
   const directory = await mkdtemp(join(tmpdir(), 'setcast-preview-jobs-'));
   const state: PreviewRevision = { revision: 0, project: structuredClone(project), error: null };
   const calls: { project: ResolvedProject; options: RenderOptions; finish: () => void }[] = [];
@@ -79,7 +79,7 @@ async function fixture() {
   };
   const queue = new PreviewJobs(
     state,
-    { directory, projectDir: directory, settings: { chunkSeconds: 1 } },
+    { directory, projectDir: directory, settings: { chunkSeconds: 1, ...settings } },
     exporter,
   );
   cleanups.push(async () => {
@@ -88,6 +88,18 @@ async function fixture() {
   });
   return { queue, state, calls, stills, sessions, directory };
 }
+
+test('ProRes preview jobs retain MOV and codec settings through the queue', async () => {
+  const { queue, calls, state } = await fixture({ codec: 'prores-4444' });
+  state.project.transparent = true;
+  const job = queue.enqueue({ revision: 0, first: 0, last: 2 });
+  expect(job.filename).toMatch(/\.mov$/);
+  await vi.waitFor(() => expect(calls).toHaveLength(1));
+  expect(calls[0]!.options).toMatchObject({ codec: 'prores-4444', resume: true });
+  expect(calls[0]!.project.transparent).toBe(true);
+  calls[0]!.finish();
+  await vi.waitFor(() => expect(queue.list()[0]!.status).toBe('complete'));
+});
 const request = { revision: 0, first: 32, last: 94 };
 
 test('reference jobs capture one exact PNG frame with runtime identity through the serial queue', async () => {

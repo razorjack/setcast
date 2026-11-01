@@ -22,6 +22,7 @@ interface Session {
 const sessions = new AsyncLocalStorage<Session>();
 
 type CaptureOptions = Pick<StillOptions, 'projectDir' | 'gl' | 'signal' | 'onProgress'> & {
+  codec?: 'h264' | 'prores-4444';
   assetPaths?: readonly string[];
   onRuntime?: RuntimeReport;
 };
@@ -105,7 +106,7 @@ async function openCapture(project: ResolvedProject, options: CaptureOptions): P
     if (options.onRuntime)
       options.onRuntime({
         ...(await page.evaluate(observeRenderBrowser)),
-        capture: 'jpeg-screenshot',
+        capture: options.codec === 'prores-4444' ? 'png-screenshot' : 'jpeg-screenshot',
       });
     return { page, [Symbol.asyncDispose]: close };
   } catch (error) {

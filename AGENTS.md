@@ -112,8 +112,17 @@ Gotchas:
 
 - This isolated bitmap-video candidate uses BMP V4 blob URLs for offline video preparation.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
-  Exact image/encoded parity, short URL checks and one-worker quiet timings pass. Full-master
-  resources and automatic-worker throughput remain pending. See docs/research/bitmap-video-2026-11-01/README.md before promoting this branch.
+  Exact image/encoded parity, short URL checks, one-worker quiet timings and the complete
+  master resource run pass. Automatic-worker throughput remains pending. See docs/research/bitmap-video-2026-11-01/README.md before promoting this branch.
+- ProRes 4444 uses straight-alpha PNG capture and limited-range BT.709 YUV with sRGB transfer;
+  H.264 retains the qualified JPEG color path. Do not apply the JPEG matrix to PNG input.
+  Transparent Stage removes art/root decorations and fades opacity. Foreground components can
+  still be opaque. See docs/compositing-output.md and the decoded/native receiver qualification.
+
+- Browser `render --cache` shares its byte budget and writer lock between video chunks and
+  whole-set preparation. Index v2 adds explicit payload kinds and migrates v1 video entries.
+  Preparation identity includes core/producer code and source content; do not key it only by
+  timestamps or filenames. Keep installed cross-command reuse and decoded parity checks.
 
 - `WholeSetReader` belongs to one preview or theme batch. It shares the latest audio revision's
   envelope and travel preparation, validates file identity before and after decoding, and returns

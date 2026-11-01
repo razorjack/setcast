@@ -1,4 +1,10 @@
-import { parseRendererFlag, preview, type PreviewOptions, type Renderer } from '../renderer.ts';
+import {
+  requireRendererFormat,
+  parseRendererFlag,
+  preview,
+  type PreviewOptions,
+  type Renderer,
+} from '../renderer.ts';
 import { parseCommandArgs, parseNumber } from '../args.ts';
 import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
@@ -26,6 +32,7 @@ export async function run(argv: string[]): Promise<void> {
   intro('preview');
   const dependencies = new Set<string>();
   const initial = await load(options.dir, options.theme, dependencies);
+  await requireRendererFormat(options.renderer ?? initial.config.renderer, initial.config.output);
   if ((options.renderer ?? initial.config.renderer) === 'browser') {
     await browserPreview(initial, dependencies, options);
     return;
@@ -39,6 +46,7 @@ export async function run(argv: string[]): Promise<void> {
   const { gl, crf, hardwareAcceleration, videoBitrate, jpegQuality, x264Preset } =
     loaded.config.output;
   const studio: PreviewOptions = {
+    codec: loaded.config.output.codec,
     projectDir: dir,
     watch: (update) =>
       watchInputs(

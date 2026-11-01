@@ -11,6 +11,7 @@ import { toSeconds } from '../time.ts';
 import type { ResolvedProject } from '../project.ts';
 
 export interface EncodingOptions {
+  codec?: OutputConfig['codec'];
   parallelEncoding?: boolean;
   profile?: ExportProfile;
   jpegQuality?: number;
@@ -41,7 +42,7 @@ export type RenderRuntime =
       userAgent: string;
       graphics: { renderer: string; vendor: string; version: string } | null;
       graphicsError: string | null;
-      capture: 'jpeg-screenshot' | 'not-observed';
+      capture: 'jpeg-screenshot' | 'png-screenshot' | 'not-observed';
     }
   | { kind: 'capture'; workers: number; parallelEncoding: boolean }
   | {
@@ -124,6 +125,7 @@ export type ExportSettings = Pick<RenderOptions, keyof EncodingOptions | 'chunkS
 
 export function exportSettings(output: OutputConfig): ExportSettings {
   return {
+    codec: output.codec,
     profile: output.profile,
     crf: output.crf,
     x264Preset: output.x264Preset,

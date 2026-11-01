@@ -2,6 +2,32 @@ import { describe, expect, test } from 'vite-plus/test';
 import { OutputSchema, ProjectConfigSchema } from './config.ts';
 
 describe('video encoding settings', () => {
+  test('ProRes uses MOV, preserves explicit transparency and rejects H.264 controls', () => {
+    const output = OutputSchema.parse({ codec: 'prores-4444', transparent: true });
+    expect(output).toMatchObject({ file: 'out/set.mov', codec: 'prores-4444', transparent: true });
+    expect(output.crf).toBeUndefined();
+    expect(output.jpegQuality).toBeUndefined();
+    expect(output.x264Preset).toBeUndefined();
+    expect(OutputSchema.parse(output)).toEqual(output);
+    expect(() => OutputSchema.parse({ transparent: true })).toThrow('H.264 cannot store alpha');
+    expect(() => OutputSchema.parse({ codec: 'prores-4444', file: 'out/set.mp4' })).toThrow(
+      'requires a .mov',
+    );
+    for (const setting of [
+      { crf: 18 },
+      { jpegQuality: 95 },
+      { x264Preset: 'medium' },
+      { videoBitrate: '12M' },
+    ]) {
+      expect(() => OutputSchema.parse({ codec: 'prores-4444', ...setting })).toThrow('Remove');
+    }
+    expect(() => OutputSchema.parse({ codec: 'prores-4444', profile: 'fast' })).toThrow(
+      'profile: standard',
+    );
+    expect(() =>
+      OutputSchema.parse({ codec: 'prores-4444', hardwareAcceleration: 'required' }),
+    ).toThrow('hardwareAcceleration: disable');
+  });
   test('preserves software quality defaults for omitted and empty output blocks', () => {
     for (const input of [{ audio: 'mix.wav' }, { audio: 'mix.wav', output: {} }]) {
       expect(ProjectConfigSchema.parse(input).output).toMatchObject({

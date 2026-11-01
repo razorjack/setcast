@@ -104,7 +104,7 @@ export class PreviewJobs {
       filename:
         request.kind === 'reference'
           ? `${id}/frame-${request.first}.png`
-          : `${id}/frames-${request.first}-${request.last}.mp4`,
+          : `${id}/frames-${request.first}-${request.last}.${settings.codec === 'prores-4444' ? 'mov' : 'mp4'}`,
       progress: null,
       runtime: [],
       error: null,

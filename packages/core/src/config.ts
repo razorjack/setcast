@@ -61,6 +61,12 @@ const VideoBitrateSchema = z
   .transform((value): VideoBitrate => value as VideoBitrate);
 
 const outputShape = {
+  codec: z
+    .enum(['h264', 'prores-4444'], {
+      error: 'codec must be h264 or prores-4444.',
+    })
+    .default('h264'),
+  transparent: z.boolean({ error: 'transparent must be true or false.' }).default(false),
   width: z
     .number({ error: 'width must be a number of pixels.' })
     .int({ error: 'width must be a whole number of pixels.' })
@@ -81,7 +87,7 @@ const outputShape = {
     .regex(/\.(?:[mM][pP]4|[mM][oO][vV]|[mM][kK][vV])$/, {
       error: 'file must end in .mp4, .mov or .mkv.',
     })
-    .default('out/set.mp4'),
+    .optional(),
   gl: GraphicsBackendSchema.default('auto'),
   profile: ExportProfileSchema.default('standard'),
   parallelEncoding: z
@@ -131,6 +137,44 @@ export const OutputSchema = z
     error: (issue) => unknownOutputKey(issue, Object.keys(outputShape)),
   })
   .superRefine((output, ctx) => {
+    if (output.transparent && output.codec === 'h264') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['transparent'],
+        message: 'H.264 cannot store alpha. Use codec: prores-4444 for transparent output.',
+      });
+    }
+    if (output.codec === 'prores-4444') {
+      if (output.file && !/\.mov$/i.test(output.file))
+        ctx.addIssue({
+          code: 'custom',
+          path: ['file'],
+          message: 'ProRes 4444 requires a .mov output file.',
+        });
+      for (const key of ['crf', 'jpegQuality', 'x264Preset', 'videoBitrate'] as const) {
+        if (output[key] !== undefined)
+          ctx.addIssue({
+            code: 'custom',
+            path: [key],
+            message: `Remove ${key} for prores-4444. It uses lossless PNG capture and the fixed 4444 encoding profile.`,
+          });
+      }
+      if (output.hardwareAcceleration !== 'disable')
+        ctx.addIssue({
+          code: 'custom',
+          path: ['hardwareAcceleration'],
+          message: 'Use hardwareAcceleration: disable for prores-4444.',
+        });
+      if (output.profile !== 'standard')
+        ctx.addIssue({
+          code: 'custom',
+          path: ['profile'],
+          message: 'Use profile: standard for prores-4444.',
+        });
+    }
+  })
+  .superRefine((output, ctx) => {
+    if (output.codec === 'prores-4444') return;
     const hardware = output.hardwareAcceleration !== 'disable';
     if (hardware && output.x264Preset !== undefined) {
       ctx.addIssue({
@@ -156,10 +200,19 @@ export const OutputSchema = z
     }
   })
   .transform((output) => {
+    if (output.codec === 'prores-4444')
+      return {
+        ...output,
+        file: output.file ?? 'out/set.mov',
+        crf: undefined,
+        jpegQuality: undefined,
+        x264Preset: undefined,
+      };
     const fast = output.profile === 'fast';
     const softwarePreset = output.x264Preset ?? (fast ? 'veryfast' : 'medium');
     return {
       ...output,
+      file: output.file ?? 'out/set.mp4',
       crf: output.crf ?? (output.videoBitrate ? undefined : 18),
       jpegQuality: output.jpegQuality ?? (fast ? 92 : 95),
       x264Preset: output.hardwareAcceleration === 'disable' ? softwarePreset : undefined,

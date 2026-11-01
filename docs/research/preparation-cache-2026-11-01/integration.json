@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "status": "passed",
+  "states": [
+    "computed",
+    "reused"
+  ],
+  "exactPreparation": true,
+  "exactDecodedVideoAndAudio": true,
+  "stored": {
+    "version": 1,
+    "directory": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/analysis-cache-2026-11-01/cache",
+    "bytes": 398457,
+    "entries": [
+      {
+        "key": "46836dc6b9478fb8bc5a16582505cd9df2751d40e86b14b9086e4b241cf22029",
+        "kind": "analysis",
+        "bytes": 20040,
+        "sha256": "7c88aa74c60cd3434fbdfb3db5cae507a1fdf2d402d57f324417ab00ed914552",
+        "used": 1793529589897
+      },
+      {
+        "key": "4747522d2ae5b828d91f2a9aa842eb3f56fc66192172f98a1cce5335022f989f",
+        "kind": "video",
+        "bytes": 378417,
+        "sha256": "47cc487e1c02b88a2db26440a98bb5c60d80ae25abc5b99da9bec0c3c90ae6ff",
+        "used": 1793529591870
+      }
+    ]
+  },
+  "cleared": true
+}

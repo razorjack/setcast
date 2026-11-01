@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "revision": "fa4b67ea8ee70d0ec3a6f62e805ae54d8fe0f8e9",
+  "dirty": true,
+  "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "thresholds": {
+    "compositeMean": 1.5,
+    "compositeMax": 12,
+    "alphaMax": 1
+  },
+  "firstFrame": 32,
+  "frames": 63,
+  "browser": {
+    "kind": "browser",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+    "capture": "png-screenshot",
+    "graphics": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "vendor": "Google Inc. (Apple)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "graphicsError": null
+  },
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n62 !== 63\n"
+}

@@ -158,3 +158,33 @@ test('invalid cache export options fail before project access or browser prepara
     render(project, { ...options, cache: { directory: '/tmp/setcast-cache', maxBytes: 0 } }),
   ).toThrow('Invalid');
 });
+
+test('legacy video entries migrate and video/analysis payloads share eviction and clearing', async () => {
+  await fixture(async (root, directory, source) => {
+    const video = digest('video'),
+      analysis = digest('analysis');
+    await withRenderCache(directory, 8, async (cache) => {
+      await cache.save(video, source);
+    });
+    const indexFile = join(directory, 'index.json');
+    const legacy = JSON.parse(await readFile(indexFile, 'utf8'));
+    legacy.version = 1;
+    delete legacy.entries[video].kind;
+    await writeFile(indexFile, JSON.stringify(legacy));
+    await withRenderCache(directory, 8, async (cache) => {
+      expect(await cache.reuse(video, join(root, 'legacy'))).toBe(true);
+      await cache.save(analysis, source, undefined, 'analysis');
+    });
+    expect(JSON.parse(await readFile(indexFile, 'utf8')).version).toBe(2);
+    expect((await inspectRenderCache(directory)).entries.map((entry) => entry.kind).sort()).toEqual(
+      ['analysis', 'video'],
+    );
+    await withRenderCache(directory, 4, async () => {});
+    expect((await inspectRenderCache(directory)).bytes).toBe(4);
+    await clearRenderCache(directory);
+    expect((await inspectRenderCache(directory)).entries).toEqual([]);
+    await expect(readFile(join(directory, `entry-${analysis}.json`))).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
+  });
+});

@@ -5,10 +5,10 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (eb40319), with local clean-install coverage but no default
-promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (1db55ff; implementation cc10be9),
-with exact-frame/encoded parity and a passed 3,000-capture resource check; full-master resources
-and quiet throughput remain unqualified.
+on `renderer/browser-first-candidate` (9b4a82e), with local clean-install coverage through cache and ProRes integration but no default
+promotion. See the [updated installation evidence](research/browser-first-prores-2026-11-01/README.md). The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (8c3cafc; implementation cc10be9),
+with exact-frame/encoded parity and a passed 3,000-capture resource check; one-worker quiet throughput is qualified; the complete master resource run passes; automatic-worker throughput
+remains unqualified.
 The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
 cases, including corrected portrait and long comparisons with no black transition frames.
 The original black frames and storage interruption remain preserved.
@@ -64,6 +64,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | Shared Setcast scene, timeline, audio and CSS contracts | Supported | Supported |
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
+| Transparent/editing output | ProRes 4444 + PCM in MOV; transparent PNG stills; locally checked | Not exposed by the Setcast adapter |
 | Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
 | Concurrency | Automatic 1/2/4 from stable CPU/memory limits; explicit 1–8 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
@@ -220,11 +221,14 @@ renderer. Native capture availability alone does not prove correct pixels or har
 
 ## Delivery sequence
 
-Phase 0 is in progress. Phase 1's first candidate was rejected; phase 3 audio overlap and hardware
-encoding are implemented. The remaining deliverables below are still pending. The installed-adapter comparison
-runner and opt-in browser/graphics/encoding observations are implemented as described in [render-comparison.md](render-comparison.md). Full upstream,
-quality and platform comparisons are still required. The phases describe implementation work,
-not newly supported renderer flags or APIs.
+The regression corpus and numerical quality calibration are complete for eleven frozen cases.
+Current-upstream quiet timings miss the release speed target. Automatic scheduling, audio overlap,
+local VideoToolbox qualification, persistent chunk reuse, scoped preparation reuse and the local
+preview/export workflow are implemented. Bitmap video and direct CDP capture remain isolated
+candidates under qualification. Native DOM capture was rejected. H.264 color handling is qualified
+locally. ProRes 4444 and transparent Stage are implemented with local FFmpeg/AVFoundation checks;
+receiving-editor workflows and cross-platform installed qualification remain pending.
+The phases describe implementation and evidence, not newly supported renderer flags or APIs.
 Benchmarking and release qualification continue across phases. Color/fidelity fixtures begin in
 phase 0; the additional output formats arrive later.
 
@@ -303,8 +307,9 @@ These options enable quality matching; their existence does not establish it.
 The second candidate retains the image DOM and serializes lossless BMP V4 blob URLs. It matches
 288 theme/orientation/seek samples and a complete 300-frame source-switch export, including audio.
 The first BMP data-URL variant was slower in its diagnostic and is archived. The blob candidate
-passes a 3,000-capture resource check; full-master memory and quiet complete-export timings
-remain required before promotion. See
+passes a 3,000-capture resource check and [quiet one-worker timing](research/bitmap-video-timing-2026-11-01/README.md)
+with exact decoded output. The [complete master resource check](research/bitmap-endurance-2026-11-01/README.md) passes.
+Automatic-worker throughput remains required before promotion. See
 [bitmap-video evidence](research/bitmap-video-2026-11-01/README.md).
 
 The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was
@@ -330,6 +335,8 @@ workloads improve without incorrect frames or unbounded memory.
 The independent-driver native experiment is complete and rejected for this milestone. All 252
 sampled theme/GPU/video/art frames exceed the existing pixel allowance; Chromium 157 repeats
 the Pirate defects. Production keeps screenshot capture. See the [retained qualification](research/native-browser-capture-2026-11-01/README.md).
+The [Electron bitmap investigation](research/electron-bitmap-2026-11-01/README.md) also rejects both
+`capturePage()` and next-paint handshakes because they can return an older frame.
 The alternative capture work below remains a future optimization, with a new proof required
 before production use; no incomplete fast path is needed to ship independent H.264 export.
 
@@ -417,7 +424,10 @@ text edits now reuse unaffected chunks for audited built-in visualizers; fresh-v
 video and audio comparisons cover visible edits and fractional chunk boundaries. Metadata and
 other project changes remain global. Preview reloads and all-theme still batches now share bounded
 whole-set preparation through `WholeSetReader`. Render bundles and clip batches already prepare
-analysis once and share a render session. Cross-command prepared-asset persistence remains pending.
+analysis once and share a render session. Cross-command overview/travel persistence now shares the same cache budget and management commands.
+Fresh-process reuse, source-change/corruption handling and exact decoded output are qualified
+locally; a quiet long-master preparation timing attempt was blocked by external CPU load. See
+[preparation-cache evidence](research/preparation-cache-2026-11-01/README.md).
 
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
 Start with identical completed chunks and validated prepared assets. Retain proven identity,
@@ -475,6 +485,14 @@ After H.264 parity, add a qualified transparent-overlay output and editing inter
 investigating VP9 alpha and ProRes 4444. An alpha codec alone does not make an opaque theme
 transparent: define a stage/background mode and supported composition behavior. Extend configuration,
 capability descriptors, validation and diagnostics together. Test with intended receiving apps.
+
+The initial implementation uses ProRes 4444 for both compositing and editing, plus transparent
+PNG stills. It retains continuous PCM audio, chunking, cache/resume and the preview queue.
+[Decoded and native receiver qualification](research/prores-alpha-2026-11-01/README.md) passes
+63 moving alpha/color frames, exact source audio, joins, cache/recovery and brightness checks.
+All sixteen theme samples contain alpha. AVFoundation identifies straight alpha and the intended
+color tags. Specific editor/OBS workflows, other platforms and sustained ProRes resources remain
+unqualified; VP9 alpha is deferred pending independent chunk-boundary evidence.
 
 These outputs support OBS overlays and compositing with filmed performances. They are useful
 parity and workflow features, not evidence of faster H.264 export. Do not make an exhaustive codec

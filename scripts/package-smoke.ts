@@ -311,7 +311,81 @@ async function exerciseBrowser(
   for (const box of ['ftyp', 'moov', 'avc1', 'mp4a']) assert(bytes.includes(box), `Missing ${box}`);
   await exerciseCache(run, project);
   await exercisePreviewExport(project);
+  await exerciseProres(run);
   console.log('  installed browser exporter: PNG, lossless WebP and H.264 + AAC');
+}
+
+async function exerciseProres(
+  run: (...args: string[]) => Promise<{ stdout: string; stderr: string }>,
+) {
+  const project = await proresFixture();
+  const browser = [project, '--renderer', 'browser'];
+  const validated = JSON.parse((await run('validate', ...browser, '--json')).stdout);
+  assert.equal(validated.valid, true);
+  const doctor = JSON.parse(
+    (await run('doctor', '--renderer', 'browser', '--require', 'alpha,prores', '--json')).stdout,
+  );
+  assert.equal(doctor.ready, true);
+  const movie = join(temporary, 'overlay.mov');
+  await run('render', ...browser, '--bundle', '--out', movie);
+  assert((await stat(join(temporary, 'overlay.png'))).size > 0);
+  await run('still', ...browser, '--at', '0.1');
+  assert((await stat(join(project, 'out', 'overlay.png'))).size > 0);
+  await run(
+    'clip',
+    ...browser,
+    '--at',
+    '0.15',
+    '--seconds',
+    '10',
+    '--out',
+    join(temporary, 'clip.mov'),
+  );
+  const media = JSON.parse(
+    (await command('ffprobe', ['-v', 'error', '-show_streams', '-of', 'json', movie], temporary))
+      .stdout,
+  );
+  assert.equal(media.streams[0].codec_name, 'prores');
+  assert.equal(media.streams[0].profile, '4444');
+  assert.equal(media.streams[0].nb_frames, '9');
+  assert.equal(media.streams[1].codec_name, 'pcm_s24le');
+  console.log('  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics');
+}
+
+async function proresFixture() {
+  const project = join(temporary, 'prores-project');
+  await mkdir(project);
+  await command(
+    'ffmpeg',
+    [
+      '-v',
+      'error',
+      '-f',
+      'lavfi',
+      '-i',
+      'anullsrc=r=48000:cl=stereo',
+      '-t',
+      '0.3',
+      join(project, 'audio.wav'),
+    ],
+    temporary,
+  );
+  await writeFile(
+    join(project, 'setcast.yaml'),
+    `title: Compositing
+renderer: browser
+audio: audio.wav
+visualizer: []
+plays: [{at: 0, title: Transparent, artist: Fixture}]
+output:
+  width: 640
+  height: 360
+  codec: prores-4444
+  transparent: true
+  file: out/overlay.mov
+`,
+  );
+  return project;
 }
 
 async function exerciseCache(
@@ -321,7 +395,18 @@ async function exerciseCache(
   const cache = join(temporary, 'render-cache');
   const first = join(temporary, 'cached-first.mp4');
   const second = join(temporary, 'cached-second.mp4');
-  const args = ['render', project, '--renderer', 'browser', '--range', '0-0.2', '--cache', cache];
+  const args = [
+    'render',
+    project,
+    '--renderer',
+    'browser',
+    '--theme',
+    'bristol',
+    '--range',
+    '0-0.2',
+    '--cache',
+    cache,
+  ];
   await run(...args, '--out', first);
   const repeated = await run(...args, '--out', second);
   assert(
@@ -329,33 +414,46 @@ async function exerciseCache(
     'Installed cache did not skip capture',
   );
   const before = JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout);
-  assert.equal(before.entries.length, 1);
-  assert(before.bytes > 0);
-  const hashes = await Promise.all(
-    [first, second].map(
-      async (file) =>
-        (
-          await command('ffmpeg', [
-            '-v',
-            'error',
-            '-xerror',
-            '-i',
-            file,
-            '-map',
-            '0:v',
-            '-f',
-            'hash',
-            '-hash',
-            'sha256',
-            '-',
-          ])
-        ).stdout,
-    ),
+  assert.equal(
+    before.entries.filter((entry: { kind: string }) => entry.kind === 'video').length,
+    1,
   );
-  assert.equal(hashes[0], hashes[1], 'Installed cached video differs after decoding');
+  assert.equal(
+    before.entries.filter((entry: { kind: string }) => entry.kind === 'analysis').length,
+    1,
+  );
+  assert(
+    repeated.stderr.includes('Reused prepared audio features'),
+    'Installed cache repeated audio preparation',
+  );
+  assert(before.bytes > 0);
+  await assertDecodedVideoEqual(first, second);
   await run('cache', 'clear', cache);
   assert.equal(JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout).bytes, 0);
   console.log('  installed cache: repeat skips capture, decoded frames match, inspect/clear work');
+}
+
+async function assertDecodedVideoEqual(first: string, second: string) {
+  const hashes = await Promise.all(
+    [first, second].map(async (file) => {
+      const result = await command('ffmpeg', [
+        '-v',
+        'error',
+        '-xerror',
+        '-i',
+        file,
+        '-map',
+        '0:v',
+        '-f',
+        'hash',
+        '-hash',
+        'sha256',
+        '-',
+      ]);
+      return result.stdout;
+    }),
+  );
+  assert.equal(hashes[0], hashes[1], 'Installed cached video differs after decoding');
 }
 
 async function exercisePreviewExport(projectDir: string) {
