@@ -1083,3 +1083,14 @@ Sequential final ready passed with unchanged test limits: 667 tests in 111 files
 lint/types, dependency isolation and decoded smoke. The resource helper is included in the
 benchmark TypeScript project. This closes the resource-check milestone; speed and full-master
 qualification remain pending, and the candidate is not promoted.
+
+## Readiness integration, 1 November 2026
+
+The user resumed roadmap completion. This candidate now integrates main 53551f0's shared
+ready-state commit hold and decoded art-transition acceptance. The production behavior under
+qualification includes that correction; the previous stop instruction is historical. Both
+exporter suites, same-page media, package checks and baseline ready must pass before commit.
+
+Readiness integration validation passes: ready, both exporter acceptance suites (Remotion with
+swangle), and frame-driver seeks/font/video-loop checks. Installed browser-package smoke passes.
+These correctness checks overlapped corpus metrics and provide no throughput evidence.

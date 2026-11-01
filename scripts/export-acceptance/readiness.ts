@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
@@ -9,13 +9,62 @@ import {
   type Exporter,
   type ResolvedProject,
 } from '../../packages/core/src/index.ts';
-import { pixels } from './measure.ts';
+import { decode, pixels } from './measure.ts';
 
 export interface AcceptanceContext {
   exporter: Exporter;
   project: ResolvedProject;
   projectDir: string;
   out: string;
+}
+
+export async function checkArtTransition({
+  exporter,
+  project,
+  projectDir,
+  out,
+}: AcceptanceContext) {
+  for (const color of ['red', 'blue'])
+    await writeFile(
+      join(projectDir, `${color}.svg`),
+      `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="${color}"/></svg>`,
+    );
+  const scene = {
+    ...project,
+    width: 1080,
+    height: 1920,
+    backgroundFit: 'contain' as const,
+    mix: {
+      ...project.mix,
+      plays: project.mix.plays.map((play, index) => ({
+        ...play,
+        background: index === 0 ? 'red.svg' : 'blue.svg',
+      })),
+    },
+    css: `${project.css}\n.sc-bg { display: block !important; position: absolute; inset: 0; }
+.sc-bg-img { width: 100%; height: 100%; } .setcast::after { display: none; }`,
+  };
+  const file = join(out, 'art-transition.mp4');
+  await exporter.render(scene, { projectDir, out: file, range: [1, 2], concurrency: 1 });
+  const centers = decode(file, [
+    '-vf',
+    'crop=2:2:540:960,scale=1:1',
+    '-an',
+    '-f',
+    'rawvideo',
+    '-pix_fmt',
+    'rgb24',
+  ]);
+  assert.equal(centers.length, 30 * 3);
+  for (let frame = 0; frame < 30; frame++) {
+    const red = centers[frame * 3]!,
+      blue = centers[frame * 3 + 2]!;
+    assert(
+      frame < 15 ? red > 220 && blue < 20 : blue > 220 && red < 20,
+      `Art transition frame ${frame}: expected ${frame < 15 ? 'red' : 'blue'}, got red=${red}, blue=${blue}`,
+    );
+  }
+  console.log('  art change: every decoded frame contains the expected prepared background');
 }
 
 export async function checkReadiness(context: AcceptanceContext): Promise<void> {
