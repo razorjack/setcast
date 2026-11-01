@@ -1,0 +1,58 @@
+[
+  {
+    "case": "themes",
+    "chromium": "156.0.8078.4",
+    "samples": 192,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 110
+  },
+  {
+    "case": "chromium157-pirate",
+    "chromium": "157.0.8080.0",
+    "samples": 12,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 110
+  },
+  {
+    "case": "field",
+    "chromium": "156.0.8078.4",
+    "samples": 12,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 145
+  },
+  {
+    "case": "tunnel",
+    "chromium": "156.0.8078.4",
+    "samples": 12,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 129
+  },
+  {
+    "case": "constellation",
+    "chromium": "156.0.8078.4",
+    "samples": 12,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 249
+  },
+  {
+    "case": "looping-video",
+    "chromium": "156.0.8078.4",
+    "samples": 12,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 9
+  },
+  {
+    "case": "dj-art-branding",
+    "chromium": "156.0.8078.4",
+    "samples": 12,
+    "exact": 0,
+    "withinSourcePrecision": 0,
+    "maximumChannelDifference": 12
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "chromium": "156.0.8078.4",
+    "args": [],
+    "api": {
+      "drawElementImage": "undefined",
+      "requestPaint": "undefined",
+      "content": false
+    }
+  },
+  {
+    "chromium": "156.0.8078.4",
+    "args": [
+      "--enable-blink-features=CanvasDrawElement"
+    ],
+    "api": {
+      "drawElementImage": "function",
+      "requestPaint": "function",
+      "content": true
+    }
+  }
+]

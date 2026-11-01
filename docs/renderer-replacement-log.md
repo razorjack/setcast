@@ -1293,3 +1293,18 @@ these runs overlapped other validation and cannot establish throughput.
 
 The corrected long comparison preserves the previous lossless reference RGB hash. Baseline
 validation passes: 676 tests in 113 files, lint/types/formatting, isolation and decoded smoke.
+
+### Native capture experiment closed
+
+The new independent-driver probe uses native drawable HTML, `requestPaint` and `drawElementImage`
+after the normal frame-readiness handshake. It imports no Remotion package. Chromium 156 requires
+the explicit experimental flag; 192 theme/aspect/transition samples and 60 GPU/video/art samples
+all exceed the existing source-precision allowance. Chromium 157 reproduces the Pirate results
+over twelve further samples. Portrait credit crops show changed text rasterization. The findings,
+complete reports and representative crops are retained in `docs/research/native-browser-capture-2026-11-01`.
+No production flag, capture transport or theme workaround was introduced. This is a rejected
+phase-2 experiment, not a speed improvement. Screenshot capture remains the compatible route;
+new native binary distribution work remains an optional future optimization.
+
+Native probe validation passes formatting, lint/types and the full ready suite (676 tests in
+113 files, isolation and decoded smoke). The experiment changes no production rendering code.

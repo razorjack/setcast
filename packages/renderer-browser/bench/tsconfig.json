@@ -27,6 +27,7 @@
     "worker-pixels.ts",
     "worker-pixels.test.ts",
     "video-stills.ts",
-    "video-memory.ts"
+    "video-memory.ts",
+    "native-capture.ts"
   ]
 }

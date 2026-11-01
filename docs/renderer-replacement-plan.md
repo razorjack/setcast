@@ -323,6 +323,12 @@ workloads improve without incorrect frames or unbounded memory.
 
 ### Phase 2: qualify a faster capture transport
 
+The independent-driver native experiment is complete and rejected for this milestone. All 252
+sampled theme/GPU/video/art frames exceed the existing pixel allowance; Chromium 157 repeats
+the Pirate defects. Production keeps screenshot capture. See the [retained qualification](research/native-browser-capture-2026-11-01/README.md).
+The alternative capture work below remains a future optimization, with a new proof required
+before production use; no incomplete fast path is needed to ship independent H.264 export.
+
 The current route is browser painting → JPEG → Node buffer → JPEG decode → H.264. Compare two
 alternatives through a small adapter-local capture boundary; do not design a general backend
 framework before a working second path exists.
