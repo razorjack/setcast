@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Linux renderer qualification has a dedicated handoff in `docs/linux-renderer-qualification.md`.
+  Transfer the local browser-first candidate before testing independent installation; main's
+  package-smoke lacks the candidate's `--report` and fresh dependency installation behavior.
+  The old upstream comparison branch predates promoted bitmap code. Windows remains unqualified.
+
 - Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
   Exact image/encoded parity, URL checks, full-master resources and one/automatic-worker quiet

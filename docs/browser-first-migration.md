@@ -69,6 +69,10 @@ alpha channel is needed. See [compositing output](compositing-output.md) for the
 
 ## Verification and release boundaries
 
+For a Linux session, follow the [qualification handoff](linux-renderer-qualification.md), including
+transfer of the local candidate branch and fresh Linux dependencies. Windows qualification remains
+pending; passing Linux checks alone does not authorize promotion.
+
 `vp run package-smoke --browser --report out/installed-browser.json` builds tarballs and installs
 only the CLI into a fresh dependency tree. Local overrides resolve unpublished Setcast packages;
 the resulting installed graph is checked for any Remotion package. The check exercises default

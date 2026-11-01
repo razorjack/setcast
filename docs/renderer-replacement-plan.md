@@ -3,6 +3,10 @@
 Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
+Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
+The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
+change the release criteria or authorize default promotion.
+
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
 on `renderer/browser-first-candidate` (qualified code revision e28d2bd), with local clean-install coverage through bitmap, cache and ProRes integration but no default
@@ -609,8 +613,9 @@ broader live hardware support can ship independently after the core replacement 
    Standard/GPU export needs further optimization if the target is retained. The rejected
    experiments do not supply a safe faster capture path.
 2. Execute the prepared browser-only installation matrix and exporter/resource qualification
-   on Linux and Windows, recording actual capture, graphics and encoder paths. This session
-   has only macOS execution; the remote-environment tool is unavailable. Do not count prepared
+   on Linux and Windows, recording actual capture, graphics and encoder paths. A Linux machine
+   is available for a follow-up session; use the [Linux runbook](linux-renderer-qualification.md).
+   Windows access is unavailable for now and its qualification remains pending. Do not count prepared
    CI jobs as successful runs or advertise an untested hardware backend as qualified.
 3. After those requirements pass, promote `renderer/browser-first-candidate`, recheck migration
    diagnostics and optional compatibility installation, and remove Remotion from the required

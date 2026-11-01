@@ -1631,3 +1631,24 @@ isolation and the decoded smoke render. The promoted bitmap implementation also 
 exporter acceptance and installed-package passes. Final timing summaries and the browser-first
 candidate's clean-install reports are committed with the reconciled roadmap. The standalone
 results chart is `docs/research/renderer-replacement-results-2026-11-01.html`.
+
+## Linux session handoff, 1 November 2026
+
+The user confirmed Linux access and no easy access to Windows. Added
+`docs/linux-renderer-qualification.md` with committed-ref transfer, Linux bootstrap and host
+inventory, sequential production checks, candidate-only independent installation, optional NVENC,
+full-master resources, current-upstream quality/performance and additional live checks. It defines
+the reports to preserve and explicit completion limits. Windows qualification and the default
+promotion criteria remain unchanged. No Linux execution or external publication occurred here.
+
+Two source-transfer details matter: main's package smoke does not support the candidate's
+`--report` or fresh independent installation, and the retained upstream comparison branch predates
+the promoted bitmap implementation. The runbook requires testing the correct candidate and building
+an isolated current-upstream comparison from the final qualified code. Ignored real masters need
+separate transfer; a Git bundle carries committed branches and reports but not those assets.
+
+Handoff validation on macOS passes `vp run ready`: formatting, lint/types, all 688 tests in 115
+files, dependency isolation and decoded smoke. The first sandboxed attempt failed five localhost
+tests with `listen EPERM`; rerunning with localhost access passed. Runbook relative links and
+directly invoked TypeScript paths were checked. These results validate the documentation change
+against the existing checkout; they are not Linux qualification evidence.
