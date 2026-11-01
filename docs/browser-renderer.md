@@ -72,9 +72,11 @@ events. A failure after capture begins fails the job atomically; it does not mix
 software chunks. Resume identity uses the resolved hardware setting. Run `setcast doctor
 --renderer browser --require hardwareEncoding` to check the current machine.
 
-VideoToolbox has passed the export acceptance suite on Apple M1 Pro. NVENC selection and failure
-behavior have unit coverage; Linux/Windows device qualification and matched-quality performance
-comparisons remain outstanding. Hardware bitrate equality does not establish equal visual quality.
+VideoToolbox has passed the export acceptance suite on Apple M1 Pro. Linux NVENC passes required-hardware
+acceptance, color, resume and a fully decoded 120-second synthetic export on Fedora x64 with an
+RTX 3070 Ti. See the [Linux evidence](research/linux-qualification-2026-11-01/README.md) for runtime
+identities and limits. Windows NVENC, full-master Linux resources and matched-quality hardware
+comparisons remain unqualified. Hardware bitrate equality does not establish equal visual quality.
 
 `--concurrency` accepts 1 through 8; omission selects a stable 1/2/4-worker pool from CPU and
 memory limits, with one worker below 300 frames. Explicit values override automatic selection.
@@ -220,7 +222,7 @@ explicitly forbidden during that run. This is one project measurement, not a gen
 Keep both adapters while checking real projects, codecs, fonts, graphics backends, long exports
 and installed distributions. Remove Remotion only after the alternative meets the supported
 workloads and performance expectations. The next useful work is profiling capture/encoding,
-qualifying Linux and Windows, and expanding fixture coverage. A sidecar or another capture API
+completing Linux full-master and Windows qualification, and expanding fixture coverage. A sidecar or another capture API
 should follow measurements, not precede a working exporter.
 
 ## Profiling and readiness optimization

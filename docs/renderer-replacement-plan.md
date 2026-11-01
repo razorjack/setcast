@@ -5,7 +5,7 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
 Linux execution is in progress. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
-records the graphics-default fix, complete production correctness, fresh installations,
+records graphics-default, font-hinting and Quicksilver clip fixes, production correctness, fresh installations,
 short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains unqualified.
 Current upstream has a separate named shared-memory leak after injected encoder failure;
 successful-export quality and quiet comparisons are still in progress.

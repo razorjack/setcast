@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 47.329307358,
+    "minSeconds": 47.329307358,
+    "maxSeconds": 47.329307358
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 45.148550757,
+    "minSeconds": 45.148550757,
+    "maxSeconds": 45.148550757
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-60fps/60fps/comparison/report.json

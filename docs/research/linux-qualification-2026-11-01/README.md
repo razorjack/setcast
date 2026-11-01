@@ -1,11 +1,13 @@
 # Linux qualification, 1 November 2026
 
-Status: in progress. Final production correctness and fresh candidate installations pass on
-this Fedora x64 host with SwiftShader graphics. Required NVENC and software exports both pass
-120-second decoded fixtures; bitmap memory passes 3,000 captures. Current Remotion 4.0.539
-has a reproduced named shared-memory leak after injected encoder failure. Full-suite quality,
-quiet timing and additional live checks are still in progress. Full-master Linux assets are
-missing, Windows remains unqualified, and main's default remains Remotion.
+Status: in progress. Production correctness, final fresh candidate installations, required
+NVENC, decoded 120-second software/NVENC fixtures and the 3,000-capture bitmap resource check
+pass on this Fedora x64 host. Three Linux fixes are committed; graphics use SwiftShader.
+Current Remotion 4.0.539 has a reproduced named shared-memory leak after injected encoder
+failure. Ten of eleven common-font fidelity cases pass; the long case, quiet timing and
+additional live checks remain in progress. Real-master Linux assets are missing. Windows
+remains unqualified, the shared Quicksilver CSS fix needs affected macOS repetition, and
+main's default remains Remotion.
 
 Starting production revision: 55a7b677b9bf40445d3dad112c411ff9ec002cd0.
 The supplied bundle verifies and contains the handoff and both requested branches.
@@ -243,3 +245,9 @@ The font-aligned video-frame suite fails six comparisons in three Quicksilver sh
 Quicksilver diagnosis rejects removal of font hinting, removal of unpaced capture, disabled GPU rasterization and disabled GPU: each still fails. Disabling GPU compositing produces exact equality, as does the narrower `.sc-bg-img { will-change: transform; }` hint. Four additional layer-hint repeats pass all four shape/fit cases, every shuffled seek, with maximum pixel difference zero. The production change applies only to Quicksilver video images. Full affected checks follow. The video harness now includes seek ordinals in filenames and reports; previously its repeated frame 29 could overwrite an earlier capture. Earlier reports retain both measurements, but an overwritten PNG cannot be recovered.
 
 The narrow Quicksilver fix passes ready (688 tests), both exporter acceptance suites, all 64 video theme/shape/fit cases, and four rounds of landscape/portrait worker comparison (eight cases, exact decoded equality across 1/2/4 workers). The demo still at 1:50.4 was inspected: art, chrome lettering and layout remain intact. The remaining font-aligned production sequence also passes color, WebP, both GPU recovery harnesses, resume, chunk/incremental/preparation caches, preview/exports, ProRes and the decoded verifier. ProRes alpha maximum error is one level; composite maximum is 2.710 and mean 0.110, with exact source PCM, exact joins, zero repeated captures and 30 resumed frames. A separate encoded looping-video worker repeat is still running.
+
+Quicksilver is committed as `a5a8bbe`; candidate merge is `5159395`. The additional looping 25 fps video check passes all six repeated shape cases with exact decoded equality across 1/2/4 workers (18 exports, 45 frames each). Candidate baseline, acceptance and fresh installation are repeating on that merge. This theme CSS change is shared by platforms; affected macOS checks have not been rerun on this Linux host, and Windows remains unqualified.
+
+The font-aligned 3,000-capture bitmap repeat passes with 3,000 created/revoked URLs, peak two active and zero after close. Peak sampled summed RSS is 2,294,538,240 bytes; four interval medians are 2,234,908,672 / 2,173,059,072 / 2,178,424,832 / 2,209,171,456 bytes. Final NVENC has 43 samples and peak summed RSS 3,989,204,992 bytes. These fixtures use Sterile Tech and are unaffected by the later Quicksilver-only CSS fix. The last software export repeat is running.
+
+Final candidate `5159395` passes ready, both acceptance suites and fresh browser-only/optional-Remotion installation. Current-upstream `5d026a6` passes ready and both acceptance suites. The software resource repeat on `a5a8bbe` passes 120 seconds/3,600 frames with 79 samples, peak summed RSS 3,082,993,664 bytes and no final temporary directories. Separate decoding of that exact file passes all frames and four stereo windows. The ten completed common-font fidelity cases pass every full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG comparison; the long chunk-boundary case is still running. Their selected themes and renderer code are unchanged by the Quicksilver-only fix; final timed outputs will all be measured on `5d026a6`.

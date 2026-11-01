@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+root=/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01
+cd /tmp/setcast-linux-current-upstream
+run() { bash "$root/upstream-run.sh" "$@"; }
+run quicksilver-upstream-ready ./node_modules/.bin/vp run ready
+run quicksilver-upstream-browser-acceptance ./node_modules/.bin/vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/quicksilver-upstream-browser-acceptance"
+run quicksilver-upstream-remotion-acceptance ./node_modules/.bin/vp run export-acceptance --gl swangle --out "$root/quicksilver-upstream-remotion-acceptance"

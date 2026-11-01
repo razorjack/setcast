@@ -4,8 +4,8 @@ The `renderer/browser-first-candidate` branch makes the browser renderer the def
 from the CLI's required dependencies. The candidate is isolated from main until the remaining
 release criteria in [the replacement plan](renderer-replacement-plan.md) are satisfied. Local
 macOS validation is evidence for that machine only. The Linux follow-up has passed fresh
-browser-only and optional-Remotion installations on Fedora x64, with the Linux graphics fix
-merged into `renderer/linux-browser-first` at `a61a0b1`. See the
+browser-only and optional-Remotion installations on Fedora x64, with the Linux graphics, font and Quicksilver fixes
+merged into `renderer/linux-browser-first` at `5159395`. See the
 [Linux evidence](research/linux-qualification-2026-11-01/README.md) for exact runtime scope.
 The hosted CI matrix has not run; Windows and matched-quality performance qualification remain open.
 

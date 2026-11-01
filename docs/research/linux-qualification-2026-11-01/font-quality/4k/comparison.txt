@@ -1,0 +1,18 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 45.59985764299999,
+    "minSeconds": 45.59985764299999,
+    "maxSeconds": 45.59985764299999
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 50.311152807000006,
+    "minSeconds": 50.311152807000006,
+    "maxSeconds": 50.311152807000006
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-4k/4k/comparison/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
