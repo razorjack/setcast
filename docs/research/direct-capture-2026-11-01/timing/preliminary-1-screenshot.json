@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "config": {
+    "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/replacement-corpus-v1/standard",
+    "at": 90,
+    "seconds": 10,
+    "repeat": 1,
+    "workers": [
+      "auto"
+    ],
+    "idleBusy": 0.15
+  },
+  "revision": "f5d06b5d00ca416c951458c620ff10d655a240dc",
+  "identity": "9308097bb26252c6c846cd7a4c44a5a3f1972841d3dd655222a34a5e8cab7f19",
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "file": "out/set.mp4",
+    "gl": "auto",
+    "profile": "standard",
+    "parallelEncoding": true,
+    "x264Preset": "medium",
+    "chunkSeconds": 60,
+    "hardwareAcceleration": "disable",
+    "crf": 18,
+    "jpegQuality": 95
+  },
+  "dimensions": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "expectedFrames": 300,
+  "dirty": false,
+  "host": {
+    "cpu": "Apple M1 Pro",
+    "memoryBytes": 34359738368
+  },
+  "timing": "Fresh sessions, render call through browser cleanup. Project loading, identity and full decode excluded. Shared process and OS caches. No matched-upstream claim.",
+  "runs": [],
+  "status": "failed",
+  "error": "Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory."
+}

@@ -1,0 +1,9 @@
+Pre-run system CPU busy: 22.8%
+Pre-run system CPU busy: 22.4%
+Pre-run system CPU busy: 22.0%
+Pre-run system CPU busy: 23.1%
+Pre-run system CPU busy: 26.3%
+Pre-run system CPU busy: 26.4%
+Pre-run system CPU busy: 21.9%
+Pre-run system CPU busy: 12.3%
+1/1: auto workers, 6.850 s

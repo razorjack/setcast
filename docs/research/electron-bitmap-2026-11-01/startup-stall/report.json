@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "revision": "e8061ce95d449557d282421141d8fd729233e106",
+  "dirty": true,
+  "scope": "Pixel feasibility only. Native Electron bitmap versus same-host CDP PNG and pinned Playwright PNG. Stage timings are not quiet throughput measurements.",
+  "results": [],
+  "status": "failed",
+  "error": "Error: Command failed: /private/tmp/setcast-electron-capture-runtime/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron /Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/electron-capture-host.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/electron-capture-pilot-r2-2026-11-01/config.json\n"
+}

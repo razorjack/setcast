@@ -2,8 +2,11 @@
 
 The isolated `renderer/bitmap-video-candidate` branch retains the existing image elements,
 object-fit, dimensions and contain blur, but replaces canvas PNG serialization with a BMP V4
-blob URL. Production main still uses PNG. Exact pixels and a 3,000-capture resource check
-pass; complete-export speed and full-master memory remain unqualified.
+blob URL. This initial report predates promotion. The subsequent
+[full-master resource check](../bitmap-endurance-2026-11-01/README.md) and
+[automatic-worker timing](../bitmap-auto-timing-2026-11-01/README.md) complete the required evidence.
+The bitmap implementation is now integrated on main. Historical pending statements below describe
+the initial experiment; the linked qualification supersedes them.
 
 ## Representation and ownership
 

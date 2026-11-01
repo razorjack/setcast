@@ -1,0 +1,3658 @@
+{
+  "version": 1,
+  "revision": "e8061ce95d449557d282421141d8fd729233e106",
+  "dirty": true,
+  "scope": "Pixel feasibility only. Native Electron bitmap versus same-host CDP PNG and pinned Playwright PNG. Stage timings are not quiet throughput measurements.",
+  "results": [
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "escapement-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "long-exposure-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bristol-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "patina-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "quicksilver-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "bunker-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "vfd-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "interference-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "pirate-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "afterhours-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "passe-partout-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "masthead-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "anamorphic-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "relief-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      },
+      "nativeVsPlaywright": {
+        "maximum": 244,
+        "rms": 13.66823153539042,
+        "changedPixels": 1411047,
+        "pixels": 2073600,
+        "qualified": false
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1920x1080",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3151,
+      "index": 2,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3029,
+      "index": 3,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3030,
+      "index": 4,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "darkroom-1080x1920",
+      "frame": 3149,
+      "index": 5,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    }
+  ],
+  "status": "measured",
+  "error": null
+}

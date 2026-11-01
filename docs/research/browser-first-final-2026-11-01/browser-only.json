@@ -1,0 +1,509 @@
+{
+  "version": 1,
+  "status": "passed",
+  "node": "v26.7.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "browserOnly": true,
+  "packages": [
+    "@clack+core@1.4.3",
+    "@clack+prompts@1.7.0",
+    "@oxc-project+runtime@0.143.0",
+    "@oxc-project+types@0.143.0",
+    "@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_82e120690dc34c603d56febe0782936a",
+    "@setcast+core@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T_37c4348a4ac9ce4f297ec12542b48204",
+    "@setcast+renderer-browser@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5_273f18f68cc307348386fa00c341f971",
+    "@setcast+themes@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn_88020eee0a3ea8b5ac3e11b8d7d34160",
+    "@types+dom-mediacapture-transform@0.1.12",
+    "@types+dom-webcodecs@0.1.13",
+    "@voidzero-dev+vite-plus-core@0.2.9_yaml@2.9.0",
+    "@voidzero-dev+vite-plus-darwin-arm64@0.2.9",
+    "@yuku-codegen+binding-darwin-arm64@0.5.48",
+    "@yuku-parser+binding-darwin-arm64@0.5.48",
+    "@yuku-toolchain+types@0.5.43",
+    "detect-libc@2.1.2",
+    "fast-string-truncated-width@3.0.3",
+    "fast-string-width@3.0.2",
+    "fast-wrap-ansi@0.2.2",
+    "fsevents@2.3.3",
+    "lightningcss-darwin-arm64@1.33.0",
+    "lightningcss@1.33.0",
+    "mediabunny@1.50.8",
+    "nanoid@3.3.20",
+    "picocolors@1.1.1",
+    "playwright-core@1.64.1",
+    "playwright@1.64.1",
+    "postcss@8.5.32",
+    "react-dom@19.2.8_react@19.2.8",
+    "react@19.2.8",
+    "scheduler@0.27.0",
+    "sisteransi@1.0.5",
+    "source-map-js@1.2.2",
+    "yaml@2.9.0",
+    "yuku-codegen@0.5.48",
+    "yuku-parser@0.5.48",
+    "zod@4.4.3"
+  ],
+  "lockSha256": "42e5ae3007bb06e16abe34da3467984dcda729b864097481b1591320cfbfdcb0",
+  "diagnostics": [
+    {
+      "version": 1,
+      "capabilities": {
+        "version": 1,
+        "renderer": "browser",
+        "features": [
+          "still",
+          "webp",
+          "video",
+          "resume",
+          "cache",
+          "gpu",
+          "hardwareEncoding",
+          "alpha",
+          "prores"
+        ],
+        "stillFormats": [
+          "png",
+          "jpeg",
+          "webp"
+        ],
+        "videoContainers": [
+          "mp4",
+          "mov",
+          "mkv"
+        ],
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "videoFormats": [
+          {
+            "codec": "h264",
+            "containers": [
+              "mp4",
+              "mov",
+              "mkv"
+            ],
+            "audioCodec": "aac",
+            "alpha": false
+          },
+          {
+            "codec": "prores-4444",
+            "containers": [
+              "mov"
+            ],
+            "audioCodec": "pcm_s24le",
+            "alpha": true
+          }
+        ],
+        "graphicsBackends": [
+          "auto",
+          "default",
+          "angle"
+        ],
+        "parallelEncoding": [
+          true
+        ],
+        "concurrency": {
+          "default": "auto",
+          "min": 1,
+          "max": 8
+        },
+        "runtime": {
+          "browser": "Playwright Chromium",
+          "ffmpeg": "system"
+        }
+      },
+      "environment": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v26.7.0"
+      },
+      "graphicsBackend": "auto",
+      "required": [
+        "video"
+      ],
+      "checks": [
+        {
+          "id": "local-server",
+          "features": [
+            "still",
+            "webp",
+            "video",
+            "resume",
+            "cache",
+            "gpu",
+            "hardwareEncoding",
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "Bound and fetched a temporary loopback HTTP endpoint."
+        },
+        {
+          "id": "browser.launch",
+          "features": [
+            "still",
+            "webp",
+            "video",
+            "resume",
+            "cache",
+            "gpu",
+            "hardwareEncoding",
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "Started the installed browser.",
+          "details": {
+            "version": "156.0.8078.4"
+          }
+        },
+        {
+          "id": "browser.capture",
+          "features": [
+            "still",
+            "webp",
+            "video",
+            "resume",
+            "cache",
+            "hardwareEncoding",
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "PNG and JPEG screenshots preserve CSS and Canvas 2D pixels.",
+          "details": {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36"
+          }
+        },
+        {
+          "id": "browser.webp",
+          "features": [
+            "webp"
+          ],
+          "status": "pass",
+          "message": "WebP screenshot preserves fixture pixels."
+        },
+        {
+          "id": "browser.webgl",
+          "features": [
+            "gpu"
+          ],
+          "status": "pass",
+          "message": "WebGL 2 compiled, drew and read back a fragment shader.",
+          "details": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          }
+        },
+        {
+          "id": "ffmpeg",
+          "features": [
+            "video",
+            "resume",
+            "cache",
+            "hardwareEncoding"
+          ],
+          "status": "pass",
+          "message": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+        },
+        {
+          "id": "ffprobe",
+          "features": [
+            "resume",
+            "cache"
+          ],
+          "status": "pass",
+          "message": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+        },
+        {
+          "id": "video.encode",
+          "features": [
+            "video",
+            "resume",
+            "cache"
+          ],
+          "status": "pass",
+          "message": "Encoded H.264 + AAC in MP4, MOV and MKV."
+        },
+        {
+          "id": "video.inspect",
+          "features": [
+            "resume",
+            "cache"
+          ],
+          "status": "pass",
+          "message": "ffprobe verified fixture codecs, dimensions and frame count."
+        },
+        {
+          "id": "hardware.encode",
+          "features": [
+            "hardwareEncoding"
+          ],
+          "status": "pass",
+          "message": "Encoded a frame with h264_videotoolbox.",
+          "details": {
+            "encoder": "h264_videotoolbox"
+          }
+        },
+        {
+          "id": "prores.encode",
+          "features": [
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "Encoded and decoded three ProRes 4444 frames with straight alpha and PCM audio."
+        }
+      ],
+      "features": {
+        "still": "ready",
+        "webp": "ready",
+        "video": "ready",
+        "resume": "ready",
+        "cache": "ready",
+        "gpu": "ready",
+        "hardwareEncoding": "ready",
+        "alpha": "ready",
+        "prores": "ready"
+      },
+      "ready": true,
+      "exitCode": 0
+    },
+    {
+      "version": 1,
+      "capabilities": {
+        "version": 1,
+        "renderer": "browser",
+        "features": [
+          "still",
+          "webp",
+          "video",
+          "resume",
+          "cache",
+          "gpu",
+          "hardwareEncoding",
+          "alpha",
+          "prores"
+        ],
+        "stillFormats": [
+          "png",
+          "jpeg",
+          "webp"
+        ],
+        "videoContainers": [
+          "mp4",
+          "mov",
+          "mkv"
+        ],
+        "videoCodec": "h264",
+        "audioCodec": "aac",
+        "videoFormats": [
+          {
+            "codec": "h264",
+            "containers": [
+              "mp4",
+              "mov",
+              "mkv"
+            ],
+            "audioCodec": "aac",
+            "alpha": false
+          },
+          {
+            "codec": "prores-4444",
+            "containers": [
+              "mov"
+            ],
+            "audioCodec": "pcm_s24le",
+            "alpha": true
+          }
+        ],
+        "graphicsBackends": [
+          "auto",
+          "default",
+          "angle"
+        ],
+        "parallelEncoding": [
+          true
+        ],
+        "concurrency": {
+          "default": "auto",
+          "min": 1,
+          "max": 8
+        },
+        "runtime": {
+          "browser": "Playwright Chromium",
+          "ffmpeg": "system"
+        }
+      },
+      "environment": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v26.7.0"
+      },
+      "graphicsBackend": "auto",
+      "required": [
+        "still",
+        "webp",
+        "video",
+        "resume",
+        "cache"
+      ],
+      "checks": [
+        {
+          "id": "local-server",
+          "features": [
+            "still",
+            "webp",
+            "video",
+            "resume",
+            "cache",
+            "gpu",
+            "hardwareEncoding",
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "Bound and fetched a temporary loopback HTTP endpoint."
+        },
+        {
+          "id": "browser.launch",
+          "features": [
+            "still",
+            "webp",
+            "video",
+            "resume",
+            "cache",
+            "gpu",
+            "hardwareEncoding",
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "Started the installed browser.",
+          "details": {
+            "version": "156.0.8078.4"
+          }
+        },
+        {
+          "id": "browser.capture",
+          "features": [
+            "still",
+            "webp",
+            "video",
+            "resume",
+            "cache",
+            "hardwareEncoding",
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "PNG and JPEG screenshots preserve CSS and Canvas 2D pixels.",
+          "details": {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36"
+          }
+        },
+        {
+          "id": "browser.webp",
+          "features": [
+            "webp"
+          ],
+          "status": "pass",
+          "message": "WebP screenshot preserves fixture pixels."
+        },
+        {
+          "id": "browser.webgl",
+          "features": [
+            "gpu"
+          ],
+          "status": "pass",
+          "message": "WebGL 2 compiled, drew and read back a fragment shader.",
+          "details": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          }
+        },
+        {
+          "id": "ffmpeg",
+          "features": [
+            "video",
+            "resume",
+            "cache",
+            "hardwareEncoding"
+          ],
+          "status": "pass",
+          "message": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+        },
+        {
+          "id": "ffprobe",
+          "features": [
+            "resume",
+            "cache"
+          ],
+          "status": "pass",
+          "message": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+        },
+        {
+          "id": "video.encode",
+          "features": [
+            "video",
+            "resume",
+            "cache"
+          ],
+          "status": "pass",
+          "message": "Encoded H.264 + AAC in MP4, MOV and MKV."
+        },
+        {
+          "id": "video.inspect",
+          "features": [
+            "resume",
+            "cache"
+          ],
+          "status": "pass",
+          "message": "ffprobe verified fixture codecs, dimensions and frame count."
+        },
+        {
+          "id": "hardware.encode",
+          "features": [
+            "hardwareEncoding"
+          ],
+          "status": "pass",
+          "message": "Encoded a frame with h264_videotoolbox.",
+          "details": {
+            "encoder": "h264_videotoolbox"
+          }
+        },
+        {
+          "id": "prores.encode",
+          "features": [
+            "alpha",
+            "prores"
+          ],
+          "status": "pass",
+          "message": "Encoded and decoded three ProRes 4444 frames with straight alpha and PCM audio."
+        }
+      ],
+      "features": {
+        "still": "ready",
+        "webp": "ready",
+        "video": "ready",
+        "resume": "ready",
+        "cache": "ready",
+        "gpu": "ready",
+        "hardwareEncoding": "ready",
+        "alpha": "ready",
+        "prores": "ready"
+      },
+      "ready": true,
+      "exitCode": 0
+    }
+  ],
+  "completed": [
+    "build and pack",
+    "fresh tarball installation",
+    "all themes, playback, stills, video, cache, resume, preview export and ProRes",
+    "default preview, clip and bundled export"
+  ],
+  "error": null
+}

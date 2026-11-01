@@ -1,0 +1,2 @@
+[56201:1101/123505.169943:ERROR:base/apple/mach_port_rendezvous_mac.cc:256] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Permission denied (1100)
+[56201:1101/123505.170167:ERROR:base/memory/shared_memory_switch.cc:261] No rendezvous client, terminating process (parent died?)

@@ -1,0 +1,141 @@
+{
+  "revision": "e8061ce95d449557d282421141d8fd729233e106",
+  "dirty": true,
+  "identity": "37b93c258e37bc5ced65ed5b765f6b76986532fca9316142e4da12132746f6ea",
+  "range": [
+    2700,
+    3059
+  ],
+  "ranges": [
+    [
+      2700,
+      2789
+    ],
+    [
+      2790,
+      2879
+    ],
+    [
+      2880,
+      2969
+    ],
+    [
+      2970,
+      3059
+    ]
+  ],
+  "encoding": {
+    "codec": "h264",
+    "transparent": false,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "gl": "auto",
+    "profile": "standard",
+    "parallelEncoding": true,
+    "x264Preset": "medium",
+    "chunkSeconds": 3,
+    "hardwareAcceleration": "disable",
+    "crf": 18,
+    "jpegQuality": 95,
+    "file": "out/set.mp4"
+  },
+  "idleBusy": 1,
+  "scope": "Four capture pages. Identical chunk boundaries and settings; round-robin frames per sequential chunk versus one page and encoder per concurrent chunk. Includes preflight, session setup, continuous master audio, capture, encoding, mux and cleanup; excludes project preparation and verification.",
+  "results": [
+    {
+      "round": 0,
+      "mode": "frames",
+      "wallSeconds": 44.121870625,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 5341434,
+        "decodedVideoHash": "SHA256=9240e41f88985a22048c0c763c70d5916dddbf4feeb729b75ace12a757d3602f",
+        "seconds": 6.749090582999997,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 42,
+        "meanSystemBusy": 0.990352328309981,
+        "maxSystemBusy": 1,
+        "initialLoadAverage": [
+          14.23779296875,
+          16.32373046875,
+          15.4375
+        ],
+        "finalLoadAverage": [
+          20.27734375,
+          17.6298828125,
+          15.962890625
+        ],
+        "nodeRssPeak": 541278208,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 44,
+        "intervals": 43,
+        "failedSamples": 0,
+        "seconds": 43.44229954199999,
+        "treeCpuSeconds": 107.33,
+        "externalCpuSeconds": 286.2499999999993,
+        "rssPeakBytes": 3190439936,
+        "maxTreeCpuCores": 3.845386076826035,
+        "maxExternalCpuCores": 7.9913260221494085,
+        "meanTreeCpuCores": 2.470633486982737,
+        "meanExternalCpuCores": 6.589199996727912,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    },
+    {
+      "round": 0,
+      "mode": "chunks",
+      "wallSeconds": 38.34543820900001,
+      "exact": true,
+      "video": {
+        "frames": 360,
+        "bytes": 5341434,
+        "decodedVideoHash": "SHA256=9240e41f88985a22048c0c763c70d5916dddbf4feeb729b75ace12a757d3602f",
+        "seconds": 8.066714834000013,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "load": {
+        "samples": 37,
+        "meanSystemBusy": 0.9778032523450817,
+        "maxSystemBusy": 1,
+        "initialLoadAverage": [
+          18.302734375,
+          17.29541015625,
+          15.86328125
+        ],
+        "finalLoadAverage": [
+          25.52978515625,
+          19.24560546875,
+          16.6318359375
+        ],
+        "nodeRssPeak": 630439936,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 39,
+        "intervals": 38,
+        "failedSamples": 0,
+        "seconds": 38.30753720800001,
+        "treeCpuSeconds": 109.71000000000001,
+        "externalCpuSeconds": 236.45999999999975,
+        "rssPeakBytes": 4837457920,
+        "maxTreeCpuCores": 4.400524336201076,
+        "maxExternalCpuCores": 7.254502501932166,
+        "meanTreeCpuCores": 2.8639272580824793,
+        "meanExternalCpuCores": 6.17267559425925,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      }
+    }
+  ],
+  "status": "passed",
+  "error": null
+}

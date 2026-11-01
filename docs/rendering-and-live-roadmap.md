@@ -20,6 +20,26 @@ suite at matched quality; it is not an achieved result or a speedup forecast. Ex
 independent preview, bounded pipelines and diagnostics are foundations already delivered.
 Live software stalls and physical-device qualification retain their separate requirements.
 
+## Renderer replacement progress, 2026-11-01
+
+The browser exporter now has automatic resource-based worker selection, continuous audio/video
+encoding overlap, hardware H.264 probing, persistent chunk and audio-preparation reuse, bounded
+incremental announcement edits, and an audible preview with exact reference frames and export
+controls. Transparent ProRes 4444 MOV and PNG stills are implemented with decoded and native
+AVFoundation checks. These capabilities retain the Setcast time, CSS and readiness contracts.
+
+Offline video preparation now uses BMP blob images. Exact theme/seek/loop/alpha checks, a complete
+56-minute master and quiet automatic-worker comparisons pass. The measured video fixture improves
+against the previous PNG preparation without changing decoded output. See the
+[bitmap qualification](research/bitmap-auto-timing-2026-11-01/README.md).
+
+The browser-first distribution is implemented separately and passes local fresh installations
+with Remotion physically absent, including current cache and ProRes workflows. It remains a
+candidate. The current-upstream first-export target and Linux/Windows qualification remain
+unsatisfied, so Remotion stays the production default. The
+[replacement plan](renderer-replacement-plan.md) records completed implementation, rejected
+capture experiments and the outstanding release requirements.
+
 ## Original delivery order
 
 The sequence below records the original scope. Completed milestones and remaining product

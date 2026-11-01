@@ -1,0 +1,1006 @@
+{
+  "version": 1,
+  "status": "passed",
+  "config": {
+    "version": 1,
+    "mode": "export",
+    "seconds": 3372,
+    "sampleSeconds": 10,
+    "changeSeconds": 30,
+    "restartSeconds": 600,
+    "project": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-bitmap-project-2026-11-01",
+    "at": 0,
+    "concurrency": 4,
+    "scenes": [
+      {
+        "title": "field",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "field",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "tunnel",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "tunnel",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "constellation",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "constellation",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      }
+    ],
+    "gpuRecovery": null,
+    "verification": "decoded",
+    "audioAt": [
+      1,
+      60.5,
+      600.5,
+      1686.5,
+      3000.5,
+      3370
+    ],
+    "graphics": "auto",
+    "operatorWindow": false
+  },
+  "runtime": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "release": "27.0.0",
+    "arch": "arm64",
+    "cpu": "Apple M1 Pro",
+    "revision": "8c3cafc39d85903a9e735edd812b6e60a72ee113",
+    "dirty": false
+  },
+  "startedAt": "2026-11-01T10:45:26.918Z",
+  "wallSeconds": 3887.276460583,
+  "samples": 361,
+  "actions": {
+    "audio-verification": 6
+  },
+  "details": {
+    "settings": {
+      "profile": "standard",
+      "crf": 22,
+      "x264Preset": "medium",
+      "parallelEncoding": true,
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "disable",
+      "jpegQuality": 90,
+      "gl": "auto",
+      "concurrency": 4
+    },
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "explicit",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 3082485760
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 4,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ],
+    "result": {
+      "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-bitmap-2026-11-01/export.mp4",
+      "frames": 101160,
+      "durationSeconds": 3372
+    },
+    "stats": {
+      "audioMs": {
+        "count": 101160,
+        "sum": 49125.79999984801,
+        "max": 226.5
+      },
+      "resolveMs": {
+        "count": 101160,
+        "sum": 95098.09999983013,
+        "max": 4.5
+      },
+      "commitMs": {
+        "count": 101160,
+        "sum": 212508.49999844283,
+        "max": 38.79999999701977
+      },
+      "readinessMs": {
+        "count": 101160,
+        "sum": 10783785.100002073,
+        "max": 433.69999999552965
+      },
+      "captureMs": {
+        "count": 101160,
+        "sum": 2474865.448141025,
+        "max": 227.39862499991432
+      },
+      "bytes": {
+        "count": 101160,
+        "sum": 14077114222,
+        "max": 164641
+      },
+      "encoder-write": {
+        "count": 101160,
+        "sum": 147070.4776310569,
+        "max": 241.70366599969566
+      },
+      "encoder-finish": {
+        "count": 57,
+        "sum": 18377.005668999504,
+        "max": 597.9688750000205
+      },
+      "audio-encode": {
+        "count": 1,
+        "sum": 137421.71266599998,
+        "max": 137421.71266599998
+      },
+      "mux": {
+        "count": 1,
+        "sum": 4096.889207999688,
+        "max": 4096.889207999688
+      }
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frames": 101160,
+    "renderWallSeconds": 3622.827653375,
+    "finalStorage": {
+      "bytes": 900901579,
+      "freeBytes": 7739830272,
+      "temporaryDirectories": [],
+      "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+    },
+    "verification": {
+      "mode": "decoded",
+      "expected": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "frames": 101160,
+        "sourceAt": 0
+      },
+      "phase": "complete",
+      "video": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1088,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
+            "level": 40,
+            "color_range": "pc",
+            "color_space": "bt470bg",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 303480000,
+            "duration": "3372.000000",
+            "bit_rate": "1798093",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "101160",
+            "nb_read_frames": "101160",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 1024,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 161856000,
+            "duration": "3372.000000",
+            "bit_rate": "329326",
+            "nb_frames": "158064",
+            "nb_read_frames": "158063",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          }
+        ],
+        "errors": []
+      },
+      "audio": [
+        {
+          "at": 1,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.999899317318795,
+            "sourceRms": 0.033810010142263085,
+            "outputRms": 0.03377401312814902,
+            "zeroLagCorrelation": 0.999899317318795,
+            "margin": 0.4192325398547989,
+            "levelRatio": 0.9989353148974933,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9999070243312569,
+                "sourceRms": 0.03453016831418805,
+                "outputRms": 0.034487771807881644,
+                "levelRatio": 0.9987721894107019,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9998909500397779,
+                "sourceRms": 0.03307417493806431,
+                "outputRms": 0.03304484106919268,
+                "levelRatio": 0.9991130884163681,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 60.5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9996840310389274,
+            "sourceRms": 0.09917070568359097,
+            "outputRms": 0.09886912107966808,
+            "zeroLagCorrelation": 0.9996840310389274,
+            "margin": 0.7650421501065724,
+            "levelRatio": 0.9969589345780687,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9997076298190921,
+                "sourceRms": 0.1001227137629575,
+                "outputRms": 0.0998570635303514,
+                "levelRatio": 0.9973467535724707,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9996596448139536,
+                "sourceRms": 0.09820946960605986,
+                "outputRms": 0.09787120653811912,
+                "levelRatio": 0.9965556980472698,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 600.5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9996004974733516,
+            "sourceRms": 0.1399923688876975,
+            "outputRms": 0.13951461180110167,
+            "zeroLagCorrelation": 0.9996004974733516,
+            "margin": 0.6427854281734873,
+            "levelRatio": 0.9965872633601972,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9996042324853892,
+                "sourceRms": 0.13549070460725302,
+                "outputRms": 0.13492979647441267,
+                "levelRatio": 0.9958601725892101,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9995976518184945,
+                "sourceRms": 0.14435371716241915,
+                "outputRms": 0.14395347802466382,
+                "levelRatio": 0.9972273721409959,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 1686.5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9995099695884764,
+            "sourceRms": 0.17193235397794507,
+            "outputRms": 0.1714916177455453,
+            "zeroLagCorrelation": 0.9995099695884764,
+            "margin": 0.55811660373084,
+            "levelRatio": 0.9974365718714217,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9995457849209877,
+                "sourceRms": 0.1724759905627681,
+                "outputRms": 0.17202635457883048,
+                "levelRatio": 0.9973930517374011,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9994737027911795,
+                "sourceRms": 0.17138699299592655,
+                "outputRms": 0.17095520829821664,
+                "levelRatio": 0.9974806448834762,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 3000.5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9995473155305481,
+            "sourceRms": 0.05125836854464213,
+            "outputRms": 0.05114358269058335,
+            "zeroLagCorrelation": 0.9995473155305481,
+            "margin": 0.2998412635658616,
+            "levelRatio": 0.9977606416802203,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9995389681777836,
+                "sourceRms": 0.05045182837439703,
+                "outputRms": 0.05036188175693429,
+                "levelRatio": 0.9982171782398993,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9995553551933902,
+                "sourceRms": 0.052052413060270794,
+                "outputRms": 0.051913514297893336,
+                "levelRatio": 0.997331559591356,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 3370,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9998323147768708,
+            "sourceRms": 0.00016930802676647002,
+            "outputRms": 0.00016768915550870937,
+            "zeroLagCorrelation": 0.9998323147768708,
+            "margin": 0.16750542715777805,
+            "levelRatio": 0.9904383076887808,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9998146591593777,
+                "sourceRms": 0.00012045056825536307,
+                "outputRms": 0.00012037046451260827,
+                "levelRatio": 0.9993349658377287,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.999856777549221,
+                "sourceRms": 0.0002069349570808941,
+                "outputRms": 0.0002043287963637702,
+                "levelRatio": 0.987405894325988,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "audioAt": [
+        1,
+        60.5,
+        600.5,
+        1686.5,
+        3000.5,
+        3370
+      ],
+      "wallSeconds": 264.4061367499996
+    },
+    "identity": {
+      "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers",
+      "output": {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-bitmap-2026-11-01/export.mp4",
+        "sha256": "a47096a756714d9894ee9a14963aa640c8539a56a06602f909b162c9d77c3f58",
+        "bytes": 900424402,
+        "stamp": "16777229:168821353:900424402:1793533548979.381:1793533549240.5527"
+      },
+      "source": {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-bitmap-project-2026-11-01/assets/mix.wav",
+        "sha256": "7fd2975e98a73d37cd1cddc6647aeaffac8fdb12ca2a14bada8ae647882a18a1",
+        "bytes": 971166720,
+        "stamp": "16777229:137470909:971166720:1791899375941.2368:1793528244632.1238"
+      }
+    }
+  },
+  "errors": []
+}

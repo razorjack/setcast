@@ -5,10 +5,12 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (fad4bb2), with local clean-install coverage but no default
-promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (8c3cafc; implementation cc10be9),
-with exact-frame/encoded parity and a passed 3,000-capture resource check; one-worker quiet throughput is qualified; full-master resources and automatic-worker throughput
-remain unqualified.
+on `renderer/browser-first-candidate` (9b4a82e), with local clean-install coverage through cache and ProRes integration but no default
+promotion. See the [updated installation evidence](research/browser-first-prores-2026-11-01/README.md). Bitmap video preparation is now integrated on main after exact-frame/encoded parity, a complete
+56-minute master resource run and quiet timing with one and automatic workers. The automatic
+series reduces median wall time by 32.7% against Setcast's PNG preparation on the frozen video
+fixture; this does not establish the separate current-Remotion target. See the
+[qualification](research/bitmap-auto-timing-2026-11-01/README.md).
 The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
 cases, including corrected portrait and long comparisons with no black transition frames.
 The original black frames and storage interruption remain preserved.
@@ -227,8 +229,8 @@ renderer. Native capture availability alone does not prove correct pixels or har
 The regression corpus and numerical quality calibration are complete for eleven frozen cases.
 Current-upstream quiet timings miss the release speed target. Automatic scheduling, audio overlap,
 local VideoToolbox qualification, persistent chunk reuse, scoped preparation reuse and the local
-preview/export workflow are implemented. Bitmap video and direct CDP capture remain isolated
-candidates under qualification. Native DOM capture was rejected. H.264 color handling is qualified
+preview/export workflow are implemented. Bitmap video preparation is integrated after correctness, resource and throughput qualification.
+Direct CDP JPEG/PNG capture was rejected after source correctness and quiet timing checks. Native DOM capture was rejected. H.264 color handling is qualified
 locally. ProRes 4444 and transparent Stage are implemented with local FFmpeg/AVFoundation checks;
 receiving-editor workflows and cross-platform installed qualification remain pending.
 The phases describe implementation and evidence, not newly supported renderer flags or APIs.
@@ -307,17 +309,19 @@ These options enable quality matching; their existence does not establish it.
 
 ### Phase 1: remove video-frame PNG serialization
 
-The second candidate retains the image DOM and serializes lossless BMP V4 blob URLs. It matches
+The integrated implementation retains the image DOM and serializes lossless BMP V4 blob URLs. It matches
 288 theme/orientation/seek samples and a complete 300-frame source-switch export, including audio.
 The first BMP data-URL variant was slower in its diagnostic and is archived. The blob candidate
 passes a 3,000-capture resource check and [quiet one-worker timing](research/bitmap-video-timing-2026-11-01/README.md)
-with exact decoded output. Full-master memory and automatic-worker throughput remain required
-before promotion. See
+with exact decoded output. The [complete master resource check](research/bitmap-endurance-2026-11-01/README.md) passes.
+The [automatic-worker series](research/bitmap-auto-timing-2026-11-01/README.md) also passes with
+identical decoded output and a 32.7% median reduction against the PNG control. Latest-main ready,
+both exporter acceptance suites and packed-browser checks pass. See
 [bitmap-video evidence](research/bitmap-video-2026-11-01/README.md).
 
 The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was
 slower in two alternating benchmark series. See the [experiment and retained evidence](research/video-canvas-2026-10-29/README.md).
-Production retains the PNG image path. Revisit decoded-frame representation with a different
+Production now uses the qualified BMP blob image path. Revisit decoded-frame representation with a different
 capture transport; do not promote the rejected candidate or assume fewer conversions are faster.
 
 Measure the existing conversion stages, then replace PNG serialization and image decoding with
@@ -338,6 +342,10 @@ workloads improve without incorrect frames or unbounded memory.
 The independent-driver native experiment is complete and rejected for this milestone. All 252
 sampled theme/GPU/video/art frames exceed the existing pixel allowance; Chromium 157 repeats
 the Pirate defects. Production keeps screenshot capture. See the [retained qualification](research/native-browser-capture-2026-11-01/README.md).
+The [Electron bitmap investigation](research/electron-bitmap-2026-11-01/README.md) also rejects both
+`capturePage()` and next-paint handshakes because they can return an older frame.
+The [direct CDP comparison](research/direct-capture-2026-11-01/README.md) also finds no complete-export
+benefit for JPEG and a regression for fast PNG on the standard fixture.
 The alternative capture work below remains a future optimization, with a new proof required
 before production use; no incomplete fast path is needed to ship independent H.264 export.
 

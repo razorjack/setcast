@@ -1118,6 +1118,49 @@ The corpus coordinator and faster lossless-reference tooling passed final ready:
 111 files, lint/types/formatting, dependency isolation and decoded smoke. The ongoing corpus
 measurement remains separate from this tooling milestone. Log: `/tmp/setcast-corpus-tools-ready.log`.
 
+## Bitmap-video candidate, 1 November 2026
+
+Isolated from main at aad14cc. The final candidate uses BMP V4 blob URLs and explicit decoder
+ownership, retaining the existing image DOM and CSS behavior. The earlier data-URL variant is
+archived after slower diagnostic readiness. All 288 theme/orientation/seek/source-switch RGBA
+samples match PNG; nine alpha/compositing controls match; all 32 scene instances release URLs
+on unmount. A full ten-second source-switch export matches all 300 decoded frames and PCM audio.
+See `research/bitmap-video-2026-11-01/README.md` for raw reports and the retained hash-tool stall.
+
+Ready passed 667 tests in 111 files, lint/types/formatting, isolation and decoded smoke. Browser
+acceptance, Remotion acceptance with swangle and packed-browser smoke passed. The final hash
+helper uses saved files, bounded threads and a 30-second hard timeout. Complete-export quiet
+speed and sustained process memory remain unqualified. Do not promote this branch yet.
+
+The 3,000-capture resource follow-up completed with ten repeated source-switch passes, natural
+GC, real JPEG capture, JS heap/DOM samples and process-tree RSS. Every sampled ready frame owns
+one BMP URL, peak replacement owns two, and close revokes all 3,000. Later heap/RSS fluctuate
+without sustained growth within this workload. Reports and the PNG control are retained under
+`research/bitmap-video-2026-11-01`. This is not full-master or speed qualification. The final ready
+attempt under concurrent quality-analysis load hit cache/preview CLI test timeouts; the failed
+log is retained and a sequential rerun is required before committing.
+
+Main also contains the shared commit-readiness correction at 53551f0. This isolated candidate
+has not incorporated it yet; integrate it before any future promotion and rerun acceptance.
+The user requested completion of this item, commit and stop, so no further tuning or promotion
+is authorized in this work period.
+
+Sequential final ready passed with unchanged test limits: 667 tests in 111 files, formatting,
+lint/types, dependency isolation and decoded smoke. The resource helper is included in the
+benchmark TypeScript project. This closes the resource-check milestone; speed and full-master
+qualification remain pending, and the candidate is not promoted.
+
+## Readiness integration, 1 November 2026
+
+The user resumed roadmap completion. This candidate now integrates main 53551f0's shared
+ready-state commit hold and decoded art-transition acceptance. The production behavior under
+qualification includes that correction; the previous stop instruction is historical. Both
+exporter suites, same-page media, package checks and baseline ready must pass before commit.
+
+Readiness integration validation passes: ready, both exporter acceptance suites (Remotion with
+swangle), and frame-driver seeks/font/video-loop checks. Installed browser-package smoke passes.
+These correctness checks overlapped corpus metrics and provide no throughput evidence.
+
 Corpus standard and Afterhours now complete: all recorded full-frame and text-region mean,
 minimum and p05 comparisons meet or exceed current Remotion at the tested settings. The GPU
 cases are running. This remains output calibration, not quiet-period performance qualification.
@@ -1431,6 +1474,12 @@ decoded video hashes and input identities. Median wall time falls from 34.248 to
 Reports are in `docs/research/bitmap-video-timing-2026-11-01`; automatic-worker throughput and
 full-master resources remain required before promotion.
 
+The bitmap candidate integrates main through 53d7594, including automatic scheduling and corrected
+endurance instrumentation. Ready passes 679 tests in 114 files plus lint/types/formatting,
+isolation and decoded smoke. Browser exporter acceptance and packed-browser installation pass.
+The first acceptance invocation used an unsupported `--renderer` harness flag and stopped before
+rendering; the corrected `--adapter` invocation passes. The merged candidate is ready for the
+full-master looping-video resource run, not yet for production promotion.
 The integrated bitmap candidate is committed as 8c3cafc after ready, exporter acceptance and
 packed-browser checks. It now includes main's automatic scheduler and corrected endurance
 instrumentation. A separate full-master workload retains the existing real audio/timeline and
@@ -1539,3 +1588,102 @@ Remotion installations pass, including the new ProRes/PNG still/clip/bundle and 
 Evidence and the earlier overlapping-test timeout are retained in
 `docs/research/browser-first-prores-2026-11-01`. This candidate remains unpromoted because platform
 qualification and the current-upstream speed target are outstanding.
+### Native bitmap host and current distribution integration
+
+ProRes 4444 is committed as e8061ce. The browser-first candidate now merges that milestone and
+persistent preparation reuse. Its first baseline attempt overlapped another check process and
+hit the existing five-second doctor/validate subprocess deadlines. The second baseline passes
+all 688 tests and the decoded smoke render. Fresh browser-only and optional-adapter installation
+checks must pass before the integration commit.
+
+An isolated Electron 45.2.1 runtime is evaluating full browser paint through `capturePage()`
+and `NativeImage.toBitmap()`. This is a CPU bitmap readback experiment, not the rejected
+HTML-in-canvas path or a shared GPU texture implementation. Production dependencies are unchanged.
+The initial four sterile-tech landscape/portrait samples match both same-host CDP PNG and the
+pinned Playwright PNG byte for byte after RGB decoding. All-theme qualification is running;
+no throughput claim follows from four samples.
+
+The pilot retains three harness failures: npm installation had not fetched the runtime binary;
+awaiting `app.whenReady()` at module evaluation prevented startup; and closing the first fixture
+window exited the app before portrait capture. The corrected host starts its asynchronous run
+without blocking module evaluation and owns shutdown explicitly across fixture windows. The
+controller checks that the native report contains every requested frame. Electron's ESM startup
+requirements are documented at https://www.electronjs.org/docs/latest/tutorial/esm.
+
+The full-master bitmap resource export remains active, beyond 87,000 of 101,160 frames. Its
+sampled summed process RSS remains around 4.5 GB at this point. This is provisional resource
+evidence under concurrent correctness/external load, not a completed memory or speed claim.
+
+
+Browser-first integration is committed as 9b4a82e. Both fresh installations pass, with browser-only
+package inventory proving that Remotion is absent. Its evidence is mirrored on main under
+`docs/research/browser-first-prores-2026-11-01`.
+
+Electron `capturePage()` passes 191 of 192 all-theme/aspect/seek comparisons. Darkroom landscape
+at absolute frame 3029 after a backward seek returns stale and partly missing content, including
+the old elapsed timer. Its same-host CDP PNG and pinned Playwright PNG agree. The native maximum
+channel difference is 244/255. This capture path is rejected for production; the original PNGs
+and measurements are retained. A separate `invalidate()` / `paint` event experiment tests whether
+explicit compositor repaint fixes the synchronization problem. It does not weaken pixel limits.
+
+A bench-only chunk scheduling comparison is also checking four pages sharing each sequential
+chunk against four independent page/encoder workers. Both arms use identical absolute ranges,
+chunk boundaries, JPEG quality, encoding settings and a single continuous master soundtrack.
+Only exact decoded video/audio equality can permit subsequent quiet timing. Production still
+uses the qualified round-robin scheduler.
+
+
+The explicit Electron repaint attempt also fails: 30/30 Darkroom reproducer samples and 191/192
+all-theme samples differ from both PNG references. The original `capturePage()` failure is exactly
+the preceding frame's decoded RGB, proving stale output. Both handshakes are rejected, with
+reports and representative images in `docs/research/electron-bitmap-2026-11-01`. No native runtime
+or fast path enters production. Research harnesses pass ready (688 tests), lint/types and smoke.
+The chunk-worker pilot passes exact 360-frame video and audio equality; its loaded timings remain
+unqualified. Its report is in `docs/research/chunk-scheduling-2026-11-01`.
+
+
+The complete bitmap master run passes at 8c3cafc: 3,372 seconds, 101,160 decoded 1080p30 frames,
+four workers, and six stereo alignment windows with zero measured lag. All 361 process samples
+are available; peak summed RSS is 4.691 GB, with quarter-hour medians increasing from 4.127 to
+4.458 GB. Peak run-directory bytes are 1.799 GB and final temporary directories are empty.
+The run overlapped correctness/external work, so its time is not throughput evidence. Reports and
+scope limits are retained in `docs/research/bitmap-endurance-2026-11-01`. The candidate now merges
+main through 5d5349f; integration checks and quiet automatic-worker timing precede promotion.
+
+
+The latest bitmap integration passes ready (688 tests in 115 files), both exporter acceptance
+suites and fresh installed-package browser checks, including persistent preparation and ProRes.
+The integration changes no H.264 quality defaults. Its logs are retained beside the full-master
+report. Automatic-worker quiet timing is the final bitmap promotion requirement.
+
+
+Automatic-worker bitmap timing completes three alternating pairs at clean baseline 5d5349f and
+candidate e388178. Every input identity, decoded video hash and file size matches. Median wall
+time is 20.373 seconds for PNG and 13.713 for bitmap (32.7% lower). A busy third-arm attempt
+exports nothing and is retained beside its successful retry. All arms satisfy the unchanged
+15% pre-run CPU limit without concurrent own validation. Evidence is in
+`docs/research/bitmap-auto-timing-2026-11-01`. Bitmap's promotion requirements are now met; this
+does not establish the separate current-Remotion speed target or change the default renderer.
+
+
+Bitmap video preparation is promoted to main after the completed qualification. The production
+change replaces video-frame PNG serialization with BMP V4 blob images and explicit decoder/URL
+ownership. It preserves the image DOM, screenshot transport, H.264 defaults and renderer choice.
+The main merge uses the same validated source tree as e388178, with subsequent evidence and
+roadmap updates. The independent distribution candidate remains separate from this optimization.
+
+
+Direct screenshot transport qualification is closed without production adoption. Three quiet
+alternating pairs per mode on the standard fixture give control/direct-JPEG medians 6.892/7.117 s,
+with exact decoded hashes, and control/fast-PNG medians 7.054/21.545 s. JPEG shows no measured
+benefit and PNG regresses the complete export at these settings. GPU/video timing is not claimed.
+Source/color/recovery checks, the original partial/busy series and complete timing reports are
+retained in `docs/research/direct-capture-2026-11-01`. The experiment stays isolated at f5d06b5.
+
+
+The browser-first candidate now integrates main through a00ece3, including promoted bitmap video
+preparation. Ready passes all 688 tests and both fresh installation paths pass again. Browser-only
+packages physically exclude Remotion and exercise the complete local default workflow, cache,
+preview/reference exports and ProRes. Evidence is in `docs/research/browser-first-final-2026-11-01`.
+The candidate remains separate from production until platform and first-export performance
+requirements are satisfied. No code or report is published to an external service.

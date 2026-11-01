@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "revision": "e8061ce95d449557d282421141d8fd729233e106",
+  "dirty": true,
+  "scope": "Pixel feasibility only. Native Electron bitmap versus same-host CDP PNG and pinned Playwright PNG. Stage timings are not quiet throughput measurements.",
+  "results": [
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3149,
+      "index": 0,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    },
+    {
+      "id": "sterile-tech-1920x1080",
+      "frame": 3150,
+      "index": 1,
+      "nativeVsCdp": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      },
+      "nativeVsPlaywright": {
+        "maximum": 0,
+        "rms": 0,
+        "changedPixels": 0,
+        "pixels": 2073600,
+        "qualified": true
+      }
+    }
+  ],
+  "status": "failed",
+  "error": "Error: ENOENT: no such file or directory, open '/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/electron-capture-pilot-r3-2026-11-01/sterile-tech-1080x1920/0.bgra'"
+}
