@@ -1016,3 +1016,15 @@ actual resolved package `dist` directories and absence of `src`. Final ready aga
 667 tests and decoded browser smoke. Retained evidence includes both harness failures and
 successful install/acceptance reports. This candidate is ready for review and platform execution,
 not production promotion.
+
+## Readiness integration, 1 November 2026
+
+The user resumed roadmap completion. This candidate now integrates main 53551f0's shared
+ready-state commit hold and decoded art-transition acceptance. The production behavior under
+qualification includes that correction; the previous stop instruction is historical. Both
+exporter suites, same-page media, package checks and baseline ready must pass before commit.
+
+Readiness integration validation passes: ready, both exporter acceptance suites (Remotion with
+swangle), and frame-driver seeks/font/video-loop checks. Installed browser-package smoke passes.
+Fresh installation contains no Remotion packages; the optional compatibility installation also passes.
+These correctness checks overlapped corpus metrics and provide no throughput evidence.
