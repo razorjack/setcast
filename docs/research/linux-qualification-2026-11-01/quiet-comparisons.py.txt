@@ -1,26 +1,42 @@
 #!/usr/bin/env python3
-"""Quiet worker screening and retained comparisons. Run quality separately afterward."""
-import json, subprocess, sys
+"""Quiet screening/final comparison; failed attempts remain and retries use new paths."""
+import json,subprocess,sys
 from pathlib import Path
-ROOT = Path(__file__).resolve().parent
-CHECKOUT = Path('/tmp/setcast-linux-current-upstream')
-CASES = json.loads((ROOT/'software-corpus/manifest.json').read_text())['cases']
-mode = sys.argv[1]
-assert mode in ('tune', 'timing')
+ROOT=Path(__file__).resolve().parent
+CHECKOUT=Path('/tmp/setcast-linux-current-upstream')
+CASES=json.loads((ROOT/'software-corpus/manifest.json').read_text())['cases']
+mode=sys.argv[1]
+assert mode in ('tune','timing')
+indexPath=ROOT/'comparison-index.json'
+index=json.loads(indexPath.read_text()) if indexPath.exists() else {}
+def passed(base):
+    for directory in reversed(index.get(base,[])):
+        p=Path(directory)/'report.json'
+        if p.exists():
+            report=json.loads(p.read_text())
+            if report['status']=='passed':return report
+    return None
 for case in CASES:
-    choices = [('2','2'),('4','4'),('auto','auto')] if mode == 'tune' else [(None,None)]
+    choices=[('2','2'),('4','4'),('auto','auto')] if mode=='tune' else [(None,None)]
     for browser,remotion in choices:
-        label = f"{mode}-{case['name']}" + (f'-{browser}' if mode == 'tune' else '')
-        if mode == 'timing':
-            arms = {name: [] for name in ('browser','remotion')}
+        base=f"{mode}-{case['name']}"+(f'-{browser}' if mode=='tune' else '')
+        if passed(base):continue
+        if mode=='timing':
+            arms={name:[] for name in ('browser','remotion')}
             for choice in ('2','4','auto'):
-                report = json.loads((ROOT/f"tune-{case['name']}-{choice}/report.json").read_text())
-                assert report['status'] == 'passed'
+                report=passed(f"tune-{case['name']}-{choice}")
+                assert report is not None, f"Missing completed worker screening for {case['name']} {choice}"
                 for run in report['runs']:
-                    arms[run['renderer']].append((run['wallSeconds'],choice))
-            browser = min(arms['browser'])[1]
-            remotion = min(arms['remotion'])[1]
-            selection = {'scope':'One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.', 'case':case['name'], 'candidates':arms, 'browser':browser, 'remotion':remotion}
+                    arms[run['renderer']].append({'wallSeconds':run['wallSeconds'],'choice':choice,'report':str(Path(run['result']['file']).parent/'report.json')})
+            browser=min(arms['browser'],key=lambda x:x['wallSeconds'])['choice']
+            remotion=min(arms['remotion'],key=lambda x:x['wallSeconds'])['choice']
+            selection={'scope':'One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.', 'case':case['name'],'candidates':arms,'browser':browser,'remotion':remotion}
             (ROOT/f"selection-{case['name']}.json").write_text(json.dumps(selection,indent=2)+'\n')
-        command = ['bash',str(ROOT/'upstream-run.sh'),label,'node','scripts/render-compare.ts',case['directory'],'--at',str(case['at']),'--seconds',str(case['seconds']),'--repeat','1' if mode=='tune' else '3','--browser-concurrency',browser,'--remotion-concurrency',remotion,'--browser-crf','16','--browser-jpeg-quality','100','--remotion-crf','18','--idle-busy','.15','--out',str(ROOT/label)]
+        attempt=len(index.get(base,[]))
+        label=base+(f'-retry-{attempt}' if attempt else '')
+        output=ROOT/label
+        assert not output.exists(),output
+        index.setdefault(base,[]).append(str(output))
+        indexPath.write_text(json.dumps(index,indent=2)+'\n')
+        command=['bash',str(ROOT/'upstream-run.sh'),label,'node','scripts/render-compare.ts',case['directory'],'--at',str(case['at']),'--seconds',str(case['seconds']),'--repeat','1' if mode=='tune' else '3','--browser-concurrency',browser,'--remotion-concurrency',remotion,'--browser-crf','16','--browser-jpeg-quality','100','--remotion-crf','18','--idle-busy','.15','--out',str(output)]
         subprocess.run(command,cwd=CHECKOUT,check=True)

@@ -274,6 +274,13 @@ cancellation. Record whether Remotion actually uses `remotionshm` or a screensho
 fallback. Attribute resources to the job; never delete unrelated pools. Resource cleanup is not
 proved by an intact MP4 or an empty export directory.
 
+The Fedora execution found that Remotion 4.0.539's encoder-failure harness passes its existing
+assertions while a named POSIX pool remains after process exit. Use the host's `/dev/shm`;
+a sandbox may expose an empty private mount. The retained
+[pool observer and diagnosis](research/linux-qualification-2026-11-01/upstream-cleanup.md)
+distinguish the job's new `rmshm-*` pools from pre-existing resources. Do not count the
+encoder-failure harness alone as shared-memory cleanup qualification.
+
 Use the existing quality tools, not just encoded-file hashes:
 
 ```sh

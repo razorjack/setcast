@@ -4,7 +4,11 @@ Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
 Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
-Linux execution is in progress; [retained host and check evidence](research/linux-qualification-2026-11-01/README.md) records passing baseline/acceptance and unresolved NVIDIA worker-pixel and screenshot failures.
+Linux execution is in progress. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
+records the graphics-default fix, complete production correctness, fresh installations,
+short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains unqualified.
+Current upstream has a separate named shared-memory leak after injected encoder failure;
+successful-export quality and quiet comparisons are still in progress.
 The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
 change the release criteria or authorize default promotion.
 

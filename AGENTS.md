@@ -114,6 +114,12 @@ Gotchas:
   Transfer the local browser-first candidate before testing independent installation; main's
   package-smoke lacks the candidate's `--report` and fresh dependency installation behavior.
   The old upstream comparison branch predates promoted bitmap code. Windows remains unqualified.
+
+- Linux shared-memory qualification needs the host's `/dev/shm`, not a sandbox's private mount.
+  Current Remotion 4.0.539 leaves a named `rmshm-*` pool after injected encoder failure even
+  when destination/temp-directory assertions pass. Observe job-owned pools independently and
+  preserve the failure; never delete unrelated pools. See the Linux qualification evidence's
+  `upstream-cleanup.md`. Production Remotion remains pinned to 4.0.513.
   Sandbox device isolation can hide a working NVIDIA driver; identify host devices with the
   same access used for exports. Worker qualification accepts `--gl` and retains runtime reports
   for each export so requested settings cannot be mistaken for observed graphics backends.
