@@ -83,8 +83,11 @@ A report status of `measured` means the tools completed, not that perceptual par
 false results remain visible for investigation. Visual review remains required.
 
 The coordinator checks the frozen authored configuration and reference project/asset digests,
-then the metric tool checks both export identities. It requires enough free space for a
-conservative uncompressed RGB reference plus reserve before each case. With `--discard-reference`,
+then the metric tool checks both export identities. The reference tool checks free disk before
+starting and before every frame, retaining a 2 GiB reserve plus two raw frame buffers.
+`quality-reference.ts --reserve-gib N` can require a larger reserve. An earlier preflight
+assumed the entire reference would be uncompressed; the runtime check permits compressed
+references while aborting capture if available space falls below the reserve. With `--discard-reference`,
 it removes only that new case's bulk FFV1 after both metrics finish and three lossless sample
 PNGs are saved and hashed. Full source/decoded hashes, per-frame metrics, encoded videos and
 first/middle/final PNGs remain. Without this explicit option, all references remain. A failed

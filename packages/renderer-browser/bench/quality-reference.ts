@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, statfs, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { framesWithinMix, resolveFrameRange, toSeconds } from '@setcast/core';
@@ -18,11 +18,17 @@ const { values, positionals } = parseArgs({
     out: { type: 'string' },
     at: { type: 'string', default: '90' },
     seconds: { type: 'string', default: '10' },
+    'reserve-gib': { type: 'string', default: '2' },
   },
 });
 if (!values.out || positionals.length > 1)
-  throw new Error('Pass [PROJECT] --out NEW_DIRECTORY [--at SECONDS] [--seconds SECONDS].');
+  throw new Error(
+    'Pass [PROJECT] --out NEW_DIRECTORY [--at SECONDS] [--seconds SECONDS] [--reserve-gib 2].',
+  );
 const projectDir = resolve(positionals[0] ?? 'examples/demo');
+const reserveGiB = Number(values['reserve-gib']);
+if (!Number.isFinite(reserveGiB) || reserveGiB < 2 || reserveGiB > 1024)
+  throw new Error('--reserve-gib must be a finite number from 2 to 1024.');
 const out = resolve(values.out),
   at = Number(values.at),
   seconds = Number(values.seconds);
@@ -47,6 +53,8 @@ const range = resolveFrameRange(
   framesWithinMix(project.mix.duration, project.fps),
 );
 await mkdir(out);
+const minimumFreeBytes = reserveGiB * 1024 ** 3 + project.width * project.height * 8;
+await checkDiskSpace();
 const control = new AbortController();
 for (const name of ['SIGINT', 'SIGTERM'] as const)
   process.once(name, () => control.abort(new Error(`Stopped by ${name}.`)));
@@ -106,6 +114,7 @@ async function captureReference() {
     await withCapture(project, options, async (page) => {
       const cdp = await page.context().newCDPSession(page);
       for (let frame = range[0]; frame <= range[1]; frame++) {
+        await checkDiskSpace();
         await prepareFrame(page, frame);
         const screenshot = await cdp.send('Page.captureScreenshot', {
           format: 'png',
@@ -165,6 +174,7 @@ async function saveReference(identity: string) {
     fileDigest: await digestFile(file),
     sourceRgbHash: decoded.trim(),
     capture: 'png-cdp-optimize-for-speed',
+    minimumFreeBytes,
     regions,
     scope:
       'Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range.',
@@ -210,5 +220,15 @@ function mergeRegions(
           }
         : bounds;
     }
+  }
+}
+
+async function checkDiskSpace() {
+  const space = await statfs(out);
+  const free = space.bavail * space.bsize;
+  if (free < minimumFreeBytes) {
+    throw new Error(
+      `Lossless reference needs ${(minimumFreeBytes / 1024 ** 3).toFixed(2)} GiB of free reserve; ${(free / 1024 ** 3).toFixed(2)} GiB is available. Free space or choose an output directory on a larger volume.`,
+    );
   }
 }

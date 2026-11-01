@@ -1,0 +1,59 @@
+{
+  "chromium": "156.0.8078.4",
+  "results": [
+    {
+      "alpha": "opaque",
+      "background": "transparent",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "opaque",
+      "background": "#111111",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "opaque",
+      "background": "#ffffff",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "gradient",
+      "background": "transparent",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "gradient",
+      "background": "#111111",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "gradient",
+      "background": "#ffffff",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "transparent",
+      "background": "transparent",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "transparent",
+      "background": "#111111",
+      "mismatched": 0,
+      "maxDelta": 0
+    },
+    {
+      "alpha": "transparent",
+      "background": "#ffffff",
+      "mismatched": 0,
+      "maxDelta": 0
+    }
+  ]
+}

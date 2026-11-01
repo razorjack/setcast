@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { mkdir, readFile, readdir, statfs, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { parseArgs, promisify } from 'node:util';
 import { digestFile } from '../packages/renderer-browser/src/export/identity.ts';
@@ -72,7 +72,6 @@ try {
 async function measureCase(fixture: CorpusCase) {
   const directory = join(out, fixture.name);
   await mkdir(directory);
-  await checkSpace(fixture);
   const authored = JSON.parse(await readFile(join(fixture.directory, 'setcast.yaml'), 'utf8'));
   assert.deepEqual(authored, fixture.config, 'Corpus configuration changed after freezing');
   const reference = join(directory, 'reference');
@@ -151,17 +150,6 @@ async function captureComparison(
       join(directory, `${adapter}.log`),
     );
   }
-}
-
-async function checkSpace(fixture: CorpusCase) {
-  const { width, height, fps } = fixture.config.output;
-  const frames = Math.ceil(fixture.seconds * fps);
-  const required = width * height * 3 * frames * 1.1 + 1024 ** 3;
-  const space = await statfs(out);
-  assert(
-    space.bavail * space.bsize >= required,
-    `Need ${(required / 1024 ** 3).toFixed(1)} GiB free for conservative uncompressed reference capacity; free space or run this case on a larger volume.`,
-  );
 }
 
 async function command(file: string, args: string[], log: string, cwd = root) {

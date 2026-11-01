@@ -1,0 +1,32 @@
+/** BMP V4 keeps top-down BGRA pixels, explicit alpha and sRGB without image compression. */
+export function bitmapDataUrl({
+  width,
+  height,
+  data,
+}: Pick<ImageData, 'width' | 'height' | 'data'>) {
+  const offset = 124;
+  const bytes = new Uint8Array(offset + width * height * 4);
+  const header = new DataView(bytes.buffer);
+  header.setUint16(0, 0x4d42, true);
+  header.setUint32(2, bytes.length, true);
+  header.setUint32(10, offset, true);
+  header.setUint32(14, 108, true);
+  header.setInt32(18, width, true);
+  header.setInt32(22, -height, true);
+  header.setUint16(26, 1, true);
+  header.setUint16(28, 32, true);
+  header.setUint32(30, 3, true);
+  header.setUint32(34, width * height * 4, true);
+  header.setUint32(54, 0x00ff0000, true);
+  header.setUint32(58, 0x0000ff00, true);
+  header.setUint32(62, 0x000000ff, true);
+  header.setUint32(66, 0xff000000, true);
+  header.setUint32(70, 0x73524742, true);
+  const source = new DataView(data.buffer, data.byteOffset, data.byteLength);
+  for (let index = 0; index < data.byteLength; index += 4) {
+    const rgba = source.getUint32(index, true);
+    const bgra = (rgba & 0xff00ff00) | ((rgba & 0xff) << 16) | ((rgba >>> 16) & 0xff);
+    header.setUint32(offset + index, bgra, true);
+  }
+  return `data:image/bmp;base64,${bytes.toBase64()}`;
+}

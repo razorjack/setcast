@@ -1051,3 +1051,79 @@ reports are retained under `research/png-reference-2026-11-01/`.
 The corpus coordinator and faster lossless-reference tooling passed final ready: 667 tests,
 111 files, lint/types/formatting, dependency isolation and decoded smoke. The ongoing corpus
 measurement remains separate from this tooling milestone. Log: `/tmp/setcast-corpus-tools-ready.log`.
+
+Corpus standard and Afterhours now complete: all recorded full-frame and text-region mean,
+minimum and p05 comparisons meet or exceed current Remotion at the tested settings. The GPU
+cases are running. This remains output calibration, not quiet-period performance qualification.
+
+A new isolated video-preparation experiment starts from aad14cc on
+`renderer/bitmap-video-candidate` at `/private/tmp/setcast-bitmap-video-candidate`. The earlier
+direct-canvas change failed pixel fidelity. This alternative keeps the `<img>` DOM and CSS
+behavior and replaces canvas PNG serialization with a BMP V4 data URL containing lossless
+32-bit pixels and explicit alpha/sRGB fields. The hypothesis is lower image-encoding cost;
+readback, copying, base64 and image decoding remain, and memory may increase. Exact pixels,
+alpha handling, arbitrary seeks/loops, bounded resources and complete-export timings must pass
+before any production change. This is an unqualified experiment.
+
+The bitmap data-URL candidate preserves exact decoded RGBA across all 288 theme/orientation/
+seek/loop samples. Its nine synthetic alpha/compositing checks also match PNG exactly. However,
+its diagnostic readiness median was slower than PNG under the same shared-load experiment,
+so it is not a speed improvement to retain. Large base64 DOM attribute values are a likely
+cost, not an isolated measurement yet. The next variant uses bounded blob URLs to avoid that
+representation; it must prove ownership/cleanup as well as the same pixels. The data-URL
+source and reports are archived in `research/bitmap-video-2026-11-01/`.
+
+The blob probe stopped after 271 recorded exact frames because its synchronous FFmpeg PNG-hash
+child waited indefinitely in a libavformat `read`, with no CPU use. The renderer had already
+written Darkroom's next PNG. Decoding that saved file separately succeeded and matched the
+baseline hash. The owned FFmpeg child was sampled and killed; the probe then closed its browser.
+The partial report and stack sample are retained. Hashing now reads the already-written PNG
+file, uses bounded threads and a 30-second hard timeout. The final Darkroom cases are being
+retried separately; the first 30 complete scenes had exactly one live bitmap URL per ready
+frame, at most two transient allocations, and zero after unmount. Browser acceptance and ready
+passed for the candidate. Do not mistake the incomplete probe for complete qualification.
+
+Darkroom's file-hash retry passed all 18 frames and both scene cleanup checks. Combined with
+the first 30 complete scenes, the blob variant matches all 288 expected RGBA hashes, keeps
+one bitmap URL per ready frame and at most two during replacement, and releases every URL
+after all 32 unmounts. Source switching is included using two video paths with identical bytes.
+All hash reports and one source-change PNG per theme/orientation remain; other newly generated
+matching screenshots were removed to recover disk space. Source media and earlier research
+artifacts were not removed. Candidate browser acceptance and ready passed; throughput and
+sustained process memory are still unqualified.
+
+The candidate also passes Remotion acceptance and packed-browser smoke. The decoded video
+comparison now covers a complete ten-second slice across a source switch, beyond sampled
+stills; those exports are correctness checks under load, not performance measurements.
+
+Reference capture now checks free disk before opening Chromium and before every frame, retaining
+2 GiB plus two raw frame buffers by default. `--reserve-gib` can increase the reserve. An
+intentional 1024 GiB requirement fails before capture with available/required space in the error;
+a normal six-frame reference passes full source/decoded RGB equality. This replaces the overly
+conservative whole-reference raw-size estimate for future corpus coordinator invocations. The
+currently running coordinator retains its original preflight and may require a separate final
+chunk-case retry. No image-quality or timing threshold changed.
+
+The full bitmap-video encoded comparison passed: all 300 decoded video frames and decoded PCM
+audio match the original PNG path exactly across the ten-second source-switch slice. See
+`research/bitmap-video-2026-11-01/README.md`. The isolated branch remains unpromoted until quiet
+throughput and sustained memory checks. Nine corpus cases now have numerical reports. Portrait
+contains an unusually low Remotion minimum; investigate individual frames before treating its
+aggregate metric advantage as release evidence.
+
+Portrait inspection identifies the low score as an entirely black current-Remotion output frame
+at offset 90 (absolute frame 3150, 105 seconds), exactly at the play/art change. Its adjacent
+frames and the browser output need comparison and a repeat/control before attributing the cause.
+This is a content failure, not a compression-quality difference. Preserve the original report
+and do not use this failed arm to claim a matched-quality performance advantage.
+
+Bitmap candidate committed as cc10be9 on `renderer/bitmap-video-candidate`; production main
+retains PNG. Final ready passed again after the hash-helper hardening. Main's first ready
+attempt found formatting in the new reserve flag usage message; formatting was corrected and
+the complete required checks are rerunning.
+
+Main reference/probe milestone passed complete ready: 667 tests in 111 files, formatting,
+lint/types, dependency isolation and decoded smoke (`/tmp/setcast-main-qualification-ready.log`).
+The browser portrait frame at offset 90 contains the expected new art, credits, branding and
+announcement; the corresponding current-Remotion frame is black. A three-repeat transition
+control is running separately, with no performance claim.
