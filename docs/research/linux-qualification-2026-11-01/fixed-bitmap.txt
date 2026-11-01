@@ -1,0 +1,1 @@
+Bitmap roundtrip: exact RGBA including alpha and background compositing

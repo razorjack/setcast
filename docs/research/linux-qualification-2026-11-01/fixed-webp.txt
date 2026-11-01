@@ -1,0 +1,23 @@
+sterile-tech: lossless WebP matches PNG after an earlier seek
+escapement: lossless WebP matches PNG after an earlier seek
+long-exposure: lossless WebP matches PNG after an earlier seek
+bristol: lossless WebP matches PNG after an earlier seek
+patina: lossless WebP matches PNG after an earlier seek
+quicksilver: lossless WebP matches PNG after an earlier seek
+bunker: lossless WebP matches PNG after an earlier seek
+vfd: lossless WebP matches PNG after an earlier seek
+interference: lossless WebP matches PNG after an earlier seek
+pirate: lossless WebP matches PNG after an earlier seek
+afterhours: lossless WebP matches PNG after an earlier seek
+passe-partout: lossless WebP matches PNG after an earlier seek
+masthead: lossless WebP matches PNG after an earlier seek
+anamorphic: lossless WebP matches PNG after an earlier seek
+relief: lossless WebP matches PNG after an earlier seek
+darkroom: lossless WebP matches PNG after an earlier seek
+field: lossless WebP matches PNG after an earlier seek
+field-portrait: lossless WebP matches PNG after an earlier seek
+tunnel: lossless WebP matches PNG after an earlier seek
+tunnel-portrait: lossless WebP matches PNG after an earlier seek
+constellation: lossless WebP matches PNG after an earlier seek
+constellation-portrait: lossless WebP matches PNG after an earlier seek
+webp: PASS (all themes, GPU visuals/portrait, exact PNG pixels, no FFmpeg; /home/razorjack/Projects/opensource/setcast/examples/demo/out/webp-check)

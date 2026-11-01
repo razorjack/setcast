@@ -1694,3 +1694,17 @@ isolation, browser Linux auto now follows Chromium's default graphics selection;
 explicit angle remains opt-in and unqualified on the tested driver. Remotion's
 graphics policy, the default renderer, and NVENC selection are unchanged.
 Baseline and both acceptance suites are being repeated before committing this fix.
+
+Committed fix 29e7dbc passes the full automatic-backend worker matrix: all 32
+theme/orientation cases have exact decoded equality across 1/2/4 workers, including
+Pirate, Afterhours and Masthead. Same-page frame checks and bitmap roundtrip also
+pass on the committed fix. Remaining affected checks, final candidate installation
+and resource requalification continue. Explicit NVIDIA angle failures remain retained.
+
+The complete affected production suite passes on 29e7dbc: frame order, all 32 exact
+worker cases, bitmap/video frames, color, WebP, both GPU recovery harnesses, resume,
+chunk/incremental/preparation caches, preview/queue, ProRes and decoded verifier.
+The automatic backend is observed SwiftShader. Final browser-first installation
+and resource checks are now being repeated with this committed implementation.
+
+Linux final candidate `a61a0b1` passed ready, both acceptance suites and both independent fresh tarball installations after the graphics fix. Browser-only inventory remains Remotion-free; explicit optional compatibility renders six decoded frames. See the Linux evidence `final-installed-*` reports. Production and candidate defaults remain scoped to their existing branches.

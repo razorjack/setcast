@@ -1,0 +1,13 @@
+initial: 75 captured, 0 reused, 1 workers
+identical repeat: 0 captured, 75 reused, 0 workers
+different destination: 0 captured, 75 reused, 0 workers
+corrupt one chunk: 30 captured, 45 reused, 1 workers
+missing one chunk: 30 captured, 45 reused, 1 workers
+changed settings: 75 captured, 0 reused, 1 workers
+changed project: 75 captured, 0 reused, 1 workers
+changed art: 75 captured, 0 reused, 1 workers
+changed audio: 75 captured, 0 reused, 1 workers
+restored inputs: 0 captured, 75 reused, 0 workers
+recover interruption: 45 captured, 30 reused, 1 workers
+after clear: 75 captured, 0 reused, 1 workers
+Persistent cache: PASS

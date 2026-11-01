@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "status": "passed",
+  "states": [
+    "computed",
+    "reused"
+  ],
+  "exactPreparation": true,
+  "exactDecodedVideoAndAudio": true,
+  "stored": {
+    "version": 1,
+    "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/fixed-preparation/cache",
+    "bytes": 406857,
+    "entries": [
+      {
+        "key": "380f2ca083b7079ffa8a237e28923fcb031400553b619943761660abf3fcd93b",
+        "kind": "analysis",
+        "bytes": 20040,
+        "sha256": "5e58f8ab35d9ee5a9ffe8a11f7fe58c180e536a79f2e2afb53bd2ab6e4140a85",
+        "used": 1793566297278
+      },
+      {
+        "key": "6ede173531ec893fc95f26e12e334180eeb8b745d2ad95131bc0832bf1c4fcb3",
+        "kind": "video",
+        "bytes": 386817,
+        "sha256": "e0cf8225ae5d41195d16745f54dd0177a05cbdc2fd9a4994dfc8f36dbb7fd2dd",
+        "used": 1793566301005
+      }
+    ]
+  },
+  "cleared": true
+}

@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "revision": "29e7dbcd39010e2a5907ab9be09dc71a12ee4d08",
+  "dirty": true,
+  "ffmpeg": "ffmpeg version 8.1.3 Copyright (c) 2000-2026 the FFmpeg developers",
+  "thresholds": {
+    "compositeMean": 1.5,
+    "compositeMax": 12,
+    "alphaMax": 1
+  },
+  "firstFrame": 32,
+  "frames": 63,
+  "browser": {
+    "kind": "browser",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+    "capture": "png-screenshot",
+    "graphics": {
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "graphicsError": null
+  },
+  "pixels": {
+    "alphaMax": 1,
+    "compositeMax": 2.709803921568607,
+    "compositeMean": 0.10996723515747465,
+    "transparent": 6185281,
+    "partial": 5753213,
+    "rgbaSha256": "575b45bcda00cbb97e27b6765a205b3e47c52fc33949dd4f7c04a01aea291c46"
+  },
+  "audio": {
+    "frames": 100800,
+    "sourceSliceExact": true,
+    "sha256": "5074f3355c917efb36181a2a77b2cc837355fd726dc458e01e342cdde7ba6ae0"
+  },
+  "chunkJoinExact": true,
+  "reuse": {
+    "cachedCaptures": 0,
+    "resumedFrames": 30
+  },
+  "themes": {
+    "sterile-tech": {
+      "transparent": 213360,
+      "partial": 16957,
+      "sha256": "aef00d6929f410766b2b4d9fbf73ff819f25ea58dc45ae6d889b7912bc02f882"
+    },
+    "escapement": {
+      "transparent": 227068,
+      "partial": 2920,
+      "sha256": "cfa587596750a7146cd85c2781b198fae3ca2bc14ec4dbe9fb9be48c329562cb"
+    },
+    "long-exposure": {
+      "transparent": 163622,
+      "partial": 66273,
+      "sha256": "d106ddc4072c7137c3be2554baa80563277971396f11630bca7e58f24d996d35"
+    },
+    "bristol": {
+      "transparent": 186579,
+      "partial": 1318,
+      "sha256": "99df4fbb168a8646163859353df41108455ba2397109570f9ea7e569649bf1fc"
+    },
+    "patina": {
+      "transparent": 226715,
+      "partial": 3605,
+      "sha256": "51d3d8e43a649f2807d9d3b86654f06319b73f6374c577955e3c43b4bc8f527a"
+    },
+    "quicksilver": {
+      "transparent": 226887,
+      "partial": 3264,
+      "sha256": "1f571fd0798f86066e5e37dbe4e5603cbeef59e2f241cb2b2c67a0d98e2eda7d"
+    },
+    "bunker": {
+      "transparent": 215127,
+      "partial": 3621,
+      "sha256": "3b71d2c6b536e36f6f1b08df17607c8dd81829df3779110bed243b9e5025f98c"
+    },
+    "vfd": {
+      "transparent": 147701,
+      "partial": 23591,
+      "sha256": "e1d11f64f3c9c915a5dc4d533520d54fb856fb584bd5f53998bcb630e73c52c6"
+    },
+    "interference": {
+      "transparent": 225878,
+      "partial": 4414,
+      "sha256": "7444465aaf044e045f41dc78930765ea94fb6fee4e035a973db99ee551532fd8"
+    },
+    "pirate": {
+      "transparent": 202253,
+      "partial": 3287,
+      "sha256": "67d30b7e7bd4d418ac0f04ec0600ea5e0f4cd29dcce708a7bda7dbc9b97bd1fd"
+    },
+    "afterhours": {
+      "transparent": 202041,
+      "partial": 28359,
+      "sha256": "9d701af9d0842a79c823684ee9dc3e73d448600fd41a0e804e0ce1cbebda7f47"
+    },
+    "passe-partout": {
+      "transparent": 229827,
+      "partial": 496,
+      "sha256": "86cf42259599fa1bfaa37035458c0012835847c852b279b64d47acac73a6ca06"
+    },
+    "masthead": {
+      "transparent": 226012,
+      "partial": 4104,
+      "sha256": "d4a9656c98156178f6473f6a8ebfa76effa0a23b61ef6059adb1c9b880418ba2"
+    },
+    "anamorphic": {
+      "transparent": 227109,
+      "partial": 2383,
+      "sha256": "38bb1ef6124c2022f9bbdfd32cf4fdf53a891653821a09388d05707a23afd04d"
+    },
+    "relief": {
+      "transparent": 114073,
+      "partial": 1122,
+      "sha256": "9bce9106145176fabbd084381e95edf247b8849d34fcf99fae417ac3277ffa22"
+    },
+    "darkroom": {
+      "transparent": 229400,
+      "partial": 977,
+      "sha256": "5b2eb75d469060a6dd2fa40201319cef6dad3dfc98530ac58bd51c968f9bd5bd"
+    }
+  },
+  "brightness": {
+    "0": 0,
+    "1": 255,
+    "0.5": 128
+  },
+  "media": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "prores",
+        "codec_long_name": "Apple ProRes (iCodec Pro)",
+        "profile": "4444",
+        "codec_type": "video",
+        "codec_tag_string": "ap4h",
+        "codec_tag": "0x68347061",
+        "width": 640,
+        "height": 360,
+        "coded_width": 640,
+        "coded_height": 360,
+        "has_b_frames": 0,
+        "pix_fmt": "yuva444p12le",
+        "level": -99,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "field_order": "progressive",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/90000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 189000,
+        "duration": "2.100000",
+        "bit_rate": "39787059",
+        "bits_per_raw_sample": "12",
+        "nb_frames": "63",
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "handler_name": "VideoHandler",
+          "vendor_id": "FFMP"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "pcm_s24le",
+        "codec_long_name": "PCM signed 24-bit little-endian",
+        "codec_type": "audio",
+        "codec_tag_string": "in24",
+        "codec_tag": "0x34326e69",
+        "sample_fmt": "s32",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 24,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 100800,
+        "duration": "2.100000",
+        "bit_rate": "2304000",
+        "bits_per_raw_sample": "24",
+        "nb_frames": "100800",
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ]
+  },
+  "status": "passed"
+}

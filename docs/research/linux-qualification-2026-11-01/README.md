@@ -172,3 +172,18 @@ unlike the NVENC workload, this runbook preset does not request decoded verifica
 The Linux automatic graphics-selection fix passes ready (688 tests), doctor with
 observed SwiftShader and all requested features, and both exporter acceptance
 suites. The complete affected suite is being rerun on the committed fix.
+
+Committed auto-path rerun at 29e7dbc passes all 32 worker cases with exact decoded
+equality, plus same-page frame order and bitmap roundtrip. This completes the
+worker regression checks on the shipped change, not only an overridden test
+launch. All per-export runtime files are retained in fixed-workers.
+
+The complete fixed-production sequence passes on 29e7dbc, with every individual
+exit status retained. This includes all 32 worker cases, 64 video cases, color,
+WebP, GPU recovery, cache/resume, preview/exports, ProRes and decoded verifier.
+The final browser-first integration is a61a0b1 and is undergoing its own ready,
+acceptance and fresh-install repetition. Production remains Remotion-default.
+
+### Final candidate installation
+
+Candidate `a61a0b1da1566b1c9638334d480f0b37829ff655` includes the committed Linux graphics fix. Its `ready`, browser acceptance and Remotion acceptance pass. Fresh browser-only tarball installation contains no Remotion packages and passes default workflows, themes, video, cache/resume and ProRes. The separate compatibility installation passes explicit optional Remotion with six decoded frames. Retained `final-candidate-*` and `final-installed-*` reports supersede the earlier candidate checks for the final implementation.
