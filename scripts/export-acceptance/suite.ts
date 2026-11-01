@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import type { Exporter, RenderProgress } from '../../packages/core/src/index.ts';
 import { createFixture, fixtureProject, FPS, FRAME_COUNT } from './fixture.ts';
 import { checkSync, checkTracks, pixels } from './measure.ts';
-import { checkReadiness, type AcceptanceContext } from './readiness.ts';
+import { checkArtTransition, checkReadiness, type AcceptanceContext } from './readiness.ts';
 import { checkPerformance } from './performance.ts';
 import { checkVideo } from './video.ts';
 import { checkGpuVisualizers } from './gpu.ts';
@@ -30,6 +30,7 @@ export async function runAcceptance(
     await exporter.withRenderSession(async () => {
       await checkExports(context);
       await checkReadiness(context);
+      await checkArtTransition(context);
       await checkVideo(context);
       await checkPerformance(context);
       await checkThemes(context, reference);

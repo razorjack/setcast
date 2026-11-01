@@ -1127,3 +1127,34 @@ lint/types, dependency isolation and decoded smoke (`/tmp/setcast-main-qualifica
 The browser portrait frame at offset 90 contains the expected new art, credits, branding and
 announcement; the corresponding current-Remotion frame is black. A three-repeat transition
 control is running separately, with no performance claim.
+
+The portrait transition failure reproduced in all three current-Remotion repeats at absolute
+frame 3150; all three browser controls contain no black frame. Source inspection found that
+`useHoldUntil` releases its adapter hold before React commits ready state, while prepared art
+keeps the entire stage hidden until that state is ready. A layout-effect hold until the ready
+state commits is being tested in the isolated upstream checkout. This is a hypothesis until
+controlled repeats finish. An attempted pause found that the corpus coordinator had already exited. Its final status
+and runtime records are being checked before any remaining case runs.
+
+The commit-readiness hold removes the black transition frame in all three controlled repeats;
+both browser and current Remotion render all frames with content. The shared hook now retains
+a layout-effect hold until matching ready state has committed. This covers prepared art and
+other asynchronous wrapper consumers. The isolated comparison checkout was restored afterward
+so the remaining original-corpus case uses the original runtime. Regression coverage and both
+exporter acceptance suites are next.
+
+The small solid-color transition control passes even without the commit hold, so it is not a
+failing-before reproducer. It remains useful all-frame acceptance of prepared-art transitions.
+The frozen Afterhours portrait workload is the actual failing-before/passing-after evidence;
+all original and corrected repeated reports are retained under `research/art-readiness-2026-11-01`.
+Ten-case quality reports, per-frame full metrics, runtime provenance and inspected midpoint
+contact sheets are retained under `research/corpus-quality-2026-11-01`.
+
+Both exporter acceptance suites pass with the commit hold, including every synthetic transition
+frame, failures, cancellation and recovery. Same-page frame checks pass. The browser decoded
+hash is unchanged across all six original/corrected portrait repeats.
+
+Commit-readiness milestone final ready passed: 667 tests in 111 files, lint/types/formatting,
+dependency isolation and decoded smoke. Logs: `/tmp/setcast-commit-hold-ready.log`,
+`/tmp/setcast-commit-hold-browser-acceptance.log`, `/tmp/setcast-commit-hold-remotion-acceptance.log`
+and `/tmp/setcast-commit-hold-frames.log`.

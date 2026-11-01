@@ -153,6 +153,10 @@ export function useHoldUntil(
     );
   }, [hold, label, revision]);
 
+  // Loading may resolve before React commits the state that makes the resource visible.
+  const committed = state.label === label && state.revision === revision && state.ready;
+  useHoldWhile(`commit:${label}`, !committed);
+
   // State left over from a previous label describes a resource this render no longer waits for.
   if (state.label !== label || state.revision !== revision) return false;
   if (state.error) throw state.error;

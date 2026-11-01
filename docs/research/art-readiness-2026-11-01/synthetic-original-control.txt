@@ -1,0 +1,3 @@
+[WARNING]
+Mediabunny was loaded twice. This will likely cause Mediabunny not to work correctly. Check if multiple dependencies are importing different versions of Mediabunny, or if something is being bundled incorrectly.
+  art change: every decoded frame contains the expected prepared background

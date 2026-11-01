@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- `useHoldUntil` must hold through the React commit that exposes matching ready state, not only
+  through promise completion. Prepared art hides Stage until then; current Remotion captured a
+  black portrait frame at an art change without the commit hold. Keep the portrait reproducer
+  in docs/research/art-readiness-2026-11-01 and decoded transition acceptance.
+
 - Resume checkpoint equality uses the deterministic acceptance marker scene. Animated theme
   paint history can differ when a fresh page starts at a resumed chunk, so theme qualification
   is separate from exact checkpoint frame comparisons. Keep the frame-hash assertion.
