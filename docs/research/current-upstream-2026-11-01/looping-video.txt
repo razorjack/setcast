@@ -1,0 +1,27 @@
+Pre-run system CPU busy: 3.8%
+Pair 1/3: browser
+Pre-run system CPU busy: 3.7%
+Pair 1/3: remotion
+Pre-run system CPU busy: 5.5%
+Pair 2/3: remotion
+Pre-run system CPU busy: 4.4%
+Pair 2/3: browser
+Pre-run system CPU busy: 7.7%
+Pair 3/3: browser
+Pre-run system CPU busy: 6.2%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 21.574506667,
+    "minSeconds": 21.497522792000005,
+    "maxSeconds": 21.72889300000001
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 12.810814874999997,
+    "minSeconds": 12.800970583000016,
+    "maxSeconds": 13.511864874999999
+  }
+}
+Report: /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/upstream-quiet-looping-video-2026-11-01/report.json

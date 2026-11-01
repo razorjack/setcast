@@ -1339,3 +1339,11 @@ project's nondefault JPEG 90 / CRF 22 settings, decoded verification and audio c
 process samples are available; final temporary directories are empty. Evidence is retained in
 `docs/research/endurance-monitor-2026-11-01`. This validates instrumentation only; a corrected
 full-master run remains required. Shared working-tree ready and exporter checks pass.
+
+The quiet current-upstream comparison completed all three alternating pairs for standard, tunnel
+and looping video. Browser wall time is higher in every fixture. Browser decoded hashes retain
+the qualified one-worker output; automatic Remotion hashes differ from its earlier quality arm,
+so this is not a newly qualified matched-quality comparison of every output. Reports and the
+negative result are retained in `docs/research/current-upstream-2026-11-01`. The default remains
+blocked. A direct CDP JPEG/fast-PNG experiment will isolate transport costs without changing the
+production CSS contract or weakening the quality threshold.

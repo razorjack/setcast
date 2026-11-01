@@ -16,6 +16,9 @@ The shared [commit-readiness fix](research/art-readiness-2026-11-01/README.md), 
 removes that repeatable black transition frame. Completed pieces and validation are tracked in the log.
 Scoped audio-preparation reuse and pinned-runtime preview references with local numeric differences
 are committed on main. Native capture was qualified and rejected for CSS pixel differences.
+The [quiet current-upstream comparison](research/current-upstream-2026-11-01/README.md) misses
+the 30% speed target in all three measured workloads. Automatic Remotion output quality requires
+separate requalification because its decoded hashes differ from the one-worker quality arms.
 Remotion remains the default until the release criteria below are met.
 
 Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
