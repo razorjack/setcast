@@ -1,0 +1,22 @@
+Pre-run system CPU busy: 23.6%
+Pre-run system CPU busy: 25.1%
+Pre-run system CPU busy: 23.4%
+Pre-run system CPU busy: 25.4%
+Pre-run system CPU busy: 25.5%
+Pre-run system CPU busy: 23.3%
+Pre-run system CPU busy: 23.1%
+Pre-run system CPU busy: 23.4%
+Pre-run system CPU busy: 24.0%
+Pre-run system CPU busy: 23.4%
+Pre-run system CPU busy: 25.3%
+Pre-run system CPU busy: 23.0%
+file:///private/tmp/setcast-direct-capture-candidate/packages/renderer-browser/bench/scaling.ts:197
+  throw new Error(
+        ^
+
+Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory.
+    at waitForIdle (file:///private/tmp/setcast-direct-capture-candidate/packages/renderer-browser/bench/scaling.ts:197:9)
+    at async run (file:///private/tmp/setcast-direct-capture-candidate/packages/renderer-browser/bench/scaling.ts:132:3)
+    at async file:///private/tmp/setcast-direct-capture-candidate/packages/renderer-browser/bench/scaling.ts:115:38
+
+Node.js v26.7.0

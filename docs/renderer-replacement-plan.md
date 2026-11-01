@@ -227,7 +227,7 @@ The regression corpus and numerical quality calibration are complete for eleven 
 Current-upstream quiet timings miss the release speed target. Automatic scheduling, audio overlap,
 local VideoToolbox qualification, persistent chunk reuse, scoped preparation reuse and the local
 preview/export workflow are implemented. Bitmap video preparation is integrated after correctness, resource and throughput qualification.
-Direct CDP capture remains an isolated experiment under qualification. Native DOM capture was rejected. H.264 color handling is qualified
+Direct CDP JPEG/PNG capture was rejected after source correctness and quiet timing checks. Native DOM capture was rejected. H.264 color handling is qualified
 locally. ProRes 4444 and transparent Stage are implemented with local FFmpeg/AVFoundation checks;
 receiving-editor workflows and cross-platform installed qualification remain pending.
 The phases describe implementation and evidence, not newly supported renderer flags or APIs.
@@ -341,6 +341,8 @@ sampled theme/GPU/video/art frames exceed the existing pixel allowance; Chromium
 the Pirate defects. Production keeps screenshot capture. See the [retained qualification](research/native-browser-capture-2026-11-01/README.md).
 The [Electron bitmap investigation](research/electron-bitmap-2026-11-01/README.md) also rejects both
 `capturePage()` and next-paint handshakes because they can return an older frame.
+The [direct CDP comparison](research/direct-capture-2026-11-01/README.md) also finds no complete-export
+benefit for JPEG and a regression for fast PNG on the standard fixture.
 The alternative capture work below remains a future optimization, with a new proof required
 before production use; no incomplete fast path is needed to ship independent H.264 export.
 

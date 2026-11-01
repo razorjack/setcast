@@ -1,0 +1,1 @@
+Scheduling acceptance: PASS (4 automatic workers, cache and resume pixels/audio identical)

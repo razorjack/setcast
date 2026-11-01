@@ -1588,3 +1588,11 @@ change replaces video-frame PNG serialization with BMP V4 blob images and explic
 ownership. It preserves the image DOM, screenshot transport, H.264 defaults and renderer choice.
 The main merge uses the same validated source tree as e388178, with subsequent evidence and
 roadmap updates. The independent distribution candidate remains separate from this optimization.
+
+
+Direct screenshot transport qualification is closed without production adoption. Three quiet
+alternating pairs per mode on the standard fixture give control/direct-JPEG medians 6.892/7.117 s,
+with exact decoded hashes, and control/fast-PNG medians 7.054/21.545 s. JPEG shows no measured
+benefit and PNG regresses the complete export at these settings. GPU/video timing is not claimed.
+Source/color/recovery checks, the original partial/busy series and complete timing reports are
+retained in `docs/research/direct-capture-2026-11-01`. The experiment stays isolated at f5d06b5.
