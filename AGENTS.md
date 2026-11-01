@@ -120,6 +120,11 @@ Gotchas:
   when destination/temp-directory assertions pass. Observe job-owned pools independently and
   preserve the failure; never delete unrelated pools. See the Linux qualification evidence's
   `upstream-cleanup.md`. Production Remotion remains pinned to 4.0.513.
+
+- Linux offline capture uses `--font-render-hinting=none`, matching Remotion's existing launch
+  policy. Default Playwright hinting changes glyph-edge pixels and heavily biases text-region
+  fidelity metrics even when native-size text looks equivalent. Keep capture flags aligned
+  before comparing encoders; the Linux evidence retains the mismatched-font measurements.
   Sandbox device isolation can hide a working NVIDIA driver; identify host devices with the
   same access used for exports. Worker qualification accepts `--gl` and retains runtime reports
   for each export so requested settings cannot be mistaken for observed graphics backends.

@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run frames node packages/renderer-browser/bench/frames.ts
+run workers node packages/renderer-browser/bench/worker-frames.ts --workers 1,2,4 --out "$root/workers"
+run bitmap node packages/renderer-browser/bench/bitmap.ts --out "$root/bitmap"
+run video-frames node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/video-frames"
+run color node packages/renderer-browser/bench/color.ts --out "$root/color"
+run webp node packages/renderer-browser/bench/webp.ts
+run gpu node packages/renderer-browser/bench/gpu.ts
+run remotion-gpu node packages/renderer-remotion/bench/gpu-recovery.ts
+run resume node packages/renderer-browser/bench/resume.ts
+run cache node packages/renderer-browser/bench/cache.ts --out "$root/cache"
+run incremental node packages/renderer-browser/bench/incremental.ts --out "$root/incremental"
+run preparation node packages/renderer-browser/bench/analysis-cache.ts --out "$root/preparation"
+run preview node packages/renderer-browser/bench/preview.ts
+run preview-exports node packages/renderer-browser/bench/preview-exports.ts --out "$root/preview-exports"
+run prores node packages/renderer-browser/bench/prores.ts --out "$root/prores"
+run decoded-verifier node packages/renderer-browser/bench/export-verification.ts

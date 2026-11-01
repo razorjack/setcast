@@ -1,6 +1,11 @@
 # Linux qualification, 1 November 2026
 
-Status: in progress, no platform qualification claimed.
+Status: in progress. Final production correctness and fresh candidate installations pass on
+this Fedora x64 host with SwiftShader graphics. Required NVENC and software exports both pass
+120-second decoded fixtures; bitmap memory passes 3,000 captures. Current Remotion 4.0.539
+has a reproduced named shared-memory leak after injected encoder failure. Full-suite quality,
+quiet timing and additional live checks are still in progress. Full-master Linux assets are
+missing, Windows remains unqualified, and main's default remains Remotion.
 
 Starting production revision: 55a7b677b9bf40445d3dad112c411ff9ec002cd0.
 The supplied bundle verifies and contains the handoff and both requested branches.
@@ -21,7 +26,10 @@ The host inventory is a multi-command diagnostic transcript; its final exit
 status does not mark every probe successful. In particular pnpm was absent from
 PATH and nvidia-smi failed.
 
-## Observations
+## Chronological observations
+
+These entries preserve discoveries and failed attempts. Later entries supersede earlier
+in-progress statuses; they do not erase the original failures.
 
 - Initial sandboxed bundle import failed because .git is read-only there.
   The authorized elevated local import succeeded.
@@ -215,3 +223,11 @@ Standard, CSS filters, Field and Tunnel complete numerical quality calibration: 
 ### Final software export resources
 
 The unchanged 120-second, one-worker software resource preset passes on the final implementation, with 84 samples, peak summed RSS 3,092,615,168 bytes and no final temporary directories. Four 900-frame interval RSS medians are 2,848,274,432; 3,005,714,432; 2,986,514,432; and 3,050,590,208 bytes. These are short-run observations, not evidence about a full master. A separate `--verify-video` run fully decodes the same 3,600-frame output and verifies four stereo windows at 5, 33, 79 and 110 seconds. Both reports preserve the output/source hashes. No rerender substitutes a different output for verification.
+
+### Linux font-hinting mismatch
+
+The first ten corpus cases meet their relative numerical floor, but inspecting absolute scores reveals a confound: standard Remotion VMAF NEG is about 70 on Linux versus about 96 in the prior macOS comparison. Browser is about 96. A Remotion PNG already differs from the browser reference by 32.6169 dB PSNR (mean absolute 0.30794, maximum 218), so H.264 conversion is not the main cause. A difference image isolates glyph edges. Decoder matrix/range variants do not recover the score. The first midpoint CLI diagnostic rejected unsupported `still --gl`; the supported retry uses the frozen project setting.
+
+Remotion launches Chromium with `--font-render-hinting=none`. Applying that flag only in an isolated browser capture improves PNG agreement to 82.2926 dB PSNR (mean absolute 0.0002125, maximum four levels). Native-size credits retain the same text and layout. This establishes launch-policy font rasterization as the cause of the large text score penalty. The original relative metric passes must not be presented as matched encoder quality.
+
+Linux browser offline capture is being aligned with the legacy Remotion font-hinting policy. Live browser behavior and other platforms are unchanged. All affected correctness and installed-package checks will be repeated, and quality references regenerated before quiet timing. Original mismatched-font captures, references, metrics and failed diagnostic attempts remain retained.

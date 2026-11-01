@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run fixed-frames node packages/renderer-browser/bench/frames.ts
+run fixed-workers node packages/renderer-browser/bench/worker-frames.ts --workers 1,2,4 --out "$root/fixed-workers"
+run fixed-bitmap node packages/renderer-browser/bench/bitmap.ts --out "$root/fixed-bitmap"
+run fixed-video-frames node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/fixed-video-frames"
+run fixed-color node packages/renderer-browser/bench/color.ts --out "$root/fixed-color"
+run fixed-webp node packages/renderer-browser/bench/webp.ts
+run fixed-gpu node packages/renderer-browser/bench/gpu.ts
+run fixed-remotion-gpu node packages/renderer-remotion/bench/gpu-recovery.ts
+run fixed-resume node packages/renderer-browser/bench/resume.ts
+run fixed-cache node packages/renderer-browser/bench/cache.ts --out "$root/fixed-cache"
+run fixed-incremental node packages/renderer-browser/bench/incremental.ts --out "$root/fixed-incremental"
+run fixed-preparation node packages/renderer-browser/bench/analysis-cache.ts --out "$root/fixed-preparation"
+run fixed-preview node packages/renderer-browser/bench/preview.ts
+run fixed-preview-exports node packages/renderer-browser/bench/preview-exports.ts --out "$root/fixed-preview-exports"
+run fixed-prores node packages/renderer-browser/bench/prores.ts --out "$root/fixed-prores"
+run fixed-decoded-verifier node packages/renderer-browser/bench/export-verification.ts

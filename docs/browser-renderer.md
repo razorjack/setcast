@@ -56,6 +56,8 @@ runtime). NVIDIA ANGLE produced theme pixel differences and screenshot timeouts 
 qualification. Explicit `angle` remains available but is unqualified on that driver. Graphics
 selection is independent of NVENC encoding; inspect `doctor` and export runtime reports for
 the actual backend. See [Linux evidence](research/linux-qualification-2026-11-01/README.md).
+Linux offline capture also disables font hinting to match the existing Remotion output.
+Without the shared setting, glyph-edge differences dominate text fidelity measurements.
 
 Software encoding supports `crf`, `videoBitrate`, `x264Preset`, `jpegQuality`, profiles and
 `chunkSeconds`. `parallelEncoding` must be true. Hardware H.264 uses VideoToolbox on macOS and
