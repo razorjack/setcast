@@ -1052,6 +1052,49 @@ The corpus coordinator and faster lossless-reference tooling passed final ready:
 111 files, lint/types/formatting, dependency isolation and decoded smoke. The ongoing corpus
 measurement remains separate from this tooling milestone. Log: `/tmp/setcast-corpus-tools-ready.log`.
 
+## Bitmap-video candidate, 1 November 2026
+
+Isolated from main at aad14cc. The final candidate uses BMP V4 blob URLs and explicit decoder
+ownership, retaining the existing image DOM and CSS behavior. The earlier data-URL variant is
+archived after slower diagnostic readiness. All 288 theme/orientation/seek/source-switch RGBA
+samples match PNG; nine alpha/compositing controls match; all 32 scene instances release URLs
+on unmount. A full ten-second source-switch export matches all 300 decoded frames and PCM audio.
+See `research/bitmap-video-2026-11-01/README.md` for raw reports and the retained hash-tool stall.
+
+Ready passed 667 tests in 111 files, lint/types/formatting, isolation and decoded smoke. Browser
+acceptance, Remotion acceptance with swangle and packed-browser smoke passed. The final hash
+helper uses saved files, bounded threads and a 30-second hard timeout. Complete-export quiet
+speed and sustained process memory remain unqualified. Do not promote this branch yet.
+
+The 3,000-capture resource follow-up completed with ten repeated source-switch passes, natural
+GC, real JPEG capture, JS heap/DOM samples and process-tree RSS. Every sampled ready frame owns
+one BMP URL, peak replacement owns two, and close revokes all 3,000. Later heap/RSS fluctuate
+without sustained growth within this workload. Reports and the PNG control are retained under
+`research/bitmap-video-2026-11-01`. This is not full-master or speed qualification. The final ready
+attempt under concurrent quality-analysis load hit cache/preview CLI test timeouts; the failed
+log is retained and a sequential rerun is required before committing.
+
+Main also contains the shared commit-readiness correction at 53551f0. This isolated candidate
+has not incorporated it yet; integrate it before any future promotion and rerun acceptance.
+The user requested completion of this item, commit and stop, so no further tuning or promotion
+is authorized in this work period.
+
+Sequential final ready passed with unchanged test limits: 667 tests in 111 files, formatting,
+lint/types, dependency isolation and decoded smoke. The resource helper is included in the
+benchmark TypeScript project. This closes the resource-check milestone; speed and full-master
+qualification remain pending, and the candidate is not promoted.
+
+## Readiness integration, 1 November 2026
+
+The user resumed roadmap completion. This candidate now integrates main 53551f0's shared
+ready-state commit hold and decoded art-transition acceptance. The production behavior under
+qualification includes that correction; the previous stop instruction is historical. Both
+exporter suites, same-page media, package checks and baseline ready must pass before commit.
+
+Readiness integration validation passes: ready, both exporter acceptance suites (Remotion with
+swangle), and frame-driver seeks/font/video-loop checks. Installed browser-package smoke passes.
+These correctness checks overlapped corpus metrics and provide no throughput evidence.
+
 Corpus standard and Afterhours now complete: all recorded full-frame and text-region mean,
 minimum and p05 comparisons meet or exceed current Remotion at the tested settings. The GPU
 cases are running. This remains output calibration, not quiet-period performance qualification.
@@ -1354,6 +1397,12 @@ decoded video hashes and input identities. Median wall time falls from 34.248 to
 Reports are in `docs/research/bitmap-video-timing-2026-11-01`; automatic-worker throughput and
 full-master resources remain required before promotion.
 
+The bitmap candidate integrates main through 53d7594, including automatic scheduling and corrected
+endurance instrumentation. Ready passes 679 tests in 114 files plus lint/types/formatting,
+isolation and decoded smoke. Browser exporter acceptance and packed-browser installation pass.
+The first acceptance invocation used an unsupported `--renderer` harness flag and stopped before
+rendering; the corrected `--adapter` invocation passes. The merged candidate is ready for the
+full-master looping-video resource run, not yet for production promotion.
 The integrated bitmap candidate is committed as 8c3cafc after ready, exporter acceptance and
 packed-browser checks. It now includes main's automatic scheduler and corrected endurance
 instrumentation. A separate full-master workload retains the existing real audio/timeline and
@@ -1508,3 +1557,34 @@ reports and representative images in `docs/research/electron-bitmap-2026-11-01`.
 or fast path enters production. Research harnesses pass ready (688 tests), lint/types and smoke.
 The chunk-worker pilot passes exact 360-frame video and audio equality; its loaded timings remain
 unqualified. Its report is in `docs/research/chunk-scheduling-2026-11-01`.
+
+
+The complete bitmap master run passes at 8c3cafc: 3,372 seconds, 101,160 decoded 1080p30 frames,
+four workers, and six stereo alignment windows with zero measured lag. All 361 process samples
+are available; peak summed RSS is 4.691 GB, with quarter-hour medians increasing from 4.127 to
+4.458 GB. Peak run-directory bytes are 1.799 GB and final temporary directories are empty.
+The run overlapped correctness/external work, so its time is not throughput evidence. Reports and
+scope limits are retained in `docs/research/bitmap-endurance-2026-11-01`. The candidate now merges
+main through 5d5349f; integration checks and quiet automatic-worker timing precede promotion.
+
+
+The latest bitmap integration passes ready (688 tests in 115 files), both exporter acceptance
+suites and fresh installed-package browser checks, including persistent preparation and ProRes.
+The integration changes no H.264 quality defaults. Its logs are retained beside the full-master
+report. Automatic-worker quiet timing is the final bitmap promotion requirement.
+
+
+Automatic-worker bitmap timing completes three alternating pairs at clean baseline 5d5349f and
+candidate e388178. Every input identity, decoded video hash and file size matches. Median wall
+time is 20.373 seconds for PNG and 13.713 for bitmap (32.7% lower). A busy third-arm attempt
+exports nothing and is retained beside its successful retry. All arms satisfy the unchanged
+15% pre-run CPU limit without concurrent own validation. Evidence is in
+`docs/research/bitmap-auto-timing-2026-11-01`. Bitmap's promotion requirements are now met; this
+does not establish the separate current-Remotion speed target or change the default renderer.
+
+
+Bitmap video preparation is promoted to main after the completed qualification. The production
+change replaces video-frame PNG serialization with BMP V4 blob images and explicit decoder/URL
+ownership. It preserves the image DOM, screenshot transport, H.264 defaults and renderer choice.
+The main merge uses the same validated source tree as e388178, with subsequent evidence and
+roadmap updates. The independent distribution candidate remains separate from this optimization.

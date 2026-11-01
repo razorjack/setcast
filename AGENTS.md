@@ -110,6 +110,10 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Offline video preparation uses BMP V4 blob URLs.
+  Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
+  Exact image/encoded parity, URL checks, full-master resources and one/automatic-worker quiet
+  timings pass. See docs/research/bitmap-auto-timing-2026-11-01/README.md.
 - ProRes 4444 uses straight-alpha PNG capture and limited-range BT.709 YUV with sRGB transfer;
   H.264 retains the qualified JPEG color path. Do not apply the JPEG matrix to PNG input.
   Transparent Stage removes art/root decorations and fades opacity. Foreground components can
@@ -129,6 +133,7 @@ Gotchas:
   through promise completion. Prepared art hides Stage until then; current Remotion captured a
   black portrait frame at an art change without the commit hold. Keep the portrait reproducer
   in docs/research/art-readiness-2026-11-01 and decoded transition acceptance.
+
 
 - Resume checkpoint equality uses the deterministic acceptance marker scene. Animated theme
   paint history can differ when a fresh page starts at a resumed chunk, so theme qualification

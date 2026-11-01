@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "renderRevision": "8c3cafc39d85903a9e735edd812b6e60a72ee113",
+  "frames": 101160,
+  "sampleCount": 361,
+  "availableProcessSamples": 361,
+  "peakSummedRssBytes": 4690919424,
+  "peakRunDirectoryBytes": 1799498962,
+  "minimumFilesystemFreeBytes": 6819930112,
+  "finalStorage": {
+    "bytes": 900901579,
+    "freeBytes": 7739830272,
+    "temporaryDirectories": [],
+    "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+  },
+  "rssMediansByWallQuarter": [
+    {
+      "from": 0,
+      "until": 900,
+      "samples": 90,
+      "medianBytes": 4127170560.0
+    },
+    {
+      "from": 900,
+      "until": 1800,
+      "samples": 90,
+      "medianBytes": 4167327744.0
+    },
+    {
+      "from": 1800,
+      "until": 2700,
+      "samples": 89,
+      "medianBytes": 4348411904
+    },
+    {
+      "from": 2700,
+      "until": null,
+      "samples": 92,
+      "medianBytes": 4458381312.0
+    }
+  ]
+}

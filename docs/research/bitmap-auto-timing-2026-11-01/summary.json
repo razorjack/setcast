@@ -1,0 +1,69 @@
+{
+  "runs": [
+    {
+      "label": "0-bitmap",
+      "mode": "bitmap",
+      "revision": "e388178f457cc6331e907c4968fbd0fb4afa83ac",
+      "seconds": 13.712759125,
+      "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+      "hash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+      "bytes": 4571043,
+      "dirty": false
+    },
+    {
+      "label": "0-png",
+      "mode": "png",
+      "revision": "5d5349fc0a7215eb48e1b87ff11577cde20908a4",
+      "seconds": 20.401176541,
+      "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+      "hash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+      "bytes": 4571043,
+      "dirty": false
+    },
+    {
+      "label": "1-bitmap",
+      "mode": "bitmap",
+      "revision": "e388178f457cc6331e907c4968fbd0fb4afa83ac",
+      "seconds": 14.271930292,
+      "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+      "hash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+      "bytes": 4571043,
+      "dirty": false
+    },
+    {
+      "label": "1-png",
+      "mode": "png",
+      "revision": "5d5349fc0a7215eb48e1b87ff11577cde20908a4",
+      "seconds": 20.372545666,
+      "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+      "hash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+      "bytes": 4571043,
+      "dirty": false
+    },
+    {
+      "label": "2-bitmap",
+      "mode": "bitmap",
+      "revision": "e388178f457cc6331e907c4968fbd0fb4afa83ac",
+      "seconds": 13.135565042,
+      "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+      "hash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+      "bytes": 4571043,
+      "dirty": false
+    },
+    {
+      "label": "2-png-r2",
+      "mode": "png",
+      "revision": "5d5349fc0a7215eb48e1b87ff11577cde20908a4",
+      "seconds": 20.302537417,
+      "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+      "hash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+      "bytes": 4571043,
+      "dirty": false
+    }
+  ],
+  "medians": {
+    "png": 20.372545666,
+    "bitmap": 13.712759125
+  },
+  "wallReduction": 0.3269000668931916
+}
