@@ -4,18 +4,32 @@ Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
-Status: implementation in progress; completed pieces and validation are tracked in the log.
-Main retains Remotion until the release criteria below are met. This isolated browser-first
-candidate implements the default and distribution migration; see
-[browser-first-migration.md](browser-first-migration.md) for validation boundaries and rollback.
+Status: implementation and qualification in progress. The browser-first distribution is committed
+on `renderer/browser-first-candidate` (eb40319), with local clean-install coverage but no default
+promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (1db55ff; implementation cc10be9),
+with exact-frame/encoded parity and a passed 3,000-capture resource check; full-master resources
+and quiet throughput remain unqualified.
+The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
+cases, including corrected portrait and long comparisons with no black transition frames.
+The original black frames and storage interruption remain preserved.
+The shared [commit-readiness fix](research/art-readiness-2026-11-01/README.md), committed as 53551f0,
+removes that repeatable black transition frame. Completed pieces and validation are tracked in the log.
+Scoped audio-preparation reuse and pinned-runtime preview references with local numeric differences
+are committed on main. Native capture was qualified and rejected for CSS pixel differences.
+The [quiet current-upstream comparison](research/current-upstream-2026-11-01/README.md) misses
+the 30% speed target in all three measured workloads. Automatic Remotion output quality requires
+separate requalification because its decoded hashes differ from the one-worker quality arms.
+Main retains Remotion until the release criteria below are met. This isolated candidate selects
+browser; see [browser-first-migration.md](browser-first-migration.md) for scope and rollback.
+
 
 Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
 contracts, finishes first exports faster, reuses work across revisions, and connects musical
 preview with export. Independence is already implemented in the browser execution path. The
 remaining work is to establish a better product and remove the installation dependency.
 
-This plan consolidates source inspection, existing local measurements and upstream documentation.
-It does not report a new benchmark. Measured results, source-level findings, experiments and
+This plan consolidates source inspection, local measurements and upstream documentation.
+Its initial assessment predates the linked qualification runs. Measured results, source-level findings, experiments and
 proposed acceptance targets are identified separately. The 30% wall-time target is a product
 objective, not a prediction supported by the existing comparisons.
 
@@ -53,7 +67,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
 | Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
-| Concurrency | Manual 1–8, default 1; automatic policy awaiting final timing qualification | Automatic or explicit |
+| Concurrency | Automatic 1/2/4 from stable CPU/memory limits; explicit 1–8 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |
 | Resume completed chunks | Supported on `render` | Explicitly rejected |
@@ -236,6 +250,10 @@ packages. Keep upstream experiments isolated from production dependencies. Recor
 transport, graphics backend, encoder, concurrency and overlap decisions. Do not force private
 memory heuristics or ignore failure behavior to manufacture a faster reference.
 
+The [portable corpus v1](research/replacement-corpus-v1.md) fixes project definitions and ranges
+for these categories before their comparative results. Generate it with
+`node packages/renderer-browser/bench/replacement-corpus.ts --out NEW_DIRECTORY`.
+
 Use CSS-heavy typography/filter scenes, field/tunnel/constellation, looping video, changing art,
 branding, DJ overlaps and portrait layouts. Include 1080p30, representative 60 fps and 4K stress
 cases, short clips, chunk-boundary cases and a long real master. Extend correctness checks to all
@@ -285,6 +303,13 @@ These options enable quality matching; their existence does not establish it.
 
 ### Phase 1: remove video-frame PNG serialization
 
+The second candidate retains the image DOM and serializes lossless BMP V4 blob URLs. It matches
+288 theme/orientation/seek samples and a complete 300-frame source-switch export, including audio.
+The first BMP data-URL variant was slower in its diagnostic and is archived. The blob candidate
+passes a 3,000-capture resource check; full-master memory and quiet complete-export timings
+remain required before promotion. See
+[bitmap-video evidence](research/bitmap-video-2026-11-01/README.md).
+
 The first direct-canvas candidate was rejected on 2026-10-29: it changed rendered pixels and was
 slower in two alternating benchmark series. See the [experiment and retained evidence](research/video-canvas-2026-10-29/README.md).
 Production retains the PNG image path. Revisit decoded-frame representation with a different
@@ -304,6 +329,12 @@ an arbitrary full video or retain every loop frame. Accept the change only after
 workloads improve without incorrect frames or unbounded memory.
 
 ### Phase 2: qualify a faster capture transport
+
+The independent-driver native experiment is complete and rejected for this milestone. All 252
+sampled theme/GPU/video/art frames exceed the existing pixel allowance; Chromium 157 repeats
+the Pirate defects. Production keeps screenshot capture. See the [retained qualification](research/native-browser-capture-2026-11-01/README.md).
+The alternative capture work below remains a future optimization, with a new proof required
+before production use; no incomplete fast path is needed to ship independent H.264 export.
 
 The current route is browser painting → JPEG → Node buffer → JPEG decode → H.264. Compare two
 alternatives through a small adapter-local capture boundary; do not design a general backend
@@ -348,13 +379,20 @@ worker-count comparisons. Applying invalidation after readiness
 caused capture stalls; outline invalidation preserved layout but exceeded the explicit source
 precision limit in Afterhours. Keep both rejected approaches and exact hash results visible.
 
-The candidate automatic policy chooses 1/2/4 workers from stable CPU and memory estimates, using
+The automatic policy chooses 1/2/4 workers from stable CPU and memory estimates, using
 one below 300 frames and retaining explicit 1–8 overrides. It resolves selection before cache/resume
 identity and reports its reason and estimate. Allocation estimates are not enforced memory limits.
 The selected count and encoded checkpoint contents must remain stable across identical jobs.
 Per-job calibration remains deferred until its complete-export benefit exceeds its preparation
 cost on representative moments. Qualification and new timings must include paint invalidation;
 the older three-fixture measurements cannot qualify the changed driver.
+
+The [1 November timing series](research/worker-scaling-2026-11-01/README.md) completes three
+alternating pairs per standard/GPU/video fixture under the 15% pre-run CPU limit. Decoded video
+hashes agree across every worker setting, and automatic selection improves each fixture. Main
+integration passes ready, scheduling cache/resume acceptance, both exporter acceptance suites,
+preview reference workflows and packed-browser installation. Current-upstream comparisons and
+full-master resource checks remain separate from this scheduler comparison.
 
 Compare round-robin frames with contiguous blocks or independent chunk workers. Investigate
 decode locality, GPU contention, head-of-line waiting, page startup and encoder contention.
@@ -380,7 +418,9 @@ inspection/clearing and conservative whole-job invalidation. See the implementat
 and [browser cache usage](browser-renderer.md#persistent-reuse-after-successful-exports). Announcement
 text edits now reuse unaffected chunks for audited built-in visualizers; fresh-versus-incremental
 video and audio comparisons cover visible edits and fractional chunk boundaries. Metadata and
-other project changes remain global. Prepared-asset caching and broader batch reuse remain pending.
+other project changes remain global. Preview reloads and all-theme still batches now share bounded
+whole-set preparation through `WholeSetReader`. Render bundles and clip batches already prepare
+analysis once and share a render session. Cross-command prepared-asset persistence remains pending.
 
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
 Start with identical completed chunks and validated prepared assets. Retain proven identity,
@@ -415,6 +455,11 @@ Add navigation by listings, annotations, beats and scene changes, then range sel
 queue, cancellation, progress and resume. Reuse CLI/core validation and renderer diagnostics.
 Show numeric reference differences and slow-frame details with actionable asset labels. Offer a
 pinned-runtime reference mode because a user's browser cannot promise export-identical pixels.
+
+The preview now queues pinned-Chromium PNG captures with runtime identity, displays them only for
+their matching paused frame/revision, and computes local RGBA differences against imported reference
+images. The image comparison does not claim to measure interactive DOM pixels. Readiness labels and
+per-stage frame timings remain available; GPU timing and cross-platform preview qualification are separate.
 
 The library preview remains read-only unless exports are enabled. The CLI now enables a scoped
 local job API with origin/token checks, bounded requests, reserved output paths and explicit lifecycle ownership. Do not turn arbitrary

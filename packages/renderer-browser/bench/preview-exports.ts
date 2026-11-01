@@ -9,7 +9,7 @@ import { chromium } from 'playwright';
 import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
 import { preview } from '../src/preview/server.ts';
 import type { PreviewExportJob, PreviewExportsState } from '../src/preview/jobs-contract.ts';
-import { render } from '../src/export/index.ts';
+import { render, still } from '../src/export/index.ts';
 
 const { values } = parseArgs({ options: { out: { type: 'string' } } });
 if (!values.out) throw new Error('Pass --out NEW_DIRECTORY to retain preview export evidence.');
@@ -76,6 +76,7 @@ try {
     referenceVideo: 'equal',
     referenceAudio: 'equal',
   };
+  await checkExportReference();
   await page.screenshot({ path: join(root, 'desktop.png') });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: join(root, 'narrow.png'), fullPage: true });
@@ -98,6 +99,56 @@ try {
 }
 async function state(): Promise<PreviewExportsState> {
   return (await fetch(`${origin}/exports`)).json();
+}
+
+async function checkExportReference() {
+  await page.getByRole('button', { name: 'Capture export frame', exact: true }).click();
+  await page.getByAltText('Export frame 0', { exact: true }).waitFor();
+  const job = (await state()).jobs.find((job) => job.kind === 'reference')!;
+  assert.equal(job.first, 0);
+  assert.equal(job.last, 0);
+  assert(job.referenceRuntime?.chromium);
+  assert.match(job.referenceRuntime.bundle, /^[a-f0-9]{64}$/);
+  const file = join(outputs, job.filename);
+  const direct = join(root, 'direct-reference.png');
+  await still(project, { projectDir: directory, out: direct, at: 0 });
+  assert.equal(decoded(file, '0:v'), decoded(direct, '0:v'));
+  await page.getByLabel('Reference image', { exact: true }).setInputFiles(file);
+  await page.locator('[data-changed-pixels="0"]').waitFor();
+  const changed = await page.evaluate(async () => {
+    const image = document.querySelector<HTMLImageElement>('img[alt="Export frame 0"]')!;
+    await image.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const context = canvas.getContext('2d')!;
+    context.drawImage(image, 0, 0);
+    const data = context.getImageData(0, 0, canvas.width, canvas.height);
+    data.data[0] = data.data[0]! ^ 255;
+    context.putImageData(data, 0, 0);
+    return canvas.toDataURL('image/png').split(',')[1]!;
+  });
+  const edited = join(root, 'one-pixel-reference.png');
+  await writeFile(edited, Buffer.from(changed, 'base64'));
+  await page.getByLabel('Reference image', { exact: true }).setInputFiles(edited);
+  await page.locator('[data-changed-pixels="1"]').waitFor();
+  await page.getByLabel('Frame number', { exact: true }).fill('1');
+  await page.locator('[data-ready-frame="1"]').waitFor();
+  assert.equal(await page.getByAltText('Export frame 0', { exact: true }).count(), 0);
+  assert.equal(await page.locator('[data-changed-pixels]').count(), 0);
+  await page.getByLabel('Frame number', { exact: true }).fill('0');
+  await page.locator('[data-changed-pixels="1"]').waitFor();
+  assert.equal(await page.locator('.sp-preparing').count(), 0);
+  await page.locator('[data-ready-frame="0"]').waitFor();
+  await page.locator('.sp-reference-metrics').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: join(root, 'reference.png') });
+  results.reference = {
+    decodedPng: 'equal to direct still',
+    identicalChangedPixels: 0,
+    editedChangedPixels: 1,
+    runtime: job.referenceRuntime,
+    staleFrame: 'hidden',
+  };
 }
 async function post(path: string, body: unknown = {}) {
   const { token } = await state();

@@ -1,0 +1,395 @@
+{
+  "version": 1,
+  "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/bitmap-source-switch-2026-11-01",
+  "frames": [
+    2700,
+    0,
+    89,
+    90,
+    29,
+    30,
+    3312,
+    2715,
+    2700
+  ],
+  "results": [
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 0,
+      "frame": 2700,
+      "file": "darkroom-landscape-0.png",
+      "hash": "SHA256=535f9b51b3aecb51965d5598498421b2edeae831dd6abf1a983b2ad26ecb8da7",
+      "timings": {
+        "audioMs": 23.40000000037253,
+        "resolveMs": 0.40000000037252903,
+        "commitMs": 107.5,
+        "readinessMs": 130.5
+      },
+      "resources": {
+        "active": 1,
+        "created": 1,
+        "revoked": 0,
+        "peak": 1
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 1,
+      "frame": 0,
+      "file": "darkroom-landscape-1.png",
+      "hash": "SHA256=786cd2eb32239539657bfb93f001ee1e2159a79a67220a2d96cca85d1c634831",
+      "timings": {
+        "audioMs": 8,
+        "resolveMs": 0.10000000149011612,
+        "commitMs": 4.5,
+        "readinessMs": 37.899999998509884
+      },
+      "resources": {
+        "active": 1,
+        "created": 2,
+        "revoked": 1,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 2,
+      "frame": 89,
+      "file": "darkroom-landscape-2.png",
+      "hash": "SHA256=af4a95b2ddd075dad3e54f881b5471b10e4d5da3dd2193a4c46bf12da565c9b2",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0,
+        "commitMs": 31.199999999254942,
+        "readinessMs": 78.80000000074506
+      },
+      "resources": {
+        "active": 1,
+        "created": 3,
+        "revoked": 2,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 3,
+      "frame": 90,
+      "file": "darkroom-landscape-3.png",
+      "hash": "SHA256=c4801aa48af8fb0a86ef9b07b0ced2abfcb2fccb6ee9e1a322d0d8ae59cdd9f8",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0.2000000011175871,
+        "commitMs": 2.5,
+        "readinessMs": 46.19999999925494
+      },
+      "resources": {
+        "active": 1,
+        "created": 4,
+        "revoked": 3,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 4,
+      "frame": 29,
+      "file": "darkroom-landscape-4.png",
+      "hash": "SHA256=601aea7b3e7537a6578ae4c93a6fd9e821f73361e5ca16593d0aba850a2d1a9c",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0,
+        "commitMs": 2.099999999627471,
+        "readinessMs": 54.5
+      },
+      "resources": {
+        "active": 1,
+        "created": 5,
+        "revoked": 4,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 5,
+      "frame": 30,
+      "file": "darkroom-landscape-5.png",
+      "hash": "SHA256=ce3f0643137cfd6ad74c31b444cf1f287fc878c82425eddfdc5884cc830e3773",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0,
+        "commitMs": 2.099999999627471,
+        "readinessMs": 55.80000000074506
+      },
+      "resources": {
+        "active": 1,
+        "created": 6,
+        "revoked": 5,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 6,
+      "frame": 3312,
+      "file": "darkroom-landscape-6.png",
+      "hash": "SHA256=769a958a87d5bf4c3a4c6dd74317b38a8be878b2986ed0bbedcd7562399c6548",
+      "timings": {
+        "audioMs": 13.900000000372529,
+        "resolveMs": 0,
+        "commitMs": 71.89999999850988,
+        "readinessMs": 71.60000000149012
+      },
+      "resources": {
+        "active": 1,
+        "created": 7,
+        "revoked": 6,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 7,
+      "frame": 2715,
+      "file": "darkroom-landscape-7.png",
+      "hash": "SHA256=07e085eb716d9e62132abb3608f814dc530be22267466748fc60cbe564a745af",
+      "timings": {
+        "audioMs": 16.09999999962747,
+        "resolveMs": 0.09999999962747097,
+        "commitMs": 74.09999999962747,
+        "readinessMs": 46.90000000037253
+      },
+      "resources": {
+        "active": 1,
+        "created": 8,
+        "revoked": 7,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "index": 8,
+      "frame": 2700,
+      "file": "darkroom-landscape-8.png",
+      "hash": "SHA256=535f9b51b3aecb51965d5598498421b2edeae831dd6abf1a983b2ad26ecb8da7",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0.09999999962747097,
+        "commitMs": 7,
+        "readinessMs": 36.80000000074506
+      },
+      "resources": {
+        "active": 1,
+        "created": 9,
+        "revoked": 8,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 0,
+      "frame": 2700,
+      "file": "darkroom-portrait-0.png",
+      "hash": "SHA256=efdf4586cb106c5d2a269927bacd49fdc0401fecf5f9449d358d54b69d857b0d",
+      "timings": {
+        "audioMs": 22.59999999962747,
+        "resolveMs": 0.40000000037252903,
+        "commitMs": 105.59999999962747,
+        "readinessMs": 61.5
+      },
+      "resources": {
+        "active": 1,
+        "created": 1,
+        "revoked": 0,
+        "peak": 1
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 1,
+      "frame": 0,
+      "file": "darkroom-portrait-1.png",
+      "hash": "SHA256=db27f28ac2fb7cf8e640e1a5708e7e7e53f35b7dbc63f7b7c7f658665f3a1e9c",
+      "timings": {
+        "audioMs": 8.099999999627471,
+        "resolveMs": 0.19999999925494194,
+        "commitMs": 4.700000001117587,
+        "readinessMs": 36.59999999962747
+      },
+      "resources": {
+        "active": 1,
+        "created": 2,
+        "revoked": 1,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 2,
+      "frame": 89,
+      "file": "darkroom-portrait-2.png",
+      "hash": "SHA256=f8b122296c6ffa3b759b62101bd13c6451d85adadeac8e003fb55cbc836b922d",
+      "timings": {
+        "audioMs": 0.10000000149011612,
+        "resolveMs": 0,
+        "commitMs": 31.199999999254942,
+        "readinessMs": 81.59999999962747
+      },
+      "resources": {
+        "active": 1,
+        "created": 3,
+        "revoked": 2,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 3,
+      "frame": 90,
+      "file": "darkroom-portrait-3.png",
+      "hash": "SHA256=78e91357e6fe2117e18879f7ad65bd428aa6733f6af945c444670c95de2725b6",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0.10000000149011612,
+        "commitMs": 2.5,
+        "readinessMs": 47.09999999962747
+      },
+      "resources": {
+        "active": 1,
+        "created": 4,
+        "revoked": 3,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 4,
+      "frame": 29,
+      "file": "darkroom-portrait-4.png",
+      "hash": "SHA256=4951f6a68480c78bfb4bb12648551137e455fc57bc26d3f43886353b5075748d",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0.09999999962747097,
+        "commitMs": 2.100000001490116,
+        "readinessMs": 51.399999998509884
+      },
+      "resources": {
+        "active": 1,
+        "created": 5,
+        "revoked": 4,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 5,
+      "frame": 30,
+      "file": "darkroom-portrait-5.png",
+      "hash": "SHA256=764b7e643ed9a2e3f759fe1b9e283122a4666d0c411cdb220b0744aabfc876e9",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0.09999999962747097,
+        "commitMs": 2.099999999627471,
+        "readinessMs": 55.59999999962747
+      },
+      "resources": {
+        "active": 1,
+        "created": 6,
+        "revoked": 5,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 6,
+      "frame": 3312,
+      "file": "darkroom-portrait-6.png",
+      "hash": "SHA256=f39a4f4885f5be5ad5eeaa9773e56ca4ffeae80da6e68aa868419fc01e93be75",
+      "timings": {
+        "audioMs": 14,
+        "resolveMs": 0,
+        "commitMs": 74.69999999925494,
+        "readinessMs": 78.59999999962747
+      },
+      "resources": {
+        "active": 1,
+        "created": 7,
+        "revoked": 6,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 7,
+      "frame": 2715,
+      "file": "darkroom-portrait-7.png",
+      "hash": "SHA256=20e5b00809b1dd6326d93ac6b19e99ea3632d6eae631d520296a7a5df5f700c9",
+      "timings": {
+        "audioMs": 15.900000000372529,
+        "resolveMs": 0.09999999962747097,
+        "commitMs": 74.30000000074506,
+        "readinessMs": 45.79999999888241
+      },
+      "resources": {
+        "active": 1,
+        "created": 8,
+        "revoked": 7,
+        "peak": 2
+      }
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "index": 8,
+      "frame": 2700,
+      "file": "darkroom-portrait-8.png",
+      "hash": "SHA256=efdf4586cb106c5d2a269927bacd49fdc0401fecf5f9449d358d54b69d857b0d",
+      "timings": {
+        "audioMs": 0,
+        "resolveMs": 0.09999999962747097,
+        "commitMs": 7.599999999627471,
+        "readinessMs": 42.30000000074506
+      },
+      "resources": {
+        "active": 1,
+        "created": 9,
+        "revoked": 8,
+        "peak": 2
+      }
+    }
+  ],
+  "lifecycles": [
+    {
+      "theme": "darkroom",
+      "portrait": false,
+      "active": 0,
+      "created": 9,
+      "revoked": 9,
+      "peak": 2
+    },
+    {
+      "theme": "darkroom",
+      "portrait": true,
+      "active": 0,
+      "created": 9,
+      "revoked": 9,
+      "peak": 2
+    }
+  ]
+}

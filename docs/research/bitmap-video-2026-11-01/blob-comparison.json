@@ -1,0 +1,11 @@
+{
+  "cases": 288,
+  "exact": 288,
+  "closedScenes": 32,
+  "allUrlsReleased": true,
+  "peakLiveUrls": 2,
+  "steadyLiveUrls": 1,
+  "partialAttempt": "partial-blob-candidate.json",
+  "retry": "blob-darkroom-retry.json",
+  "scope": "Exact RGBA across equivalent image bytes under source switches; diagnostic timing under concurrent load is not speed qualification"
+}

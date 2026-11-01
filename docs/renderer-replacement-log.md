@@ -1028,3 +1028,400 @@ Readiness integration validation passes: ready, both exporter acceptance suites 
 swangle), and frame-driver seeks/font/video-loop checks. Installed browser-package smoke passes.
 Fresh installation contains no Remotion packages; the optional compatibility installation also passes.
 These correctness checks overlapped corpus metrics and provide no throughput evidence.
+
+Quality measurement committed as 979582c. The fifth quiet-period worker attempt performed no
+exports; some samples fell to 15.5–17.4%, but none met the unchanged 15% threshold. Its report/log
+are retained as `worker-scaling-2026-10-31/busy-standard-retry4.*`.
+
+Browser-first distribution is being prepared on branch `renderer/browser-first-candidate` in
+`/private/tmp/setcast-browser-first-candidate`, starting at 979582c. This is an isolated migration
+candidate, not promotion of the production default. It can qualify physical Remotion-free
+installation and compatibility diagnostics while final timing/platform criteria remain pending.
+The main branch remains on Remotion by default. Keep the candidate commits and test results
+linked here before any context handoff.
+
+The sixth worker attempt also performed no exports because its pre-run CPU checks stayed above
+15%. The isolated distribution candidate now changes configuration/CLI/scaffold defaults, makes
+the Remotion adapter an optional peer, and preserves explicit Studio hardware selection. Its
+package smoke is being converted from workspace dependency symlinks to a fresh pnpm tarball
+installation. Root development tooling pins pnpm and invokes both pnpm and local vp through
+Node entry points, avoiding Windows .cmd execution and global-vp ambiguity. This is candidate
+work only; package and platform checks have not yet passed.
+
+Browser-first candidate local checks now pass: both adapter acceptance suites, 667 tests,
+decoded browser smoke, a fresh browser-only installation with all default commands, and a fresh
+installation with the optional Remotion adapter. The final candidate commit is being prepared;
+platform CI jobs are implemented but unexecuted. Main retains its existing default.
+
+The one-second quality follow-up found JPEG 100 / CRF 16 meets or exceeds current Remotion
+4.0.539 CRF 18 across all measured full/credit-region mean, p05 and minimum PSNR/SSIM and VMAF
+NEG scores. The encoded browser file is larger. This identifies settings for broader testing,
+not a speed or whole-suite fidelity result. Final project/asset/frame/output identities match;
+raw metrics and comparisons are retained in `quality-calibration-2026-11-01/crf16/`.
+
+The browser-first candidate is committed as **755fa71** on branch
+`renderer/browser-first-candidate` in `/private/tmp/setcast-browser-first-candidate`. It includes
+browser defaults, optional Remotion compatibility, fresh tarball verification, all default
+workflow checks, migration/rollback documentation, retained macOS reports, and an unexecuted
+Linux/macOS/Windows CI matrix. Both adapter acceptance suites and final ready passed. Do not
+merge this candidate merely because its installation checks pass; performance and supported-
+platform evidence remain outstanding. Main remains at its existing renderer default.
+
+The seventh final-driver worker attempt admitted four exports after pre-run samples below 15%,
+then stopped when later load checks remained busy for a minute. Two one-worker runs took
+10.487/10.985 seconds and two automatic-worker runs took 6.798/6.898 seconds. These are partial
+runs, not the required three complete pairs; the report status remains failed. All four videos
+passed decoded verification. `worker-scaling-2026-10-31/partial-standard-retry6.*` retains the
+full report and load history. The candidate automatic policy remains unpromoted.
+
+A portable corpus generator now fixes concrete workloads for the plan's CSS, three GPU, looping
+video, editorial/art/branding, portrait, 60 fps, 4K and chunk-boundary categories before their
+comparative results. Definitions and constraints are in `research/replacement-corpus-v1.md`.
+The long local master remains a separate requirement; no existing workload is silently removed.
+
+All eleven corpus projects generated and passed public project loading, finite timeline and
+asset resolution. The generated manifest with exact configs and content digests is retained as
+`research/replacement-corpus-v1.json`. No comparative run of these cases has started before this
+manifest is frozen. Local free disk is about 14 GiB, so full lossless references should be
+processed one case at a time; retain measurements, identities and inspection crops before
+removing only newly generated bulk references. Never remove user source media or old evidence.
+
+Corpus/calibration milestone ready passed all 667 tests in 111 files, formatting/lint/types,
+Remotion isolation and decoded smoke. Log: `/tmp/setcast-corpus-ready.log`. The frozen corpus
+and higher-fidelity calibration are now ready for broader per-case output comparison.
+
+Corpus definitions and calibration evidence committed as 9838b84. A sequential quality
+coordinator is now running all frozen cases against current Remotion 4.0.539 with browser
+JPEG 100 / CRF 16, one worker per adapter. This pass deliberately excludes performance claims.
+It records all metrics and identity checks and bounds disk use by retaining three lossless
+reference samples before deleting only each newly generated bulk reference after successful
+measurement. Failed cases retain their reference. Logs: `/tmp/setcast-corpus-quality.log`.
+
+Lossless-reference generation exposed a tooling bottleneck: Chromium's normal PNG screenshot
+compression dominated the reference process. A separate exact-RGBA experiment compared normal
+Playwright PNG against CDP PNG with `optimizeForSpeed: true`. All 120 cases matched exactly:
+16 themes x two orientations x three absolute moments, plus field/tunnel/constellation/looping
+video x two orientations x three moments. The reference tool now uses this lossless compression
+mode and records it in each new manifest. Production screenshots and encoding are unchanged.
+The first corpus reference used the original PNG mode; subsequent references use the verified
+mode. Every reference still verifies complete source-to-FFV1 decoded RGB equality. Probe timings
+ran under shared load and are diagnostic, not replacement performance evidence.
+
+The first complete frozen-corpus case (standard, 300 frames) measured successfully. Browser
+JPEG 100 / CRF 16 meets or exceeds current Remotion CRF 18 for every recorded full/credit-region
+mean, minimum and p05 metric. Native-size midpoint credit crops were inspected for all three
+reference/browser/Remotion images; no missing content or placement difference was observed.
+This is one case, not completion of the corpus. Afterhours is in progress. PNG experiment
+reports are retained under `research/png-reference-2026-11-01/`.
+
+The corpus coordinator and faster lossless-reference tooling passed final ready: 667 tests,
+111 files, lint/types/formatting, dependency isolation and decoded smoke. The ongoing corpus
+measurement remains separate from this tooling milestone. Log: `/tmp/setcast-corpus-tools-ready.log`.
+
+Corpus standard and Afterhours now complete: all recorded full-frame and text-region mean,
+minimum and p05 comparisons meet or exceed current Remotion at the tested settings. The GPU
+cases are running. This remains output calibration, not quiet-period performance qualification.
+
+A new isolated video-preparation experiment starts from aad14cc on
+`renderer/bitmap-video-candidate` at `/private/tmp/setcast-bitmap-video-candidate`. The earlier
+direct-canvas change failed pixel fidelity. This alternative keeps the `<img>` DOM and CSS
+behavior and replaces canvas PNG serialization with a BMP V4 data URL containing lossless
+32-bit pixels and explicit alpha/sRGB fields. The hypothesis is lower image-encoding cost;
+readback, copying, base64 and image decoding remain, and memory may increase. Exact pixels,
+alpha handling, arbitrary seeks/loops, bounded resources and complete-export timings must pass
+before any production change. This is an unqualified experiment.
+
+The bitmap data-URL candidate preserves exact decoded RGBA across all 288 theme/orientation/
+seek/loop samples. Its nine synthetic alpha/compositing checks also match PNG exactly. However,
+its diagnostic readiness median was slower than PNG under the same shared-load experiment,
+so it is not a speed improvement to retain. Large base64 DOM attribute values are a likely
+cost, not an isolated measurement yet. The next variant uses bounded blob URLs to avoid that
+representation; it must prove ownership/cleanup as well as the same pixels. The data-URL
+source and reports are archived in `research/bitmap-video-2026-11-01/`.
+
+The blob probe stopped after 271 recorded exact frames because its synchronous FFmpeg PNG-hash
+child waited indefinitely in a libavformat `read`, with no CPU use. The renderer had already
+written Darkroom's next PNG. Decoding that saved file separately succeeded and matched the
+baseline hash. The owned FFmpeg child was sampled and killed; the probe then closed its browser.
+The partial report and stack sample are retained. Hashing now reads the already-written PNG
+file, uses bounded threads and a 30-second hard timeout. The final Darkroom cases are being
+retried separately; the first 30 complete scenes had exactly one live bitmap URL per ready
+frame, at most two transient allocations, and zero after unmount. Browser acceptance and ready
+passed for the candidate. Do not mistake the incomplete probe for complete qualification.
+
+Darkroom's file-hash retry passed all 18 frames and both scene cleanup checks. Combined with
+the first 30 complete scenes, the blob variant matches all 288 expected RGBA hashes, keeps
+one bitmap URL per ready frame and at most two during replacement, and releases every URL
+after all 32 unmounts. Source switching is included using two video paths with identical bytes.
+All hash reports and one source-change PNG per theme/orientation remain; other newly generated
+matching screenshots were removed to recover disk space. Source media and earlier research
+artifacts were not removed. Candidate browser acceptance and ready passed; throughput and
+sustained process memory are still unqualified.
+
+The candidate also passes Remotion acceptance and packed-browser smoke. The decoded video
+comparison now covers a complete ten-second slice across a source switch, beyond sampled
+stills; those exports are correctness checks under load, not performance measurements.
+
+Reference capture now checks free disk before opening Chromium and before every frame, retaining
+2 GiB plus two raw frame buffers by default. `--reserve-gib` can increase the reserve. An
+intentional 1024 GiB requirement fails before capture with available/required space in the error;
+a normal six-frame reference passes full source/decoded RGB equality. This replaces the overly
+conservative whole-reference raw-size estimate for future corpus coordinator invocations. The
+currently running coordinator retains its original preflight and may require a separate final
+chunk-case retry. No image-quality or timing threshold changed.
+
+The full bitmap-video encoded comparison passed: all 300 decoded video frames and decoded PCM
+audio match the original PNG path exactly across the ten-second source-switch slice. See
+`research/bitmap-video-2026-11-01/README.md`. The isolated branch remains unpromoted until quiet
+throughput and sustained memory checks. Nine corpus cases now have numerical reports. Portrait
+contains an unusually low Remotion minimum; investigate individual frames before treating its
+aggregate metric advantage as release evidence.
+
+Portrait inspection identifies the low score as an entirely black current-Remotion output frame
+at offset 90 (absolute frame 3150, 105 seconds), exactly at the play/art change. Its adjacent
+frames and the browser output need comparison and a repeat/control before attributing the cause.
+This is a content failure, not a compression-quality difference. Preserve the original report
+and do not use this failed arm to claim a matched-quality performance advantage.
+
+Bitmap candidate committed as cc10be9 on `renderer/bitmap-video-candidate`; production main
+retains PNG. Final ready passed again after the hash-helper hardening. Main's first ready
+attempt found formatting in the new reserve flag usage message; formatting was corrected and
+the complete required checks are rerunning.
+
+Main reference/probe milestone passed complete ready: 667 tests in 111 files, formatting,
+lint/types, dependency isolation and decoded smoke (`/tmp/setcast-main-qualification-ready.log`).
+The browser portrait frame at offset 90 contains the expected new art, credits, branding and
+announcement; the corresponding current-Remotion frame is black. A three-repeat transition
+control is running separately, with no performance claim.
+
+The portrait transition failure reproduced in all three current-Remotion repeats at absolute
+frame 3150; all three browser controls contain no black frame. Source inspection found that
+`useHoldUntil` releases its adapter hold before React commits ready state, while prepared art
+keeps the entire stage hidden until that state is ready. A layout-effect hold until the ready
+state commits is being tested in the isolated upstream checkout. This is a hypothesis until
+controlled repeats finish. An attempted pause found that the corpus coordinator had already exited. Its final status
+and runtime records are being checked before any remaining case runs.
+
+The commit-readiness hold removes the black transition frame in all three controlled repeats;
+both browser and current Remotion render all frames with content. The shared hook now retains
+a layout-effect hold until matching ready state has committed. This covers prepared art and
+other asynchronous wrapper consumers. The isolated comparison checkout was restored afterward
+so the remaining original-corpus case uses the original runtime. Regression coverage and both
+exporter acceptance suites are next.
+
+The small solid-color transition control passes even without the commit hold, so it is not a
+failing-before reproducer. It remains useful all-frame acceptance of prepared-art transitions.
+The frozen Afterhours portrait workload is the actual failing-before/passing-after evidence;
+all original and corrected repeated reports are retained under `research/art-readiness-2026-11-01`.
+Ten-case quality reports, per-frame full metrics, runtime provenance and inspected midpoint
+contact sheets are retained under `research/corpus-quality-2026-11-01`.
+
+Both exporter acceptance suites pass with the commit hold, including every synthetic transition
+frame, failures, cancellation and recovery. Same-page frame checks pass. The browser decoded
+hash is unchanged across all six original/corrected portrait repeats.
+
+Commit-readiness milestone final ready passed: 667 tests in 111 files, lint/types/formatting,
+dependency isolation and decoded smoke. Logs: `/tmp/setcast-commit-hold-ready.log`,
+`/tmp/setcast-commit-hold-browser-acceptance.log`, `/tmp/setcast-commit-hold-remotion-acceptance.log`
+and `/tmp/setcast-commit-hold-frames.log`.
+
+Main commits now include 543bc50 (reference reserve and bitmap evidence), 53551f0 (shared
+commit-readiness correction), and e7c4f34 (ten-case quality reports). Bitmap production code
+remains isolated at cc10be9. A 3,000-capture PNG/BMP resource comparison is running with repeated
+100–110 second seeks and source changes, natural garbage collection, browser heap/DOM counts,
+process-tree RSS and explicit bitmap URL ownership. These concurrent runs are not speed tests.
+
+User requested completion of the current item, then commit and stop. Scope is now limited to
+closing the in-flight quality/resource milestone: final corpus case, corrected portrait metrics,
+3,000-frame PNG/BMP memory probes and final checks. No new performance tuning or promotion.
+The BMP resource run completed all 3,000 JPEG captures across repeated source switches, with
+one live URL per sampled ready frame, at most two transiently, and all 3,000 URLs revoked on
+close. Natural-GC heap/process samples are retained; no complete-export speed claim is made.
+Packed-browser smoke for the shared readiness correction also passed.
+
+Both 3,000-capture resource runs passed and closed. Later sampled JS heap and process-tree RSS
+fluctuated without sustained growth; all bitmap URLs were revoked. Raw PNG/BMP reports are
+retained. The final ready runs overlapped CPU-heavy quality analysis and failed only five-second
+CLI subprocess test timeouts (cache on main, cache/preview on candidate). Those logs are retained;
+checks will run sequentially after analysis, with unchanged test limits.
+
+The corrected full ten-second portrait comparison passes all numerical quality checks with no
+black frames in either output. Its lossless reference RGB hash matches the original reference.
+The failed original comparison remains retained; `corpus-quality-2026-11-01/portrait-corrected`
+contains the valid quality arm. Only final chunk metrics and sequential final checks remain
+before committing and stopping as requested.
+
+Sequential final ready passes on main and the bitmap candidate with unchanged test limits:
+667 tests in 111 files, formatting/lint/types, isolation and decoded smoke in each checkout.
+The earlier parallel-load timeout logs remain archived. The comparison runtime's final check
+is running next, sequentially.
+
+The bitmap resource milestone is committed as 728e2f0 on `renderer/bitmap-video-candidate`
+(implementation cc10be9). The current-upstream research runtime is now committed as 6c373c0
+on `renderer/upstream-539-comparison`, replacing the previously dirty detached checkout. Its
+final ready passed 665 tests in 110 files, lint/types/formatting, isolation and decoded smoke.
+No automatic policy or Remotion dependency upgrade was promoted to main. The browser-first
+candidate remains clean at 755fa71.
+
+## Stop checkpoint, 1 November 2026
+
+The final chunk-boundary case completed all quality measurements. All eleven frozen cases have
+numerical reports at browser JPEG 100 / CRF 16 versus current Remotion CRF 18, one worker each.
+The corrected portrait arm removes the original black-frame defect and still meets every
+recorded metric comparison. The chunk retry also meets every recorded metric comparison, but its original-code Remotion
+arm contains the same black transition at offset 510 (absolute 3150), found by the final frame
+scan. Browser has none. A corrected 63-second rerun is pending; this failed arm cannot qualify
+matched quality or speed. The user requested stopping after this item, so no new rerun starts.
+These are output calibration results under shared load, not throughput evidence or changed
+defaults. All original failures remain in the research records.
+
+The current item is finished. Main includes the readiness fix, disk-reserve guard, typed video
+resource probe and durable quality/resource findings. The bitmap implementation and resource
+evidence remain isolated at `renderer/bitmap-video-candidate` 728e2f0. The browser-first
+installation candidate remains at 755fa71, and the exact current-upstream research runtime is
+committed as `renderer/upstream-539-comparison` 6c373c0. No further work starts in this period.
+
+Remaining before promotion: repeat the 63-second comparison with the committed readiness fix;
+integrate the shared readiness fix into the isolated feature
+candidates; run complete quiet alternating worker/video/current-upstream timings; qualify
+full-master process memory and supported installed platforms/backends; then integrate the
+browser-first distribution with its migration/rollback documentation. Automatic workers and
+bitmap video remain unpromoted. The 30% speed target is unproven. Native capture qualification,
+prepared-asset/batch reuse and transparent/editing outputs remain planned work as scoped in the
+replacement plan. No CI execution, external publication or default switch was performed.
+
+Validation: main and bitmap each pass 667 tests in 111 files plus lint/types/formatting,
+isolation and decoded smoke. The upstream snapshot passes 665 tests in 110 files and the same
+baseline checks. Both exporter acceptance suites, same-page media checks and packed-browser
+smoke pass for the shared readiness correction. Each video resource run completed 3,000 JPEG
+captures and closed; all 3,000 bitmap URLs were revoked. Earlier load-related test timeout logs
+are retained, followed by successful sequential reruns with unchanged limits.
+
+## Resumed roadmap completion, 1 November 2026
+
+The user resumed autonomous work through the renderer-replacement roadmap. The previous stop
+checkpoint is historical. Main begins at 65d78fa; isolated candidates are bitmap 728e2f0,
+browser-first 755fa71, and upstream 6c373c0. The corrected 63-second corpus rerun has started
+against the committed upstream runtime, with the same frozen inputs and quality settings.
+Integrate the shared readiness correction into both feature candidates before further qualification.
+Keep timing runs separate from these correctness jobs and preserve the 15% pre-run CPU limit.
+
+### Whole-set preparation reuse
+
+Inspection confirmed that render bundles and clip batches already share analysis and browser
+preparation. Preview reloads repeated whole-set decoding after unrelated edits, and all-theme
+stills reused only the overview envelope, which could omit travel needed by later themes.
+`WholeSetReader` now owns the latest audio source's summaries for one preview or theme batch.
+It coalesces concurrent requests, resolves source aliases, checks device/inode/size and nanosecond
+modification/change timestamps before and after decoding, evicts failed work, and copies returned
+arrays. It retains summaries rather than PCM; retained travel still scales with source duration.
+It is not a persistent or cross-command cache, and timestamp identity is not a content digest.
+Projects without whole-set consumers do not access audio. Browser and Remotion previews share the
+same implementation. Six focused tests cover reuse, isolation, source edits/replacement, bounded
+source retention and recovery. The initial test expected an unresolved macOS temporary-directory
+alias; correcting the fixture to its real path made the error-path assertion portable.
+
+Whole-set reuse validation passes: 673 tests in 112 files, formatting/lint/types, isolation,
+decoded smoke, and packed-browser CLI/all-theme still smoke. Direct and reused demo summaries
+are deeply equal, including after a title edit. Candidate readiness integrations are committed
+as bitmap 1db55ff and browser-first eb40319; both pass ready, both exporter acceptance suites,
+frame-driver checks and installed browser smoke. Browser-first also passes the optional Remotion
+compatibility installation. No throughput claim follows from these shared-load checks.
+
+### Export-runtime reference inspection
+
+The preview now captures one PNG through the existing export session and bounded queue. Requests
+accept an explicit reference kind with equal first/last frames; the server still chooses every
+output path and applies origin/token checks. Completed jobs retain Chromium version and bundle
+digest. The view displays only captures matching its current revision and paused frame. Local
+reference images remain in-browser; numeric differences compare the PNG and imported image after
+8-bit sRGB canvas decoding, not the interactive DOM or encoded video quality. The actual-browser
+workflow check passes direct-still decoded equality, zero differences for identical images, one
+changed pixel for a controlled edit, and stale-frame hiding, alongside existing export recovery.
+Visual inspection found that the interactive driver's preparation cover briefly obscured a ready
+export image; the cover now applies only while displaying the interactive frame. Final validation
+is pending. Corrected long corpus metrics continue independently and are not performance samples.
+
+Reference inspection validation passes: ready (676 tests in 113 files, lint/types/formatting,
+isolation and decoded smoke), interactive preview and reference/export workflow checks, both
+exporter acceptance suites, and packed-browser smoke. Final desktop/narrow screenshots were
+inspected. The full evidence is in `docs/research/preview-reference-2026-11-01`.
+
+### Corrected long corpus completed
+
+The full 63-second chunk-boundary comparison completed against committed upstream 6c373c0 with
+the shared readiness correction. Every recorded quality comparison still passes at browser
+JPEG 100 / CRF 16 versus Remotion CRF 18. A full decoded scan finds no black frames in either
+output. `docs/research/corpus-quality-2026-11-01/chunk-corrected` retains provenance, metric
+reports and sample hashes. The original faulty arm remains archived. All eleven frozen cases
+now have valid numerical quality arms. Default quality and the 30% speed target remain unqualified;
+these runs overlapped other validation and cannot establish throughput.
+
+The corrected long comparison preserves the previous lossless reference RGB hash. Baseline
+validation passes: 676 tests in 113 files, lint/types/formatting, isolation and decoded smoke.
+
+### Native capture experiment closed
+
+The new independent-driver probe uses native drawable HTML, `requestPaint` and `drawElementImage`
+after the normal frame-readiness handshake. It imports no Remotion package. Chromium 156 requires
+the explicit experimental flag; 192 theme/aspect/transition samples and 60 GPU/video/art samples
+all exceed the existing source-precision allowance. Chromium 157 reproduces the Pirate results
+over twelve further samples. Portrait credit crops show changed text rasterization. The findings,
+complete reports and representative crops are retained in `docs/research/native-browser-capture-2026-11-01`.
+No production flag, capture transport or theme workaround was introduced. This is a rejected
+phase-2 experiment, not a speed improvement. Screenshot capture remains the compatible route;
+new native binary distribution work remains an optional future optimization.
+
+Native probe validation passes formatting, lint/types and the full ready suite (676 tests in
+113 files, isolation and decoded smoke). The experiment changes no production rendering code.
+
+### Quiet timing and full-master preparation
+
+All own correctness jobs finished before new worker timing began. The isolated upstream runtime
+runs three alternating one/automatic pairs per standard, tunnel and looping-video fixture with
+the unchanged 15% pre-run CPU limit. Busy samples wait; no other project's processes are stopped.
+Evidence goes to `examples/demo/out/scaling-quiet-*-2026-11-01` and matching `/tmp/setcast-scaling-quiet-*.log`.
+
+The endurance harness inspection found two qualification gaps: it records only Node RSS, and it
+does not forward the project's export settings. The pending correction uses public core/node
+loading, forwards explicit output settings, records runtime decisions and adds sampled process-tree
+RSS with its shared-page/external-service limitations. Its validation waits until timing is idle.
+
+All three worker series completed their six arms with identical decoded video hashes within
+each fixture. Median reductions versus one worker are 32.9% standard, 31.9% tunnel and 41.5%
+looping video. Complete reports and load observations are in `docs/research/worker-scaling-2026-11-01`.
+The qualified automatic-policy patch is now applied to main, with integration validation pending.
+The separate current-Remotion timing series has started in the isolated upstream runtime at
+browser JPEG 100 / CRF 16 versus Remotion CRF 18, both selecting workers automatically. No main
+validation runs concurrently with that comparison.
+
+Automatic scheduling integration passes ready (679 tests in 114 files), scheduling acceptance
+with four selected workers and exact cached/resumed video and audio, both exporter acceptance
+suites, preview reference workflows and packed-browser installation. The scheduler is now enabled
+on main. No quality setting or renderer default changed.
+
+Endurance measurement correction passes a ten-second real-master export with 300 frames, the
+project's nondefault JPEG 90 / CRF 22 settings, decoded verification and audio checks. All six
+process samples are available; final temporary directories are empty. Evidence is retained in
+`docs/research/endurance-monitor-2026-11-01`. This validates instrumentation only; a corrected
+full-master run remains required. Shared working-tree ready and exporter checks pass.
+
+The quiet current-upstream comparison completed all three alternating pairs for standard, tunnel
+and looping video. Browser wall time is higher in every fixture. Browser decoded hashes retain
+the qualified one-worker output; automatic Remotion hashes differ from its earlier quality arm,
+so this is not a newly qualified matched-quality comparison of every output. Reports and the
+negative result are retained in `docs/research/current-upstream-2026-11-01`. The default remains
+blocked. A direct CDP JPEG/fast-PNG experiment will isolate transport costs without changing the
+production CSS contract or weakening the quality threshold.
+
+
+The browser-first candidate now integrates main through 8d00d33, including automatic workers,
+scoped whole-set preparation, reference inspection and endurance instrumentation. Only append-only
+log history and the candidate status paragraph required manual merge resolution. Qualification
+must pass again before committing this integration. Main's default remains unchanged.
+
+Updated browser-first integration passes ready (679 tests in 114 files) and both fresh packed
+installation paths. Browser-only installation physically excludes Remotion and exercises current
+preview, clip, bundled outputs, all themes and reuse. Optional Remotion compatibility also passes.
+Reports are retained in `docs/research/browser-first-merged-2026-11-01`. Platform and speed criteria
+remain outstanding; this commit does not promote the production default.

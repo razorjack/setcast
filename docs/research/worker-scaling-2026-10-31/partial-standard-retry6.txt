@@ -1,0 +1,40 @@
+Pre-run system CPU busy: 14.9%
+1/3: 1 workers, 10.487 s
+Pre-run system CPU busy: 16.1%
+Pre-run system CPU busy: 12.1%
+1/3: auto workers, 6.798 s
+Pre-run system CPU busy: 12.8%
+2/3: auto workers, 6.898 s
+Pre-run system CPU busy: 39.1%
+Pre-run system CPU busy: 28.2%
+Pre-run system CPU busy: 17.0%
+Pre-run system CPU busy: 28.1%
+Pre-run system CPU busy: 17.1%
+Pre-run system CPU busy: 25.7%
+Pre-run system CPU busy: 18.8%
+Pre-run system CPU busy: 21.3%
+Pre-run system CPU busy: 25.4%
+Pre-run system CPU busy: 11.6%
+2/3: 1 workers, 10.985 s
+Pre-run system CPU busy: 25.8%
+Pre-run system CPU busy: 19.6%
+Pre-run system CPU busy: 29.8%
+Pre-run system CPU busy: 32.8%
+Pre-run system CPU busy: 26.1%
+Pre-run system CPU busy: 22.0%
+Pre-run system CPU busy: 34.8%
+Pre-run system CPU busy: 31.5%
+Pre-run system CPU busy: 30.3%
+Pre-run system CPU busy: 31.2%
+Pre-run system CPU busy: 29.5%
+Pre-run system CPU busy: 26.0%
+file:///private/tmp/setcast-upstream-539-final/packages/renderer-browser/bench/scaling.ts:197
+  throw new Error(
+        ^
+
+Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory.
+    at waitForIdle (file:///private/tmp/setcast-upstream-539-final/packages/renderer-browser/bench/scaling.ts:197:9)
+    at async run (file:///private/tmp/setcast-upstream-539-final/packages/renderer-browser/bench/scaling.ts:132:3)
+    at async file:///private/tmp/setcast-upstream-539-final/packages/renderer-browser/bench/scaling.ts:115:38
+
+Node.js v26.7.0

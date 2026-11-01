@@ -10,6 +10,6 @@ export const capabilities: RendererCapabilities = {
   audioCodec: 'aac',
   graphicsBackends: ['auto', 'default', 'angle'],
   parallelEncoding: [true],
-  concurrency: { default: 1, min: 1, max: 8 },
+  concurrency: { default: 'auto', min: 1, max: 8 },
   runtime: { browser: 'Playwright Chromium', ffmpeg: 'system' },
 };

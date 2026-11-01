@@ -1,0 +1,56 @@
+$ vp check ⊘ cache disabled
+[1m[94mpass:[39m[0m All 573 files are correctly formatted [2m(470ms, 10 threads)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 511 files [2m(6.2s, 10 threads)[0m
+
+$ vp test ⊘ cache disabled
+
+ RUN  v4.1.10 /private/tmp/setcast-bitmap-video-candidate
+
+ ❯ packages/cli/src/commands/preview.test.ts (1 test | 1 failed) 6138ms
+   × preview renderer overrides select the requested adapter in both directions 6137ms
+ ❯ packages/cli/src/commands/cache.test.ts (1 test | 1 failed) 7236ms
+   × cache management works without FFmpeg and preserves unrelated files 7235ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/cli/src/commands/cache.test.ts > cache management works without FFmpeg and preserves unrelated files
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ packages/cli/src/commands/cache.test.ts:15:1
+     13|   });
+     14|
+     15| test('cache management works without FFmpeg and preserves unrelated fi…
+       | ^
+     16|   const root = await mkdtemp(join(tmpdir(), 'setcast-cache-cli-'));
+     17|   try {
+ ❯ VitestModuleRunner.directRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1274:59
+ ❯ VitestModuleRunner.cachedRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1181:73
+ ❯ VitestModuleRunner.import node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1135:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/cli/src/commands/preview.test.ts > preview renderer overrides select the requested adapter in both directions
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ packages/cli/src/commands/preview.test.ts:33:1
+     31| }
+     32|
+     33| test('preview renderer overrides select the requested adapter in both …
+       | ^
+     34|   const directory = await mkdtemp(join(tmpdir(), 'setcast-preview-sele…
+     35|   try {
+ ❯ VitestModuleRunner.directRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1274:59
+ ❯ VitestModuleRunner.cachedRequest node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1181:73
+ ❯ VitestModuleRunner.import node_modules/.pnpm/@voidzero-dev+vite-plus-core@0.2.9_@types+node@26.2.0_esbuild@0.28.1_terser@5.50.0_typescript@7.0.2_yaml@2.9.0/node_modules/@voidzero-dev/vite-plus-core/dist/vite/node/module-runner.js:1135:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 109 passed (111)
+      Tests  2 failed | 665 passed (667)
+   Start at  01:34:01
+   Duration  12.59s (transform 8.95s, setup 0ms, import 30.55s, tests 65.27s, environment 9ms)
+
+
+---
+vp run: 0/2 cache hit (0%), 1 failed. (Run `vp run --last-details` for full details)

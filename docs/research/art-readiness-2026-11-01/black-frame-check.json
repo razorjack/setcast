@@ -1,0 +1,68 @@
+[
+  {
+    "variant": "original",
+    "file": "0-browser.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "original",
+    "file": "0-remotion.mp4",
+    "blackFrames": [
+      "[Parsed_blackframe_0 @ 0x7a4101dc80] frame:30 pblack:100 pts:90000 t:1.000000 type:B last_keyframe:0"
+    ]
+  },
+  {
+    "variant": "original",
+    "file": "1-browser.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "original",
+    "file": "1-remotion.mp4",
+    "blackFrames": [
+      "[Parsed_blackframe_0 @ 0x7769015f80] frame:30 pblack:100 pts:90000 t:1.000000 type:B last_keyframe:0"
+    ]
+  },
+  {
+    "variant": "original",
+    "file": "2-browser.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "original",
+    "file": "2-remotion.mp4",
+    "blackFrames": [
+      "[Parsed_blackframe_0 @ 0x7b99006280] frame:30 pblack:100 pts:90000 t:1.000000 type:B last_keyframe:0"
+    ]
+  },
+  {
+    "variant": "commit-hold",
+    "file": "0-browser.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "commit-hold",
+    "file": "0-remotion.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "commit-hold",
+    "file": "1-browser.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "commit-hold",
+    "file": "1-remotion.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "commit-hold",
+    "file": "2-browser.mp4",
+    "blackFrames": []
+  },
+  {
+    "variant": "commit-hold",
+    "file": "2-remotion.mp4",
+    "blackFrames": []
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "adapter": "browser",
+    "blackFrames": []
+  },
+  {
+    "adapter": "remotion",
+    "blackFrames": []
+  }
+]

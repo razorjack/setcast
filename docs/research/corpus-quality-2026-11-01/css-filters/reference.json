@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/replacement-corpus-v1/css-filters",
+  "range": [
+    2700,
+    2999
+  ],
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "frames": 300,
+  "identity": "f802f663b89b0d1cf948b603d1d7a76ad765e90923bc1713c4ff13a405b62591",
+  "projectDigest": "0a67d18555efc6db02b2377d1f3696d72f7a07d6f359a12a025e96541b91057a",
+  "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33",
+  "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/corpus-quality-v1-2026-11-01/css-filters/reference/reference.mkv",
+  "fileDigest": {
+    "sha256": "c520ea3ffb624ed8303fede51b784dd353ba3f0008c77e481a9a2a334045f4f9",
+    "bytes": 356061612,
+    "stamp": "16777229:167962333:356061612:1793490593001.8127:1793490593001.8127"
+  },
+  "sourceRgbHash": "SHA256=e35237914d4f2eb6bfc924bcd1fad274c564b220be6d9c0a2d19c8d72c7c460d",
+  "capture": "png-cdp-optimize-for-speed",
+  "regions": {
+    "credits": {
+      "x": 66,
+      "y": 114,
+      "right": 718,
+      "bottom": 380
+    }
+  },
+  "scope": "Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range."
+}

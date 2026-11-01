@@ -65,6 +65,20 @@ The reference remains selected across project edits. A changed composition size 
 comparison until a matching image is chosen. Scaling the workspace affects both images equally.
 This is a visual comparison tool, not a cross-browser pixel-equivalence guarantee.
 
+Capture export frame queues a lossless PNG of the selected frame in the exporter's pinned
+Chromium. It requires Chromium provisioning and uses the project's graphics setting. Show export
+frame displays that PNG while paused; playback and a different frame return to interactive rendering.
+The queue records the Chromium version and bundle digest, and offers a PNG download. A project
+revision hides older captures. Reference capture shares the serial export queue, its request checks,
+cancellation and output ownership. Failed or cancelled stills can be retried; they have no chunks.
+
+With an export frame displayed and a local reference selected, the inspector reports changed
+pixels plus mean absolute, RMS and maximum channel differences. Both images are decoded into
+8-bit sRGB canvas RGBA in the viewing browser, with no resizing. Metrics support up to 8K pixels;
+the existing 32 MiB reference-file limit still applies. Alpha participates in the comparison.
+These numbers compare two images, not the interactive DOM, and do not measure perceptual video
+quality. Local reference images remain in the browser and are never uploaded.
+
 ## Project edits and recovery
 
 The CLI watches resolved project inputs, including YAML, theme/CSS and media. Valid edits publish
@@ -88,7 +102,7 @@ and `setcast browser-install` to provision Chromium. Unsupported encoding settin
 
 The queue runs one job at a time, with at most four waiting jobs and twenty jobs per preview
 session. It shows stage progress, completed-frame reuse, errors, actual runtime details and a
-Download MP4 link. Jobs use the project revision selected when submitted. Valid project edits or
+Download MP4 or PNG link. Jobs use the project revision selected when submitted. Valid project edits or
 failed reloads cancel unfinished jobs; create a new job after fixing or changing the project.
 This prevents a queued old scene from exporting with newly replaced media.
 
@@ -97,7 +111,7 @@ the project revision remains unchanged. Input hashes and runtime identity decide
 can be reused. Consecutive jobs share a browser/bundle session; the browser closes when the queue
 empties. Audio is encoded once continuously for each export. Preview volume does not change it.
 
-Stopping preview cancels active and waiting work and waits for cleanup. Completed MP4s and
+Stopping preview cancels active and waiting work and waits for cleanup. Completed MP4s, PNGs and
 interrupted checkpoints remain on disk; queue history is not restored after restarting the server.
 A CLI render with `--resume`, the same `--out`, encoding settings and exact range can reuse those
 checkpoints. Range end is `(last + 1) / fps`, including a partial final frame. The UI does not offer
@@ -135,8 +149,7 @@ six frames through the installed preview API. Shared export-driver changes also 
 both exporter acceptance suites and the same-page frame-order bench.
 
 Further work: live hardware and other operating systems remain separate qualification tasks.
-Numeric image-difference metrics and GPU timing remain
-future additions. Audible playback checks verify browser media state and frame selection, not
+GPU timing remains a future addition. Audible playback checks verify browser media state and frame selection, not
 physical speaker/display latency or output routing.
 
 Validated locally: `vp run ready` (467 tests, dependency ban and Remotion smoke), both exporter

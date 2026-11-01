@@ -6,6 +6,7 @@ import {
   readWholeSet,
   readsWholeSet,
   type LoadedProject,
+  type WholeSetReader,
 } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { clearSpinnerOnError, spinner, warn } from './ui.ts';
@@ -64,12 +65,17 @@ export async function withHardwareEncoding(
  * the travel its CSS reads. Reading a long set takes seconds, so commands call this after
  * everything they can validate first.
  */
-export async function withWholeSet({ dir, project }: LoadedProject): Promise<ResolvedProject> {
+export async function withWholeSet(
+  { dir, project }: LoadedProject,
+  reader?: WholeSetReader,
+): Promise<ResolvedProject> {
   if (!readsWholeSet(project)) return project;
 
   const spin = spinner();
-  spin.start(`Reading all of ${project.audio}`);
-  const whole = await clearSpinnerOnError(spin, () => readWholeSet(project, dir));
-  spin.stop('Read the whole set');
+  spin.start(`Preparing audio features for ${project.audio}`);
+  const whole = await clearSpinnerOnError(spin, () =>
+    reader ? reader.read(project, dir) : readWholeSet(project, dir),
+  );
+  spin.stop('Audio features ready');
   return whole;
 }

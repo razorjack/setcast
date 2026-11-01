@@ -1,10 +1,19 @@
-import { join } from 'node:path';
-import { load, withWholeSet } from '../../../cli/src/project.ts';
+import { join, resolve } from 'node:path';
+import {
+  loadProject,
+  probeAudio,
+  readsWholeSet,
+  readWholeSet,
+  type LoadedProject,
+} from '@setcast/core/node';
+import { themes } from '../../../themes/src/index.ts';
 import { render, type BrowserMetric } from '../../src/export/index.ts';
 import type { EnduranceConfig } from './config.ts';
 import type { EnduranceReport } from './report.ts';
 import { verifyExport } from './verify.ts';
-import { toSeconds } from '@setcast/core';
+import { exportSettings, toSeconds, type RenderRuntime } from '@setcast/core';
+import { sampleProcessMemory } from './process-memory.ts';
+import { sampleOutputStorage } from './output-storage.ts';
 
 export async function runExport(
   config: EnduranceConfig,
@@ -13,7 +22,10 @@ export async function runExport(
   control: { signal: AbortSignal; existingVideo?: string },
 ) {
   const { signal, existingVideo } = control;
-  const loaded = await load(config.project);
+  const loaded = await loadProject(resolve(config.project), {
+    themes,
+    probeDuration: (audio, root) => probeAudio({ audio }, root),
+  });
   const end = config.at + config.seconds;
   if (end > toSeconds(loaded.project.mix.duration))
     throw new Error(
@@ -29,20 +41,36 @@ export async function runExport(
     );
     return;
   }
-  const project = await withWholeSet(loaded);
+  await exportProject(loaded, config, report, { out, signal });
+}
+
+async function exportProject(
+  loaded: LoadedProject,
+  config: EnduranceConfig,
+  report: EnduranceReport,
+  control: { out: string; signal: AbortSignal },
+) {
+  const { out, signal } = control;
+  const project = readsWholeSet(loaded.project)
+    ? await readWholeSet(loaded.project, loaded.dir)
+    : loaded.project;
   const metrics = exportMetrics();
   const file = join(out, 'export.mp4');
   const stop = new AbortController();
+  const runtime: RenderRuntime[] = [];
+  const settings = { ...exportSettings(loaded.config.output), concurrency: config.concurrency };
+  report.report.details = { ...report.report.details, settings, runtime };
+  const started = performance.now();
   const rendering = render(project, {
+    ...settings,
     projectDir: loaded.dir,
     out: file,
-    range: [config.at, end],
-    concurrency: config.concurrency,
+    range: [config.at, config.at + config.seconds],
     onMetrics: metrics.measured,
+    onRuntime: (event) => runtime.push(event),
     signal: AbortSignal.any([signal, stop.signal]),
   });
-  const started = performance.now();
-  const result = await sampleExport(rendering, { report, metrics, config, stop });
+  const result = await sampleExport(rendering, { report, metrics, config, stop, out });
   report.report.details = {
     ...report.report.details,
     result,
@@ -52,6 +80,7 @@ export async function runExport(
     fps: project.fps,
     frames: metrics.frames(),
     renderWallSeconds: (performance.now() - started) / 1000,
+    finalStorage: await sampleOutputStorage(out),
   };
   await verifyExport(file, { project, dir: loaded.dir }, { config, report }, signal);
 }
@@ -78,16 +107,16 @@ function exportMetrics() {
   return { stats, measured, frames: () => frames };
 }
 
-async function sampleExport<T>(
-  rendering: Promise<T>,
-  options: {
-    report: EnduranceReport;
-    metrics: ReturnType<typeof exportMetrics>;
-    config: EnduranceConfig;
-    stop: AbortController;
-  },
-) {
-  const { report, metrics, config, stop } = options;
+interface ExportSamplingOptions {
+  report: EnduranceReport;
+  metrics: ReturnType<typeof exportMetrics>;
+  config: EnduranceConfig;
+  stop: AbortController;
+  out: string;
+}
+
+async function sampleExport<T>(rendering: Promise<T>, options: ExportSamplingOptions) {
+  const { config, stop } = options;
   let finished = false;
   // Attach a rejection handler before sampling so an early failure is never unhandled.
   const settled = rendering
@@ -100,12 +129,7 @@ async function sampleExport<T>(
     });
   try {
     while (!finished) {
-      await report.event('sample', {
-        frames: metrics.frames(),
-        nodeRssBytes: process.memoryUsage().rss,
-        stats: metrics.stats,
-      });
-      await report.checkpoint();
+      await sampleExportResources(options);
       await Promise.race([settled, delay(config.sampleSeconds * 1000)]);
     }
     const outcome = await settled;
@@ -133,4 +157,20 @@ function delay(milliseconds: number) {
     const timer = setTimeout(resolve, milliseconds);
     timer.unref();
   });
+}
+
+async function sampleExportResources({ out, report, metrics }: ExportSamplingOptions) {
+  const storage = await sampleOutputStorage(out);
+  await report.event('sample', {
+    frames: metrics.frames(),
+    nodeRssBytes: process.memoryUsage().rss,
+    processes: sampleProcessMemory(),
+    storage,
+    stats: metrics.stats,
+  });
+  await report.checkpoint();
+  if (storage.freeBytes < 2 * 1024 ** 3)
+    throw new Error(
+      'Endurance export stopped because filesystem free space fell below 2 GiB. Free space before retrying.',
+    );
 }

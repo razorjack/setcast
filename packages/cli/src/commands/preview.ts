@@ -4,6 +4,7 @@ import { load, withHardwareEncoding, withWholeSet } from '../project.ts';
 import { watchInputs } from '../watch.ts';
 import { browserPreview } from '../browser-preview.ts';
 import { dim, intro, log, printError } from '../ui.ts';
+import { WholeSetReader } from '@setcast/core/node';
 
 export const help = `setcast preview [dir] [--port N] [--theme name] [--renderer remotion|browser]
 
@@ -31,7 +32,8 @@ export async function run(argv: string[]): Promise<void> {
   }
   const loaded = await withHardwareEncoding(initial, 'remotion');
   const { dir } = loaded;
-  const project = await withWholeSet(loaded);
+  const reader = new WholeSetReader();
+  const project = await withWholeSet(loaded, reader);
   log.info(`Opening Remotion Studio for ${project.title || dir} ${dim('(Ctrl+C to stop)')}`);
 
   const { gl, crf, hardwareAcceleration, videoBitrate, jpegQuality, x264Preset } =
@@ -43,7 +45,7 @@ export async function run(argv: string[]): Promise<void> {
         dependencies,
         async (files) => {
           const next = await load(dir, options.theme, files);
-          await update(await withWholeSet(next));
+          await update(await withWholeSet(next, reader));
         },
         printError,
       ),

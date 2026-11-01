@@ -66,15 +66,20 @@ VideoToolbox has passed the export acceptance suite on Apple M1 Pro. NVENC selec
 behavior have unit coverage; Linux/Windows device qualification and matched-quality performance
 comparisons remain outstanding. Hardware bitrate equality does not establish equal visual quality.
 
-`--concurrency` accepts 1 through 8 and defaults to 1. The CLI reports actual capture workers
+`--concurrency` accepts 1 through 8; omission selects a stable 1/2/4-worker pool from CPU and
+memory limits, with one worker below 300 frames. Explicit values override automatic selection.
+The memory calculation is a selection estimate, not an enforced limit on native/GPU allocations.
+Selection happens before cache/resume identity and reports its reason. The CLI reports actual capture workers
 when preparation completes, including zero when all chunks are reused. Each worker retains bounded
 PCM windows and decoder state. Capture overlaps encoder writes through a bounded queue: at most
 one pending capture per worker plus the image being written. Frames reach FFmpeg in order with
 backpressure. Measure your project before raising concurrency; independence is not a speed guarantee.
 
-A resource-aware automatic policy has passed cache/resume acceptance but awaits new throughput
-measurements with the corrected paint driver. The [candidate and timing record](research/worker-scaling-2026-10-31/README.md)
-remain separate from the production default.
+The policy has passed cache/resume acceptance and three alternating pairs on standard, tunnel
+and looping-video fixtures with the corrected paint driver. All decoded video hashes agree
+between one and automatic workers within each fixture. See the
+[timing record](research/worker-scaling-2026-11-01/README.md). This comparison measures scheduling,
+not the separate matched-quality target against current Remotion.
 
 The shared export/preview driver resets cached paint immediately after React commits, before
 waiting for stable paint and assets. This resets frame-dependent cached gradient and text paint. It restores body display synchronously, preserving React and decoded

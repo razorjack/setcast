@@ -1,0 +1,28 @@
+Quality corpus: standard
+Quality corpus: css-filters
+Quality corpus: field
+Quality corpus: tunnel
+Quality corpus: constellation
+Quality corpus: looping-video
+Quality corpus: dj-art-branding
+Quality corpus: portrait
+Quality corpus: 60fps
+Quality corpus: 4k
+Quality corpus: chunk-boundary
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Need 13.0 GiB free for conservative uncompressed reference capacity; free space or run this case on a larger volume.
+    at checkSpace (file:///Users/razorjack/Projects/OpenSource/setcast/scripts/corpus-quality.ts:161:3)
+    at async measureCase (file:///Users/razorjack/Projects/OpenSource/setcast/scripts/corpus-quality.ts:75:3)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/scripts/corpus-quality.ts:60:25 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

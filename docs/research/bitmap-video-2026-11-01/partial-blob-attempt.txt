@@ -1,0 +1,54 @@
+sterile-tech landscape: captured
+sterile-tech portrait: captured
+escapement landscape: captured
+escapement portrait: captured
+long-exposure landscape: captured
+long-exposure portrait: captured
+bristol landscape: captured
+bristol portrait: captured
+patina landscape: captured
+patina portrait: captured
+quicksilver landscape: captured
+quicksilver portrait: captured
+bunker landscape: captured
+bunker portrait: captured
+vfd landscape: captured
+vfd portrait: captured
+interference landscape: captured
+interference portrait: captured
+pirate landscape: captured
+pirate portrait: captured
+afterhours landscape: captured
+afterhours portrait: captured
+passe-partout landscape: captured
+passe-partout portrait: captured
+masthead landscape: captured
+masthead portrait: captured
+anamorphic landscape: captured
+anamorphic portrait: captured
+relief landscape: captured
+relief portrait: captured
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: ffmpeg -v error -i pipe:0 -pix_fmt rgba -f hash -hash sha256 -
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at recordFrame (file:///private/tmp/setcast-bitmap-video-candidate/packages/renderer-browser/bench/video-stills.ts:86:16)
+    at async file:///private/tmp/setcast-bitmap-video-candidate/packages/renderer-browser/bench/video-stills.ts:61:7
+    at async withCapturePages (file:///private/tmp/setcast-bitmap-video-candidate/packages/renderer-browser/src/export/session.ts:140:20)
+    at async captureVariant (file:///private/tmp/setcast-bitmap-video-candidate/packages/renderer-browser/bench/video-stills.ts:57:3)
+    at async file:///private/tmp/setcast-bitmap-video-candidate/packages/renderer-browser/bench/video-stills.ts:39:7
+    at async withRenderSession (file:///private/tmp/setcast-bitmap-video-candidate/packages/renderer-browser/src/export/session.ts:64:12) {
+  status: null,
+  signal: 'SIGKILL',
+  output: [ null, Buffer(0) [Uint8Array] [], Buffer(0) [Uint8Array] [] ],
+  pid: 72045,
+  stdout: Buffer(0) [Uint8Array] [],
+  stderr: Buffer(0) [Uint8Array] []
+}
+
+Node.js v26.7.0

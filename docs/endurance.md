@@ -131,6 +131,15 @@ runner rejects an overlong range instead of silently producing a shorter qualifi
 It never modifies the source project. The generated MP4 uses that project's encoding settings.
 
 Samples contain completed frame metrics, stage count/sum/maximum, captured bytes and Node RSS.
+On macOS and Linux they also record sampled RSS for Node and its current descendants. Summing
+RSS can double-count shared pages; external GPU/encoder services and processes that exit between
+samples are excluded. Sampling failures are explicit unavailable observations and do not stop
+the export. Report details include the resolved export settings and runtime decisions. Export
+settings are forwarded from the project; the workload's explicit concurrency overrides them.
+Samples also record apparent bytes in the dedicated run directory, temporary output directories
+and filesystem free space. Symlinks are excluded from byte totals. Free space is shared with
+other jobs; it is not attributed to Setcast alone. The harness cancels its own export if free
+space falls below 2 GiB. The final storage sample records output and temporary-directory cleanup.
 The default `verification: "metadata"` checks video dimensions, rate, frame count and duration,
 plus audio presence and duration. `verification: "decoded"` also decodes every video frame and
 compares sampled audio against the source master. Both modes retain source/output SHA-256 hashes,

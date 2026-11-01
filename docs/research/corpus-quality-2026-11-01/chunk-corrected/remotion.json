@@ -1,0 +1,324 @@
+{
+  "version": 1,
+  "video": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/corpus-quality-chunk-corrected-2026-11-01/chunk-boundary/comparison/0-remotion.mp4",
+  "reference": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/corpus-quality-chunk-corrected-2026-11-01/chunk-boundary/reference/reference.json",
+  "referenceStream": {
+    "index": 0,
+    "codec_name": "ffv1",
+    "codec_long_name": "FFmpeg video codec #1",
+    "codec_type": "video",
+    "codec_tag_string": "[0][0][0][0]",
+    "codec_tag": "0x0000",
+    "width": 1920,
+    "height": 1080,
+    "coded_width": 1920,
+    "coded_height": 1080,
+    "has_b_frames": 0,
+    "pix_fmt": "bgr0",
+    "level": -99,
+    "color_range": "pc",
+    "color_space": "gbr",
+    "field_order": "progressive",
+    "refs": 1,
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "start_pts": 0,
+    "start_time": "0.000000",
+    "bits_per_raw_sample": "8",
+    "nb_read_frames": "1890",
+    "extradata_size": 43,
+    "disposition": {
+      "default": 0,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0,
+      "non_diegetic": 0,
+      "captions": 0,
+      "descriptions": 0,
+      "metadata": 0,
+      "dependent": 0,
+      "still_image": 0,
+      "multilayer": 0
+    },
+    "tags": {
+      "ENCODER": "Lavc63.1.102 ffv1",
+      "DURATION": "00:01:03.000000000"
+    }
+  },
+  "videoStream": {
+    "index": 0,
+    "codec_name": "h264",
+    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+    "profile": "High",
+    "codec_type": "video",
+    "codec_tag_string": "avc1",
+    "codec_tag": "0x31637661",
+    "mime_codec_string": "avc1.640028",
+    "width": 1920,
+    "height": 1080,
+    "coded_width": 1920,
+    "coded_height": 1088,
+    "has_b_frames": 2,
+    "sample_aspect_ratio": "1:1",
+    "display_aspect_ratio": "16:9",
+    "pix_fmt": "yuv420p",
+    "level": 40,
+    "color_range": "tv",
+    "color_transfer": "iec61966-2-1",
+    "color_primaries": "bt709",
+    "chroma_location": "left",
+    "field_order": "progressive",
+    "refs": 4,
+    "is_avc": "true",
+    "nal_length_size": "4",
+    "id": "0x1",
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "time_base": "1/90000",
+    "start_pts": 0,
+    "start_time": "0.000000",
+    "duration_ts": 5670000,
+    "duration": "63.000000",
+    "bit_rate": "1194818",
+    "bits_per_raw_sample": "8",
+    "nb_frames": "1890",
+    "nb_read_frames": "1890",
+    "extradata_size": 51,
+    "disposition": {
+      "default": 1,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0,
+      "non_diegetic": 0,
+      "captions": 0,
+      "descriptions": 0,
+      "metadata": 0,
+      "dependent": 0,
+      "still_image": 0,
+      "multilayer": 0
+    },
+    "tags": {
+      "language": "und",
+      "handler_name": "VideoHandler"
+    }
+  },
+  "videoDigest": {
+    "sha256": "6e6cf123782d99e74f735d804dedfb9c92de724ea083d06795c43841cccdc13b",
+    "bytes": 11677053,
+    "stamp": "16777229:168611003:11677053:1793525537202.4937:1793525537203.8657"
+  },
+  "projectVerification": "matched absolute frames, resolved project, asset contents and exported file",
+  "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "scope": "Raster fidelity by frame index, using FFmpeg tagged matrix/range conversion to full-range RGB. Missing matrix tags use FFmpeg defaults and remain visible in stream metadata. No transfer-function/display conversion. Not a temporal, audio, subjective-quality or speed qualification.",
+  "regions": {
+    "full": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "psnr": {
+        "frames": 1890,
+        "min": 39.79,
+        "p05": 40.16,
+        "median": 40.68,
+        "mean": 40.65260846560841
+      },
+      "ssim": {
+        "frames": 1890,
+        "min": 0.973906,
+        "p05": 0.974754,
+        "median": 0.990705,
+        "mean": 0.9868474396825381
+      }
+    },
+    "branding": {
+      "rect": {
+        "x": 787,
+        "y": 119,
+        "right": 1855,
+        "bottom": 950
+      },
+      "psnr": {
+        "frames": 1890,
+        "min": 39.68,
+        "p05": 39.8,
+        "median": 41.16,
+        "mean": 41.094582010582016
+      },
+      "ssim": {
+        "frames": 1890,
+        "min": 0.97275,
+        "p05": 0.973119,
+        "median": 0.989862,
+        "mean": 0.9858970058201056
+      }
+    },
+    "tracklist": {
+      "rect": {
+        "x": 1374,
+        "y": 140,
+        "right": 1855,
+        "bottom": 490
+      },
+      "psnr": {
+        "frames": 1890,
+        "min": 33.69,
+        "p05": 33.94,
+        "median": 35.53,
+        "mean": 35.558597883597905
+      },
+      "ssim": {
+        "frames": 1890,
+        "min": 0.968351,
+        "p05": 0.972356,
+        "median": 0.980524,
+        "mean": 0.979180587830688
+      }
+    },
+    "credits": {
+      "rect": {
+        "x": 65,
+        "y": 141,
+        "right": 680,
+        "bottom": 274
+      },
+      "psnr": {
+        "frames": 1890,
+        "min": 37.9,
+        "p05": 42.51,
+        "median": 47.2,
+        "mean": 46.484820105820084
+      },
+      "ssim": {
+        "frames": 1890,
+        "min": 0.97889,
+        "p05": 0.97941,
+        "median": 0.995851,
+        "mean": 0.9930818132275141
+      }
+    }
+  },
+  "vmaf": {
+    "model": "vmaf_v0.6.1neg",
+    "pooled": {
+      "integer_adm2_egl_1": {
+        "min": 0.989483,
+        "max": 0.995148,
+        "mean": 0.993217,
+        "harmonic_mean": 0.993216
+      },
+      "integer_aim_egl_1": {
+        "min": 0.005822,
+        "max": 0.014628,
+        "mean": 0.009065,
+        "harmonic_mean": 0.009058
+      },
+      "integer_adm3_egl_1": {
+        "min": 0.989732,
+        "max": 0.994345,
+        "mean": 0.992076,
+        "harmonic_mean": 0.992075
+      },
+      "integer_adm_scale0_egl_1": {
+        "min": 0.98406,
+        "max": 0.994684,
+        "mean": 0.99121,
+        "harmonic_mean": 0.991208
+      },
+      "integer_adm_scale1_egl_1": {
+        "min": 0.982233,
+        "max": 0.995111,
+        "mean": 0.992041,
+        "harmonic_mean": 0.99204
+      },
+      "integer_adm_scale2_egl_1": {
+        "min": 0.989196,
+        "max": 0.995732,
+        "mean": 0.993854,
+        "harmonic_mean": 0.993854
+      },
+      "integer_adm_scale3_egl_1": {
+        "min": 0.989777,
+        "max": 0.996169,
+        "mean": 0.994349,
+        "harmonic_mean": 0.994348
+      },
+      "VMAF_integer_feature_motion_sad_score": {
+        "min": 0,
+        "max": 22.097897,
+        "mean": 0.160777,
+        "harmonic_mean": 0.130337
+      },
+      "integer_vif_scale0_egl_1": {
+        "min": 0.89924,
+        "max": 0.954216,
+        "mean": 0.930789,
+        "harmonic_mean": 0.930737
+      },
+      "integer_vif_scale1_egl_1": {
+        "min": 0.987171,
+        "max": 0.995968,
+        "mean": 0.993545,
+        "harmonic_mean": 0.993544
+      },
+      "integer_vif_scale2_egl_1": {
+        "min": 0.990542,
+        "max": 0.997076,
+        "mean": 0.995511,
+        "harmonic_mean": 0.995511
+      },
+      "integer_vif_scale3_egl_1": {
+        "min": 0.991809,
+        "max": 0.997705,
+        "mean": 0.996298,
+        "harmonic_mean": 0.996297
+      },
+      "integer_motion2": {
+        "min": 0,
+        "max": 2.341274,
+        "mean": 0.123066,
+        "harmonic_mean": 0.106432
+      },
+      "integer_motion3": {
+        "min": 0.022095,
+        "max": 2.341274,
+        "mean": 0.123095,
+        "harmonic_mean": 0.106465
+      },
+      "vmaf": {
+        "min": 94.553641,
+        "max": 97.924513,
+        "mean": 95.562664,
+        "harmonic_mean": 95.561763
+      }
+    },
+    "percentiles": {
+      "frames": 1890,
+      "min": 94.553641,
+      "p05": 95.116296,
+      "median": 95.600277,
+      "mean": 95.56266374126994
+    }
+  },
+  "status": "measured",
+  "error": null
+}

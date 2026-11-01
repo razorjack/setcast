@@ -44,6 +44,14 @@ export type RenderRuntime =
       capture: 'jpeg-screenshot' | 'not-observed';
     }
   | { kind: 'capture'; workers: number; parallelEncoding: boolean }
+  | {
+      kind: 'scheduling';
+      workers: number;
+      reason: 'explicit' | 'short-export' | 'resource-budget';
+      cpuCount: number;
+      memoryBudgetBytes: number;
+      estimatedMemoryBytes: number;
+    }
   | { kind: 'encoding-selection'; encoder: string; fallback: string | null }
   | {
       kind: 'encoder';

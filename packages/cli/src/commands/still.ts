@@ -2,14 +2,8 @@ import type { StillOptions, StillResult } from '@setcast/core';
 import { parseRendererFlag, still, withRenderSession, type Renderer } from '../renderer.ts';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
-import {
-  defaultStillTime,
-  toSeconds,
-  formatTime,
-  type ResolvedProject,
-  type SetEnvelope,
-} from '@setcast/core';
-import type { LoadedProject } from '@setcast/core/node';
+import { defaultStillTime, toSeconds, formatTime, type ResolvedProject } from '@setcast/core';
+import { WholeSetReader, type LoadedProject } from '@setcast/core/node';
 import { themes } from '@setcast/themes';
 import { parseAt, parseCommandArgs, timeWithinAudio } from '../args.ts';
 import { stem } from '../paths.ts';
@@ -71,16 +65,13 @@ async function runCommand(options: StillCommandOptions, loaded: LoadedProject): 
 async function grabEveryTheme(options: StillCommandOptions): Promise<void> {
   const names = Object.keys(themes);
   const column = Math.max(...names.map((name) => name.length));
-  let envelope: SetEnvelope | null = null;
+  const reader = new WholeSetReader();
   let grabbedAt = 0;
 
   for (const theme of names) {
     const loaded = await load(options.dir, theme);
     const plan = planStill(loaded, options);
-    const project: ResolvedProject = envelope
-      ? { ...loaded.project, envelope }
-      : await withWholeSet(loaded);
-    envelope = project.envelope;
+    const project = await withWholeSet(loaded, reader);
     const themedPlan = { ...plan, out: themedFile(plan.out, theme) };
     const result = await grabStill(
       project,

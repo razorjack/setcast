@@ -32,8 +32,9 @@ Browser export accepts `gl: auto`, `default` and `angle`; remove other Remotion-
 or select the compatibility adapter. `parallelEncoding: false` is unsupported by browser;
 remove it to use bounded streaming. Unsupported options fail before capture, without silently
 switching renderers. Hardware encoding requires a supported device and an actual successful
-encode probe. Software H.264 remains the default. Worker concurrency remains one unless explicitly
-selected; the automatic policy experiment has not been promoted.
+encode probe. Software H.264 remains the default. Worker concurrency selects 1/2/4 from stable CPU/memory limits, with one worker below 300 frames.
+An explicit `--concurrency 1` through `8` overrides that policy. Selection is recorded before
+checkpoint/cache identity; its memory estimate is not an allocation limit.
 
 ## Compatibility and rollback
 
