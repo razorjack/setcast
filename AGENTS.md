@@ -114,6 +114,9 @@ Gotchas:
   Transfer the local browser-first candidate before testing independent installation; main's
   package-smoke lacks the candidate's `--report` and fresh dependency installation behavior.
   The old upstream comparison branch predates promoted bitmap code. Windows remains unqualified.
+  Sandbox device isolation can hide a working NVIDIA driver; identify host devices with the
+  same access used for exports. Worker qualification accepts `--gl` and retains runtime reports
+  for each export so requested settings cannot be mistaken for observed graphics backends.
 
 - Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.

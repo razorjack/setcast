@@ -119,3 +119,37 @@ brightness checks. This qualifies the short FFmpeg decoding/compositing fixture,
 not editors, OBS or sustained ProRes. The decoded-verifier positive and negative
 fixtures pass. Ready passes again before this evidence commit (688 tests).
 The unresolved worker matrix remains failed; baseline success does not supersede it.
+
+Candidate fb00141 passes ready (688 tests), browser acceptance and Remotion
+acceptance with swangle. Fresh browser-only package smoke passes with 36 package
+inventory entries, no Remotion packages, and lock digest
+8676b2ab0c86875511e3ee32599063af9a8f54f73c578c7b47300f1f7f77fbe5.
+Its report includes actual diagnostics and completed default workflows.
+
+Fresh optional-Remotion installation also passes: explicit compatibility validation
+and six decoded Remotion export frames, alongside installed browser workflows.
+The candidate worktree remains clean. Neither installation run is external CI.
+
+NVENC doctor, required-hardware acceptance (19 observed h264_nvenc chunks, no
+fallback), color and resume checks pass. Resume includes changed encoder backend
+invalidation. The 120-second synthetic NVENC workload uses four workers, required
+hardware and 12M bitrate, full decoded verification and four stereo checkpoints.
+It is not a substitute for a real master. Initial fixture copying failed because
+Node rejects copying a directory into its own descendant even with a filter;
+copying only the authored YAML and assets resolves that preparation error.
+
+The 120-second NVENC demo passes full decoding of 3,600 frames and all four sampled
+stereo windows at zero measured lag. Observed encoding is h264_nvenc with no
+fallback; active graphics are NVIDIA ANGLE. Peak sampled summed process-tree RSS
+is 3,498,487,808 bytes, peak sampled run-directory storage 173,843,196 bytes.
+Temporary directories are removed after completion. This short synthetic run
+does not establish hour-long memory stability or qualify a real master.
+The producing revision is e1b4b17 with documentation and worker-harness edits;
+production renderer code remains identical to handoff.
+
+The worker harness now accepts --gl auto/default/angle, forwards it to encoded
+and source captures, and retains each export's runtime observations even on
+failure. Ready passes (688 tests). Pirate with the shipped --gl default setting
+selects SwiftShader and passes exact equality in both orientations across 1/2/4
+workers. This is software-backend evidence; NVIDIA auto remains failed.
+A full software matrix follows without changing production defaults.

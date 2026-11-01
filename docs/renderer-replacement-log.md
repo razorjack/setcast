@@ -1678,3 +1678,10 @@ counts. The original PNGs and reports remain retained. These failures prevent
 claiming complete production fidelity despite both short acceptance suites passing.
 Investigation will distinguish graphics rasterization from frame/readiness behavior;
 thresholds remain unchanged.
+
+The isolated browser-first candidate fb00141 passes ready (688 tests), both exporter
+acceptance suites and a fresh browser-only tarball installation. The installed
+inventory contains no Remotion packages; default workflows, themes/video,
+cache/resume, preview and ProRes pass. The optional-Remotion installation is still
+running. This establishes the exercised Linux installation behavior, not full
+backend fidelity or release readiness.

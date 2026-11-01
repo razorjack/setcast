@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { ResolvedProject } from '@setcast/core';
+import type { GraphicsBackend, ResolvedProject } from '@setcast/core';
 import { pipeline } from '../src/export/pipeline.ts';
 import { prepareFrame, withCapturePages } from '../src/export/session.ts';
 
@@ -37,18 +37,18 @@ export async function qualifySourcePixels(
   project: ResolvedProject,
   projectDir: string,
   root: string,
-  workers: readonly number[],
+  options: { workers: readonly number[]; gl: GraphicsBackend },
 ) {
   const range = [30, 74] as const;
   const groups: [string, number][] = [
     ['one-a', 1],
     ['one-b', 1],
-    ...workers.slice(1).map((count): [string, number] => [`${count}-workers`, count]),
+    ...options.workers.slice(1).map((count): [string, number] => [`${count}-workers`, count]),
   ];
   for (const [name, count] of groups) {
     const directory = join(root, name);
     await mkdir(directory, { recursive: true });
-    await withCapturePages(project, { projectDir }, count, (pages) =>
+    await withCapturePages(project, { projectDir, gl: options.gl }, count, (pages) =>
       pipeline({
         range: [...range],
         workers: count,

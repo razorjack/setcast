@@ -1,0 +1,768 @@
+{
+  "version": 1,
+  "scope": "Frozen portable corpus. Three alternating timed pairs per case, after quality qualification. Long real-master qualification is separate and remains required.",
+  "revision": "e1b4b1702d19b8122cce4d269bf952deacc1416f",
+  "ffmpeg": "ffmpeg version 8.1.3 Copyright (c) 2000-2026 the FFmpeg developers",
+  "cases": [
+    {
+      "name": "standard",
+      "theme": "sterile-tech",
+      "at": 90,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/standard",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ]
+      },
+      "projectDigest": "42ab144120333da47307144d987f64c9ac3c61affd79c97101d799efdbfd8c6d",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "css-filters",
+      "theme": "afterhours",
+      "at": 90,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/css-filters",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "afterhours",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ]
+      },
+      "projectDigest": "0a67d18555efc6db02b2377d1f3696d72f7a07d6f359a12a025e96541b91057a",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "field",
+      "theme": "sterile-tech",
+      "visualizer": "field",
+      "at": 90,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/field",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ],
+        "visualizer": {
+          "name": "field"
+        }
+      },
+      "projectDigest": "3ba323816845869821873ef7894ea6d986dfda2ff941d75c9e2158375bb417cb",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "tunnel",
+      "theme": "sterile-tech",
+      "visualizer": "tunnel",
+      "at": 90,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/tunnel",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ],
+        "visualizer": {
+          "name": "tunnel"
+        }
+      },
+      "projectDigest": "96d8fb130347d05149c3585f7dcd499b0c0037ec2a7fe1978df7c8dd6c3c3483",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "constellation",
+      "theme": "sterile-tech",
+      "visualizer": "constellation",
+      "at": 90,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/constellation",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ],
+        "visualizer": {
+          "name": "constellation"
+        }
+      },
+      "projectDigest": "c48bd640413480fa4f2cfbfa7c86ac7141d7d693d7d5d48ea9ba517ce8ef0e2a",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "looping-video",
+      "theme": "sterile-tech",
+      "video": true,
+      "at": 90,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/looping-video",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/motion.mp4",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ]
+      },
+      "projectDigest": "6624d5304e7f46ad903904e76687edb750c4e8a856ea98316280ae92a9f00488",
+      "assetsDigest": "4572bdf9ec9912078eb57e790c8e8c5bcc479bb0c2e21b626c5cfb555616e4ec"
+    },
+    {
+      "name": "dj-art-branding",
+      "theme": "sterile-tech",
+      "branding": true,
+      "at": 102,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/dj-art-branding",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal",
+            "background": "assets/alternate.svg"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ],
+        "tracklist": true,
+        "branding": {
+          "logo": "assets/logo.svg",
+          "name": "Null Vector",
+          "event": "Renderer qualification",
+          "episode": "01",
+          "messages": {
+            "lines": [
+              "Tracklist in the description",
+              "Recorded fixture"
+            ],
+            "seconds": 3,
+            "gap": 1
+          }
+        },
+        "announcements": [
+          {
+            "at": 104,
+            "text": "Guest contribution",
+            "seconds": 4
+          }
+        ]
+      },
+      "projectDigest": "2e1d00e1e2fcce41d7893047133a96b8bb779be64c17413b21e01be902a34cd4",
+      "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933"
+    },
+    {
+      "name": "portrait",
+      "theme": "afterhours",
+      "branding": true,
+      "portrait": true,
+      "at": 102,
+      "seconds": 10,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/portrait",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "afterhours",
+        "bpm": 174,
+        "output": {
+          "width": 1080,
+          "height": 1920,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal",
+            "background": "assets/alternate.svg"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ],
+        "tracklist": true,
+        "branding": {
+          "logo": "assets/logo.svg",
+          "name": "Null Vector",
+          "event": "Renderer qualification",
+          "episode": "01",
+          "messages": {
+            "lines": [
+              "Tracklist in the description",
+              "Recorded fixture"
+            ],
+            "seconds": 3,
+            "gap": 1
+          }
+        },
+        "announcements": [
+          {
+            "at": 104,
+            "text": "Guest contribution",
+            "seconds": 4
+          }
+        ]
+      },
+      "projectDigest": "76f2ea3f319e6850063e3606f0cd5c97dfa780749d9bee562c92d6d92ad4f3bd",
+      "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933"
+    },
+    {
+      "name": "60fps",
+      "theme": "sterile-tech",
+      "fps": 60,
+      "at": 90,
+      "seconds": 6,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/60fps",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 60,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ]
+      },
+      "projectDigest": "54f5e132eff9bcce01bceb5fd47e5041e24c9058bebf8d56d7ab6777f7290573",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "4k",
+      "theme": "sterile-tech",
+      "width": 3840,
+      "height": 2160,
+      "at": 90,
+      "seconds": 3,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/4k",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 3840,
+          "height": 2160,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ]
+      },
+      "projectDigest": "b383ba739752788bd9504496bd3a1f9e04267fca48db3ed11aa65dc0b294b865",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33"
+    },
+    {
+      "name": "chunk-boundary",
+      "theme": "sterile-tech",
+      "branding": true,
+      "at": 88,
+      "seconds": 63,
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/chunk-boundary",
+      "config": {
+        "title": "Renderer replacement corpus v1",
+        "audio": "assets/demo-set.wav",
+        "background": "assets/bg.png",
+        "theme": "sterile-tech",
+        "bpm": 174,
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "crf": 18,
+          "jpegQuality": 95,
+          "x264Preset": "medium",
+          "chunkSeconds": 60
+        },
+        "plays": [
+          {
+            "id": "first",
+            "at": 0,
+            "until": 105,
+            "artist": "Null Vector",
+            "title": "Sterile Room"
+          },
+          {
+            "id": "second",
+            "at": 60,
+            "until": 114,
+            "artist": "Oxide Array",
+            "title": "Rust Protocol"
+          },
+          {
+            "id": "closer",
+            "at": 105,
+            "artist": "Phase Memory",
+            "title": "Broken Signal",
+            "background": "assets/alternate.svg"
+          }
+        ],
+        "annotations": [
+          {
+            "kind": "breakdown",
+            "at": 77.2
+          },
+          {
+            "kind": "drop",
+            "at": 110.3,
+            "participants": [
+              "second",
+              "closer"
+            ]
+          }
+        ],
+        "tracklist": true,
+        "branding": {
+          "logo": "assets/logo.svg",
+          "name": "Null Vector",
+          "event": "Renderer qualification",
+          "episode": "01",
+          "messages": {
+            "lines": [
+              "Tracklist in the description",
+              "Recorded fixture"
+            ],
+            "seconds": 3,
+            "gap": 1
+          }
+        },
+        "announcements": [
+          {
+            "at": 104,
+            "text": "Guest contribution",
+            "seconds": 4
+          }
+        ]
+      },
+      "projectDigest": "2e1d00e1e2fcce41d7893047133a96b8bb779be64c17413b21e01be902a34cd4",
+      "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933"
+    }
+  ]
+}

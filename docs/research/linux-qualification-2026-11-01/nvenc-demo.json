@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "mode": "export",
+  "project": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo",
+  "at": 0,
+  "seconds": 120,
+  "sampleSeconds": 5,
+  "concurrency": 4,
+  "verification": "decoded",
+  "audioAt": [
+    5,
+    33,
+    79,
+    110
+  ]
+}
