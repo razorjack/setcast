@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "revision": "fa4b67ea8ee70d0ec3a6f62e805ae54d8fe0f8e9",
+  "dirty": true,
+  "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "thresholds": {
+    "compositeMean": 1.5,
+    "compositeMax": 12,
+    "alphaMax": 1
+  },
+  "firstFrame": 32,
+  "frames": 63,
+  "browser": {
+    "kind": "browser",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+    "capture": "png-screenshot",
+    "graphics": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "vendor": "Google Inc. (Apple)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "graphicsError": null
+  },
+  "pixels": {
+    "alphaMax": 1,
+    "compositeMax": 2.95686274509805,
+    "compositeMean": 0.11046727982567468,
+    "transparent": 6174173,
+    "partial": 5729240,
+    "rgbaSha256": "655acb32bb649427cf66d3f018b7dc48055477c1b4b75ed3851a78c88e4b46cb"
+  },
+  "avfoundation": {
+    "metadata": {
+      "containsAlpha": true,
+      "formatExtensions": [
+        "Optional({\n    AlphaChannelMode = StraightAlpha;\n    BitsPerComponent = 16;\n    CVFieldCount = 1;\n    CVImageBufferColorPrimaries = \"ITU_R_709_2\";\n    CVImageBufferTransferFunction = \"IEC_sRGB\";\n    CVImageBufferYCbCrMatrix = \"ITU_R_709_2\";\n    ContainsAlphaChannel = 1;\n    Depth = 32;\n    FormatName = \"'ap4h'\";\n    RevisionLevel = 0;\n    SpatialQuality = 512;\n    TemporalQuality = 512;\n    Vendor = FFMP;\n    VerbatimSampleDescription = {length = 114, bytes = 0x00000072 61703468 00000000 00000001 ... 6c630001 000d0001 };\n    Version = 0;\n})"
+      ],
+      "frames": 63,
+      "os": "Version 27.0.1 (Build 26A434)",
+      "pixelAttachments": "Optional({\n    AlphaChannelMode = StraightAlpha;\n    CGColorSpace = \"<CGColorSpace 0x782ae5a940> (kCGColorSpaceICCBased; kCGColorSpaceModelRGB; QuickTime 'nclc' Video (1,13,1))\";\n    CVFieldCount = 1;\n    CVImageBufferColorPrimaries = \"ITU_R_709_2\";\n    CVImageBufferTransferFunction = \"IEC_sRGB\";\n    CVImageBufferYCbCrMatrix = \"ITU_R_709_2\";\n    \"ProResHW_CheckValue\" = {length = 12, bytes = 0x3046a5ea8e0ffaa28e9d4fd2};\n    QTMovieTime =     {\n        TimeScale = 90000;\n        TimeValue = 0;\n    };\n})",
+      "receiver": "AVFoundation AVAssetReader / 32BGRA",
+      "timestamps": [
+        0,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.1,
+        0.13333333333333333,
+        0.16666666666666666,
+        0.2,
+        0.23333333333333334,
+        0.26666666666666666,
+        0.3,
+        0.3333333333333333,
+        0.36666666666666664,
+        0.4,
+        0.43333333333333335,
+        0.4666666666666667,
+        0.5,
+        0.5333333333333333,
+        0.5666666666666667,
+        0.6,
+        0.6333333333333333,
+        0.6666666666666666,
+        0.7,
+        0.7333333333333333,
+        0.7666666666666667,
+        0.8,
+        0.8333333333333334,
+        0.8666666666666667,
+        0.9,
+        0.9333333333333333,
+        0.9666666666666667,
+        1,
+        1.0333333333333334,
+        1.0666666666666667,
+        1.1,
+        1.1333333333333333,
+        1.1666666666666667,
+        1.2,
+        1.2333333333333334,
+        1.2666666666666666,
+        1.3,
+        1.3333333333333333,
+        1.3666666666666667,
+        1.4,
+        1.4333333333333333,
+        1.4666666666666666,
+        1.5,
+        1.5333333333333334,
+        1.5666666666666667,
+        1.6,
+        1.6333333333333333,
+        1.6666666666666667,
+        1.7,
+        1.7333333333333334,
+        1.7666666666666666,
+        1.8,
+        1.8333333333333333,
+        1.8666666666666667,
+        1.9,
+        1.9333333333333333,
+        1.9666666666666666,
+        2,
+        2.033333333333333,
+        2.066666666666667
+      ]
+    },
+    "pixels": {
+      "alphaMax": 1,
+      "compositeMax": 3.0039215686274474,
+      "compositeMean": 0.10863909745431001,
+      "transparent": 6174173,
+      "partial": 5729240,
+      "rgbaSha256": "d0a864c36c1358a24b5190c8b840e8e8757cca4cfc7ea7d2930440e7afff8aa5"
+    }
+  },
+  "audio": {
+    "frames": 100800,
+    "sourceSliceExact": true,
+    "sha256": "5074f3355c917efb36181a2a77b2cc837355fd726dc458e01e342cdde7ba6ae0"
+  },
+  "chunkJoinExact": true,
+  "reuse": {
+    "cachedCaptures": 0,
+    "resumedFrames": 30
+  },
+  "themes": {
+    "sterile-tech": {
+      "transparent": 210294,
+      "partial": 19999,
+      "sha256": "7d7dd81728e1b3ddcdcb788fc10bbe223e049493abd112f0a640b383a8e0c6bb"
+    },
+    "escapement": {
+      "transparent": 226644,
+      "partial": 3339,
+      "sha256": "083cfd8c5422a6123760c823a308c89a66ec4389fc438364e4c7ba3eab4650f0"
+    },
+    "long-exposure": {
+      "transparent": 163333,
+      "partial": 66548,
+      "sha256": "2911326d8be529dcf030a948deee964eeda184c7413d77784b704ad8407028f1"
+    },
+    "bristol": {
+      "transparent": 186625,
+      "partial": 1209,
+      "sha256": "ba4029f7a605174be90bb579c750c0f70708d58e8dd7f43e8de6fed23af10bce"
+    },
+    "patina": {
+      "transparent": 226502,
+      "partial": 3847,
+      "sha256": "173544aa87cc2e13c7324a96a4ae1fbd164e92a211fc6ceaa9c85c62003d3f6c"
+    },
+    "quicksilver": {
+      "transparent": 226429,
+      "partial": 3715,
+      "sha256": "dfbcdfcfbd7843b7d7515de083c13165403b20ac9f64c451b1995c511fe113a7"
+    },
+    "bunker": {
+      "transparent": 214631,
+      "partial": 4029,
+      "sha256": "fa6b6d0bb03837f3a3818b3da5a7f4871bec11c44443e699af35fbbc94307349"
+    },
+    "vfd": {
+      "transparent": 146862,
+      "partial": 24430,
+      "sha256": "d4537b908e2bcec6304e2022f0352dcea366547c79bda30599e2203161a6dfc5"
+    },
+    "interference": {
+      "transparent": 225982,
+      "partial": 4228,
+      "sha256": "acb4ec007819056765af4dcb1bb2efd632029ca4f531da44813d2785ed34bb1f"
+    },
+    "pirate": {
+      "transparent": 202530,
+      "partial": 3220,
+      "sha256": "93478423dedc3028ed7dabd94823ee2c6f5dc7ef89d9c0a919f01ea60218a563"
+    },
+    "afterhours": {
+      "transparent": 201048,
+      "partial": 29352,
+      "sha256": "c77715bc3e8cc597a7a82ab652f9b7d80965ac7aaa29e5fea337f730a3c7c7fe"
+    },
+    "passe-partout": {
+      "transparent": 229734,
+      "partial": 588,
+      "sha256": "eb3e527c6a65027ac2cd018e032087c22bcd226a8ad9d9e48ec29351bfe0c705"
+    },
+    "masthead": {
+      "transparent": 225586,
+      "partial": 4530,
+      "sha256": "bbbcfa5a261d31f13395f62a81e4683757ac6726119fb5f1341b7cc4ec7b1546"
+    },
+    "anamorphic": {
+      "transparent": 227003,
+      "partial": 2462,
+      "sha256": "03229cfa28de97448e5f4d18897f8e9f1b9d75840f8d76093cbb3aad9f691f88"
+    },
+    "relief": {
+      "transparent": 113962,
+      "partial": 1242,
+      "sha256": "55df19dc3c25b8aad1eea276cf352f8f30c5324f4779fb02852dcaf7b0105fa7"
+    },
+    "darkroom": {
+      "transparent": 229132,
+      "partial": 1243,
+      "sha256": "7972d7f3eb156c26f4f2c104cd7bce2835d130c0fd45a75ea840ad340577c361"
+    }
+  },
+  "brightness": {
+    "0": 0,
+    "1": 255,
+    "0.5": 128
+  },
+  "media": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "prores",
+        "codec_long_name": "Apple ProRes (iCodec Pro)",
+        "profile": "4444",
+        "codec_type": "video",
+        "codec_tag_string": "ap4h",
+        "codec_tag": "0x68347061",
+        "width": 640,
+        "height": 360,
+        "coded_width": 640,
+        "coded_height": 360,
+        "has_b_frames": 0,
+        "pix_fmt": "yuva444p12le",
+        "level": -99,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "field_order": "progressive",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/90000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 189000,
+        "duration": "2.100000",
+        "bit_rate": "39734400",
+        "bits_per_raw_sample": "12",
+        "nb_frames": "63",
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "handler_name": "VideoHandler",
+          "vendor_id": "FFMP"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "pcm_s24le",
+        "codec_long_name": "PCM signed 24-bit little-endian",
+        "codec_type": "audio",
+        "codec_tag_string": "in24",
+        "codec_tag": "0x34326e69",
+        "sample_fmt": "s32",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 24,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 100800,
+        "duration": "2.100000",
+        "bit_rate": "2304000",
+        "bits_per_raw_sample": "24",
+        "nb_frames": "100800",
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ]
+  },
+  "status": "passed"
+}

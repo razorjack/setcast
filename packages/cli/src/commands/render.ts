@@ -1,9 +1,17 @@
 import type { RenderOptions, StillOptions } from '@setcast/core';
-import { parseRendererFlag, render, still, withRenderSession, type Renderer } from '../renderer.ts';
+import {
+  requireRendererFormat,
+  parseRendererFlag,
+  render,
+  still,
+  withRenderSession,
+  type Renderer,
+} from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import {
   exportSettings,
+  requireVideoOutput,
   toSeconds,
   chapterProblems,
   formatTime,
@@ -22,16 +30,16 @@ import { bold, dim, intro, log, outro, RenderUi, formatPath, steel, warn } from 
 
 export const help = `setcast render [dir] [--range MM:SS-MM:SS] [--out file.mp4] [--theme name] [--concurrency N] [--bundle]
 
-Renders the project in <dir> (default: current directory) to an MP4.
+Renders the project in <dir> (default: current directory) using output.codec and output.file.
   --renderer  browser (default) or remotion (optional adapter); overrides renderer: in YAML
   --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
   --concurrency  parallel browser tabs (default: renderer chooses; browser accepts 1–8)
   --resume       browser only: retain completed chunks and reuse valid checkpoints after interruption
-  --cache        browser only: persistent chunk cache directory (separate from --resume)
-  --cache-size   maximum cached video MiB (default: 2048); requires --cache
-  --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
+  --cache        browser only: persistent chunk and audio-preparation cache directory (separate from --resume)
+  --cache-size   maximum cached payload MiB (default: 2048); requires --cache
+  --bundle       also write the thumbnail (.png for transparency, otherwise .jpg) and description (.txt)`;
 
 interface RenderCommandOptions {
   dir: string | undefined;
@@ -51,6 +59,7 @@ export async function run(argv: string[]) {
   validateOptions(options);
   const loaded = await load(options.dir, options.theme);
   const renderer = options.renderer ?? loaded.config.renderer;
+  await requireRendererFormat(renderer, loaded.config.output);
   if (options.resume && renderer !== 'browser')
     throw new SetcastError(
       '--resume requires the browser renderer.',
@@ -68,12 +77,14 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
   const { dir } = loaded;
   const range = renderedRange(options.range, loaded.project);
   const out = outputPath(options.out, range, resolve(dir, loaded.config.output.file));
+  requireVideoOutput(out, loaded.config.output.codec);
+  checkCacheOutput(out, options.cache);
   if (options.resume) log.info(`Resume checkpoints: ${out}.setcast-resume`);
   if (options.cache) log.info(`Persistent render cache: ${options.cache.directory}`);
   await mkdir(dirname(out), { recursive: true });
   showProject(loaded.project, range);
   const { config } = await withHardwareEncoding(loaded);
-  const project = await withWholeSet(loaded);
+  const project = await withWholeSet(loaded, undefined, options.cache);
 
   const started = Date.now();
   const ui = new RenderUi();
@@ -100,6 +111,16 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
 
   const elapsed = formatDuration((Date.now() - started) / 1000);
   outro(`${bold('Done')} in ${elapsed}  →  ${files.map(formatPath).join(', ')}`);
+}
+
+function checkCacheOutput(out: string, cache: RenderOptions['cache']) {
+  if (!cache) return;
+  const path = relative(resolve(cache.directory), resolve(out));
+  if (path !== '..' && !path.startsWith(`..${sep}`) && !isAbsolute(path))
+    throw new SetcastError(
+      'Render output must be outside the cache directory.',
+      'Use a dedicated directory for --cache, separate from exported files.',
+    );
 }
 
 function parseOptions(argv: string[]): RenderCommandOptions {
@@ -215,7 +236,12 @@ async function sideOutputs(
   output: ProjectConfig['output'],
 ): Promise<string[]> {
   const base = stem(video);
-  const thumbnail = await renderThumbnail(project, dir, `${base}.jpg`, output);
+  const thumbnail = await renderThumbnail(
+    project,
+    dir,
+    `${base}.${project.transparent ? 'png' : 'jpg'}`,
+    output,
+  );
   const description = await writeDescription(project, `${base}.txt`);
   return [thumbnail, description];
 }

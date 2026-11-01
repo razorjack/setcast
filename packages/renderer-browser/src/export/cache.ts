@@ -15,17 +15,20 @@ import {
 export const DEFAULT_CACHE_BYTES = 2 * 1024 * 1024 * 1024;
 const MAX_ENTRIES = 4096;
 const hash = /^[a-f0-9]{64}$/;
+export type CacheEntryKind = 'video' | 'analysis';
 interface Entry {
+  kind: CacheEntryKind;
   bytes: number;
   sha256: string;
   used: number;
 }
 interface Index {
-  version: 1;
+  version: 2;
   entries: Record<string, Entry>;
 }
-const emptyIndex = (): Index => ({ version: 1, entries: {} });
-const entryFile = (key: string) => `entry-${key}.mp4`;
+const emptyIndex = (): Index => ({ version: 2, entries: {} });
+const entryFile = (key: string, kind: CacheEntryKind) =>
+  `entry-${key}.${kind === 'video' ? 'mp4' : 'json'}`;
 
 function validEntry(value: Entry) {
   return (
@@ -40,9 +43,9 @@ function validEntry(value: Entry) {
 }
 
 export function parseCacheIndex(value: unknown): Index {
-  const index = value as Index;
+  const index = value as Omit<Index, 'version'> & { version: number };
   if (
-    index?.version !== 1 ||
+    (index?.version !== 1 && index?.version !== 2) ||
     !index.entries ||
     Array.isArray(index.entries) ||
     typeof index.entries !== 'object'
@@ -50,13 +53,24 @@ export function parseCacheIndex(value: unknown): Index {
     throw new Error('Invalid render cache index.');
   if (Object.keys(index.entries).length > MAX_ENTRIES)
     throw new Error('Oversized render cache index.');
-  for (const [key, entry] of Object.entries(index.entries))
+  for (const [key, entry] of Object.entries(index.entries)) {
     if (!hash.test(key) || !validEntry(entry)) throw new Error('Invalid render cache entry.');
+    if (index.version === 2 && !['video', 'analysis'].includes(entry.kind))
+      throw new Error('Invalid render cache entry kind.');
+  }
   if (
     !Number.isSafeInteger(Object.values(index.entries).reduce((sum, entry) => sum + entry.bytes, 0))
   )
     throw new Error('Render cache byte accounting exceeds safe integers.');
-  return index;
+  return {
+    version: 2,
+    entries: Object.fromEntries(
+      Object.entries(index.entries).map(([key, entry]) => [
+        key,
+        { ...entry, kind: index.version === 1 ? 'video' : entry.kind },
+      ]),
+    ),
+  };
 }
 
 async function readIndex(directory: string): Promise<Index> {
@@ -101,10 +115,13 @@ export class RenderCache {
   }
 
   async reconcile() {
-    await removeCacheFiles(this.directory, new Set(Object.keys(this.index.entries).map(entryFile)));
+    await removeCacheFiles(
+      this.directory,
+      new Set(Object.entries(this.index.entries).map(([key, entry]) => entryFile(key, entry.kind))),
+    );
     for (const [key, entry] of Object.entries(this.index.entries)) {
       try {
-        const info = await lstat(join(this.directory, entryFile(key)));
+        const info = await lstat(join(this.directory, entryFile(key, entry.kind)));
         if (!info.isFile() || info.size !== entry.bytes) await this.remove(key);
       } catch (error) {
         if (!absent(error)) throw error;
@@ -115,13 +132,13 @@ export class RenderCache {
     await this.persist();
   }
 
-  async reuse(key: string, destination: string, signal?: AbortSignal) {
+  async reuse(key: string, destination: string, signal?: AbortSignal, maxBytes = Infinity) {
     if (!hash.test(key)) throw new Error('Invalid cache key.');
     signal?.throwIfAborted();
     const entry = this.index.entries[key];
-    if (!entry) return false;
+    if (!entry || entry.bytes > maxBytes) return false;
     try {
-      const source = join(this.directory, entryFile(key));
+      const source = join(this.directory, entryFile(key, entry.kind));
       const info = await lstat(source);
       if (!info.isFile() || info.size !== entry.bytes) {
         await this.remove(key);
@@ -144,7 +161,7 @@ export class RenderCache {
     return false;
   }
 
-  async save(key: string, source: string, signal?: AbortSignal) {
+  async save(key: string, source: string, signal?: AbortSignal, kind: CacheEntryKind = 'video') {
     if (!hash.test(key)) throw new Error('Invalid cache key.');
     signal?.throwIfAborted();
     const info = await lstat(source);
@@ -166,8 +183,13 @@ export class RenderCache {
         await handle.close();
       }
       signal?.throwIfAborted();
-      await rename(temporary, join(this.directory, entryFile(key)));
-      this.index.entries[key] = { bytes: copied.bytes, sha256: copied.sha256, used: Date.now() };
+      await rename(temporary, join(this.directory, entryFile(key, kind)));
+      this.index.entries[key] = {
+        kind,
+        bytes: copied.bytes,
+        sha256: copied.sha256,
+        used: Date.now(),
+      };
       await this.persist();
     } finally {
       await rm(temporary, { force: true });
@@ -175,7 +197,9 @@ export class RenderCache {
   }
 
   private async remove(key: string) {
-    const file = join(this.directory, entryFile(key));
+    const entry = this.index.entries[key];
+    if (!entry) return;
+    const file = join(this.directory, entryFile(key, entry.kind));
     try {
       if (!(await lstat(file)).isDirectory()) await rm(file);
     } catch (error) {

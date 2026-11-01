@@ -77,6 +77,10 @@ export function mountExport(element: HTMLElement) {
 
 async function initialize() {
   const project: ResolvedProject = await (await fetch('/project.json')).json();
+  if (project.transparent) {
+    document.documentElement.style.background = 'transparent';
+    document.body.style.background = 'transparent';
+  }
   const timeline = new Timeline(project.mix);
   const analysis = await openAnalysis(assetUrl(project.audio), toSeconds(project.mix.duration));
   return { project, timeline, analysis };

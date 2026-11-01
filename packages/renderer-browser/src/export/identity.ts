@@ -38,14 +38,14 @@ export async function digestFile(file: string, signal?: AbortSignal): Promise<Fi
       signal?.throwIfAborted();
       hash.update(bytes);
     }
-    if (stamp(before) !== stamp(await handle.stat())) throw changedAsset(file);
-    return { sha256: hash.digest('hex'), bytes: before.size, stamp: stamp(before) };
+    if (fileStamp(before) !== fileStamp(await handle.stat())) throw changedAsset(file);
+    return { sha256: hash.digest('hex'), bytes: before.size, stamp: fileStamp(before) };
   } finally {
     await handle.close();
   }
 }
 
-const stamp = (info: Stats) =>
+export const fileStamp = (info: Stats) =>
   `${info.dev}:${info.ino}:${info.size}:${info.mtimeMs}:${info.ctimeMs}`;
 const changedAsset = (file: string) =>
   new SetcastError(
@@ -152,13 +152,16 @@ async function assertAssetsUnchanged(root: string, assets: InputAsset[], signal?
   for (const asset of assets) {
     signal?.throwIfAborted();
     const file = await projectAsset(root, asset.path);
-    if (file !== asset.file || stamp(await stat(asset.file)) !== asset.stamp)
+    if (file !== asset.file || fileStamp(await stat(asset.file)) !== asset.stamp)
       throw changedAsset(asset.path);
   }
 }
 
 async function adapterDigest() {
-  const root = fileURLToPath(new URL('../', import.meta.url));
+  return sourceTreeDigest(fileURLToPath(new URL('../', import.meta.url)));
+}
+
+export async function sourceTreeDigest(root: string) {
   const entries = await readdir(root, { recursive: true, withFileTypes: true });
   const files = entries.filter(
     (entry) =>

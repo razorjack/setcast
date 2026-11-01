@@ -1425,3 +1425,117 @@ installation paths. Browser-only installation physically excludes Remotion and e
 preview, clip, bundled outputs, all themes and reuse. Optional Remotion compatibility also passes.
 Reports are retained in `docs/research/browser-first-merged-2026-11-01`. Platform and speed criteria
 remain outstanding; this commit does not promote the production default.
+Bitmap quiet timing passes three alternating pairs at one worker. All six outputs have identical
+decoded video hashes and input identities. Median wall time falls from 34.248 to 26.325 seconds
+(23.1%). This isolates video preparation at JPEG 95 / CRF 18, not current-Remotion performance.
+Reports are in `docs/research/bitmap-video-timing-2026-11-01`; automatic-worker throughput and
+full-master resources remain required before promotion.
+
+The integrated bitmap candidate is committed as 8c3cafc after ready, exporter acceptance and
+packed-browser checks. It now includes main's automatic scheduler and corrected endurance
+instrumentation. A separate full-master workload retains the existing real audio/timeline and
+uses the portable looping-video fixture; it does not modify the original project or master.
+Direct JPEG and fast PNG each pass 192 independent-page exact pixel samples and encoded
+color-chart playback checks in the isolated direct-capture candidate. Further recovery, GPU/video
+and complete-export timing qualification is pending; no production capture mode changed.
+
+The browser-first integration is committed as fad4bb2. Ready and both fresh installation paths
+pass with current main workflows, including preview, clips, bundled outputs and reuse. The
+browser-only dependency tree physically excludes Remotion. Evidence is mirrored on main in
+`docs/research/browser-first-merged-2026-11-01`; Linux/Windows and release speed criteria remain
+unqualified. No package was published and production defaults remain unchanged.
+
+### Persistent preparation implementation in progress
+
+Repeated CLI exports still decoded whole-set overview/travel summaries before looking up encoded
+chunks. The new opt-in preparation path uses the same `--cache` directory, lock, aggregate byte
+budget, eviction and clear command. Index version 2 distinguishes video and analysis payloads;
+version-1 entries migrate as video. The inspection report keeps its version and adds entry kind.
+Older binaries reject the new index instead of treating analysis as video.
+
+Preparation identity includes source content, requested summaries, core/producer code, decoder
+versions and host/runtime identity. Source metadata and aliases are checked again after preparation.
+Reads are capped at 64 MiB, checksummed and shape-validated; invalid summaries are recomputed.
+Only summaries are persisted, not PCM. Appearance edits can reuse preparation when the requested
+summary kinds stay the same. The implementation is not committed yet; tests, installed-package
+checks and a preparation-cost measurement must pass before acceptance.
+
+Direct-capture timing reached five successful standard-fixture arms. Direct JPEG was close to
+the screenshot control; fast PNG was substantially slower. The sixth arm waited a full minute
+above the unchanged 15% CPU limit and stopped before exporting. Preserve its busy report and
+retry remaining comparisons in a new output directory when the host is quiet. No other own
+correctness job ran during those timing arms.
+
+Persistent preparation validation passes: 685 tests in 115 files, full ready, exact fresh/reused
+summary and decoded video/audio comparison, existing cache recovery, both exporter suites and
+packed-browser installation. Fresh installed CLI commands reuse one analysis payload and all six
+video frames; inspection and clearing cover both kinds. The preparation timing attempt exported
+nothing and measured no arms because all twelve CPU samples exceeded 15%. Evidence is retained
+in `docs/research/preparation-cache-2026-11-01`. Functional reuse is complete; no timing advantage
+is claimed. The full-master bitmap resource run is now active at committed candidate 8c3cafc,
+with 1080p30 looping video, the existing 3,372-second real audio/timeline, sampled process memory,
+disk reserve and decoded/audio verification. Concurrent external load makes it resource evidence only.
+
+### Transparent output and editing intermediates in progress
+
+The next implementation adds `output.codec: prores-4444` and `output.transparent: true`, with MOV,
+lossless PNG frame capture and one continuous 48 kHz stereo PCM soundtrack. H.264 remains the
+default. Transparent Stage omits project/per-play art and root backdrop decorations; foreground
+panels, visualizers and branding keep their own CSS. Brightness fades the foreground's opacity.
+Transparent stills require PNG. Configuration, capabilities, diagnostics and preview jobs now
+carry the format explicitly; unsupported Remotion settings fail before preparation.
+
+The first local qualification passes 63 moving chart frames with text, glow, masks and four alpha
+levels. FFmpeg decode has maximum alpha error 1/255 and maximum black/white composite error
+2.957/255, against limits fixed before the run (alpha 1, composite mean 1.5, maximum 12). Chunked
+and continuous exports decode identically; repeat cache exports capture zero frames; interrupted
+export reuses 30 frames and matches a fresh video/audio result. All sixteen landscape theme
+stills contain transparent and partial-alpha pixels. Native AVFoundation reports `StraightAlpha`,
+recognizes the sRGB/BT.709 metadata and decodes 63 frames at exact 30 fps timestamps. Its composite
+maximum is 3.004/255 and mean 0.109/255. This checks the macOS receiving API, not a particular
+editor's project color settings or OBS playback.
+
+Raw development evidence is under `examples/demo/out/prores-alpha-2026-11-01-r2`. The initial
+run used an explicit range ending at 3.1415 seconds but expected the existing acceptance harness's
+clamped final-frame count. It correctly returned 62 frames. The corrected harness uses the
+established `[1.05, 8]` range and expects 63; no range contract changed. The first test run also
+failed localhost binding in the sandbox. An escalated ready run passed formatting/types but hit
+the existing five-second cache/preview CLI test timeouts while native compilation and the
+full-master export were running. Those failures remain logged; validation must pass before commit.
+
+VP9 alpha remains a separate investigation. Remotion's current transparent-video documentation
+describes possible alpha differences at independently encoded chunk boundaries, so it cannot
+inherit the H.264 join qualification. ProRes 4444 supplies both a transparent compositing file and
+an editing intermediate without that temporal alpha dependency. OBS's documented portable mode
+does not support macOS; no user OBS profile was modified for this work.
+
+
+The native receiver, source-slice PCM and brightness checks pass in the expanded third ProRes
+run. Both exporter acceptance suites pass. The installed package exercise initially combined
+`--bundle` with `--range`, which the CLI correctly rejects; the corrected tiny full-set fixture
+then used a subminimum `clip --seconds` value. Both harness mistakes are retained in the research
+folder. The final installed run uses an allowed ten-second clip request clamped to the 0.3-second
+fixture and passes render, clip, PNG still, bundle, validation and alpha/ProRes diagnostics.
+
+Ready passed all 688 tests after giving the four-process cache and six-process preview checks
+local 30-second budgets. Cache subprocesses now have an explicit ten-second deadline too. That
+independent test fix is committed as 64bb62d. A subsequent ready run overlapping package
+validation hit five-second doctor/validation CLI test deadlines; no assertions failed and those
+tests were not relaxed. Final validation is rerun without another own validation job. The
+full-master resource export remains active; none of these elapsed times qualify performance.
+
+
+ProRes integration is ready to commit. Final ready passes 688 tests in 115 files, formatting,
+lint/types, dependency isolation and the decoded H.264 smoke render. Both adapter acceptance
+suites and the corrected fresh installed-package checks pass. Evidence, including failed harness
+attempts, is retained in `docs/research/prores-alpha-2026-11-01`. The production H.264 defaults
+and quality settings are unchanged. The native receiving API is qualified locally; specific
+editing applications, OBS and other platforms remain explicit limits.
+
+
+The browser-first distribution now integrates e8061ce, including persistent preparation and
+transparent ProRes output. Ready passes 688 tests in 115 files. Fresh browser-only and optional
+Remotion installations pass, including the new ProRes/PNG still/clip/bundle and diagnostics checks.
+Evidence and the earlier overlapping-test timeout are retained in
+`docs/research/browser-first-prores-2026-11-01`. This candidate remains unpromoted because platform
+qualification and the current-upstream speed target are outstanding.

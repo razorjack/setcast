@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "status": "failed",
+  "error": "Error: System remained busy for 60 seconds. Retain the report and retry in a new directory.",
+  "revision": "458016da39ac82a0cd444969cf9878840e5fb03f",
+  "dirty": true,
+  "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-master-project",
+  "source": {
+    "sha256": "7fd2975e98a73d37cd1cddc6647aeaffac8fdb12ca2a14bada8ae647882a18a1",
+    "bytes": 971166720,
+    "stamp": "16777229:137470909:971166720:1791899375941.2368:1793528244632.1238"
+  },
+  "decoder": {
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers\nbuilt with Apple clang version 21.0.0 (clang-2100.3.34.2)\nconfiguration: --prefix=/opt/homebrew/Cellar/ffmpeg/9.0.2_1 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvmaf --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox --enable-neon\nlibavutil      61.  1.102 / 61.  1.102\nlibavcodec     63.  1.102 / 63.  1.102\nlibavformat    63.  1.102 / 63.  1.102\nlibavdevice    63.  1.102 / 63.  1.102\nlibavfilter    12.  1.102 / 12.  1.102\nlibswscale     10.  1.102 / 10.  1.102\nlibswresample   7.  1.102 /  7.  1.102\n\nExiting with exit code 0\n",
+    "ffprobe": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers\nbuilt with Apple clang version 21.0.0 (clang-2100.3.34.2)\nconfiguration: --prefix=/opt/homebrew/Cellar/ffmpeg/9.0.2_1 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvmaf --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox --enable-neon\nlibavutil      61.  1.102 / 61.  1.102\nlibavcodec     63.  1.102 / 63.  1.102\nlibavformat    63.  1.102 / 63.  1.102\nlibavdevice    63.  1.102 / 63.  1.102\nlibavfilter    12.  1.102 / 12.  1.102\nlibswscale     10.  1.102 / 10.  1.102\nlibswresample   7.  1.102 /  7.  1.102\n"
+  },
+  "preparedHash": "c5fdd601b533a04f3023195e9774e362daf4be95efadecb12778a32c145dddd6",
+  "scope": "Three alternating warm preparation pairs, 15% pre-run CPU limit. Includes source hashing and cache validation for reuse. Excludes project loading, browser capture, encoding and CLI startup. Same process and warm filesystem; not end-to-end export speed.",
+  "runs": [],
+  "cache": null
+}

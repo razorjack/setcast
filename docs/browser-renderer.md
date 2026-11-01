@@ -5,6 +5,10 @@ its pinned Chromium runtime, and a system FFmpeg subprocess. Themes, visualizers
 queries, audio analysis and frame assembly use the same Setcast contracts in both exporters.
 The browser package has no Remotion dependency.
 
+For transparent overlays and editing intermediates, use
+[`output.codec: prores-4444`](compositing-output.md). This opt-in MOV format preserves straight
+alpha through PNG capture and uses continuous PCM audio. H.264/AAC remains the default.
+
 The [independent renderer replacement plan](renderer-replacement-plan.md) records the current
 capability comparison, performance evidence, remaining experiments and release criteria. Its
 completed features and pending qualification are tracked separately. This isolated browser-first
@@ -297,8 +301,9 @@ raw measurements and platform limitations.
 
 ## Persistent reuse after successful exports
 
-`render --cache <directory>` retains validated video chunks after success and interruption. An
-identical export can reuse those chunks without capturing frames. Cache use is opt-in, supports
+`render --cache <directory>` retains validated video chunks after success and interruption, plus
+whole-set overview/travel summaries when the CLI project needs them. An identical export can
+reuse those chunks without capturing frames and reuse preparation without decoding whole-set audio. Cache use is opt-in, supports
 only the browser renderer, and is separate from output-specific `--resume` checkpoints. The two
 options cannot be combined.
 
@@ -311,21 +316,34 @@ setcast cache clear examples/demo/out/render-cache
 
 Use a new dedicated directory or an existing recognized Setcast render cache. Exported files must
 be outside it. Existing unmarked directories and symbolic directory links are rejected. The CLI
-resolves `--cache` relative to its working directory. `--cache-size 2048` sets the video-byte limit
+resolves `--cache` relative to its working directory. `--cache-size 2048` sets the combined payload-byte limit
 in MiB; 2048 MiB is the default. Lowering the limit evicts old entries when the next export opens
-the cache. Chunks larger than the entire limit are rendered but not retained. The index also has
+the cache. Payloads larger than the entire limit are computed but not retained. The index also has
 a 4096-entry limit. Eviction uses last-use timestamps; equal timestamps use a deterministic key order.
 A cache smaller than a job may therefore retain only some of its chunks.
 
-The limit covers managed video chunks, including a pending chunk copy after space is reserved.
+The limit covers managed video and analysis payloads, including a pending copy after space is reserved.
 It excludes index/lock metadata, unrelated files, the export's working copies and final output.
 `inspect` reports indexed bytes and keys, not a recursive disk-usage or integrity audit. `clear`
-resets the index and removes managed chunk/temporary files while preserving unrelated files and
+resets the index and removes managed video/analysis/temporary files while preserving unrelated files and
 unexpected directories. It also recovers a corrupt index. Only one export or management operation
 can hold the cache lock at a time. A killed process can leave `lock.json`; inspect its process/host
 before removing that file. Do not clear another active export's cache.
 
-Identity includes source-file contents, ranges, encoding, worker count, graphics choice,
+Preparation has its own identity: source content and extension, required summary kinds, core and
+producer code, decoder versions, Node, OS and host. Appearance changes can reuse summaries when
+they require the same kinds. Source metadata and aliases are checked again after preparation.
+Stored summaries are checksummed and shape-validated before use, with a 64 MiB read/store limit.
+Invalid summaries are recomputed. PCM and per-frame FFT features are not persisted. Low-level
+callers can use `prepareProject(project, { projectDir, cache })` from the browser export entry;
+`render()` continues to consume the supplied resolved project without silently changing analysis.
+
+The cache index now uses version 2 with explicit video/analysis kinds. Existing version-1 entries
+migrate as video under the writer lock. Older binaries reject version 2; use the current
+`setcast cache clear` before returning to an older binary. The inspection report remains version 1
+and adds `kind` to each entry. Metadata and temporary preparation files are outside the payload limit.
+
+Video identity includes source-file contents, ranges, encoding, worker count, graphics choice,
 browser/bundle/adapter/FFmpeg versions, Node, OS and host. Project changes invalidate reuse except
 for announcement text outside a chunk's captured frame range. With the built-in visualizers,
 editing only an announcement's text recaptures intersecting chunks and reuses the others.

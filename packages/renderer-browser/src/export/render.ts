@@ -14,7 +14,16 @@ import {
 import { prepareFrame, withCapturePages, withRenderSession } from './session.ts';
 import { atomicOutput } from './output.ts';
 import { validateGraphicsBackend } from './graphics.ts';
-import { assemble, encodeAudio, exportEncoding, videoArgs, preflight } from './encoding.ts';
+import {
+  assemble,
+  encodeAudio,
+  exportEncoding,
+  videoArgs,
+  preflight,
+  chunkExtension,
+  type ExportVideoEncoder,
+} from './encoding.ts';
+import { probeProres } from './prores.ts';
 import { measure, type MetricsReport } from './metrics.ts';
 import { ffmpeg } from './ffmpeg.ts';
 import { computeExportIdentity } from './identity.ts';
@@ -26,7 +35,7 @@ import {
 } from './checkpoint.ts';
 import { pipeline } from './pipeline.ts';
 import { renderTracks } from './tracks.ts';
-import { resolveHardwareEncoding, type VideoEncoder } from './hardware.ts';
+import { resolveHardwareEncoding } from './hardware.ts';
 import { DEFAULT_CACHE_BYTES, withRenderCache } from './cache.ts';
 import { cachedChunks } from './cache-chunks.ts';
 import { captureResources, captureSchedule } from './concurrency.ts';
@@ -43,8 +52,13 @@ export function render(
 ): Promise<RenderResult> {
   validateGraphicsBackend(options.gl);
   validateStorage(options);
-  requireVideoOutput(options.out);
+  requireVideoOutput(options.out, options.codec);
   const encoding = exportEncoding(options);
+  if (project.transparent && encoding.codec !== 'prores-4444')
+    throw new SetcastError(
+      'H.264 cannot preserve this transparent project.',
+      'Use codec: prores-4444 with a .mov output path.',
+    );
   const range = renderedFrames(project, options.range);
   const frames = range[1] - range[0] + 1;
   const schedule = captureSchedule(
@@ -100,7 +114,7 @@ interface RenderJob {
   project: ResolvedProject;
   options: BrowserRenderOptions & { assetPaths?: readonly string[] };
   encoding: OutputConfig;
-  encoder: VideoEncoder;
+  encoder: ExportVideoEncoder;
   ranges: FrameRange[];
   /** The first frame of the export. */
   first: number;
@@ -108,6 +122,11 @@ interface RenderJob {
 }
 
 async function renderJob(job: RenderJob) {
+  if (job.encoding.codec === 'prores-4444') {
+    await probeProres({ signal: job.options.signal });
+    job.options.onRuntime?.({ kind: 'encoding-selection', encoder: 'prores_ks', fallback: null });
+    return renderStoredOutput({ ...job, encoder: 'prores_ks' });
+  }
   const hardware = await resolveHardwareEncoding(job.encoding.hardwareAcceleration, {
     width: job.project.width,
     height: job.project.height,
@@ -123,6 +142,10 @@ async function renderJob(job: RenderJob) {
     fallback: hardware.fallback ?? null,
   });
   if (hardware.encoder === 'libx264') await preflight(options.signal);
+  return renderStoredOutput(job);
+}
+
+async function renderStoredOutput(job: RenderJob) {
   if (!job.options.resume && !job.options.cache) return renderOutput(job, DISPOSABLE_CHUNKS);
 
   job.options.onProgress?.({ stage: 'checkpoint', progress: 0 });
@@ -132,10 +155,17 @@ async function renderJob(job: RenderJob) {
     return withRenderCache(
       job.options.cache.directory,
       job.options.cache.maxBytes ?? DEFAULT_CACHE_BYTES,
-      (cache) => renderOutput(resumable, cachedChunks(cache, identity, job.project)),
+      (cache) =>
+        renderOutput(
+          resumable,
+          cachedChunks(cache, identity, { ...job.project, codec: job.encoding.codec }),
+        ),
     );
   return withCheckpoint(job.options.out, identity, (checkpoint) =>
-    renderOutput(resumable, checkpointChunks(checkpoint, identity, job.project)),
+    renderOutput(
+      resumable,
+      checkpointChunks(checkpoint, identity, { ...job.project, codec: job.encoding.codec }),
+    ),
   );
 }
 
@@ -163,7 +193,14 @@ function renderOutput(job: RenderJob, chunks: ChunkStore) {
 async function renderChunks(job: RenderJob, chunks: ChunkStore, directory: string) {
   const reused: boolean[] = [];
   for (const [index, range] of job.ranges.entries()) {
-    reused.push(await chunks.reuse(index, range, chunkFile(directory, index), job.options.signal));
+    reused.push(
+      await chunks.reuse(
+        index,
+        range,
+        chunkFile(directory, index, job.encoding.codec),
+        job.options.signal,
+      ),
+    );
   }
   const workers = reused.every(Boolean) ? 0 : (job.options.concurrency ?? 1);
   job.options.onRuntime?.({ kind: 'capture', workers, parallelEncoding: true });
@@ -177,7 +214,7 @@ async function renderChunks(job: RenderJob, chunks: ChunkStore, directory: strin
         frameProgress(job, range[1] - job.first + 1, reusedFrames);
         continue;
       }
-      const out = chunkFile(directory, index);
+      const out = chunkFile(directory, index, job.encoding.codec);
       await encodeChunk(pages, range, { ...job, out, reusedFrames });
       await chunks.assertInputsUnchanged();
       await chunks.save(index, range, out, job.options.signal);
@@ -185,7 +222,8 @@ async function renderChunks(job: RenderJob, chunks: ChunkStore, directory: strin
   });
 }
 
-const chunkFile = (directory: string, index: number) => join(directory, `chunk-${index}.mp4`);
+const chunkFile = (directory: string, index: number, codec: RenderOptions['codec']) =>
+  join(directory, `chunk-${index}.${chunkExtension(codec)}`);
 
 interface ChunkJob extends RenderJob {
   out: string;
@@ -225,7 +263,10 @@ async function encodeChunk(pages: Page[], range: [number, number], job: ChunkJob
 async function captureFrame(page: Page, frame: number, job: ChunkJob) {
   const timings = await prepareFrame(page, frame);
   const started = performance.now();
-  const image = await page.screenshot({ type: 'jpeg', quality: job.encoding.jpegQuality });
+  const image =
+    job.encoding.codec === 'prores-4444'
+      ? await page.screenshot({ type: 'png', omitBackground: Boolean(job.project.transparent) })
+      : await page.screenshot({ type: 'jpeg', quality: job.encoding.jpegQuality });
   job.options.onMetrics?.({
     kind: 'frame',
     frame,

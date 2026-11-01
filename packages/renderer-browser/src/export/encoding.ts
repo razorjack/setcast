@@ -9,7 +9,11 @@ import {
 } from '@setcast/core';
 import { runFfmpeg } from './ffmpeg.ts';
 import { hardwareArgs, type VideoEncoder } from './hardware.ts';
-import { SCREENSHOT_COLOR_FILTER } from './color.ts';
+import { SCREENSHOT_COLOR_FILTER, PRORES_COLOR_FILTER } from './color.ts';
+
+export type ExportVideoEncoder = VideoEncoder | 'prores_ks';
+export const chunkExtension = (codec: RenderOptions['codec']) =>
+  codec === 'prores-4444' ? 'mov' : 'mp4';
 
 export function exportEncoding(options: RenderOptions) {
   const {
@@ -34,6 +38,7 @@ export function exportEncoding(options: RenderOptions) {
       'Use --concurrency 1 for the smallest memory footprint.',
     );
   const encoding = OutputSchema.parse({
+    codec: options.codec,
     profile,
     parallelEncoding,
     jpegQuality,
@@ -50,8 +55,10 @@ export function videoArgs(
   fps: number,
   encoding: OutputConfig,
   out: string,
-  encoder: VideoEncoder = 'libx264',
+  encoder: ExportVideoEncoder = 'libx264',
 ) {
+  if (encoding.codec === 'prores-4444') return proresVideoArgs(fps, out);
+  if (encoder === 'prores_ks') throw new Error('H.264 videoArgs requires an H.264 encoder.');
   const quality = encoding.videoBitrate
     ? ['-b:v', encoding.videoBitrate]
     : ['-crf', String(encoding.crf)];
@@ -89,14 +96,15 @@ interface Assembly {
 }
 
 export async function assemble(project: ResolvedProject, options: RenderOptions, job: Assembly) {
-  const audio = join(job.directory, 'master.mp4');
+  const extension = chunkExtension(options.codec);
+  const audio = join(job.directory, `master.${extension}`);
   const manifest = join(job.directory, 'chunks.txt');
   await writeFile(
     manifest,
     job.ranges
       .map(
         ([first, last], index) =>
-          `file chunk-${index}.mp4\nduration ${(last - first + 1) / project.fps}\n`,
+          `file chunk-${index}.${extension}\nduration ${(last - first + 1) / project.fps}\n`,
       )
       .join(''),
   );
@@ -136,6 +144,8 @@ export async function encodeAudio(
   options: RenderOptions,
   job: Pick<Assembly, 'directory' | 'ranges' | 'duration'>,
 ) {
+  const audioEncoding =
+    options.codec === 'prores-4444' ? ['-c:a', 'pcm_s24le'] : ['-c:a', 'aac', '-b:a', '320k'];
   await runFfmpeg(
     [
       '-ss',
@@ -144,10 +154,7 @@ export async function encodeAudio(
       resolve(options.projectDir, project.audio),
       '-map',
       '0:a:0',
-      '-c:a',
-      'aac',
-      '-b:a',
-      '320k',
+      ...audioEncoding,
       '-ar',
       '48000',
       '-ac',
@@ -160,7 +167,7 @@ export async function encodeAudio(
       '90000',
       '-map_metadata',
       '-1',
-      join(job.directory, 'master.mp4'),
+      join(job.directory, `master.${chunkExtension(options.codec)}`),
     ],
     options.signal,
   );
@@ -185,4 +192,31 @@ export function preflight(signal?: AbortSignal) {
     ],
     signal,
   );
+}
+
+function proresVideoArgs(fps: number, out: string) {
+  return [
+    '-f',
+    'image2pipe',
+    '-vcodec',
+    'png',
+    '-framerate',
+    String(fps),
+    '-i',
+    'pipe:0',
+    '-an',
+    '-c:v',
+    'prores_ks',
+    '-profile:v',
+    '4444',
+    '-alpha_bits',
+    '16',
+    '-vf',
+    PRORES_COLOR_FILTER,
+    '-pix_fmt',
+    'yuva444p10le',
+    '-video_track_timescale',
+    '90000',
+    out,
+  ];
 }

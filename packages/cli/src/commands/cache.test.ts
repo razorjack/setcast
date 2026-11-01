@@ -10,6 +10,7 @@ const run = (...args: string[]) =>
   spawnSync(process.execPath, [cli, 'cache', ...args], {
     encoding: 'utf8',
     env: { ...process.env, PATH: '' },
+    timeout: 10_000,
   });
 
 test('cache management works without FFmpeg and preserves unrelated files', async () => {
@@ -33,4 +34,4 @@ test('cache management works without FFmpeg and preserves unrelated files', asyn
   } finally {
     await rm(root, { recursive: true, force: true });
   }
-});
+}, 30_000);

@@ -1,0 +1,36 @@
+$ node scripts/package-smoke.ts --browser ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+ │
+■  Invalid --seconds "0.2"
+│
+│  Use a clip length from 10 to 120 seconds, e.g. --seconds 30.
+
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-2G9hWM/node_modules/@setcast/cli/dist/main.mjs clip /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-2G9hWM/prores-project --renderer browser --at 0.15 --seconds 0.2 --out /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-2G9hWM/clip.mov
+│
+■  Invalid --seconds "0.2"
+│
+│  Use a clip length from 10 to 120 seconds, e.g. --seconds 30.
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:20)
+    at maybeClose (node:internal/child_process:1125:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5) {
+  code: 2,
+  killed: false,
+  signal: null,
+  cmd: '/Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-2G9hWM/node_modules/@setcast/cli/dist/main.mjs clip /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-2G9hWM/prores-project --renderer browser --at 0.15 --seconds 0.2 --out /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-2G9hWM/clip.mov',
+  stdout: '',
+  stderr: '│\n' +
+    '■  Invalid --seconds "0.2"\n' +
+    '│\n' +
+    '│  Use a clip length from 10 to 120 seconds, e.g. --seconds 30.\n'
+}
+
+Node.js v26.7.0
+

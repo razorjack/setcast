@@ -10,6 +10,8 @@ export const RENDERER_FEATURES: readonly RendererFeature[] = [
   'cache',
   'gpu',
   'hardwareEncoding',
+  'alpha',
+  'prores',
 ];
 
 export interface RendererDiagnosticOptions {

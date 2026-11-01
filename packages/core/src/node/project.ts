@@ -99,7 +99,7 @@ function resolveProject(
 ): ResolvedProject {
   let presentation = config.presentation.mode;
   if (presentation === 'auto') presentation = new Timeline(mix).overlaps ? 'dj' : 'playlist';
-  return {
+  const project: ResolvedProject = {
     ...resolveAppearance(config, theme, css, resolveVisualizers(config.visualizer, theme)),
     clockOffset: config.clockOffset,
     clockTotal: config.clockTotal ?? null,
@@ -117,6 +117,8 @@ function resolveProject(
     performance: config.performance,
     automation: config.automation,
   };
+  if (config.output.transparent) project.transparent = true;
+  return project;
 }
 
 type AppearanceSettings = Pick<

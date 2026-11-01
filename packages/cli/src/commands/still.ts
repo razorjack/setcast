@@ -1,5 +1,11 @@
 import type { StillOptions, StillResult } from '@setcast/core';
-import { parseRendererFlag, still, withRenderSession, type Renderer } from '../renderer.ts';
+import {
+  requireRendererFormat,
+  parseRendererFlag,
+  still,
+  withRenderSession,
+  type Renderer,
+} from '../renderer.ts';
 import { mkdir } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { defaultStillTime, toSeconds, formatTime, type ResolvedProject } from '@setcast/core';
@@ -15,7 +21,7 @@ export const help = `setcast still [dir] [--at MM:SS] [--out thumb.jpg] [--theme
 Renders one frame as an image, ready to upload as the YouTube thumbnail.
   --renderer  browser (default) or remotion (optional adapter); overrides renderer: in YAML
   --at     the moment to grab; defaults to the first drop, or a quarter into the set
-  --out    output file; .png, .jpg or .webp (default: output.file with a .jpg extension)
+  --out    .png, .jpg or .webp; default: output.file with .png for transparency, otherwise .jpg
   --theme  a built-in theme or a .css file to use instead of setcast.yaml's theme:;
            all grabs one still per built-in theme, named after it (thumb-pirate.jpg)`;
 
@@ -38,6 +44,9 @@ export async function run(argv: string[]) {
     options.dir,
     options.theme === EVERY_THEME ? Object.keys(themes)[0] : options.theme,
   );
+  await requireRendererFormat(options.renderer ?? loaded.config.renderer, {
+    transparent: loaded.project.transparent,
+  });
   await withRenderSession(
     () => runCommand(options, loaded),
     options.renderer ?? loaded.config.renderer,
@@ -111,7 +120,9 @@ function planStill(loaded: LoadedProject, options: StillCommandOptions): StillPl
   const at = options.at ?? defaultStillTime(project.mix);
   return {
     projectDir: dir,
-    out: options.out ? resolve(options.out) : defaultOut(dir, config.output.file),
+    out: options.out
+      ? resolve(options.out)
+      : defaultOut(dir, config.output.file, project.transparent),
     at: timeWithinAudio(at, duration, '--at'),
     jpegQuality: config.output.jpegQuality,
     gl: config.output.gl,
@@ -131,7 +142,8 @@ async function grabStill(
 }
 
 /** The video's own name with an image extension, so the thumbnail sits next to the render. */
-const defaultOut = (dir: string, videoFile: string) => resolve(dir, `${stem(videoFile)}.jpg`);
+const defaultOut = (dir: string, videoFile: string, transparent = false) =>
+  resolve(dir, `${stem(videoFile)}.${transparent ? 'png' : 'jpg'}`);
 
 /** `out/set.jpg` → `out/set-pirate.jpg`. */
 const themedFile = (file: string, theme: string) => `${stem(file)}-${theme}${extname(file)}`;

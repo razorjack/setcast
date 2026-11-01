@@ -10,6 +10,8 @@ test('readiness distinguishes absent evidence, prerequisites, optional failures 
   expect(rendererReadiness(fixture, [])).toMatchObject({
     video: 'unchecked',
     hardwareEncoding: 'unsupported',
+    alpha: 'unsupported',
+    prores: 'unsupported',
   });
   const checks: RendererCheck[] = [
     {
@@ -31,6 +33,8 @@ test('readiness distinguishes absent evidence, prerequisites, optional failures 
     gpu: 'unchecked',
     webp: 'unchecked',
     hardwareEncoding: 'unsupported',
+    alpha: 'unsupported',
+    prores: 'unsupported',
   });
   checks.push({
     id: 'browser-failure',
