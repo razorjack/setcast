@@ -1572,3 +1572,12 @@ The latest bitmap integration passes ready (688 tests in 115 files), both export
 suites and fresh installed-package browser checks, including persistent preparation and ProRes.
 The integration changes no H.264 quality defaults. Its logs are retained beside the full-master
 report. Automatic-worker quiet timing is the final bitmap promotion requirement.
+
+
+Automatic-worker bitmap timing completes three alternating pairs at clean baseline 5d5349f and
+candidate e388178. Every input identity, decoded video hash and file size matches. Median wall
+time is 20.373 seconds for PNG and 13.713 for bitmap (32.7% lower). A busy third-arm attempt
+exports nothing and is retained beside its successful retry. All arms satisfy the unchanged
+15% pre-run CPU limit without concurrent own validation. Evidence is in
+`docs/research/bitmap-auto-timing-2026-11-01`. Bitmap's promotion requirements are now met; this
+does not establish the separate current-Remotion speed target or change the default renderer.

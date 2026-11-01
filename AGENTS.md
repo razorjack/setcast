@@ -110,10 +110,10 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
-- This isolated bitmap-video candidate uses BMP V4 blob URLs for offline video preparation.
+- Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
-  Exact image/encoded parity, short URL checks, one-worker quiet timings and the complete
-  master resource run pass. Automatic-worker throughput remains pending. See docs/research/bitmap-video-2026-11-01/README.md before promoting this branch.
+  Exact image/encoded parity, URL checks, full-master resources and one/automatic-worker quiet
+  timings pass. See docs/research/bitmap-auto-timing-2026-11-01/README.md.
 - ProRes 4444 uses straight-alpha PNG capture and limited-range BT.709 YUV with sRGB transfer;
   H.264 retains the qualified JPEG color path. Do not apply the JPEG matrix to PNG input.
   Transparent Stage removes art/root decorations and fades opacity. Foreground components can
