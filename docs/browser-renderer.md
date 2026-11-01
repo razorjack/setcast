@@ -51,6 +51,11 @@ and Mediabunny decoder. Re-export an unsupported input as PCM WAV.
 
 `output.gl` currently accepts `auto`, `default` and `angle`. Other graphics backends fail
 with an explicit alternative before capture.
+On Linux, `auto` uses Chromium's default graphics selection (SwiftShader in the pinned
+runtime). NVIDIA ANGLE produced theme pixel differences and screenshot timeouts during Linux
+qualification. Explicit `angle` remains available but is unqualified on that driver. Graphics
+selection is independent of NVENC encoding; inspect `doctor` and export runtime reports for
+the actual backend. See [Linux evidence](research/linux-qualification-2026-11-01/README.md).
 
 Software encoding supports `crf`, `videoBitrate`, `x264Preset`, `jpegQuality`, profiles and
 `chunkSeconds`. `parallelEncoding` must be true. Hardware H.264 uses VideoToolbox on macOS and

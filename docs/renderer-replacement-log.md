@@ -1685,3 +1685,12 @@ inventory contains no Remotion packages; default workflows, themes/video,
 cache/resume, preview and ProRes pass. The optional-Remotion installation is still
 running. This establishes the exercised Linux installation behavior, not full
 backend fidelity or release readiness.
+
+All 32 worker cases pass exact decoded equality with explicit default graphics,
+observed as SwiftShader. Four repeated Masthead rounds also pass all eight
+orientation cases without screenshot timeout. The NVIDIA raster-disable experiment
+did not fix Pirate or Masthead and remains rejected. Based on this backend
+isolation, browser Linux auto now follows Chromium's default graphics selection;
+explicit angle remains opt-in and unqualified on the tested driver. Remotion's
+graphics policy, the default renderer, and NVENC selection are unchanged.
+Baseline and both acceptance suites are being repeated before committing this fix.

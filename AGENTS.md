@@ -117,6 +117,9 @@ Gotchas:
   Sandbox device isolation can hide a working NVIDIA driver; identify host devices with the
   same access used for exports. Worker qualification accepts `--gl` and retains runtime reports
   for each export so requested settings cannot be mistaken for observed graphics backends.
+  Browser Linux `auto` now follows pinned Chromium's software default: NVIDIA ANGLE failed
+  Pirate/Afterhours source precision and Masthead capture reliability. Explicit `angle` remains
+  opt-in and unqualified on that driver. This does not change Remotion's graphics policy or NVENC.
 
 - Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
@@ -1224,7 +1227,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `preview()` start the browser or Studio: `if-possible` falls back to `disable`, `required`
   throws. The CLI calls it before its progress UI, so the fallback warning prints on its own line.
   A driver failure after encoding starts is still not recovered.
-- `output.gl` defaults to `auto`: ANGLE on macOS and Linux, Chromium's default elsewhere. `default`
+- Remotion `output.gl` defaults to `auto`: ANGLE on macOS and Linux, Chromium's default elsewhere. `default`
   restores Chromium's own choice on any platform; explicit backend names pass through the adapter.
   The same setting applies to metadata, renders, stills, bundled thumbnails and Studio render
   settings. The backend stays out of `ResolvedProject`: it configures the renderer, not the scene.

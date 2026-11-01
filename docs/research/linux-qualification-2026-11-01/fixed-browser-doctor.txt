@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "capabilities": {
+    "version": 1,
+    "renderer": "browser",
+    "features": [
+      "still",
+      "webp",
+      "video",
+      "resume",
+      "cache",
+      "gpu",
+      "hardwareEncoding",
+      "alpha",
+      "prores"
+    ],
+    "stillFormats": [
+      "png",
+      "jpeg",
+      "webp"
+    ],
+    "videoContainers": [
+      "mp4",
+      "mov",
+      "mkv"
+    ],
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "videoFormats": [
+      {
+        "codec": "h264",
+        "containers": [
+          "mp4",
+          "mov",
+          "mkv"
+        ],
+        "audioCodec": "aac",
+        "alpha": false
+      },
+      {
+        "codec": "prores-4444",
+        "containers": [
+          "mov"
+        ],
+        "audioCodec": "pcm_s24le",
+        "alpha": true
+      }
+    ],
+    "graphicsBackends": [
+      "auto",
+      "default",
+      "angle"
+    ],
+    "parallelEncoding": [
+      true
+    ],
+    "concurrency": {
+      "default": "auto",
+      "min": 1,
+      "max": 8
+    },
+    "runtime": {
+      "browser": "Playwright Chromium",
+      "ffmpeg": "system"
+    }
+  },
+  "environment": {
+    "platform": "linux",
+    "arch": "x64",
+    "node": "v26.7.0"
+  },
+  "graphicsBackend": "auto",
+  "required": [
+    "still",
+    "webp",
+    "video",
+    "gpu",
+    "resume",
+    "cache",
+    "alpha",
+    "prores"
+  ],
+  "checks": [
+    {
+      "id": "local-server",
+      "features": [
+        "still",
+        "webp",
+        "video",
+        "resume",
+        "cache",
+        "gpu",
+        "hardwareEncoding",
+        "alpha",
+        "prores"
+      ],
+      "status": "pass",
+      "message": "Bound and fetched a temporary loopback HTTP endpoint."
+    },
+    {
+      "id": "browser.launch",
+      "features": [
+        "still",
+        "webp",
+        "video",
+        "resume",
+        "cache",
+        "gpu",
+        "hardwareEncoding",
+        "alpha",
+        "prores"
+      ],
+      "status": "pass",
+      "message": "Started the installed browser.",
+      "details": {
+        "version": "156.0.8078.4"
+      }
+    },
+    {
+      "id": "browser.capture",
+      "features": [
+        "still",
+        "webp",
+        "video",
+        "resume",
+        "cache",
+        "hardwareEncoding",
+        "alpha",
+        "prores"
+      ],
+      "status": "pass",
+      "message": "PNG and JPEG screenshots preserve CSS and Canvas 2D pixels.",
+      "details": {
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36"
+      }
+    },
+    {
+      "id": "browser.webp",
+      "features": [
+        "webp"
+      ],
+      "status": "pass",
+      "message": "WebP screenshot preserves fixture pixels."
+    },
+    {
+      "id": "browser.webgl",
+      "features": [
+        "gpu"
+      ],
+      "status": "pass",
+      "message": "WebGL 2 compiled, drew and read back a fragment shader.",
+      "details": {
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "vendor": "Google Inc. (Google)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "id": "ffmpeg",
+      "features": [
+        "video",
+        "resume",
+        "cache",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "ffmpeg version 8.1.3 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    {
+      "id": "ffprobe",
+      "features": [
+        "resume",
+        "cache"
+      ],
+      "status": "pass",
+      "message": "ffprobe version 8.1.3 Copyright (c) 2007-2026 the FFmpeg developers"
+    },
+    {
+      "id": "video.encode",
+      "features": [
+        "video",
+        "resume",
+        "cache"
+      ],
+      "status": "pass",
+      "message": "Encoded H.264 + AAC in MP4, MOV and MKV."
+    },
+    {
+      "id": "video.inspect",
+      "features": [
+        "resume",
+        "cache"
+      ],
+      "status": "pass",
+      "message": "ffprobe verified fixture codecs, dimensions and frame count."
+    },
+    {
+      "id": "hardware.encode",
+      "features": [
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "Encoded a frame with h264_nvenc.",
+      "details": {
+        "encoder": "h264_nvenc"
+      }
+    },
+    {
+      "id": "prores.encode",
+      "features": [
+        "alpha",
+        "prores"
+      ],
+      "status": "pass",
+      "message": "Encoded and decoded three ProRes 4444 frames with straight alpha and PCM audio."
+    }
+  ],
+  "features": {
+    "still": "ready",
+    "webp": "ready",
+    "video": "ready",
+    "resume": "ready",
+    "cache": "ready",
+    "gpu": "ready",
+    "hardwareEncoding": "ready",
+    "alpha": "ready",
+    "prores": "ready"
+  },
+  "ready": true,
+  "exitCode": 0
+}

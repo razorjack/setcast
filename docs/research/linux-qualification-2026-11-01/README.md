@@ -153,3 +153,22 @@ failure. Ready passes (688 tests). Pirate with the shipped --gl default setting
 selects SwiftShader and passes exact equality in both orientations across 1/2/4
 workers. This is software-backend evidence; NVIDIA auto remains failed.
 A full software matrix follows without changing production defaults.
+
+All 32 software worker cases pass exact decoded equality. Four repeated Masthead
+rounds pass all eight orientation cases at 1/2/4 workers. The proposed Linux auto
+fix follows Chromium's default (observed SwiftShader), preserving explicit angle
+for opt-in use. This fixes automatic selection by avoiding the failing backend;
+it does not fix or qualify the NVIDIA driver's ANGLE rasterization. Both exporters'
+acceptance and all affected browser checks must pass under the shipped auto path.
+
+The 3,000-capture bitmap resource check passes: 3,000 created/revoked BMP URLs,
+zero active after close, peak two active. Peak sampled summed RSS is
+1,937,428,480 bytes; consecutive 750-capture interval medians are
+1,840,332,800 / 1,862,696,960 / 1,820,733,440 / 1,838,049,280 bytes.
+Some correctness work overlapped, so timings are not performance evidence.
+The original two-minute software export passes metadata verification and cleanup;
+unlike the NVENC workload, this runbook preset does not request decoded verification.
+
+The Linux automatic graphics-selection fix passes ready (688 tests), doctor with
+observed SwiftShader and all requested features, and both exporter acceptance
+suites. The complete affected suite is being rerun on the committed fix.

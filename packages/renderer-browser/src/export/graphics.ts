@@ -21,6 +21,12 @@ export function validateGraphicsBackend(backend: GraphicsBackend = 'auto'): void
 
 export function graphicsArgs(backend: GraphicsBackend = 'auto'): string[] {
   validateGraphicsBackend(backend);
-  if (backend === 'default' || (backend === 'auto' && process.platform === 'win32')) return [];
+  // Linux NVIDIA ANGLE fails theme pixel determinism and can stall screenshots.
+  // The pinned Chromium default uses SwiftShader; keep explicit ANGLE opt-in.
+  if (
+    backend === 'default' ||
+    (backend === 'auto' && ['linux', 'win32'].includes(process.platform))
+  )
+    return [];
   return ['--use-gl=angle'];
 }

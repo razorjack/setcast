@@ -155,7 +155,10 @@ pass qualifies FFmpeg decoding/compositing, not AVFoundation, OBS or an editor.
 
 Headless graphics need explicit interpretation. Remotion acceptance uses `--gl swangle` because
 automatic ANGLE can render CSS while failing WebGL 2 without a hardware backend. Browser export
-currently accepts only `auto`, `default` and `angle`; Linux `auto` supplies `--use-gl=angle`.
+currently accepts only `auto`, `default` and `angle`. The handoff used ANGLE for Linux
+`auto`; Linux execution found source-pixel failures and screenshot stalls on NVIDIA. The
+qualification fix makes browser `auto` follow Chromium's default (SwiftShader in the pinned
+runtime), while explicit `angle` remains unqualified on that driver.
 Do not pass Remotion's `swangle` to it. Retain the actual WebGL renderer/vendor from diagnostics
 and active exports. A SwiftShader pass is software qualification, not GPU acceleration evidence.
 

@@ -1,0 +1,154 @@
+[
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 0,
+    "width": 1920,
+    "height": 1080,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 0,
+    "width": 1080,
+    "height": 1920,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 1,
+    "width": 1920,
+    "height": 1080,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 1,
+    "width": 1080,
+    "height": 1920,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 2,
+    "width": 1920,
+    "height": 1080,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 2,
+    "width": 1080,
+    "height": 1920,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 3,
+    "width": 1920,
+    "height": 1080,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f",
+      "SHA256=5ed9456fea2695ea59f5b3ebf8eff395fbdec5898dd075a87d36db8b73fe762f"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "masthead",
+    "gl": "default",
+    "round": 3,
+    "width": 1080,
+    "height": 1920,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5",
+      "SHA256=b2fc06b149e17825d09ce727231e7a0c45280eb66e8a943e60e25232683b02b5"
+    ],
+    "equal": true,
+    "qualified": true
+  }
+]
