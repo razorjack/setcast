@@ -5,11 +5,14 @@ export interface PreviewExportOptions {
   settings?: ExportSettings;
 }
 export interface PreviewExportRequest {
+  kind?: 'video' | 'reference';
   revision: number;
   first: number;
   last: number;
 }
 export interface PreviewExportJob extends PreviewExportRequest {
+  kind: 'video' | 'reference';
+  referenceRuntime?: { chromium: string; bundle: string };
   id: string;
   status: 'queued' | 'running' | 'complete' | 'cancelled' | 'failed';
   fps: number;

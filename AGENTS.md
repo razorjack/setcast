@@ -860,6 +860,9 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   CLI preview enables a bounded serial export queue under out/preview, using token/origin checked
   range requests and the existing resumable exporter. Project updates cancel stale jobs; shutdown
   awaits cancellation cleanup. Generated destinations prevent overwriting normal project outputs.
+  Single-frame reference jobs capture PNG in pinned Chromium, record its version and bundle hash,
+  and display only for the matching paused frame/revision. Numeric differences compare this PNG
+  with an imported image through local sRGB canvas RGBA; they do not measure interactive DOM pixels.
   Preview uses the user's browser; offline export still uses pinned Chromium. See
   docs/independent-preview.md and renderer-browser/bench/preview.ts. Run both exporter acceptance
   suites for shared driver changes and package-smoke for preview entry/export changes.

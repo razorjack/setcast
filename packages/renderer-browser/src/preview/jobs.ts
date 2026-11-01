@@ -8,8 +8,11 @@ import {
   type ExportSettings,
   type RenderOptions,
   type ResolvedProject,
+  type StillOptions,
+  type StillResult,
 } from '@setcast/core';
-import { render, withRenderSession } from '../export/index.ts';
+import { render, still, withRenderSession } from '../export/index.ts';
+import { exportRuntime } from '../export/session.ts';
 import { exportEncoding } from '../export/encoding.ts';
 import { validateGraphicsBackend } from '../export/graphics.ts';
 import { projectAssets } from '../export/identity.ts';
@@ -28,6 +31,29 @@ interface Job {
   out?: string;
 }
 
+interface PreviewExporter extends Pick<
+  import('@setcast/core').Exporter,
+  'render' | 'withRenderSession'
+> {
+  still(
+    project: ResolvedProject,
+    options: StillOptions,
+  ): Promise<
+    StillResult & {
+      runtime?: PreviewExportJob['referenceRuntime'];
+    }
+  >;
+}
+
+const exporter: PreviewExporter = {
+  render,
+  withRenderSession,
+  async still(project, options) {
+    const result = await still(project, options);
+    return { ...result, runtime: await exportRuntime(options) };
+  },
+};
+
 export class PreviewJobs {
   readonly directory: string;
   private jobs: Job[] = [];
@@ -35,15 +61,15 @@ export class PreviewJobs {
   private closed = false;
   private revision: PreviewRevision;
   private options: PreviewExportOptions & { projectDir: string };
-  private exporter: Pick<import('@setcast/core').Exporter, 'render' | 'withRenderSession'>;
+  private exporter: PreviewExporter;
   constructor(
     revision: PreviewRevision,
     options: PreviewExportOptions & { projectDir: string },
-    exporter = { render, withRenderSession },
+    implementation = exporter,
   ) {
     this.revision = revision;
     this.options = options;
-    this.exporter = exporter;
+    this.exporter = implementation;
     if (typeof options.directory !== 'string' || !options.directory.trim())
       throw new SetcastError(
         'Preview export directory is empty.',
@@ -62,17 +88,22 @@ export class PreviewJobs {
         'This preview has 20 export jobs. Restart preview to start a new queue; saved files remain available.',
       );
     const settings = structuredClone(this.options.settings ?? {});
-    exportEncoding({ ...settings, projectDir: '', out: 'export.mp4' });
+    if (request.kind !== 'reference')
+      exportEncoding({ ...settings, projectDir: '', out: 'export.mp4' });
     validateGraphicsBackend(settings.gl);
     projectAssets(this.revision.project);
     const id = randomUUID();
     const report: PreviewExportJob = {
       ...request,
+      kind: request.kind ?? 'video',
       id,
       status: 'queued',
       fps: this.revision.project.fps,
       title: this.revision.project.title,
-      filename: `${id}/frames-${request.first}-${request.last}.mp4`,
+      filename:
+        request.kind === 'reference'
+          ? `${id}/frame-${request.first}.png`
+          : `${id}/frames-${request.first}-${request.last}.mp4`,
       progress: null,
       runtime: [],
       error: null,
@@ -182,7 +213,17 @@ export class PreviewJobs {
           if (job.report.runtime.length < 16) job.report.runtime.push(event);
         },
       };
-      await this.exporter.render(job.project, options);
+      if (job.report.kind === 'reference') {
+        const result = await this.exporter.still(job.project, {
+          projectDir: options.projectDir,
+          out: options.out,
+          at: job.report.first / job.project.fps,
+          gl: options.gl,
+          signal: options.signal,
+          onProgress: options.onProgress,
+        });
+        job.report.referenceRuntime = result.runtime;
+      } else await this.exporter.render(job.project, options);
       job.report.status = 'complete';
     } catch (error) {
       job.report.status = job.controller.signal.aborted ? 'cancelled' : 'failed';
@@ -215,18 +256,12 @@ export class PreviewJobs {
 
 function parseRequest(body: unknown, state: PreviewRevision): PreviewExportRequest {
   const request = body as Partial<PreviewExportRequest> | null;
-  if (
-    !request ||
-    typeof request !== 'object' ||
-    Array.isArray(request) ||
-    Object.keys(request).sort().join(',') !== 'first,last,revision'
-  )
-    throw new Error(
-      'Export requests require only revision, first and last integer frames. Refresh preview and try again.',
-    );
+  requireRequest(request);
   if (request.revision !== state.revision)
     throw new Error('The preview revision is stale. Wait for project reload, then export again.');
   const { first, last } = request;
+  if (request.kind === 'reference' && first !== last)
+    throw new Error('Reference requests require one frame: first and last must be equal.');
   const count = framesWithinMix(state.project.mix.duration, state.project.fps);
   if (
     !Number.isSafeInteger(first) ||
@@ -238,5 +273,22 @@ function parseRequest(body: unknown, state: PreviewRevision): PreviewExportReque
     throw new Error(
       `Invalid export range ${first}-${last}. Choose inclusive frames from 0 to ${count - 1}.`,
     );
-  return { revision: state.revision, first: first!, last: last! };
+  return { revision: state.revision, first: first!, last: last!, kind: request.kind ?? 'video' };
+}
+
+function requireRequest(
+  request: Partial<PreviewExportRequest> | null,
+): asserts request is Partial<PreviewExportRequest> {
+  if (
+    !request ||
+    typeof request !== 'object' ||
+    Array.isArray(request) ||
+    !['first,last,revision', 'first,kind,last,revision'].includes(
+      Object.keys(request).sort().join(','),
+    ) ||
+    (request.kind !== undefined && !['video', 'reference'].includes(request.kind))
+  )
+    throw new Error(
+      'Export requests require revision, first and last integer frames, and optional kind (video or reference). Refresh preview and try again.',
+    );
 }

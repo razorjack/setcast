@@ -1261,3 +1261,22 @@ are deeply equal, including after a title edit. Candidate readiness integrations
 as bitmap 1db55ff and browser-first eb40319; both pass ready, both exporter acceptance suites,
 frame-driver checks and installed browser smoke. Browser-first also passes the optional Remotion
 compatibility installation. No throughput claim follows from these shared-load checks.
+
+### Export-runtime reference inspection
+
+The preview now captures one PNG through the existing export session and bounded queue. Requests
+accept an explicit reference kind with equal first/last frames; the server still chooses every
+output path and applies origin/token checks. Completed jobs retain Chromium version and bundle
+digest. The view displays only captures matching its current revision and paused frame. Local
+reference images remain in-browser; numeric differences compare the PNG and imported image after
+8-bit sRGB canvas decoding, not the interactive DOM or encoded video quality. The actual-browser
+workflow check passes direct-still decoded equality, zero differences for identical images, one
+changed pixel for a controlled edit, and stale-frame hiding, alongside existing export recovery.
+Visual inspection found that the interactive driver's preparation cover briefly obscured a ready
+export image; the cover now applies only while displaying the interactive frame. Final validation
+is pending. Corrected long corpus metrics continue independently and are not performance samples.
+
+Reference inspection validation passes: ready (676 tests in 113 files, lint/types/formatting,
+isolation and decoded smoke), interactive preview and reference/export workflow checks, both
+exporter acceptance suites, and packed-browser smoke. Final desktop/narrow screenshots were
+inspected. The full evidence is in `docs/research/preview-reference-2026-11-01`.

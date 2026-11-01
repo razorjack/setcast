@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { errorMessage } from '@setcast/core';
+import { ReferenceMetrics } from './reference-metrics.tsx';
 
 interface ReferenceImage {
   url: string;
@@ -53,10 +54,12 @@ export function ReferenceControls({
   reference,
   width,
   height,
+  pinnedImage,
 }: {
   reference: Reference;
   width: number;
   height: number;
+  pinnedImage: string | null;
 }) {
   const compatible =
     !reference.image || (reference.image.width === width && reference.image.height === height);
@@ -86,6 +89,14 @@ export function ReferenceControls({
         </p>
       )}
       {reference.image && <ReferenceComparison reference={reference} />}
+      {compatible && pinnedImage && reference.image && (
+        <ReferenceMetrics
+          captured={pinnedImage}
+          reference={reference.image.url}
+          width={width}
+          height={height}
+        />
+      )}
     </section>
   );
 }

@@ -7,6 +7,7 @@ import {
   type RenderOptions,
   type RenderResult,
   type ResolvedProject,
+  type StillOptions,
 } from '@setcast/core';
 import { PreviewJobs } from './jobs.ts';
 import type { PreviewRevision } from './server.ts';
@@ -45,7 +46,16 @@ async function fixture() {
   const state: PreviewRevision = { revision: 0, project: structuredClone(project), error: null };
   const calls: { project: ResolvedProject; options: RenderOptions; finish: () => void }[] = [];
   const sessions: string[] = [];
+  const stills: StillOptions[] = [];
   const exporter = {
+    async still(_project: ResolvedProject, options: StillOptions) {
+      stills.push(options);
+      return {
+        file: options.out,
+        timeSeconds: options.at!,
+        runtime: { chromium: 'test-runtime', bundle: 'test-bundle' },
+      };
+    },
     async withRenderSession<T>(task: () => Promise<T>) {
       sessions.push('open');
       try {
@@ -76,9 +86,27 @@ async function fixture() {
     await queue.close();
     await rm(directory, { recursive: true, force: true });
   });
-  return { queue, state, calls, sessions, directory };
+  return { queue, state, calls, stills, sessions, directory };
 }
 const request = { revision: 0, first: 32, last: 94 };
+
+test('reference jobs capture one exact PNG frame with runtime identity through the serial queue', async () => {
+  const { queue, stills, calls } = await fixture();
+  expect(() => queue.enqueue({ ...request, kind: 'reference' })).toThrow('one frame');
+  expect(() => queue.enqueue({ ...request, kind: 'unknown' })).toThrow('optional kind');
+  const job = queue.enqueue({ ...request, kind: 'reference', last: 32 });
+  await vi.waitFor(() => expect(queue.list()[0]!.status).toBe('complete'));
+  expect(calls).toHaveLength(0);
+  expect(stills).toHaveLength(1);
+  expect(stills[0]!.at).toBe(32 / 30);
+  expect(stills[0]!.out).toMatch(/frame-32\.png$/);
+  expect(stills[0]!.signal).toBeInstanceOf(AbortSignal);
+  expect(queue.completedFile(job.id)).toBe(stills[0]!.out);
+  expect(queue.list()[0]!.referenceRuntime).toEqual({
+    chromium: 'test-runtime',
+    bundle: 'test-bundle',
+  });
+});
 
 test('serial jobs freeze inputs, preserve the partial final frame and share a render session', async () => {
   const { queue, calls, sessions, state } = await fixture();

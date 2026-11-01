@@ -436,6 +436,11 @@ queue, cancellation, progress and resume. Reuse CLI/core validation and renderer
 Show numeric reference differences and slow-frame details with actionable asset labels. Offer a
 pinned-runtime reference mode because a user's browser cannot promise export-identical pixels.
 
+The preview now queues pinned-Chromium PNG captures with runtime identity, displays them only for
+their matching paused frame/revision, and computes local RGBA differences against imported reference
+images. The image comparison does not claim to measure interactive DOM pixels. Readiness labels and
+per-stage frame timings remain available; GPU timing and cross-platform preview qualification are separate.
+
 The library preview remains read-only unless exports are enabled. The CLI now enables a scoped
 local job API with origin/token checks, bounded requests, reserved output paths and explicit lifecycle ownership. Do not turn arbitrary
 preview requests into filesystem writes or shell execution. No code editor or general NLE is

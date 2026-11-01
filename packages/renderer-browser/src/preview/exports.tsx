@@ -6,12 +6,13 @@ export function PreviewExports({
   revision,
   range,
   invalid,
+  queue,
 }: {
   revision: number;
   range: RangeSelection;
   invalid: boolean;
+  queue: ExportQueue;
 }) {
-  const queue = useExportQueue();
   if (queue.unavailable) return null;
   return (
     <section className="sp-exports">
@@ -25,7 +26,7 @@ export function PreviewExports({
       {queue.error && <p role="alert">{queue.error}</p>}
       {queue.state && (
         <>
-          <p>H.264 + AAC · Saves to {queue.state.directory}</p>
+          <p>H.264 + AAC or PNG reference · Saves to {queue.state.directory}</p>
           <p>One export at a time. Project edits cancel unfinished jobs.</p>
           <ol>
             {queue.state.jobs.map((job) => (
@@ -58,7 +59,8 @@ function ExportJob({
   return (
     <li data-export-id={job.id} data-export-status={job.status}>
       <strong>
-        {job.first}–{job.last} · {job.status}
+        {job.kind === 'reference' ? `Reference ${job.first}` : `${job.first}–${job.last}`} ·{' '}
+        {job.status}
       </strong>
       <span>
         {job.title} · {job.fps} fps
@@ -75,18 +77,19 @@ function ExportJob({
           disabled={disabled || job.revision !== revision}
           onClick={() => void send(`/${job.id}/resume`)}
         >
-          Resume export
+          {job.kind === 'reference' ? 'Retry reference' : 'Resume export'}
         </button>
       )}
       {job.status === 'complete' && (
         <a href={`/exports/${job.id}/file`} download>
-          Download MP4
+          Download {job.kind === 'reference' ? 'PNG' : 'MP4'}
         </a>
       )}
       <details>
         <summary>Export details</summary>
         <p>{job.filename}</p>
         <pre>{JSON.stringify(job.runtime, null, 2)}</pre>
+        {job.referenceRuntime && <pre>{JSON.stringify(job.referenceRuntime, null, 2)}</pre>}
       </details>
     </li>
   );
@@ -104,7 +107,7 @@ function JobProgress({ job }: { job: PreviewExportJob }) {
     </>
   );
 }
-function useExportQueue() {
+export function useExportQueue() {
   const queue = useQueuePolling();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -125,6 +128,61 @@ function useExportQueue() {
     }
   };
   return { ...queue, error: error ?? queue.error, pending, send };
+}
+export type ExportQueue = ReturnType<typeof useExportQueue>;
+
+interface ExportFrameOptions {
+  queue: ExportQueue;
+  revision: number;
+  frame: number;
+  invalid: boolean;
+  showing: boolean;
+  setShowing: (value: boolean) => void;
+}
+export function ExportFrameControls({
+  queue,
+  revision,
+  frame,
+  invalid,
+  showing,
+  setShowing,
+}: ExportFrameOptions) {
+  if (queue.unavailable) return null;
+  const job = queue.state?.jobs.findLast(
+    (job) => job.kind === 'reference' && job.revision === revision && job.first === frame,
+  );
+  return (
+    <section>
+      <h2>Export frame</h2>
+      <p>
+        Capture this frame with the exporter's pinned Chromium. Interactive playback uses your
+        browser.
+      </p>
+      <button
+        disabled={
+          !queue.state ||
+          queue.pending ||
+          invalid ||
+          job?.status === 'queued' ||
+          job?.status === 'running'
+        }
+        onClick={() => {
+          setShowing(true);
+          void queue.send('', { kind: 'reference', revision, first: frame, last: frame });
+        }}
+      >
+        Capture export frame
+      </button>
+      {job && (
+        <p role="status">
+          Frame {frame} · {job.status}
+        </p>
+      )}
+      {job?.status === 'complete' && (
+        <ExportFrameDisplay job={job} showing={showing} setShowing={setShowing} />
+      )}
+    </section>
+  );
 }
 function useQueuePolling() {
   const [state, setState] = useState<PreviewExportsState | null>(null);
@@ -174,4 +232,24 @@ async function exportRequest(token: string, path: string, body: object) {
         .join(' '),
     );
   }
+}
+
+function ExportFrameDisplay({
+  job,
+  showing,
+  setShowing,
+}: Pick<ExportFrameOptions, 'showing' | 'setShowing'> & { job: PreviewExportJob }) {
+  return (
+    <>
+      <label>
+        <input
+          type="checkbox"
+          checked={showing}
+          onChange={(event) => setShowing(event.target.checked)}
+        />
+        Show export frame
+      </label>
+      <p>Chromium {job.referenceRuntime?.chromium ?? 'unknown'} · PNG · paused frame only</p>
+    </>
+  );
 }
