@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- This isolated bitmap-video candidate uses BMP V4 blob URLs for offline video preparation.
+  Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
+  Exact image/encoded parity and short URL checks pass; sustained memory and speed remain
+  pending. See docs/research/bitmap-video-2026-11-01/README.md before promoting this branch.
+
 - Resume checkpoint equality uses the deterministic acceptance marker scene. Animated theme
   paint history can differ when a fresh page starts at a resumed chunk, so theme qualification
   is separate from exact checkpoint frame comparisons. Keep the frame-hash assertion.

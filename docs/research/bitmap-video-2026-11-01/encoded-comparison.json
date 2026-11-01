@@ -1,0 +1,21 @@
+{
+  "videoExact": true,
+  "audioExact": true,
+  "scope": "Correctness exports under concurrent load; timings are not performance qualification",
+  "records": [
+    {
+      "variant": "baseline",
+      "file": "examples/demo/out/bitmap-encoded-baseline-2026-11-01/0-1.mp4",
+      "frames": 300,
+      "decodedVideoHash": "df89901d6e2e9321ec241e5aaa69c39a974f0570df08678e4f748ff91ab95881",
+      "decodedAudioHash": "SHA256=756ac0425833f578ce1b52cf4c6964327f1ef801e1bcbfa520f1328fcbfda3e9"
+    },
+    {
+      "variant": "candidate",
+      "file": "examples/demo/out/bitmap-encoded-candidate-2026-11-01/0-1.mp4",
+      "frames": 300,
+      "decodedVideoHash": "df89901d6e2e9321ec241e5aaa69c39a974f0570df08678e4f748ff91ab95881",
+      "decodedAudioHash": "SHA256=756ac0425833f578ce1b52cf4c6964327f1ef801e1bcbfa520f1328fcbfda3e9"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "cases": 288,
+  "exact": 288,
+  "scope": "Exact RGBA equality; diagnostic timings under concurrent load do not qualify speed"
+}

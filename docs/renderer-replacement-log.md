@@ -1051,3 +1051,17 @@ reports are retained under `research/png-reference-2026-11-01/`.
 The corpus coordinator and faster lossless-reference tooling passed final ready: 667 tests,
 111 files, lint/types/formatting, dependency isolation and decoded smoke. The ongoing corpus
 measurement remains separate from this tooling milestone. Log: `/tmp/setcast-corpus-tools-ready.log`.
+
+## Bitmap-video candidate, 1 November 2026
+
+Isolated from main at aad14cc. The final candidate uses BMP V4 blob URLs and explicit decoder
+ownership, retaining the existing image DOM and CSS behavior. The earlier data-URL variant is
+archived after slower diagnostic readiness. All 288 theme/orientation/seek/source-switch RGBA
+samples match PNG; nine alpha/compositing controls match; all 32 scene instances release URLs
+on unmount. A full ten-second source-switch export matches all 300 decoded frames and PCM audio.
+See `research/bitmap-video-2026-11-01/README.md` for raw reports and the retained hash-tool stall.
+
+Ready passed 667 tests in 111 files, lint/types/formatting, isolation and decoded smoke. Browser
+acceptance, Remotion acceptance with swangle and packed-browser smoke passed. The final hash
+helper uses saved files, bounded threads and a 30-second hard timeout. Complete-export quiet
+speed and sustained process memory remain unqualified. Do not promote this branch yet.
