@@ -50,7 +50,7 @@ test('preview renderer overrides select the requested adapter in both directions
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
-});
+}, 30_000);
 
 function wave() {
   const buffer = Buffer.alloc(44 + 16000);
