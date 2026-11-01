@@ -5,16 +5,17 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (755fa71), with local clean-install coverage but no default
-promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (728e2f0; implementation cc10be9),
+on `renderer/browser-first-candidate` (eb40319), with local clean-install coverage but no default
+promotion. The bitmap-video candidate is committed on `renderer/bitmap-video-candidate` (1db55ff; implementation cc10be9),
 with exact-frame/encoded parity and a passed 3,000-capture resource check; full-master resources
 and quiet throughput remain unqualified.
 The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
-cases, including a corrected portrait comparison and the final-case retry. The final Remotion
-chunk output still contains the original art-transition failure and needs a corrected rerun.
+cases, including corrected portrait and long comparisons with no black transition frames.
 The original black frames and storage interruption remain preserved.
 The shared [commit-readiness fix](research/art-readiness-2026-11-01/README.md), committed as 53551f0,
 removes that repeatable black transition frame. Completed pieces and validation are tracked in the log.
+Scoped audio-preparation reuse and pinned-runtime preview references with local numeric differences
+are committed on main. Native capture was qualified and rejected for CSS pixel differences.
 Remotion remains the default until the release criteria below are met.
 
 Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
@@ -22,8 +23,8 @@ contracts, finishes first exports faster, reuses work across revisions, and conn
 preview with export. Independence is already implemented in the browser execution path. The
 remaining work is to establish a better product and remove the installation dependency.
 
-This plan consolidates source inspection, existing local measurements and upstream documentation.
-It does not report a new benchmark. Measured results, source-level findings, experiments and
+This plan consolidates source inspection, local measurements and upstream documentation.
+Its initial assessment predates the linked qualification runs. Measured results, source-level findings, experiments and
 proposed acceptance targets are identified separately. The 30% wall-time target is a product
 objective, not a prediction supported by the existing comparisons.
 
@@ -61,7 +62,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
 | Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
-| Concurrency | Manual 1–8, default 1; automatic policy awaiting final timing qualification | Automatic or explicit |
+| Concurrency | Automatic 1/2/4 from stable CPU/memory limits; explicit 1–8 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |
 | Resume completed chunks | Supported on `render` | Explicitly rejected |
@@ -372,13 +373,20 @@ worker-count comparisons. Applying invalidation after readiness
 caused capture stalls; outline invalidation preserved layout but exceeded the explicit source
 precision limit in Afterhours. Keep both rejected approaches and exact hash results visible.
 
-The candidate automatic policy chooses 1/2/4 workers from stable CPU and memory estimates, using
+The automatic policy chooses 1/2/4 workers from stable CPU and memory estimates, using
 one below 300 frames and retaining explicit 1–8 overrides. It resolves selection before cache/resume
 identity and reports its reason and estimate. Allocation estimates are not enforced memory limits.
 The selected count and encoded checkpoint contents must remain stable across identical jobs.
 Per-job calibration remains deferred until its complete-export benefit exceeds its preparation
 cost on representative moments. Qualification and new timings must include paint invalidation;
 the older three-fixture measurements cannot qualify the changed driver.
+
+The [1 November timing series](research/worker-scaling-2026-11-01/README.md) completes three
+alternating pairs per standard/GPU/video fixture under the 15% pre-run CPU limit. Decoded video
+hashes agree across every worker setting, and automatic selection improves each fixture. Main
+integration passes ready, scheduling cache/resume acceptance, both exporter acceptance suites,
+preview reference workflows and packed-browser installation. Current-upstream comparisons and
+full-master resource checks remain separate from this scheduler comparison.
 
 Compare round-robin frames with contiguous blocks or independent chunk workers. Investigate
 decode locality, GPU contention, head-of-line waiting, page startup and encoder contention.

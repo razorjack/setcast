@@ -29,6 +29,7 @@ import { renderTracks } from './tracks.ts';
 import { resolveHardwareEncoding, type VideoEncoder } from './hardware.ts';
 import { DEFAULT_CACHE_BYTES, withRenderCache } from './cache.ts';
 import { cachedChunks } from './cache-chunks.ts';
+import { captureResources, captureSchedule } from './concurrency.ts';
 
 export type BrowserRenderOptions = RenderOptions & {
   onMetrics?: MetricsReport;
@@ -45,14 +46,20 @@ export function render(
   requireVideoOutput(options.out);
   const encoding = exportEncoding(options);
   const range = renderedFrames(project, options.range);
+  const frames = range[1] - range[0] + 1;
+  const schedule = captureSchedule(
+    { ...project, frames, concurrency: options.concurrency },
+    captureResources(),
+  );
+  options.onRuntime?.({ kind: 'scheduling', ...schedule });
   const job: RenderJob = {
     project,
-    options,
+    options: { ...options, concurrency: schedule.workers },
     encoding,
     encoder: 'libx264',
     ranges: splitFrameRange(range, encoding.chunkSeconds * project.fps),
     first: range[0],
-    frames: range[1] - range[0] + 1,
+    frames,
   };
   return withRenderSession(() => renderJob(job));
 }

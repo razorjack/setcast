@@ -870,8 +870,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   are absolute and acknowledged after React/asset readiness. Mediabunny decodes background video
   frames explicitly; real-time native-video synchronization is not used for export. Bounded PCM
   windows supply the shared analyzer. One continuous master AAC stream spans video chunks.
-- Browser export streams ordered JPEG frames with backpressure, defaults to one capture worker,
-  and supports up to eight. Software H.264 only; parallelEncoding must be true. Existing output
+- Browser export streams ordered JPEG frames with backpressure. Automatic scheduling chooses
+  1/2/4 workers from stable CPU/memory limits, uses one below 300 frames, and resolves before
+  cache/resume identity. Explicit 1–8 overrides remain available. Memory estimates are not enforced
+  allocation limits. Software H.264 remains the default; parallelEncoding must be true. Existing output
   survives failure/cancellation. AbortSignal and CLI stop signals clean up active jobs in both
   adapters. `vp run package-smoke --browser` checks packed browser export too.
 - Player Save scene writes a self-contained saved-scene-* directory, preserving source YAML.

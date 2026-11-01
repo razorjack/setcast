@@ -1308,3 +1308,28 @@ new native binary distribution work remains an optional future optimization.
 
 Native probe validation passes formatting, lint/types and the full ready suite (676 tests in
 113 files, isolation and decoded smoke). The experiment changes no production rendering code.
+
+### Quiet timing and full-master preparation
+
+All own correctness jobs finished before new worker timing began. The isolated upstream runtime
+runs three alternating one/automatic pairs per standard, tunnel and looping-video fixture with
+the unchanged 15% pre-run CPU limit. Busy samples wait; no other project's processes are stopped.
+Evidence goes to `examples/demo/out/scaling-quiet-*-2026-11-01` and matching `/tmp/setcast-scaling-quiet-*.log`.
+
+The endurance harness inspection found two qualification gaps: it records only Node RSS, and it
+does not forward the project's export settings. The pending correction uses public core/node
+loading, forwards explicit output settings, records runtime decisions and adds sampled process-tree
+RSS with its shared-page/external-service limitations. Its validation waits until timing is idle.
+
+All three worker series completed their six arms with identical decoded video hashes within
+each fixture. Median reductions versus one worker are 32.9% standard, 31.9% tunnel and 41.5%
+looping video. Complete reports and load observations are in `docs/research/worker-scaling-2026-11-01`.
+The qualified automatic-policy patch is now applied to main, with integration validation pending.
+The separate current-Remotion timing series has started in the isolated upstream runtime at
+browser JPEG 100 / CRF 16 versus Remotion CRF 18, both selecting workers automatically. No main
+validation runs concurrently with that comparison.
+
+Automatic scheduling integration passes ready (679 tests in 114 files), scheduling acceptance
+with four selected workers and exact cached/resumed video and audio, both exporter acceptance
+suites, preview reference workflows and packed-browser installation. The scheduler is now enabled
+on main. No quality setting or renderer default changed.

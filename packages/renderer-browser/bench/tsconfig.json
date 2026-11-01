@@ -22,6 +22,7 @@
     "preview-exports.ts",
     "color.ts",
     "scaling.ts",
+    "scheduling.ts",
     "worker-frames.ts",
     "worker-capture.ts",
     "worker-pixels.ts",

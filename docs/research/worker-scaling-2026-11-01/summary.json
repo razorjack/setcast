@@ -1,0 +1,119 @@
+[
+  {
+    "case": "standard",
+    "groups": {
+      "1": {
+        "seconds": [
+          10.788822709,
+          10.689791041000005,
+          10.64860770800001
+        ],
+        "medianSeconds": 10.689791041000005,
+        "minSeconds": 10.64860770800001,
+        "maxSeconds": 10.788822709,
+        "peakTreeRssBytes": 1992654848,
+        "meanExternalCpuCores": [
+          1.440627665929564,
+          0.8424865503004128,
+          0.94089687324742
+        ]
+      },
+      "auto": {
+        "seconds": [
+          7.348141458999999,
+          7.169143708000004,
+          6.918541666000005
+        ],
+        "medianSeconds": 7.169143708000004,
+        "minSeconds": 6.918541666000005,
+        "maxSeconds": 7.348141458999999,
+        "peakTreeRssBytes": 3000287232,
+        "meanExternalCpuCores": [
+          1.1026443649403326,
+          1.0758551668167746,
+          0.8582682001217825
+        ]
+      }
+    },
+    "medianReductionPercent": 32.93466934476815,
+    "decodedVideoHashesEqual": true
+  },
+  {
+    "case": "tunnel",
+    "groups": {
+      "1": {
+        "seconds": [
+          11.058915665999999,
+          11.282184833000006,
+          11.055782625000008
+        ],
+        "medianSeconds": 11.058915665999999,
+        "minSeconds": 11.055782625000008,
+        "maxSeconds": 11.282184833000006,
+        "peakTreeRssBytes": 1992114176,
+        "meanExternalCpuCores": [
+          0.772719980665684,
+          0.6349799976967646,
+          0.29509503120780256
+        ]
+      },
+      "auto": {
+        "seconds": [
+          7.531379874999995,
+          7.746009041999998,
+          7.473079417000001
+        ],
+        "medianSeconds": 7.531379874999995,
+        "minSeconds": 7.473079417000001,
+        "maxSeconds": 7.746009041999998,
+        "peakTreeRssBytes": 2921316352,
+        "meanExternalCpuCores": [
+          0.3803912463862462,
+          0.5176843255473874,
+          0.3305083996697912
+        ]
+      }
+    },
+    "medianReductionPercent": 31.89766426961017,
+    "decodedVideoHashesEqual": true
+  },
+  {
+    "case": "looping-video",
+    "groups": {
+      "1": {
+        "seconds": [
+          34.479218167,
+          34.245173625000014,
+          34.314919334
+        ],
+        "medianSeconds": 34.314919334,
+        "minSeconds": 34.245173625000014,
+        "maxSeconds": 34.479218167,
+        "peakTreeRssBytes": 2432892928,
+        "meanExternalCpuCores": [
+          0.48402189722422034,
+          0.45474531188280487,
+          1.2855198574350106
+        ]
+      },
+      "auto": {
+        "seconds": [
+          20.154693542,
+          20.064861040999997,
+          19.96075995800001
+        ],
+        "medianSeconds": 20.064861040999997,
+        "minSeconds": 19.96075995800001,
+        "maxSeconds": 20.154693542,
+        "peakTreeRssBytes": 3998728192,
+        "meanExternalCpuCores": [
+          0.5509450552853403,
+          0.5515922864709883,
+          0.528261632873997
+        ]
+      }
+    },
+    "medianReductionPercent": 41.527296492522204,
+    "decodedVideoHashesEqual": true
+  }
+]
