@@ -112,8 +112,19 @@ Gotchas:
 
 - This isolated bitmap-video candidate uses BMP V4 blob URLs for offline video preparation.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
-  Exact image/encoded parity and short URL checks pass; sustained memory and speed remain
-  pending. See docs/research/bitmap-video-2026-11-01/README.md before promoting this branch.
+  Exact image/encoded parity, short URL checks and one-worker quiet timings pass. Full-master
+  resources and automatic-worker throughput remain pending. See docs/research/bitmap-video-2026-11-01/README.md before promoting this branch.
+
+- `WholeSetReader` belongs to one preview or theme batch. It shares the latest audio revision's
+  envelope and travel preparation, validates file identity before and after decoding, and returns
+  independent arrays. Reuse both summaries across theme changes; an envelope-only shortcut can
+  omit travel required by a later theme. This is in-memory reuse, not a persistent audio cache.
+
+- `useHoldUntil` must hold through the React commit that exposes matching ready state, not only
+  through promise completion. Prepared art hides Stage until then; current Remotion captured a
+  black portrait frame at an art change without the commit hold. Keep the portrait reproducer
+  in docs/research/art-readiness-2026-11-01 and decoded transition acceptance.
+
 
 - Resume checkpoint equality uses the deterministic acceptance marker scene. Animated theme
   paint history can differ when a fresh page starts at a resumed chunk, so theme qualification
@@ -855,6 +866,9 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   CLI preview enables a bounded serial export queue under out/preview, using token/origin checked
   range requests and the existing resumable exporter. Project updates cancel stale jobs; shutdown
   awaits cancellation cleanup. Generated destinations prevent overwriting normal project outputs.
+  Single-frame reference jobs capture PNG in pinned Chromium, record its version and bundle hash,
+  and display only for the matching paused frame/revision. Numeric differences compare this PNG
+  with an imported image through local sRGB canvas RGBA; they do not measure interactive DOM pixels.
   Preview uses the user's browser; offline export still uses pinned Chromium. See
   docs/independent-preview.md and renderer-browser/bench/preview.ts. Run both exporter acceptance
   suites for shared driver changes and package-smoke for preview entry/export changes.
@@ -862,8 +876,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   are absolute and acknowledged after React/asset readiness. Mediabunny decodes background video
   frames explicitly; real-time native-video synchronization is not used for export. Bounded PCM
   windows supply the shared analyzer. One continuous master AAC stream spans video chunks.
-- Browser export streams ordered JPEG frames with backpressure, defaults to one capture worker,
-  and supports up to eight. Software H.264 only; parallelEncoding must be true. Existing output
+- Browser export streams ordered JPEG frames with backpressure. Automatic scheduling chooses
+  1/2/4 workers from stable CPU/memory limits, uses one below 300 frames, and resolves before
+  cache/resume identity. Explicit 1–8 overrides remain available. Memory estimates are not enforced
+  allocation limits. Software H.264 remains the default; parallelEncoding must be true. Existing output
   survives failure/cancellation. AbortSignal and CLI stop signals clean up active jobs in both
   adapters. `vp run package-smoke --browser` checks packed browser export too.
 - Player Save scene writes a self-contained saved-scene-* directory, preserving source YAML.

@@ -1,0 +1,12 @@
+[
+  {
+    "adapter": "browser",
+    "blackFrames": []
+  },
+  {
+    "adapter": "remotion",
+    "blackFrames": [
+      "[Parsed_blackframe_0 @ 0x7889021c80] frame:510 pblack:100 pts:1530000 t:17.000000 type:B last_keyframe:500"
+    ]
+  }
+]

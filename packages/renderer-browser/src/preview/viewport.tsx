@@ -7,10 +7,12 @@ export function PreviewViewport({
   project,
   session,
   reference,
+  pinnedImage,
 }: {
   project: ResolvedProject;
   session: FramePreview;
   reference: Reference;
+  pinnedImage: string | null;
 }) {
   const { viewport, scale } = useViewportScale(project);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -24,24 +26,17 @@ export function PreviewViewport({
           transform: `translate(-50%, -50%) scale(${scale})`,
         }}
       >
-        <iframe
-          src="/frame.html"
-          title="Preview frame"
-          tabIndex={-1}
-          onLoad={(event) => {
-            const driver = event.currentTarget.contentWindow?.setcastExport;
-            if (driver) session.setDriver(driver);
-            else
-              setLoadError(
-                'Frame driver did not load. Retry the frame or restart setcast preview.',
-              );
-          }}
-          width={project.width}
-          height={project.height}
-        />
+        <FrameIframe project={project} session={session} setLoadError={setLoadError} />
+        {pinnedImage && (
+          <img
+            className="sp-reference-image"
+            src={pinnedImage}
+            alt={`Export frame ${session.requested}`}
+          />
+        )}
         <ReferenceLayer project={project} reference={reference} />
       </div>
-      {session.busy && !session.playing && (
+      {session.busy && !session.playing && !pinnedImage && (
         <div className="sp-preparing">Preparing frame {session.requested}</div>
       )}
       {(session.error || loadError) && (
@@ -95,5 +90,30 @@ function ReferenceLayer({
         />
       )}
     </>
+  );
+}
+
+function FrameIframe({
+  project,
+  session,
+  setLoadError,
+}: {
+  project: ResolvedProject;
+  session: FramePreview;
+  setLoadError: (error: string) => void;
+}) {
+  return (
+    <iframe
+      src="/frame.html"
+      title="Preview frame"
+      tabIndex={-1}
+      onLoad={(event) => {
+        const driver = event.currentTarget.contentWindow?.setcastExport;
+        if (driver) session.setDriver(driver);
+        else setLoadError('Frame driver did not load. Retry the frame or restart setcast preview.');
+      }}
+      width={project.width}
+      height={project.height}
+    />
   );
 }

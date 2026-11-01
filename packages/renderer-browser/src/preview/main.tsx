@@ -6,7 +6,7 @@ import { useFramePreview } from './frame-preview.ts';
 import { usePreviewPlayback, type PreviewPreferences } from './playback.ts';
 import { MusicalNavigation, PreviewRange, usePreviewSelection } from './timeline.tsx';
 import type { PreviewSelection } from './navigation.ts';
-import { PreviewExports } from './exports.tsx';
+import { PreviewExports, ExportFrameControls, useExportQueue } from './exports.tsx';
 import { Inspector } from './inspector.tsx';
 import { PreviewViewport } from './viewport.tsx';
 import { PreviewTransport } from './transport.tsx';
@@ -57,15 +57,7 @@ function Preview() {
     </main>
   );
 }
-function Workspace({
-  project,
-  reference,
-  position,
-  preferences,
-  selection,
-  revision,
-  invalid,
-}: {
+interface WorkspaceOptions {
   project: ResolvedProject;
   reference: Reference;
   position: RefObject<number | null>;
@@ -73,11 +65,47 @@ function Workspace({
   selection: RefObject<PreviewSelection | null>;
   revision: number;
   invalid: boolean;
-}) {
+}
+function useWorkspace({
+  project,
+  reference,
+  position,
+  preferences,
+  selection,
+  revision,
+  invalid,
+}: WorkspaceOptions) {
   const range = usePreviewSelection(project, selection);
   const count = framesWithinMix(project.mix.duration, project.fps);
   const frames = useFramePreview(count, project.fps, position);
   const session = usePreviewPlayback(project, frames, preferences);
+  const queue = useExportQueue();
+  const [showExportFrame, setShowExportFrame] = useState(false);
+  const captured = queue.state?.jobs.findLast(
+    (job) =>
+      job.kind === 'reference' && job.revision === revision && job.first === session.requested,
+  );
+  const pinnedImage =
+    showExportFrame && !session.playing && !invalid && captured?.status === 'complete'
+      ? `/exports/${captured.id}/file`
+      : null;
+  return {
+    project,
+    reference,
+    range,
+    count,
+    session,
+    queue,
+    revision,
+    invalid,
+    showExportFrame,
+    setShowExportFrame,
+    pinnedImage,
+  };
+}
+function Workspace(options: WorkspaceOptions) {
+  const state = useWorkspace(options);
+  const { project, count, session, reference, pinnedImage } = state;
   return (
     <div
       className="sp-workspace"
@@ -91,16 +119,52 @@ function Workspace({
           </span>
           <span>{count.toLocaleString()} frames</span>
         </div>
-        <PreviewViewport project={project} session={session} reference={reference} />
+        <PreviewViewport
+          project={project}
+          session={session}
+          reference={reference}
+          pinnedImage={pinnedImage}
+        />
         <PreviewTransport session={session} count={count} fps={project.fps} />
       </div>
-      <aside className="sp-inspector" aria-label="Frame inspector">
-        <MusicalNavigation project={project} frame={session.requested} seek={session.seek} />
-        <PreviewRange range={range} frame={session.requested} seek={session.seek} />
-        <PreviewExports revision={revision} range={range} invalid={invalid} />
-        <Inspector session={session} />
-        <ReferenceControls reference={reference} width={project.width} height={project.height} />
-      </aside>
+      <WorkspaceInspector state={state} />
     </div>
+  );
+}
+
+function WorkspaceInspector({ state }: { state: ReturnType<typeof useWorkspace> }) {
+  const {
+    project,
+    reference,
+    range,
+    session,
+    queue,
+    revision,
+    invalid,
+    showExportFrame,
+    setShowExportFrame,
+    pinnedImage,
+  } = state;
+  return (
+    <aside className="sp-inspector" aria-label="Frame inspector">
+      <MusicalNavigation project={project} frame={session.requested} seek={session.seek} />
+      <PreviewRange range={range} frame={session.requested} seek={session.seek} />
+      <ExportFrameControls
+        queue={queue}
+        revision={revision}
+        frame={session.requested}
+        invalid={invalid || session.playing}
+        showing={showExportFrame}
+        setShowing={setShowExportFrame}
+      />
+      <PreviewExports revision={revision} range={range} invalid={invalid} queue={queue} />
+      <Inspector session={session} />
+      <ReferenceControls
+        reference={reference}
+        width={project.width}
+        height={project.height}
+        pinnedImage={pinnedImage}
+      />
+    </aside>
   );
 }

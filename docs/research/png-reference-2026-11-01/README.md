@@ -21,3 +21,9 @@ attempt called `.names()` on the theme record and failed before capturing; it wa
 The reference manifest records `capture: png-cdp-optimize-for-speed`. Its independent full RGB
 hash still verifies that FFV1 preserves every captured pixel. An equality probe at these
 moments does not replace the broader output-quality, temporal or platform checks.
+
+The reference tool also checks free disk before capture and before every frame. It reserves
+2 GiB plus two raw frames; `--reserve-gib` can increase the reserve. The deliberate 1024 GiB
+negative control fails before bulk output, and the normal six-frame positive control produces
+the same source RGB hash as the earlier content-reference control. This protects local
+qualification storage without altering pixels or lowering quality requirements.

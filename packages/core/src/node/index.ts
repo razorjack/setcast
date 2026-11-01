@@ -1,4 +1,5 @@
 export { ANALYSIS_RATE, decodeMono, readEnvelope, readWholeSet, readsWholeSet } from './audio.ts';
+export { WholeSetReader } from './whole-set-reader.ts';
 export { loadCss } from './css.ts';
 export {
   CONFIG_FILE,

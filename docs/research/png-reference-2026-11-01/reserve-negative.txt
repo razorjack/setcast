@@ -1,0 +1,9 @@
+file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/quality-reference.ts:228
+    throw new Error(
+          ^
+
+Error: Lossless reference needs 1024.02 GiB of free reserve; 12.77 GiB is available. Free space or choose an output directory on a larger volume.
+    at checkDiskSpace (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/quality-reference.ts:228:11)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/quality-reference.ts:55:1
+
+Node.js v26.7.0

@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "config": {
+    "projectDir": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/replacement-corpus-v1/looping-video",
+    "at": 90,
+    "seconds": 10,
+    "repeat": 1,
+    "workers": [
+      1
+    ],
+    "idleBusy": 0.15
+  },
+  "revision": "8d00d3336dc45b081487a0f1c1b3d5e0e96616d7",
+  "identity": "db9129431169fec7a8318dad3d466929d1b6efea85eaf65c0d32c0f1d77ac860",
+  "output": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "file": "out/set.mp4",
+    "gl": "auto",
+    "profile": "standard",
+    "parallelEncoding": true,
+    "x264Preset": "medium",
+    "chunkSeconds": 60,
+    "hardwareAcceleration": "disable",
+    "crf": 18,
+    "jpegQuality": 95
+  },
+  "dimensions": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "expectedFrames": 300,
+  "dirty": false,
+  "host": {
+    "cpu": "Apple M1 Pro",
+    "memoryBytes": 34359738368
+  },
+  "timing": "Fresh sessions, render call through browser cleanup. Project loading, identity and full decode excluded. Shared process and OS caches. No matched-upstream claim.",
+  "runs": [
+    {
+      "round": 0,
+      "concurrency": 1,
+      "wallSeconds": 34.247851667000006,
+      "runtime": [
+        {
+          "kind": "scheduling",
+          "workers": 1,
+          "reason": "explicit",
+          "cpuCount": 10,
+          "memoryBudgetBytes": 8589934592,
+          "estimatedMemoryBytes": 1173274624
+        },
+        {
+          "kind": "encoding-selection",
+          "encoder": "libx264",
+          "fallback": null
+        },
+        {
+          "kind": "capture",
+          "workers": 1,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+            "vendor": "Google Inc. (Apple)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        }
+      ],
+      "load": {
+        "samples": 34,
+        "meanSystemBusy": 0.31811953141370364,
+        "maxSystemBusy": 0.525,
+        "initialLoadAverage": [
+          2.9111328125,
+          3.4765625,
+          4.85595703125
+        ],
+        "finalLoadAverage": [
+          3.884765625,
+          3.6201171875,
+          4.84912109375
+        ],
+        "nodeRssPeak": 513114112,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 35,
+        "intervals": 34,
+        "failedSamples": 0,
+        "seconds": 34.09258579200001,
+        "treeCpuSeconds": 83.83999999999999,
+        "externalCpuSeconds": 14.709999999999859,
+        "rssPeakBytes": 2176892928,
+        "maxTreeCpuCores": 4.5482478936995445,
+        "maxExternalCpuCores": 0.8081544109025266,
+        "meanTreeCpuCores": 2.4591857159650665,
+        "meanExternalCpuCores": 0.43147211214033615,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      },
+      "verification": {
+        "frames": 300,
+        "bytes": 4571043,
+        "decodedVideoHash": "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73",
+        "seconds": 3.834973833000004,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      }
+    }
+  ],
+  "status": "passed",
+  "error": null
+}

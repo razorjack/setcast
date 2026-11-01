@@ -27,7 +27,7 @@ Renders the project in <dir> (default: current directory) to an MP4.
   --range        render only a slice, e.g. --range 1:00-1:30; its end clips to the set
   --out          output file; defaults to output.file in setcast.yaml
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
-  --concurrency  parallel browser tabs (default: Remotion chooses; browser uses 1)
+  --concurrency  parallel browser tabs (default: renderer chooses; browser accepts 1–8)
   --resume       browser only: retain completed chunks and reuse valid checkpoints after interruption
   --cache        browser only: persistent chunk cache directory (separate from --resume)
   --cache-size   maximum cached video MiB (default: 2048); requires --cache

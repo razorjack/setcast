@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import { errorMessage, exportSettings, ConfigError, SetcastError } from '@setcast/core';
-import type { LoadedProject } from '@setcast/core/node';
+import { WholeSetReader, type LoadedProject } from '@setcast/core/node';
 import { load, withWholeSet } from './project.ts';
 import { watchInputs } from './watch.ts';
 import { log, printError } from './ui.ts';
@@ -11,7 +11,8 @@ export async function browserPreview(
   options: { port?: number; theme?: string },
 ) {
   const { preview } = await import('@setcast/renderer-browser/preview');
-  const server = await preview(await withWholeSet(loaded), {
+  const reader = new WholeSetReader();
+  const server = await preview(await withWholeSet(loaded, reader), {
     projectDir: loaded.dir,
     port: options.port,
     exports: {
@@ -23,7 +24,7 @@ export async function browserPreview(
     dependencies,
     async (files) => {
       const next = await load(loaded.dir, options.theme, files);
-      server.update(await withWholeSet(next), exportSettings(next.config.output));
+      server.update(await withWholeSet(next, reader), exportSettings(next.config.output));
     },
     (error) => {
       printError(error);

@@ -1,0 +1,20 @@
+[
+  {
+    "case": "standard",
+    "browserMatchesQualifiedCorpus": true,
+    "remotionUniqueDecodedHashes": 2,
+    "remotionMatchesOneWorkerCorpus": false
+  },
+  {
+    "case": "tunnel",
+    "browserMatchesQualifiedCorpus": true,
+    "remotionUniqueDecodedHashes": 2,
+    "remotionMatchesOneWorkerCorpus": false
+  },
+  {
+    "case": "looping-video",
+    "browserMatchesQualifiedCorpus": true,
+    "remotionUniqueDecodedHashes": 2,
+    "remotionMatchesOneWorkerCorpus": false
+  }
+]

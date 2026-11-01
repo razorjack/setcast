@@ -1,0 +1,568 @@
+{
+  "version": 1,
+  "status": "passed",
+  "config": {
+    "version": 1,
+    "mode": "export",
+    "seconds": 10,
+    "sampleSeconds": 1,
+    "changeSeconds": 30,
+    "restartSeconds": 600,
+    "project": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-master-project",
+    "at": 90,
+    "concurrency": 4,
+    "scenes": [
+      {
+        "title": "field",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "field",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "tunnel",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "tunnel",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "constellation",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "constellation",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      }
+    ],
+    "gpuRecovery": null,
+    "verification": "decoded",
+    "audioAt": [
+      1,
+      5,
+      8
+    ],
+    "graphics": "auto",
+    "operatorWindow": false
+  },
+  "runtime": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "release": "27.0.0",
+    "arch": "arm64",
+    "cpu": "Apple M1 Pro",
+    "revision": "e3551669f9fafdc55a830431cbe9886e5ccd2e47",
+    "dirty": true
+  },
+  "startedAt": "2026-11-01T10:05:53.890Z",
+  "wallSeconds": 7.750385292,
+  "samples": 6,
+  "actions": {
+    "audio-verification": 3
+  },
+  "details": {
+    "settings": {
+      "profile": "standard",
+      "crf": 22,
+      "x264Preset": "medium",
+      "parallelEncoding": true,
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "disable",
+      "jpegQuality": 90,
+      "gl": "auto",
+      "concurrency": 4
+    },
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 4,
+        "reason": "explicit",
+        "cpuCount": 10,
+        "memoryBudgetBytes": 8589934592,
+        "estimatedMemoryBytes": 3082485760
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 4,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "vendor": "Google Inc. (Apple)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ],
+    "result": {
+      "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-monitor-2026-11-01/export.mp4",
+      "frames": 300,
+      "durationSeconds": 10
+    },
+    "stats": {
+      "audio-encode": {
+        "count": 1,
+        "sum": 448.6905,
+        "max": 448.6905
+      },
+      "audioMs": {
+        "count": 300,
+        "sum": 238.90000002086163,
+        "max": 59.5
+      },
+      "resolveMs": {
+        "count": 300,
+        "sum": 308.0999998822808,
+        "max": 7
+      },
+      "commitMs": {
+        "count": 300,
+        "sum": 858.8000000417233,
+        "max": 44.899999998509884
+      },
+      "readinessMs": {
+        "count": 300,
+        "sum": 614.3000000193715,
+        "max": 55.19999999552965
+      },
+      "captureMs": {
+        "count": 300,
+        "sum": 12337.363002000007,
+        "max": 95.51412500000015
+      },
+      "bytes": {
+        "count": 300,
+        "sum": 74860006,
+        "max": 255251
+      },
+      "encoder-write": {
+        "count": 300,
+        "sum": 627.4810499999944,
+        "max": 45.35433399999988
+      },
+      "encoder-finish": {
+        "count": 1,
+        "sum": 276.5704589999996,
+        "max": 276.5704589999996
+      },
+      "mux": {
+        "count": 1,
+        "sum": 58.95666600000004,
+        "max": 58.95666600000004
+      }
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frames": 300,
+    "renderWallSeconds": 5.58449525,
+    "finalStorage": {
+      "bytes": 3317297,
+      "freeBytes": 14431350784,
+      "temporaryDirectories": [],
+      "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+    },
+    "verification": {
+      "mode": "decoded",
+      "expected": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "frames": 300,
+        "sourceAt": 90
+      },
+      "phase": "complete",
+      "video": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1088,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
+            "level": 40,
+            "color_range": "pc",
+            "color_space": "bt470bg",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 900000,
+            "duration": "10.000000",
+            "bit_rate": "2289955",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "300",
+            "nb_read_frames": "300",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 1024,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 480000,
+            "duration": "10.000000",
+            "bit_rate": "343310",
+            "nb_frames": "470",
+            "nb_read_frames": "469",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          }
+        ],
+        "errors": []
+      },
+      "audio": [
+        {
+          "at": 1,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9996103382651164,
+            "sourceRms": 0.12467804049162103,
+            "outputRms": 0.1242306495543247,
+            "zeroLagCorrelation": 0.9996103382651164,
+            "margin": 0.5228076019235499,
+            "levelRatio": 0.9964116300229598,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9996201908372822,
+                "sourceRms": 0.1247620021720517,
+                "outputRms": 0.12434862031225367,
+                "levelRatio": 0.9966866365351531,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9996005301407919,
+                "sourceRms": 0.12459402223092787,
+                "outputRms": 0.12411256666356324,
+                "levelRatio": 0.9961358052437517,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 5,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9996652405367648,
+            "sourceRms": 0.12729579721521148,
+            "outputRms": 0.1269553716766258,
+            "zeroLagCorrelation": 0.9996652405367648,
+            "margin": 0.400906238441725,
+            "levelRatio": 0.997325712662688,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9997306571830159,
+                "sourceRms": 0.12726857450001292,
+                "outputRms": 0.12705423007051037,
+                "levelRatio": 0.9983158102434586,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9996007358279633,
+                "sourceRms": 0.12732301410996588,
+                "outputRms": 0.12685643624305956,
+                "levelRatio": 0.9963354789378192,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "at": 8,
+          "result": {
+            "status": "passed",
+            "lagSamples": 0,
+            "lagMilliseconds": 0,
+            "correlation": 0.9997023911501469,
+            "sourceRms": 0.12288853689322447,
+            "outputRms": 0.12244704688922194,
+            "zeroLagCorrelation": 0.9997023911501469,
+            "margin": 0.44764920541791653,
+            "levelRatio": 0.9964073947402747,
+            "channelChecks": [
+              {
+                "channel": 0,
+                "correlation": 0.9997283071917978,
+                "sourceRms": 0.1220825888236205,
+                "outputRms": 0.12170138757353495,
+                "levelRatio": 0.9968775133804192,
+                "passed": true
+              },
+              {
+                "channel": 1,
+                "correlation": 0.9996773346663759,
+                "sourceRms": 0.12368923358820302,
+                "outputRms": 0.12318819280457963,
+                "levelRatio": 0.995949196473385,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "audioAt": [
+        1,
+        5,
+        8
+      ],
+      "wallSeconds": 2.1249163330000003
+    },
+    "identity": {
+      "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers",
+      "output": {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-monitor-2026-11-01/export.mp4",
+        "sha256": "c6a76292d10b29069e488f9e1d69c7379c889175c0ecce4262aade388acecd21",
+        "bytes": 3304957,
+        "stamp": "16777229:168678117:3304957:1793527559474.9634:1793527559476.315"
+      },
+      "source": {
+        "path": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/endurance-master-project/assets/mix.wav",
+        "sha256": "7fd2975e98a73d37cd1cddc6647aeaffac8fdb12ca2a14bada8ae647882a18a1",
+        "bytes": 971166720,
+        "stamp": "16777229:137470909:971166720:1791899375941.2368:1792759287743.174"
+      }
+    }
+  },
+  "errors": []
+}

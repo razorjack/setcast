@@ -1,0 +1,53 @@
+[
+  {
+    "case": "standard",
+    "browser": {
+      "runs": 3,
+      "medianSeconds": 9.781036541999999,
+      "minSeconds": 9.699781750000001,
+      "maxSeconds": 9.893633125000008
+    },
+    "remotion": {
+      "runs": 3,
+      "medianSeconds": 7.790826625000001,
+      "minSeconds": 7.598704874999996,
+      "maxSeconds": 8.53219825
+    },
+    "browserWallTimeChangePercent": 25.545555212506056,
+    "targetMet": false
+  },
+  {
+    "case": "tunnel",
+    "browser": {
+      "runs": 3,
+      "medianSeconds": 10.791651667000002,
+      "minSeconds": 10.70145958299999,
+      "maxSeconds": 10.809214791000006
+    },
+    "remotion": {
+      "runs": 3,
+      "medianSeconds": 8.697193709000015,
+      "minSeconds": 8.661259834000004,
+      "maxSeconds": 8.879505999999997
+    },
+    "browserWallTimeChangePercent": 24.081997343954797,
+    "targetMet": false
+  },
+  {
+    "case": "looping-video",
+    "browser": {
+      "runs": 3,
+      "medianSeconds": 21.574506667,
+      "minSeconds": 21.497522792000005,
+      "maxSeconds": 21.72889300000001
+    },
+    "remotion": {
+      "runs": 3,
+      "medianSeconds": 12.810814874999997,
+      "minSeconds": 12.800970583000016,
+      "maxSeconds": 13.511864874999999
+    },
+    "browserWallTimeChangePercent": 68.40854291870335,
+    "targetMet": false
+  }
+]

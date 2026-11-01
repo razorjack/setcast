@@ -80,10 +80,14 @@ export async function readWholeSet(
   projectDir: string,
 ): Promise<ResolvedProject> {
   const file = join(projectDir, project.audio);
-  const energy = await readEnvelope(file, SET_ENERGY_RATE, SET_ENERGY_HOP_SECONDS);
+  const energy = await readSetEnergy(file);
   const envelope = drawsWholeSet(project) ? summarizeEnvelope(energy) : null;
   const travel = readsTravel(project) ? travelOf(energy) : null;
   return { ...project, envelope, travel };
+}
+
+export function readSetEnergy(file: string): Promise<Envelope> {
+  return readEnvelope(file, SET_ENERGY_RATE, SET_ENERGY_HOP_SECONDS);
 }
 
 /** False when ffmpeg is not installed. Anything else it reports is an error worth showing. */

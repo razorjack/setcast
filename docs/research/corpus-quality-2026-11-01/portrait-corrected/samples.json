@@ -1,0 +1,20 @@
+[
+  {
+    "frameOffset": 0,
+    "file": "sample-01.png",
+    "bytes": 677780,
+    "sha256": "36e03be97510878adedacd95297266e1675a83a250872ec3ff59c7cdee97f9cf"
+  },
+  {
+    "frameOffset": 150,
+    "file": "sample-02.png",
+    "bytes": 572593,
+    "sha256": "f5684739d8b19a5ca431d38db60e55b123202ecec96eb4666de5debf7cae22b3"
+  },
+  {
+    "frameOffset": 299,
+    "file": "sample-03.png",
+    "bytes": 726182,
+    "sha256": "130e388277e7ce9a18755f4661c513f1f06d2415672dc10f8cad76911bbc6548"
+  }
+]
