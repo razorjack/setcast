@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Renderer qualification results</title>
+    <style>
+      body { margin: 0; font-family: var(--font-sans, system-ui); color: var(--foreground, CanvasText); }
+      section { margin: 0 0 24px; }
+      h3 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+      p { margin: 0 0 16px; color: var(--muted-foreground, GrayText); font-size: 13px; line-height: 1.5; }
+      .row { display: grid; grid-template-columns: 74px minmax(80px, 1fr) 76px; align-items: center; gap: 10px; height: 36px; font-size: 14px; }
+      .bar { height: 20px; width: calc(var(--value) / var(--max) * 100%); border-radius: 3px; background: var(--chart-2, GrayText); }
+      .after { background: var(--chart-1, Highlight); }
+      .value { text-align: right; font-variant-numeric: tabular-nums; }
+      .axis { display: flex; justify-content: space-between; margin: 5px 86px 10px 84px; color: var(--muted-foreground, GrayText); font-size: 11px; border-top: 1px solid var(--border, GrayText); padding-top: 5px; }
+      .result { font-size: 14px; font-weight: 600; color: var(--foreground, CanvasText); margin: 0; }
+      footer { font-size: 12px; line-height: 1.5; color: var(--muted-foreground, GrayText); border-top: 1px solid var(--border, GrayText); padding-top: 12px; }
+    </style>
+  </head>
+  <body>
+    <section aria-label="Looping-video export median wall time" style="--max: 24">
+      <h3>10-second looping-video export</h3>
+      <p>Four automatic workers · Three alternating pairs · Identical decoded output</p>
+      <div class="row"><span>PNG</span><div class="bar" style="--value: 20.373"></div><span class="value">20.373 s</span></div>
+      <div class="row"><span>Bitmap</span><div class="bar after" style="--value: 13.713"></div><span class="value">13.713 s</span></div>
+      <div class="axis" aria-hidden="true"><span>0</span><span>12</span><span>24 s</span></div>
+      <p class="result">32.7% lower median wall time</p>
+    </section>
+    <section aria-label="Whole-set preparation median wall time" style="--max: 3">
+      <h3>56-minute master: preparation only</h3>
+      <p>Warm filesystem · Source hashing and cache validation included · Exact summaries</p>
+      <div class="row"><span>Compute</span><div class="bar" style="--value: 2.622"></div><span class="value">2.622 s</span></div>
+      <div class="row"><span>Reuse</span><div class="bar after" style="--value: 0.859"></div><span class="value">0.859 s</span></div>
+      <div class="axis" aria-hidden="true"><span>0</span><span>1.5</span><span>3 s</span></div>
+      <p class="result">67.3% lower median preparation time</p>
+    </section>
+    <footer>Local macOS measurements, 1 November 2026. Every arm passed the 15% pre-run CPU limit. These comparisons measure Setcast improvements; they do not establish the separate 30% target against Remotion.</footer>
+  </body>
+</html>

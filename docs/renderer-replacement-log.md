@@ -1596,3 +1596,38 @@ with exact decoded hashes, and control/fast-PNG medians 7.054/21.545 s. JPEG sho
 benefit and PNG regresses the complete export at these settings. GPU/video timing is not claimed.
 Source/color/recovery checks, the original partial/busy series and complete timing reports are
 retained in `docs/research/direct-capture-2026-11-01`. The experiment stays isolated at f5d06b5.
+
+
+Preparation timing is complete at a00ece3: three alternating warm pairs on the real 3,372-second
+master pass the 15% pre-run CPU limit and exact summary equality. Computed/cached medians are
+2.622/0.859 s (67.3% lower). The measurement includes source/cache validation, not full
+CLI/export startup. Evidence is appended under `docs/research/preparation-cache-2026-11-01`.
+
+Chunk scheduling is closed without production adoption. Three quiet alternating pairs per
+standard/Tunnel/video fixture preserve decoded video and audio exactly in all eighteen outputs.
+Median reductions are 0.8%, 2.1% and 5.1%, with about 2 GB additional peak summed RSS in each case.
+The first two timing ranges overlap. Production keeps round-robin capture; ordered checkpoint
+publication and multiple encoders are not justified by this short four-chunk result. A long-master
+study at the actual default chunk duration remains a future optimization, not a release blocker.
+Reports and the decision are in `docs/research/chunk-scheduling-2026-11-01`.
+
+
+The final browser-first integration is committed as e28d2bd, incorporating production through
+a00ece3. Ready and both fresh tarball installation paths pass, including the bitmap optimization
+and current ProRes/cache/preview workflows. Reports are mirrored under
+`docs/research/browser-first-final-2026-11-01`. The candidate's migration/rollback guide is now
+available on main as a plan, with explicit handling of transparent ProRes when selecting Remotion.
+
+Local implementation and experiment decisions are recorded for every roadmap phase. Production
+still retains the Remotion default and required adapter because the current-upstream first-export
+objective and supported-platform evidence are unresolved. No Linux/Windows runtime is exposed in
+this session, and the remote-environment tool is unavailable. The user has been asked whether
+additional test machines are available; no external CI or publication was initiated. Optional
+receiver/VP9/cross-machine-cache and long-chunk studies are separate from the core release work.
+
+
+Final main validation passes formatting, lint/types, all 688 tests in 115 files, dependency
+isolation and the decoded smoke render. The promoted bitmap implementation also retains both
+exporter acceptance and installed-package passes. Final timing summaries and the browser-first
+candidate's clean-install reports are committed with the reconciled roadmap. The standalone
+results chart is `docs/research/renderer-replacement-results-2026-11-01.html`.

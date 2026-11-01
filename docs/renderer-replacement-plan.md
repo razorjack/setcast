@@ -5,8 +5,8 @@ Ongoing observations, failed experiments and validation results are recorded in
 
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (9b4a82e), with local clean-install coverage through cache and ProRes integration but no default
-promotion. See the [updated installation evidence](research/browser-first-prores-2026-11-01/README.md). Bitmap video preparation is now integrated on main after exact-frame/encoded parity, a complete
+on `renderer/browser-first-candidate` (qualified code revision e28d2bd), with local clean-install coverage through bitmap, cache and ProRes integration but no default
+promotion. See the [updated installation evidence](research/browser-first-final-2026-11-01/README.md). Bitmap video preparation is now integrated on main after exact-frame/encoded parity, a complete
 56-minute master resource run and quiet timing with one and automatic workers. The automatic
 series reduces median wall time by 32.7% against Setcast's PNG preparation on the frozen video
 fixture; this does not establish the separate current-Remotion target. See the
@@ -234,16 +234,20 @@ The phases describe implementation and evidence, not newly supported renderer fl
 Benchmarking and release qualification continue across phases. Color/fidelity fixtures begin in
 phase 0; the additional output formats arrive later.
 
-| Phase | Deliverable | Completion evidence |
+| Phase | Deliverable | Current status |
 | --- | --- | --- |
-| 0 | Current comparative benchmark and regression corpus | Reproducible reports for browser, installed Remotion and a qualified current upstream baseline |
-| 1 | Direct decoded video frames | Faster video workloads with correct seeks, loops, CSS and bounded resources |
-| 2 | Capture without intermediate image compression | Qualified fast path or a documented rejected experiment; screenshot compatibility retained |
-| 3 | Resource-aware scheduling and encoding | Useful automatic defaults, hardware encoding, continuous audio overlap and safe recovery |
-| 4 | Persistent reuse | Identical successful jobs avoid capture; validated local edits invalidate only proven dependencies |
-| 5 | Unified preview and export workflow | Audible playback, exact inspection and actionable export controls |
-| 6 | Explicit output fidelity and compositing formats | Qualified color handling, transparent output and editing intermediate |
-| 7 | Browser-first distribution and migration | Clean Remotion-free installs, platform evidence and release criteria satisfied |
+| 0 | Comparative benchmark and regression corpus | Tooling and eleven-case quality corpus complete. Current-upstream timing is negative; tuned automatic Remotion quality remains a separate qualification. |
+| 1 | Decoded video preparation | Complete on main: exact pixels/encoded output, full-master resources and quiet speed improvements. |
+| 2 | Faster capture transport | Investigations complete with rejection decisions. Native DOM, Electron handshakes and direct CDP modes are not promoted. Screenshot capture remains. |
+| 3 | Scheduling and encoding | Complete locally: automatic workers, VideoToolbox probes and audio overlap. Contiguous chunk workers are not promoted after the resource/timing comparison. |
+| 4 | Persistent reuse | Complete locally: identical chunks, proven local edits and persistent overview/travel preparation; exact output and quiet preparation timing pass. |
+| 5 | Preview and export | Complete locally: audible playback, exact references, ranges, export queue, cancellation and recovery. |
+| 6 | Fidelity and compositing | Complete locally for the implemented H.264/ProRes/PNG contracts. Specific editors, OBS and broader platform support remain unqualified. |
+| 7 | Browser-first distribution | Implementation and local clean installs complete at e28d2bd. Production promotion remains blocked by the release requirements below. |
+
+Implementation and experiment decisions are recorded for every phase. A local completion above
+is not supported-platform release qualification. The [candidate migration and rollback guide](browser-first-migration.md)
+describes the prepared dependency/default change without applying it to main.
 
 ### Phase 0: establish a fair benchmark
 
@@ -404,6 +408,12 @@ integration passes ready, scheduling cache/resume acceptance, both exporter acce
 preview reference workflows and packed-browser installation. Current-upstream comparisons and
 full-master resource checks remain separate from this scheduler comparison.
 
+The [contiguous chunk study](research/chunk-scheduling-2026-11-01/README.md) completes three quiet
+pairs per standard/GPU/video fixture. It preserves exact decoded video/audio, but improves medians
+by only 0.8–5.1% while adding about 2 GB of peak summed RSS. Keep round-robin capture. A future
+long-master study at default chunk sizes remains optional research.
+
+The comparison below describes the evaluated approach and requirements for any future adoption.
 Compare round-robin frames with contiguous blocks or independent chunk workers. Investigate
 decode locality, GPU contention, head-of-line waiting, page startup and encoder contention.
 Keep queues bounded and final output ordered. Chunk scheduling must not change absolute time,
@@ -432,7 +442,8 @@ other project changes remain global. Preview reloads and all-theme still batches
 whole-set preparation through `WholeSetReader`. Render bundles and clip batches already prepare
 analysis once and share a render session. Cross-command overview/travel persistence now shares the same cache budget and management commands.
 Fresh-process reuse, source-change/corruption handling and exact decoded output are qualified
-locally; a quiet long-master preparation timing attempt was blocked by external CPU load. See
+locally. The final quiet long-master series completes three alternating pairs with exact data,
+reducing warm preparation median from 2.622 to 0.859 seconds. The original busy attempt is retained. See
 [preparation-cache evidence](research/preparation-cache-2026-11-01/README.md).
 
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
@@ -570,8 +581,8 @@ iteration benefits. Track each requirement with the producing revision and retai
 
 - [ ] Existing Setcast render/still/clip/preview/bundle workflows work without Remotion installed.
 - [ ] Required theme/CSS, frame, audio, video-loop and readiness checks pass on supported runtimes.
-- [ ] Real capture/encoder failures, cancellation and resume preserve existing output and clean up
-  active resources; corrupt/stale cache entries cannot produce a successful stale export.
+- [x] Local capture/encoder failure, cancellation, resume and corrupt/stale-cache fixtures preserve
+  existing output and clean up active resources. Supported-platform repetition remains required below.
 - [ ] Installed-package and sustained export checks pass on each advertised platform/backend.
 - [ ] Comparative results identify current upstream versions and actual paths. Target at least
   30% lower median wall time than tuned current Remotion on the predefined core workload suite
@@ -581,14 +592,35 @@ iteration benefits. Track each requirement with the producing revision and retai
   fresh renders while reusing unaffected work.
 - [x] Users can hear a mix, inspect exact frames, select ranges and manage exports without Studio
   on the locally checked browser workflow. Physical playback latency and other platforms remain unqualified.
-- [ ] Capture, encoding, resource and fallback decisions appear in diagnostics; unsupported options
+- [x] Capture, encoding, resource and fallback decisions appear in diagnostics; unsupported options
   fail before expensive work with a useful alternative.
-- [ ] Documentation distinguishes qualified offline support, experimental paths and live hardware
+- [x] Documentation distinguishes qualified offline support, experimental paths and live hardware
   limits. The default migration has a documented compatibility/rollback path.
 
 The 30% target can be revised through an explicit roadmap decision if measurements justify a
 different objective. It must not be described as achieved without evidence. Extra codecs and
 broader live hardware support can ship independently after the core replacement criteria.
+
+## Work required before removing the default dependency
+
+1. Establish the first-export performance result at matched quality. The last current-upstream
+   comparison misses the 30% target; bitmap's 32.7% improvement is against Setcast's PNG video
+   path, not Remotion. Requalify tuned upstream output and compare the final implementation.
+   Standard/GPU export needs further optimization if the target is retained. The rejected
+   experiments do not supply a safe faster capture path.
+2. Execute the prepared browser-only installation matrix and exporter/resource qualification
+   on Linux and Windows, recording actual capture, graphics and encoder paths. This session
+   has only macOS execution; the remote-environment tool is unavailable. Do not count prepared
+   CI jobs as successful runs or advertise an untested hardware backend as qualified.
+3. After those requirements pass, promote `renderer/browser-first-candidate`, recheck migration
+   diagnostics and optional compatibility installation, and remove Remotion from the required
+   CLI dependency graph. The candidate already contains defaults, scaffolds, documentation,
+   package tests and the CI matrix. No external publication or CI run was initiated here.
+
+Specific editor/OBS interoperability, long ProRes exports, VP9 alpha, cross-machine caches and
+long-master contiguous chunk scheduling remain separately scoped follow-up work. They do not
+justify withholding the already qualified local H.264, cache, preview or ProRes features, and
+they must not be described as qualified by the current evidence.
 
 ## Validation and starting commands
 
