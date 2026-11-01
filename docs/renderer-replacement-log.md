@@ -1347,3 +1347,9 @@ so this is not a newly qualified matched-quality comparison of every output. Rep
 negative result are retained in `docs/research/current-upstream-2026-11-01`. The default remains
 blocked. A direct CDP JPEG/fast-PNG experiment will isolate transport costs without changing the
 production CSS contract or weakening the quality threshold.
+
+Bitmap quiet timing passes three alternating pairs at one worker. All six outputs have identical
+decoded video hashes and input identities. Median wall time falls from 34.248 to 26.325 seconds
+(23.1%). This isolates video preparation at JPEG 95 / CRF 18, not current-Remotion performance.
+Reports are in `docs/research/bitmap-video-timing-2026-11-01`; automatic-worker throughput and
+full-master resources remain required before promotion.
