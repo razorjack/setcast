@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { SetcastError } from '@setcast/core';
 
 const marker = '{"format":"setcast-render-cache","version":1}\n';
-export const cacheEntryName = /^entry-[a-f0-9]{64}\.mp4$/;
+export const cacheEntryName = /^entry-[a-f0-9]{64}\.(mp4|json)$/;
 const temporaryName = /^pending-[a-f0-9-]{36}\.(mp4|json)$/;
 export const absent = (error: unknown) => (error as NodeJS.ErrnoException).code === 'ENOENT';
 

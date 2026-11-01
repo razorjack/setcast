@@ -420,7 +420,10 @@ text edits now reuse unaffected chunks for audited built-in visualizers; fresh-v
 video and audio comparisons cover visible edits and fractional chunk boundaries. Metadata and
 other project changes remain global. Preview reloads and all-theme still batches now share bounded
 whole-set preparation through `WholeSetReader`. Render bundles and clip batches already prepare
-analysis once and share a render session. Cross-command prepared-asset persistence remains pending.
+analysis once and share a render session. Cross-command overview/travel persistence now shares the same cache budget and management commands.
+Fresh-process reuse, source-change/corruption handling and exact decoded output are qualified
+locally; a quiet long-master preparation timing attempt was blocked by external CPU load. See
+[preparation-cache evidence](research/preparation-cache-2026-11-01/README.md).
 
 Implement an opt-in, bounded content-addressed cache separately from interruption checkpoints.
 Start with identical completed chunks and validated prepared assets. Retain proven identity,

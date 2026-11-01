@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import type { ResolvedProject } from '@setcast/core';
+import type { RenderOptions, ResolvedProject } from '@setcast/core';
 import {
   loadProject,
   probeAudio,
@@ -64,14 +64,24 @@ export async function withHardwareEncoding(loaded: LoadedProject): Promise<Loade
 export async function withWholeSet(
   { dir, project }: LoadedProject,
   reader?: WholeSetReader,
+  cache?: RenderOptions['cache'],
 ): Promise<ResolvedProject> {
   if (!readsWholeSet(project)) return project;
 
   const spin = spinner();
   spin.start(`Preparing audio features for ${project.audio}`);
-  const whole = await clearSpinnerOnError(spin, () =>
-    reader ? reader.read(project, dir) : readWholeSet(project, dir),
-  );
-  spin.stop('Audio features ready');
+  let reused = false;
+  const whole = await clearSpinnerOnError(spin, async () => {
+    if (!cache) return reader ? reader.read(project, dir) : readWholeSet(project, dir);
+    const { prepareProject } = await import('@setcast/renderer-browser/export');
+    return prepareProject(project, {
+      projectDir: dir,
+      cache,
+      onPreparation: (status) => {
+        reused = status === 'reused';
+      },
+    });
+  });
+  spin.stop(reused ? 'Reused prepared audio features' : 'Audio features ready');
   return whole;
 }

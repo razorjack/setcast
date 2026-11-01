@@ -1,0 +1,22 @@
+Pre-run CPU busy: 24.0%
+Pre-run CPU busy: 24.3%
+Pre-run CPU busy: 24.2%
+Pre-run CPU busy: 24.1%
+Pre-run CPU busy: 27.1%
+Pre-run CPU busy: 24.7%
+Pre-run CPU busy: 24.1%
+Pre-run CPU busy: 24.8%
+Pre-run CPU busy: 23.1%
+Pre-run CPU busy: 23.1%
+Pre-run CPU busy: 23.3%
+Pre-run CPU busy: 23.7%
+file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/preparation-timing.ts:126
+  throw new Error(
+        ^
+
+Error: System remained busy for 60 seconds. Retain the report and retry in a new directory.
+    at waitForIdle (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/preparation-timing.ts:126:9)
+    at async measure (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/preparation-timing.ts:71:3)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/preparation-timing.ts:57:31
+
+Node.js v26.7.0

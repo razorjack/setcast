@@ -321,7 +321,18 @@ async function exerciseCache(
   const cache = join(temporary, 'render-cache');
   const first = join(temporary, 'cached-first.mp4');
   const second = join(temporary, 'cached-second.mp4');
-  const args = ['render', project, '--renderer', 'browser', '--range', '0-0.2', '--cache', cache];
+  const args = [
+    'render',
+    project,
+    '--renderer',
+    'browser',
+    '--theme',
+    'bristol',
+    '--range',
+    '0-0.2',
+    '--cache',
+    cache,
+  ];
   await run(...args, '--out', first);
   const repeated = await run(...args, '--out', second);
   assert(
@@ -329,33 +340,46 @@ async function exerciseCache(
     'Installed cache did not skip capture',
   );
   const before = JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout);
-  assert.equal(before.entries.length, 1);
-  assert(before.bytes > 0);
-  const hashes = await Promise.all(
-    [first, second].map(
-      async (file) =>
-        (
-          await command('ffmpeg', [
-            '-v',
-            'error',
-            '-xerror',
-            '-i',
-            file,
-            '-map',
-            '0:v',
-            '-f',
-            'hash',
-            '-hash',
-            'sha256',
-            '-',
-          ])
-        ).stdout,
-    ),
+  assert.equal(
+    before.entries.filter((entry: { kind: string }) => entry.kind === 'video').length,
+    1,
   );
-  assert.equal(hashes[0], hashes[1], 'Installed cached video differs after decoding');
+  assert.equal(
+    before.entries.filter((entry: { kind: string }) => entry.kind === 'analysis').length,
+    1,
+  );
+  assert(
+    repeated.stderr.includes('Reused prepared audio features'),
+    'Installed cache repeated audio preparation',
+  );
+  assert(before.bytes > 0);
+  await assertDecodedVideoEqual(first, second);
   await run('cache', 'clear', cache);
   assert.equal(JSON.parse((await run('cache', 'inspect', cache, '--json')).stdout).bytes, 0);
   console.log('  installed cache: repeat skips capture, decoded frames match, inspect/clear work');
+}
+
+async function assertDecodedVideoEqual(first: string, second: string) {
+  const hashes = await Promise.all(
+    [first, second].map(async (file) => {
+      const result = await command('ffmpeg', [
+        '-v',
+        'error',
+        '-xerror',
+        '-i',
+        file,
+        '-map',
+        '0:v',
+        '-f',
+        'hash',
+        '-hash',
+        'sha256',
+        '-',
+      ]);
+      return result.stdout;
+    }),
+  );
+  assert.equal(hashes[0], hashes[1], 'Installed cached video differs after decoding');
 }
 
 async function exercisePreviewExport(projectDir: string) {

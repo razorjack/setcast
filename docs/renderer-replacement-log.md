@@ -1367,3 +1367,34 @@ pass with current main workflows, including preview, clips, bundled outputs and 
 browser-only dependency tree physically excludes Remotion. Evidence is mirrored on main in
 `docs/research/browser-first-merged-2026-11-01`; Linux/Windows and release speed criteria remain
 unqualified. No package was published and production defaults remain unchanged.
+
+### Persistent preparation implementation in progress
+
+Repeated CLI exports still decoded whole-set overview/travel summaries before looking up encoded
+chunks. The new opt-in preparation path uses the same `--cache` directory, lock, aggregate byte
+budget, eviction and clear command. Index version 2 distinguishes video and analysis payloads;
+version-1 entries migrate as video. The inspection report keeps its version and adds entry kind.
+Older binaries reject the new index instead of treating analysis as video.
+
+Preparation identity includes source content, requested summaries, core/producer code, decoder
+versions and host/runtime identity. Source metadata and aliases are checked again after preparation.
+Reads are capped at 64 MiB, checksummed and shape-validated; invalid summaries are recomputed.
+Only summaries are persisted, not PCM. Appearance edits can reuse preparation when the requested
+summary kinds stay the same. The implementation is not committed yet; tests, installed-package
+checks and a preparation-cost measurement must pass before acceptance.
+
+Direct-capture timing reached five successful standard-fixture arms. Direct JPEG was close to
+the screenshot control; fast PNG was substantially slower. The sixth arm waited a full minute
+above the unchanged 15% CPU limit and stopped before exporting. Preserve its busy report and
+retry remaining comparisons in a new output directory when the host is quiet. No other own
+correctness job ran during those timing arms.
+
+Persistent preparation validation passes: 685 tests in 115 files, full ready, exact fresh/reused
+summary and decoded video/audio comparison, existing cache recovery, both exporter suites and
+packed-browser installation. Fresh installed CLI commands reuse one analysis payload and all six
+video frames; inspection and clearing cover both kinds. The preparation timing attempt exported
+nothing and measured no arms because all twelve CPU samples exceeded 15%. Evidence is retained
+in `docs/research/preparation-cache-2026-11-01`. Functional reuse is complete; no timing advantage
+is claimed. The full-master bitmap resource run is now active at committed candidate 8c3cafc,
+with 1080p30 looping video, the existing 3,372-second real audio/timeline, sampled process memory,
+disk reserve and decoded/audio verification. Concurrent external load makes it resource evidence only.

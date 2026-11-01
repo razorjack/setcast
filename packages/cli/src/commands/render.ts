@@ -1,7 +1,7 @@
 import type { RenderOptions, StillOptions } from '@setcast/core';
 import { parseRendererFlag, render, still, withRenderSession, type Renderer } from '../renderer.ts';
 import { mkdir, stat, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import {
   exportSettings,
   toSeconds,
@@ -29,8 +29,8 @@ Renders the project in <dir> (default: current directory) to an MP4.
   --theme        a built-in theme or a .css file to use instead of setcast.yaml's theme:
   --concurrency  parallel browser tabs (default: renderer chooses; browser accepts 1–8)
   --resume       browser only: retain completed chunks and reuse valid checkpoints after interruption
-  --cache        browser only: persistent chunk cache directory (separate from --resume)
-  --cache-size   maximum cached video MiB (default: 2048); requires --cache
+  --cache        browser only: persistent chunk and audio-preparation cache directory (separate from --resume)
+  --cache-size   maximum cached payload MiB (default: 2048); requires --cache
   --bundle       also write the thumbnail (.jpg) and the YouTube description (.txt) next to the MP4`;
 
 interface RenderCommandOptions {
@@ -68,12 +68,13 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
   const { dir } = loaded;
   const range = renderedRange(options.range, loaded.project);
   const out = outputPath(options.out, range, resolve(dir, loaded.config.output.file));
+  checkCacheOutput(out, options.cache);
   if (options.resume) log.info(`Resume checkpoints: ${out}.setcast-resume`);
   if (options.cache) log.info(`Persistent render cache: ${options.cache.directory}`);
   await mkdir(dirname(out), { recursive: true });
   showProject(loaded.project, range);
   const { config } = await withHardwareEncoding(loaded);
-  const project = await withWholeSet(loaded);
+  const project = await withWholeSet(loaded, undefined, options.cache);
 
   const started = Date.now();
   const ui = new RenderUi();
@@ -100,6 +101,16 @@ async function runCommand(options: RenderCommandOptions, loaded: LoadedProject):
 
   const elapsed = formatDuration((Date.now() - started) / 1000);
   outro(`${bold('Done')} in ${elapsed}  →  ${files.map(formatPath).join(', ')}`);
+}
+
+function checkCacheOutput(out: string, cache: RenderOptions['cache']) {
+  if (!cache) return;
+  const path = relative(resolve(cache.directory), resolve(out));
+  if (path !== '..' && !path.startsWith(`..${sep}`) && !isAbsolute(path))
+    throw new SetcastError(
+      'Render output must be outside the cache directory.',
+      'Use a dedicated directory for --cache, separate from exported files.',
+    );
 }
 
 function parseOptions(argv: string[]): RenderCommandOptions {
