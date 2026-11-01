@@ -21,3 +21,17 @@ exceeded 15% CPU busy. It is retained as a blocked attempt, not throughput evide
 copy was dirty because it contained this implementation. Two system ANECompilerService processes
 were each observed using approximately one CPU core; their ownership was not established and they
 were left untouched. Functional reuse is qualified; its end-to-end timing benefit remains unclaimed.
+
+
+## Quiet long-master preparation result
+
+The final run at a00ece3 completes three alternating pairs on the 3,372-second real master.
+Every arm passes the unchanged 15% pre-run CPU limit and returns exactly the same prepared data.
+No own validation runs concurrently. The original busy attempt above remains preserved.
+
+Computed preparation has median 2.622 seconds (2.606–2.628); cached preparation has median
+0.859 seconds (0.844–0.867), a 67.3% reduction. Reuse includes source hashing, runtime/cache
+validation and reading/parsing the stored summaries. Both arms run in one process with a warm
+filesystem; this does not measure cold installation, CLI startup, browser capture or total export
+speed. `quiet-report.json` retains exact summary identity, source hash, decoder, resource/CPU
+observations and cache inspection. `quiet-run.txt` includes waits through external load spikes.
