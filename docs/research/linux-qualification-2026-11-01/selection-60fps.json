@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "60fps",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 42.626504363,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-1/report.json"
+      },
+      {
+        "wallSeconds": 26.72914729,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-2/report.json"
+      },
+      {
+        "wallSeconds": 21.054561446,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-4/report.json"
+      },
+      {
+        "wallSeconds": 20.049111929,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-8/report.json"
+      },
+      {
+        "wallSeconds": 21.57671299,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 38.775701266999995,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-1/report.json"
+      },
+      {
+        "wallSeconds": 22.461099467999993,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-2/report.json"
+      },
+      {
+        "wallSeconds": 20.286237901,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-4/report.json"
+      },
+      {
+        "wallSeconds": 20.205840408000004,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-8/report.json"
+      },
+      {
+        "wallSeconds": 20.709732883999997,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-auto/report.json"
+      }
+    ]
+  },
+  "browser": "8",
+  "remotion": "8"
+}

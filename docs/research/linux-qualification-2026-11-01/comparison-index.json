@@ -163,5 +163,38 @@
   ],
   "tune-chunk-boundary-auto": [
     "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-auto"
+  ],
+  "timing-standard": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard"
+  ],
+  "timing-css-filters": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters"
+  ],
+  "timing-field": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field"
+  ],
+  "timing-tunnel": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel"
+  ],
+  "timing-constellation": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation"
+  ],
+  "timing-looping-video": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video"
+  ],
+  "timing-dj-art-branding": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding"
+  ],
+  "timing-portrait": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait"
+  ],
+  "timing-60fps": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps"
+  ],
+  "timing-4k": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k"
+  ],
+  "timing-chunk-boundary": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary"
   ]
 }

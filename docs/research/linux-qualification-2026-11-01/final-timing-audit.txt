@@ -1,0 +1,8 @@
+{
+  "mode": "timing",
+  "completedComparisons": 11,
+  "completedArms": 66,
+  "maxAcceptedPreRunBusyPercent": 0.6,
+  "maxMeanExternalCpuCores": 0.3110532861697311,
+  "maxExternalCpuCores": 2.005609723489161
+}

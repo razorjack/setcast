@@ -22,5 +22,16 @@ for path in paths:
     assert (before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_ino,after.st_size,after.st_mtime_ns),f'Artifact changed while hashing: {path}'
     files.append({'path':str(path),'bytes':after.st_size,'sha256':digest.hexdigest()})
 report={'scope':'Retained generated media in the qualification directory and listed fixed-output harness directories, plus the supplied Git bundle. Files were stable while hashed. Old successful smoke MP4s overwritten by subsequent baseline checks are not reconstructible from this manifest; their validation logs remain. Original overwritten duplicate-seek images are documented in README.', 'roots':[str(p) for p in roots], 'files':files,'count':len(files),'totalBytes':sum(p['bytes'] for p in files)}
+by_path={entry['path']:entry['sha256'] for entry in files}
+verified=[]
+comparisons=set(ROOT.glob('tune-*/report.json'))|set(ROOT.glob('timing-*/report.json'))|set(ROOT.glob('**/comparison/report.json'))
+for comparison in sorted(comparisons):
+    observed=json.loads(comparison.read_text())
+    if not isinstance(observed.get('runs'),list):continue
+    for run in observed['runs']:
+        path=str(Path(run['result']['file']).resolve())
+        assert by_path.get(path)==run['outputDigest'],f'Comparison output missing or changed: {path}'
+        verified.append({'comparison':str(comparison),'file':path,'sha256':run['outputDigest']})
+report['verifiedComparisonOutputs']=verified
 DEST.write_text(json.dumps(report,indent=2)+'\n')
 print('Hashed',report['count'],'files,',report['totalBytes'],'bytes into',DEST)

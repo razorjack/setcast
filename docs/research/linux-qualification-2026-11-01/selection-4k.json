@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "4k",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 44.306933582,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-1/report.json"
+      },
+      {
+        "wallSeconds": 26.765055651999994,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-2/report.json"
+      },
+      {
+        "wallSeconds": 25.15795936,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-4/report.json"
+      },
+      {
+        "wallSeconds": 25.229574825,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-8/report.json"
+      },
+      {
+        "wallSeconds": 44.326801331000006,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 41.559809302000005,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-1/report.json"
+      },
+      {
+        "wallSeconds": 27.160393060999994,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-2/report.json"
+      },
+      {
+        "wallSeconds": 25.58252613600001,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-4/report.json"
+      },
+      {
+        "wallSeconds": 27.003007889,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-8/report.json"
+      },
+      {
+        "wallSeconds": 25.94928557,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-auto/report.json"
+      }
+    ]
+  },
+  "browser": "4",
+  "remotion": "4"
+}

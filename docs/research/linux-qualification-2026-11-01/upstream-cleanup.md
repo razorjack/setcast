@@ -2,7 +2,7 @@
 
 Injected encoder failure leaves a named POSIX shared-memory pool after Node and its browser exit. This is a failure of the current-upstream reference qualification, independently of successful export fidelity or throughput.
 
-The comparison checkout is `/tmp/setcast-linux-current-upstream`, branch `renderer/linux-current-upstream`, commit `2a7381a448326aa8e2003b1838a88a6e319ef70a`. It uses the final Setcast bitmap/readiness implementation, Remotion 4.0.539 and its Chromium 157.0.8080.0 on Fedora x64. Node uses its normal rejection policy.
+The initial comparison checkout is `/tmp/setcast-linux-current-upstream`, branch `renderer/linux-current-upstream`, commit `2a7381a448326aa8e2003b1838a88a6e319ef70a`. It includes the promoted Setcast bitmap/readiness implementation, Remotion 4.0.539 and its Chromium 157.0.8080.0 on Fedora x64. Node uses its normal rejection policy.
 
 Run from that checkout, with a new output directory:
 
@@ -12,7 +12,7 @@ node packages/renderer-remotion/bench/encoder-failure.ts --out NEW_DIRECTORY
 
 The harness injects an invalid FFmpeg option into the second encoding call of a three-chunk render. It catches the error, preserves the previous destination and removes Setcast temporary directories. Those assertions pass. A separate observer polls `/dev/shm/rmshm-*` every 100 ms, records pool names/inodes/sizes and output-line boundaries, and fails if a new named pool remains after process exit. The observer source is retained as `shm-observe.py.txt`; exact invocation and exit status are in `upstream-shm-observed-failure.*.txt`.
 
-The first run leaves `rmshm-11411021668764671149` (inode 4965). The observed repeat leaves `rmshm-13983776585987463118` (inode 5148). Each is 8,294,464 bytes. The latter appears during the failing chunk and remains after child exit. The observed acceptance suite creates 31 new pools and removes them, including its normal completion and cancellation paths. Its 32 observed entries include the pre-existing first failure pool. No pool, including unrelated host resources, was deleted.
+The first run leaves `rmshm-11411021668764671149` (inode 4965). The observed repeat leaves `rmshm-13983776585987463118` (inode 5148). Each is 8,294,464 bytes. The latter appears during the failing chunk and remains after child exit. The observed acceptance suite creates 31 new pools and removes them, including its normal completion and cancellation paths. Its 32 observed entries include the pre-existing first failure pool. No pool was deleted during these observations.
 
 Inspection of the installed library suggests an asynchronous teardown race:
 
@@ -26,3 +26,5 @@ This explains a plausible race between pool destruction and page/browser closure
 The published dependency is therefore retained unchanged for successful-export measurements. Those measurements can describe normal export behavior but do not qualify current-upstream failure cleanup. No upstream report has been posted and no release requirement has been waived.
 
 The final `5d026a6` upstream encoder-failure repeat reproduces the leak a third time: `rmshm-7284829172597860390`, inode 7049, 8,294,464 bytes, remains after process exit. The child harness passes destination and temporary-directory assertions; the independent host observer exits 1. No other Remotion export was running during this observation. No library dependency or fast path was patched for the comparison.
+
+After all quiet comparisons finished, the three known orphan pools were archived and removed manually. Each file still matched its recorded inode, UID 1000 and size; `fuser -v` reported no visible owners before archival and immediately before removal. The cleanup opened each file with `O_NOFOLLOW`, preserved and SHA-256 verified all 8,294,464 bytes, and rechecked file identity before unlinking. The three raw buffers remain in `examples/demo/out/linux-qualification-2026-11-01/upstream-orphan-cleanup/`. No unrelated pool was removed. See [cleanup report](upstream-orphan-cleanup.json) and its retained command transcript. This manual cleanup does not repair or qualify the library failure path.

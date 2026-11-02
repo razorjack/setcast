@@ -6,8 +6,8 @@ pass on this Fedora x64 host. Three Linux fixes are committed; graphics use Swif
 Current Remotion 4.0.539 has a reproduced named shared-memory leak after injected encoder
 failure. All eleven common-font fidelity cases pass, including full encoded black-frame scans
 and inspected art/chunk transitions. All 55 worker-screening pairs meet every required quality
-comparison, and all 110 outputs pass black-frame scans. Final repeated timing and additional
-live checks remain pending. Real-master Linux assets are missing. Windows
+comparison, and all 110 outputs pass black-frame scans. All 66 final timed exports and their black-frame scans pass; detailed final fidelity
+verification and additional Linux CI/live checks are running. Real-master Linux assets are missing. Windows
 remains unqualified, the shared Quicksilver CSS fix needs affected macOS repetition, and
 main's default remains Remotion.
 
@@ -42,8 +42,8 @@ PATH and nvidia-smi failed.
 | Resources | 3,000 bitmap captures release all URLs. The 120-second software export passes full decode and four stereo alignment windows; real-master assets remain unavailable. | [Bitmap summary](font-video-memory-summary.json), [software summary](font-export-short-summary.json), [decoded verification](font-software-decoded.json) |
 | Current-upstream fidelity | All eleven calibration cases meet every full/regional min/p05/mean PSNR/SSIM and VMAF NEG comparison. All 22 encoded files pass black-frame scans; selected art/join frames were inspected. | [Metrics](calibration-summary.json), [black-frame scans](calibration-blackframe-results.json), [transition inspection](font-transition-inspections.json) |
 | Current-upstream failure cleanup | Remotion 4.0.539 leaves an 8,294,464-byte named pool after injected encoder failure, reproduced three times. Successful export cleanup does not supersede this failure. | [Diagnosis](upstream-cleanup.md), [final observer](final-upstream-shm-failure.json) |
-| Throughput | All 55 screening pairs pass every required quality comparison, and all 110 outputs pass black-frame scans. Three alternating final pairs remain pending. Loaded calibration times are excluded. | [Screening quality](tune-summary.json), [runtime/load/cleanup audit](tune-audit.json), [black-frame scans](tune-blackframe-results.json). |
-| Additional Linux CI/live | Remaining candidate checks and live endurance are pending. | No pass is inferred from a workflow definition. |
+| Throughput | All 55 screening pairs pass every required quality comparison, and all 110 outputs pass black-frame scans. Three alternating pairs per workload complete with no failed attempt or new named pool. Final fidelity analysis is running; no release-speed conclusion is inferred yet. Loaded calibration times are excluded. | [Screening quality](tune-summary.json), [runtime/load/cleanup audit](tune-audit.json), [black-frame scans](tune-blackframe-results.json). |
+| Additional Linux CI/live | Remaining candidate checks are running; full live endurance follows. | No pass is inferred from a workflow definition. |
 
 Final production source fix: `a5a8bbe`. Final candidate: `5159395`. Final current-upstream
 comparison: `5d026a6`, with Remotion 4.0.539 / Chromium 157.0.8080.0. Browser capture uses
@@ -75,7 +75,7 @@ PSNR/SSIM and VMAF NEG against the matching retained lossless reference.
 Each timed arm requires a five-second pre-run CPU-busy sample at or below 15%; the harness
 waits at most 60 seconds before failing the attempt. Logs retain these samples. Exports
 record system load and sampled process-tree/external CPU and RSS. Summed RSS can double-count
-shared pages, and process sampling can miss short-lived work. No own validation, quality,
+shared pages, and process sampling can miss short-lived work. No separate validation, quality,
 endurance, hashing or baseline job runs during a quiet timing stage.
 
 Timing includes project loading through cleanup, excluding identity calculation and output
@@ -319,3 +319,9 @@ All 110 screening outputs complete quality measurement without errors. Every one
 The screening evidence checkpoint passes `vp run ready`: formatting, lint/types, all 688 tests in 115 files, dependency isolation and decoded smoke. No renderer source changed during calibration verification or quiet screening. Final repeated timing remains pending.
 
 Git’s optional whitespace check reports the trailing separators written by `printf '%q '` in retained command transcripts. Those raw records are preserved unchanged; this is not a renderer or baseline-check failure. The complete check output is retained as `screening-transcript-whitespace.txt`.
+
+Final quiet timing completes all eleven workloads: three alternating pairs each, 66 exports total, with no failed/busy attempt or new named pool after completion. The highest accepted pre-run CPU-busy sample is 0.6%; the largest sampled mean external CPU load is 0.3111 of 32 cores. All outputs use clean revision `5d026a6`, observed SwiftShader and software encoding. Every final output is now being measured against its lossless reference before interpreting the speed target. The frozen 4K fixture retains its 2304×1296 background enlarged to 3840×2160; the warning and identical input are preserved for both arms.
+
+All three job-created upstream failure pools have been archived with verified hashes and removed after exact inode/UID/size checks and two owner probes. Raw buffers remain retained; no unrelated pool was removed. This manual host cleanup does not fix or qualify Remotion failure cleanup.
+
+After the final timing process exited, all 66 final videos passed full black-frame scans. Detailed fidelity measurement continues. The independent additional candidate Linux CI checks and evidence baseline now run under load; their elapsed times are excluded from performance results. Existing candidate fixed outputs were archived first (only its latest smoke video existed before these additional harnesses).

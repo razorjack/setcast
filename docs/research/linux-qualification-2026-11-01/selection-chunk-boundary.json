@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "chunk-boundary",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 215.151532669,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1/report.json"
+      },
+      {
+        "wallSeconds": 115.93024467100001,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-2/report.json"
+      },
+      {
+        "wallSeconds": 98.757526204,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-4/report.json"
+      },
+      {
+        "wallSeconds": 97.57098219400001,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-8/report.json"
+      },
+      {
+        "wallSeconds": 101.073930789,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 181.610180777,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1/report.json"
+      },
+      {
+        "wallSeconds": 104.55170801300002,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-2/report.json"
+      },
+      {
+        "wallSeconds": 78.35000842199999,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-4/report.json"
+      },
+      {
+        "wallSeconds": 76.810138251,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-8/report.json"
+      },
+      {
+        "wallSeconds": 78.38051470299999,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-auto/report.json"
+      }
+    ]
+  },
+  "browser": "8",
+  "remotion": "8"
+}

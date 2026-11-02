@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "looping-video",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 81.36212111500001,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-1/report.json"
+      },
+      {
+        "wallSeconds": 43.598399393,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-2/report.json"
+      },
+      {
+        "wallSeconds": 27.435939203999997,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-4/report.json"
+      },
+      {
+        "wallSeconds": 25.800396330999998,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-8/report.json"
+      },
+      {
+        "wallSeconds": 28.564843526999997,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 46.85508209100001,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-1/report.json"
+      },
+      {
+        "wallSeconds": 29.603858503999994,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-2/report.json"
+      },
+      {
+        "wallSeconds": 19.928637246999998,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-4/report.json"
+      },
+      {
+        "wallSeconds": 17.016447870000004,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-8/report.json"
+      },
+      {
+        "wallSeconds": 17.441905377,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-auto/report.json"
+      }
+    ]
+  },
+  "browser": "8",
+  "remotion": "8"
+}

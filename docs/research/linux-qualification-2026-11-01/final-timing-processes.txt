@@ -1,0 +1,34 @@
+Snapshot UTC: 2026-11-02T00:34:28.480825+00:00
+Local: 01:34:28 CET
+Process CPU percentages are lifetime averages, not the per-arm five-second idle measurement. Names only; no arguments or environment.
+    PID    PPID %CPU COMMAND
+1137739 1137737 50.0 python3
+1137737    8652 25.0 bash
+   4473    4294  6.1 t3code
+1075919 1075918  4.5 Telegram
+   2964    2949  4.1 kwin_wayland
+   4379    4287  2.8 t3code
+   4480    4267  2.3 t3code
+ 210149  208533  1.3 steam
+ 210503  210435  1.1 steamwebhelper
+ 210453  210432  1.1 steamwebhelper
+1029313 1029082  0.8 Discord
+   3398    2662  0.7 voxtype
+   4267    2662  0.6 t3code
+ 210423  210399  0.5 steamwebhelper
+   8652    4480  0.5 codex
+   2962    2662  0.5 pipewire
+1029241 1029092  0.4 Discord
+   3197    2662  0.4 pipewire-pulse
+   3050    2964  0.4 Xwayland
+   7886    7816  0.2 slack
+1029082 1029076  0.2 Discord
+ 814852    2662  0.2 dolphin
+1133180    2964  0.2 kscreenlocker_g
+   3794    3622  0.2 1password
+   3107    2662  0.1 plasmashell
+   7941    7832  0.1 slack
+   2255       1  0.1 mongod
+   2242       2  0.1 nvidia-modeset/kthread_q
+   1477       1  0.1 systemd-oomd
+   2265       1  0.1 valkey-server

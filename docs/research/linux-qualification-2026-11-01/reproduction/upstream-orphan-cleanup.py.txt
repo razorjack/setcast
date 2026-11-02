@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Inspect or archive/unlink only the three identified failed-export pools."""
+import datetime,hashlib,json,os,stat,subprocess,sys
+from pathlib import Path
+mode=sys.argv[1];out=Path(sys.argv[2]);assert mode in ('check','cleanup')
+out.mkdir(parents=True,exist_ok=False)
+known={'rmshm-11411021668764671149':4965,'rmshm-13983776585987463118':5148,'rmshm-7284829172597860390':7049}
+report={'scope':'Targeted manual handling of three previously identified job-created failure pools. UID/inode/size and visible fuser owners are checked. Cleanup archives unchanged raw bytes before unlinking. No unrelated names are removed; this does not repair or qualify the upstream library.', 'mode':mode,'startedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'status':'running','targets':[]}
+def save(): (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+def identity(path,inode):
+    current=path.lstat()
+    assert stat.S_ISREG(current.st_mode) and current.st_uid==os.getuid()==1000
+    assert current.st_ino==inode and current.st_size==8294464,(path,current)
+    return {'inode':current.st_ino,'bytes':current.st_size,'uid':current.st_uid,'device':current.st_dev,'mtimeNs':current.st_mtime_ns,'ctimeNs':current.st_ctime_ns}
+def owners(path):
+    command=['/usr/bin/fuser','-v',str(path)]
+    result=subprocess.run(command,text=True,capture_output=True,timeout=30)
+    return {'command':command,'exitCode':result.returncode,'stdout':result.stdout,'stderr':result.stderr,'noVisibleOwners':result.returncode==1 and not result.stdout.strip() and not result.stderr.strip()}
+save()
+try:
+    for name,inode in known.items():
+        path=Path('/dev/shm')/name
+        entry={'path':str(path),'expectedInode':inode};report['targets'].append(entry);save()
+        entry['before']=identity(path,inode);entry['ownerProbe']=owners(path);save()
+        assert entry['ownerProbe']['noVisibleOwners'],entry['ownerProbe']
+        if mode=='cleanup':
+            archived=out/(name+'.raw');digest=hashlib.sha256();count=0
+            descriptor=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
+            with os.fdopen(descriptor,'rb') as source,archived.open('xb') as destination:
+                os.chmod(archived,0o600)
+                opened=os.fstat(source.fileno());assert opened.st_ino==inode and opened.st_dev==entry['before']['device']
+                while block:=source.read(1024*1024):destination.write(block);digest.update(block);count+=len(block)
+                destination.flush();os.fsync(destination.fileno())
+            assert count==8294464
+            with archived.open('rb') as saved:assert hashlib.file_digest(saved,'sha256').hexdigest()==digest.hexdigest()
+            entry['archived']={'path':str(archived),'bytes':count,'sha256':digest.hexdigest()};save()
+            assert identity(path,inode)==entry['before']
+            entry['finalOwnerProbe']=owners(path);save()
+            assert entry['finalOwnerProbe']['noVisibleOwners'],entry['finalOwnerProbe']
+            assert identity(path,inode)==entry['before']
+            path.unlink();entry['removed']=not path.exists();assert entry['removed'];save()
+    report['remainingNamedPools']={path.name:{'inode':path.stat().st_ino,'bytes':path.stat().st_size} for path in Path('/dev/shm').glob('rmshm-*')}
+    report['status']='passed'
+except Exception as error:
+    report['status']='failed';report['error']=str(error);save();raise
+finally:save()
+print(json.dumps(report,indent=2))

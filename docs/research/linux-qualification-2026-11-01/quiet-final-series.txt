@@ -1,0 +1,299 @@
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.4%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 16.57900443,
+    "minSeconds": 16.21709649499999,
+    "maxSeconds": 16.663595333999996
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 16.40986792300001,
+    "minSeconds": 16.246693486999998,
+    "maxSeconds": 16.627078533
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.5%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 15.959511580000006,
+    "minSeconds": 15.837720325000003,
+    "maxSeconds": 16.293424050000002
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 16.875843875999998,
+    "minSeconds": 16.734821119,
+    "maxSeconds": 16.995777916999995
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 18.439786404,
+    "minSeconds": 18.415354399,
+    "maxSeconds": 18.476015393000008
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 18.28945192600001,
+    "minSeconds": 18.181029873,
+    "maxSeconds": 18.521849085000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.4%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 19.028527624,
+    "minSeconds": 18.89755340400002,
+    "maxSeconds": 19.044323994000006
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 18.668981091999996,
+    "minSeconds": 18.603330320999987,
+    "maxSeconds": 18.888586704
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 46.20567321100002,
+    "minSeconds": 46.03491542599999,
+    "maxSeconds": 48.647087158
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 47.907695219000004,
+    "minSeconds": 47.554993917,
+    "maxSeconds": 48.245817982000005
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.4%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 25.748855368000005,
+    "minSeconds": 25.688753397,
+    "maxSeconds": 26.05930521399999
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 16.511449650999975,
+    "minSeconds": 16.441098123999996,
+    "maxSeconds": 17.343995744
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.4%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 17.841517765,
+    "minSeconds": 17.558492316999995,
+    "maxSeconds": 18.04369354600001
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 15.626149019999989,
+    "minSeconds": 15.508787887999992,
+    "maxSeconds": 15.879916433999998
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 21.288647616000016,
+    "minSeconds": 21.049160356,
+    "maxSeconds": 21.548868833
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 21.93709419599999,
+    "minSeconds": 21.84506008400001,
+    "maxSeconds": 22.420660879000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.5%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 19.327085166000003,
+    "minSeconds": 19.187672297,
+    "maxSeconds": 19.437002770000007
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 18.585211760000007,
+    "minSeconds": 18.424823643000003,
+    "maxSeconds": 18.86097449
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.4%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 26.630036435999997,
+    "minSeconds": 24.975498808000005,
+    "maxSeconds": 26.779994435999992
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 24.225455804,
+    "minSeconds": 24.007486374999978,
+    "maxSeconds": 25.256486987000002
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json
+Pre-run system CPU busy: 0.2%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.3%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 97.34355729699996,
+    "minSeconds": 97.26011807100001,
+    "maxSeconds": 97.77808229500003
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 76.25680150299996,
+    "minSeconds": 75.835779041,
+    "maxSeconds": 76.285306807
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json

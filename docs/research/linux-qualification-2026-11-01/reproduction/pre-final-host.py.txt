@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+import datetime,subprocess
+print('Snapshot UTC:',datetime.datetime.now(datetime.timezone.utc).isoformat())
+print('Local:',datetime.datetime.now().astimezone().strftime('%H:%M:%S %Z'))
+print('Process CPU percentages are lifetime averages, not the per-arm five-second idle measurement. Names only; no arguments or environment.')
+lines=subprocess.check_output(['ps','-eo','pid,ppid,pcpu,comm','--sort=-pcpu'],text=True).splitlines()
+print('\n'.join(lines[:31]))
