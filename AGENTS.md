@@ -110,6 +110,10 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Live sequence Run/Next controls must respect an active manual scene fade. Scene selection
+  changes before fade-in completes; accepting another recall then returns false without preparing
+  its assets. Keep the unchanged sequence failure/journal reproducer in Linux qualification.
+
 - Linux renderer qualification has a dedicated handoff in `docs/linux-renderer-qualification.md`.
   Transfer the local browser-first candidate before testing independent installation; main's
   package-smoke lacks the candidate's `--report` and fresh dependency installation behavior.

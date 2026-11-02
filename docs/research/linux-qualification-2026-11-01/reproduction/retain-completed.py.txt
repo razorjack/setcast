@@ -27,3 +27,5 @@ for index_file,subdirectory in [('quality-index.json','quality-mismatched-font')
         for source in directory.glob('*command.json'):shutil.copy2(source,destination/source.name)
 for source in ROOT.glob('*.py'):shutil.copy2(source,DEST/'reproduction'/(source.name+'.txt'))
 for source in ROOT.glob('*.sh'):shutil.copy2(source,DEST/'reproduction'/(source.name+'.txt'))
+
+for source in ROOT.glob('*.ts'):shutil.copy2(source,DEST/'reproduction'/(source.name+'.txt'))
