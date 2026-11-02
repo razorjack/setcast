@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+"""Run the unchanged full live presets after mandatory candidate checks."""
+import concurrent.futures,json,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+root=Path(__file__).resolve().parent
+repo=Path('/tmp/setcast-linux-browser-first')
+assert (root/'additional-linux-ci.exit.txt').read_text().strip()=='0'
+report_path=root/'live-endurance-series.json'
+assert not report_path.exists(),report_path
+report={'scope':'Unchanged full presets on final candidate. Both live workloads run concurrently as loaded reliability checks, after all quiet performance measurements. Synthetic input, independent ephemeral ports and browsers. Elapsed times are not comparative throughput. User desktop activity remains allowed.', 'startedAt':datetime.now(timezone.utc).isoformat(),'status':'running','results':[]}
+report_path.write_text(json.dumps(report,indent=2)+'\n')
+def run(preset):
+ label='final-live-'+preset
+ command=['bash',str(root/'candidate-run.sh'),label,'node','packages/renderer-browser/bench/endurance.ts','--config',f'packages/renderer-browser/bench/endurance/live-{preset}.json','--out',str(root/label)]
+ result=subprocess.run(command,cwd=repo)
+ return {'preset':preset,'exitCode':result.returncode,'report':str(root/label/'report.json')}
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+ for result in concurrent.futures.as_completed([pool.submit(run,p) for p in ('gpu-recovery','software')]):
+  report['results'].append(result.result());report_path.write_text(json.dumps(report,indent=2)+'\n')
+report['status']='passed' if all(r['exitCode']==0 for r in report['results']) else 'failed'
+report['endedAt']=datetime.now(timezone.utc).isoformat();report_path.write_text(json.dumps(report,indent=2)+'\n')
+assert report['status']=='passed',report

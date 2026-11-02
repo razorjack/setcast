@@ -1,0 +1,200 @@
+{
+  "timing-4k-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k-quality-0-browser"
+  ],
+  "timing-4k-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k-quality-0-remotion"
+  ],
+  "timing-4k-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k-quality-1-remotion"
+  ],
+  "timing-4k-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k-quality-1-browser"
+  ],
+  "timing-4k-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k-quality-2-browser"
+  ],
+  "timing-4k-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k-quality-2-remotion"
+  ],
+  "timing-60fps-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps-quality-0-browser"
+  ],
+  "timing-60fps-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps-quality-0-remotion"
+  ],
+  "timing-60fps-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps-quality-1-remotion"
+  ],
+  "timing-60fps-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps-quality-1-browser"
+  ],
+  "timing-60fps-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps-quality-2-browser"
+  ],
+  "timing-60fps-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps-quality-2-remotion"
+  ],
+  "timing-chunk-boundary-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary-quality-0-browser"
+  ],
+  "timing-chunk-boundary-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary-quality-0-remotion"
+  ],
+  "timing-chunk-boundary-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary-quality-1-remotion"
+  ],
+  "timing-chunk-boundary-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary-quality-1-browser"
+  ],
+  "timing-chunk-boundary-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary-quality-2-browser"
+  ],
+  "timing-chunk-boundary-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary-quality-2-remotion"
+  ],
+  "timing-constellation-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation-quality-0-browser"
+  ],
+  "timing-constellation-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation-quality-0-remotion"
+  ],
+  "timing-constellation-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation-quality-1-remotion"
+  ],
+  "timing-constellation-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation-quality-1-browser"
+  ],
+  "timing-constellation-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation-quality-2-browser"
+  ],
+  "timing-constellation-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation-quality-2-remotion"
+  ],
+  "timing-css-filters-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters-quality-0-browser"
+  ],
+  "timing-css-filters-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters-quality-0-remotion"
+  ],
+  "timing-css-filters-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters-quality-1-remotion"
+  ],
+  "timing-css-filters-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters-quality-1-browser"
+  ],
+  "timing-css-filters-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters-quality-2-browser"
+  ],
+  "timing-css-filters-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters-quality-2-remotion"
+  ],
+  "timing-dj-art-branding-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding-quality-0-browser"
+  ],
+  "timing-dj-art-branding-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding-quality-0-remotion"
+  ],
+  "timing-dj-art-branding-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding-quality-1-remotion"
+  ],
+  "timing-dj-art-branding-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding-quality-1-browser"
+  ],
+  "timing-dj-art-branding-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding-quality-2-browser"
+  ],
+  "timing-dj-art-branding-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding-quality-2-remotion"
+  ],
+  "timing-field-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field-quality-0-browser"
+  ],
+  "timing-field-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field-quality-0-remotion"
+  ],
+  "timing-field-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field-quality-1-remotion"
+  ],
+  "timing-field-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field-quality-1-browser"
+  ],
+  "timing-field-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field-quality-2-browser"
+  ],
+  "timing-field-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field-quality-2-remotion"
+  ],
+  "timing-looping-video-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video-quality-0-browser"
+  ],
+  "timing-looping-video-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video-quality-0-remotion"
+  ],
+  "timing-looping-video-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video-quality-1-remotion"
+  ],
+  "timing-looping-video-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video-quality-1-browser"
+  ],
+  "timing-looping-video-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video-quality-2-browser"
+  ],
+  "timing-looping-video-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video-quality-2-remotion"
+  ],
+  "timing-portrait-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait-quality-0-browser"
+  ],
+  "timing-portrait-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait-quality-0-remotion"
+  ],
+  "timing-portrait-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait-quality-1-remotion"
+  ],
+  "timing-portrait-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait-quality-1-browser"
+  ],
+  "timing-portrait-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait-quality-2-browser"
+  ],
+  "timing-portrait-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait-quality-2-remotion"
+  ],
+  "timing-standard-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard-quality-0-browser"
+  ],
+  "timing-standard-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard-quality-0-remotion"
+  ],
+  "timing-standard-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard-quality-1-remotion"
+  ],
+  "timing-standard-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard-quality-1-browser"
+  ],
+  "timing-standard-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard-quality-2-browser"
+  ],
+  "timing-standard-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard-quality-2-remotion"
+  ],
+  "timing-tunnel-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel-quality-0-browser"
+  ],
+  "timing-tunnel-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel-quality-0-remotion"
+  ],
+  "timing-tunnel-quality-1-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel-quality-1-remotion"
+  ],
+  "timing-tunnel-quality-1-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel-quality-1-browser"
+  ],
+  "timing-tunnel-quality-2-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel-quality-2-browser"
+  ],
+  "timing-tunnel-quality-2-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel-quality-2-remotion"
+  ]
+}

@@ -1,0 +1,11 @@
+4k timing-4k passed quality True reduction -9.93
+60fps timing-60fps passed quality True reduction -3.99
+chunk-boundary timing-chunk-boundary passed quality True reduction -27.65
+constellation timing-constellation passed quality True reduction 3.55
+css-filters timing-css-filters passed quality True reduction 5.43
+dj-art-branding timing-dj-art-branding passed quality True reduction -14.18
+field timing-field passed quality True reduction -0.82
+looping-video timing-looping-video passed quality True reduction -55.95
+portrait timing-portrait passed quality True reduction 2.96
+standard timing-standard passed quality True reduction -1.03
+tunnel timing-tunnel passed quality True reduction -1.93

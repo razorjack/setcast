@@ -6,8 +6,8 @@ pass on this Fedora x64 host. Three Linux fixes are committed; graphics use Swif
 Current Remotion 4.0.539 has a reproduced named shared-memory leak after injected encoder
 failure. All eleven common-font fidelity cases pass, including full encoded black-frame scans
 and inspected art/chunk transitions. All 55 worker-screening pairs meet every required quality
-comparison, and all 110 outputs pass black-frame scans. All 66 final timed exports and their black-frame scans pass; detailed final fidelity
-verification and additional Linux CI/live checks are running. Real-master Linux assets are missing. Windows
+comparison, and all 110 outputs pass black-frame scans. All 66 final timed exports pass their full quality comparisons and black-frame scans.
+None of the eleven workloads meets the unchanged 30% speed target. Additional Linux CI/live checks are running. Real-master Linux assets are missing. Windows
 remains unqualified, the shared Quicksilver CSS fix needs affected macOS repetition, and
 main's default remains Remotion.
 
@@ -42,7 +42,7 @@ PATH and nvidia-smi failed.
 | Resources | 3,000 bitmap captures release all URLs. The 120-second software export passes full decode and four stereo alignment windows; real-master assets remain unavailable. | [Bitmap summary](font-video-memory-summary.json), [software summary](font-export-short-summary.json), [decoded verification](font-software-decoded.json) |
 | Current-upstream fidelity | All eleven calibration cases meet every full/regional min/p05/mean PSNR/SSIM and VMAF NEG comparison. All 22 encoded files pass black-frame scans; selected art/join frames were inspected. | [Metrics](calibration-summary.json), [black-frame scans](calibration-blackframe-results.json), [transition inspection](font-transition-inspections.json) |
 | Current-upstream failure cleanup | Remotion 4.0.539 leaves an 8,294,464-byte named pool after injected encoder failure, reproduced three times. Successful export cleanup does not supersede this failure. | [Diagnosis](upstream-cleanup.md), [final observer](final-upstream-shm-failure.json) |
-| Throughput | All 55 screening pairs pass every required quality comparison, and all 110 outputs pass black-frame scans. Three alternating pairs per workload complete with no failed attempt or new named pool. Final fidelity analysis is running; no release-speed conclusion is inferred yet. Loaded calibration times are excluded. | [Screening quality](tune-summary.json), [runtime/load/cleanup audit](tune-audit.json), [black-frame scans](tune-blackframe-results.json). |
+| Throughput | All 55 screening pairs pass every required quality comparison, and all 110 outputs pass black-frame scans. Three alternating pairs per workload pass every quality comparison. None meets the 30% target. Browser median time ranges from 5.4% lower to 55.9% higher than Remotion; no failed attempt or new named pool occurred. Loaded calibration times are excluded. | [Final results and spread](performance-table.md), [final quality](timing-summary.json), [final runtime/load/cleanup audit](timing-audit.json). |
 | Additional Linux CI/live | Remaining candidate checks are running; full live endurance follows. | No pass is inferred from a workflow definition. |
 
 Final production source fix: `a5a8bbe`. Final candidate: `5159395`. Final current-upstream
@@ -83,6 +83,30 @@ verification. Sessions are fresh, but process and OS caches are shared. These ar
 cold-boot or freshly downloaded-runtime timings. Loaded calibration and resource-run wall
 times do not establish comparative throughput. The release objective remains at least 30%
 lower median wall time in every predefined workload at matched quality.
+
+## Final matched-quality performance
+
+All eleven workloads meet every full-frame/text-region minimum, p05 and mean PSNR/SSIM
+and VMAF NEG requirement for all three final pairs. All 66 outputs pass full black-frame
+scans. None meets the required 30% lower median wall time. Browser is modestly faster
+in CSS filters (5.4%), constellation (3.6%) and portrait (3.0%), and slower in the other
+eight workloads. Looping video is 55.9% slower and the long chunk-boundary case is 27.7%
+slower. Three observations per arm describe this run's spread; they do not establish
+statistical confidence for small differences.
+
+[Every workload, median, range and worker count](performance-table.md),
+[per-run CSV](performance-runs.csv), [resource/output-size/runtime details](performance-results.json)
+and [interactive chart](performance.html) are retained. Negative time reductions in the table
+mean browser export took longer. All timings use the final clean implementation at `5d026a6`.
+The highest accepted pre-run busy sample is 0.6%, and the highest mean sampled external
+load is 0.3111 of 32 CPU cores. Both adapters use SwiftShader and software H.264; Remotion's
+encoder receives `remotionshm`. The frozen 4K case upscales its 2304×1296 art to 3840×2160
+in both arms. This is a fixture limitation, preserved before and after measurement.
+
+This Linux result does not meet the release performance requirement. It does not revise
+the target, qualify other platforms or authorize browser-first promotion. The independent
+Remotion failure-cleanup defect remains recorded even though every successful timed export
+removed its newly created named pools.
 
 ## Chronological observations
 

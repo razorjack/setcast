@@ -10,7 +10,9 @@ short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains u
 Current upstream has a separate named shared-memory leak after injected encoder failure;
 all eleven successful-export calibration cases pass. All 55 quiet worker-screening pairs
 meet the required quality comparisons, with every one of their 110 outputs measured and
-checked for black frames. Three-pair throughput comparisons and additional live checks remain pending.
+checked for black frames. All 33 final pairs also meet every quality requirement, but none of
+the eleven workloads meets the unchanged 30% speed target. Browser median time ranges from
+5.4% lower to 55.9% higher than tuned Remotion. See [final timings and spread](research/linux-qualification-2026-11-01/performance-table.md). Additional live checks are running.
 The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
 change the release criteria or authorize default promotion.
 
@@ -144,7 +146,7 @@ upstream comparison must include that regression without changing Node's rejecti
 The [29 October 4.0.539 exercise](research/remotion-539-2026-10-29/README.md) passes export acceptance
 and the caught-error/destination checks using shared-memory capture. That earlier exercise
 did not verify named pool cleanup or the full matched-quality comparison. The Linux continuation now reproduces a named-pool leak after injected encoder
-failure and passes all eleven fidelity calibration cases; final quiet comparisons remain pending.
+failure and passes all eleven final matched-quality comparisons; none meets the 30% speed target.
 Additional native and 4.0.535 research at
 `prototype/native-capture` commit `308b1cc` is summarized there, including per-play layout limits
 and intermittent POSIX-pool leaks in the older upstream version.
@@ -618,7 +620,9 @@ broader live hardware support can ship independently after the core replacement 
 
 1. Establish the first-export performance result at matched quality. The last current-upstream
    comparison misses the 30% target; bitmap's 32.7% improvement is against Setcast's PNG video
-   path, not Remotion. Requalify tuned upstream output and compare the final implementation.
+   path, not Remotion. The final Linux implementation now passes all eleven tuned-output quality
+   comparisons, but misses the target in every workload. Preserve the complete Linux results;
+   further optimization needs new evidence and another matched-quality comparison.
    Standard/GPU export needs further optimization if the target is retained. The rejected
    experiments do not supply a safe faster capture path.
 2. Complete supported-platform exporter/resource qualification, recording actual capture,

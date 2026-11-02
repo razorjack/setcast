@@ -1,0 +1,1525 @@
+{
+  "scope": "Three alternating pairs per workload after worker screening. Includes loading through cleanup, with fresh sessions but shared process/OS caches. All final output quality is measured separately. Target is at least 30% lower median wall time in every workload, not an aggregate.",
+  "cases": [
+    {
+      "case": "standard",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.010306999897478,
+      "reduction": -0.010306999897478075,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 16.57900443,
+        "minSeconds": 16.21709649499999,
+        "maxSeconds": 16.663595333999996,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 4723789,
+          "median": 4723789,
+          "max": 4723789
+        },
+        "peakSummedRssBytes": 6180765696,
+        "meanExternalCpuCores": 0.04158453177663126
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 16.40986792300001,
+        "minSeconds": 16.246693486999998,
+        "maxSeconds": 16.627078533,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 2861461,
+          "median": 2861461,
+          "max": 2861461
+        },
+        "peakSummedRssBytes": 6442467328,
+        "meanExternalCpuCores": 0.1846233926338137
+      }
+    },
+    {
+      "case": "css-filters",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 0.9457015422320211,
+      "reduction": 0.054298457767978925,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 15.959511580000006,
+        "minSeconds": 15.837720325000003,
+        "maxSeconds": 16.293424050000002,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 3269288,
+          "median": 3269288,
+          "max": 3269288
+        },
+        "peakSummedRssBytes": 4509581312,
+        "meanExternalCpuCores": 0.022172179391613558
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 16.875843875999998,
+        "minSeconds": 16.734821119,
+        "maxSeconds": 16.995777916999995,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 2281889,
+          "median": 2281889,
+          "max": 2281889
+        },
+        "peakSummedRssBytes": 6344728576,
+        "meanExternalCpuCores": 0.12269857369495221
+      }
+    },
+    {
+      "case": "field",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.0082197366333476,
+      "reduction": -0.00821973663334763,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 18.439786404,
+        "minSeconds": 18.415354399,
+        "maxSeconds": 18.476015393000008,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 5988568,
+          "median": 5988568,
+          "max": 5988568
+        },
+        "peakSummedRssBytes": 6646784000,
+        "meanExternalCpuCores": 0.07393707588268397
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 18.28945192600001,
+        "minSeconds": 18.181029873,
+        "maxSeconds": 18.521849085000003,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 3801416,
+          "median": 3801416,
+          "max": 3801416
+        },
+        "peakSummedRssBytes": 6437502976,
+        "meanExternalCpuCores": 0.09097259021985621
+      }
+    },
+    {
+      "case": "tunnel",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.0192590334859826,
+      "reduction": -0.01925903348598257,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 19.028527624,
+        "minSeconds": 18.89755340400002,
+        "maxSeconds": 19.044323994000006,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 12062051,
+          "median": 12062051,
+          "max": 12062051
+        },
+        "peakSummedRssBytes": 4621393920,
+        "meanExternalCpuCores": 0.1410937311076881
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 18.668981091999996,
+        "minSeconds": 18.603330320999987,
+        "maxSeconds": 18.888586704,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 7812235,
+          "median": 7812235,
+          "max": 7812235
+        },
+        "peakSummedRssBytes": 4548788224,
+        "meanExternalCpuCores": 0.10928651117847117
+      }
+    },
+    {
+      "case": "constellation",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 0.9644728889540699,
+      "reduction": 0.03552711104593009,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 46.20567321100002,
+        "minSeconds": 46.03491542599999,
+        "maxSeconds": 48.647087158,
+        "workers": [
+          2
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 8668805,
+          "median": 8668805,
+          "max": 8668805
+        },
+        "peakSummedRssBytes": 3658854400,
+        "meanExternalCpuCores": 0.0853842517844914
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 47.907695219000004,
+        "minSeconds": 47.554993917,
+        "maxSeconds": 48.245817982000005,
+        "workers": [
+          2
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 5399372,
+          "median": 5399372,
+          "max": 5399372
+        },
+        "peakSummedRssBytes": 3511656448,
+        "meanExternalCpuCores": 0.04199358317820103
+      }
+    },
+    {
+      "case": "looping-video",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.5594545550057495,
+      "reduction": -0.5594545550057495,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 25.748855368000005,
+        "minSeconds": 25.688753397,
+        "maxSeconds": 26.05930521399999,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 6700433,
+          "median": 6700433,
+          "max": 6700433
+        },
+        "peakSummedRssBytes": 9003397120,
+        "meanExternalCpuCores": 0.14492686395364007
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 16.511449650999975,
+        "minSeconds": 16.441098123999996,
+        "maxSeconds": 17.343995744,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 3991071,
+          "median": 3991071,
+          "max": 3991071
+        },
+        "peakSummedRssBytes": 9167745024,
+        "meanExternalCpuCores": 0.1848370136303722
+      }
+    },
+    {
+      "case": "dj-art-branding",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.141773174066403,
+      "reduction": -0.141773174066403,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 17.841517765,
+        "minSeconds": 17.558492316999995,
+        "maxSeconds": 18.04369354600001,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 3435799,
+          "median": 3435799,
+          "max": 3435799
+        },
+        "peakSummedRssBytes": 4574765056,
+        "meanExternalCpuCores": 0.039140740553683676
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 15.626149019999989,
+        "minSeconds": 15.508787887999992,
+        "maxSeconds": 15.879916433999998,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 2190376,
+          "median": 2190376,
+          "max": 2190376
+        },
+        "peakSummedRssBytes": 4751785984,
+        "meanExternalCpuCores": 0.08765129907232426
+      }
+    },
+    {
+      "case": "portrait",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 0.9704406347437661,
+      "reduction": 0.029559365256233927,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 21.288647616000016,
+        "minSeconds": 21.049160356,
+        "maxSeconds": 21.548868833,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 3952623,
+          "median": 3952623,
+          "max": 3952623
+        },
+        "peakSummedRssBytes": 5184540672,
+        "meanExternalCpuCores": 0.11092214067848932
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 21.93709419599999,
+        "minSeconds": 21.84506008400001,
+        "maxSeconds": 22.420660879000003,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 2587599,
+          "median": 2587599,
+          "max": 2587599
+        },
+        "peakSummedRssBytes": 5167697920,
+        "meanExternalCpuCores": 0.09363419118377966
+      }
+    },
+    {
+      "case": "60fps",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.0399174039865766,
+      "reduction": -0.039917403986576616,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 19.327085166000003,
+        "minSeconds": 19.187672297,
+        "maxSeconds": 19.437002770000007,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 2316372,
+          "median": 2316372,
+          "max": 2316372
+        },
+        "peakSummedRssBytes": 6456479744,
+        "meanExternalCpuCores": 0.08756808655207698
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 18.585211760000007,
+        "minSeconds": 18.424823643000003,
+        "maxSeconds": 18.86097449,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 1524538,
+          "median": 1524538,
+          "max": 1524538
+        },
+        "peakSummedRssBytes": 6413111296,
+        "meanExternalCpuCores": 0.12826697480898572
+      }
+    },
+    {
+      "case": "4k",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.0992584268157697,
+      "reduction": -0.09925842681576968,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 26.630036435999997,
+        "minSeconds": 24.975498808000005,
+        "maxSeconds": 26.779994435999992,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 5443865,
+          "median": 5443865,
+          "max": 5443865
+        },
+        "peakSummedRssBytes": 9115557888,
+        "meanExternalCpuCores": 0.1311862225823052
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 24.225455804,
+        "minSeconds": 24.007486374999978,
+        "maxSeconds": 25.256486987000002,
+        "workers": [
+          4
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 3504538,
+          "median": 3504538,
+          "max": 3504538
+        },
+        "peakSummedRssBytes": 9192804352,
+        "meanExternalCpuCores": 0.06960014677139306
+      }
+    },
+    {
+      "case": "chunk-boundary",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json",
+      "revision": "5d026a64293207d90753f002020737deaa66f39d",
+      "dirty": false,
+      "qualityPassed": true,
+      "ratio": 1.276522951112373,
+      "reduction": -0.276522951112373,
+      "targetMet": false,
+      "browser": {
+        "runs": 3,
+        "medianSeconds": 97.34355729699996,
+        "minSeconds": 97.26011807100001,
+        "maxSeconds": 97.77808229500003,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "image2pipe"
+        ],
+        "bytes": {
+          "min": 18206508,
+          "median": 18206508,
+          "max": 18206508
+        },
+        "peakSummedRssBytes": 6945947648,
+        "meanExternalCpuCores": 0.10304801941457481
+      },
+      "remotion": {
+        "runs": 3,
+        "medianSeconds": 76.25680150299996,
+        "minSeconds": 75.835779041,
+        "maxSeconds": 76.285306807,
+        "workers": [
+          8
+        ],
+        "encoderInputs": [
+          "remotionshm"
+        ],
+        "bytes": {
+          "min": 12297599,
+          "median": 12297599,
+          "max": 12297599
+        },
+        "peakSummedRssBytes": 6990127104,
+        "meanExternalCpuCores": 0.0837313170806551
+      }
+    }
+  ],
+  "runs": [
+    {
+      "case": "standard",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 16.57900443,
+      "bytes": 4723789,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6006288384,
+      "meanExternalCpuCores": 0.12475359532989377,
+      "maxExternalCpuCores": 0.9996638775163087,
+      "outputSha256": "d3780e8197eb9e04ac420e420d109080dbd973a2ebb17bbdef6e3f1bb6200f86",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json"
+    },
+    {
+      "case": "standard",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 16.663595333999996,
+      "bytes": 4723789,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6060171264,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "d3780e8197eb9e04ac420e420d109080dbd973a2ebb17bbdef6e3f1bb6200f86",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json"
+    },
+    {
+      "case": "standard",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 16.21709649499999,
+      "bytes": 4723789,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6180765696,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "d3780e8197eb9e04ac420e420d109080dbd973a2ebb17bbdef6e3f1bb6200f86",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json"
+    },
+    {
+      "case": "standard",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 16.627078533,
+      "bytes": 2861461,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6266855424,
+      "meanExternalCpuCores": 0.18262120182997704,
+      "maxExternalCpuCores": 1.0004067323639625,
+      "outputSha256": "e75bafd13325bee1822d83d69ee7341855d7670bbb04c02162bc3aa7413d30cc",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json"
+    },
+    {
+      "case": "standard",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 16.246693486999998,
+      "bytes": 2861461,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6204174336,
+      "meanExternalCpuCores": 0.2475101223678731,
+      "maxExternalCpuCores": 1.0027885373171683,
+      "outputSha256": "e75bafd13325bee1822d83d69ee7341855d7670bbb04c02162bc3aa7413d30cc",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json"
+    },
+    {
+      "case": "standard",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 16.40986792300001,
+      "bytes": 2861461,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6442467328,
+      "meanExternalCpuCores": 0.12373885370359095,
+      "maxExternalCpuCores": 1.7227597173200742,
+      "outputSha256": "e75bafd13325bee1822d83d69ee7341855d7670bbb04c02162bc3aa7413d30cc",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/report.json"
+    },
+    {
+      "case": "css-filters",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 15.837720325000003,
+      "bytes": 3269288,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4257505280,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "e3949c25380827fb9a2ed292c101c813c57a3a43a46b6c9512c453da189d0dfe",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json"
+    },
+    {
+      "case": "css-filters",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 16.293424050000002,
+      "bytes": 3269288,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4427206656,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "e3949c25380827fb9a2ed292c101c813c57a3a43a46b6c9512c453da189d0dfe",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json"
+    },
+    {
+      "case": "css-filters",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 15.959511580000006,
+      "bytes": 3269288,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4509581312,
+      "meanExternalCpuCores": 0.06651653817484067,
+      "maxExternalCpuCores": 0.9998738204233012,
+      "outputSha256": "e3949c25380827fb9a2ed292c101c813c57a3a43a46b6c9512c453da189d0dfe",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json"
+    },
+    {
+      "case": "css-filters",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 16.995777916999995,
+      "bytes": 2281889,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6267850752,
+      "meanExternalCpuCores": 0.1824870194114245,
+      "maxExternalCpuCores": 1.0001753902563522,
+      "outputSha256": "f374f78859fa0591eba23cad698c913ca40001ed99be867f4dab28116e59afa8",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json"
+    },
+    {
+      "case": "css-filters",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 16.875843875999998,
+      "bytes": 2281889,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6293962752,
+      "meanExternalCpuCores": 0.12374453431265997,
+      "maxExternalCpuCores": 0.9992185741039663,
+      "outputSha256": "f374f78859fa0591eba23cad698c913ca40001ed99be867f4dab28116e59afa8",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json"
+    },
+    {
+      "case": "css-filters",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 16.734821119,
+      "bytes": 2281889,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6344728576,
+      "meanExternalCpuCores": 0.06186416736077217,
+      "maxExternalCpuCores": 1.0066559386001221,
+      "outputSha256": "f374f78859fa0591eba23cad698c913ca40001ed99be867f4dab28116e59afa8",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/report.json"
+    },
+    {
+      "case": "field",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 18.439786404,
+      "bytes": 5988568,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6374670336,
+      "meanExternalCpuCores": 0.11090366540756147,
+      "maxExternalCpuCores": 0.9991224098409688,
+      "outputSha256": "f7eb6e8dbfad024a3ddb409e0eb3028132c8ae0cdf83dfd91d520029f636d02c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json"
+    },
+    {
+      "case": "field",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 18.415354399,
+      "bytes": 5988568,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6587863040,
+      "meanExternalCpuCores": 0.05545116032998052,
+      "maxExternalCpuCores": 1.000138396650982,
+      "outputSha256": "f7eb6e8dbfad024a3ddb409e0eb3028132c8ae0cdf83dfd91d520029f636d02c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json"
+    },
+    {
+      "case": "field",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 18.476015393000008,
+      "bytes": 5988568,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6646784000,
+      "meanExternalCpuCores": 0.05545640191050993,
+      "maxExternalCpuCores": 0.9998869757759163,
+      "outputSha256": "f7eb6e8dbfad024a3ddb409e0eb3028132c8ae0cdf83dfd91d520029f636d02c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json"
+    },
+    {
+      "case": "field",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 18.521849085000003,
+      "bytes": 3801416,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6264229888,
+      "meanExternalCpuCores": 0.1627524712520773,
+      "maxExternalCpuCores": 1.0034674592273418,
+      "outputSha256": "59d5d88c2da8d48534e85c88af9f8b88ee2c76ef81a0915098ae9e2729bded72",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json"
+    },
+    {
+      "case": "field",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 18.181029873,
+      "bytes": 3801416,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6223335424,
+      "meanExternalCpuCores": 0.05502175346909119,
+      "maxExternalCpuCores": 0.998785142174692,
+      "outputSha256": "59d5d88c2da8d48534e85c88af9f8b88ee2c76ef81a0915098ae9e2729bded72",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json"
+    },
+    {
+      "case": "field",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 18.28945192600001,
+      "bytes": 3801416,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6437502976,
+      "meanExternalCpuCores": 0.05514354593840013,
+      "maxExternalCpuCores": 0.99832915240403,
+      "outputSha256": "59d5d88c2da8d48534e85c88af9f8b88ee2c76ef81a0915098ae9e2729bded72",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/report.json"
+    },
+    {
+      "case": "tunnel",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 19.028527624,
+      "bytes": 12062051,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4346175488,
+      "meanExternalCpuCores": 0.157650813003205,
+      "maxExternalCpuCores": 1.0004684618537487,
+      "outputSha256": "7589a6fac6402289a2b37f18e17b079caec1cc07c97c3b9feadc106eb998a146",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json"
+    },
+    {
+      "case": "tunnel",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 19.044323994000006,
+      "bytes": 12062051,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4533813248,
+      "meanExternalCpuCores": 0.2101722661605483,
+      "maxExternalCpuCores": 1.002249020241817,
+      "outputSha256": "7589a6fac6402289a2b37f18e17b079caec1cc07c97c3b9feadc106eb998a146",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json"
+    },
+    {
+      "case": "tunnel",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 18.89755340400002,
+      "bytes": 12062051,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4621393920,
+      "meanExternalCpuCores": 0.05545811415931106,
+      "maxExternalCpuCores": 0.9972534547862602,
+      "outputSha256": "7589a6fac6402289a2b37f18e17b079caec1cc07c97c3b9feadc106eb998a146",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json"
+    },
+    {
+      "case": "tunnel",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 18.888586704,
+      "bytes": 7812235,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4335808512,
+      "meanExternalCpuCores": 0.16263421646319456,
+      "maxExternalCpuCores": 0.9996707994087242,
+      "outputSha256": "0e918a679944ba2f31a84feeee1dc870d86706004d2d7f1f1c4cfbaa6680477e",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json"
+    },
+    {
+      "case": "tunnel",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 18.668981091999996,
+      "bytes": 7812235,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4351823872,
+      "meanExternalCpuCores": 0.110141248563928,
+      "maxExternalCpuCores": 0.9997896172702231,
+      "outputSha256": "0e918a679944ba2f31a84feeee1dc870d86706004d2d7f1f1c4cfbaa6680477e",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json"
+    },
+    {
+      "case": "tunnel",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 18.603330320999987,
+      "bytes": 7812235,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4548788224,
+      "meanExternalCpuCores": 0.05508406850829096,
+      "maxExternalCpuCores": 1.0017800303781688,
+      "outputSha256": "0e918a679944ba2f31a84feeee1dc870d86706004d2d7f1f1c4cfbaa6680477e",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/report.json"
+    },
+    {
+      "case": "constellation",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 48.647087158,
+      "bytes": 8668805,
+      "workers": "2",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 3439480832,
+      "meanExternalCpuCores": 0.10409724630372642,
+      "maxExternalCpuCores": 2.0009223902057443,
+      "outputSha256": "81b308c1d1348aa0e562df6fcc049f6befdd3eff0d0f877c0e2d3ced857d43b4",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json"
+    },
+    {
+      "case": "constellation",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 46.03491542599999,
+      "bytes": 8668805,
+      "workers": "2",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 3578744832,
+      "meanExternalCpuCores": 0.06516784514582566,
+      "maxExternalCpuCores": 0.9996463795915949,
+      "outputSha256": "81b308c1d1348aa0e562df6fcc049f6befdd3eff0d0f877c0e2d3ced857d43b4",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json"
+    },
+    {
+      "case": "constellation",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 46.20567321100002,
+      "bytes": 8668805,
+      "workers": "2",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 3658854400,
+      "meanExternalCpuCores": 0.0868876639039221,
+      "maxExternalCpuCores": 1.0045533197459107,
+      "outputSha256": "81b308c1d1348aa0e562df6fcc049f6befdd3eff0d0f877c0e2d3ced857d43b4",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json"
+    },
+    {
+      "case": "constellation",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 47.554993917,
+      "bytes": 5399372,
+      "workers": "2",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 3306299392,
+      "meanExternalCpuCores": 0.06324638290361964,
+      "maxExternalCpuCores": 1.0057299447111336,
+      "outputSha256": "4355835111097406b42bde007447c156346a483b2bd10477ccb48b7c7e54fb5c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json"
+    },
+    {
+      "case": "constellation",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 47.907695219000004,
+      "bytes": 5399372,
+      "workers": "2",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 3296686080,
+      "meanExternalCpuCores": 0.021200956146161423,
+      "maxExternalCpuCores": 1.0014945498458945,
+      "outputSha256": "4355835111097406b42bde007447c156346a483b2bd10477ccb48b7c7e54fb5c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json"
+    },
+    {
+      "case": "constellation",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 48.245817982000005,
+      "bytes": 5399372,
+      "workers": "2",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 3511656448,
+      "meanExternalCpuCores": 0.04153341048482203,
+      "maxExternalCpuCores": 1.0022806419924999,
+      "outputSha256": "4355835111097406b42bde007447c156346a483b2bd10477ccb48b7c7e54fb5c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json"
+    },
+    {
+      "case": "looping-video",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 25.688753397,
+      "bytes": 6700433,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 8558608384,
+      "meanExternalCpuCores": 0.23969012715588456,
+      "maxExternalCpuCores": 2.005609723489161,
+      "outputSha256": "b1594dba8f64c4ac6658fbcb7b224f3eda473f541de279dfa43613366787391c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json"
+    },
+    {
+      "case": "looping-video",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 25.748855368000005,
+      "bytes": 6700433,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 8770711552,
+      "meanExternalCpuCores": 0.07987481231688301,
+      "maxExternalCpuCores": 1.0000330175901302,
+      "outputSha256": "b1594dba8f64c4ac6658fbcb7b224f3eda473f541de279dfa43613366787391c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json"
+    },
+    {
+      "case": "looping-video",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 26.05930521399999,
+      "bytes": 6700433,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 9003397120,
+      "meanExternalCpuCores": 0.11521565238815265,
+      "maxExternalCpuCores": 1.0011053980556666,
+      "outputSha256": "b1594dba8f64c4ac6658fbcb7b224f3eda473f541de279dfa43613366787391c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json"
+    },
+    {
+      "case": "looping-video",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 17.343995744,
+      "bytes": 3991071,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 8860000256,
+      "meanExternalCpuCores": 0.24345775472138545,
+      "maxExternalCpuCores": 1.0054780419489746,
+      "outputSha256": "7a0931118237a1d8f1948bc002604b125851c0514f7ce46bc611f377d756cc97",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json"
+    },
+    {
+      "case": "looping-video",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 16.441098123999996,
+      "bytes": 3991071,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 8858402816,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "7a0931118237a1d8f1948bc002604b125851c0514f7ce46bc611f377d756cc97",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json"
+    },
+    {
+      "case": "looping-video",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 16.511449650999975,
+      "bytes": 3991071,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 9167745024,
+      "meanExternalCpuCores": 0.3110532861697311,
+      "maxExternalCpuCores": 2.0026985491776146,
+      "outputSha256": "7a0931118237a1d8f1948bc002604b125851c0514f7ce46bc611f377d756cc97",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/report.json"
+    },
+    {
+      "case": "dj-art-branding",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 17.841517765,
+      "bytes": 3435799,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4362219520,
+      "meanExternalCpuCores": 0.05871243747962025,
+      "maxExternalCpuCores": 0.9986148782234618,
+      "outputSha256": "da4767f031e4b1afa061186e184027a78324bd824d56792dbe44e927aed01660",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json"
+    },
+    {
+      "case": "dj-art-branding",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 17.558492316999995,
+      "bytes": 3435799,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4567859200,
+      "meanExternalCpuCores": 0.05870978418143077,
+      "maxExternalCpuCores": 1.0008660969748546,
+      "outputSha256": "da4767f031e4b1afa061186e184027a78324bd824d56792dbe44e927aed01660",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json"
+    },
+    {
+      "case": "dj-art-branding",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 18.04369354600001,
+      "bytes": 3435799,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 4574765056,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "da4767f031e4b1afa061186e184027a78324bd824d56792dbe44e927aed01660",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json"
+    },
+    {
+      "case": "dj-art-branding",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 15.879916433999998,
+      "bytes": 2190376,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4646899712,
+      "meanExternalCpuCores": 0.06484829126597932,
+      "maxExternalCpuCores": 1.0001092124260542,
+      "outputSha256": "b2b000fcea2ba345383d6a5c1e1dc2df28809034b7bd0ba2ad8d77db1a4bae3c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json"
+    },
+    {
+      "case": "dj-art-branding",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 15.626149019999989,
+      "bytes": 2190376,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4751785984,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "b2b000fcea2ba345383d6a5c1e1dc2df28809034b7bd0ba2ad8d77db1a4bae3c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json"
+    },
+    {
+      "case": "dj-art-branding",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 15.508787887999992,
+      "bytes": 2190376,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4738813952,
+      "meanExternalCpuCores": 0.19810560595099347,
+      "maxExternalCpuCores": 1.9993676380040708,
+      "outputSha256": "b2b000fcea2ba345383d6a5c1e1dc2df28809034b7bd0ba2ad8d77db1a4bae3c",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/report.json"
+    },
+    {
+      "case": "portrait",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 21.049160356,
+      "bytes": 3952623,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 5031854080,
+      "meanExternalCpuCores": 0.09509434136451865,
+      "maxExternalCpuCores": 1.0001395119608727,
+      "outputSha256": "91a992171c9acd58642f9f3de35fa79aea41211078cb4af12b0baf3c83203254",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json"
+    },
+    {
+      "case": "portrait",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 21.548868833,
+      "bytes": 3952623,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 5184540672,
+      "meanExternalCpuCores": 0.14262909293217513,
+      "maxExternalCpuCores": 1.0012776112076398,
+      "outputSha256": "91a992171c9acd58642f9f3de35fa79aea41211078cb4af12b0baf3c83203254",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json"
+    },
+    {
+      "case": "portrait",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 21.288647616000016,
+      "bytes": 3952623,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 5180157952,
+      "meanExternalCpuCores": 0.09504298773877419,
+      "maxExternalCpuCores": 0.9994437920394409,
+      "outputSha256": "91a992171c9acd58642f9f3de35fa79aea41211078cb4af12b0baf3c83203254",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json"
+    },
+    {
+      "case": "portrait",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 22.420660879000003,
+      "bytes": 2587599,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 5093974016,
+      "meanExternalCpuCores": 0.044627516327531515,
+      "maxExternalCpuCores": 0.9990160775568616,
+      "outputSha256": "e3845f3dbb385c01885f6ce0f49acddf7582d3ddc60a19b98c0aaf0a944429a3",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json"
+    },
+    {
+      "case": "portrait",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 21.84506008400001,
+      "bytes": 2587599,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 4966350848,
+      "meanExternalCpuCores": 0.04722575453412287,
+      "maxExternalCpuCores": 0.9998493786901881,
+      "outputSha256": "e3845f3dbb385c01885f6ce0f49acddf7582d3ddc60a19b98c0aaf0a944429a3",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json"
+    },
+    {
+      "case": "portrait",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 21.93709419599999,
+      "bytes": 2587599,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 5167697920,
+      "meanExternalCpuCores": 0.1890493026896846,
+      "maxExternalCpuCores": 1.0010206431503264,
+      "outputSha256": "e3845f3dbb385c01885f6ce0f49acddf7582d3ddc60a19b98c0aaf0a944429a3",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/report.json"
+    },
+    {
+      "case": "60fps",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 19.187672297,
+      "bytes": 2316372,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 5842403328,
+      "meanExternalCpuCores": 0.10509854753804146,
+      "maxExternalCpuCores": 1.0011109162654523,
+      "outputSha256": "3bfe54523bf4de9985b42d5700ff7ce581fa38f9f3c4cf395800362a4eeb6668",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json"
+    },
+    {
+      "case": "60fps",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 19.327085166000003,
+      "bytes": 2316372,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6046588928,
+      "meanExternalCpuCores": 0.05253641720622206,
+      "maxExternalCpuCores": 1.0028154857041698,
+      "outputSha256": "3bfe54523bf4de9985b42d5700ff7ce581fa38f9f3c4cf395800362a4eeb6668",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json"
+    },
+    {
+      "case": "60fps",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 19.437002770000007,
+      "bytes": 2316372,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6456479744,
+      "meanExternalCpuCores": 0.10506929491196743,
+      "maxExternalCpuCores": 1.0054816218634441,
+      "outputSha256": "3bfe54523bf4de9985b42d5700ff7ce581fa38f9f3c4cf395800362a4eeb6668",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json"
+    },
+    {
+      "case": "60fps",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 18.86097449,
+      "bytes": 1524538,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6236143616,
+      "meanExternalCpuCores": 0.05428715413800945,
+      "maxExternalCpuCores": 1.0000176168103478,
+      "outputSha256": "abb493ffa21d4c9efd8e7acce25ca50a3853d3b20c808598ed7d31209b25e5bd",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json"
+    },
+    {
+      "case": "60fps",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 18.424823643000003,
+      "bytes": 1524538,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6193369088,
+      "meanExternalCpuCores": 0.22038746765871758,
+      "maxExternalCpuCores": 1.9999611717538046,
+      "outputSha256": "abb493ffa21d4c9efd8e7acce25ca50a3853d3b20c808598ed7d31209b25e5bd",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json"
+    },
+    {
+      "case": "60fps",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 18.585211760000007,
+      "bytes": 1524538,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6413111296,
+      "meanExternalCpuCores": 0.11012630263023009,
+      "maxExternalCpuCores": 1.0018424709560871,
+      "outputSha256": "abb493ffa21d4c9efd8e7acce25ca50a3853d3b20c808598ed7d31209b25e5bd",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/report.json"
+    },
+    {
+      "case": "4k",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 26.630036435999997,
+      "bytes": 5443865,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 8947150848,
+      "meanExternalCpuCores": 0.07679300011628883,
+      "maxExternalCpuCores": 0.999585687226222,
+      "outputSha256": "c70b7f56218c0190ba9b68730deb2adcfe83fd0095becd09244ff6dc387b0a0e",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json"
+    },
+    {
+      "case": "4k",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 26.779994435999992,
+      "bytes": 5443865,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 9010565120,
+      "meanExternalCpuCores": 0.1919699350951788,
+      "maxExternalCpuCores": 1.9997548230595512,
+      "outputSha256": "c70b7f56218c0190ba9b68730deb2adcfe83fd0095becd09244ff6dc387b0a0e",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json"
+    },
+    {
+      "case": "4k",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 24.975498808000005,
+      "bytes": 5443865,
+      "workers": "4",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 9115557888,
+      "meanExternalCpuCores": 0.12479573253544797,
+      "maxExternalCpuCores": 1.0037683415872733,
+      "outputSha256": "c70b7f56218c0190ba9b68730deb2adcfe83fd0095becd09244ff6dc387b0a0e",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json"
+    },
+    {
+      "case": "4k",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 25.256486987000002,
+      "bytes": 3504538,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 8921513984,
+      "meanExternalCpuCores": 0,
+      "maxExternalCpuCores": 0,
+      "outputSha256": "46c9fde3404512ca9053ad30e2628e7ac72c15005b201d135c76c970d39758a9",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json"
+    },
+    {
+      "case": "4k",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 24.225455804,
+      "bytes": 3504538,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 9192804352,
+      "meanExternalCpuCores": 0.1655825645277874,
+      "maxExternalCpuCores": 1.0007604828947532,
+      "outputSha256": "46c9fde3404512ca9053ad30e2628e7ac72c15005b201d135c76c970d39758a9",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json"
+    },
+    {
+      "case": "4k",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 24.007486374999978,
+      "bytes": 3504538,
+      "workers": "4",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 8876339200,
+      "meanExternalCpuCores": 0.04321787578639177,
+      "maxExternalCpuCores": 0.9985112217653472,
+      "outputSha256": "46c9fde3404512ca9053ad30e2628e7ac72c15005b201d135c76c970d39758a9",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/report.json"
+    },
+    {
+      "case": "chunk-boundary",
+      "renderer": "browser",
+      "pair": 0,
+      "wallSeconds": 97.26011807100001,
+      "bytes": 18206508,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6758850560,
+      "meanExternalCpuCores": 0.1133535763369885,
+      "maxExternalCpuCores": 1.9926002061482244,
+      "outputSha256": "b8aa42a250111092207d3496d4b1597519c991b235c4883580aa6cd3c60281f1",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/0-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json"
+    },
+    {
+      "case": "chunk-boundary",
+      "renderer": "browser",
+      "pair": 1,
+      "wallSeconds": 97.34355729699996,
+      "bytes": 18206508,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6945947648,
+      "meanExternalCpuCores": 0.09273836042242412,
+      "maxExternalCpuCores": 1.005820388385117,
+      "outputSha256": "b8aa42a250111092207d3496d4b1597519c991b235c4883580aa6cd3c60281f1",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/1-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json"
+    },
+    {
+      "case": "chunk-boundary",
+      "renderer": "browser",
+      "pair": 2,
+      "wallSeconds": 97.77808229500003,
+      "bytes": 18206508,
+      "workers": "8",
+      "encoderInputs": "image2pipe",
+      "peakSummedRssBytes": 6779346944,
+      "meanExternalCpuCores": 0.10305212148431182,
+      "maxExternalCpuCores": 1.0050337042726147,
+      "outputSha256": "b8aa42a250111092207d3496d4b1597519c991b235c4883580aa6cd3c60281f1",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/2-browser.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json"
+    },
+    {
+      "case": "chunk-boundary",
+      "renderer": "remotion",
+      "pair": 0,
+      "wallSeconds": 76.285306807,
+      "bytes": 12297599,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6808031232,
+      "meanExternalCpuCores": 0.06629562380112472,
+      "maxExternalCpuCores": 1.0006166795593237,
+      "outputSha256": "59826b6bdb9490f9a78c2fb8b62d339186fcc4cfa9c6fedb994b2e27325af3aa",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/0-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json"
+    },
+    {
+      "case": "chunk-boundary",
+      "renderer": "remotion",
+      "pair": 1,
+      "wallSeconds": 75.835779041,
+      "bytes": 12297599,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6768111616,
+      "meanExternalCpuCores": 0.07982135847947765,
+      "maxExternalCpuCores": 1.0039069594269756,
+      "outputSha256": "59826b6bdb9490f9a78c2fb8b62d339186fcc4cfa9c6fedb994b2e27325af3aa",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/1-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json"
+    },
+    {
+      "case": "chunk-boundary",
+      "renderer": "remotion",
+      "pair": 2,
+      "wallSeconds": 76.25680150299996,
+      "bytes": 12297599,
+      "workers": "8",
+      "encoderInputs": "remotionshm",
+      "peakSummedRssBytes": 6990127104,
+      "meanExternalCpuCores": 0.10507696896136293,
+      "maxExternalCpuCores": 1.9985300691432029,
+      "outputSha256": "59826b6bdb9490f9a78c2fb8b62d339186fcc4cfa9c6fedb994b2e27325af3aa",
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/2-remotion.mp4",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/report.json"
+    }
+  ]
+}
