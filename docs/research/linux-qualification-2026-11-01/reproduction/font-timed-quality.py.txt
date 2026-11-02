@@ -6,20 +6,32 @@ ROOT=Path(__file__).resolve().parent
 REPO=Path('/home/razorjack/Projects/opensource/setcast')
 mode=sys.argv[1]
 assert mode in ('tune','timing')
-index=json.loads((ROOT/'font-quality-index.json').read_text())
-jobs=[]
+references=json.loads((ROOT/'font-quality-index.json').read_text())
+index_path=ROOT/(mode+'-quality-index.json')
+index=json.loads(index_path.read_text()) if index_path.exists() else {}
+jobs=[];completed=[]
 for comparison in sorted(ROOT.glob(mode+'-*/report.json')):
     report=json.loads(comparison.read_text())
+    if not isinstance(report.get('runs'),list):continue
     name=Path(report['config']['project']).name
-    reference=Path(index[name])/'reference/reference.json'
+    reference=Path(references[name])/'reference/reference.json'
     for run in report['runs']:
-        label=comparison.parent.name+f"-quality-{run['index']}-{run['renderer']}"
+        base=comparison.parent.name+f"-quality-{run['index']}-{run['renderer']}"
+        attempts=index.setdefault(base,[])
+        measured=next((Path(p) for p in reversed(attempts) if (Path(p)/'report.json').exists() and json.loads((Path(p)/'report.json').read_text())['status']=='measured' and (ROOT/(Path(p).name+'.exit.txt')).exists() and (ROOT/(Path(p).name+'.exit.txt')).read_text().strip()=='0'),None)
+        if measured:
+            completed.append({'label':measured.name,'exitCode':0,'reusedMeasurement':True});continue
+        label=base+(f'-retry-{len(attempts)}' if attempts else '')
+        output=ROOT/label
+        assert not output.exists(),output
+        attempts.append(str(output))
         jobs.append((label,reference,comparison,run['result']['file']))
+index_path.write_text(json.dumps(index,indent=2)+'\n')
 def verify(job):
     label,reference,comparison,video=job
     result=subprocess.run(['bash',str(ROOT/'run.sh'),label,'node','scripts/render-quality.ts','--reference',str(reference),'--video',video,'--comparison',str(comparison),'--out',str(ROOT/label)],cwd=REPO)
     return {'label':label,'exitCode':result.returncode}
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-    results=list(pool.map(verify,jobs))
+with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+    results=completed+list(pool.map(verify,jobs))
 (ROOT/(mode+'-quality-results.json')).write_text(json.dumps(results,indent=2)+'\n')
 assert all(r['exitCode']==0 for r in results),results

@@ -8,7 +8,9 @@ Linux execution is in progress. [Retained evidence](research/linux-qualification
 records graphics-default, font-hinting and Quicksilver clip fixes, production correctness, fresh installations,
 short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains unqualified.
 Current upstream has a separate named shared-memory leak after injected encoder failure;
-successful-export quality and quiet comparisons are still in progress.
+all eleven successful-export calibration cases pass. All 55 quiet worker-screening pairs
+meet the required quality comparisons, with every one of their 110 outputs measured and
+checked for black frames. Three-pair throughput comparisons and additional live checks remain pending.
 The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
 change the release criteria or authorize default promotion.
 
@@ -76,7 +78,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
 | Transparent/editing output | ProRes 4444 + PCM in MOV; transparent PNG stills; locally checked | Not exposed by the Setcast adapter |
-| Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
+| Hardware encoding | VideoToolbox checked on M1 Pro; NVENC checked on Fedora x64 / RTX 3070 Ti, including a decoded 120-second synthetic export | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
 | Concurrency | Automatic 1/2/4 from stable CPU/memory limits; explicit 1–8 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |
@@ -103,8 +105,8 @@ Setcast's conditional image-sequence fallback. See
 [shared-memory capture](https://www.remotion.dev/docs/shared-memory-capture).
 
 Upstream also provides six video codecs (H.264, H.265, VP8, VP9, AV1 and ProRes), hardware
-encoding, Studio and distributed rendering. Setcast currently exposes only H.264/AAC video through
-either adapter. Codec support and cloud distribution are separate comparisons from the installed
+encoding, Studio and distributed rendering. Setcast exposes H.264/AAC through both adapters
+and ProRes 4444/PCM through the browser adapter. Broader codec support and cloud distribution are separate comparisons from the installed
 Setcast integration. See [encoding](https://www.remotion.dev/docs/encoding),
 [hardware acceleration](https://www.remotion.dev/docs/hardware-acceleration) and
 [Lambda](https://www.remotion.dev/docs/lambda).
@@ -139,9 +141,11 @@ macOS. It is neither a shared-memory benchmark nor proof that a current upstream
 has the failure. Keep production pinned until a deliberate upgrade passes failure tests. A new
 upstream comparison must include that regression without changing Node's rejection policy.
 
-The [current 4.0.539 exercise](research/remotion-539-2026-10-29/README.md) passes export acceptance
-and the caught-error/destination checks using shared-memory capture. Named pool cleanup and the
-full matched-quality comparison remain unverified. Additional native and 4.0.535 research at
+The [29 October 4.0.539 exercise](research/remotion-539-2026-10-29/README.md) passes export acceptance
+and the caught-error/destination checks using shared-memory capture. That earlier exercise
+did not verify named pool cleanup or the full matched-quality comparison. The Linux continuation now reproduces a named-pool leak after injected encoder
+failure and passes all eleven fidelity calibration cases; final quiet comparisons remain pending.
+Additional native and 4.0.535 research at
 `prototype/native-capture` commit `308b1cc` is summarized there, including per-play layout limits
 and intermittent POSIX-pool leaks in the older upstream version.
 

@@ -1,0 +1,39 @@
+{
+  "scope": "Host named Remotion pools immediately before and after the complete comparison command; no resources deleted.",
+  "before": {
+    "rmshm-7284829172597860390": {
+      "inode": 7049,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-13983776585987463118": {
+      "inode": 5148,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "after": {
+    "rmshm-7284829172597860390": {
+      "inode": 7049,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-13983776585987463118": {
+      "inode": 5148,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "remainingNewPools": {},
+  "exitCode": 0
+}

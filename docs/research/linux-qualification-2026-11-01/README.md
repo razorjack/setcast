@@ -1,11 +1,13 @@
-# Linux qualification, 1 November 2026
+# Linux qualification, started 1 November 2026
 
 Status: in progress. Production correctness, final fresh candidate installations, required
 NVENC, decoded 120-second software/NVENC fixtures and the 3,000-capture bitmap resource check
 pass on this Fedora x64 host. Three Linux fixes are committed; graphics use SwiftShader.
 Current Remotion 4.0.539 has a reproduced named shared-memory leak after injected encoder
-failure. Ten of eleven common-font fidelity cases pass; the long case, quiet timing and
-additional live checks remain in progress. Real-master Linux assets are missing. Windows
+failure. All eleven common-font fidelity cases pass, including full encoded black-frame scans
+and inspected art/chunk transitions. All 55 worker-screening pairs meet every required quality
+comparison, and all 110 outputs pass black-frame scans. Final repeated timing and additional
+live checks remain pending. Real-master Linux assets are missing. Windows
 remains unqualified, the shared Quicksilver CSS fix needs affected macOS repetition, and
 main's default remains Remotion.
 
@@ -27,6 +29,60 @@ examples/demo/out/linux-qualification-2026-11-01.
 The host inventory is a multi-command diagnostic transcript; its final exit
 status does not mark every probe successful. In particular pnpm was absent from
 PATH and nvidia-smi failed.
+
+## Current evidence
+
+| Area | Observed result and scope | Evidence |
+| --- | --- | --- |
+| Production baseline | Formatting, lint/types, 688 tests, dependency isolation and decoded smoke pass. | [Latest baseline log](tuning-evidence-ready.txt) |
+| Source and encoded correctness | All 32 theme/orientation worker cases are exact across 1/2/4 workers. Final Quicksilver reruns pass all 64 video cases and repeated static/video worker checks. | [Workers](font-workers.json), [video matrix](quicksilver-fixed-video.json), [looping-video workers](quicksilver-video-workers.json) |
+| Cache, resume, preview and ProRes | Final affected checks pass. ProRes establishes FFmpeg decoding/compositing, not an editor or OBS receiver. | [Preparation](font-preparation.json), [preview exports](font-preview-exports-results.json), [ProRes](font-prores.json) |
+| Fresh candidate installation | Candidate `5159395` passes browser-only and separate optional-Remotion installations. Browser-only inventory contains no Remotion packages. | [Browser installation](quicksilver-installed-browser.json), [compatibility installation](quicksilver-installed-compatibility.json) |
+| NVENC | Actual required `h264_nvenc` acceptance/color/resume and a fully decoded synthetic 120-second export pass on RTX 3070 Ti / driver 615.78.08. | [Acceptance](font-nvenc-acceptance.txt), [endurance](font-nvenc-endurance.json) |
+| Resources | 3,000 bitmap captures release all URLs. The 120-second software export passes full decode and four stereo alignment windows; real-master assets remain unavailable. | [Bitmap summary](font-video-memory-summary.json), [software summary](font-export-short-summary.json), [decoded verification](font-software-decoded.json) |
+| Current-upstream fidelity | All eleven calibration cases meet every full/regional min/p05/mean PSNR/SSIM and VMAF NEG comparison. All 22 encoded files pass black-frame scans; selected art/join frames were inspected. | [Metrics](calibration-summary.json), [black-frame scans](calibration-blackframe-results.json), [transition inspection](font-transition-inspections.json) |
+| Current-upstream failure cleanup | Remotion 4.0.539 leaves an 8,294,464-byte named pool after injected encoder failure, reproduced three times. Successful export cleanup does not supersede this failure. | [Diagnosis](upstream-cleanup.md), [final observer](final-upstream-shm-failure.json) |
+| Throughput | All 55 screening pairs pass every required quality comparison, and all 110 outputs pass black-frame scans. Three alternating final pairs remain pending. Loaded calibration times are excluded. | [Screening quality](tune-summary.json), [runtime/load/cleanup audit](tune-audit.json), [black-frame scans](tune-blackframe-results.json). |
+| Additional Linux CI/live | Remaining candidate checks and live endurance are pending. | No pass is inferred from a workflow definition. |
+
+Final production source fix: `a5a8bbe`. Final candidate: `5159395`. Final current-upstream
+comparison: `5d026a6`, with Remotion 4.0.539 / Chromium 157.0.8080.0. Browser capture uses
+Playwright 1.64.1 / Chromium 156.0.8078.4 and system FFmpeg 8.1.3. Both comparison arms use
+observed SwiftShader; NVENC is a separate encoding qualification. Runtime binary hashes are
+retained in [runtime-binaries.json](runtime-binaries.json).
+
+## Comparison method
+
+The quiet comparison uses the frozen `software-corpus/manifest.json` in the raw evidence
+directory and current-upstream checkout `5d026a6`. Both adapters use observed SwiftShader,
+software H.264 and the medium x264 preset. Browser uses JPEG 100 / CRF 16; Remotion uses
+CRF 18 with its observed shared-memory encoder input. Original mismatched-font calibration
+is retained but excluded from matched-quality claims.
+
+The first ten references and calibration arms were produced at `a53bcca`; the chunk-boundary
+reference uses `5d026a6`. The intervening production change affects only Quicksilver CSS,
+which none of these corpus cases selects, plus the video harness artifact naming. Selected
+theme and renderer code is unchanged. Every quiet comparison uses final revision `5d026a6`.
+See the [source provenance check](reference-source-provenance.json).
+
+Worker screening tests 1, 2, 4, 8 and automatic concurrency independently for both adapters.
+One pair per setting selects provisional settings; screening variance is not characterized.
+Every screening output must then meet the existing quality comparisons before those settings
+are used in three alternating final pairs per workload. All retained final outputs receive
+the same measurements, including every full-frame/text-region minimum, p05 and mean
+PSNR/SSIM and VMAF NEG against the matching retained lossless reference.
+
+Each timed arm requires a five-second pre-run CPU-busy sample at or below 15%; the harness
+waits at most 60 seconds before failing the attempt. Logs retain these samples. Exports
+record system load and sampled process-tree/external CPU and RSS. Summed RSS can double-count
+shared pages, and process sampling can miss short-lived work. No own validation, quality,
+endurance, hashing or baseline job runs during a quiet timing stage.
+
+Timing includes project loading through cleanup, excluding identity calculation and output
+verification. Sessions are fresh, but process and OS caches are shared. These are not
+cold-boot or freshly downloaded-runtime timings. Loaded calibration and resource-run wall
+times do not establish comparative throughput. The release objective remains at least 30%
+lower median wall time in every predefined workload at matched quality.
 
 ## Chronological observations
 
@@ -251,3 +307,15 @@ Quicksilver is committed as `a5a8bbe`; candidate merge is `5159395`. The additio
 The font-aligned 3,000-capture bitmap repeat passes with 3,000 created/revoked URLs, peak two active and zero after close. Peak sampled summed RSS is 2,294,538,240 bytes; four interval medians are 2,234,908,672 / 2,173,059,072 / 2,178,424,832 / 2,209,171,456 bytes. Final NVENC has 43 samples and peak summed RSS 3,989,204,992 bytes. These fixtures use Sterile Tech and are unaffected by the later Quicksilver-only CSS fix. The last software export repeat is running.
 
 Final candidate `5159395` passes ready, both acceptance suites and fresh browser-only/optional-Remotion installation. Current-upstream `5d026a6` passes ready and both acceptance suites. The software resource repeat on `a5a8bbe` passes 120 seconds/3,600 frames with 79 samples, peak summed RSS 3,082,993,664 bytes and no final temporary directories. Separate decoding of that exact file passes all frames and four stereo windows. The ten completed common-font fidelity cases pass every full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG comparison; the long chunk-boundary case is still running. Their selected themes and renderer code are unchanged by the Quicksilver-only fix; final timed outputs will all be measured on `5d026a6`.
+
+The final `5d026a6` upstream encoder-failure repeat reproduces the leak a third time: `rmshm-7284829172597860390`, inode 7049, 8,294,464 bytes, remains after process exit. The child harness passes destination and temporary-directory assertions; the independent host observer exits 1. No other Remotion export was running during this observation. No library dependency or fast path was patched for the comparison.
+
+All eleven common-font corpus cases now meet every full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG comparison. All 22 encoded outputs pass full black-frame scans. Midpoint sheets for all cases and before/at/after sheets for DJ/portrait/chunk art changes and the chunk join were inspected. The partially folding long-case midpoint credit matches panelMotion handover to the visible tracklist; it is not missing output. Calibration ran under load and its wall times are excluded from throughput claims. The official registry recheck immediately before timing still returns Remotion 4.0.539. Quiet worker screening will cover 1/2/4/8/auto for both adapters, followed by three alternating pairs with selected settings. Every retained timed output will receive the same quality measurements after timing stops.
+
+Quiet screening completed all 55 pairs on final comparison revision `5d026a6`: five worker settings for each of eleven workloads. Every comparison exits successfully and leaves no new named Remotion pool. All 110 encoded outputs remain retained. Quality verification of every screening output follows before selecting settings for the three-pair series; these screening timings do not establish the release target.
+
+All 110 screening outputs complete quality measurement without errors. Every one of the 55 paired comparisons meets the unchanged full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG requirements; all videos also pass full black-frame scans. Every timed arm starts within the 15% CPU-busy limit (highest accepted rounded sample 12.4%). The largest sampled mean external load is 3.4024 of 32 CPU cores; this variation remains reported. Source/runtime/cleanup audit confirms clean final revision `5d026a6`, SwiftShader and software encoding throughout, with no new named pools after successful comparisons. The official registry recheck still returns 4.0.539. Final three-pair measurements follow after the evidence checkpoint; no release-speed conclusion is inferred from screening.
+
+The screening evidence checkpoint passes `vp run ready`: formatting, lint/types, all 688 tests in 115 files, dependency isolation and decoded smoke. No renderer source changed during calibration verification or quiet screening. Final repeated timing remains pending.
+
+Git’s optional whitespace check reports the trailing separators written by `printf '%q '` in retained command transcripts. Those raw records are preserved unchanged; this is not a renderer or baseline-check failure. The complete check output is retained as `screening-transcript-whitespace.txt`.

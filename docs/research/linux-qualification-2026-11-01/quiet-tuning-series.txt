@@ -1,0 +1,1056 @@
+Pre-run system CPU busy: 1.6%
+Pair 1/1: browser
+Pre-run system CPU busy: 2.2%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 34.917152852,
+    "minSeconds": 34.917152852,
+    "maxSeconds": 34.917152852
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 32.217267539999995,
+    "minSeconds": 32.217267539999995,
+    "maxSeconds": 32.217267539999995
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-1/report.json
+Pre-run system CPU busy: 1.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.2%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 22.18541545,
+    "minSeconds": 22.18541545,
+    "maxSeconds": 22.18541545
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 18.489486589,
+    "minSeconds": 18.489486589,
+    "maxSeconds": 18.489486589
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-2/report.json
+Pre-run system CPU busy: 1.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.7%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 17.982887604999995,
+    "minSeconds": 17.982887604999995,
+    "maxSeconds": 17.982887604999995
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.100194945000002,
+    "minSeconds": 17.100194945000002,
+    "maxSeconds": 17.100194945000002
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-4/report.json
+Pre-run system CPU busy: 1.2%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.2%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 16.893605741,
+    "minSeconds": 16.893605741,
+    "maxSeconds": 16.893605741
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.016576506,
+    "minSeconds": 17.016576506,
+    "maxSeconds": 17.016576506
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-8/report.json
+Pre-run system CPU busy: 0.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 17.393997855000002,
+    "minSeconds": 17.393997855000002,
+    "maxSeconds": 17.393997855000002
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.115290201,
+    "minSeconds": 17.115290201,
+    "maxSeconds": 17.115290201
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-auto/report.json
+Pre-run system CPU busy: 0.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 35.641818789000006,
+    "minSeconds": 35.641818789000006,
+    "maxSeconds": 35.641818789000006
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 33.885317757,
+    "minSeconds": 33.885317757,
+    "maxSeconds": 33.885317757
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-1/report.json
+Pre-run system CPU busy: 0.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.7%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 21.602717321,
+    "minSeconds": 21.602717321,
+    "maxSeconds": 21.602717321
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 20.680351481,
+    "minSeconds": 20.680351481,
+    "maxSeconds": 20.680351481
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-2/report.json
+Pre-run system CPU busy: 1.0%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 16.04171063,
+    "minSeconds": 16.04171063,
+    "maxSeconds": 16.04171063
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.369565579,
+    "minSeconds": 17.369565579,
+    "maxSeconds": 17.369565579
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-4/report.json
+Pre-run system CPU busy: 0.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.7%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 16.048048689999998,
+    "minSeconds": 16.048048689999998,
+    "maxSeconds": 16.048048689999998
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.165063043,
+    "minSeconds": 17.165063043,
+    "maxSeconds": 17.165063043
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-8/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.3%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 15.843910988000001,
+    "minSeconds": 15.843910988000001,
+    "maxSeconds": 15.843910988000001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.125832494999994,
+    "minSeconds": 17.125832494999994,
+    "maxSeconds": 17.125832494999994
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-auto/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 36.21551479399999,
+    "minSeconds": 36.21551479399999,
+    "maxSeconds": 36.21551479399999
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 31.17340503100001,
+    "minSeconds": 31.17340503100001,
+    "maxSeconds": 31.17340503100001
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-1/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 21.849800941,
+    "minSeconds": 21.849800941,
+    "maxSeconds": 21.849800941
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.861547304,
+    "minSeconds": 19.861547304,
+    "maxSeconds": 19.861547304
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 18.731229651000003,
+    "minSeconds": 18.731229651000003,
+    "maxSeconds": 18.731229651000003
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 18.628129218,
+    "minSeconds": 18.628129218,
+    "maxSeconds": 18.628129218
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-4/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 18.149678747,
+    "minSeconds": 18.149678747,
+    "maxSeconds": 18.149678747
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 18.612049225000003,
+    "minSeconds": 18.612049225000003,
+    "maxSeconds": 18.612049225000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-8/report.json
+Pre-run system CPU busy: 0.5%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 18.365275631,
+    "minSeconds": 18.365275631,
+    "maxSeconds": 18.365275631
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 18.823226642,
+    "minSeconds": 18.823226642,
+    "maxSeconds": 18.823226642
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-auto/report.json
+Pre-run system CPU busy: 0.5%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.1%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 37.508800581,
+    "minSeconds": 37.508800581,
+    "maxSeconds": 37.508800581
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 31.965696438,
+    "minSeconds": 31.965696438,
+    "maxSeconds": 31.965696438
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-1/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 23.121702871999997,
+    "minSeconds": 23.121702871999997,
+    "maxSeconds": 23.121702871999997
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 20.266501401000003,
+    "minSeconds": 20.266501401000003,
+    "maxSeconds": 20.266501401000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-2/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 19.000334665,
+    "minSeconds": 19.000334665,
+    "maxSeconds": 19.000334665
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 18.957219788000003,
+    "minSeconds": 18.957219788000003,
+    "maxSeconds": 18.957219788000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-4/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 19.087366852,
+    "minSeconds": 19.087366852,
+    "maxSeconds": 19.087366852
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.138604156,
+    "minSeconds": 19.138604156,
+    "maxSeconds": 19.138604156
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-8/report.json
+Pre-run system CPU busy: 0.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.3%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 18.934110671000003,
+    "minSeconds": 18.934110671000003,
+    "maxSeconds": 18.934110671000003
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.129097522000002,
+    "minSeconds": 19.129097522000002,
+    "maxSeconds": 19.129097522000002
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-auto/report.json
+Pre-run system CPU busy: 0.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.3%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 75.51172110899999,
+    "minSeconds": 75.51172110899999,
+    "maxSeconds": 75.51172110899999
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 72.135571225,
+    "minSeconds": 72.135571225,
+    "maxSeconds": 72.135571225
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-1/report.json
+Pre-run system CPU busy: 0.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 46.649129036000005,
+    "minSeconds": 46.649129036000005,
+    "maxSeconds": 46.649129036000005
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 48.891317023000006,
+    "minSeconds": 48.891317023000006,
+    "maxSeconds": 48.891317023000006
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-2/report.json
+Pre-run system CPU busy: 0.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 47.53809097,
+    "minSeconds": 47.53809097,
+    "maxSeconds": 47.53809097
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 50.456844921999995,
+    "minSeconds": 50.456844921999995,
+    "maxSeconds": 50.456844921999995
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-4/report.json
+Pre-run system CPU busy: 3.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 51.424553206999995,
+    "minSeconds": 51.424553206999995,
+    "maxSeconds": 51.424553206999995
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 57.63827267999999,
+    "minSeconds": 57.63827267999999,
+    "maxSeconds": 57.63827267999999
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-8/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 47.274460506,
+    "minSeconds": 47.274460506,
+    "maxSeconds": 47.274460506
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 60.138345382,
+    "minSeconds": 60.138345382,
+    "maxSeconds": 60.138345382
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-auto/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 81.36212111500001,
+    "minSeconds": 81.36212111500001,
+    "maxSeconds": 81.36212111500001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 46.85508209100001,
+    "minSeconds": 46.85508209100001,
+    "maxSeconds": 46.85508209100001
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-1/report.json
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 43.598399393,
+    "minSeconds": 43.598399393,
+    "maxSeconds": 43.598399393
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 29.603858503999994,
+    "minSeconds": 29.603858503999994,
+    "maxSeconds": 29.603858503999994
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-2/report.json
+Pre-run system CPU busy: 2.2%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.7%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 27.435939203999997,
+    "minSeconds": 27.435939203999997,
+    "maxSeconds": 27.435939203999997
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.928637246999998,
+    "minSeconds": 19.928637246999998,
+    "maxSeconds": 19.928637246999998
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-4/report.json
+Pre-run system CPU busy: 0.6%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 25.800396330999998,
+    "minSeconds": 25.800396330999998,
+    "maxSeconds": 25.800396330999998
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.016447870000004,
+    "minSeconds": 17.016447870000004,
+    "maxSeconds": 17.016447870000004
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-8/report.json
+Pre-run system CPU busy: 3.1%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 28.564843526999997,
+    "minSeconds": 28.564843526999997,
+    "maxSeconds": 28.564843526999997
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.441905377,
+    "minSeconds": 17.441905377,
+    "maxSeconds": 17.441905377
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-auto/report.json
+Pre-run system CPU busy: 0.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 34.936539413,
+    "minSeconds": 34.936539413,
+    "maxSeconds": 34.936539413
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 33.128504502999995,
+    "minSeconds": 33.128504502999995,
+    "maxSeconds": 33.128504502999995
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-1/report.json
+Pre-run system CPU busy: 2.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 20.044339444,
+    "minSeconds": 20.044339444,
+    "maxSeconds": 20.044339444
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.535536548000003,
+    "minSeconds": 19.535536548000003,
+    "maxSeconds": 19.535536548000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-2/report.json
+Pre-run system CPU busy: 0.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 17.879424661,
+    "minSeconds": 17.879424661,
+    "maxSeconds": 17.879424661
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 15.717589188000002,
+    "minSeconds": 15.717589188000002,
+    "maxSeconds": 15.717589188000002
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-4/report.json
+Pre-run system CPU busy: 0.5%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.3%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 18.372634318,
+    "minSeconds": 18.372634318,
+    "maxSeconds": 18.372634318
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 16.449706745,
+    "minSeconds": 16.449706745,
+    "maxSeconds": 16.449706745
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-8/report.json
+Pre-run system CPU busy: 4.5%
+Pair 1/1: browser
+Pre-run system CPU busy: 6.3%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 18.119092519,
+    "minSeconds": 18.119092519,
+    "maxSeconds": 18.119092519
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 16.62446249,
+    "minSeconds": 16.62446249,
+    "maxSeconds": 16.62446249
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-auto/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 5.6%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.0%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 44.913643213,
+    "minSeconds": 44.913643213,
+    "maxSeconds": 44.913643213
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 40.097717540000005,
+    "minSeconds": 40.097717540000005,
+    "maxSeconds": 40.097717540000005
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-1/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 7.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.2%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 26.509230635,
+    "minSeconds": 26.509230635,
+    "maxSeconds": 26.509230635
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 26.014323731000005,
+    "minSeconds": 26.014323731000005,
+    "maxSeconds": 26.014323731000005
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-2/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 9.0%
+Pair 1/1: browser
+Pre-run system CPU busy: 7.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 21.81155197,
+    "minSeconds": 21.81155197,
+    "maxSeconds": 21.81155197
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 23.283120565000004,
+    "minSeconds": 23.283120565000004,
+    "maxSeconds": 23.283120565000004
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-4/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 12.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 22.211841756000002,
+    "minSeconds": 22.211841756000002,
+    "maxSeconds": 22.211841756000002
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 23.479137676000004,
+    "minSeconds": 23.479137676000004,
+    "maxSeconds": 23.479137676000004
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-8/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 7.1%
+Pair 1/1: browser
+Pre-run system CPU busy: 9.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 22.201756575,
+    "minSeconds": 22.201756575,
+    "maxSeconds": 22.201756575
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 24.401692033,
+    "minSeconds": 24.401692033,
+    "maxSeconds": 24.401692033
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-auto/report.json
+Pre-run system CPU busy: 9.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 9.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 42.626504363,
+    "minSeconds": 42.626504363,
+    "maxSeconds": 42.626504363
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 38.775701266999995,
+    "minSeconds": 38.775701266999995,
+    "maxSeconds": 38.775701266999995
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-1/report.json
+Pre-run system CPU busy: 9.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 12.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 26.72914729,
+    "minSeconds": 26.72914729,
+    "maxSeconds": 26.72914729
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 22.461099467999993,
+    "minSeconds": 22.461099467999993,
+    "maxSeconds": 22.461099467999993
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-2/report.json
+Pre-run system CPU busy: 7.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 7.5%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 21.054561446,
+    "minSeconds": 21.054561446,
+    "maxSeconds": 21.054561446
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 20.286237901,
+    "minSeconds": 20.286237901,
+    "maxSeconds": 20.286237901
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-4/report.json
+Pre-run system CPU busy: 7.2%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.1%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 20.049111929,
+    "minSeconds": 20.049111929,
+    "maxSeconds": 20.049111929
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 20.205840408000004,
+    "minSeconds": 20.205840408000004,
+    "maxSeconds": 20.205840408000004
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-8/report.json
+Pre-run system CPU busy: 8.1%
+Pair 1/1: browser
+Pre-run system CPU busy: 10.0%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 21.57671299,
+    "minSeconds": 21.57671299,
+    "maxSeconds": 21.57671299
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 20.709732883999997,
+    "minSeconds": 20.709732883999997,
+    "maxSeconds": 20.709732883999997
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-auto/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 7.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.1%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 44.306933582,
+    "minSeconds": 44.306933582,
+    "maxSeconds": 44.306933582
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 41.559809302000005,
+    "minSeconds": 41.559809302000005,
+    "maxSeconds": 41.559809302000005
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-1/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 15.7%
+Pre-run system CPU busy: 12.1%
+Pair 1/1: browser
+Pre-run system CPU busy: 9.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 26.765055651999994,
+    "minSeconds": 26.765055651999994,
+    "maxSeconds": 26.765055651999994
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 27.160393060999994,
+    "minSeconds": 27.160393060999994,
+    "maxSeconds": 27.160393060999994
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-2/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 9.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.1%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 25.15795936,
+    "minSeconds": 25.15795936,
+    "maxSeconds": 25.15795936
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 25.58252613600001,
+    "minSeconds": 25.58252613600001,
+    "maxSeconds": 25.58252613600001
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-4/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 7.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 9.0%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 25.229574825,
+    "minSeconds": 25.229574825,
+    "maxSeconds": 25.229574825
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 27.003007889,
+    "minSeconds": 27.003007889,
+    "maxSeconds": 27.003007889
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-8/report.json
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 10.1%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 44.326801331000006,
+    "minSeconds": 44.326801331000006,
+    "maxSeconds": 44.326801331000006
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 25.94928557,
+    "minSeconds": 25.94928557,
+    "maxSeconds": 25.94928557
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-auto/report.json
+Pre-run system CPU busy: 1.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 215.151532669,
+    "minSeconds": 215.151532669,
+    "maxSeconds": 215.151532669
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 181.610180777,
+    "minSeconds": 181.610180777,
+    "maxSeconds": 181.610180777
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1/report.json
+Pre-run system CPU busy: 1.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 115.93024467100001,
+    "minSeconds": 115.93024467100001,
+    "maxSeconds": 115.93024467100001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 104.55170801300002,
+    "minSeconds": 104.55170801300002,
+    "maxSeconds": 104.55170801300002
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-2/report.json
+Pre-run system CPU busy: 1.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 98.757526204,
+    "minSeconds": 98.757526204,
+    "maxSeconds": 98.757526204
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 78.35000842199999,
+    "minSeconds": 78.35000842199999,
+    "maxSeconds": 78.35000842199999
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-4/report.json
+Pre-run system CPU busy: 0.9%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 97.57098219400001,
+    "minSeconds": 97.57098219400001,
+    "maxSeconds": 97.57098219400001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 76.810138251,
+    "minSeconds": 76.810138251,
+    "maxSeconds": 76.810138251
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-8/report.json
+Pre-run system CPU busy: 1.6%
+Pair 1/1: browser
+Pre-run system CPU busy: 5.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 101.073930789,
+    "minSeconds": 101.073930789,
+    "maxSeconds": 101.073930789
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 78.38051470299999,
+    "minSeconds": 78.38051470299999,
+    "maxSeconds": 78.38051470299999
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-auto/report.json

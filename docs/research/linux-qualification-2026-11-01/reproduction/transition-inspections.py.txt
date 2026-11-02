@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+import concurrent.futures,json,subprocess
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+index=json.loads((ROOT/'font-quality-index.json').read_text())
+out=ROOT/'font-transition-inspections';out.mkdir()
+jobs=[('dj-art-branding','art',[89,90,91]),('portrait','art',[89,90,91]),('chunk-boundary','art',[509,510,511]),('chunk-boundary','join',[1799,1800,1801])]
+def make(job):
+    name,kind,frames=job;directory=Path(index[name]);reference=json.loads((directory/'reference/reference.json').read_text())
+    width=240 if reference['width']<reference['height'] else 480
+    inputs=[directory/'reference/reference.mkv',directory/'comparison/0-browser.mp4',directory/'comparison/0-remotion.mp4']
+    select='+'.join(f'eq(n\\,{frame})' for frame in frames)
+    filters=[f'[{i}:v]select={select},scale={width}:-1,tile=1x3[p{i}]' for i in range(3)]+['[p0][p1][p2]hstack=inputs=3']
+    file=out/f'{name}-{kind}.png';command=['ffmpeg','-hide_banner','-v','error']
+    for video in inputs:command+=['-threads','2','-i',str(video)]
+    command+=['-filter_complex_threads','2','-filter_complex',';'.join(filters),'-frames:v','1','-update','1',str(file)]
+    result=subprocess.run(command,capture_output=True,text=True)
+    return {'case':name,'kind':kind,'frameOffsets':frames,'file':str(file),'command':command,'exitCode':result.returncode,'output':result.stdout+result.stderr,'order':'Columns: lossless reference, browser, Remotion. Rows: the three listed frame offsets.'}
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:results=list(pool.map(make,jobs))
+(out/'report.json').write_text(json.dumps(results,indent=2)+'\n')
+assert all(r['exitCode']==0 for r in results),results

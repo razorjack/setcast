@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""Retain fixed-output harness artifacts only while their producers are stopped."""
+import json,shutil,sys
+from pathlib import Path
+root=Path(__file__).resolve().parent
+repo=Path('/home/razorjack/Projects/opensource/setcast')
+phase=sys.argv[1]
+assert phase in ('pre-candidate-ci','final')
+checkouts={'candidate':Path('/tmp/setcast-linux-browser-first')}
+if phase=='final':checkouts.update(production=repo,upstream=Path('/tmp/setcast-linux-current-upstream'))
+names=['webp-check','gpu-check','gpu-recovery-remotion','resume-check','resume-hardware-check','preview-check','export-verification','themes','output-check','transport-check','sequence-check','projection-check','energy-check','beat-check','branding-check','camera-check','midi-check']
+destination=root/(phase+'-fixed-output-artifacts')
+assert not destination.exists(),destination
+destination.mkdir()
+entries=[]
+for name,checkout in checkouts.items():
+    for directory in names:
+        source=checkout/'examples/demo/out'/directory
+        if source.exists():
+            target=destination/name/directory
+            shutil.copytree(source,target,copy_function=shutil.copy2)
+            entries.append({'source':str(source),'retained':str(target)})
+    smoke=checkout/'examples/demo/out/smoke.mp4'
+    if smoke.exists():
+        target=destination/name/'smoke.mp4'
+        target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(smoke,target)
+        entries.append({'source':str(smoke),'retained':str(target)})
+report={'scope':'Copies of existing fixed-output harness directories and the latest smoke video, made after their producers stopped. Original paths remain provenance; retained paths are on the repository filesystem.', 'phase':phase,'artifacts':entries}
+(destination/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(report,indent=2))

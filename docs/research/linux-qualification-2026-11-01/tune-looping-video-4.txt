@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 2.2%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.7%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 27.435939203999997,
+    "minSeconds": 27.435939203999997,
+    "maxSeconds": 27.435939203999997
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.928637246999998,
+    "minSeconds": 19.928637246999998,
+    "maxSeconds": 19.928637246999998
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-4/report.json

@@ -1,0 +1,390 @@
+{
+  "version": 4,
+  "config": {
+    "project": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary",
+    "out": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1",
+    "at": 88,
+    "seconds": 63,
+    "repeat": 1,
+    "concurrency": 2,
+    "idleBusy": 0.15,
+    "overrides": {
+      "browser": {
+        "concurrency": 1,
+        "crf": 16,
+        "jpegQuality": 100
+      },
+      "remotion": {
+        "concurrency": 1,
+        "crf": 18
+      }
+    }
+  },
+  "identity": {
+    "frames": 1890,
+    "projectHash": "8eff5749562c7055d95606b7e574de90a04e7aecde833a3eddbfcaf781b9977c",
+    "assets": [
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary/assets/alternate.svg",
+        "sha256": "9e00807df5815010e88ff21d49e7994945015c649e06bd223c9a153269fcd273",
+        "bytes": 226,
+        "stamp": "54:1936431:226:1793565646491.962:1793565646491.962"
+      },
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary/assets/bg.png",
+        "sha256": "1a31d21f5fc9d211f7bc1cefce7de7aede07fcee0be210ce48817cba1ec3b201",
+        "bytes": 3049362,
+        "stamp": "54:1936430:3049362:1793565646491.818:1793565646491.818"
+      },
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary/assets/demo-set.wav",
+        "sha256": "b91642b751283fea92a1fb4958e52d9bf87fe5ce4da210b062c8feb70f651aed",
+        "bytes": 27250804,
+        "stamp": "54:1936429:27250804:1793565646491.6743:1793565646491.6743"
+      },
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary/assets/logo.svg",
+        "sha256": "cc718287eaf64eb1ea22887bee113ad76a537817df65af95f08fa52bc235cefa",
+        "bytes": 160,
+        "stamp": "54:1936432:160:1793565646492.0984:1793565646492.0984"
+      },
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary/setcast.yaml",
+        "sha256": "3c79b817d960ca8f9d48f9d8baf836767d26aa4fec51c2dd13294378ee33aa0b",
+        "bytes": 1401,
+        "stamp": "54:1936433:1401:1793565646907.0132:1793565646907.0132"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/core/css/base.css",
+        "sha256": "25dfb210b4914b4eb1ee7edba13216ab0fef205e8e7c0871934be5c64dbace81",
+        "bytes": 16741,
+        "stamp": "53:37859:16741:1793564227715.2285:1793564227715.2285"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-500-latin-ext.woff2",
+        "sha256": "d6c474644e6a96f801aa3bebb00186a313578ee3f4358becab48db20952942bb",
+        "bytes": 6584,
+        "stamp": "53:38349:6584:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-500-latin.woff2",
+        "sha256": "31ff5e6e96a096fde4d78bc838719e69b093db2d0b062b96e423c065a6d1b2b1",
+        "bytes": 14680,
+        "stamp": "53:38350:14680:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-600-latin-ext.woff2",
+        "sha256": "5fc394b4e782a16d27c157006e24c39dd39dab539d81e8204ce73d446c767af8",
+        "bytes": 6588,
+        "stamp": "53:38351:6588:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-600-latin.woff2",
+        "sha256": "5bc49d41f32810a114765314392332ce2acae2276635eee265a50319a12c1b49",
+        "bytes": 14844,
+        "stamp": "53:38352:14844:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-700-latin-ext.woff2",
+        "sha256": "f0da93f04334dda1e199a38f9b211907a862b83ecd0875120fe99d16f76de2e8",
+        "bytes": 6620,
+        "stamp": "53:38353:6620:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-700-latin.woff2",
+        "sha256": "e3e520cb7468f2efd60bc2ce96694567c3312f4ef414fffbe605e3ad146b24e6",
+        "bytes": 14888,
+        "stamp": "53:38354:14888:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/JetBrainsMono-100-800-latin-ext.woff2",
+        "sha256": "9541a1dbd48b9c9fab226f6b0b10911a0a8cc10ba9927f473905312f0f119556",
+        "bytes": 11548,
+        "stamp": "53:38383:11548:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/JetBrainsMono-100-800-latin.woff2",
+        "sha256": "1e06740a02a443fb7f3eeda8fcaa685a0f6c620e3f01e6666e847295469ce3ad",
+        "bytes": 40480,
+        "stamp": "53:38384:40480:1793564227743.7764:1793564227743.7764"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/sterile-tech/theme.css",
+        "sha256": "c97c97059c6f545949702f9c5d66a5ce12c8ec1d7980ce66260b45c49919606d",
+        "bytes": 35794,
+        "stamp": "53:38444:35794:1793564227746.3848:1793564227746.3848"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/textures/grain.png",
+        "sha256": "6432a61de5554ab3f7f9545c8239237e6c5c33e6f981f241a87993091adcd2f9",
+        "bytes": 753061,
+        "stamp": "53:38446:753061:1793564227747.7764:1793564227747.7764"
+      }
+    ],
+    "output": {
+      "codec": "h264",
+      "transparent": false,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "gl": "default",
+      "profile": "standard",
+      "parallelEncoding": true,
+      "x264Preset": "medium",
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "disable",
+      "crf": 18,
+      "jpegQuality": 95,
+      "file": "out/set.mp4"
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "startedAt": "2026-11-01T23:38:11.525Z",
+  "revision": "5d026a64293207d90753f002020737deaa66f39d",
+  "dirty": false,
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "linux",
+    "os": "7.2.13-200.fc44.x86_64",
+    "cpu": "AMD Ryzen 9 5950X 16-Core Processor"
+  },
+  "runtimePins": {
+    "playwright": "1.64.1",
+    "@remotion/renderer": "4.0.539",
+    "mediabunny": "1.50.8"
+  },
+  "runtimeObservation": "Per-run browser user agent, WebGL identity, capture workers and encoder decisions. Optional observation overhead is included in wall time.",
+  "timing": "Fresh sessions, shared process and OS caches. Includes loading through cleanup; excludes identity and verification.",
+  "runs": [
+    {
+      "renderer": "browser",
+      "index": 0,
+      "status": "passed",
+      "wallSeconds": 215.151532669,
+      "firstFrameProgressSeconds": 0.8866438129999997,
+      "result": {
+        "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1/0-browser.mp4",
+        "frames": 1890,
+        "durationSeconds": 63
+      },
+      "settings": {
+        "codec": "h264",
+        "profile": "standard",
+        "crf": 16,
+        "x264Preset": "medium",
+        "parallelEncoding": true,
+        "chunkSeconds": 60,
+        "hardwareAcceleration": "disable",
+        "jpegQuality": 100,
+        "gl": "default",
+        "concurrency": 1
+      },
+      "load": {
+        "samples": 215,
+        "meanSystemBusy": 0.1340604018956236,
+        "maxSystemBusy": 0.26857532379004767,
+        "initialLoadAverage": [
+          7.36,
+          6.16,
+          5.93
+        ],
+        "finalLoadAverage": [
+          3.01,
+          4.55,
+          5.34
+        ],
+        "nodeRssPeak": 817455104,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 216,
+        "intervals": 215,
+        "failedSamples": 0,
+        "seconds": 215.059271439,
+        "treeCpuSeconds": 580,
+        "externalCpuSeconds": 202,
+        "rssPeakBytes": 3071557632,
+        "maxTreeCpuCores": 5.012812483027556,
+        "maxExternalCpuCores": 5.9922480115110135,
+        "meanTreeCpuCores": 2.6969309256890734,
+        "meanExternalCpuCores": 0.9392759430848152,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      },
+      "verification": {
+        "frames": 1890,
+        "bytes": 18206508,
+        "decodedVideoHash": "SHA256=ef79c57e3b5292b88bb49206133fb91189ec1dcfeb0d99d9e7aebab163f9e57f",
+        "seconds": 18.77040128600001,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "projectDigest": "2e1d00e1e2fcce41d7893047133a96b8bb779be64c17413b21e01be902a34cd4",
+      "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933",
+      "outputDigest": "b8aa42a250111092207d3496d4b1597519c991b235c4883580aa6cd3c60281f1",
+      "runtime": [
+        {
+          "kind": "scheduling",
+          "workers": 1,
+          "reason": "explicit",
+          "cpuCount": 32,
+          "memoryBudgetBytes": 16822347776,
+          "estimatedMemoryBytes": 1173274624
+        },
+        {
+          "kind": "encoding-selection",
+          "encoder": "libx264",
+          "fallback": null
+        },
+        {
+          "kind": "capture",
+          "workers": 1,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "vendor": "Google Inc. (Google)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "remotion",
+      "index": 0,
+      "status": "passed",
+      "wallSeconds": 181.610180777,
+      "firstFrameProgressSeconds": 2.747446777000005,
+      "result": {
+        "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1/0-remotion.mp4",
+        "frames": 1890,
+        "durationSeconds": 63
+      },
+      "settings": {
+        "codec": "h264",
+        "profile": "standard",
+        "crf": 18,
+        "x264Preset": "medium",
+        "parallelEncoding": true,
+        "chunkSeconds": 60,
+        "hardwareAcceleration": "disable",
+        "jpegQuality": 95,
+        "gl": "default",
+        "concurrency": 1
+      },
+      "load": {
+        "samples": 181,
+        "meanSystemBusy": 0.08636966985394263,
+        "maxSystemBusy": 0.17933655839668283,
+        "initialLoadAverage": [
+          2.42,
+          4.32,
+          5.25
+        ],
+        "finalLoadAverage": [
+          1.73,
+          3.12,
+          4.61
+        ],
+        "nodeRssPeak": 1243799552,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 182,
+        "intervals": 181,
+        "failedSamples": 0,
+        "seconds": 181.42786855850005,
+        "treeCpuSeconds": 368,
+        "externalCpuSeconds": 37,
+        "rssPeakBytes": 2979794944,
+        "maxTreeCpuCores": 4.00252392955098,
+        "maxExternalCpuCores": 3.0007101105457594,
+        "meanTreeCpuCores": 2.0283543147140106,
+        "meanExternalCpuCores": 0.20393779794678912,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      },
+      "verification": {
+        "frames": 1890,
+        "bytes": 12297599,
+        "decodedVideoHash": "SHA256=540f3ab922e0725f28d9d6ceffd11328c14a5a4857831d05d06254deee570977",
+        "seconds": 18.754375682999964,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "projectDigest": "2e1d00e1e2fcce41d7893047133a96b8bb779be64c17413b21e01be902a34cd4",
+      "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933",
+      "outputDigest": "59826b6bdb9490f9a78c2fb8b62d339186fcc4cfa9c6fedb994b2e27325af3aa",
+      "runtime": [
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8080.0 Safari/537.36",
+          "capture": "not-observed",
+          "graphics": {
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "vendor": "Google Inc. (Google)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "capture",
+          "workers": 1,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "remotionshm",
+          "pipeline": "stream"
+        },
+        {
+          "kind": "capture",
+          "workers": 1,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "remotionshm",
+          "pipeline": "stream"
+        }
+      ]
+    }
+  ],
+  "status": "passed",
+  "error": null,
+  "summary": {
+    "browser": {
+      "runs": 1,
+      "medianSeconds": 215.151532669,
+      "minSeconds": 215.151532669,
+      "maxSeconds": 215.151532669
+    },
+    "remotion": {
+      "runs": 1,
+      "medianSeconds": 181.610180777,
+      "minSeconds": 181.610180777,
+      "maxSeconds": 181.610180777
+    }
+  }
+}

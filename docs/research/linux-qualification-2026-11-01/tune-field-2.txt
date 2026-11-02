@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.8%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 21.849800941,
+    "minSeconds": 21.849800941,
+    "maxSeconds": 21.849800941
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.861547304,
+    "minSeconds": 19.861547304,
+    "maxSeconds": 19.861547304
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2/report.json

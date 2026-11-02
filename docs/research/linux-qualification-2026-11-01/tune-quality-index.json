@@ -1,0 +1,332 @@
+{
+  "tune-4k-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-1-quality-0-browser"
+  ],
+  "tune-4k-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-1-quality-0-remotion"
+  ],
+  "tune-4k-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-2-quality-0-browser"
+  ],
+  "tune-4k-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-2-quality-0-remotion"
+  ],
+  "tune-4k-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-4-quality-0-browser"
+  ],
+  "tune-4k-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-4-quality-0-remotion"
+  ],
+  "tune-4k-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-8-quality-0-browser"
+  ],
+  "tune-4k-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-8-quality-0-remotion"
+  ],
+  "tune-4k-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-auto-quality-0-browser"
+  ],
+  "tune-4k-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-auto-quality-0-remotion"
+  ],
+  "tune-60fps-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-1-quality-0-browser"
+  ],
+  "tune-60fps-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-1-quality-0-remotion"
+  ],
+  "tune-60fps-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-2-quality-0-browser"
+  ],
+  "tune-60fps-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-2-quality-0-remotion"
+  ],
+  "tune-60fps-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-4-quality-0-browser"
+  ],
+  "tune-60fps-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-4-quality-0-remotion"
+  ],
+  "tune-60fps-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-8-quality-0-browser"
+  ],
+  "tune-60fps-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-8-quality-0-remotion"
+  ],
+  "tune-60fps-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-auto-quality-0-browser"
+  ],
+  "tune-60fps-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-auto-quality-0-remotion"
+  ],
+  "tune-chunk-boundary-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1-quality-0-browser"
+  ],
+  "tune-chunk-boundary-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1-quality-0-remotion"
+  ],
+  "tune-chunk-boundary-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-2-quality-0-browser"
+  ],
+  "tune-chunk-boundary-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-2-quality-0-remotion"
+  ],
+  "tune-chunk-boundary-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-4-quality-0-browser"
+  ],
+  "tune-chunk-boundary-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-4-quality-0-remotion"
+  ],
+  "tune-chunk-boundary-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-8-quality-0-browser"
+  ],
+  "tune-chunk-boundary-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-8-quality-0-remotion"
+  ],
+  "tune-chunk-boundary-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-auto-quality-0-browser"
+  ],
+  "tune-chunk-boundary-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-auto-quality-0-remotion"
+  ],
+  "tune-constellation-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-1-quality-0-browser"
+  ],
+  "tune-constellation-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-1-quality-0-remotion"
+  ],
+  "tune-constellation-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-2-quality-0-browser"
+  ],
+  "tune-constellation-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-2-quality-0-remotion"
+  ],
+  "tune-constellation-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-4-quality-0-browser"
+  ],
+  "tune-constellation-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-4-quality-0-remotion"
+  ],
+  "tune-constellation-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-8-quality-0-browser"
+  ],
+  "tune-constellation-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-8-quality-0-remotion"
+  ],
+  "tune-constellation-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-auto-quality-0-browser"
+  ],
+  "tune-constellation-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-auto-quality-0-remotion"
+  ],
+  "tune-css-filters-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-1-quality-0-browser"
+  ],
+  "tune-css-filters-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-1-quality-0-remotion"
+  ],
+  "tune-css-filters-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-2-quality-0-browser"
+  ],
+  "tune-css-filters-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-2-quality-0-remotion"
+  ],
+  "tune-css-filters-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-4-quality-0-browser"
+  ],
+  "tune-css-filters-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-4-quality-0-remotion"
+  ],
+  "tune-css-filters-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-8-quality-0-browser"
+  ],
+  "tune-css-filters-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-8-quality-0-remotion"
+  ],
+  "tune-css-filters-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-auto-quality-0-browser"
+  ],
+  "tune-css-filters-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-auto-quality-0-remotion"
+  ],
+  "tune-dj-art-branding-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-1-quality-0-browser"
+  ],
+  "tune-dj-art-branding-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-1-quality-0-remotion"
+  ],
+  "tune-dj-art-branding-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-2-quality-0-browser"
+  ],
+  "tune-dj-art-branding-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-2-quality-0-remotion"
+  ],
+  "tune-dj-art-branding-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-4-quality-0-browser"
+  ],
+  "tune-dj-art-branding-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-4-quality-0-remotion"
+  ],
+  "tune-dj-art-branding-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-8-quality-0-browser"
+  ],
+  "tune-dj-art-branding-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-8-quality-0-remotion"
+  ],
+  "tune-dj-art-branding-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-auto-quality-0-browser"
+  ],
+  "tune-dj-art-branding-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-auto-quality-0-remotion"
+  ],
+  "tune-field-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-1-quality-0-browser"
+  ],
+  "tune-field-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-1-quality-0-remotion"
+  ],
+  "tune-field-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2-quality-0-browser"
+  ],
+  "tune-field-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2-quality-0-remotion"
+  ],
+  "tune-field-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-4-quality-0-browser"
+  ],
+  "tune-field-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-4-quality-0-remotion"
+  ],
+  "tune-field-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-8-quality-0-browser"
+  ],
+  "tune-field-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-8-quality-0-remotion"
+  ],
+  "tune-field-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-auto-quality-0-browser"
+  ],
+  "tune-field-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-auto-quality-0-remotion"
+  ],
+  "tune-looping-video-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-1-quality-0-browser"
+  ],
+  "tune-looping-video-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-1-quality-0-remotion"
+  ],
+  "tune-looping-video-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-2-quality-0-browser"
+  ],
+  "tune-looping-video-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-2-quality-0-remotion"
+  ],
+  "tune-looping-video-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-4-quality-0-browser"
+  ],
+  "tune-looping-video-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-4-quality-0-remotion"
+  ],
+  "tune-looping-video-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-8-quality-0-browser"
+  ],
+  "tune-looping-video-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-8-quality-0-remotion"
+  ],
+  "tune-looping-video-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-auto-quality-0-browser"
+  ],
+  "tune-looping-video-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-looping-video-auto-quality-0-remotion"
+  ],
+  "tune-portrait-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-1-quality-0-browser"
+  ],
+  "tune-portrait-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-1-quality-0-remotion"
+  ],
+  "tune-portrait-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-2-quality-0-browser"
+  ],
+  "tune-portrait-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-2-quality-0-remotion"
+  ],
+  "tune-portrait-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-4-quality-0-browser"
+  ],
+  "tune-portrait-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-4-quality-0-remotion"
+  ],
+  "tune-portrait-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-8-quality-0-browser"
+  ],
+  "tune-portrait-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-8-quality-0-remotion"
+  ],
+  "tune-portrait-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-auto-quality-0-browser"
+  ],
+  "tune-portrait-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-auto-quality-0-remotion"
+  ],
+  "tune-standard-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-1-quality-0-browser"
+  ],
+  "tune-standard-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-1-quality-0-remotion"
+  ],
+  "tune-standard-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-2-quality-0-browser"
+  ],
+  "tune-standard-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-2-quality-0-remotion"
+  ],
+  "tune-standard-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-4-quality-0-browser"
+  ],
+  "tune-standard-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-4-quality-0-remotion"
+  ],
+  "tune-standard-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-8-quality-0-browser"
+  ],
+  "tune-standard-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-8-quality-0-remotion"
+  ],
+  "tune-standard-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-auto-quality-0-browser"
+  ],
+  "tune-standard-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-auto-quality-0-remotion"
+  ],
+  "tune-tunnel-1-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-1-quality-0-browser"
+  ],
+  "tune-tunnel-1-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-1-quality-0-remotion"
+  ],
+  "tune-tunnel-2-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-2-quality-0-browser"
+  ],
+  "tune-tunnel-2-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-2-quality-0-remotion"
+  ],
+  "tune-tunnel-4-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-4-quality-0-browser"
+  ],
+  "tune-tunnel-4-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-4-quality-0-remotion"
+  ],
+  "tune-tunnel-8-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-8-quality-0-browser"
+  ],
+  "tune-tunnel-8-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-8-quality-0-remotion"
+  ],
+  "tune-tunnel-auto-quality-0-browser": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-auto-quality-0-browser"
+  ],
+  "tune-tunnel-auto-quality-0-remotion": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-auto-quality-0-remotion"
+  ]
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "case": "standard",
+    "exitCode": 0
+  },
+  {
+    "case": "css-filters",
+    "exitCode": 0
+  },
+  {
+    "case": "field",
+    "exitCode": 0
+  },
+  {
+    "case": "tunnel",
+    "exitCode": 0
+  },
+  {
+    "case": "constellation",
+    "exitCode": 0
+  },
+  {
+    "case": "looping-video",
+    "exitCode": 0
+  },
+  {
+    "case": "dj-art-branding",
+    "exitCode": 0
+  },
+  {
+    "case": "portrait",
+    "exitCode": 0
+  },
+  {
+    "case": "60fps",
+    "exitCode": 0
+  },
+  {
+    "case": "4k",
+    "exitCode": 0
+  },
+  {
+    "case": "chunk-boundary",
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 0.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 47.53809097,
+    "minSeconds": 47.53809097,
+    "maxSeconds": 47.53809097
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 50.456844921999995,
+    "minSeconds": 50.456844921999995,
+    "maxSeconds": 50.456844921999995
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-4/report.json

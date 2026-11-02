@@ -9,6 +9,7 @@ for status in ROOT.glob('*.exit.txt'):
         if source.is_file() and source.suffix in ('.txt','.json'):shutil.copy2(source,DEST/source.name)
     directory=ROOT/label
     if (directory/'report.json').exists():shutil.copy2(directory/'report.json',DEST/(label+'.json'))
+    if (directory/'results.json').exists():shutil.copy2(directory/'results.json',DEST/(label+'-results.json'))
     if (directory/'samples.jsonl').exists():shutil.copy2(directory/'samples.jsonl',DEST/(label+'-samples.jsonl'))
     runtimes={p.name:json.loads(p.read_text()) for p in directory.glob('*.runtime.json')}
     if runtimes:(DEST/(label+'-runtime.json')).write_text(json.dumps(runtimes,indent=2)+'\n')

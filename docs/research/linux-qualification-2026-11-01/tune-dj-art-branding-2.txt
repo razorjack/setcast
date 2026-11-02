@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 2.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.6%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 20.044339444,
+    "minSeconds": 20.044339444,
+    "maxSeconds": 20.044339444
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 19.535536548000003,
+    "minSeconds": 19.535536548000003,
+    "maxSeconds": 19.535536548000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-2/report.json

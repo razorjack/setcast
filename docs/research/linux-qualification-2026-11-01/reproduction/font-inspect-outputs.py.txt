@@ -9,6 +9,7 @@ comparisons=[Path(p)/'comparison/report.json' for p in index.values()] if mode==
 jobs=[]
 for path in comparisons:
     report=json.loads(path.read_text())
+    if not isinstance(report.get('runs'),list):continue
     for run in report['runs']:jobs.append((path,run))
 def inspect(job):
     path,run=job

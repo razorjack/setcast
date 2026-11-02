@@ -1,0 +1,20 @@
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.
+Pre-run system CPU busy: 12.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 22.211841756000002,
+    "minSeconds": 22.211841756000002,
+    "maxSeconds": 22.211841756000002
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 23.479137676000004,
+    "minSeconds": 23.479137676000004,
+    "maxSeconds": 23.479137676000004
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-portrait-8/report.json

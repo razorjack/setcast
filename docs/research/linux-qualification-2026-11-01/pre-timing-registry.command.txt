@@ -1,0 +1,1 @@
+pnpm view remotion version --registry=https://registry.npmjs.org/ 

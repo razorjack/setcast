@@ -1,0 +1,7 @@
+Encoder failure artifacts: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-upstream-encoder-failure
+Encoder failure: PASS (caught failure, intact destination, no temporary directories)
+Traceback (most recent call last):
+  File "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/shm-observe.py", line 36, in <module>
+    assert not remaining,remaining
+           ^^^^^^^^^^^^^
+AssertionError: {'rmshm-7284829172597860390': {'inode': 7049, 'bytes': 8294464, 'uid': 1000}}

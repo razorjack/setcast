@@ -58,5 +58,13 @@
     "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-4k/4k/inspection-midpoint.png",
     "result": "Same sampled credits, art and visualizer layout; no missing content seen.",
     "scope": "Resized midpoint aid, not native-resolution or full temporal proof."
+  },
+  {
+    "case": "chunk-boundary",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-chunk-boundary/chunk-boundary/inspection-midpoint.png",
+    "result": "Art, branding, tracklist and visualizer match at the sampled midpoint. The credit is partially clipped in the same way in the lossless reference and both encoded outputs.",
+    "scope": "Resized midpoint inspection; all-frame black scans pass separately. Numerical metrics are still running.",
+    "interpretation": "The panel folds as panelMotion hands its credit to the visible tracklist after dwell. The same clipping appears in the lossless reference and both adapters; the tracklist retains the complete title.",
+    "source": "packages/core/src/react/components/NowPlaying.tsx:panelMotion"
   }
 ]

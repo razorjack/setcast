@@ -6,6 +6,9 @@ mode=sys.argv[1]
 assert mode in ('calibration','tune','timing')
 font_index=json.loads((ROOT/'font-quality-index.json').read_text())
 paths=[Path(p)/'comparison/report.json' for p in font_index.values()] if mode=='calibration' else sorted(ROOT.glob(mode+'-*/report.json'))
+def measured(path):
+    try:return path.exists() and json.loads(path.read_text()).get('status')=='measured'
+    except json.JSONDecodeError:return False
 def checks(browser,remotion):
     assert browser['status']==remotion['status']=='measured'
     assert browser['regions'].keys()==remotion['regions'].keys()
@@ -19,14 +22,21 @@ def checks(browser,remotion):
     return result
 results=[]
 for path in paths:
-    report=json.loads(path.read_text());name=Path(report['config']['project']).name
+    report=json.loads(path.read_text())
+    if not isinstance(report.get('runs'),list):continue
+    name=Path(report['config']['project']).name
     pairs=[]
     for index in sorted(set(r['index'] for r in report['runs'])):
         if mode=='calibration':
             quality={a:Path(font_index[name])/a/'report.json' for a in ('browser','remotion')}
         else:
-            quality={a:ROOT/(path.parent.name+f'-quality-{index}-{a}')/'report.json' for a in ('browser','remotion')}
-        if not all(p.exists() for p in quality.values()):
+            quality_index=json.loads((ROOT/(mode+'-quality-index.json')).read_text())
+            quality={}
+            for a in ('browser','remotion'):
+                base=path.parent.name+f'-quality-{index}-{a}'
+                attempts=quality_index.get(base,[str(ROOT/base)])
+                quality[a]=next((Path(p)/'report.json' for p in reversed(attempts) if measured(Path(p)/'report.json')),Path(attempts[-1])/'report.json')
+        if not all(measured(p) for p in quality.values()):
             pairs.append(dict(index=index,status='incomplete',paths={a:str(p) for a,p in quality.items()}));continue
         metrics={a:json.loads(p.read_text()) for a,p in quality.items()}
         rows=checks(metrics['browser'],metrics['remotion'])

@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.3%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 15.843910988000001,
+    "minSeconds": 15.843910988000001,
+    "maxSeconds": 15.843910988000001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 17.125832494999994,
+    "minSeconds": 17.125832494999994,
+    "maxSeconds": 17.125832494999994
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-auto/report.json

@@ -1,0 +1,20 @@
+▲  background assets/bg.png is 2304×1296, so the 3840×2160 frame enlarges it 1.7× and it will look soft. Use a version at least 3840 px wide if you have one.
+Pre-run system CPU busy: 7.8%
+Pair 1/1: browser
+Pre-run system CPU busy: 8.1%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 44.306933582,
+    "minSeconds": 44.306933582,
+    "maxSeconds": 44.306933582
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 41.559809302000005,
+    "minSeconds": 41.559809302000005,
+    "maxSeconds": 41.559809302000005
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-4k-1/report.json

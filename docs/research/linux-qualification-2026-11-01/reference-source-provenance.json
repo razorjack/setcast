@@ -1,0 +1,28 @@
+{
+  "earlierReferenceRevision": "a53bcca346f805a1724eb213e0ebde1b752e1e0a",
+  "finalComparisonRevision": "5d026a64293207d90753f002020737deaa66f39d",
+  "command": [
+    "git",
+    "diff",
+    "--name-only",
+    "a53bcca346f805a1724eb213e0ebde1b752e1e0a",
+    "5d026a64293207d90753f002020737deaa66f39d",
+    "--",
+    "packages",
+    "scripts",
+    "package.json",
+    "pnpm-workspace.yaml",
+    "pnpm-lock.yaml",
+    "vite.config.ts",
+    ".node-version"
+  ],
+  "changedSourceAndToolchainFiles": [
+    "packages/renderer-browser/bench/video-frames.ts",
+    "packages/themes/quicksilver/theme.css"
+  ],
+  "selectedThemes": [
+    "afterhours",
+    "sterile-tech"
+  ],
+  "scope": "The first ten calibration/reference cases precede the Quicksilver-only production CSS fix and seek-artifact harness update. Their selected theme and renderer code is unchanged. The chunk-boundary reference and every quiet comparison use the final revision. Documentation changes are excluded from the code diff."
+}

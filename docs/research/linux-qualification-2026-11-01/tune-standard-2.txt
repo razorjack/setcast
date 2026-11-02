@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 1.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 1.2%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 22.18541545,
+    "minSeconds": 22.18541545,
+    "maxSeconds": 22.18541545
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 18.489486589,
+    "minSeconds": 18.489486589,
+    "maxSeconds": 18.489486589
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-2/report.json

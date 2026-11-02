@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import hashlib,json,os
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+REPO=Path('/home/razorjack/Projects/opensource/setcast')
+DEST=REPO/'docs/research/linux-qualification-2026-11-01/artifact-manifest.json'
+roots=[ROOT]
+for checkout in [REPO,Path('/tmp/setcast-linux-browser-first'),Path('/tmp/setcast-linux-current-upstream')]:
+    for name in ['webp-check','gpu-check','gpu-recovery-remotion','resume-check','resume-hardware-check','preview-check','export-verification','themes','output-check','transport-check','sequence-check','projection-check','energy-check','beat-check','branding-check','camera-check','midi-check']:
+        p=checkout/'examples/demo/out'/name
+        if p.exists():roots.append(p)
+extensions={'.mp4','.mov','.mkv','.png','.jpg','.jpeg','.webp','.wav','.bmp','.rgba','.raw','.ffv1'}
+paths=sorted({p.resolve() for root in roots for p in root.rglob('*') if p.is_file() and p.suffix.lower() in extensions})
+bundle=REPO/'setcast-linux-qualification.bundle'
+if bundle.exists():paths.append(bundle)
+files=[]
+for path in paths:
+    before=path.stat();digest=hashlib.sha256()
+    with path.open('rb') as stream:
+        while block:=stream.read(1024*1024):digest.update(block)
+    after=path.stat()
+    assert (before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_ino,after.st_size,after.st_mtime_ns),f'Artifact changed while hashing: {path}'
+    files.append({'path':str(path),'bytes':after.st_size,'sha256':digest.hexdigest()})
+report={'scope':'Retained generated media in the qualification directory and listed fixed-output harness directories, plus the supplied Git bundle. Files were stable while hashed. Old successful smoke MP4s overwritten by subsequent baseline checks are not reconstructible from this manifest; their validation logs remain. Original overwritten duplicate-seek images are documented in README.', 'roots':[str(p) for p in roots], 'files':files,'count':len(files),'totalBytes':sum(p['bytes'] for p in files)}
+DEST.write_text(json.dumps(report,indent=2)+'\n')
+print('Hashed',report['count'],'files,',report['totalBytes'],'bytes into',DEST)

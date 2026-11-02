@@ -1,0 +1,90 @@
+[
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-standard/standard/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-standard/standard/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-css-filters/css-filters/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-css-filters/css-filters/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-field/field/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-field/field/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-tunnel/tunnel/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-tunnel/tunnel/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-constellation/constellation/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-constellation/constellation/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-looping-video/looping-video/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-looping-video/looping-video/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-dj-art-branding/dj-art-branding/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-dj-art-branding/dj-art-branding/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-portrait/portrait/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-portrait/portrait/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-60fps/60fps/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-60fps/60fps/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-4k/4k/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-4k/4k/comparison/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-chunk-boundary/chunk-boundary/comparison/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-chunk-boundary/chunk-boundary/comparison/0-remotion-blackframe.json",
+    "passed": true
+  }
+]
