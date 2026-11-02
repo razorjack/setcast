@@ -1,0 +1,33 @@
+import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
+import { appendFile } from 'node:fs/promises';
+const root='/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01';
+const checkout='/tmp/setcast-linux-browser-first';
+process.chdir(checkout);
+const require=createRequire(checkout+'/packages/renderer-browser/bench/endurance.ts');
+const {chromium}=await import(pathToFileURL(require.resolve('playwright')).href);
+const launch=chromium.launch.bind(chromium);
+chromium.launch=async (...args)=>{
+ const browser=await launch(...args);
+ const newPage=browser.newPage.bind(browser);
+ browser.newPage=async (...args)=>{
+  const page=await newPage(...args);
+  await page.addInitScript(()=>{
+   const records=[];let discarded=0;
+   const push=record=>{if(records.length>=256){records.shift();discarded++;}records.push({...record,now:performance.now(),frame:document.querySelector('main')?.getAttribute('data-frame'),dropped:document.querySelector('main')?.getAttribute('data-dropped')});};
+   window.takeStallRecords=()=>({records:records.splice(0),discarded});
+   new PerformanceObserver(list=>{for(const e of list.getEntries())push({kind:'longtask',start:e.startTime,duration:e.duration});}).observe({type:'longtask',buffered:true});
+   for(const name of ['compileShader','getShaderParameter','linkProgram','getProgramParameter','getUniformLocation','drawArrays','readPixels','finish','flush']){
+    const original=WebGL2RenderingContext.prototype[name];if(!original)continue;
+    WebGL2RenderingContext.prototype[name]=function(...args){const at=performance.now();try{return original.apply(this,args);}finally{const duration=performance.now()-at;if(duration>=25)push({kind:'webgl',name,start:at,duration});}};
+   }
+  });
+  let pending=false;
+  const timer=setInterval(async()=>{if(pending||page.isClosed())return;pending=true;try{const result=await page.evaluate(()=>window.takeStallRecords?.());if(result?.records.length)await appendFile(root+'/live-stall-observations.jsonl',JSON.stringify(result)+'\n');}catch{}finally{pending=false;}},1000);
+  page.on('close',()=>clearInterval(timer));
+  return page;
+ };
+ return browser;
+};
+process.argv=['node',checkout+'/packages/renderer-browser/bench/endurance.ts','--config',root+'/live-stall-diagnostic.json','--out',root+'/final-live-stall-diagnostic'];
+await import(pathToFileURL(checkout+'/packages/renderer-browser/bench/endurance.ts').href);

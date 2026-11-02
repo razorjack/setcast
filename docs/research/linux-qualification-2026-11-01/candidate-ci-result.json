@@ -122,6 +122,31 @@
       "label": "live-fixed-installed-compatibility",
       "exitCode": 0,
       "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-transport",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-projection",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-beats",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-branding",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-camera",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
     }
   ],
   "retainedFailures": [
@@ -133,11 +158,5 @@
     "live-sequence-diagnostic-3",
     "live-sequence-transition-state"
   ],
-  "remainingFinalLiveRepeats": [
-    "transport",
-    "projection",
-    "beats",
-    "branding",
-    "camera"
-  ]
+  "remainingFinalLiveRepeats": []
 }

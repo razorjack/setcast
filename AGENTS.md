@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Fedora SwiftShader live qualification passes the one-hour recovery preset, but the separate-operator
+  software preset drops analysis samples near scene changes, including in isolation. A diagnostic
+  observes an 875 ms packet-delivery gap beyond the 512 ms queue budget; its browser cause remains
+  unresolved. Keep the queue bounds and zero-drop assertions. See the Linux live qualification report.
+
 - Live sequence Run/Next controls must respect an active manual scene fade. Scene selection
   changes before fade-in completes; accepting another recall then returns false without preparing
   its assets. Keep the unchanged sequence failure/journal reproducer in Linux qualification.

@@ -228,3 +228,13 @@ Synthetic input exercises WebAudio and player scheduling. It does not qualify ph
 USB routing, camera banding, display latency or projector legibility. Record concurrent workloads,
 power conditions and hardware when sharing results. Run export performance comparisons in
 isolation; a stress test while developing is useful reliability evidence, not a clean benchmark.
+
+## Fedora x64 qualification
+
+The [Linux qualification](research/linux-qualification-2026-11-01/live-qualification.md) passes
+the unchanged one-hour recovery preset on candidate `166e51d`, using SwiftShader and synthetic
+input. The 90-minute software preset remains unqualified: it drops analysis samples both during
+concurrent startup and in an isolated repeat near a scene change. Short diagnostics identify a
+packet-delivery gap exceeding the existing queue budget, but do not establish its browser cause.
+The queue bound and zero-drop assertions remain unchanged. The recovery result does not qualify
+the separate-operator software workload or physical hardware integration.

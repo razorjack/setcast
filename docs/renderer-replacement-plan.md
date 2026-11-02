@@ -4,7 +4,7 @@ Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
 Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
-Linux execution is in progress. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
+Linux execution is complete for the available fixtures; release requirements remain unmet. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
 records graphics-default, font-hinting and Quicksilver clip fixes, production correctness, fresh installations,
 short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains unqualified.
 Current upstream has a separate named shared-memory leak after injected encoder failure;
@@ -12,7 +12,8 @@ all eleven successful-export calibration cases pass. All 55 quiet worker-screeni
 meet the required quality comparisons, with every one of their 110 outputs measured and
 checked for black frames. All 33 final pairs also meet every quality requirement, but none of
 the eleven workloads meets the unchanged 30% speed target. Browser median time ranges from
-5.4% lower to 55.9% higher than tuned Remotion. See [final timings and spread](research/linux-qualification-2026-11-01/performance-table.md). Additional local Linux CI passes after a live sequence-control fix; full live endurance is running.
+5.4% lower to 55.9% higher than tuned Remotion. See [final timings and spread](research/linux-qualification-2026-11-01/performance-table.md). Additional local Linux CI passes after a live sequence-control fix; the full software live preset fails with dropped samples, while the one-hour recovery preset
+passes. See the [live qualification scope](research/linux-qualification-2026-11-01/live-qualification.md).
 The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
 change the release criteria or authorize default promotion.
 

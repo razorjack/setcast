@@ -1,0 +1,10 @@
+{
+  "scope": "Copies of existing fixed-output harness directories and the latest smoke video, made after their producers stopped. Original paths remain provenance; retained paths are on the repository filesystem.",
+  "phase": "pre-candidate-ci",
+  "artifacts": [
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/smoke.mp4",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-candidate-ci-fixed-output-artifacts/candidate/smoke.mp4"
+    }
+  ]
+}

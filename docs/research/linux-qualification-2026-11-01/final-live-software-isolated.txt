@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: Capture dropped analysis samples
+
+17408 !== 0
+
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-software-isolated/report.json

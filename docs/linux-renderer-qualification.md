@@ -10,6 +10,11 @@ record observations as they occur, and commit each coherent change. Do not publi
 external CI or change the default on main. Ordinary local fixes and qualification are authorized.
 Do not restart rejected capture experiments unless Linux supplies new evidence relevant to them.
 
+Execution results are retained in the [Fedora x64 qualification report](research/linux-qualification-2026-11-01/README.md).
+The Linux session fixes four reproducible issues and executes the available checks. It does not
+meet the performance target or qualify Windows, a missing real master, explicit NVIDIA ANGLE,
+upstream encoder-failure cleanup or the separate-operator software live endurance preset.
+
 ## Source and evidence to bring
 
 Read root `AGENTS.md`, this runbook, the replacement plan and the latest entries in

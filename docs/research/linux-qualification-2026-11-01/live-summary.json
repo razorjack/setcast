@@ -126,6 +126,404 @@
       ]
     },
     {
+      "name": "final-live-gpu-recovery-isolated",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-gpu-recovery-isolated/report.json",
+      "status": "passed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "linux",
+        "release": "7.2.13-200.fc44.x86_64",
+        "arch": "x64",
+        "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+        "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+        "dirty": false
+      },
+      "wallSeconds": 3608.302345558,
+      "configSeconds": 3600,
+      "samples": 710,
+      "actions": {
+        "gpu-recovery": 119,
+        "scene-and-announcement": 79,
+        "restart": 3
+      },
+      "errors": [],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "auto",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 960,
+              "height": 540
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "workloadSeconds": 3600.1011138229997,
+        "journals": {
+          "files": 4,
+          "scenes": 83,
+          "announcements": 79
+        }
+      },
+      "measurements": {
+        "heapBytes": {
+          "min": 23906109,
+          "median": 59280780.0,
+          "max": 124597659
+        },
+        "nodeRssBytes": {
+          "min": 697929728,
+          "median": 705421312.0,
+          "max": 812294144
+        },
+        "nodes": {
+          "min": 414,
+          "median": 417.0,
+          "max": 419
+        },
+        "cached": {
+          "min": 301,
+          "median": 2048.0,
+          "max": 2048
+        },
+        "renderFps": {
+          "min": 6.4,
+          "median": 30.0,
+          "max": 31.7
+        },
+        "dropped": {
+          "min": 0,
+          "median": 0.0,
+          "max": 0
+        }
+      },
+      "quarterHourIntervals": [
+        {
+          "fromSeconds": 0,
+          "untilSeconds": 900,
+          "samples": 174,
+          "measurements": {
+            "heapBytes": {
+              "min": 23906109,
+              "median": 60888272.5,
+              "max": 121364296
+            },
+            "nodeRssBytes": {
+              "min": 698011648,
+              "median": 703610880.0,
+              "max": 812294144
+            },
+            "nodes": {
+              "min": 414,
+              "median": 417.0,
+              "max": 419
+            },
+            "cached": {
+              "min": 474,
+              "median": 2048.0,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 6.7,
+              "median": 30.0,
+              "max": 31.7
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0.0,
+              "max": 0
+            }
+          }
+        },
+        {
+          "fromSeconds": 900,
+          "untilSeconds": 1800,
+          "samples": 178,
+          "measurements": {
+            "heapBytes": {
+              "min": 29100912,
+              "median": 57961596.5,
+              "max": 124597659
+            },
+            "nodeRssBytes": {
+              "min": 700194816,
+              "median": 702967808.0,
+              "max": 713052160
+            },
+            "nodes": {
+              "min": 415,
+              "median": 417.0,
+              "max": 419
+            },
+            "cached": {
+              "min": 878,
+              "median": 2048.0,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 6.4,
+              "median": 30.0,
+              "max": 31.7
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0.0,
+              "max": 0
+            }
+          }
+        },
+        {
+          "fromSeconds": 1800,
+          "untilSeconds": 2700,
+          "samples": 178,
+          "measurements": {
+            "heapBytes": {
+              "min": 29277032,
+              "median": 60276926.0,
+              "max": 111886866
+            },
+            "nodeRssBytes": {
+              "min": 697929728,
+              "median": 705480704.0,
+              "max": 715407360
+            },
+            "nodes": {
+              "min": 415,
+              "median": 417.0,
+              "max": 419
+            },
+            "cached": {
+              "min": 1612,
+              "median": 2048.0,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 6.6,
+              "median": 30.0,
+              "max": 31
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0.0,
+              "max": 0
+            }
+          }
+        },
+        {
+          "fromSeconds": 2700,
+          "untilSeconds": 3600,
+          "samples": 177,
+          "measurements": {
+            "heapBytes": {
+              "min": 29429195,
+              "median": 58133774,
+              "max": 121578797
+            },
+            "nodeRssBytes": {
+              "min": 702578688,
+              "median": 707719168,
+              "max": 716382208
+            },
+            "nodes": {
+              "min": 415,
+              "median": 417,
+              "max": 419
+            },
+            "cached": {
+              "min": 301,
+              "median": 2048,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 6.5,
+              "median": 30,
+              "max": 31
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0,
+              "max": 0
+            }
+          }
+        },
+        {
+          "fromSeconds": 3600,
+          "untilSeconds": 4500,
+          "samples": 3,
+          "measurements": {
+            "heapBytes": {
+              "min": 34846425,
+              "median": 39251320,
+              "max": 63567262
+            },
+            "nodeRssBytes": {
+              "min": 707014656,
+              "median": 707014656,
+              "max": 707801088
+            },
+            "nodes": {
+              "min": 417,
+              "median": 417,
+              "max": 417
+            },
+            "cached": {
+              "min": 2048,
+              "median": 2048,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 29.5,
+              "median": 30,
+              "max": 30.5
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0,
+              "max": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-live-packet-diagnostic",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-packet-diagnostic/report.json",
+      "status": "failed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "linux",
+        "release": "7.2.13-200.fc44.x86_64",
+        "arch": "x64",
+        "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+        "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+        "dirty": false
+      },
+      "wallSeconds": 23.111780225000004,
+      "configSeconds": 180,
+      "samples": 21,
+      "actions": {
+        "scene-and-announcement": 4
+      },
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Capture dropped analysis samples\n\n17408 !== 0\n\n    at sample (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:245:10)\n    at async exercise (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:151:7)\n    at async runLive (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:38:9)\n    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshot": "failure.png"
+      },
+      "measurements": {
+        "heapBytes": {
+          "min": 19965108,
+          "median": 46520230,
+          "max": 73255240
+        },
+        "nodeRssBytes": {
+          "min": 759324672,
+          "median": 787329024,
+          "max": 842706944
+        },
+        "nodes": {
+          "min": 27,
+          "median": 29,
+          "max": 29
+        },
+        "cached": {
+          "min": 12,
+          "median": 2048,
+          "max": 2048
+        },
+        "renderFps": {
+          "min": 13.6,
+          "median": 29.5,
+          "max": 30.5
+        },
+        "dropped": {
+          "min": 0,
+          "median": 0,
+          "max": 17408
+        }
+      },
+      "quarterHourIntervals": [
+        {
+          "fromSeconds": 0,
+          "untilSeconds": 900,
+          "samples": 21,
+          "measurements": {
+            "heapBytes": {
+              "min": 19965108,
+              "median": 46520230,
+              "max": 73255240
+            },
+            "nodeRssBytes": {
+              "min": 759324672,
+              "median": 787329024,
+              "max": 842706944
+            },
+            "nodes": {
+              "min": 27,
+              "median": 29,
+              "max": 29
+            },
+            "cached": {
+              "min": 12,
+              "median": 2048,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 13.6,
+              "median": 29.5,
+              "max": 30.5
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0,
+              "max": 17408
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "final-live-software",
       "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-software/report.json",
       "status": "failed",
@@ -249,7 +647,7 @@
     {
       "name": "final-live-software-isolated",
       "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-software-isolated/report.json",
-      "status": "running",
+      "status": "failed",
       "runtime": {
         "node": "v26.7.0",
         "platform": "linux",
@@ -259,11 +657,15 @@
         "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
         "dirty": false
       },
-      "wallSeconds": 11.211021086999999,
+      "wallSeconds": 604.9380814799999,
       "configSeconds": 5400,
-      "samples": 2,
-      "actions": {},
-      "errors": [],
+      "samples": 61,
+      "actions": {
+        "scene-and-announcement": 10
+      },
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Capture dropped analysis samples\n\n17408 !== 0\n\n    at sample (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:245:10)\n    at async exercise (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:151:7)\n    at async runLive (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:38:9)\n    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
       "details": {
         "browser": "156.0.8078.4",
         "syntheticInput": true,
@@ -289,75 +691,200 @@
             "unmaskedVendor": "Google Inc. (Google)",
             "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
           }
-        }
+        },
+        "notices": [],
+        "failureScreenshot": "failure.png"
       },
       "measurements": {
         "heapBytes": {
           "min": 23699599,
-          "median": 30100201.0,
-          "max": 36500803
+          "median": 55264288,
+          "max": 77832882
         },
         "nodeRssBytes": {
-          "min": 753967104,
-          "median": 775962624.0,
+          "min": 696709120,
+          "median": 702365696,
           "max": 797958144
         },
         "nodes": {
           "min": 27,
-          "median": 27.0,
-          "max": 27
+          "median": 29,
+          "max": 29
         },
         "cached": {
           "min": 20,
-          "median": 1034.0,
+          "median": 2048,
           "max": 2048
         },
         "renderFps": {
-          "min": 31,
-          "median": 31,
+          "min": 22.5,
+          "median": 30.0,
           "max": 31
         },
         "dropped": {
           "min": 0,
-          "median": 0.0,
-          "max": 0
+          "median": 0,
+          "max": 17408
         }
       },
       "quarterHourIntervals": [
         {
           "fromSeconds": 0,
           "untilSeconds": 900,
-          "samples": 2,
+          "samples": 61,
           "measurements": {
             "heapBytes": {
               "min": 23699599,
-              "median": 30100201.0,
-              "max": 36500803
+              "median": 55264288,
+              "max": 77832882
             },
             "nodeRssBytes": {
-              "min": 753967104,
-              "median": 775962624.0,
+              "min": 696709120,
+              "median": 702365696,
               "max": 797958144
             },
             "nodes": {
               "min": 27,
-              "median": 27.0,
-              "max": 27
+              "median": 29,
+              "max": 29
             },
             "cached": {
               "min": 20,
-              "median": 1034.0,
+              "median": 2048,
               "max": 2048
             },
             "renderFps": {
-              "min": 31,
-              "median": 31,
+              "min": 22.5,
+              "median": 30.0,
               "max": 31
             },
             "dropped": {
               "min": 0,
-              "median": 0.0,
-              "max": 0
+              "median": 0,
+              "max": 17408
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-live-stall-diagnostic",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-stall-diagnostic/report.json",
+      "status": "failed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "linux",
+        "release": "7.2.13-200.fc44.x86_64",
+        "arch": "x64",
+        "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+        "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+        "dirty": false
+      },
+      "wallSeconds": 23.381994004,
+      "configSeconds": 180,
+      "samples": 21,
+      "actions": {
+        "scene-and-announcement": 4
+      },
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Capture dropped analysis samples\n\n19456 !== 0\n\n    at sample (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:245:10)\n    at async exercise (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:151:7)\n    at async runLive (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:38:9)\n    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshot": "failure.png"
+      },
+      "measurements": {
+        "heapBytes": {
+          "min": 24967337,
+          "median": 49740773,
+          "max": 77643703
+        },
+        "nodeRssBytes": {
+          "min": 744673280,
+          "median": 766484480,
+          "max": 823480320
+        },
+        "nodes": {
+          "min": 27,
+          "median": 29,
+          "max": 29
+        },
+        "cached": {
+          "min": 40,
+          "median": 2048,
+          "max": 2048
+        },
+        "renderFps": {
+          "min": 10.8,
+          "median": 29.75,
+          "max": 30.5
+        },
+        "dropped": {
+          "min": 0,
+          "median": 0,
+          "max": 19456
+        }
+      },
+      "quarterHourIntervals": [
+        {
+          "fromSeconds": 0,
+          "untilSeconds": 900,
+          "samples": 21,
+          "measurements": {
+            "heapBytes": {
+              "min": 24967337,
+              "median": 49740773,
+              "max": 77643703
+            },
+            "nodeRssBytes": {
+              "min": 744673280,
+              "median": 766484480,
+              "max": 823480320
+            },
+            "nodes": {
+              "min": 27,
+              "median": 29,
+              "max": 29
+            },
+            "cached": {
+              "min": 40,
+              "median": 2048,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 10.8,
+              "median": 29.75,
+              "max": 30.5
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0,
+              "max": 19456
             }
           }
         }
