@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+root=/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01
+cd /tmp/setcast-linux-browser-first
+run() { bash "$root/candidate-run.sh" "$@"; }
+run live-fixed-candidate-ready ./node_modules/.bin/vp run ready
+for round in 1 2 3; do
+ run "live-fixed-sequence-$round" node packages/renderer-browser/bench/sequence.ts
+ if [ "$round" != 3 ]; then cp -a examples/demo/out/sequence-check "$root/live-fixed-sequence-$round-artifacts"; fi
+done
+for check in output energy midi; do
+ run "live-fixed-$check" node "packages/renderer-browser/bench/$check.ts"
+done

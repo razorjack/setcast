@@ -1,0 +1,367 @@
+{
+  "scope": "Live reports retain their original passed/failed/running status. Heap and runner RSS exclude GPU and browser native allocations. Quarter-hour intervals may include startup, restarts and partial final intervals; FPS is a measurement, not a universal pass threshold.",
+  "results": [
+    {
+      "name": "final-live-gpu-recovery",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-gpu-recovery/report.json",
+      "status": "cancelled",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "linux",
+        "release": "7.2.13-200.fc44.x86_64",
+        "arch": "x64",
+        "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+        "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+        "dirty": false
+      },
+      "wallSeconds": 86.516355604,
+      "configSeconds": 3600,
+      "samples": 16,
+      "actions": {
+        "gpu-recovery": 2,
+        "scene-and-announcement": 1
+      },
+      "errors": [
+        "page.waitForTimeout: Target page, context or browser has been closed\n    at exercise (/tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:155:16)\n    at async runLive (/tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:38:9)\n    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "auto",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 960,
+              "height": 540
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshotError": "Error: page.screenshot: Target page, context or browser has been closed"
+      },
+      "measurements": {
+        "heapBytes": {
+          "min": 25000609,
+          "median": 50573886.5,
+          "max": 73705786
+        },
+        "nodeRssBytes": {
+          "min": 705355776,
+          "median": 772284416.0,
+          "max": 814223360
+        },
+        "nodes": {
+          "min": 414,
+          "median": 417.0,
+          "max": 419
+        },
+        "cached": {
+          "min": 495,
+          "median": 2048.0,
+          "max": 2048
+        },
+        "renderFps": {
+          "min": 14.6,
+          "median": 30.0,
+          "max": 30.5
+        },
+        "dropped": {
+          "min": 0,
+          "median": 0.0,
+          "max": 0
+        }
+      },
+      "quarterHourIntervals": [
+        {
+          "fromSeconds": 0,
+          "untilSeconds": 900,
+          "samples": 16,
+          "measurements": {
+            "heapBytes": {
+              "min": 25000609,
+              "median": 50573886.5,
+              "max": 73705786
+            },
+            "nodeRssBytes": {
+              "min": 705355776,
+              "median": 772284416.0,
+              "max": 814223360
+            },
+            "nodes": {
+              "min": 414,
+              "median": 417.0,
+              "max": 419
+            },
+            "cached": {
+              "min": 495,
+              "median": 2048.0,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 14.6,
+              "median": 30.0,
+              "max": 30.5
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0.0,
+              "max": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-live-software",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-software/report.json",
+      "status": "failed",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "linux",
+        "release": "7.2.13-200.fc44.x86_64",
+        "arch": "x64",
+        "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+        "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+        "dirty": false
+      },
+      "wallSeconds": 11.605528087,
+      "configSeconds": 5400,
+      "samples": 2,
+      "actions": {},
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Capture dropped analysis samples\n\n4096 !== 0\n\n    at sample (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:245:10)\n    at async exercise (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:151:7)\n    at async runLive (file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:38:9)\n    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance.ts:35:33"
+      ],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "notices": [],
+        "failureScreenshot": "failure.png"
+      },
+      "measurements": {
+        "heapBytes": {
+          "min": 30297183,
+          "median": 34059350.5,
+          "max": 37821518
+        },
+        "nodeRssBytes": {
+          "min": 759062528,
+          "median": 782712832.0,
+          "max": 806363136
+        },
+        "nodes": {
+          "min": 27,
+          "median": 27.0,
+          "max": 27
+        },
+        "cached": {
+          "min": 42,
+          "median": 1045.0,
+          "max": 2048
+        },
+        "renderFps": {
+          "min": 31,
+          "median": 31,
+          "max": 31
+        },
+        "dropped": {
+          "min": 0,
+          "median": 2048.0,
+          "max": 4096
+        }
+      },
+      "quarterHourIntervals": [
+        {
+          "fromSeconds": 0,
+          "untilSeconds": 900,
+          "samples": 2,
+          "measurements": {
+            "heapBytes": {
+              "min": 30297183,
+              "median": 34059350.5,
+              "max": 37821518
+            },
+            "nodeRssBytes": {
+              "min": 759062528,
+              "median": 782712832.0,
+              "max": 806363136
+            },
+            "nodes": {
+              "min": 27,
+              "median": 27.0,
+              "max": 27
+            },
+            "cached": {
+              "min": 42,
+              "median": 1045.0,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 31,
+              "median": 31,
+              "max": 31
+            },
+            "dropped": {
+              "min": 0,
+              "median": 2048.0,
+              "max": 4096
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-live-software-isolated",
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-software-isolated/report.json",
+      "status": "running",
+      "runtime": {
+        "node": "v26.7.0",
+        "platform": "linux",
+        "release": "7.2.13-200.fc44.x86_64",
+        "arch": "x64",
+        "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+        "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+        "dirty": false
+      },
+      "wallSeconds": 11.211021086999999,
+      "configSeconds": 5400,
+      "samples": 2,
+      "actions": {},
+      "errors": [],
+      "details": {
+        "browser": "156.0.8078.4",
+        "syntheticInput": true,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "graphics": {
+          "requested": "swiftshader",
+          "context": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "canvas": {
+              "width": 1920,
+              "height": 1080
+            },
+            "drawingBuffer": {
+              "width": 480,
+              "height": 270
+            },
+            "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "WebKit",
+            "renderer": "WebKit WebGL",
+            "unmaskedVendor": "Google Inc. (Google)",
+            "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        }
+      },
+      "measurements": {
+        "heapBytes": {
+          "min": 23699599,
+          "median": 30100201.0,
+          "max": 36500803
+        },
+        "nodeRssBytes": {
+          "min": 753967104,
+          "median": 775962624.0,
+          "max": 797958144
+        },
+        "nodes": {
+          "min": 27,
+          "median": 27.0,
+          "max": 27
+        },
+        "cached": {
+          "min": 20,
+          "median": 1034.0,
+          "max": 2048
+        },
+        "renderFps": {
+          "min": 31,
+          "median": 31,
+          "max": 31
+        },
+        "dropped": {
+          "min": 0,
+          "median": 0.0,
+          "max": 0
+        }
+      },
+      "quarterHourIntervals": [
+        {
+          "fromSeconds": 0,
+          "untilSeconds": 900,
+          "samples": 2,
+          "measurements": {
+            "heapBytes": {
+              "min": 23699599,
+              "median": 30100201.0,
+              "max": 36500803
+            },
+            "nodeRssBytes": {
+              "min": 753967104,
+              "median": 775962624.0,
+              "max": 797958144
+            },
+            "nodes": {
+              "min": 27,
+              "median": 27.0,
+              "max": 27
+            },
+            "cached": {
+              "min": 20,
+              "median": 1034.0,
+              "max": 2048
+            },
+            "renderFps": {
+              "min": 31,
+              "median": 31,
+              "max": 31
+            },
+            "dropped": {
+              "min": 0,
+              "median": 0.0,
+              "max": 0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+bash examples/demo/out/linux-qualification-2026-11-01/candidate-live-fix.sh 

@@ -1,0 +1,44 @@
+{
+  "scope": "Final live-only control fix does not alter the offline export implementation, dependency pins or emitted export bundle. Timings remain attributed to their original revision; no new timing is inferred.",
+  "before": {
+    "checkout": "/tmp/setcast-linux-current-upstream",
+    "revision": "5d026a64293207d90753f002020737deaa66f39d",
+    "dirty": "",
+    "entry": "export.tsx",
+    "files": [
+      {
+        "name": "/player.css",
+        "bytes": 74,
+        "sha256": "ce0ff73a20e59c32e7e2dcbb3072803f741e67ad94ac424c0e3751fb0fae1983"
+      },
+      {
+        "name": "/player.js",
+        "bytes": 971815,
+        "sha256": "a830cda395a4283b0a462c892d61e1747b0660652cf8b4fc67b0eb91babb7ced"
+      }
+    ]
+  },
+  "after": {
+    "checkout": "/tmp/setcast-linux-current-upstream",
+    "revision": "d9d1b4a5c7a3cade200ea2c8d25cffc63da153c5",
+    "dirty": "",
+    "entry": "export.tsx",
+    "files": [
+      {
+        "name": "/player.css",
+        "bytes": 74,
+        "sha256": "ce0ff73a20e59c32e7e2dcbb3072803f741e67ad94ac424c0e3751fb0fae1983"
+      },
+      {
+        "name": "/player.js",
+        "bytes": 971815,
+        "sha256": "a830cda395a4283b0a462c892d61e1747b0660652cf8b4fc67b0eb91babb7ced"
+      }
+    ]
+  },
+  "changedFiles": [
+    "packages/renderer-browser/src/live/performance-controls.tsx",
+    "packages/renderer-browser/src/live/sequence-controls.tsx"
+  ],
+  "identicalOfflineBundle": true
+}

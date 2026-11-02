@@ -2,12 +2,12 @@
 
 Status: in progress. Production correctness, final fresh candidate installations, required
 NVENC, decoded 120-second software/NVENC fixtures and the 3,000-capture bitmap resource check
-pass on this Fedora x64 host. Three Linux fixes are committed; graphics use SwiftShader.
+pass on this Fedora x64 host. Four Linux fixes are committed; graphics use SwiftShader.
 Current Remotion 4.0.539 has a reproduced named shared-memory leak after injected encoder
 failure. All eleven common-font fidelity cases pass, including full encoded black-frame scans
 and inspected art/chunk transitions. All 55 worker-screening pairs meet every required quality
 comparison, and all 110 outputs pass black-frame scans. All 66 final timed exports pass their full quality comparisons and black-frame scans.
-None of the eleven workloads meets the unchanged 30% speed target. Additional Linux CI/live checks are running. Real-master Linux assets are missing. Windows
+None of the eleven workloads meets the unchanged 30% speed target. Additional local Linux CI passes after the sequence control fix; full live endurance is running. Real-master Linux assets are missing. Windows
 remains unqualified, the shared Quicksilver CSS fix needs affected macOS repetition, and
 main's default remains Remotion.
 
@@ -37,16 +37,16 @@ PATH and nvidia-smi failed.
 | Production baseline | Formatting, lint/types, 688 tests, dependency isolation and decoded smoke pass. | [Latest baseline log](tuning-evidence-ready.txt) |
 | Source and encoded correctness | All 32 theme/orientation worker cases are exact across 1/2/4 workers. Final Quicksilver reruns pass all 64 video cases and repeated static/video worker checks. | [Workers](font-workers.json), [video matrix](quicksilver-fixed-video.json), [looping-video workers](quicksilver-video-workers.json) |
 | Cache, resume, preview and ProRes | Final affected checks pass. ProRes establishes FFmpeg decoding/compositing, not an editor or OBS receiver. | [Preparation](font-preparation.json), [preview exports](font-preview-exports-results.json), [ProRes](font-prores.json) |
-| Fresh candidate installation | Candidate `5159395` passes browser-only and separate optional-Remotion installations. Browser-only inventory contains no Remotion packages. | [Browser installation](quicksilver-installed-browser.json), [compatibility installation](quicksilver-installed-compatibility.json) |
+| Fresh candidate installation | Final candidate `166e51d` passes browser-only and separate optional-Remotion installations. Browser-only inventory contains no Remotion packages. | [Browser installation](live-fixed-installed-browser.json), [compatibility installation](live-fixed-installed-compatibility.json) |
 | NVENC | Actual required `h264_nvenc` acceptance/color/resume and a fully decoded synthetic 120-second export pass on RTX 3070 Ti / driver 615.78.08. | [Acceptance](font-nvenc-acceptance.txt), [endurance](font-nvenc-endurance.json) |
 | Resources | 3,000 bitmap captures release all URLs. The 120-second software export passes full decode and four stereo alignment windows; real-master assets remain unavailable. | [Bitmap summary](font-video-memory-summary.json), [software summary](font-export-short-summary.json), [decoded verification](font-software-decoded.json) |
 | Current-upstream fidelity | All eleven calibration cases meet every full/regional min/p05/mean PSNR/SSIM and VMAF NEG comparison. All 22 encoded files pass black-frame scans; selected art/join frames were inspected. | [Metrics](calibration-summary.json), [black-frame scans](calibration-blackframe-results.json), [transition inspection](font-transition-inspections.json) |
 | Current-upstream failure cleanup | Remotion 4.0.539 leaves an 8,294,464-byte named pool after injected encoder failure, reproduced three times. Successful export cleanup does not supersede this failure. | [Diagnosis](upstream-cleanup.md), [final observer](final-upstream-shm-failure.json) |
 | Throughput | All 55 screening pairs pass every required quality comparison, and all 110 outputs pass black-frame scans. Three alternating pairs per workload pass every quality comparison. None meets the 30% target. Browser median time ranges from 5.4% lower to 55.9% higher than Remotion; no failed attempt or new named pool occurred. Loaded calibration times are excluded. | [Final results and spread](performance-table.md), [final quality](timing-summary.json), [final runtime/load/cleanup audit](timing-audit.json). |
-| Additional Linux CI/live | Remaining candidate checks are running; full live endurance follows. | No pass is inferred from a workflow definition. |
+| Additional Linux CI/live | All local candidate CI commands pass, including three sequence repeats after the fix. Full live endurance is running. | [Executed checks and retained failures](candidate-ci-result.json). No hosted CI was invoked. |
 
-Final production source fix: `a5a8bbe`. Final candidate: `5159395`. Final current-upstream
-comparison: `5d026a6`, with Remotion 4.0.539 / Chromium 157.0.8080.0. Browser capture uses
+Final offline source fix: `a5a8bbe`; final live control fix: `97f2db7`. Final candidate: `166e51d`.
+Timed comparison: `5d026a6`; final comparison checkout after the live-only fix: `d9d1b4a`, with Remotion 4.0.539 / Chromium 157.0.8080.0. Browser capture uses
 Playwright 1.64.1 / Chromium 156.0.8078.4 and system FFmpeg 8.1.3. Both comparison arms use
 observed SwiftShader; NVENC is a separate encoding qualification. Runtime binary hashes are
 retained in [runtime-binaries.json](runtime-binaries.json).
@@ -62,7 +62,9 @@ is retained but excluded from matched-quality claims.
 The first ten references and calibration arms were produced at `a53bcca`; the chunk-boundary
 reference uses `5d026a6`. The intervening production change affects only Quicksilver CSS,
 which none of these corpus cases selects, plus the video harness artifact naming. Selected
-theme and renderer code is unchanged. Every quiet comparison uses final revision `5d026a6`.
+theme and renderer code is unchanged. Every quiet comparison uses revision `5d026a6`. The later live-only control fix at `d9d1b4a`
+changes no offline source or dependency and emits identical export JavaScript/CSS; see
+[live-fix provenance](live-fix-offline-provenance.json).
 See the [source provenance check](reference-source-provenance.json).
 
 Worker screening tests 1, 2, 4, 8 and automatic concurrency independently for both adapters.
@@ -107,6 +109,26 @@ This Linux result does not meet the release performance requirement. It does not
 the target, qualify other platforms or authorize browser-first promotion. The independent
 Remotion failure-cleanup defect remains recorded even though every successful timed export
 removed its newly created named pools.
+
+## Release assessment
+
+The qualified offline scope is Fedora x64 with the recorded pinned Chromium, SwiftShader,
+FFmpeg and NVIDIA driver. Fresh independent installs, existing production workflows, exact
+same-runtime checks, cache/resume, preview, FFmpeg ProRes compositing, actual NVENC and short
+synthetic resource fixtures have passing evidence. This scope does not include Linux ARM64.
+
+Release promotion remains blocked by the unchanged matched-quality performance target,
+unqualified Windows workflows, missing Linux real-master resource evidence and affected
+macOS repetition for the shared Quicksilver/live-control changes. The complete Linux comparison
+misses the speed target; it is not waiting for another metric or hidden successful subset.
+
+Explicit NVIDIA ANGLE remains unqualified because of retained pixel/stall failures. Remotion
+4.0.539 failure cleanup remains defective despite normal successful-export cleanup. These are
+separate from the qualified SwiftShader browser path and actual NVENC encoding checks.
+
+Full live endurance is still under investigation after a concurrent startup dropped samples.
+Physical mixer/MIDI routing, OBS/display latency, native editor ProRes receivers and long ProRes
+exports remain separately unqualified. No skipped or cancelled check is counted as passed.
 
 ## Chronological observations
 
@@ -353,3 +375,9 @@ After the final timing process exited, all 66 final videos passed full black-fra
 Additional candidate Linux checks pass the full worker matrix, resume, WebP, both renderer GPU recovery checks, preview and decoded verification. Live output, transport, projection, energy, beats, branding, camera patterns and MIDI pass. Sequence fails reproducibly in two unchanged runs while waiting for the malformed-art scene error notice; original logs are retained and diagnosis continues. Two diagnostic launcher failures (wrong output base, then package resolution outside the workspace package) are also retained separately and are not product failures.
 
 The sequence failure is a control-state race, confirmed by pre-click DOM capture: the manual scene is active and all scene pads/brightness are disabled, but Run/Next remain enabled. LivePerformance.queue rejects a recall during fade-out/loading/fade-in; the failed-scene JSON loads but its image is never requested. Sequence controls now disable Run/Next during those transition phases and report Transitioning; Hold remains available. The unchanged full sequence harness passes with the fix, including malformed-art failure, journal and restart assertions. This change touches live controls only; offline bundle identity will be checked before reusing completed performance evidence.
+
+Live control fix `97f2db7` passes ready (688 tests and decoded smoke) and the unchanged sequence regression. It is transferred as candidate `166e51d` and comparison `d9d1b4a`. Comparing the latter against timed revision `5d026a6` shows exactly two live control files changed; rebuilt offline `export.tsx` JavaScript and CSS hashes are identical. The final offline implementation and measured comparison are therefore unchanged. See [bundle/source provenance](live-fix-offline-provenance.json). Candidate affected repetitions follow before full live endurance.
+
+Final candidate `166e51d` passes ready, three unchanged full sequence repeats, affected output/energy/MIDI checks, and both fresh independent installations. All additional local Linux CI commands now have passing evidence; the original sequence failures and failed aggregate remain retained. Full unchanged live recovery (3,600 s) and explicit software (5,400 s) presets are starting concurrently as loaded reliability checks. Both use synthetic input and independent browser/server instances; their elapsed times are excluded from the quiet comparison.
+
+The concurrent software preset fails at its second sample (11.47 s) with 4,096 dropped analysis samples; the initial sample had zero. Graphics identifies SwiftShader. The recovery preset is deliberately cancelled through SIGINT after 87 s to isolate the failure, retaining 16 samples, two recoveries and one scene change; cancellation is not a pass. Its runner records cancelled/exit130 with a browser-close error during interruption. The full 5,400-second software preset is now repeated alone in a new directory. No transport bound, assertion or workload setting has changed.

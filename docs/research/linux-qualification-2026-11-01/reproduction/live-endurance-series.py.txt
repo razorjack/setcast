@@ -5,7 +5,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 root=Path(__file__).resolve().parent
 repo=Path('/tmp/setcast-linux-browser-first')
-assert (root/'additional-linux-ci.exit.txt').read_text().strip()=='0'
+assert (root/'candidate-live-fix.exit.txt').read_text().strip()=='0'
 report_path=root/'live-endurance-series.json'
 assert not report_path.exists(),report_path
 report={'scope':'Unchanged full presets on final candidate. Both live workloads run concurrently as loaded reliability checks, after all quiet performance measurements. Synthetic input, independent ephemeral ports and browsers. Elapsed times are not comparative throughput. User desktop activity remains allowed.', 'startedAt':datetime.now(timezone.utc).isoformat(),'status':'running','results':[]}

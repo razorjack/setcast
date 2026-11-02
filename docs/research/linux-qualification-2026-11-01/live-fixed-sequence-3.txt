@@ -1,0 +1,1 @@
+Sequence: PASS (dwell, loop, hold/skip, manual takeover, failure, journal and restart)

@@ -5,7 +5,7 @@ from pathlib import Path
 root=Path(__file__).resolve().parent
 repo=Path('/home/razorjack/Projects/opensource/setcast')
 phase=sys.argv[1]
-assert phase in ('pre-candidate-ci','final')
+assert phase in ('pre-candidate-ci','pre-live-fix','final')
 checkouts={'candidate':Path('/tmp/setcast-linux-browser-first')}
 if phase=='final':checkouts.update(production=repo,upstream=Path('/tmp/setcast-linux-current-upstream'))
 names=['webp-check','gpu-check','gpu-recovery-remotion','resume-check','resume-hardware-check','preview-check','export-verification','themes','output-check','transport-check','sequence-check','projection-check','energy-check','beat-check','branding-check','camera-check','midi-check']
