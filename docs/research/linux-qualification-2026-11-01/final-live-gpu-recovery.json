@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "status": "cancelled",
+  "config": {
+    "version": 1,
+    "mode": "live",
+    "seconds": 3600,
+    "sampleSeconds": 5,
+    "changeSeconds": 45,
+    "restartSeconds": 900,
+    "project": "examples/demo",
+    "at": 0,
+    "concurrency": 1,
+    "scenes": [
+      {
+        "title": "",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": [
+          {
+            "name": "field",
+            "resolution": 0.5
+          },
+          {
+            "name": "tunnel",
+            "resolution": 0.5
+          },
+          {
+            "name": "constellation",
+            "resolution": 0.5
+          }
+        ],
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "GPU recovery qualification",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained 1080p output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": [
+          {
+            "name": "field",
+            "resolution": 0.5
+          }
+        ],
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "GPU recovery qualification",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained 1080p output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": [
+          {
+            "name": "tunnel",
+            "resolution": 0.5
+          }
+        ],
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "GPU recovery qualification",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained 1080p output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": [
+          {
+            "name": "constellation",
+            "resolution": 0.5
+          }
+        ],
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "GPU recovery qualification",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained 1080p output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      }
+    ],
+    "gpuRecovery": {
+      "everySeconds": 30,
+      "restoreSeconds": 0.5
+    },
+    "verification": "metadata",
+    "audioAt": null,
+    "graphics": "auto",
+    "operatorWindow": false
+  },
+  "runtime": {
+    "node": "v26.7.0",
+    "platform": "linux",
+    "release": "7.2.13-200.fc44.x86_64",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+    "revision": "166e51d47deb50daab3ded80682633e855a12a5b",
+    "dirty": false
+  },
+  "startedAt": "2026-11-02T01:57:01.127Z",
+  "wallSeconds": 86.516355604,
+  "samples": 16,
+  "actions": {
+    "gpu-recovery": 2,
+    "scene-and-announcement": 1
+  },
+  "details": {
+    "browser": "156.0.8078.4",
+    "syntheticInput": true,
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "graphics": {
+      "requested": "auto",
+      "context": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "canvas": {
+          "width": 1920,
+          "height": 1080
+        },
+        "drawingBuffer": {
+          "width": 960,
+          "height": 540
+        },
+        "shadingLanguage": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+        "vendor": "WebKit",
+        "renderer": "WebKit WebGL",
+        "unmaskedVendor": "Google Inc. (Google)",
+        "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      }
+    },
+    "notices": [],
+    "failureScreenshotError": "Error: page.screenshot: Target page, context or browser has been closed"
+  },
+  "errors": [
+    "page.waitForTimeout: Target page, context or browser has been closed\n    at exercise (/tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:155:16)\n    at async runLive (/tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance/live.ts:38:9)\n    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/endurance.ts:35:33"
+  ]
+}

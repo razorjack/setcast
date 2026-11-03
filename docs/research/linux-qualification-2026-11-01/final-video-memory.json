@@ -1,0 +1,386 @@
+{
+  "version": 1,
+  "projectDir": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/corpus/looping-video",
+  "frames": 3000,
+  "bitmap": true,
+  "revision": "61d844448e5d8d6b9003278e928769715d6d5e77",
+  "scope": "Repeated 100–110 second seeks with JPEG capture. Resource check, not an encoded export or speed comparison. Summed RSS may double-count shared pages; external GPU services are excluded.",
+  "samples": [
+    {
+      "captured": 1,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 199,
+        "JSHeapUsedSize": 6254584,
+        "JSHeapTotalSize": 18423808
+      },
+      "treeRssBytes": 1529618432,
+      "urls": {
+        "active": 1,
+        "created": 1,
+        "revoked": 0,
+        "peak": 1
+      }
+    },
+    {
+      "captured": 151,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 9977140,
+        "JSHeapTotalSize": 18948096
+      },
+      "treeRssBytes": 2355658752,
+      "urls": {
+        "active": 1,
+        "created": 151,
+        "revoked": 150,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 301,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 241,
+        "JSHeapUsedSize": 11905812,
+        "JSHeapTotalSize": 20258816
+      },
+      "treeRssBytes": 2380480512,
+      "urls": {
+        "active": 1,
+        "created": 301,
+        "revoked": 300,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 451,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 219,
+        "JSHeapUsedSize": 10543432,
+        "JSHeapTotalSize": 14491648
+      },
+      "treeRssBytes": 2261184512,
+      "urls": {
+        "active": 1,
+        "created": 451,
+        "revoked": 450,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 601,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11077316,
+        "JSHeapTotalSize": 14491648
+      },
+      "treeRssBytes": 2322743296,
+      "urls": {
+        "active": 1,
+        "created": 601,
+        "revoked": 600,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 751,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11194984,
+        "JSHeapTotalSize": 15540224
+      },
+      "treeRssBytes": 2327584768,
+      "urls": {
+        "active": 1,
+        "created": 751,
+        "revoked": 750,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 901,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11205288,
+        "JSHeapTotalSize": 15015936
+      },
+      "treeRssBytes": 2333990912,
+      "urls": {
+        "active": 1,
+        "created": 901,
+        "revoked": 900,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1051,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 192,
+        "JSHeapUsedSize": 10655092,
+        "JSHeapTotalSize": 15015936
+      },
+      "treeRssBytes": 2223742976,
+      "urls": {
+        "active": 1,
+        "created": 1051,
+        "revoked": 1050,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1201,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11132912,
+        "JSHeapTotalSize": 15015936
+      },
+      "treeRssBytes": 2338045952,
+      "urls": {
+        "active": 1,
+        "created": 1201,
+        "revoked": 1200,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1351,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 192,
+        "JSHeapUsedSize": 10681460,
+        "JSHeapTotalSize": 15540224
+      },
+      "treeRssBytes": 2231803904,
+      "urls": {
+        "active": 1,
+        "created": 1351,
+        "revoked": 1350,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1501,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 219,
+        "JSHeapUsedSize": 10868652,
+        "JSHeapTotalSize": 15278080
+      },
+      "treeRssBytes": 2288128000,
+      "urls": {
+        "active": 1,
+        "created": 1501,
+        "revoked": 1500,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1651,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 219,
+        "JSHeapUsedSize": 10766940,
+        "JSHeapTotalSize": 15278080
+      },
+      "treeRssBytes": 2284146688,
+      "urls": {
+        "active": 1,
+        "created": 1651,
+        "revoked": 1650,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1801,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 199,
+        "JSHeapUsedSize": 10628528,
+        "JSHeapTotalSize": 15015936
+      },
+      "treeRssBytes": 2244206592,
+      "urls": {
+        "active": 1,
+        "created": 1801,
+        "revoked": 1800,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 1951,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11147332,
+        "JSHeapTotalSize": 15540224
+      },
+      "treeRssBytes": 2341888000,
+      "urls": {
+        "active": 1,
+        "created": 1951,
+        "revoked": 1950,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 2101,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 199,
+        "JSHeapUsedSize": 10686840,
+        "JSHeapTotalSize": 14753792
+      },
+      "treeRssBytes": 2247282688,
+      "urls": {
+        "active": 1,
+        "created": 2101,
+        "revoked": 2100,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 2251,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 219,
+        "JSHeapUsedSize": 10810476,
+        "JSHeapTotalSize": 15540224
+      },
+      "treeRssBytes": 2293927936,
+      "urls": {
+        "active": 1,
+        "created": 2251,
+        "revoked": 2250,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 2401,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11151980,
+        "JSHeapTotalSize": 15015936
+      },
+      "treeRssBytes": 2356047872,
+      "urls": {
+        "active": 1,
+        "created": 2401,
+        "revoked": 2400,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 2551,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 192,
+        "JSHeapUsedSize": 10645572,
+        "JSHeapTotalSize": 16064512
+      },
+      "treeRssBytes": 2240991232,
+      "urls": {
+        "active": 1,
+        "created": 2551,
+        "revoked": 2550,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 2701,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 199,
+        "JSHeapUsedSize": 10649780,
+        "JSHeapTotalSize": 13180928
+      },
+      "treeRssBytes": 2278166528,
+      "urls": {
+        "active": 1,
+        "created": 2701,
+        "revoked": 2700,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 2851,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 230,
+        "JSHeapUsedSize": 11124932,
+        "JSHeapTotalSize": 15540224
+      },
+      "treeRssBytes": 2352836608,
+      "urls": {
+        "active": 1,
+        "created": 2851,
+        "revoked": 2850,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 3000,
+      "closed": false,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 192,
+        "JSHeapUsedSize": 10634012,
+        "JSHeapTotalSize": 13443072
+      },
+      "treeRssBytes": 2219724800,
+      "urls": {
+        "active": 1,
+        "created": 3000,
+        "revoked": 2999,
+        "peak": 2
+      }
+    },
+    {
+      "captured": 3000,
+      "closed": true,
+      "heap": {
+        "Documents": 1,
+        "Nodes": 192,
+        "JSHeapUsedSize": 10681228,
+        "JSHeapTotalSize": 13443072
+      },
+      "treeRssBytes": 2185363456,
+      "urls": {
+        "active": 0,
+        "created": 3000,
+        "revoked": 3000,
+        "peak": 2
+      }
+    }
+  ],
+  "status": "passed",
+  "error": null
+}

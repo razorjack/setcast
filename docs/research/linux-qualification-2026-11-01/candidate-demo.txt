@@ -1,0 +1,9 @@
+$ node scripts/make-demo-assets.ts ⊘ cache disabled
+wrote /tmp/setcast-linux-browser-first/examples/demo/assets/demo-set.wav (154.5 s, 27.3 MB)
+  intro         0.0 s
+  buildup      22.1 s
+  drop         33.1 s
+  breakdown    77.2 s
+  buildup      99.3 s
+  drop        110.3 s
+

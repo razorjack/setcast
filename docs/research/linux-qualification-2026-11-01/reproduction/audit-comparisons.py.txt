@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+import json,re,sys
+from pathlib import Path
+root=Path(__file__).resolve().parent
+mode=sys.argv[1]
+assert mode in ('tune','timing')
+rows=[]
+for path in sorted(root.glob(mode+'-*/report.json')):
+    report=json.loads(path.read_text())
+    if not isinstance(report.get('runs'),list):continue
+    log=(root/(path.parent.name+'.txt')).read_text()
+    accepted=[];pending=[]
+    for line in log.splitlines():
+        match=re.fullmatch(r'Pre-run system CPU busy: ([\d.]+)%',line)
+        if match:pending.append(float(match[1]))
+        elif re.match(r'Pair \d+/\d+: (browser|remotion)$',line):
+            assert pending and pending[-1]<=15,(path,line,pending)
+            accepted.append(pending);pending=[]
+    observation=json.loads((root/(path.parent.name+'-shm.json')).read_text())
+    for run in report['runs']:
+        assert run['settings']['hardwareAcceleration']=='disable'
+        assert all(event['encoder']=='libx264' for event in run['runtime'] if event['kind']=='encoder')
+        for event in run['runtime']:
+            if event['kind']=='browser':assert 'SwiftShader' in event['graphics']['renderer'],(path,event)
+    assert report['config']['idleBusy']==.15
+    if report['status']=='passed':
+        assert report['revision']=='5d026a64293207d90753f002020737deaa66f39d' and not report['dirty']
+        assert len(accepted)==len(report['runs'])==report['config']['repeat']*2
+        assert observation['exitCode']==0 and not observation['remainingNewPools']
+    rows.append({'report':str(path),'status':report['status'],'revision':report['revision'],'dirty':report['dirty'],'preRunCpuBusyPercentSamples':accepted,'remainingNewPools':observation['remainingNewPools'],'runs':[{'renderer':run['renderer'],'index':run['index'],'wallSeconds':run['wallSeconds'],'bytes':Path(run['result']['file']).stat().st_size,'processes':run['processes'],'runtime':run['runtime']} for run in report['runs']]})
+passed=[row for row in rows if row['status']=='passed']
+output={'scope':'Audits retained commands, rounded pre-run CPU samples, final status, software graphics/encoding identity and named-pool cleanup. No own validation or resource job overlapped quiet measurement. External CPU samples include other visible processes and cannot identify particular user activity. Successful-export cleanup does not supersede the separately reproduced encoder-failure leak.','mode':mode,'comparisons':rows,'completedComparisons':len(passed),'completedArms':sum(len(row['runs']) for row in passed),'maxAcceptedPreRunBusyPercent':max(samples[-1] for row in passed for samples in row['preRunCpuBusyPercentSamples']),'maxMeanExternalCpuCores':max(run['processes']['meanExternalCpuCores'] for row in passed for run in row['runs']),'maxExternalCpuCores':max(run['processes']['maxExternalCpuCores'] for row in passed for run in row['runs'])}
+(root/(mode+'-audit.json')).write_text(json.dumps(output,indent=2)+'\n')
+print(json.dumps({key:value for key,value in output.items() if key not in ('comparisons','scope')},indent=2))

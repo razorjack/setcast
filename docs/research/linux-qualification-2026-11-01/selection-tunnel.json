@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "tunnel",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 37.508800581,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-1/report.json"
+      },
+      {
+        "wallSeconds": 23.121702871999997,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-2/report.json"
+      },
+      {
+        "wallSeconds": 19.000334665,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-4/report.json"
+      },
+      {
+        "wallSeconds": 19.087366852,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-8/report.json"
+      },
+      {
+        "wallSeconds": 18.934110671000003,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 31.965696438,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-1/report.json"
+      },
+      {
+        "wallSeconds": 20.266501401000003,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-2/report.json"
+      },
+      {
+        "wallSeconds": 18.957219788000003,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-4/report.json"
+      },
+      {
+        "wallSeconds": 19.138604156,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-8/report.json"
+      },
+      {
+        "wallSeconds": 19.129097522000002,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-auto/report.json"
+      }
+    ]
+  },
+  "browser": "auto",
+  "remotion": "4"
+}

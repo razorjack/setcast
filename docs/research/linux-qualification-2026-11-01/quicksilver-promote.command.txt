@@ -1,0 +1,1 @@
+node examples/demo/out/linux-qualification-2026-11-01/quicksilver-layer-probe.mjs promote --image-only --theme quicksilver --out examples/demo/out/linux-qualification-2026-11-01/quicksilver-promote 

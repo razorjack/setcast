@@ -1,0 +1,14 @@
+#!/bin/bash
+set -u
+export PATH="$PWD/node_modules/.bin:/home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/bin:$PATH"
+linux_run="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+label="$1"; shift
+test ! -e "$linux_run/$label.txt" || exit 99
+printf '%q ' "$@" > "$linux_run/$label.command.txt"
+printf '\n' >> "$linux_run/$label.command.txt"
+date -u +%FT%TZ > "$linux_run/$label.start.txt"
+status=0
+"$@" > "$linux_run/$label.txt" 2>&1 || status=$?
+printf '%s\n' "$status" > "$linux_run/$label.exit.txt"
+tail -60 "$linux_run/$label.txt"
+exit "$status"

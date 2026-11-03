@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run quicksilver-fixed-ready ./node_modules/.bin/vp run ready
+run quicksilver-fixed-browser-acceptance ./node_modules/.bin/vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/quicksilver-fixed-browser-acceptance"
+run quicksilver-fixed-remotion-acceptance ./node_modules/.bin/vp run export-acceptance --gl swangle --out "$root/quicksilver-fixed-remotion-acceptance"
+run quicksilver-fixed-video node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/quicksilver-fixed-video"
+run quicksilver-fixed-workers node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 4 --workers 1,2,4 --out "$root/quicksilver-fixed-workers"
+run quicksilver-fixed-stills ./node_modules/.bin/vp run theme-stills --at 1:50.4 --theme quicksilver

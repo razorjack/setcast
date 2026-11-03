@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "constellation",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 75.51172110899999,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-1/report.json"
+      },
+      {
+        "wallSeconds": 46.649129036000005,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-2/report.json"
+      },
+      {
+        "wallSeconds": 47.53809097,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-4/report.json"
+      },
+      {
+        "wallSeconds": 51.424553206999995,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-8/report.json"
+      },
+      {
+        "wallSeconds": 47.274460506,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 72.135571225,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-1/report.json"
+      },
+      {
+        "wallSeconds": 48.891317023000006,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-2/report.json"
+      },
+      {
+        "wallSeconds": 50.456844921999995,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-4/report.json"
+      },
+      {
+        "wallSeconds": 57.63827267999999,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-8/report.json"
+      },
+      {
+        "wallSeconds": 60.138345382,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-constellation-auto/report.json"
+      }
+    ]
+  },
+  "browser": "2",
+  "remotion": "2"
+}

@@ -1,0 +1,1 @@
+Frame driver: PASS (same-page backward seeks, scene font changes, video loops)

@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+import concurrent.futures,json,subprocess,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+index=json.loads((ROOT/'quality-index.json').read_text())
+names=sys.argv[1:] or list(index)
+def make(name):
+    directory=Path(index[name]);reference=json.loads((directory/'reference/reference.json').read_text());offset=reference['frames']//2
+    assert json.loads((directory/'comparison/report.json').read_text())['status']=='passed'
+    inputs=[directory/'reference/reference.mkv',directory/'comparison/0-browser.mp4',directory/'comparison/0-remotion.mp4']
+    width=360 if reference['width']<reference['height'] else 640
+    filters=[f'[{i}:v]select=eq(n\\,{offset}),scale={width}:-1[p{i}]' for i in range(3)]
+    filters.append('[p0][p1][p2]hstack=inputs=3')
+    command=['ffmpeg','-hide_banner','-v','error']
+    for video in inputs:command+=['-threads','2','-i',str(video)]
+    command+=['-filter_complex_threads','2','-filter_complex',';'.join(filters),'-frames:v','1','-update','1',str(directory/'inspection-midpoint.png')]
+    if (directory/'inspection-midpoint.png').exists():return
+    result=subprocess.run(command,text=True,capture_output=True)
+    (directory/'inspection-midpoint-command.json').write_text(json.dumps({'command':command,'exitCode':result.returncode,'output':result.stdout+result.stderr,'frameOffset':offset,'order':['reference','browser','remotion'],'scope':'Resized midpoint viewing aid, not a lossless reference or complete temporal inspection.'},indent=2)+'\n')
+    assert result.returncode==0,result.stderr
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:list(pool.map(make,names))

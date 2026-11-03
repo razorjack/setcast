@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "standard",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 34.917152852,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-1/report.json"
+      },
+      {
+        "wallSeconds": 22.18541545,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-2/report.json"
+      },
+      {
+        "wallSeconds": 17.982887604999995,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-4/report.json"
+      },
+      {
+        "wallSeconds": 16.893605741,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-8/report.json"
+      },
+      {
+        "wallSeconds": 17.393997855000002,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 32.217267539999995,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-1/report.json"
+      },
+      {
+        "wallSeconds": 18.489486589,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-2/report.json"
+      },
+      {
+        "wallSeconds": 17.100194945000002,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-4/report.json"
+      },
+      {
+        "wallSeconds": 17.016576506,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-8/report.json"
+      },
+      {
+        "wallSeconds": 17.115290201,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-standard-auto/report.json"
+      }
+    ]
+  },
+  "browser": "8",
+  "remotion": "8"
+}

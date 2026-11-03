@@ -1,0 +1,1 @@
+node examples/demo/out/linux-qualification-2026-11-01/raster-probe.mjs --theme pirate --workers 1\,2\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/raster-pirate 

@@ -1,0 +1,34 @@
+  sterile-tech: canvas/image comparison complete in both shapes and fits
+  escapement: canvas/image comparison complete in both shapes and fits
+  long-exposure: canvas/image comparison complete in both shapes and fits
+  bristol: canvas/image comparison complete in both shapes and fits
+  patina: canvas/image comparison complete in both shapes and fits
+  quicksilver: canvas/image comparison complete in both shapes and fits
+  bunker: canvas/image comparison complete in both shapes and fits
+  vfd: canvas/image comparison complete in both shapes and fits
+  interference: canvas/image comparison complete in both shapes and fits
+  pirate: canvas/image comparison complete in both shapes and fits
+  afterhours: canvas/image comparison complete in both shapes and fits
+  passe-partout: canvas/image comparison complete in both shapes and fits
+  masthead: canvas/image comparison complete in both shapes and fits
+  anamorphic: canvas/image comparison complete in both shapes and fits
+  relief: canvas/image comparison complete in both shapes and fits
+  darkroom: canvas/image comparison complete in both shapes and fits
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Video differences exceed tolerance: quicksilver-640-contain:7, quicksilver-640-contain:29, quicksilver-360-cover:29, quicksilver-360-cover:7, quicksilver-360-cover:0, quicksilver-360-contain:29. Inspect /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-video-frames.
+
+6 !== 0
+
+    at file:///home/razorjack/Projects/opensource/setcast/packages/renderer-browser/bench/video-frames.ts:81:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 6,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

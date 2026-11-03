@@ -1,0 +1,211 @@
+{
+  "results": [
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "IMG"
+    }
+  ],
+  "differences": [
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "frame": 29,
+      "max": 84,
+      "mean": 0.014952256944444445,
+      "rms": 0.5687042106109877
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 36,
+      "max": 73,
+      "mean": 0.04140335648148148,
+      "rms": 0.962830631042695
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 0,
+      "max": 73,
+      "mean": 0.04140335648148148,
+      "rms": 0.962830631042695
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 7,
+      "max": 64,
+      "mean": 0.017301793981481482,
+      "rms": 0.5437766064158932
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    }
+  ],
+  "failures": [
+    "quicksilver-640-contain:29",
+    "quicksilver-360-cover:36",
+    "quicksilver-360-cover:0",
+    "quicksilver-360-contain:7"
+  ]
+}

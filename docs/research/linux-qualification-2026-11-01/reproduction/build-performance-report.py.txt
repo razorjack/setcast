@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+"""Build final tables and an interactive chart from retained repeated comparisons."""
+import csv,html,json,math,statistics
+from pathlib import Path
+root=Path(__file__).resolve().parent
+destination=Path('/home/razorjack/Projects/opensource/setcast/docs/research/linux-qualification-2026-11-01')
+index=json.loads((root/'comparison-index.json').read_text())
+quality={row['report']:row for row in json.loads((root/'timing-summary.json').read_text())['results']}
+cases=json.loads((root/'software-corpus/manifest.json').read_text())['cases']
+rows=[];runs=[]
+for case in cases:
+    paths=[Path(p)/'report.json' for p in index['timing-'+case['name']]]
+    path=next(p for p in reversed(paths) if p.exists() and json.loads(p.read_text())['status']=='passed')
+    report=json.loads(path.read_text());measured=quality[str(path)]
+    shm=json.loads((root/(path.parent.name+'-shm.json')).read_text())
+    assert not shm['remainingNewPools'] and shm['exitCode']==0
+    assert report['config']['repeat']==3 and len(report['runs'])==6
+    assert report['config']['idleBusy']==.15
+    arms={}
+    for arm in ('browser','remotion'):
+        selected=[run for run in report['runs'] if run['renderer']==arm]
+        workers=sorted({event['workers'] for run in selected for event in run['runtime'] if event['kind']=='capture'})
+        inputs=sorted({event['inputFormat'] for run in selected for event in run['runtime'] if event['kind']=='encoder'})
+        sizes=[Path(run['result']['file']).stat().st_size for run in selected]
+        arms[arm]={**report['summary'][arm],'workers':workers,'encoderInputs':inputs,'bytes':{'min':min(sizes),'median':statistics.median(sizes),'max':max(sizes)},'peakSummedRssBytes':max(run['processes']['rssPeakBytes'] for run in selected),'meanExternalCpuCores':statistics.mean(run['processes']['meanExternalCpuCores'] for run in selected)}
+        for run in selected:
+            runs.append({'case':case['name'],'renderer':arm,'pair':run['index'],'wallSeconds':run['wallSeconds'],'bytes':Path(run['result']['file']).stat().st_size,'workers':','.join(map(str,workers)),'encoderInputs':','.join(inputs),'peakSummedRssBytes':run['processes']['rssPeakBytes'],'meanExternalCpuCores':run['processes']['meanExternalCpuCores'],'maxExternalCpuCores':run['processes']['maxExternalCpuCores'],'outputSha256':run['outputDigest'],'file':run['result']['file'],'report':str(path)})
+    ratio=arms['browser']['medianSeconds']/arms['remotion']['medianSeconds']
+    rows.append({'case':case['name'],'report':str(path),'revision':report['revision'],'dirty':report['dirty'],'qualityPassed':measured['qualityPassed'],'ratio':ratio,'reduction':1-ratio,'targetMet':measured['qualityPassed'] and ratio<=.7,**arms})
+result={'scope':'Three alternating pairs per workload after worker screening. Includes loading through cleanup, with fresh sessions but shared process/OS caches. All final output quality is measured separately. Target is at least 30% lower median wall time in every workload, not an aggregate.','cases':rows,'runs':runs}
+(destination/'performance-results.json').write_text(json.dumps(result,indent=2)+'\n')
+with (destination/'performance-runs.csv').open('w') as stream:
+    writer=csv.DictWriter(stream,fieldnames=list(runs[0]));writer.writeheader();writer.writerows(runs)
+lines=['| Workload | Browser median [range], s | Remotion median [range], s | Actual workers B/R | Browser time reduction | Quality | 30% target |','| --- | ---: | ---: | --- | ---: | --- | --- |']
+for row in rows:
+    b,r=row['browser'],row['remotion']
+    def times(arm):return f"{arm['medianSeconds']:.2f} [{arm['minSeconds']:.2f}, {arm['maxSeconds']:.2f}]"
+    lines.append(f"| {row['case']} | {times(b)} | {times(r)} | {b['workers']}/{r['workers']} | {100*row['reduction']:.1f}% | {'Pass' if row['qualityPassed'] else 'Fail'} | {'Pass' if row['targetMet'] else 'Fail'} |")
+(destination/'performance-table.md').write_text('\n'.join(lines)+'\n')
+maximum=max(120,math.ceil(max(row['ratio'] for row in rows)*100/20)*20)
+chart=[]
+for i,row in enumerate(rows):
+    b,r=row['browser'],row['remotion'];name=html.escape(row['case']+(' (quality failed)' if not row['qualityPassed'] else ''))
+    details=html.escape(f"Browser: {b['medianSeconds']:.2f} s median, {b['minSeconds']:.2f}–{b['maxSeconds']:.2f} s range; workers {b['workers']}; median output {b['bytes']['median']/1e6:.2f} MB. Remotion: {r['medianSeconds']:.2f} s median, {r['minSeconds']:.2f}–{r['maxSeconds']:.2f} s range; workers {r['workers']}; median output {r['bytes']['median']/1e6:.2f} MB. Every paired quality comparison {'passes' if row['qualityPassed'] else 'does not pass'}. The 30% target {'passes' if row['targetMet'] else 'does not pass'}.")
+    chart.append(f'''<button class="row" aria-expanded="false" aria-controls="detail-{i}" onclick="toggle(this)"><span class="name">{name}</span><span class="plot"><span class="bar" style="width:{row['ratio']*100/maximum*100:.3f}%;background:var({'--success' if row['targetMet'] else '--chart-1'},Highlight)"></span><span class="target" style="left:{70/maximum*100:.3f}%"></span><span class="reference" style="left:{100/maximum*100:.3f}%"></span></span><span class="value">{row['ratio']*100:.1f}%</span></button><p class="detail" id="detail-{i}" hidden>{details}</p>''')
+page='''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+body{margin:0;color:var(--foreground,CanvasText);font-family:var(--font-sans,system-ui)}p{line-height:1.45}.note{font-size:13px;color:var(--muted-foreground,GrayText)}.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin:14px 0}.legend i{display:inline-block;height:12px;vertical-align:middle;margin-right:6px}.target-key{border-left:2px dashed var(--warning,Highlight)}.reference-key{border-left:2px solid var(--foreground,CanvasText)}.row{display:grid;grid-template-columns:155px minmax(0,1fr) 65px;gap:10px;align-items:center;width:100%;min-height:43px;border:0;border-bottom:1px solid var(--border,GrayText);background:none;color:inherit;font:inherit;text-align:left;padding:6px 0;cursor:pointer}.row:focus-visible{outline:2px solid var(--ring,Highlight)}.name{font-size:13px;overflow-wrap:anywhere}.plot{height:18px;position:relative;background:var(--secondary,ButtonFace)}.bar{position:absolute;inset:0 auto 0 0}.target,.reference{position:absolute;top:-4px;height:26px;pointer-events:none}.target{border-left:2px dashed var(--warning,Highlight)}.reference{border-left:1px solid var(--foreground,CanvasText)}.value{font-size:13px;font-variant-numeric:tabular-nums;text-align:right}.detail{font-size:12px;margin:10px 0 14px;line-height:1.6}.axis{display:flex;justify-content:space-between;margin-left:165px;margin-right:75px;font-size:11px;color:var(--muted-foreground,GrayText)}@media(max-width:480px){.row{grid-template-columns:98px minmax(0,1fr) 53px;gap:7px}.axis{margin-left:105px;margin-right:60px}.name,.value{font-size:12px}}
+</style></head><body><p>Browser median export time relative to tuned Remotion 4.0.539. Lower is faster.</p><div class="legend"><span><i class="target-key"></i>70%: required target</span><span><i class="reference-key"></i>100%: Remotion median</span></div>'''+f'<div class="axis"><span>0%</span><span>{maximum}%</span></div>'+''.join(chart)+'''<p class="note">Three alternating pairs per workload on Fedora x64. Click a workload for times, ranges, workers, output sizes and quality status. Fresh render sessions share process and OS caches. Calibration and endurance timings are excluded.</p><script>function toggle(button){const expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));document.getElementById(button.getAttribute('aria-controls')).hidden=expanded;}</script></body></html>'''
+(destination/'performance.html').write_text(page)
+print('Wrote final performance results for',len(rows),'workloads; quality passes',sum(row['qualityPassed'] for row in rows),'target passes',sum(row['targetMet'] for row in rows))

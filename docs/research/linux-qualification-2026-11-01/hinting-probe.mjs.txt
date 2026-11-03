@@ -1,0 +1,5 @@
+import { chromium } from '../../../../packages/renderer-browser/node_modules/playwright/index.mjs';
+const launch = chromium.launch.bind(chromium);
+chromium.launch = (options = {}) => launch({ ...options, args: [...(options.args ?? []), '--font-render-hinting=none'] });
+process.argv = [process.execPath, 'packages/cli/bin/setcast.js', 'still', process.argv[2], '--renderer', 'browser', '--at', '1:35', '--out', process.argv[3]];
+await import('../../../../packages/cli/bin/setcast.js');

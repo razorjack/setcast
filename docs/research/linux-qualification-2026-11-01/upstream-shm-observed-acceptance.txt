@@ -1,0 +1,4 @@
+  File "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/shm-observe.py", line 34
+    (out/'report.json').write_text(json.dumps(report,indent=2)+'
+                                                               ^
+SyntaxError: unterminated string literal (detected at line 34)

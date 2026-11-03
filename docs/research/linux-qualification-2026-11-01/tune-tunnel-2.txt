@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 0.4%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 23.121702871999997,
+    "minSeconds": 23.121702871999997,
+    "maxSeconds": 23.121702871999997
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 20.266501401000003,
+    "minSeconds": 20.266501401000003,
+    "maxSeconds": 20.266501401000003
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-tunnel-2/report.json

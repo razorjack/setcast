@@ -1,0 +1,27 @@
+Pre-run system CPU busy: 0.3%
+Pair 1/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 1/3: remotion
+Pre-run system CPU busy: 0.3%
+Pair 2/3: remotion
+Pre-run system CPU busy: 0.2%
+Pair 2/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: browser
+Pre-run system CPU busy: 0.2%
+Pair 3/3: remotion
+{
+  "browser": {
+    "runs": 3,
+    "medianSeconds": 46.20567321100002,
+    "minSeconds": 46.03491542599999,
+    "maxSeconds": 48.647087158
+  },
+  "remotion": {
+    "runs": 3,
+    "medianSeconds": 47.907695219000004,
+    "minSeconds": 47.554993917,
+    "maxSeconds": 48.245817982000005
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/report.json

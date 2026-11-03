@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "revision": "8eca0d3d15002b6cb7107bf63c25b487ae21e5ce",
+  "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-video-memory/report.json",
+  "peakRssBytes": 2294538240,
+  "intervals": [
+    {
+      "capturedAfter": 0,
+      "capturedThrough": 750,
+      "samples": 5,
+      "medianRssBytes": 2234908672,
+      "maxRssBytes": 2272501760
+    },
+    {
+      "capturedAfter": 750,
+      "capturedThrough": 1500,
+      "samples": 5,
+      "medianRssBytes": 2173059072,
+      "maxRssBytes": 2175553536
+    },
+    {
+      "capturedAfter": 1500,
+      "capturedThrough": 2250,
+      "samples": 5,
+      "medianRssBytes": 2178424832,
+      "maxRssBytes": 2294538240
+    },
+    {
+      "capturedAfter": 2250,
+      "capturedThrough": 3000,
+      "samples": 6,
+      "medianRssBytes": 2209171456.0,
+      "maxRssBytes": 2254077952
+    }
+  ],
+  "closed": {
+    "captured": 3000,
+    "closed": true,
+    "heap": {
+      "Documents": 1,
+      "Nodes": 192,
+      "JSHeapUsedSize": 10724016,
+      "JSHeapTotalSize": 14229504
+    },
+    "treeRssBytes": 2169192448,
+    "urls": {
+      "active": 0,
+      "created": 3000,
+      "revoked": 3000,
+      "peak": 2
+    }
+  },
+  "scope": "Loaded 3000-capture synthetic resource check. Summed RSS can double-count shared pages; these observations do not establish full-master stability or throughput."
+}

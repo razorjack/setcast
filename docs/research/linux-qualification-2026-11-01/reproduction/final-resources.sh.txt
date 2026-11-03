@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run final-nvenc-doctor node packages/cli/bin/setcast.js doctor --renderer browser --require hardwareEncoding --json
+run final-nvenc-acceptance node packages/renderer-browser/bench/hardware.ts --out "$root/final-nvenc-acceptance"
+run final-nvenc-color node packages/renderer-browser/bench/color.ts --hardware --out "$root/final-nvenc-color"
+run final-nvenc-resume node packages/renderer-browser/bench/resume.ts --hardware
+run final-nvenc-endurance node packages/renderer-browser/bench/endurance.ts --config "$root/nvenc-demo.json" --out "$root/final-nvenc-endurance"
+run final-video-memory node packages/renderer-browser/bench/video-memory.ts "$root/corpus/looping-video" --bitmap --frames 3000 --out "$root/final-video-memory"
+run final-export-short node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/export-demo.json --out "$root/final-export-short"

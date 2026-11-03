@@ -3,8 +3,12 @@
 The `renderer/browser-first-candidate` branch makes the browser renderer the default and removes the Remotion adapter
 from the CLI's required dependencies. The candidate is isolated from main until the remaining
 release criteria in [the replacement plan](renderer-replacement-plan.md) are satisfied. Local
-macOS validation is evidence for that machine only; the new Linux/macOS/Windows CI matrix has
-not yet run. Matched-quality performance qualification remains open.
+macOS validation is evidence for that machine only. The Linux follow-up has passed fresh
+browser-only and optional-Remotion installations on Fedora x64, with the Linux graphics, font, Quicksilver and live sequence-control fixes
+merged into `renderer/linux-browser-first` at `166e51d`. The final candidate also passes the
+locally executed Linux CI commands; full live endurance remains separately recorded. See the
+[Linux evidence](research/linux-qualification-2026-11-01/README.md) for exact runtime scope.
+The hosted CI matrix has not run; Windows and matched-quality performance qualification remain open.
 
 Main still defaults to Remotion. The commands and default behavior below describe the candidate;
 on main, select the browser renderer explicitly.
@@ -68,6 +72,10 @@ an MP4 `output.file`, then select `renderer: remotion`. Keep the original ProRes
 alpha channel is needed. See [compositing output](compositing-output.md) for the format contract.
 
 ## Verification and release boundaries
+
+For a Linux session, follow the [qualification handoff](linux-renderer-qualification.md), including
+transfer of the local candidate branch and fresh Linux dependencies. Windows qualification remains
+pending; passing Linux checks alone does not authorize promotion.
 
 `vp run package-smoke --browser --report out/installed-browser.json` builds tarballs and installs
 only the CLI into a fresh dependency tree. Local overrides resolve unpublished Setcast packages;

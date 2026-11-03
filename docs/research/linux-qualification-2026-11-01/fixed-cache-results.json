@@ -1,0 +1,62 @@
+{
+  "initial": {
+    "captured": 75,
+    "reused": 0,
+    "workers": 1
+  },
+  "identical repeat": {
+    "captured": 0,
+    "reused": 75,
+    "workers": 0
+  },
+  "different destination": {
+    "captured": 0,
+    "reused": 75,
+    "workers": 0
+  },
+  "corrupt one chunk": {
+    "captured": 30,
+    "reused": 45,
+    "workers": 1
+  },
+  "missing one chunk": {
+    "captured": 30,
+    "reused": 45,
+    "workers": 1
+  },
+  "changed settings": {
+    "captured": 75,
+    "reused": 0,
+    "workers": 1
+  },
+  "changed project": {
+    "captured": 75,
+    "reused": 0,
+    "workers": 1
+  },
+  "changed art": {
+    "captured": 75,
+    "reused": 0,
+    "workers": 1
+  },
+  "changed audio": {
+    "captured": 75,
+    "reused": 0,
+    "workers": 1
+  },
+  "restored inputs": {
+    "captured": 0,
+    "reused": 75,
+    "workers": 0
+  },
+  "recover interruption": {
+    "captured": 45,
+    "reused": 30,
+    "workers": 1
+  },
+  "after clear": {
+    "captured": 75,
+    "reused": 0,
+    "workers": 1
+  }
+}

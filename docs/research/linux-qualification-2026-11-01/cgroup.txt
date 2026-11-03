@@ -1,0 +1,36 @@
+0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-t3code.slice/app-t3code-agents.slice/app-t3code-agents-488e54da2676.slice/t3code-codex-7d7d694b.scope
+
+/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-t3code.slice/app-t3code-agents.slice/app-t3code-agents-488e54da2676.slice/t3code-codex-7d7d694b.scope
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-t3code.slice/app-t3code-agents.slice/app-t3code-agents-488e54da2676.slice
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-t3code.slice/app-t3code-agents.slice
+cpu.max max 100000
+memory.max 62994423808
+memory.high 60846940160
+/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-t3code.slice
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup/user.slice/user-1000.slice
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup/user.slice
+cpu.max max 100000
+memory.max max
+memory.high max
+/sys/fs/cgroup
+cpuset.cpus.effective 0-31

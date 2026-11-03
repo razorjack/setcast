@@ -1,0 +1,6 @@
+┌   setcast  still
+[?25l│
+◒  Bundling composition 6%[1G[J◐  Bundling composition 6%[1G[J◓  Bundling composition 6%[1G[J◑  Bundling composition 6%[1G[J◒  Bundling composition 6%[1G[J◐  Bundling composition 17%[1G[J◓  Bundling composition 92%[1G[J◑  Bundling composition 100%[1G[J◒  Bundling composition 100%.[1G[J◐  Bundling composition 100%.[1G[J◓  Bundling composition 100%.[1G[J◑  Bundling composition 100%.[1G[J◒  Bundling composition 100%.[1G[J◐  Bundling composition 100%.[1G[J◓  Bundling composition 100%.[1G[J◑  Bundling composition 100%.[1G[J◒  Bundling composition 100%..[1G[J◐  Bundling composition 100%..[1G[J◓  Bundling composition 100%..[1G[J◑  Bundling composition 100%..[1G[J◒  Bundling composition 100%..[1G[J◐  Bundling composition 100%..[1G[J◓  Bundling composition 100%..[1G[J◑  Bundling composition 100%..[1G[J◒  Bundling composition 100%...[1G[J◐  Bundling composition 100%...[1G[J◓  Bundling composition 100%...[1G[J◑  Bundling composition 100%...[1G[J◒  Bundling composition 100%...[1G[J◇  Grabbed 1:35 of the set
+[?25h│
+└  Done  →  ~/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/upstream-midpoint.png
+

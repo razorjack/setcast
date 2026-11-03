@@ -1,0 +1,1 @@
+Lossless reference: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-chunk-boundary/chunk-boundary/reference/reference.mkv

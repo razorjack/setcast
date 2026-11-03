@@ -1,0 +1,55 @@
+{
+  "scope": "Loaded resource repeat; not throughput. Summed RSS may double-count shared pages. Four capture-count intervals, not wall-time intervals.",
+  "peakRssBytes": 2380480512,
+  "intervals": [
+    {
+      "captureRange": [
+        1,
+        750
+      ],
+      "medianRssBytes": 2322743296,
+      "samples": 5
+    },
+    {
+      "captureRange": [
+        751,
+        1500
+      ],
+      "medianRssBytes": 2327584768,
+      "samples": 5
+    },
+    {
+      "captureRange": [
+        1501,
+        2250
+      ],
+      "medianRssBytes": 2284146688,
+      "samples": 5
+    },
+    {
+      "captureRange": [
+        2251,
+        3000
+      ],
+      "medianRssBytes": 2286047232.0,
+      "samples": 6
+    }
+  ],
+  "final": {
+    "captured": 3000,
+    "closed": true,
+    "heap": {
+      "Documents": 1,
+      "Nodes": 192,
+      "JSHeapUsedSize": 10681228,
+      "JSHeapTotalSize": 13443072
+    },
+    "treeRssBytes": 2185363456,
+    "urls": {
+      "active": 0,
+      "created": 3000,
+      "revoked": 3000,
+      "peak": 2
+    }
+  }
+}

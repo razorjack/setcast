@@ -1,0 +1,18 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 50.857403603,
+    "minSeconds": 50.857403603,
+    "maxSeconds": 50.857403603
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 45.997987020000004,
+    "minSeconds": 45.997987020000004,
+    "maxSeconds": 45.997987020000004
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-portrait/portrait/comparison/report.json
+▲  background assets/bg.png is 2304×1296, another shape than the 1080×1920 frame, so it is shown whole over a blurred copy of itself. Set backgroundFit: cover to crop it to the frame instead, or backgroundFit: contain to keep this without the note.

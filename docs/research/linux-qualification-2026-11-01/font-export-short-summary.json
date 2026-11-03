@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "runtime": {
+    "node": "v26.7.0",
+    "platform": "linux",
+    "release": "7.2.13-200.fc44.x86_64",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+    "revision": "a5a8bbe66c1acd03ca14bd06ba1988962b3df13d",
+    "dirty": true
+  },
+  "samples": 79,
+  "peakRssBytes": 3082993664,
+  "intervals": [
+    {
+      "framesFrom": 0,
+      "framesBefore": 900,
+      "samples": 21,
+      "medianRssBytes": 2805559296,
+      "peakRssBytes": 2902216704
+    },
+    {
+      "framesFrom": 900,
+      "framesBefore": 1800,
+      "samples": 19,
+      "medianRssBytes": 2943778816,
+      "peakRssBytes": 2995666944
+    },
+    {
+      "framesFrom": 1800,
+      "framesBefore": 2700,
+      "samples": 21,
+      "medianRssBytes": 2943549440,
+      "peakRssBytes": 3082993664
+    },
+    {
+      "framesFrom": 2700,
+      "framesBefore": 3600,
+      "samples": 18,
+      "medianRssBytes": 3002968064.0,
+      "peakRssBytes": 3049857024
+    }
+  ],
+  "finalStorage": {
+    "bytes": 59383220,
+    "freeBytes": 781159632896,
+    "temporaryDirectories": [],
+    "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+  },
+  "scope": "120-second synthetic software export, one worker. Loaded resource observations, not performance or full-master evidence. Summed RSS can double-count shared pages."
+}

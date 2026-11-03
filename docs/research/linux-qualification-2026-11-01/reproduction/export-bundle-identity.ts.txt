@@ -1,0 +1,18 @@
+import { createHash } from 'node:crypto';
+import { writeFile } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+const [checkout, output] = process.argv.slice(2);
+process.chdir(checkout!);
+const { bundlePlayer } = await import(pathToFileURL(join(checkout!, 'packages/renderer-browser/src/bundle.ts')).href);
+const files: Map<string, Buffer> = await bundlePlayer('export.tsx');
+const report = {
+  checkout,
+  revision: spawnSync('git', ['rev-parse', 'HEAD'], {encoding:'utf8'}).stdout.trim(),
+  dirty: spawnSync('git', ['status', '--porcelain'], {encoding:'utf8'}).stdout.trim(),
+  entry: 'export.tsx',
+  files: [...files].map(([name, data]) => ({name, bytes:data.length, sha256:createHash('sha256').update(data).digest('hex')})).sort((a,b)=>a.name.localeCompare(b.name)),
+};
+await writeFile(output!, JSON.stringify(report, null, 2)+'\n', {flag:'wx'});
+console.log(JSON.stringify(report, null, 2));

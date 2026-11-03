@@ -1,0 +1,56 @@
+diff --git a/packages/renderer-browser/src/live/performance-controls.tsx b/packages/renderer-browser/src/live/performance-controls.tsx
+index 6e18bb4..4a3f9a9 100644
+--- a/packages/renderer-browser/src/live/performance-controls.tsx
++++ b/packages/renderer-browser/src/live/performance-controls.tsx
+@@ -49,6 +49,7 @@ export function PerformanceControls({ show, available, running }: Props) {
+         bank={show.bank}
+         available={available}
+         active={show.activePreset}
++        transitioning={Boolean(performance.transition && performance.transition.phase !== 'queued')}
+       />
+       <MidiControls midi={show.midi} />
+     </section>
+diff --git a/packages/renderer-browser/src/live/sequence-controls.tsx b/packages/renderer-browser/src/live/sequence-controls.tsx
+index 600dc05..cacaaef 100644
+--- a/packages/renderer-browser/src/live/sequence-controls.tsx
++++ b/packages/renderer-browser/src/live/sequence-controls.tsx
+@@ -8,11 +8,12 @@ interface Props {
+   bank: SceneBank;
+   available: boolean;
+   active: string | null;
++  transitioning: boolean;
+ }
+ export function SequenceControls(props: Props) {
+   const { sequence, bank } = props;
+   let status = sequence.running ? 'Running' : 'Held';
+-  if (sequence.pending) status = 'Transitioning';
++  if (sequence.pending || props.transitioning) status = 'Transitioning';
+   return (
+     <details
+       className="sc-sequence"
+@@ -43,19 +44,22 @@ export function SequenceControls(props: Props) {
+     </details>
+   );
+ }
+-function SequenceActions({ sequence, available, active }: Props) {
++function SequenceActions({ sequence, available, active, transitioning }: Props) {
+   return (
+     <div className="sc-performance-timing">
+       <button
+         className="sc-button"
+-        disabled={!sequence.running && (!available || sequence.pending || !sequence.scenes.length)}
++        disabled={
++          !sequence.running &&
++          (!available || sequence.pending || transitioning || !sequence.scenes.length)
++        }
+         onClick={() => (sequence.running ? sequence.hold() : sequence.start(active))}
+       >
+         {sequence.running ? 'Hold sequence' : 'Run sequence'}
+       </button>
+       <button
+         className="sc-button"
+-        disabled={!available || sequence.pending || !sequence.scenes.length}
++        disabled={!available || sequence.pending || transitioning || !sequence.scenes.length}
+         onClick={() => sequence.next()}
+       >
+         Next scene

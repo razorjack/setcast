@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+root=/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01
+while [ ! -f "$root/final-live-gpu-recovery-isolated.exit.txt" ]; do sleep 5; done
+cd /home/razorjack/Projects/opensource/setcast
+bash "$root/run.sh" live-packet-diagnostic node "$root/live-packet-diagnostic.mjs"

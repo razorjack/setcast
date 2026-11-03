@@ -1,0 +1,266 @@
+[
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-4k/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-60fps/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-chunk-boundary/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-constellation/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-css-filters/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-dj-art-branding/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-field/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-looping-video/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-portrait/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-standard/2-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/0-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/0-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/1-remotion-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/1-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/2-browser-blackframe.json",
+    "passed": true
+  },
+  {
+    "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/timing-tunnel/2-remotion-blackframe.json",
+    "passed": true
+  }
+]

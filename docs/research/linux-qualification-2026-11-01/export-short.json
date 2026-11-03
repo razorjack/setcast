@@ -1,0 +1,439 @@
+{
+  "version": 1,
+  "status": "passed",
+  "config": {
+    "version": 1,
+    "mode": "export",
+    "seconds": 120,
+    "sampleSeconds": 5,
+    "changeSeconds": 30,
+    "restartSeconds": 600,
+    "project": "examples/demo",
+    "at": 0,
+    "concurrency": 1,
+    "scenes": [
+      {
+        "title": "field",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "field",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "tunnel",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "tunnel",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      },
+      {
+        "title": "constellation",
+        "backgroundFit": "auto",
+        "theme": "sterile-tech",
+        "modulation": [],
+        "visualizer": {
+          "name": "constellation",
+          "resolution": 0.5
+        },
+        "beatOffset": 0,
+        "branding": {
+          "logo": "logo.svg",
+          "name": "Endurance",
+          "position": "top-right",
+          "size": 1,
+          "opacity": 1,
+          "visible": true,
+          "messages": {
+            "lines": [
+              "Sustained live output"
+            ],
+            "seconds": 3,
+            "gap": 2,
+            "position": "bottom",
+            "size": 1,
+            "visible": true
+          }
+        },
+        "output": {
+          "width": 960,
+          "height": 540,
+          "fps": 30
+        },
+        "clock": false,
+        "input": {
+          "channels": null,
+          "gain": 1,
+          "delay": 0
+        }
+      }
+    ],
+    "gpuRecovery": null,
+    "verification": "metadata",
+    "audioAt": null,
+    "graphics": "auto",
+    "operatorWindow": false
+  },
+  "runtime": {
+    "node": "v26.7.0",
+    "platform": "linux",
+    "release": "7.2.13-200.fc44.x86_64",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+    "revision": "63649abfe3b9704658e46064d7379e0f4b1b928c",
+    "dirty": true
+  },
+  "startedAt": "2026-11-01T20:33:06.144Z",
+  "wallSeconds": 156.46181494299998,
+  "samples": 31,
+  "actions": {},
+  "details": {
+    "settings": {
+      "codec": "h264",
+      "profile": "standard",
+      "crf": 18,
+      "x264Preset": "medium",
+      "parallelEncoding": true,
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "disable",
+      "jpegQuality": 95,
+      "gl": "auto",
+      "concurrency": 1
+    },
+    "runtime": [
+      {
+        "kind": "scheduling",
+        "workers": 1,
+        "reason": "explicit",
+        "cpuCount": 32,
+        "memoryBudgetBytes": 16822347776,
+        "estimatedMemoryBytes": 1173274624
+      },
+      {
+        "kind": "encoding-selection",
+        "encoder": "libx264",
+        "fallback": null
+      },
+      {
+        "kind": "capture",
+        "workers": 1,
+        "parallelEncoding": true
+      },
+      {
+        "kind": "browser",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+        "capture": "jpeg-screenshot",
+        "graphics": {
+          "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2, OpenGL ES 3.2)",
+          "vendor": "Google Inc. (NVIDIA Corporation)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "graphicsError": null
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      },
+      {
+        "kind": "encoder",
+        "encoder": "libx264",
+        "inputFormat": "image2pipe",
+        "pipeline": "stream"
+      }
+    ],
+    "result": {
+      "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/export-short/export.mp4",
+      "frames": 3600,
+      "durationSeconds": 120
+    },
+    "stats": {
+      "audioMs": {
+        "count": 3600,
+        "sum": 288.79999999981374,
+        "max": 29.300000000279397
+      },
+      "resolveMs": {
+        "count": 3600,
+        "sum": 2857.4999999939464,
+        "max": 3
+      },
+      "commitMs": {
+        "count": 3600,
+        "sum": 22150.300000004005,
+        "max": 47.1999999997206
+      },
+      "readinessMs": {
+        "count": 3600,
+        "sum": 8007.400000004098,
+        "max": 107.39999999990687
+      },
+      "captureMs": {
+        "count": 3600,
+        "sum": 117426.51231700022,
+        "max": 75.09039399999892
+      },
+      "bytes": {
+        "count": 3600,
+        "sum": 1042430010,
+        "max": 375367
+      },
+      "encoder-write": {
+        "count": 3600,
+        "sum": 1707.2512359991856,
+        "max": 63.818137999999635
+      },
+      "audio-encode": {
+        "count": 1,
+        "sum": 7234.337111,
+        "max": 7234.337111
+      },
+      "encoder-finish": {
+        "count": 2,
+        "sum": 708.6487129999878,
+        "max": 360.6869710000028
+      },
+      "mux": {
+        "count": 1,
+        "sum": 184.94739899999695,
+        "max": 184.94739899999695
+      }
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frames": 3600,
+    "renderWallSeconds": 156.02700831800001,
+    "finalStorage": {
+      "bytes": 57426891,
+      "freeBytes": 813396570112,
+      "temporaryDirectories": [],
+      "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+    },
+    "verification": {
+      "mode": "metadata",
+      "expected": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "frames": 3600,
+        "sourceAt": 0
+      },
+      "phase": "complete",
+      "video": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuvj420p",
+            "level": 40,
+            "color_range": "pc",
+            "color_space": "bt470bg",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 10800000,
+            "duration": "120.000000",
+            "bit_rate": "3545709",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "3600",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 5760000,
+            "duration": "120.000000",
+            "bit_rate": "270980",
+            "nb_frames": "5626",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          }
+        ],
+        "errors": []
+      },
+      "audio": [],
+      "audioAt": [
+        0.25,
+        2.62,
+        29.875,
+        59.5,
+        89.125,
+        118.75
+      ],
+      "wallSeconds": 0.386445974000002
+    },
+    "identity": {
+      "ffmpeg": "ffmpeg version 8.1.3 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 8.1.3 Copyright (c) 2007-2026 the FFmpeg developers",
+      "output": {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/export-short/export.mp4",
+        "sha256": "4b06ea229408d6b82eafa824c958abd1a93896a4358fcb5fcfb5419cbf0d9462",
+        "bytes": 57384615,
+        "stamp": "54:1935548:57384615:1793565342167.6511:1793565342172.6511"
+      },
+      "source": {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/assets/demo-set.wav",
+        "sha256": "b91642b751283fea92a1fb4958e52d9bf87fe5ce4da210b062c8feb70f651aed",
+        "bytes": 27250804,
+        "stamp": "54:482989:27250804:1793562776555.2678:1793562776555.2678"
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,19 @@
+import { cp, readFile, writeFile } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
+import { loadProject, probeAudio } from '../../../../packages/core/src/node/index.ts';
+import { themes } from '../../../../packages/themes/src/index.ts';
+import { projectContent } from '../../../../scripts/render-compare/content.ts';
+const root = resolve('examples/demo/out/linux-qualification-2026-11-01');
+const source = join(root, 'corpus');
+const destination = join(root, 'software-corpus');
+await cp(source, destination, { recursive: true, force: false, errorOnExist: true });
+const manifest = JSON.parse(await readFile(join(source, 'manifest.json'), 'utf8'));
+manifest.scope += ' Linux common-software-backend comparison: output.gl=default for both adapters, frozen before quality or timing. Original auto corpus is retained.';
+for (const fixture of manifest.cases) {
+ fixture.directory = join(destination, fixture.name);
+ fixture.config.output.gl = 'default';
+ await writeFile(join(fixture.directory, 'setcast.yaml'), JSON.stringify(fixture.config, null, 2) + '\n');
+ const { project } = await loadProject(fixture.directory, { themes, probeDuration: (audio, root) => probeAudio({ audio }, root) });
+ Object.assign(fixture, await projectContent(project, fixture.directory));
+}
+await writeFile(join(destination, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');

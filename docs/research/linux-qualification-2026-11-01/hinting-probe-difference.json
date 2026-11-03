@@ -1,0 +1,6 @@
+{
+  "scope": "Diagnostic only: browser font hinting none versus current Remotion PNG, both at 95 seconds. Production flags unchanged.",
+  "psnr": 82.29256160443748,
+  "meanAbsolute": 0.00021251286008230452,
+  "maxAbsolute": 4
+}

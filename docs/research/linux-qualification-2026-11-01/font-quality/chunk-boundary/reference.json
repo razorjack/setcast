@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "projectDir": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/chunk-boundary",
+  "range": [
+    2640,
+    4529
+  ],
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "frames": 1890,
+  "identity": "828c5bf06b118a911c9ef2f2254e238150ea1f36376be321e91f83599b1f4fb1",
+  "projectDigest": "2e1d00e1e2fcce41d7893047133a96b8bb779be64c17413b21e01be902a34cd4",
+  "assetsDigest": "f0e965a59059aa315066cff8b6ffd9ec6ac3af4757ca0f8a7a39f73017ee6933",
+  "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-chunk-boundary/chunk-boundary/reference/reference.mkv",
+  "fileDigest": {
+    "sha256": "05b59726e4aecec5cbaddd1486e21fc4b71f6b760f7d6316dacf39cd477ecfa5",
+    "bytes": 1660980816,
+    "stamp": "54:1958995:1660980816:1793571162552.3103:1793571162552.3103"
+  },
+  "sourceRgbHash": "SHA256=1f43bd21763bf5ac8c227af4234e1cfb6dfd55b9a1369e4f4ebeb55dc635bf1a",
+  "capture": "png-cdp-optimize-for-speed",
+  "minimumFreeBytes": 2164072448,
+  "regions": {
+    "branding": {
+      "x": 787,
+      "y": 119,
+      "right": 1855,
+      "bottom": 950
+    },
+    "tracklist": {
+      "x": 1374,
+      "y": 140,
+      "right": 1855,
+      "bottom": 490
+    },
+    "credits": {
+      "x": 65,
+      "y": 141,
+      "right": 680,
+      "bottom": 274
+    }
+  },
+  "scope": "Untimed sequential PNG capture in pinned browser. FFV1 decoded RGB24 hash equals every source RGB sample. Regions bound all matching DOM rectangles over the range."
+}

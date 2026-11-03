@@ -1,0 +1,4 @@
+field: Remotion waits for recovery, preserves pixels and fails on timeout
+tunnel: Remotion waits for recovery, preserves pixels and fails on timeout
+constellation: Remotion waits for recovery, preserves pixels and fails on timeout
+gpu-recovery-remotion: PASS (/home/razorjack/Projects/opensource/setcast/examples/demo/out/gpu-recovery-remotion)

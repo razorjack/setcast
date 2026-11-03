@@ -1,0 +1,6 @@
+Projection: PASS (geometry, artwork alignment, crop, masks, calibration, blackout, profiles, snapshots)
+Energy: PASS (synthetic input, transient rejection, sustained selection, hold, export and journal)
+Beats: PASS (live PCM, confidence loss, explicit adoption, journal, manual tempo and restart)
+Branding: PASS (logo, edits, toggles, MIDI, announcements, blackout, projection, scenes, journal replay with 1 announcement(s), portrait)
+Camera setup: PASS (patterns, motion, output protection, projection, presets, scenes, portrait). /tmp/setcast-linux-browser-first/examples/demo/out/camera-check
+MIDI: PASS (artifacts: /tmp/setcast-linux-browser-first/examples/demo/out/midi-check)

@@ -1,0 +1,1 @@
+bash -c set\ -e\;\ for\ check\ in\ projection\ energy\ beats\ branding\ camera\ midi\;\ do\ bash\ /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/candidate-run.sh\ \"live-\$check\"\ node\ \"packages/renderer-browser/bench/\$check.ts\"\;\ done 

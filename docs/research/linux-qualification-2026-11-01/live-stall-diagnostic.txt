@@ -1,0 +1,8 @@
+file:///home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/live-stall-diagnostic.mjs:9
+const launch=chromium.launch.bind(chromium);
+                      ^
+
+TypeError: Cannot read properties of undefined (reading 'launch')
+    at file:///home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/live-stall-diagnostic.mjs:9:23
+
+Node.js v26.7.0

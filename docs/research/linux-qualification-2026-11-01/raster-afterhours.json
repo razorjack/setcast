@@ -1,0 +1,38 @@
+[
+  {
+    "theme": "afterhours",
+    "round": 0,
+    "width": 1920,
+    "height": 1080,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=3d3a7c98b44a6fefef310a72ed43412d7daf3bab32f8295ef917fdbd0751184b",
+      "SHA256=3d3a7c98b44a6fefef310a72ed43412d7daf3bab32f8295ef917fdbd0751184b",
+      "SHA256=3d3a7c98b44a6fefef310a72ed43412d7daf3bab32f8295ef917fdbd0751184b"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "afterhours",
+    "round": 0,
+    "width": 1080,
+    "height": 1920,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=1995306e484c796d3e643f64cb1e0f741e29f7d2c054f4bab9fb17c06c74b307",
+      "SHA256=1995306e484c796d3e643f64cb1e0f741e29f7d2c054f4bab9fb17c06c74b307",
+      "SHA256=1995306e484c796d3e643f64cb1e0f741e29f7d2c054f4bab9fb17c06c74b307"
+    ],
+    "equal": true,
+    "qualified": true
+  }
+]

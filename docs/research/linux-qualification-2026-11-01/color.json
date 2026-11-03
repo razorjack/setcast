@@ -1,0 +1,4689 @@
+{
+  "version": 1,
+  "jpegQuality": 90,
+  "encoder": "libx264",
+  "chromium": "156.0.8078.4",
+  "ffmpeg": "ffmpeg version 8.1.3 Copyright (c) 2000-2026 the FFmpeg developers",
+  "variants": {
+    "production": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-vf",
+        "setparams=range=full:color_primaries=bt709:color_trc=iec61966-2-1:colorspace=bt470bg",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/production.mp4"
+      ],
+      "decodedHash": "SHA256=aea865ce9dc013b89800777704b45cc27f4046333b5ef50233442761ed4bfec4",
+      "metadata": {
+        "pix_fmt": "yuvj420p",
+        "color_range": "pc",
+        "color_space": "bt470bg",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 1.1232465277777777,
+        "rms": 4.063229635332521,
+        "maximum": 105,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              4,
+              4,
+              4
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              32,
+              32,
+              32
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              128,
+              64
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 1.4545124421296296,
+        "rms": 5.990727185463226,
+        "maximum": 127,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              4,
+              4,
+              4
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              32,
+              32,
+              32
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              255,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              128,
+              64
+            ]
+          }
+        ]
+      }
+    },
+    "legacy-untagged": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/legacy-untagged.mp4"
+      ],
+      "decodedHash": "SHA256=aea865ce9dc013b89800777704b45cc27f4046333b5ef50233442761ed4bfec4",
+      "metadata": {
+        "pix_fmt": "yuvj420p",
+        "color_range": "pc",
+        "color_space": "bt470bg",
+        "color_transfer": null,
+        "color_primaries": null,
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 1.1232465277777777,
+        "rms": 4.063229635332521,
+        "maximum": 105,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              4,
+              4,
+              4
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              32,
+              32,
+              32
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              128,
+              64
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 11.339988425925926,
+        "rms": 16.336283304322134,
+        "maximum": 130,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              19,
+              19,
+              19
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              56,
+              56,
+              56
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              130,
+              130,
+              130
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              248,
+              36,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              63,
+              251,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              26,
+              35,
+              255
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              69,
+              253,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              249,
+              52,
+              255
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              254,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              130,
+              130,
+              57
+            ]
+          }
+        ]
+      }
+    },
+    "601-full-srgb-params": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "setparams=range=full:color_primaries=bt709:color_trc=iec61966-2-1:colorspace=bt470bg",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/601-full-srgb-params.mp4"
+      ],
+      "decodedHash": "SHA256=aea865ce9dc013b89800777704b45cc27f4046333b5ef50233442761ed4bfec4",
+      "metadata": {
+        "pix_fmt": "yuvj420p",
+        "color_range": "pc",
+        "color_space": "bt470bg",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 1.1232465277777777,
+        "rms": 4.063229635332521,
+        "maximum": 105,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              4,
+              4,
+              4
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              32,
+              32,
+              32
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              128,
+              64
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 1.4545124421296296,
+        "rms": 5.990727185463226,
+        "maximum": 127,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              4,
+              4,
+              4
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              32,
+              32,
+              32
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              255,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              128,
+              64
+            ]
+          }
+        ]
+      }
+    },
+    "601-limited-srgb": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "scale=in_color_matrix=bt601:in_range=pc:out_color_matrix=bt601:out_range=tv",
+        "-colorspace",
+        "bt470bg",
+        "-color_range",
+        "tv",
+        "-color_primaries",
+        "bt709",
+        "-color_trc",
+        "iec61966-2-1",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/601-limited-srgb.mp4"
+      ],
+      "decodedHash": "SHA256=1a352e19b719bcfe8de77e83e33cbe83ab07f07eaac07e15b3d5539f30c3e53a",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt470bg",
+        "color_transfer": null,
+        "color_primaries": null,
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 1.474748263888889,
+        "rms": 4.2147850023151525,
+        "maximum": 105,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              3,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              31,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              253,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              2
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              254,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              252,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              126,
+              64
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 4.267235243055556,
+        "rms": 13.105915081645952,
+        "maximum": 126,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              3,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              31,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              248,
+              36,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              63,
+              251,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              26,
+              35,
+              255
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              69,
+              253,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              249,
+              52,
+              255
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              254,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              127,
+              64
+            ]
+          }
+        ]
+      }
+    },
+    "709-limited-srgb": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "scale=in_color_matrix=bt601:in_range=pc:out_color_matrix=bt709:out_range=tv",
+        "-colorspace",
+        "bt709",
+        "-color_range",
+        "tv",
+        "-color_primaries",
+        "bt709",
+        "-color_trc",
+        "iec61966-2-1",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/709-limited-srgb.mp4"
+      ],
+      "decodedHash": "SHA256=23f95f91265fc172bebd2e3236be4e60bdbc1cabe2a0d3dd5bc6c5a0b7b90d98",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": null,
+        "color_primaries": null,
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 2.650558449074074,
+        "rms": 4.795807389639259,
+        "maximum": 98,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              1,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              4,
+              6,
+              6
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              13,
+              15,
+              15
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              29,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              60,
+              62,
+              62
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              124,
+              126,
+              126
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              253,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              251,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              251
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              254,
+              252
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              253,
+              0,
+              251
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              253,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              125,
+              126,
+              60
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 5.506208043981482,
+        "rms": 14.15021558082407,
+        "maximum": 144,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              2,
+              4,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              5,
+              8,
+              7
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              14,
+              16,
+              15
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              30,
+              32,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              61,
+              64,
+              63
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              125,
+              128,
+              127
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              253,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              224,
+              32,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              67,
+              251,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              24,
+              32,
+              242
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              73,
+              253,
+              251
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              228,
+              48,
+              244
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              251,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              125,
+              131,
+              63
+            ]
+          }
+        ]
+      }
+    },
+    "709-limited-tag": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "scale=in_color_matrix=bt601:in_range=pc:out_color_matrix=bt709:out_range=tv",
+        "-colorspace",
+        "bt709",
+        "-color_range",
+        "tv",
+        "-color_primaries",
+        "bt709",
+        "-color_trc",
+        "bt709",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/709-limited-tag.mp4"
+      ],
+      "decodedHash": "SHA256=23f95f91265fc172bebd2e3236be4e60bdbc1cabe2a0d3dd5bc6c5a0b7b90d98",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": null,
+        "color_primaries": null,
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 2.650558449074074,
+        "rms": 4.795807389639259,
+        "maximum": 98,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              1,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              4,
+              6,
+              6
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              13,
+              15,
+              15
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              29,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              60,
+              62,
+              62
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              124,
+              126,
+              126
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              253,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              251,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              251
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              254,
+              252
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              253,
+              0,
+              251
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              253,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              125,
+              126,
+              60
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 5.506208043981482,
+        "rms": 14.15021558082407,
+        "maximum": 144,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              2,
+              4,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              5,
+              8,
+              7
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              14,
+              16,
+              15
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              30,
+              32,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              61,
+              64,
+              63
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              125,
+              128,
+              127
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              253,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              224,
+              32,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              67,
+              251,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              24,
+              32,
+              242
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              73,
+              253,
+              251
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              228,
+              48,
+              244
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              251,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              125,
+              131,
+              63
+            ]
+          }
+        ]
+      }
+    },
+    "709-srgb-params": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "scale=in_color_matrix=bt601:in_range=pc:out_color_matrix=bt709:out_range=tv,setparams=range=limited:color_primaries=bt709:color_trc=iec61966-2-1:colorspace=bt709",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/709-srgb-params.mp4"
+      ],
+      "decodedHash": "SHA256=23f95f91265fc172bebd2e3236be4e60bdbc1cabe2a0d3dd5bc6c5a0b7b90d98",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 2.650558449074074,
+        "rms": 4.795807389639259,
+        "maximum": 98,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              1,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              4,
+              6,
+              6
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              13,
+              15,
+              15
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              29,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              60,
+              62,
+              62
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              124,
+              126,
+              126
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              253,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              251,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              251
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              254,
+              252
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              253,
+              0,
+              251
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              253,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              125,
+              126,
+              60
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 2.3901880787037038,
+        "rms": 6.488348932895025,
+        "maximum": 140,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              2,
+              4,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              5,
+              8,
+              7
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              13,
+              16,
+              15
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              30,
+              32,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              61,
+              63,
+              63
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              125,
+              127,
+              127
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              253,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              252,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              252
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              253
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              253,
+              0,
+              252
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              254,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              126,
+              127,
+              61
+            ]
+          }
+        ]
+      }
+    },
+    "601-srgb-params": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "scale=in_color_matrix=bt601:in_range=pc:out_color_matrix=bt601:out_range=tv,setparams=range=limited:color_primaries=bt709:color_trc=iec61966-2-1:colorspace=bt470bg",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/601-srgb-params.mp4"
+      ],
+      "decodedHash": "SHA256=1a352e19b719bcfe8de77e83e33cbe83ab07f07eaac07e15b3d5539f30c3e53a",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt470bg",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 1.474748263888889,
+        "rms": 4.2147850023151525,
+        "maximum": 105,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              3,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              31,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              253,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              2
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              254,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              252,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              126,
+              64
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 1.5917173032407408,
+        "rms": 6.0494405206949455,
+        "maximum": 127,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              3,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              31,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              255,
+              0,
+              1
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              255,
+              3
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              255,
+              254,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              129,
+              128,
+              64
+            ]
+          }
+        ]
+      }
+    },
+    "709-srgb-accurate": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "scale=in_color_matrix=bt601:in_range=pc:out_color_matrix=bt709:out_range=tv:flags=accurate_rnd+full_chroma_int+bitexact,setparams=range=limited:color_primaries=bt709:color_trc=iec61966-2-1:colorspace=bt709",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/709-srgb-accurate.mp4"
+      ],
+      "decodedHash": "SHA256=eaf963ab8338d4ce2ffc644cb8189e2e1eb79807546fd54df15a4062e5aad3a7",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "chroma_location": "left"
+      },
+      "decodedRgb": {
+        "mean": 1.9222873263888889,
+        "rms": 5.233075260135357,
+        "maximum": 101,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              3,
+              3,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              31,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              253,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              253,
+              254
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              254,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              253,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              128,
+              126,
+              63
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 1.8632045717592594,
+        "rms": 7.315448618081894,
+        "maximum": 150,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              3,
+              4,
+              3
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              8,
+              8,
+              8
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              32,
+              31,
+              31
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              64,
+              64,
+              64
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              128,
+              128,
+              128
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              255,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              1,
+              0,
+              255
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              254,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              129,
+              128,
+              64
+            ]
+          }
+        ]
+      }
+    },
+    "709-limited-convert": {
+      "args": [
+        "-f",
+        "image2pipe",
+        "-vcodec",
+        "mjpeg",
+        "-framerate",
+        "30",
+        "-i",
+        "pipe:0",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-video_track_timescale",
+        "90000",
+        "-vf",
+        "colorspace=ispace=bt470bg:irange=pc:iprimaries=bt709:itrc=srgb:space=bt709:range=tv:primaries=bt709:trc=bt709:format=yuv420p",
+        "-colorspace",
+        "bt709",
+        "-color_range",
+        "tv",
+        "-color_primaries",
+        "bt709",
+        "-color_trc",
+        "bt709",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/color/709-limited-convert.mp4"
+      ],
+      "decodedHash": "SHA256=87da26e8d2655c9d31093d73482e7bad4d1b0088cb1de8780c650421e72ed3ee",
+      "metadata": {
+        "pix_fmt": "yuv420p",
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "bt709",
+        "color_primaries": "bt709",
+        "chroma_location": "center"
+      },
+      "decodedRgb": {
+        "mean": 8.58070601851852,
+        "rms": 10.818870955418593,
+        "maximum": 107,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              2,
+              2,
+              2
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              5,
+              5,
+              5
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              48,
+              48,
+              48
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              253,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              254,
+              0
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              0,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              254,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              254,
+              0,
+              253
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              253,
+              253,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              113,
+              114,
+              48
+            ]
+          }
+        ]
+      },
+      "browserPlayback": {
+        "mean": 8.333644386574074,
+        "rms": 11.205362898931888,
+        "maximum": 137,
+        "patches": [
+          {
+            "color": "#000000",
+            "expected": [
+              0,
+              0,
+              0
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#010101",
+            "expected": [
+              1,
+              1,
+              1
+            ],
+            "actual": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#040404",
+            "expected": [
+              4,
+              4,
+              4
+            ],
+            "actual": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "color": "#080808",
+            "expected": [
+              8,
+              8,
+              8
+            ],
+            "actual": [
+              2,
+              2,
+              2
+            ]
+          },
+          {
+            "color": "#101010",
+            "expected": [
+              16,
+              16,
+              16
+            ],
+            "actual": [
+              6,
+              6,
+              6
+            ]
+          },
+          {
+            "color": "#202020",
+            "expected": [
+              32,
+              32,
+              32
+            ],
+            "actual": [
+              16,
+              16,
+              16
+            ]
+          },
+          {
+            "color": "#404040",
+            "expected": [
+              64,
+              64,
+              64
+            ],
+            "actual": [
+              49,
+              49,
+              49
+            ]
+          },
+          {
+            "color": "#808080",
+            "expected": [
+              128,
+              128,
+              128
+            ],
+            "actual": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "color": "#ffffff",
+            "expected": [
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff0000",
+            "expected": [
+              255,
+              0,
+              0
+            ],
+            "actual": [
+              254,
+              0,
+              0
+            ]
+          },
+          {
+            "color": "#00ff00",
+            "expected": [
+              0,
+              255,
+              0
+            ],
+            "actual": [
+              0,
+              255,
+              1
+            ]
+          },
+          {
+            "color": "#0000ff",
+            "expected": [
+              0,
+              0,
+              255
+            ],
+            "actual": [
+              1,
+              0,
+              255
+            ]
+          },
+          {
+            "color": "#00ffff",
+            "expected": [
+              0,
+              255,
+              255
+            ],
+            "actual": [
+              0,
+              255,
+              255
+            ]
+          },
+          {
+            "color": "#ff00ff",
+            "expected": [
+              255,
+              0,
+              255
+            ],
+            "actual": [
+              255,
+              0,
+              254
+            ]
+          },
+          {
+            "color": "#ffff00",
+            "expected": [
+              255,
+              255,
+              0
+            ],
+            "actual": [
+              254,
+              255,
+              0
+            ]
+          },
+          {
+            "color": "#808040",
+            "expected": [
+              128,
+              128,
+              64
+            ],
+            "actual": [
+              114,
+              116,
+              49
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

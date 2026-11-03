@@ -6,18 +6,21 @@ import { parseArgs } from 'node:util';
 import { themes } from '../../themes/src/index.ts';
 import { createFixture, fixtureProject } from '../../../scripts/export-acceptance/fixture.ts';
 import { render, withRenderSession } from '../src/export/index.ts';
-import type { ResolvedProject } from '@setcast/core';
+import type { GraphicsBackend, RenderRuntime, ResolvedProject } from '@setcast/core';
 import { qualifySourcePixels } from './worker-pixels.ts';
 
 const { values } = parseArgs({
   options: {
     out: { type: 'string' },
     theme: { type: 'string' },
+    gl: { type: 'string', default: 'auto' },
     repeat: { type: 'string', default: '1' },
     workers: { type: 'string', default: '1,2,4' },
   },
 });
 if (!values.out) throw new Error('Pass --out NEW_DIRECTORY for worker pixel comparisons.');
+const gl = values.gl as GraphicsBackend;
+assert(gl === 'auto' || gl === 'default' || gl === 'angle', 'Use --gl auto, default or angle.');
 const workers = values.workers!.split(',').map(Number);
 assert(workers[0] === 1 && workers.length >= 2 && new Set(workers).size === workers.length);
 assert(workers.every((count) => Number.isSafeInteger(count) && count >= 1 && count <= 8));
@@ -29,6 +32,7 @@ await mkdir(root);
 await createFixture(root);
 const reports: {
   theme: string;
+  gl: string;
   round: number;
   width: number;
   height: number;
@@ -72,10 +76,10 @@ async function compare(project: ResolvedProject, theme: string, round: number) {
         { ...project, width, height },
         root,
         join(root, `${round}-${theme}-${width}-source`),
-        workers,
+        { workers, gl },
       );
   const qualified = equal || source!.qualified;
-  reports.push({ theme, round, width, height, workers, hashes, equal, qualified, source });
+  reports.push({ theme, gl, round, width, height, workers, hashes, equal, qualified, source });
   await writeFile(join(root, 'report.json'), JSON.stringify(reports, null, 2));
   let status = 'DIFFERENT';
   if (qualified) status = 'source rounding within precision budget';
@@ -88,20 +92,25 @@ async function renderHash(project: ResolvedProject, theme: string, concurrency: 
   const out = join(root, `${theme}-${width}-${concurrency}.mp4`);
   process.stdout.write(`Starting ${theme} ${width}x${height}, ${concurrency} workers\n`);
   let lastFrame: number | null = null;
+  const runtime: RenderRuntime[] = [];
   const result = await render(project, {
     projectDir: root,
     out,
     range: [1, 2.5],
     concurrency,
+    gl,
+    onRuntime: (event) => runtime.push(event),
     onMetrics: (metric) => {
       if (metric.kind === 'frame') lastFrame = metric.frame;
     },
-  }).catch((error: unknown) => {
-    process.stderr.write(
-      `Failed ${theme} ${width}x${height}, ${concurrency} workers; last captured frame ${lastFrame}\n`,
-    );
-    throw error;
-  });
+  })
+    .catch((error: unknown) => {
+      process.stderr.write(
+        `Failed ${theme} ${width}x${height}, ${concurrency} workers; last captured frame ${lastFrame}\n`,
+      );
+      throw error;
+    })
+    .finally(() => writeFile(`${out}.runtime.json`, JSON.stringify(runtime, null, 2)));
   assert.equal(result.frames, 45);
   return execFileSync(
     'ffmpeg',

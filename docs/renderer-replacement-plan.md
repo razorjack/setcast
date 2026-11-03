@@ -3,6 +3,20 @@
 Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
+Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
+Linux execution is complete for the available fixtures; release requirements remain unmet. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
+records graphics-default, font-hinting and Quicksilver clip fixes, production correctness, fresh installations,
+short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains unqualified.
+Current upstream has a separate named shared-memory leak after injected encoder failure;
+all eleven successful-export calibration cases pass. All 55 quiet worker-screening pairs
+meet the required quality comparisons, with every one of their 110 outputs measured and
+checked for black frames. All 33 final pairs also meet every quality requirement, but none of
+the eleven workloads meets the unchanged 30% speed target. Browser median time ranges from
+5.4% lower to 55.9% higher than tuned Remotion. See [final timings and spread](research/linux-qualification-2026-11-01/performance-table.md). Additional local Linux CI passes after a live sequence-control fix; the full software live preset fails with dropped samples, while the one-hour recovery preset
+passes. See the [live qualification scope](research/linux-qualification-2026-11-01/live-qualification.md).
+The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
+change the release criteria or authorize default promotion.
+
 Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
 Status: implementation and qualification in progress. The browser-first distribution is committed
 on `renderer/browser-first-candidate` (qualified code revision e28d2bd), with local clean-install coverage through bitmap, cache and ProRes integration but no default
@@ -69,7 +83,7 @@ Sources: [browser descriptor](../packages/renderer-browser/src/capabilities.ts),
 | PNG, JPEG and WebP stills | Supported; no system FFmpeg needed | Supported |
 | H.264 video and AAC soundtrack | MP4, MOV and MKV | MP4, MOV and MKV |
 | Transparent/editing output | ProRes 4444 + PCM in MOV; transparent PNG stills; locally checked | Not exposed by the Setcast adapter |
-| Hardware encoding | VideoToolbox implemented and checked on M1 Pro; NVENC implemented, device qualification pending | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
+| Hardware encoding | VideoToolbox checked on M1 Pro; NVENC checked on Fedora x64 / RTX 3070 Ti, including a decoded 120-second synthetic export | VideoToolbox on macOS; NVENC on supported Linux/Windows systems |
 | Concurrency | Automatic 1/2/4 from stable CPU/memory limits; explicit 1–8 | Automatic or explicit |
 | Graphics selection | `auto`, `default`, `angle` | Additional backend choices |
 | Parallel encoding | Required | May be enabled or disabled; bounded chunk fallback when applicable |
@@ -97,8 +111,8 @@ Setcast's conditional image-sequence fallback. See
 [shared-memory capture](https://www.remotion.dev/docs/shared-memory-capture).
 
 Upstream also provides six video codecs (H.264, H.265, VP8, VP9, AV1 and ProRes), hardware
-encoding, Studio and distributed rendering. Setcast currently exposes only H.264/AAC video through
-either adapter. Codec support and cloud distribution are separate comparisons from the installed
+encoding, Studio and distributed rendering. Setcast exposes H.264/AAC through both adapters
+and ProRes 4444/PCM through the browser adapter. Broader codec support and cloud distribution are separate comparisons from the installed
 Setcast integration. See [encoding](https://www.remotion.dev/docs/encoding),
 [hardware acceleration](https://www.remotion.dev/docs/hardware-acceleration) and
 [Lambda](https://www.remotion.dev/docs/lambda).
@@ -133,9 +147,11 @@ macOS. It is neither a shared-memory benchmark nor proof that a current upstream
 has the failure. Keep production pinned until a deliberate upgrade passes failure tests. A new
 upstream comparison must include that regression without changing Node's rejection policy.
 
-The [current 4.0.539 exercise](research/remotion-539-2026-10-29/README.md) passes export acceptance
-and the caught-error/destination checks using shared-memory capture. Named pool cleanup and the
-full matched-quality comparison remain unverified. Additional native and 4.0.535 research at
+The [29 October 4.0.539 exercise](research/remotion-539-2026-10-29/README.md) passes export acceptance
+and the caught-error/destination checks using shared-memory capture. That earlier exercise
+did not verify named pool cleanup or the full matched-quality comparison. The Linux continuation now reproduces a named-pool leak after injected encoder
+failure and passes all eleven final matched-quality comparisons; none meets the 30% speed target.
+Additional native and 4.0.535 research at
 `prototype/native-capture` commit `308b1cc` is summarized there, including per-play layout limits
 and intermittent POSIX-pool leaks in the older upstream version.
 
@@ -609,12 +625,19 @@ broader live hardware support can ship independently after the core replacement 
 
 1. Establish the first-export performance result at matched quality. The last current-upstream
    comparison misses the 30% target; bitmap's 32.7% improvement is against Setcast's PNG video
-   path, not Remotion. Requalify tuned upstream output and compare the final implementation.
+   path, not Remotion. The final Linux implementation now passes all eleven tuned-output quality
+   comparisons, but misses the target in every workload. Preserve the complete Linux results;
+   further optimization needs new evidence and another matched-quality comparison.
    Standard/GPU export needs further optimization if the target is retained. The rejected
    experiments do not supply a safe faster capture path.
-2. Execute the prepared browser-only installation matrix and exporter/resource qualification
-   on Linux and Windows, recording actual capture, graphics and encoder paths. This session
-   has only macOS execution; the remote-environment tool is unavailable. Do not count prepared
+2. Complete supported-platform exporter/resource qualification, recording actual capture,
+   graphics and encoder paths. The [Linux follow-up](research/linux-qualification-2026-11-01/README.md)
+   passes fresh browser-only and optional-Remotion installations, production correctness and
+   short decoded NVENC export on Fedora x64. Linux automatic browser graphics now use the
+   qualified Chromium default (observed SwiftShader); explicit NVIDIA ANGLE failed pixel/stall
+   checks. Full real-master Linux assets are still missing. Continue with the
+   [Linux runbook](linux-renderer-qualification.md).
+   Windows access is unavailable for now and its qualification remains pending. Do not count prepared
    CI jobs as successful runs or advertise an untested hardware backend as qualified.
 3. After those requirements pass, promote `renderer/browser-first-candidate`, recheck migration
    diagnostics and optional compatibility installation, and remove Remotion from the required

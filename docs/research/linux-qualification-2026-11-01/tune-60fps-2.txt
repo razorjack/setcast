@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 9.3%
+Pair 1/1: browser
+Pre-run system CPU busy: 12.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 26.72914729,
+    "minSeconds": 26.72914729,
+    "maxSeconds": 26.72914729
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 22.461099467999993,
+    "minSeconds": 22.461099467999993,
+    "maxSeconds": 22.461099467999993
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-60fps-2/report.json

@@ -1,0 +1,372 @@
+{
+  "version": 4,
+  "config": {
+    "project": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/field",
+    "out": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2",
+    "at": 90,
+    "seconds": 10,
+    "repeat": 1,
+    "concurrency": 2,
+    "idleBusy": 0.15,
+    "overrides": {
+      "browser": {
+        "concurrency": 2,
+        "crf": 16,
+        "jpegQuality": 100
+      },
+      "remotion": {
+        "concurrency": 2,
+        "crf": 18
+      }
+    }
+  },
+  "identity": {
+    "frames": 300,
+    "projectHash": "d3dde45f2b8a8d7fcecdcf067f3ee7ff00ac5f81603dbe779b6a9e775fe34321",
+    "assets": [
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/field/assets/bg.png",
+        "sha256": "1a31d21f5fc9d211f7bc1cefce7de7aede07fcee0be210ce48817cba1ec3b201",
+        "bytes": 3049362,
+        "stamp": "54:1936373:3049362:1793565646481.7979:1793565646481.7979"
+      },
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/field/assets/demo-set.wav",
+        "sha256": "b91642b751283fea92a1fb4958e52d9bf87fe5ce4da210b062c8feb70f651aed",
+        "bytes": 27250804,
+        "stamp": "54:1936372:27250804:1793565646481.6338:1793565646481.6338"
+      },
+      {
+        "path": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/field/setcast.yaml",
+        "sha256": "de3e29526442f788a7ba4ebe6ac23314d9573048b207c176ae44a691291ac215",
+        "bytes": 978,
+        "stamp": "54:1936376:978:1793565646610.004:1793565646610.004"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/core/css/base.css",
+        "sha256": "25dfb210b4914b4eb1ee7edba13216ab0fef205e8e7c0871934be5c64dbace81",
+        "bytes": 16741,
+        "stamp": "53:37859:16741:1793564227715.2285:1793564227715.2285"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-500-latin-ext.woff2",
+        "sha256": "d6c474644e6a96f801aa3bebb00186a313578ee3f4358becab48db20952942bb",
+        "bytes": 6584,
+        "stamp": "53:38349:6584:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-500-latin.woff2",
+        "sha256": "31ff5e6e96a096fde4d78bc838719e69b093db2d0b062b96e423c065a6d1b2b1",
+        "bytes": 14680,
+        "stamp": "53:38350:14680:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-600-latin-ext.woff2",
+        "sha256": "5fc394b4e782a16d27c157006e24c39dd39dab539d81e8204ce73d446c767af8",
+        "bytes": 6588,
+        "stamp": "53:38351:6588:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-600-latin.woff2",
+        "sha256": "5bc49d41f32810a114765314392332ce2acae2276635eee265a50319a12c1b49",
+        "bytes": 14844,
+        "stamp": "53:38352:14844:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-700-latin-ext.woff2",
+        "sha256": "f0da93f04334dda1e199a38f9b211907a862b83ecd0875120fe99d16f76de2e8",
+        "bytes": 6620,
+        "stamp": "53:38353:6620:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/BarlowCondensed-700-latin.woff2",
+        "sha256": "e3e520cb7468f2efd60bc2ce96694567c3312f4ef414fffbe605e3ad146b24e6",
+        "bytes": 14888,
+        "stamp": "53:38354:14888:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/JetBrainsMono-100-800-latin-ext.woff2",
+        "sha256": "9541a1dbd48b9c9fab226f6b0b10911a0a8cc10ba9927f473905312f0f119556",
+        "bytes": 11548,
+        "stamp": "53:38383:11548:1793564227743.0002:1793564227743.0002"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/fonts/JetBrainsMono-100-800-latin.woff2",
+        "sha256": "1e06740a02a443fb7f3eeda8fcaa685a0f6c620e3f01e6666e847295469ce3ad",
+        "bytes": 40480,
+        "stamp": "53:38384:40480:1793564227743.7764:1793564227743.7764"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/sterile-tech/theme.css",
+        "sha256": "c97c97059c6f545949702f9c5d66a5ce12c8ec1d7980ce66260b45c49919606d",
+        "bytes": 35794,
+        "stamp": "53:38444:35794:1793564227746.3848:1793564227746.3848"
+      },
+      {
+        "path": "/tmp/setcast-linux-current-upstream/packages/themes/textures/grain.png",
+        "sha256": "6432a61de5554ab3f7f9545c8239237e6c5c33e6f981f241a87993091adcd2f9",
+        "bytes": 753061,
+        "stamp": "53:38446:753061:1793564227747.7764:1793564227747.7764"
+      }
+    ],
+    "output": {
+      "codec": "h264",
+      "transparent": false,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "gl": "default",
+      "profile": "standard",
+      "parallelEncoding": true,
+      "x264Preset": "medium",
+      "chunkSeconds": 60,
+      "hardwareAcceleration": "disable",
+      "crf": 18,
+      "jpegQuality": 95,
+      "file": "out/set.mp4"
+    },
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "startedAt": "2026-11-01T22:47:15.337Z",
+  "revision": "5d026a64293207d90753f002020737deaa66f39d",
+  "dirty": false,
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "linux",
+    "os": "7.2.13-200.fc44.x86_64",
+    "cpu": "AMD Ryzen 9 5950X 16-Core Processor"
+  },
+  "runtimePins": {
+    "playwright": "1.64.1",
+    "@remotion/renderer": "4.0.539",
+    "mediabunny": "1.50.8"
+  },
+  "runtimeObservation": "Per-run browser user agent, WebGL identity, capture workers and encoder decisions. Optional observation overhead is included in wall time.",
+  "timing": "Fresh sessions, shared process and OS caches. Includes loading through cleanup; excludes identity and verification.",
+  "runs": [
+    {
+      "renderer": "browser",
+      "index": 0,
+      "status": "passed",
+      "wallSeconds": 21.849800941,
+      "firstFrameProgressSeconds": 0.9121111830000009,
+      "result": {
+        "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2/0-browser.mp4",
+        "frames": 300,
+        "durationSeconds": 10
+      },
+      "settings": {
+        "codec": "h264",
+        "profile": "standard",
+        "crf": 16,
+        "x264Preset": "medium",
+        "parallelEncoding": true,
+        "chunkSeconds": 60,
+        "hardwareAcceleration": "disable",
+        "jpegQuality": 100,
+        "gl": "default",
+        "concurrency": 2
+      },
+      "load": {
+        "samples": 21,
+        "meanSystemBusy": 0.17477992028688044,
+        "maxSystemBusy": 0.20034482758620686,
+        "initialLoadAverage": [
+          2.8,
+          3.79,
+          4.86
+        ],
+        "finalLoadAverage": [
+          3.44,
+          3.87,
+          4.86
+        ],
+        "nodeRssPeak": 837718016,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 22,
+        "intervals": 21,
+        "failedSamples": 0,
+        "seconds": 21.029587815,
+        "treeCpuSeconds": 98,
+        "externalCpuSeconds": 3,
+        "rssPeakBytes": 3379953664,
+        "maxTreeCpuCores": 7.006613619668357,
+        "maxExternalCpuCores": 1.0008018669754655,
+        "meanTreeCpuCores": 4.660100847535323,
+        "meanExternalCpuCores": 0.14265614839393848,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      },
+      "verification": {
+        "frames": 300,
+        "bytes": 5988568,
+        "decodedVideoHash": "SHA256=415cbf601eebcf33df935414eaa10da62aa44436372cf554901a3a0dde057f82",
+        "seconds": 3.644871626,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "projectDigest": "3ba323816845869821873ef7894ea6d986dfda2ff941d75c9e2158375bb417cb",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33",
+      "outputDigest": "f7eb6e8dbfad024a3ddb409e0eb3028132c8ae0cdf83dfd91d520029f636d02c",
+      "runtime": [
+        {
+          "kind": "scheduling",
+          "workers": 2,
+          "reason": "explicit",
+          "cpuCount": 32,
+          "memoryBudgetBytes": 16822347776,
+          "estimatedMemoryBytes": 1809678336
+        },
+        {
+          "kind": "encoding-selection",
+          "encoder": "libx264",
+          "fallback": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "vendor": "Google Inc. (Google)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+          "capture": "jpeg-screenshot",
+          "graphics": {
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "vendor": "Google Inc. (Google)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "image2pipe",
+          "pipeline": "stream"
+        }
+      ]
+    },
+    {
+      "renderer": "remotion",
+      "index": 0,
+      "status": "passed",
+      "wallSeconds": 19.861547304,
+      "firstFrameProgressSeconds": 2.674414764000001,
+      "result": {
+        "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-field-2/0-remotion.mp4",
+        "frames": 300,
+        "durationSeconds": 10
+      },
+      "settings": {
+        "codec": "h264",
+        "profile": "standard",
+        "crf": 18,
+        "x264Preset": "medium",
+        "parallelEncoding": true,
+        "chunkSeconds": 60,
+        "hardwareAcceleration": "disable",
+        "jpegQuality": 95,
+        "gl": "default",
+        "concurrency": 2
+      },
+      "load": {
+        "samples": 19,
+        "meanSystemBusy": 0.15878745702275876,
+        "maxSystemBusy": 0.18653383716935756,
+        "initialLoadAverage": [
+          2.98,
+          3.76,
+          4.82
+        ],
+        "finalLoadAverage": [
+          4.08,
+          3.97,
+          4.86
+        ],
+        "nodeRssPeak": 1257549824,
+        "scope": "System CPU includes renderer and other jobs; RSS is Node only, not process tree."
+      },
+      "processes": {
+        "status": "available",
+        "error": null,
+        "samples": 20,
+        "intervals": 19,
+        "failedSamples": 0,
+        "seconds": 19.435082334000004,
+        "treeCpuSeconds": 79,
+        "externalCpuSeconds": 2,
+        "rssPeakBytes": 3421593600,
+        "maxTreeCpuCores": 7.000062780063083,
+        "maxExternalCpuCores": 1.0010057129423096,
+        "meanTreeCpuCores": 4.064814269492252,
+        "meanExternalCpuCores": 0.10290669036689246,
+        "scope": "Sampled Node and descendants; summed RSS can double-count shared pages. CPU deltas exclude new/exited processes and can miss short-lived work. External CPU is other visible processes, including OS services, not a specific project. GPU/encoder services outside the tree remain external. No process names or arguments are retained."
+      },
+      "verification": {
+        "frames": 300,
+        "bytes": 3801416,
+        "decodedVideoHash": "SHA256=39cf604878a971613b1a4b934bf9c84e4abed1c997a4e978ea1018bb1b8aef9e",
+        "seconds": 3.3906879320000005,
+        "scope": "Full video decode and stream metadata; no pixel equivalence or audio alignment assertion."
+      },
+      "projectDigest": "3ba323816845869821873ef7894ea6d986dfda2ff941d75c9e2158375bb417cb",
+      "assetsDigest": "bfcd84dd864eef450a2b7a7e0108b0f28758a18cb678a822c78f146b0af4fb33",
+      "outputDigest": "59d5d88c2da8d48534e85c88af9f8b88ee2c76ef81a0915098ae9e2729bded72",
+      "runtime": [
+        {
+          "kind": "browser",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8080.0 Safari/537.36",
+          "capture": "not-observed",
+          "graphics": {
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "vendor": "Google Inc. (Google)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "graphicsError": null
+        },
+        {
+          "kind": "capture",
+          "workers": 2,
+          "parallelEncoding": true
+        },
+        {
+          "kind": "encoder",
+          "encoder": "libx264",
+          "inputFormat": "remotionshm",
+          "pipeline": "stream"
+        }
+      ]
+    }
+  ],
+  "status": "passed",
+  "error": null,
+  "summary": {
+    "browser": {
+      "runs": 1,
+      "medianSeconds": 21.849800941,
+      "minSeconds": 21.849800941,
+      "maxSeconds": 21.849800941
+    },
+    "remotion": {
+      "runs": 1,
+      "medianSeconds": 19.861547304,
+      "minSeconds": 19.861547304,
+      "maxSeconds": 19.861547304
+    }
+  }
+}

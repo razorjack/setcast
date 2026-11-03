@@ -1,0 +1,16 @@
+{
+  "reason": "Software preset failed during concurrent startup. Stop only our recovery runner through its handled SIGINT to isolate the full software preset. Interrupted recovery remains cancelled, not passed.",
+  "processes": [
+    {
+      "pid": 1274739,
+      "command": [
+        "/home/razorjack/.local/share/mise/installs/node/26.7.0/bin/node",
+        "packages/renderer-browser/bench/endurance.ts",
+        "--config",
+        "packages/renderer-browser/bench/endurance/live-gpu-recovery.json",
+        "--out",
+        "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-gpu-recovery"
+      ]
+    }
+  ]
+}

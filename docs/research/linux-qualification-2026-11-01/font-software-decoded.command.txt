@@ -1,0 +1,1 @@
+node packages/renderer-browser/bench/endurance.ts --verify-video examples/demo/out/linux-qualification-2026-11-01/font-export-short/export.mp4 --config examples/demo/out/linux-qualification-2026-11-01/software-demo-decoded.json --out examples/demo/out/linux-qualification-2026-11-01/font-software-decoded 

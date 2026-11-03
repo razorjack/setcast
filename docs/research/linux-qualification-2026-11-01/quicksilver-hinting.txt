@@ -1,0 +1,19 @@
+  quicksilver: canvas/image comparison complete in both shapes and fits
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Video differences exceed tolerance: quicksilver-640-cover:36, quicksilver-640-contain:7, quicksilver-640-contain:29, quicksilver-360-cover:7. Inspect /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quicksilver-hinting.
+
+4 !== 0
+
+    at file:///home/razorjack/Projects/opensource/setcast/packages/renderer-browser/bench/video-frames.ts:81:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 4,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

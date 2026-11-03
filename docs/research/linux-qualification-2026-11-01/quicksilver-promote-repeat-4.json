@@ -1,0 +1,231 @@
+{
+  "results": [
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "640x360",
+      "fit": "contain",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "cover",
+      "element": "IMG"
+    },
+    {
+      "theme": "quicksilver",
+      "shape": "360x640",
+      "fit": "contain",
+      "element": "IMG"
+    }
+  ],
+  "differences": [
+    {
+      "name": "quicksilver-640-cover",
+      "seek": 0,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "seek": 1,
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "seek": 2,
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "seek": 3,
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-cover",
+      "seek": 4,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "seek": 0,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "seek": 1,
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "seek": 2,
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "seek": 3,
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-640-contain",
+      "seek": 4,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "seek": 0,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "seek": 1,
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "seek": 2,
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "seek": 3,
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-cover",
+      "seek": 4,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "seek": 0,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "seek": 1,
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "seek": 2,
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "seek": 3,
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "quicksilver-360-contain",
+      "seek": 4,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "seek": 0,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "seek": 1,
+      "frame": 36,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "seek": 2,
+      "frame": 7,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "seek": 3,
+      "frame": 0,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    },
+    {
+      "name": "60fps",
+      "seek": 4,
+      "frame": 29,
+      "max": 0,
+      "mean": 0,
+      "rms": 0
+    }
+  ],
+  "failures": []
+}

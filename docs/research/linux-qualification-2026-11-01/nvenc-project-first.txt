@@ -1,0 +1,22 @@
+node:internal/fs/cp/cp:111
+    throw new ERR_FS_CP_EINVAL({
+          ^
+
+SystemError [ERR_FS_CP_EINVAL]: Invalid src or dest: cp returned EINVAL (cannot copy examples/demo to a subdirectory of self /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo) /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo
+    at checkPaths (node:internal/fs/cp/cp:111:11)
+    at async cpFn (node:internal/fs/cp/cp:66:17)
+    at async file:///home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-project.mjs:6:1 {
+  code: 'ERR_FS_CP_EINVAL',
+  info: {
+    message: 'cannot copy examples/demo to a subdirectory of self /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo',
+    path: '/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/nvenc-demo',
+    syscall: 'cp',
+    errno: 22,
+    code: 'EINVAL'
+  },
+  errno: [Getter/Setter],
+  syscall: [Getter/Setter],
+  path: [Getter/Setter]
+}
+
+Node.js v26.7.0

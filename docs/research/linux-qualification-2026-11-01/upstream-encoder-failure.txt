@@ -1,0 +1,2 @@
+Encoder failure artifacts: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/upstream-encoder-failure
+Encoder failure: PASS (caught failure, intact destination, no temporary directories)

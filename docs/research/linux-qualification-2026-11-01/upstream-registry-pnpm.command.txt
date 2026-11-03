@@ -1,0 +1,1 @@
+/home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/bin/pnpm view remotion version --json 

@@ -8,11 +8,12 @@ interface Props {
   bank: SceneBank;
   available: boolean;
   active: string | null;
+  transitioning: boolean;
 }
 export function SequenceControls(props: Props) {
   const { sequence, bank } = props;
   let status = sequence.running ? 'Running' : 'Held';
-  if (sequence.pending) status = 'Transitioning';
+  if (sequence.pending || props.transitioning) status = 'Transitioning';
   return (
     <details
       className="sc-sequence"
@@ -43,19 +44,22 @@ export function SequenceControls(props: Props) {
     </details>
   );
 }
-function SequenceActions({ sequence, available, active }: Props) {
+function SequenceActions({ sequence, available, active, transitioning }: Props) {
   return (
     <div className="sc-performance-timing">
       <button
         className="sc-button"
-        disabled={!sequence.running && (!available || sequence.pending || !sequence.scenes.length)}
+        disabled={
+          !sequence.running &&
+          (!available || sequence.pending || transitioning || !sequence.scenes.length)
+        }
         onClick={() => (sequence.running ? sequence.hold() : sequence.start(active))}
       >
         {sequence.running ? 'Hold sequence' : 'Run sequence'}
       </button>
       <button
         className="sc-button"
-        disabled={!available || sequence.pending || !sequence.scenes.length}
+        disabled={!available || sequence.pending || transitioning || !sequence.scenes.length}
         onClick={() => sequence.next()}
       >
         Next scene

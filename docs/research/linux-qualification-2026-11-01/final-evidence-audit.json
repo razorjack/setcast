@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "evidenceLinks": "all referenced local evidence files exist",
+  "baseline": "passed688tests",
+  "knownLiveFailures": "preserved, not counted as passes",
+  "handoffAncestry": true,
+  "refs": [
+    "a5a9b37d796eb99d3e1d98878771a57b4fd7d889 refs/heads/master",
+    "4c6f21ced7e9926a4fa2a72fc377a2245a6d5ee0 refs/heads/renderer/browser-first-candidate",
+    "166e51d47deb50daab3ded80682633e855a12a5b refs/heads/renderer/linux-browser-first",
+    "d9d1b4a5c7a3cade200ea2c8d25cffc63da153c5 refs/heads/renderer/linux-current-upstream",
+    "6c373c063e284d03d0e4dc10db5f83744af9ea52 refs/heads/renderer/upstream-539-comparison"
+  ],
+  "isolatedWorktreesClean": true,
+  "comparisonOutputHashesVerified": 220
+}

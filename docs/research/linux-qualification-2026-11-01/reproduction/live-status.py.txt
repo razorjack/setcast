@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+import json,sys
+from datetime import datetime
+from pathlib import Path
+root=Path(__file__).resolve().parent
+print(datetime.now().astimezone().strftime('%H:%M %Z'))
+for name in sys.argv[1:]:
+ directory=root/name
+ report=json.loads((directory/'report.json').read_text())
+ samples=[json.loads(line) for line in (directory/'samples.jsonl').read_text().splitlines()]
+ last=next((row for row in reversed(samples) if row['kind']=='sample'),None)
+ print(name,report['status'],round(report['wallSeconds']/60,1),'minutes;',report['actions'])
+ if last:print({key:last['details'].get(key) for key in ('capture','dropped','cached','heapBytes','renderFps','captureEpoch')})
+ if report['errors']:print(report['errors'])

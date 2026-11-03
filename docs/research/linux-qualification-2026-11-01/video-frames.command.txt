@@ -1,0 +1,1 @@
+node packages/renderer-browser/bench/video-frames.ts --image-only --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/video-frames 

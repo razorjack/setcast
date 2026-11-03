@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+"""Read compact progress without starting validation or other render work."""
+import datetime,json,sys
+from pathlib import Path
+root=Path(__file__).resolve().parent
+mode=sys.argv[1] if len(sys.argv)>1 else 'tune'
+reports=[]
+for path in root.glob(mode+'-*/report.json'):
+    report=json.loads(path.read_text())
+    if isinstance(report.get('runs'),list):reports.append((path,report))
+print('Local time:',datetime.datetime.now().astimezone().strftime('%H:%M %Z'))
+print('Completed comparisons:',sum(report['status']=='passed' for _,report in reports),'of',55 if mode=='tune' else 11)
+for path,report in reports:
+    if report['status']!='passed':print(path.parent.name,report['status'],'completed arms',len(report['runs']),report.get('error'))

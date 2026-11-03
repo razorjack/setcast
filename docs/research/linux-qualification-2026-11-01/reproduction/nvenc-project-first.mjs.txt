@@ -1,0 +1,15 @@
+import { cp, readFile, writeFile } from 'node:fs/promises';
+import { resolve, basename } from 'node:path';
+import YAML from '../../../../packages/core/node_modules/yaml/dist/index.js';
+const root = resolve('examples/demo/out/linux-qualification-2026-11-01');
+const project = root + '/nvenc-demo';
+await cp('examples/demo', project, { recursive: true, filter: source => !['out', 'node_modules'].includes(basename(source)) });
+const config = YAML.parse(await readFile(project + '/setcast.yaml', 'utf8'));
+delete config.output.crf;
+config.output.hardwareAcceleration = 'required';
+config.output.videoBitrate = '12M';
+await writeFile(project + '/setcast.yaml', YAML.stringify(config));
+await writeFile(root + '/nvenc-demo.json', JSON.stringify({
+version: 1, mode: 'export', project, at: 0, seconds: 120,
+sampleSeconds: 5, concurrency: 4, verification: 'decoded', audioAt: [5, 33, 79, 110]
+}, null, 2));

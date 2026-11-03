@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "samples": 84,
+  "peakRssBytes": 3092615168,
+  "intervalMedianRssBytes": [
+    2848274432.0,
+    3005714432,
+    2986514432.0,
+    3050590208
+  ],
+  "peakStorageBytes": 58468001,
+  "finalStorage": {
+    "bytes": 59358730,
+    "freeBytes": 809980792832,
+    "temporaryDirectories": [],
+    "scope": "Apparent file bytes in this dedicated run directory, including temporary output. Free space belongs to the whole filesystem and can change due to other jobs. Symlinks are excluded."
+  },
+  "scope": "Loaded 120-second software export, one worker. Sampled summed RSS can double-count shared pages; external services excluded. Interval medians use completed-frame counts."
+}

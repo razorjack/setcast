@@ -1,0 +1,26 @@
+{
+  "requests": "Cross-origin, missing/wrong token, foreign Host, stale revision, path injection and invalid ranges rejected without jobs",
+  "exactRange": {
+    "first": 32,
+    "last": 94,
+    "decodedFrames": 63,
+    "referenceVideo": "equal",
+    "referenceAudio": "equal"
+  },
+  "reference": {
+    "decodedPng": "equal to direct still",
+    "identicalChangedPixels": 0,
+    "editedChangedPixels": 1,
+    "runtime": {
+      "bundle": "f155c709c3c64c7398742fb505bbc984cf6fb012d43b57fded0b010c2de259f7",
+      "chromium": "156.0.8078.4"
+    },
+    "staleFrame": "hidden"
+  },
+  "resume": {
+    "reusedFrames": 30,
+    "filename": "cefa2cf3-cffb-4154-b1c7-dca03e8940e3/frames-0-94.mp4"
+  },
+  "revisions": "Active and queued work cancelled; stale resume/create and invalid-project create rejected",
+  "shutdown": "Server closed, writer unlocked, checkpoint retained, no partial output"
+}

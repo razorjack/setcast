@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "scope": "Output quality only. Export timings ran without an idle requirement and are not performance evidence.",
+  "manifest": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/software-corpus/manifest.json",
+  "upstream": "/tmp/setcast-linux-current-upstream",
+  "status": "measured",
+  "error": null,
+  "results": [
+    {
+      "name": "chunk-boundary",
+      "directory": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-chunk-boundary/chunk-boundary",
+      "metrics": {
+        "scope": "Numerical comparisons only; inspect samples and temporal correctness before qualification.",
+        "browserBytes": 18207395,
+        "remotionBytes": 12297599,
+        "allAtLeastReference": true,
+        "checks": [
+          {
+            "region": "full",
+            "metric": "psnr",
+            "stat": "min",
+            "browser": 40.13,
+            "remotion": 28.98,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "psnr",
+            "stat": "p05",
+            "browser": 40.58,
+            "remotion": 29.32,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "psnr",
+            "stat": "mean",
+            "browser": 40.98451322751329,
+            "remotion": 30.500830687830813,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "ssim",
+            "stat": "min",
+            "browser": 0.976365,
+            "remotion": 0.962802,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "ssim",
+            "stat": "p05",
+            "browser": 0.977635,
+            "remotion": 0.963635,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "ssim",
+            "stat": "mean",
+            "browser": 0.9871557883597897,
+            "remotion": 0.9761080174603167,
+            "atLeastReference": true
+          },
+          {
+            "region": "branding",
+            "metric": "psnr",
+            "stat": "min",
+            "browser": 39.91,
+            "remotion": 26.26,
+            "atLeastReference": true
+          },
+          {
+            "region": "branding",
+            "metric": "psnr",
+            "stat": "p05",
+            "browser": 40.03,
+            "remotion": 26.27,
+            "atLeastReference": true
+          },
+          {
+            "region": "branding",
+            "metric": "psnr",
+            "stat": "mean",
+            "browser": 41.42667195767191,
+            "remotion": 27.89168253968263,
+            "atLeastReference": true
+          },
+          {
+            "region": "branding",
+            "metric": "ssim",
+            "stat": "min",
+            "browser": 0.975023,
+            "remotion": 0.956062,
+            "atLeastReference": true
+          },
+          {
+            "region": "branding",
+            "metric": "ssim",
+            "stat": "p05",
+            "browser": 0.975955,
+            "remotion": 0.957273,
+            "atLeastReference": true
+          },
+          {
+            "region": "branding",
+            "metric": "ssim",
+            "stat": "mean",
+            "browser": 0.986869777248676,
+            "remotion": 0.9712978084656079,
+            "atLeastReference": true
+          },
+          {
+            "region": "tracklist",
+            "metric": "psnr",
+            "stat": "min",
+            "browser": 34.23,
+            "remotion": 21.25,
+            "atLeastReference": true
+          },
+          {
+            "region": "tracklist",
+            "metric": "psnr",
+            "stat": "p05",
+            "browser": 34.35,
+            "remotion": 21.63,
+            "atLeastReference": true
+          },
+          {
+            "region": "tracklist",
+            "metric": "psnr",
+            "stat": "mean",
+            "browser": 35.933883597883494,
+            "remotion": 22.005201058201262,
+            "atLeastReference": true
+          },
+          {
+            "region": "tracklist",
+            "metric": "ssim",
+            "stat": "min",
+            "browser": 0.973662,
+            "remotion": 0.910833,
+            "atLeastReference": true
+          },
+          {
+            "region": "tracklist",
+            "metric": "ssim",
+            "stat": "p05",
+            "browser": 0.977303,
+            "remotion": 0.913601,
+            "atLeastReference": true
+          },
+          {
+            "region": "tracklist",
+            "metric": "ssim",
+            "stat": "mean",
+            "browser": 0.9823217042328045,
+            "remotion": 0.9204837132275129,
+            "atLeastReference": true
+          },
+          {
+            "region": "credits",
+            "metric": "psnr",
+            "stat": "min",
+            "browser": 39.59,
+            "remotion": 24.09,
+            "atLeastReference": true
+          },
+          {
+            "region": "credits",
+            "metric": "psnr",
+            "stat": "p05",
+            "browser": 43.56,
+            "remotion": 24.17,
+            "atLeastReference": true
+          },
+          {
+            "region": "credits",
+            "metric": "psnr",
+            "stat": "mean",
+            "browser": 46.17207407407423,
+            "remotion": 38.427809523809735,
+            "atLeastReference": true
+          },
+          {
+            "region": "credits",
+            "metric": "ssim",
+            "stat": "min",
+            "browser": 0.978785,
+            "remotion": 0.962035,
+            "atLeastReference": true
+          },
+          {
+            "region": "credits",
+            "metric": "ssim",
+            "stat": "p05",
+            "browser": 0.979913,
+            "remotion": 0.967125,
+            "atLeastReference": true
+          },
+          {
+            "region": "credits",
+            "metric": "ssim",
+            "stat": "mean",
+            "browser": 0.992600429100531,
+            "remotion": 0.9844549640211688,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "vmafNeg",
+            "stat": "min",
+            "browser": 94.532876,
+            "remotion": 56.622299,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "vmafNeg",
+            "stat": "p05",
+            "browser": 95.538218,
+            "remotion": 56.800045,
+            "atLeastReference": true
+          },
+          {
+            "region": "full",
+            "metric": "vmafNeg",
+            "stat": "mean",
+            "browser": 95.88285106137552,
+            "remotion": 66.35306962857153,
+            "atLeastReference": true
+          }
+        ]
+      },
+      "samples": [
+        {
+          "frameOffset": 0,
+          "file": "sample-01.png",
+          "sha256": "1ba71c76e565b930fe24ed9d66b094e71426d1ffe1e176287305328da6eba663",
+          "bytes": 2061874,
+          "stamp": "54:1947496:2061874:1793570463366.356:1793570463366.356"
+        },
+        {
+          "frameOffset": 945,
+          "file": "sample-02.png",
+          "sha256": "8445dd4e213f3fbe71e68301921aa2e98841350c314856bae707ab29f0bd5708",
+          "bytes": 599354,
+          "stamp": "54:1947526:599354:1793570468196.4382:1793570468196.4382"
+        },
+        {
+          "frameOffset": 1889,
+          "file": "sample-03.png",
+          "sha256": "f85b9a0ce9509f963bea44a9e4da6db2a36370c84da940c0277313820cc04cb1",
+          "bytes": 581472,
+          "stamp": "54:1947527:581472:1793570468298.603:1793570468298.603"
+        }
+      ]
+    }
+  ],
+  "discardReference": false
+}

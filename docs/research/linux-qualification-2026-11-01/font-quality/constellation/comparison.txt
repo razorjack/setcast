@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 103.26344836599999,
+    "minSeconds": 103.26344836599999,
+    "maxSeconds": 103.26344836599999
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 120.065365095,
+    "minSeconds": 120.065365095,
+    "maxSeconds": 120.065365095
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-constellation/constellation/comparison/report.json

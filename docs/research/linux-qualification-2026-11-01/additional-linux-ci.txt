@@ -1,0 +1,134 @@
+Starting 0-interference 1080x1920, 2 workers
+Starting 0-interference 1080x1920, 4 workers
+interference 1080x1920: identical
+Starting 0-pirate 1920x1080, 1 workers
+Starting 0-pirate 1920x1080, 2 workers
+Starting 0-pirate 1920x1080, 4 workers
+pirate 1920x1080: identical
+Starting 0-pirate 1080x1920, 1 workers
+Starting 0-pirate 1080x1920, 2 workers
+Starting 0-pirate 1080x1920, 4 workers
+pirate 1080x1920: identical
+Starting 0-afterhours 1920x1080, 1 workers
+Starting 0-afterhours 1920x1080, 2 workers
+Starting 0-afterhours 1920x1080, 4 workers
+afterhours 1920x1080: identical
+Starting 0-afterhours 1080x1920, 1 workers
+Starting 0-afterhours 1080x1920, 2 workers
+Starting 0-afterhours 1080x1920, 4 workers
+afterhours 1080x1920: identical
+Starting 0-passe-partout 1920x1080, 1 workers
+Starting 0-passe-partout 1920x1080, 2 workers
+Starting 0-passe-partout 1920x1080, 4 workers
+passe-partout 1920x1080: identical
+Starting 0-passe-partout 1080x1920, 1 workers
+Starting 0-passe-partout 1080x1920, 2 workers
+Starting 0-passe-partout 1080x1920, 4 workers
+passe-partout 1080x1920: identical
+Starting 0-masthead 1920x1080, 1 workers
+Starting 0-masthead 1920x1080, 2 workers
+Starting 0-masthead 1920x1080, 4 workers
+masthead 1920x1080: identical
+Starting 0-masthead 1080x1920, 1 workers
+Starting 0-masthead 1080x1920, 2 workers
+Starting 0-masthead 1080x1920, 4 workers
+masthead 1080x1920: identical
+Starting 0-anamorphic 1920x1080, 1 workers
+Starting 0-anamorphic 1920x1080, 2 workers
+Starting 0-anamorphic 1920x1080, 4 workers
+anamorphic 1920x1080: identical
+Starting 0-anamorphic 1080x1920, 1 workers
+Starting 0-anamorphic 1080x1920, 2 workers
+Starting 0-anamorphic 1080x1920, 4 workers
+anamorphic 1080x1920: identical
+Starting 0-relief 1920x1080, 1 workers
+Starting 0-relief 1920x1080, 2 workers
+Starting 0-relief 1920x1080, 4 workers
+relief 1920x1080: identical
+Starting 0-relief 1080x1920, 1 workers
+Starting 0-relief 1080x1920, 2 workers
+Starting 0-relief 1080x1920, 4 workers
+relief 1080x1920: identical
+Starting 0-darkroom 1920x1080, 1 workers
+Starting 0-darkroom 1920x1080, 2 workers
+Starting 0-darkroom 1920x1080, 4 workers
+darkroom 1920x1080: identical
+Starting 0-darkroom 1080x1920, 1 workers
+Starting 0-darkroom 1080x1920, 2 workers
+Starting 0-darkroom 1080x1920, 4 workers
+darkroom 1080x1920: identical
+Worker frames: PASS (32 cases, workers 1,2,4, all 45 frames per export)
+  resume: 45 captured, 30 reused
+  corrupt chunk: 75 captured, 0 reused
+  missing chunk: 75 captured, 0 reused
+  changed artwork: 75 captured, 0 reused
+  changed audio: 75 captured, 0 reused
+  changed configuration: 75 captured, 0 reused
+  changed encoder settings: 75 captured, 0 reused
+  relative asset paths: 75 captured, 0 reused
+  all chunks complete: 0 captured, 75 reused
+Resume: PASS (cancellation, checksums, asset/configuration changes, complete checkpoints and untracked resources)
+sterile-tech: lossless WebP matches PNG after an earlier seek
+escapement: lossless WebP matches PNG after an earlier seek
+long-exposure: lossless WebP matches PNG after an earlier seek
+bristol: lossless WebP matches PNG after an earlier seek
+patina: lossless WebP matches PNG after an earlier seek
+quicksilver: lossless WebP matches PNG after an earlier seek
+bunker: lossless WebP matches PNG after an earlier seek
+vfd: lossless WebP matches PNG after an earlier seek
+interference: lossless WebP matches PNG after an earlier seek
+pirate: lossless WebP matches PNG after an earlier seek
+afterhours: lossless WebP matches PNG after an earlier seek
+passe-partout: lossless WebP matches PNG after an earlier seek
+masthead: lossless WebP matches PNG after an earlier seek
+anamorphic: lossless WebP matches PNG after an earlier seek
+relief: lossless WebP matches PNG after an earlier seek
+darkroom: lossless WebP matches PNG after an earlier seek
+field: lossless WebP matches PNG after an earlier seek
+field-portrait: lossless WebP matches PNG after an earlier seek
+tunnel: lossless WebP matches PNG after an earlier seek
+tunnel-portrait: lossless WebP matches PNG after an earlier seek
+constellation: lossless WebP matches PNG after an earlier seek
+constellation-portrait: lossless WebP matches PNG after an earlier seek
+webp: PASS (all themes, GPU visuals/portrait, exact PNG pixels, no FFmpeg; /tmp/setcast-linux-browser-first/examples/demo/out/webp-check)
+field: deterministic frames, failures and software
+tunnel: deterministic frames, failures and software
+constellation: deterministic frames, failures and software
+{"config":{"name":"field","resolution":0.5},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":2.9621217990000006,"framesPerSecond":20.25575046247448,"commitMs":0.8516666667535902,"captureMs":43.97622859999974}
+{"config":{"name":"field","resolution":1},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":3.480460440999999,"framesPerSecond":17.239098394337997,"commitMs":0.8566666670143605,"captureMs":43.94327978333319}
+{"config":{"name":"tunnel","resolution":0.5},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":3.106015357999997,"framesPerSecond":19.317354579545533,"commitMs":0.9099999994039536,"captureMs":44.66806568333353}
+{"config":{"name":"tunnel","resolution":1},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":3.3345412190000023,"framesPerSecond":17.993479780104035,"commitMs":0.9449999999875823,"captureMs":35.326557499999886}
+{"config":{"name":"constellation","resolution":0.5},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":10.312644408,"framesPerSecond":5.81810034615905,"commitMs":0.8666666667287548,"captureMs":33.993532449999655}
+{"config":{"name":"constellation","resolution":1},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":36.403095482000005,"framesPerSecond":1.648211483269817,"commitMs":1.0699999996771414,"captureMs":37.089183550000115}
+{"config":{"name":"spectrum"},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":2.7472879410000024,"framesPerSecond":21.839720221739928,"commitMs":1.5216666666169962,"captureMs":42.318292183334655}
+{"config":{"name":"radial"},"runtime":{"chromium":"156.0.8078.4","node":"v26.7.0","platform":"linux","arch":"x64","gpu":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"seconds":2.5636140869999946,"framesPerSecond":23.404458691445836,"commitMs":1.1499999997516472,"captureMs":39.964685649999595}
+{"config":{"name":"field","resolution":0.5},"backend":"SwiftShader","width":1920,"height":1080,"captureFrameMs":47.28407874999975}
+{"config":{"name":"tunnel","resolution":0.5},"backend":"SwiftShader","width":1920,"height":1080,"captureFrameMs":48.71422765000025}
+{"config":{"name":"constellation","resolution":0.5},"backend":"SwiftShader","width":1920,"height":1080,"captureFrameMs":157.75194955000043}
+{"config":{"name":"spectrum"},"backend":"SwiftShader","width":1920,"height":1080,"captureFrameMs":40.00681630000035}
+gpu: PASS (artifacts: /tmp/setcast-linux-browser-first/examples/demo/out/gpu-check)
+Browser preview: PASS (frame parity, audio clock with slow frames, exact pause/seek, silent playback, audio cleanup/failure, reference, reload, video, read-only server, CLI watch without Remotion)
+Export verification: PASS (decoded video, rounded origin, shifted audio, truncation, silence, metadata). /tmp/setcast-linux-browser-first/examples/demo/out/export-verification/run-UVXKEW
+field: Remotion waits for recovery, preserves pixels and fails on timeout
+tunnel: Remotion waits for recovery, preserves pixels and fails on timeout
+constellation: Remotion waits for recovery, preserves pixels and fails on timeout
+gpu-recovery-remotion: PASS (/tmp/setcast-linux-browser-first/examples/demo/out/gpu-recovery-remotion)
+output: PASS (artifacts: /tmp/setcast-linux-browser-first/examples/demo/out/output-check)
+Transport: PASS (current 0, former 8-packet queue 6144 dropped samples; 2 s stall survives with 71680 skipped samples; starvation fails). /tmp/setcast-linux-browser-first/examples/demo/out/transport-check
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByText(/Cannot prepare this scene/) to be visible[22m
+
+    at checkFailure (/tmp/setcast-linux-browser-first/packages/renderer-browser/bench/sequence.ts:94:57)
+    at async file:///tmp/setcast-linux-browser-first/packages/renderer-browser/bench/sequence.ts:64:3 {
+  log: [
+    '  - waiting for getByText(/Cannot prepare this scene/) to be visible'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

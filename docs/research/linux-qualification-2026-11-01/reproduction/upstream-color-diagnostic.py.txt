@@ -1,0 +1,21 @@
+import json,subprocess,math
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+base=ROOT/'quality/standard'
+reference=base/'reference/reference.mkv';video=base/'comparison/0-remotion.mp4'
+commands=[]
+def pixels(file,filter):
+    command=['ffmpeg','-hide_banner','-v','error','-threads','2','-ss','5','-i',str(file),'-vf',filter,'-frames:v','1','-f','rawvideo','-pix_fmt','rgb24','-']
+    commands.append(command)
+    return subprocess.check_output(command)
+r=pixels(reference,'scale=in_range=auto:out_range=full,format=rgb24')
+results=[]
+for range in ['tv','pc']:
+ for matrix in ['bt601','bt709']:
+    v=pixels(video,f'scale=in_range={range}:out_range=full:in_color_matrix={matrix},format=rgb24')
+    assert len(r)==len(v)
+    mse=sum((a-b)**2 for a,b in zip(r,v))/len(r)
+    results.append({'range':range,'matrix':matrix,'psnr':10*math.log10(255**2/mse),'meanAbsolute':sum(abs(a-b) for a,b in zip(r,v))/len(r),'maxAbsolute':max(abs(a-b) for a,b in zip(r,v))})
+report={'scope':'Diagnostic decoder assumptions on one midpoint, not a correction to the output or qualification. Source/output files unchanged.','results':results,'commands':commands}
+(ROOT/'upstream-color-diagnostic.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(results,indent=2))

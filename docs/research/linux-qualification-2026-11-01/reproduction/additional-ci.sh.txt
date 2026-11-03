@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+root=/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01
+cd /tmp/setcast-linux-browser-first
+run() { bash "$root/candidate-run.sh" "$@"; }
+run final-candidate-workers node packages/renderer-browser/bench/worker-frames.ts --workers 1,2,4 --out "$root/final-candidate-workers"
+run final-candidate-resume node packages/renderer-browser/bench/resume.ts
+run final-candidate-webp node packages/renderer-browser/bench/webp.ts
+run final-candidate-gpu node packages/renderer-browser/bench/gpu.ts
+run final-candidate-preview node packages/renderer-browser/bench/preview.ts
+run final-candidate-export-verification node packages/renderer-browser/bench/export-verification.ts
+run final-candidate-remotion-gpu node packages/renderer-remotion/bench/gpu-recovery.ts
+bash "$root/live-checks.sh"

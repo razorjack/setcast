@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "mode": "export",
+  "project": "examples/demo",
+  "at": 0,
+  "seconds": 120,
+  "sampleSeconds": 5,
+  "concurrency": 1,
+  "verification": "decoded",
+  "audioAt": [
+    5,
+    33,
+    79,
+    110
+  ]
+}

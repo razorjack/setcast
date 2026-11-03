@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 37.28676122900001,
+    "minSeconds": 37.28676122900001,
+    "maxSeconds": 37.28676122900001
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 34.585513978,
+    "minSeconds": 34.585513978,
+    "maxSeconds": 34.585513978
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality/standard/comparison/report.json

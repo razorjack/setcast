@@ -1,0 +1,61 @@
+$ vp check ⊘ cache disabled
+[1m[94mpass:[39m[0m All 594 files are correctly formatted [2m(270ms, 32 threads)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 532 files [2m(2.2s, 32 threads)[0m
+
+$ vp test ⊘ cache disabled
+
+ RUN  v4.1.10 /tmp/setcast-linux-browser-first
+
+
+ Test Files  115 passed (115)
+      Tests  688 passed (688)
+   Start at  21:16:50
+   Duration  5.04s (transform 14.94s, setup 0ms, import 38.84s, tests 31.06s, environment 14ms)
+
+
+$ node scripts/check-remotion-ban.ts ⊘ cache disabled
+✓ packages/core: no Remotion in its dependency graph
+✓ packages/themes: no Remotion in its dependency graph
+✓ packages/renderer-browser: no Remotion in its dependency graph
+✓ packages/cli: no Remotion in its dependency graph
+
+$ node scripts/smoke.ts ⊘ cache disabled
+smoke: rendering 0:32-0:35 of examples/demo → out/smoke.mp4
+(node:164467) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[90m┌[39m   setcast  render
+[90m│[39m
+[34m●[39m  Setcast Demo Session  ·  4 recordings, 4 plays, 3 listings  ·  1920×1080 @ 30 fps  ·  theme sterile-tech
+[90m│[39m
+[34m●[39m  Range 0:32 → 0:35
+[?25l[90m│[39m
+[35m◒[39m  Preparing browser[1G[J[35m◐[39m  Bundling composition 0%[1G[J[35m◓[39m  Bundling composition 0%[1G[J[35m◑[39m  Preparing browser 0%[1G[J[35m◒[39m  Browser ready[1G[J[35m◐[39m  Browser ready[1G[J[35m◓[39m  Browser ready[1G[J[35m◑[39m  Browser ready[1G[J[35m◒[39m  Browser ready.[1G[J[32m◇[39m  Composition ready · 1 capture worker
+[?25h
+│  frames   ▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱   1%  1/90
+│  frames   ▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱  10%  9/90  eta 3s
+│  frames   ▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱  20%  18/90  eta 3s
+│  frames   ▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱  30%  27/90  26 frames/s  eta 2s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱  40%  36/90  26 frames/s  eta 2s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱  50%  45/90  26 frames/s  eta 2s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱  60%  54/90  25 frames/s  eta 1s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱  70%  63/90  25 frames/s  eta 1s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱  80%  72/90  25 frames/s  eta 1s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱  90%  81/90  25 frames/s  eta 0s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ 100%  90/90  25 frames/s
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ 100%  90/90
+◇  Rendered 90 frames  ·  23 frames/s
+
+│  encode   ▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱   0%  h264 + aac
+│  encode   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ 100%  h264 + aac
+◇  Encoded 3s of video  ·  1.7 MB  ·  0.63× realtime
+[90m│[39m
+[90m└[39m  Done in 5s  →  out/smoke.mp4
+
+smoke: MP4 container markers ok (1.72 MB)
+smoke: ffprobe confirms h264 + aac, 90 frames, 3 s
+smoke: decoded audio is non-silent (RMS 0.4665)
+smoke: frames differ over time (visuals are moving)
+smoke: PASS
+
+---
+vp run: 0/4 cache hit (0%). (Run `vp run --last-details` for full details)

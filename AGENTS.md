@@ -114,6 +114,42 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Fedora SwiftShader live qualification passes the one-hour recovery preset, but the separate-operator
+  software preset drops analysis samples near scene changes, including in isolation. A diagnostic
+  observes an 875 ms packet-delivery gap beyond the 512 ms queue budget; its browser cause remains
+  unresolved. Keep the queue bounds and zero-drop assertions. See the Linux live qualification report.
+
+- Live sequence Run/Next controls must respect an active manual scene fade. Scene selection
+  changes before fade-in completes; accepting another recall then returns false without preparing
+  its assets. Keep the unchanged sequence failure/journal reproducer in Linux qualification.
+
+- Linux renderer qualification has a dedicated handoff in `docs/linux-renderer-qualification.md`.
+  Transfer the local browser-first candidate before testing independent installation; main's
+  package-smoke lacks the candidate's `--report` and fresh dependency installation behavior.
+  The old upstream comparison branch predates promoted bitmap code. Windows remains unqualified.
+
+- Linux shared-memory qualification needs the host's `/dev/shm`, not a sandbox's private mount.
+  Current Remotion 4.0.539 leaves a named `rmshm-*` pool after injected encoder failure even
+  when destination/temp-directory assertions pass. Observe job-owned pools independently and
+  preserve the failure; never delete unrelated pools. See the Linux qualification evidence's
+  `upstream-cleanup.md`. Production Remotion remains pinned to 4.0.513.
+
+- Linux offline capture uses `--font-render-hinting=none`, matching Remotion's existing launch
+  policy. Default Playwright hinting changes glyph-edge pixels and heavily biases text-region
+  fidelity metrics even when native-size text looks equivalent. Keep capture flags aligned
+  before comparing encoders; the Linux evidence retains the mismatched-font measurements.
+  Sandbox device isolation can hide a working NVIDIA driver; identify host devices with the
+  same access used for exports. Worker qualification accepts `--gl` and retains runtime reports
+  for each export so requested settings cannot be mistaken for observed graphics backends.
+  Browser Linux `auto` now follows pinned Chromium's software default: NVIDIA ANGLE failed
+  Pirate/Afterhours source precision and Masthead capture reliability. Explicit `angle` remains
+  opt-in and unqualified on that driver. This does not change Remotion's graphics policy or NVENC.
+
+- Quicksilver's circular video clip needs `will-change: transform` on `.sc-bg-img`.
+  Without a stable compositor layer, Linux Chromium changes clip-edge antialiasing between
+  shuffled seeks (up to 84 levels), even with SwiftShader. Keep the video-frame comparison
+  and its per-seek artifacts; disabling font hinting or GPU rasterization does not fix it.
+
 - Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
   Exact image/encoded parity, URL checks, full-master resources and one/automatic-worker quiet
@@ -1222,7 +1258,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   `preview()` start the browser or Studio: `if-possible` falls back to `disable`, `required`
   throws. The CLI calls it before its progress UI, so the fallback warning prints on its own line.
   A driver failure after encoding starts is still not recovered.
-- `output.gl` defaults to `auto`: ANGLE on macOS and Linux, Chromium's default elsewhere. `default`
+- Remotion `output.gl` defaults to `auto`: ANGLE on macOS and Linux, Chromium's default elsewhere. `default`
   restores Chromium's own choice on any platform; explicit backend names pass through the adapter.
   The same setting applies to metadata, renders, stills, bundled thumbnails and Studio render
   settings. The backend stays out of `ResolvedProject`: it configures the renderer, not the scene.

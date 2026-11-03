@@ -1,0 +1,40 @@
+[
+  {
+    "theme": "pirate",
+    "gl": "default",
+    "round": 0,
+    "width": 1920,
+    "height": 1080,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=45d76ba5c2ab9b090d63f747ac60e470e9ab984bf10f55bb391d8e10020336f7",
+      "SHA256=45d76ba5c2ab9b090d63f747ac60e470e9ab984bf10f55bb391d8e10020336f7",
+      "SHA256=45d76ba5c2ab9b090d63f747ac60e470e9ab984bf10f55bb391d8e10020336f7"
+    ],
+    "equal": true,
+    "qualified": true
+  },
+  {
+    "theme": "pirate",
+    "gl": "default",
+    "round": 0,
+    "width": 1080,
+    "height": 1920,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=6abe07bb4e03bedd3dfaa54a9d364b2d381aaa5ad23b9ce5108f529fc4414f8b",
+      "SHA256=6abe07bb4e03bedd3dfaa54a9d364b2d381aaa5ad23b9ce5108f529fc4414f8b",
+      "SHA256=6abe07bb4e03bedd3dfaa54a9d364b2d381aaa5ad23b9ce5108f529fc4414f8b"
+    ],
+    "equal": true,
+    "qualified": true
+  }
+]

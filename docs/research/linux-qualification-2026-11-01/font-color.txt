@@ -1,0 +1,10 @@
+production: recorded metadata and decoded/playback pixel differences
+legacy-untagged: recorded metadata and decoded/playback pixel differences
+601-full-srgb-params: recorded metadata and decoded/playback pixel differences
+601-limited-srgb: recorded metadata and decoded/playback pixel differences
+709-limited-srgb: recorded metadata and decoded/playback pixel differences
+709-limited-tag: recorded metadata and decoded/playback pixel differences
+709-srgb-params: recorded metadata and decoded/playback pixel differences
+601-srgb-params: recorded metadata and decoded/playback pixel differences
+709-srgb-accurate: recorded metadata and decoded/playback pixel differences
+709-limited-convert: recorded metadata and decoded/playback pixel differences

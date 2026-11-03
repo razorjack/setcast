@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "css-filters",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 35.641818789000006,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-1/report.json"
+      },
+      {
+        "wallSeconds": 21.602717321,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-2/report.json"
+      },
+      {
+        "wallSeconds": 16.04171063,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-4/report.json"
+      },
+      {
+        "wallSeconds": 16.048048689999998,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-8/report.json"
+      },
+      {
+        "wallSeconds": 15.843910988000001,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 33.885317757,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-1/report.json"
+      },
+      {
+        "wallSeconds": 20.680351481,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-2/report.json"
+      },
+      {
+        "wallSeconds": 17.369565579,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-4/report.json"
+      },
+      {
+        "wallSeconds": 17.165063043,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-8/report.json"
+      },
+      {
+        "wallSeconds": 17.125832494999994,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-css-filters-auto/report.json"
+      }
+    ]
+  },
+  "browser": "auto",
+  "remotion": "auto"
+}

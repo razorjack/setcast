@@ -1,0 +1,19 @@
+Pre-run system CPU busy: 1.7%
+Pair 1/1: browser
+Pre-run system CPU busy: 0.4%
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 215.151532669,
+    "minSeconds": 215.151532669,
+    "maxSeconds": 215.151532669
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 181.610180777,
+    "minSeconds": 181.610180777,
+    "maxSeconds": 181.610180777
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-chunk-boundary-1/report.json

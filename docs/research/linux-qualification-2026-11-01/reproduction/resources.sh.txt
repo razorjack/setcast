@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run corpus node packages/renderer-browser/bench/replacement-corpus.ts --out "$root/corpus"
+run video-memory node packages/renderer-browser/bench/video-memory.ts "$root/corpus/looping-video" --bitmap --frames 3000 --out "$root/video-memory"
+run export-short node packages/renderer-browser/bench/endurance.ts --config packages/renderer-browser/bench/endurance/export-demo.json --out "$root/export-short"

@@ -1,0 +1,114 @@
+{
+  "scope": "Copies of existing fixed-output harness directories and the latest smoke video, made after their producers stopped. Original paths remain provenance; retained paths are on the repository filesystem.",
+  "phase": "final",
+  "artifacts": [
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/webp-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/webp-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/gpu-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/gpu-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/gpu-recovery-remotion",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/gpu-recovery-remotion"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/resume-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/resume-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/preview-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/preview-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/export-verification",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/export-verification"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/output-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/output-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/transport-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/transport-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/sequence-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/sequence-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/projection-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/projection-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/energy-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/energy-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/beat-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/beat-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/branding-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/branding-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/camera-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/camera-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/midi-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/midi-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/smoke.mp4",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/candidate/smoke.mp4"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/webp-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/webp-check"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/gpu-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/gpu-check"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/gpu-recovery-remotion",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/gpu-recovery-remotion"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/resume-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/resume-check"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/resume-hardware-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/resume-hardware-check"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/preview-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/preview-check"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/export-verification",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/export-verification"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/themes",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/themes"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/sequence-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/sequence-check"
+    },
+    {
+      "source": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/smoke.mp4",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/production/smoke.mp4"
+    },
+    {
+      "source": "/tmp/setcast-linux-current-upstream/examples/demo/out/smoke.mp4",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-fixed-output-artifacts/upstream/smoke.mp4"
+    }
+  ]
+}

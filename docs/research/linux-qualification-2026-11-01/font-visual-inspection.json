@@ -1,0 +1,70 @@
+[
+  {
+    "case": "standard",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-standard/standard/inspection-midpoint.png",
+    "result": "Same visible text, art, layout and visualizer geometry in reference/browser/Remotion at the sampled midpoint. No missing content or obvious color shift seen.",
+    "scope": "Resized sampled visual inspection only; complete temporal and regional numerical checks are separate."
+  },
+  {
+    "case": "css-filters",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-css-filters/css-filters/inspection-midpoint.png",
+    "result": "Same visible text, art, layout and visualizer geometry in reference/browser/Remotion at the sampled midpoint. No missing content or obvious color shift seen.",
+    "scope": "Resized sampled visual inspection only; complete temporal and regional numerical checks are separate."
+  },
+  {
+    "case": "field",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-field/field/inspection-midpoint.png",
+    "result": "Same visible text, art, layout and visualizer geometry in reference/browser/Remotion at the sampled midpoint. No missing content or obvious color shift seen.",
+    "scope": "Resized sampled visual inspection only; complete temporal and regional numerical checks are separate."
+  },
+  {
+    "case": "tunnel",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-tunnel/tunnel/inspection-midpoint.png",
+    "result": "Same visible text, art, layout and visualizer geometry in reference/browser/Remotion at the sampled midpoint. No missing content or obvious color shift seen.",
+    "scope": "Resized sampled visual inspection only; complete temporal and regional numerical checks are separate."
+  },
+  {
+    "case": "looping-video",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-looping-video/looping-video/inspection-midpoint.png",
+    "result": "Same visible text, art, layout and visualizer geometry in reference/browser/Remotion at the sampled midpoint. No missing content or obvious color shift seen.",
+    "scope": "Resized sampled visual inspection only; complete temporal and regional numerical checks are separate."
+  },
+  {
+    "case": "constellation",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-constellation/constellation/inspection-midpoint.png",
+    "result": "Same visible credits, art, layout, branding and visualizer geometry in the three sampled outputs.",
+    "scope": "Resized sampled visual inspection; numerical and temporal verification remain separate."
+  },
+  {
+    "case": "dj-art-branding",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-dj-art-branding/dj-art-branding/inspection-midpoint.png",
+    "result": "Same visible credits, art, layout, branding and visualizer geometry in the three sampled outputs.",
+    "scope": "Resized sampled visual inspection; numerical and temporal verification remain separate."
+  },
+  {
+    "case": "portrait",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-portrait/portrait/inspection-midpoint.png",
+    "result": "Same visible credits, artwork, layout and branding in reference/browser/Remotion; portrait includes the expected centered art and bottom credit.",
+    "scope": "Resized midpoint inspection only; numerical and temporal checks remain separate."
+  },
+  {
+    "case": "60fps",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-60fps/60fps/inspection-midpoint.png",
+    "result": "Same visible credits, artwork, layout and branding in reference/browser/Remotion; portrait includes the expected centered art and bottom credit.",
+    "scope": "Resized midpoint inspection only; numerical and temporal checks remain separate."
+  },
+  {
+    "case": "4k",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-4k/4k/inspection-midpoint.png",
+    "result": "Same sampled credits, art and visualizer layout; no missing content seen.",
+    "scope": "Resized midpoint aid, not native-resolution or full temporal proof."
+  },
+  {
+    "case": "chunk-boundary",
+    "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-chunk-boundary/chunk-boundary/inspection-midpoint.png",
+    "result": "Art, branding, tracklist and visualizer match at the sampled midpoint. The credit is partially clipped in the same way in the lossless reference and both encoded outputs.",
+    "scope": "Resized midpoint inspection; all-frame black scans pass separately. Numerical metrics are still running.",
+    "interpretation": "The panel folds as panelMotion hands its credit to the visible tracklist after dwell. The same clipping appears in the lossless reference and both adapters; the tracklist retains the complete title.",
+    "source": "packages/core/src/react/components/NowPlaying.tsx:panelMotion"
+  }
+]

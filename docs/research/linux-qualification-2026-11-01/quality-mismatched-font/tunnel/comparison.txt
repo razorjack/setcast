@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 48.457270218,
+    "minSeconds": 48.457270218,
+    "maxSeconds": 48.457270218
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 40.28489119500001,
+    "minSeconds": 40.28489119500001,
+    "maxSeconds": 40.28489119500001
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-tunnel/tunnel/comparison/report.json

@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+import datetime,json,sys
+from pathlib import Path
+root=Path(__file__).resolve().parent
+mode=sys.argv[1]
+reports=[]
+for path in root.glob(mode+'-*-quality-*/report.json'):
+    try:report=json.loads(path.read_text())
+    except json.JSONDecodeError:continue
+    reports.append((path,report))
+print('Local time:',datetime.datetime.now().astimezone().strftime('%H:%M %Z'))
+print('Measured:',sum(report['status']=='measured' for _,report in reports),'started:',len(reports))
+print('Active/failed:',[(path.parent.name,report['status']) for path,report in reports if report['status']!='measured'])
+print('Black-frame scan complete:',(root/(mode+'-blackframe-results.json')).exists())

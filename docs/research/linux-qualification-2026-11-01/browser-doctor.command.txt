@@ -1,0 +1,1 @@
+node packages/cli/bin/setcast.js doctor --renderer browser --require still\,webp\,video\,gpu\,resume\,cache\,alpha\,prores --json 

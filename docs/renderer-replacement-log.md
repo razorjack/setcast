@@ -13,7 +13,7 @@ coherent validated change. No push or publication is authorized. Another project
 this machine; repeat suspicious performance measurements when that load stops. Do not stop or
 modify that other project.
 
-The main branch retains Remotion as the default. This isolated migration candidate selects browser. Comparison tooling now records active capture/encoding, process-tree
+Remotion remains the default. Comparison tooling now records active capture/encoding, process-tree
 resources and external CPU load. A current-upstream 4.0.539 exercise is retained, but matched-quality
 performance across the full suite and platform qualification remain incomplete. The direct decoded-
 canvas candidate was rejected. Continuous audio overlap, hardware H.264, bounded persistent chunk
@@ -963,72 +963,6 @@ isolation and decoded smoke. Both lossless RGB controls and all identity/mismatc
 Logs: `/tmp/setcast-quality-{commit-check,final-ready,content-final}.log`. This completes the
 measurement-tool milestone, not the broader matched-quality speed qualification.
 
-## Browser-first migration candidate, 1 November 2026
-
-This branch starts at main commit 979582c and is isolated from production defaults. Configuration,
-CLI helpers, doctor/capabilities and scaffolds now select browser. Remotion is an optional CLI
-peer and remains a workspace development dependency for compatibility checks. Studio explicitly
-selects Remotion's hardware resolver, preserving renderer overrides in both directions.
-
-The package smoke now installs packed tarballs into a fresh pnpm dependency tree. Browser mode
-installs only the CLI as a root dependency and uses local tarball overrides for its Setcast
-dependencies; it asserts that no Remotion package appears in the virtual store. Library smoke
-scripts run from the installed CLI's dependency context so root-level development links cannot
-hide undeclared dependencies. Compatibility mode explicitly installs the optional adapter too.
-Pinned local pnpm and vp are executed through Node entry points for portable Windows execution.
-
-Initial lint/types pass. The first unit run passed 662 tests and failed five HTTP-server tests
-because sandboxed localhost listening returned EPERM. The authorized unsandboxed ready run is
-now checking the same tests without changing their limits. No default has been promoted to main.
-
-Candidate ready passes all 667 tests in 111 files, required dependency isolation including CLI,
-and the default browser smoke (90 decoded H.264 frames, AAC audio and motion). The first fresh
-tarball install failed because pnpm 11.22.0 ignores `package.json`'s `pnpm.overrides`; it attempted
-to fetch unpublished Setcast dependencies. Overrides now live in `pnpm-workspace.yaml`, as
-[pnpm documents](https://pnpm.io/settings). Retry is in progress. The failure is retained in
-`/tmp/setcast-browser-first-package.log`; it was not a renderer or dependency-isolation failure.
-
-The expanded fresh browser-only tarball retry passed with no Remotion packages physically
-installed. Default render, all theme stills, diagnostics/validation, playback, preview export,
-persistent cache decoded equality, missing-adapter errors, default CLI preview, clipped short
-output and bundled video/thumbnail/description all passed. Reports retain actual platform/runtime
-details and the fresh installation lock digest. CI is prepared for independent Linux/macOS/Windows
-installed checks, but no CI runs have been claimed or started. Migration and rollback are documented
-in `docs/browser-first-migration.md`; the plan distinguishes candidate defaults from main. Browser
-export acceptance passed; Remotion acceptance and optional-adapter installation are next.
-
-Both export acceptance suites passed, including fractional timing, delayed assets, video loops,
-GPU fixtures, cancellation, recovery and destination preservation. Candidate ready passed all
-667 tests in 111 files, lint/types/formatting, the expanded dependency check and the decoded
-90-frame browser smoke. Optional-adapter packaging also passed: explicit Remotion validation
-and six decoded export frames work alongside the browser default. Its initial report writer
-shadowed the report variable with a validation response and failed after export; that test-harness
-bug is fixed and the failed log is retained. Final package assertions resolve actual installed
-package directories through the CLI context, so absent root-level transitive links cannot make
-source-isolation assertions pass vacuously.
-
-Reports are retained in `docs/research/browser-first-2026-11-01/`. Linux and Windows CI jobs are
-prepared but unexecuted. Main defaults and production concurrency remain unchanged. No matched-
-quality speed target or cross-platform release criterion is marked complete by these local runs.
-
-Final candidate package checks pass in both modes; the final browser-only check also verifies
-actual resolved package `dist` directories and absence of `src`. Final ready again passes all
-667 tests and decoded browser smoke. Retained evidence includes both harness failures and
-successful install/acceptance reports. This candidate is ready for review and platform execution,
-not production promotion.
-
-## Readiness integration, 1 November 2026
-
-The user resumed roadmap completion. This candidate now integrates main 53551f0's shared
-ready-state commit hold and decoded art-transition acceptance. The production behavior under
-qualification includes that correction; the previous stop instruction is historical. Both
-exporter suites, same-page media, package checks and baseline ready must pass before commit.
-
-Readiness integration validation passes: ready, both exporter acceptance suites (Remotion with
-swangle), and frame-driver seeks/font/video-loop checks. Installed browser-package smoke passes.
-Fresh installation contains no Remotion packages; the optional compatibility installation also passes.
-These correctness checks overlapped corpus metrics and provide no throughput evidence.
-
 Quality measurement committed as 979582c. The fifth quiet-period worker attempt performed no
 exports; some samples fell to 15.5–17.4%, but none met the unchanged 15% threshold. Its report/log
 are retained as `worker-scaling-2026-10-31/busy-standard-retry4.*`.
@@ -1457,17 +1391,6 @@ negative result are retained in `docs/research/current-upstream-2026-11-01`. The
 blocked. A direct CDP JPEG/fast-PNG experiment will isolate transport costs without changing the
 production CSS contract or weakening the quality threshold.
 
-
-The browser-first candidate now integrates main through 8d00d33, including automatic workers,
-scoped whole-set preparation, reference inspection and endurance instrumentation. Only append-only
-log history and the candidate status paragraph required manual merge resolution. Qualification
-must pass again before committing this integration. Main's default remains unchanged.
-
-Updated browser-first integration passes ready (679 tests in 114 files) and both fresh packed
-installation paths. Browser-only installation physically excludes Remotion and exercises current
-preview, clip, bundled outputs, all themes and reuse. Optional Remotion compatibility also passes.
-Reports are retained in `docs/research/browser-first-merged-2026-11-01`. Platform and speed criteria
-remain outstanding; this commit does not promote the production default.
 Bitmap quiet timing passes three alternating pairs at one worker. All six outputs have identical
 decoded video hashes and input identities. Median wall time falls from 34.248 to 26.325 seconds
 (23.1%). This isolates video preparation at JPEG 95 / CRF 18, not current-Remotion performance.
@@ -1582,12 +1505,6 @@ and quality settings are unchanged. The native receiving API is qualified locall
 editing applications, OBS and other platforms remain explicit limits.
 
 
-The browser-first distribution now integrates e8061ce, including persistent preparation and
-transparent ProRes output. Ready passes 688 tests in 115 files. Fresh browser-only and optional
-Remotion installations pass, including the new ProRes/PNG still/clip/bundle and diagnostics checks.
-Evidence and the earlier overlapping-test timeout are retained in
-`docs/research/browser-first-prores-2026-11-01`. This candidate remains unpromoted because platform
-qualification and the current-upstream speed target are outstanding.
 ### Native bitmap host and current distribution integration
 
 ProRes 4444 is committed as e8061ce. The browser-first candidate now merges that milestone and
@@ -1681,12 +1598,6 @@ Source/color/recovery checks, the original partial/busy series and complete timi
 retained in `docs/research/direct-capture-2026-11-01`. The experiment stays isolated at f5d06b5.
 
 
-The browser-first candidate now integrates main through a00ece3, including promoted bitmap video
-preparation. Ready passes all 688 tests and both fresh installation paths pass again. Browser-only
-packages physically exclude Remotion and exercise the complete local default workflow, cache,
-preview/reference exports and ProRes. Evidence is in `docs/research/browser-first-final-2026-11-01`.
-The candidate remains separate from production until platform and first-export performance
-requirements are satisfied. No code or report is published to an external service.
 Preparation timing is complete at a00ece3: three alternating warm pairs on the real 3,372-second
 master pass the 15% pre-run CPU limit and exact summary equality. Computed/cached medians are
 2.622/0.859 s (67.3% lower). The measurement includes source/cache validation, not full
@@ -1720,3 +1631,171 @@ isolation and the decoded smoke render. The promoted bitmap implementation also 
 exporter acceptance and installed-package passes. Final timing summaries and the browser-first
 candidate's clean-install reports are committed with the reconciled roadmap. The standalone
 results chart is `docs/research/renderer-replacement-results-2026-11-01.html`.
+
+## Linux session handoff, 1 November 2026
+
+The user confirmed Linux access and no easy access to Windows. Added
+`docs/linux-renderer-qualification.md` with committed-ref transfer, Linux bootstrap and host
+inventory, sequential production checks, candidate-only independent installation, optional NVENC,
+full-master resources, current-upstream quality/performance and additional live checks. It defines
+the reports to preserve and explicit completion limits. Windows qualification and the default
+promotion criteria remain unchanged. No Linux execution or external publication occurred here.
+
+Two source-transfer details matter: main's package smoke does not support the candidate's
+`--report` or fresh independent installation, and the retained upstream comparison branch predates
+the promoted bitmap implementation. The runbook requires testing the correct candidate and building
+an isolated current-upstream comparison from the final qualified code. Ignored real masters need
+separate transfer; a Git bundle carries committed branches and reports but not those assets.
+
+Handoff validation on macOS passes `vp run ready`: formatting, lint/types, all 688 tests in 115
+files, dependency isolation and decoded smoke. The first sandboxed attempt failed five localhost
+tests with `listen EPERM`; rerunning with localhost access passed. Runbook relative links and
+directly invoked TypeScript paths were checked. These results validate the documentation change
+against the existing checkout; they are not Linux qualification evidence.
+
+## Linux execution started, 1 November 2026
+
+The supplied bundle verifies; production starts at 55a7b67 and both handoff branches
+are restored locally without overwriting master. Fedora 44 x64 exposes a Ryzen
+9 5950X, 64 GiB RAM and an RTX 3070 Ti PCI device, but nvidia-smi cannot communicate
+with the driver. No hardware qualification is inferred. Initial ready fails on
+an incomplete pre-existing dependency tree; frozen installation is being repaired
+before source defects are assessed. Original failures and commands are retained in
+[Linux evidence](research/linux-qualification-2026-11-01/README.md).
+
+Frozen dependency installation restores the baseline: all 688 tests and decoded smoke
+pass. Host device access also resolves the apparent NVIDIA failure; the sandbox had
+hidden device nodes. The provisioned browser doctor identifies Chromium 156.0.8078.4
+with NVIDIA ANGLE and passes all requested features, including a real NVENC probe.
+Remotion's required swangle doctor passes using Chromium 149 and SwiftShader.
+Neither probe alone qualifies full exports or hardware endurance. No real master
+is present in the checkout.
+
+The Linux worker matrix discovers source-precision failures on NVIDIA ANGLE:
+Pirate landscape differs at up to 35 pixels by one level (budget 21), and
+Afterhours landscape differs across repeated one-worker pages as well as worker
+counts. The original PNGs and reports remain retained. These failures prevent
+claiming complete production fidelity despite both short acceptance suites passing.
+Investigation will distinguish graphics rasterization from frame/readiness behavior;
+thresholds remain unchanged.
+
+The isolated browser-first candidate fb00141 passes ready (688 tests), both exporter
+acceptance suites and a fresh browser-only tarball installation. The installed
+inventory contains no Remotion packages; default workflows, themes/video,
+cache/resume, preview and ProRes pass. The optional-Remotion installation is still
+running. This establishes the exercised Linux installation behavior, not full
+backend fidelity or release readiness.
+
+All 32 worker cases pass exact decoded equality with explicit default graphics,
+observed as SwiftShader. Four repeated Masthead rounds also pass all eight
+orientation cases without screenshot timeout. The NVIDIA raster-disable experiment
+did not fix Pirate or Masthead and remains rejected. Based on this backend
+isolation, browser Linux auto now follows Chromium's default graphics selection;
+explicit angle remains opt-in and unqualified on the tested driver. Remotion's
+graphics policy, the default renderer, and NVENC selection are unchanged.
+Baseline and both acceptance suites are being repeated before committing this fix.
+
+Committed fix 29e7dbc passes the full automatic-backend worker matrix: all 32
+theme/orientation cases have exact decoded equality across 1/2/4 workers, including
+Pirate, Afterhours and Masthead. Same-page frame checks and bitmap roundtrip also
+pass on the committed fix. Remaining affected checks, final candidate installation
+and resource requalification continue. Explicit NVIDIA angle failures remain retained.
+
+The complete affected production suite passes on 29e7dbc: frame order, all 32 exact
+worker cases, bitmap/video frames, color, WebP, both GPU recovery harnesses, resume,
+chunk/incremental/preparation caches, preview/queue, ProRes and decoded verifier.
+The automatic backend is observed SwiftShader. Final browser-first installation
+and resource checks are now being repeated with this committed implementation.
+
+Linux final candidate `a61a0b1` passed ready, both acceptance suites and both independent fresh tarball installations after the graphics fix. Browser-only inventory remains Remotion-free; explicit optional compatibility renders six decoded frames. See the Linux evidence `final-installed-*` reports. Production and candidate defaults remain scoped to their existing branches.
+
+Final Linux NVENC checks pass after the graphics fix: required encoder, 19 acceptance chunks, color, resume identity, and a 120-second/3,600-frame decoded synthetic export with four zero-lag stereo windows and cleanup. Reports retain separate SwiftShader graphics and NVENC encoder identities. Full-master assets remain absent.
+
+Linux current Remotion 4.0.539 leaks an 8,294,464-byte named POSIX pool after injected encoder failure, reproduced twice. The existing encoder-failure harness passes destination/temp-directory checks; an independent `/dev/shm/rmshm-*` observer fails. Normal/cancellation acceptance creates and removes its new pools. A library teardown race is under investigation; successful-export comparisons do not erase this cleanup failure. Evidence: Linux `shm-observed-failure.json`.
+
+Final Linux software resource repeat passes the 120-second preset with 84 samples, peak summed RSS 3.09 GB and temporary-directory cleanup. Additional verification decodes all 3,600 frames of that same file and passes four stereo alignment windows. Final bitmap memory passes 3,000 captures with all URLs revoked and no monotonic interval RSS growth. Full real-master Linux qualification remains blocked by missing assets.
+
+Linux fidelity calibration found different font hinting in the two launch policies. Native-size text has the same content/layout, but glyph-edge pixels reduce standard Remotion PNG agreement to 32.6 dB against browser capture. A diagnostic browser launch with Remotion's `--font-render-hinting=none` reaches 82.3 dB. Browser Linux offline capture is being aligned to preserve existing Remotion text appearance. Original mismatched-font quality results remain retained and cannot establish matched encoder quality; affected checks and references must be repeated before timing.
+
+Linux offline font alignment passes ready (688 tests) and both exporter acceptance suites. Remaining affected production checks, final candidate installations and the common-font quality corpus will be repeated on the committed fix before any quiet comparison. Main still defaults to Remotion.
+
+Font-aligned Linux candidate `4904519` passes ready, both acceptance suites, fresh Remotion-free browser installation and separate optional Remotion installation. Current-upstream `a53bcca` passes its baseline and both acceptance suites with the final browser implementation. Common-font fidelity calibration is running; no quiet throughput measurements have started.
+
+Committed font alignment passes all 32 theme/orientation cases with exact decoded equality across one, two and four workers. Bitmap roundtrip remains exact RGBA. Required NVENC acceptance, color, resume and the 120-second decoded synthetic export pass again. Final video/cache/preview/ProRes and bitmap resource repeats continue; their completion is not inferred from earlier revisions.
+
+The font-aligned video-frame suite fails six comparisons in three Quicksilver shape/fit cases; all 64 cases completed, with 60 non-Quicksilver cases passing. A focused repeat reproduces four failures. Difference bounds and images isolate circular background clip edges, not glyphs, so the timing of discovery does not establish font hinting as the cause. Maximum differences reach 84 levels. Rasterization, hinting and pacing are being isolated without changing tolerances. Quiet measurements remain blocked by this correctness failure.
+
+Quicksilver diagnosis rejects removal of font hinting, removal of unpaced capture, disabled GPU rasterization and disabled GPU: each still fails. Disabling GPU compositing produces exact equality, as does the narrower `.sc-bg-img { will-change: transform; }` hint. Four additional layer-hint repeats pass all four shape/fit cases, every shuffled seek, with maximum pixel difference zero. The production change applies only to Quicksilver video images. Full affected checks follow. The video harness now includes seek ordinals in filenames and reports; previously its repeated frame 29 could overwrite an earlier capture. Earlier reports retain both measurements, but an overwritten PNG cannot be recovered.
+
+The narrow Quicksilver fix passes ready (688 tests), both exporter acceptance suites, all 64 video theme/shape/fit cases, and four rounds of landscape/portrait worker comparison (eight cases, exact decoded equality across 1/2/4 workers). The demo still at 1:50.4 was inspected: art, chrome lettering and layout remain intact. The remaining font-aligned production sequence also passes color, WebP, both GPU recovery harnesses, resume, chunk/incremental/preparation caches, preview/exports, ProRes and the decoded verifier. ProRes alpha maximum error is one level; composite maximum is 2.710 and mean 0.110, with exact source PCM, exact joins, zero repeated captures and 30 resumed frames. A separate encoded looping-video worker repeat is still running.
+
+Quicksilver fix `a5a8bbe` passes the full 64-case video matrix, eight repeated static worker cases and six looping-video worker cases with exact decoded equality. Candidate `5159395` passes ready, both acceptance suites and both fresh installations. Current-upstream `5d026a6` includes the same final implementation and retains isolated Remotion 4.0.539 pins. Ten common-font corpus cases pass; chunk-boundary calibration and quiet timing remain pending. The shared Quicksilver CSS change still needs affected macOS repetition; Windows remains unqualified.
+
+Final candidate `5159395` passes ready, both acceptance suites and fresh browser-only/optional-Remotion installation. Current-upstream `5d026a6` passes ready and both acceptance suites. The software resource repeat on `a5a8bbe` passes 120 seconds/3,600 frames with 79 samples, peak summed RSS 3,082,993,664 bytes and no final temporary directories. Separate decoding of that exact file passes all frames and four stereo windows. The ten completed common-font fidelity cases pass every full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG comparison; the long chunk-boundary case is still running. Their selected themes and renderer code are unchanged by the Quicksilver-only fix; final timed outputs will all be measured on `5d026a6`.
+
+The final `5d026a6` upstream encoder-failure repeat reproduces the leak a third time: `rmshm-7284829172597860390`, inode 7049, 8,294,464 bytes, remains after process exit. The child harness passes destination and temporary-directory assertions; the independent host observer exits 1. No other Remotion export was running during this observation. No library dependency or fast path was patched for the comparison.
+
+All eleven common-font corpus cases now meet every full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG comparison. All 22 encoded outputs pass full black-frame scans. Midpoint sheets for all cases and before/at/after sheets for DJ/portrait/chunk art changes and the chunk join were inspected. The partially folding long-case midpoint credit matches panelMotion handover to the visible tracklist; it is not missing output. Calibration ran under load and its wall times are excluded from throughput claims. The official registry recheck immediately before timing still returns Remotion 4.0.539. Quiet worker screening will cover 1/2/4/8/auto for both adapters, followed by three alternating pairs with selected settings. Every retained timed output will receive the same quality measurements after timing stops.
+
+## Linux quiet screening completed, 2 November 2026
+
+Quiet screening completed all 55 pairs on final comparison revision `5d026a6`: five worker settings for each of eleven workloads. Every comparison exits successfully and leaves no new named Remotion pool. All 110 encoded outputs remain retained. Quality verification of every screening output follows before selecting settings for the three-pair series; these screening timings do not establish the release target.
+
+All 110 screening outputs complete quality measurement without errors. Every one of the 55 paired comparisons meets the unchanged full/regional minimum, p05 and mean PSNR/SSIM and VMAF NEG requirements; all videos also pass full black-frame scans. Every timed arm starts within the 15% CPU-busy limit (highest accepted rounded sample 12.4%). The largest sampled mean external load is 3.4024 of 32 CPU cores; this variation remains reported. Source/runtime/cleanup audit confirms clean final revision `5d026a6`, SwiftShader and software encoding throughout, with no new named pools after successful comparisons. The official registry recheck still returns 4.0.539. Final three-pair measurements follow after the evidence checkpoint; no release-speed conclusion is inferred from screening.
+
+The screening evidence checkpoint passes `vp run ready`: formatting, lint/types, all 688 tests in 115 files, dependency isolation and decoded smoke. No renderer source changed during calibration verification or quiet screening. Final repeated timing remains pending.
+
+Final quiet timing completes all eleven workloads: three alternating pairs each, 66 exports total, with no failed/busy attempt or new named pool after completion. The highest accepted pre-run CPU-busy sample is 0.6%; the largest sampled mean external CPU load is 0.3111 of 32 cores. All outputs use clean revision `5d026a6`, observed SwiftShader and software encoding. Every final output is now being measured against its lossless reference before interpreting the speed target. The frozen 4K fixture retains its 2304×1296 background enlarged to 3840×2160; the warning and identical input are preserved for both arms.
+
+All three job-created upstream failure pools have been archived with verified hashes and removed after exact inode/UID/size checks and two owner probes. Raw buffers remain retained; no unrelated pool was removed. This manual host cleanup does not fix or qualify Remotion failure cleanup.
+
+After the final timing process exited, all 66 final videos passed full black-frame scans. Detailed fidelity measurement continues. The independent additional candidate Linux CI checks and evidence baseline now run under load; their elapsed times are excluded from performance results. Existing candidate fixed outputs were archived first (only its latest smoke video existed before these additional harnesses).
+
+Final Linux comparison on clean `5d026a6` passes every required quality comparison for all 33 pairs / 66 outputs, plus full black-frame scans. None of eleven workloads meets the unchanged 30% lower median wall-time target. Browser ranges from 5.4% faster (CSS filters) to 55.9% slower (looping video); the long chunk-boundary case is 27.7% slower. All workload medians/ranges, worker selections, output sizes, resources, actual paths and quality reports are retained in [final performance evidence](research/linux-qualification-2026-11-01/performance-table.md). No failed/busy final attempt was omitted. Default promotion remains pending. Additional local Linux CI/live work continues.
+
+Additional candidate Linux checks pass the full worker matrix, resume, WebP, both renderer GPU recovery checks, preview and decoded verification. Live output, transport, projection, energy, beats, branding, camera patterns and MIDI pass. Sequence fails reproducibly in two unchanged runs while waiting for the malformed-art scene error notice; original logs are retained and diagnosis continues. Two diagnostic launcher failures (wrong output base, then package resolution outside the workspace package) are also retained separately and are not product failures.
+
+The sequence failure is a control-state race, confirmed by pre-click DOM capture: the manual scene is active and all scene pads/brightness are disabled, but Run/Next remain enabled. LivePerformance.queue rejects a recall during fade-out/loading/fade-in; the failed-scene JSON loads but its image is never requested. Sequence controls now disable Run/Next during those transition phases and report Transitioning; Hold remains available. The unchanged full sequence harness passes with the fix, including malformed-art failure, journal and restart assertions. This change touches live controls only; offline bundle identity will be checked before reusing completed performance evidence.
+
+Live control fix `97f2db7` passes ready (688 tests and decoded smoke) and the unchanged sequence regression. It is transferred as candidate `166e51d` and comparison `d9d1b4a`. Comparing the latter against timed revision `5d026a6` shows exactly two live control files changed; rebuilt offline `export.tsx` JavaScript and CSS hashes are identical. The final offline implementation and measured comparison are therefore unchanged. See [bundle/source provenance](research/linux-qualification-2026-11-01/live-fix-offline-provenance.json). Candidate affected repetitions follow before full live endurance.
+
+Final candidate `166e51d` passes ready, three unchanged full sequence repeats, affected output/energy/MIDI checks, and both fresh independent installations. All additional local Linux CI commands now have passing evidence; the original sequence failures and failed aggregate remain retained. Full unchanged live recovery (3,600 s) and explicit software (5,400 s) presets are starting concurrently as loaded reliability checks. Both use synthetic input and independent browser/server instances; their elapsed times are excluded from the quiet comparison.
+
+The concurrent software preset fails at its second sample (11.47 s) with 4,096 dropped analysis samples; the initial sample had zero. Graphics identifies SwiftShader. The recovery preset is deliberately cancelled through SIGINT after 87 s to isolate the failure, retaining 16 samples, two recoveries and one scene change; cancellation is not a pass. Its runner records cancelled/exit130 with a browser-close error during interruption. The full 5,400-second software preset is now repeated alone in a new directory. No transport bound, assertion or workload setting has changed.
+
+The unchanged isolated software preset also fails: 17,408 dropped samples at 604.81 s, after ten scene/announcement actions. The previous sample at 594.58 s had zero dropped samples; no other Setcast rendering job was running. The final five CI repeats/recovery continuation correctly stops because this prerequisite failed. A separate accelerated transition diagnostic will collect browser long tasks and slow WebGL calls; it is not a replacement for either full-duration preset.
+
+The separate accelerated transition diagnostic fails after 23 seconds/four scene changes with 19,456 dropped samples. Its bounded long-task observer records 188 ms and 97 ms tasks; no instrumented WebGL call exceeds 25 ms. These observations do not establish shader compilation as the cause. Instrumentation overhead and the shorter scene dwell make this diagnostic distinct from the unchanged full-preset failures. No production transport budget or assertion has changed. The earlier diagnostic launcher CommonJS-resolution failure remains retained. Independent final live CI repetitions continue before the separate full recovery preset.
+
+The isolated full recovery preset passes its first 15-minute capture restart and journal rollover, with zero dropped samples through 31 forced recoveries and 21 scene changes. JavaScript heap returns to about 37 MB after earlier peaks above 100 MB; no leak conclusion is drawn from isolated peaks. Full-duration status remains running.
+
+The isolated recovery preset passes its second scheduled restart and remains running after 31 minutes: 62 forced recoveries, 41 scene changes and zero dropped samples. These are intermediate observations; full-duration and final journal validation remain pending.
+
+The isolated recovery preset passes its third scheduled capture restart at 45 minutes. Capture resumes in epoch three with zero dropped samples and a freshly reset cache; 89 recoveries and 59 scene changes have completed. The final quarter-hour and final journal validation remain pending.
+
+The unchanged full recovery preset passes on final candidate `166e51d`: 3,600.10 s of workload, 710 samples, 119 forced recoveries, 79 scene changes, three capture restarts and four valid ended journals (83 scene records and 79 announcements). All samples have zero dropped analysis samples; cache maximum is 2,048. Actual graphics is SwiftShader, configured 1920×1080 with a 1440×1000 scaled viewport. Rendered-update FPS spans 6.4–31.7 with median 30; this is not a guarantee of constant 30 fps. Quarter-hour heap medians are 60.89/57.96/60.28/58.13 MB; runner RSS medians 703.61/702.97/705.48/707.72 MB. These measurements exclude browser-native and GPU memory. The final screenshot was inspected.
+
+The separate packet diagnostic fails after 23 s/four accelerated changes with 17,408 dropped samples. It records an 874.8 ms gap in main-thread packet receipt, exceeding the 512 ms queue budget by approximately that sample count; the largest long task is 151 ms. Extra producer metadata was not observed, so the browser operation causing the delivery gap remains unresolved. The full software preset remains failed/unqualified. No queue limit or assertion was relaxed, and no speculative source change was promoted.
+
+Final baseline passes formatting, lint/types, all 688 tests, dependency isolation and decoded smoke. Final artifact archival copies temporary-worktree outputs onto the repository filesystem. The hash audit covers 7,555 files / 16,384,724,426 bytes and confirms all 220 comparison outputs still match their recorded digests. All available Linux runbook checks have outcomes; performance, explicit NVIDIA ANGLE, current-upstream failure cleanup and the software live preset remain failed/unqualified. Missing real-master assets, Windows and affected macOS repetition remain outstanding. Main still defaults to Remotion; nothing was pushed or published.
+
+## macOS follow-up, 3 November 2026
+
+Reviewed the Linux commits through `ec1d84d`. The shared changes requiring macOS repetition are
+Quicksilver's compositor hint and the sequence controls' manual-transition restriction. Linux
+font hinting and automatic graphics selection are platform-scoped; the macOS doctor still observes
+Chromium 156 with ANGLE Metal on Apple M1 Pro. Initial baseline (688 tests), both exporter
+acceptance suites, all 64 shuffled-seek video cases and eight repeated Quicksilver static worker
+cases pass. The demo still was inspected. The unchanged live sequence harness passes three times;
+output, energy and MIDI checks also pass.
+
+The stricter looping-video worker fixture exposes a macOS failure: landscape decoded hashes
+match across 1/2/4 workers, but the first portrait round differs. Lossless portrait comparisons
+exceed the existing source precision budget, reaching two channel levels on up to 1,500 pixels.
+The prepared BMP hashes match across every worker/frame in a separate diagnostic while PNG
+captures differ, isolating variability after media preparation. Original failures are retained.
+Removing the compositor hint in the fixture gives exact source comparisons, but would discard
+the qualified Linux fix. A filter hint also fails; an opacity hint passes one source matrix
+and four encoded shape/round cases, then fails its third landscape round. Neither alternative
+is promoted, and no assertion is relaxed. Further macOS checks and candidate integration are
+recorded under `examples/demo/out/macos-followup-2026-11-03` while they run.

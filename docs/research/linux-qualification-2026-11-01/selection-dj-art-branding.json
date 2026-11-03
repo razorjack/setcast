@@ -1,0 +1,62 @@
+{
+  "scope": "One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.",
+  "case": "dj-art-branding",
+  "candidates": {
+    "browser": [
+      {
+        "wallSeconds": 34.936539413,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-1/report.json"
+      },
+      {
+        "wallSeconds": 20.044339444,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-2/report.json"
+      },
+      {
+        "wallSeconds": 17.879424661,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-4/report.json"
+      },
+      {
+        "wallSeconds": 18.372634318,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-8/report.json"
+      },
+      {
+        "wallSeconds": 18.119092519,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-auto/report.json"
+      }
+    ],
+    "remotion": [
+      {
+        "wallSeconds": 33.128504502999995,
+        "choice": "1",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-1/report.json"
+      },
+      {
+        "wallSeconds": 19.535536548000003,
+        "choice": "2",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-2/report.json"
+      },
+      {
+        "wallSeconds": 15.717589188000002,
+        "choice": "4",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-4/report.json"
+      },
+      {
+        "wallSeconds": 16.449706745,
+        "choice": "8",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-8/report.json"
+      },
+      {
+        "wallSeconds": 16.62446249,
+        "choice": "auto",
+        "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/tune-dj-art-branding-auto/report.json"
+      }
+    ]
+  },
+  "browser": "4",
+  "remotion": "4"
+}

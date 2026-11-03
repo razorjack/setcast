@@ -1,0 +1,162 @@
+{
+  "scope": "Local execution of candidate Linux CI commands and affected repetitions. Original additional-linux-ci exits 1 at reproducible sequence failure; it remains a failure record. The sequence defect is fixed in 97f2db7 / candidate166e51d, with three unchanged reproducer passes and affected workflow repetitions. Prior offline evidence is retained with producing revisions and byte-identical final export bundle proof. No hosted CI was invoked.",
+  "status": "passed",
+  "candidate": "166e51d47deb50daab3ded80682633e855a12a5b",
+  "checks": [
+    {
+      "label": "final-candidate-workers",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "final-candidate-resume",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "final-candidate-webp",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "final-candidate-gpu",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "final-candidate-preview",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "final-candidate-export-verification",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "final-candidate-remotion-gpu",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-output",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-transport",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-projection",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-energy",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-beats",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-branding",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-camera",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-midi",
+      "exitCode": 0,
+      "producingRevision": "5159395bfc28c856b0c249f6d909b98cd64a9a9e"
+    },
+    {
+      "label": "live-fixed-candidate-ready",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-sequence-1",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-sequence-2",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-sequence-3",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-output",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-energy",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-midi",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-installed-browser",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-fixed-installed-compatibility",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-transport",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-projection",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-beats",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-branding",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    },
+    {
+      "label": "live-final-camera",
+      "exitCode": 0,
+      "producingRevision": "166e51d47deb50daab3ded80682633e855a12a5b"
+    }
+  ],
+  "retainedFailures": [
+    "additional-linux-ci",
+    "live-sequence",
+    "live-sequence-repeat",
+    "live-sequence-diagnostic",
+    "live-sequence-diagnostic-2",
+    "live-sequence-diagnostic-3",
+    "live-sequence-transition-state"
+  ],
+  "remainingFinalLiveRepeats": []
+}

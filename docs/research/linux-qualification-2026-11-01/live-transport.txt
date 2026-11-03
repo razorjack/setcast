@@ -1,0 +1,1 @@
+Transport: PASS (current 0, former 8-packet queue 6144 dropped samples; 2 s stall survives with 71680 skipped samples; starvation fails). /tmp/setcast-linux-browser-first/examples/demo/out/transport-check

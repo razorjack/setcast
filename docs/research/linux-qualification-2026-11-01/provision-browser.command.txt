@@ -1,0 +1,1 @@
+./node_modules/.bin/vp exec --filter @setcast/renderer-browser playwright install chromium 

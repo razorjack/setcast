@@ -1,0 +1,129 @@
+{
+  "scope": "Targeted manual handling of three previously identified job-created failure pools. UID/inode/size and visible fuser owners are checked. Cleanup archives unchanged raw bytes before unlinking. No unrelated names are removed; this does not repair or qualify the upstream library.",
+  "mode": "cleanup",
+  "startedAt": "2026-11-02T01:23:32.846516+00:00",
+  "status": "passed",
+  "targets": [
+    {
+      "path": "/dev/shm/rmshm-11411021668764671149",
+      "expectedInode": 4965,
+      "before": {
+        "inode": 4965,
+        "bytes": 8294464,
+        "uid": 1000,
+        "device": 27,
+        "mtimeNs": 1793567136208756197,
+        "ctimeNs": 1793567136208756197
+      },
+      "ownerProbe": {
+        "command": [
+          "/usr/bin/fuser",
+          "-v",
+          "/dev/shm/rmshm-11411021668764671149"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "",
+        "noVisibleOwners": true
+      },
+      "archived": {
+        "path": "examples/demo/out/linux-qualification-2026-11-01/upstream-orphan-cleanup/rmshm-11411021668764671149.raw",
+        "bytes": 8294464,
+        "sha256": "bdb150d8b3656284e0dc42bd470387b532a939a893eb3e54de4e883a4de9ca12"
+      },
+      "finalOwnerProbe": {
+        "command": [
+          "/usr/bin/fuser",
+          "-v",
+          "/dev/shm/rmshm-11411021668764671149"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "",
+        "noVisibleOwners": true
+      },
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/rmshm-13983776585987463118",
+      "expectedInode": 5148,
+      "before": {
+        "inode": 5148,
+        "bytes": 8294464,
+        "uid": 1000,
+        "device": 27,
+        "mtimeNs": 1793567249402290083,
+        "ctimeNs": 1793567249402290083
+      },
+      "ownerProbe": {
+        "command": [
+          "/usr/bin/fuser",
+          "-v",
+          "/dev/shm/rmshm-13983776585987463118"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "",
+        "noVisibleOwners": true
+      },
+      "archived": {
+        "path": "examples/demo/out/linux-qualification-2026-11-01/upstream-orphan-cleanup/rmshm-13983776585987463118.raw",
+        "bytes": 8294464,
+        "sha256": "ad20ad9471f028e6ce2c6f26920b94a7ca8584a7991ffb7ce7c07e6e5dfd4315"
+      },
+      "finalOwnerProbe": {
+        "command": [
+          "/usr/bin/fuser",
+          "-v",
+          "/dev/shm/rmshm-13983776585987463118"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "",
+        "noVisibleOwners": true
+      },
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/rmshm-7284829172597860390",
+      "expectedInode": 7049,
+      "before": {
+        "inode": 7049,
+        "bytes": 8294464,
+        "uid": 1000,
+        "device": 27,
+        "mtimeNs": 1793571701926222332,
+        "ctimeNs": 1793571701926222332
+      },
+      "ownerProbe": {
+        "command": [
+          "/usr/bin/fuser",
+          "-v",
+          "/dev/shm/rmshm-7284829172597860390"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "",
+        "noVisibleOwners": true
+      },
+      "archived": {
+        "path": "examples/demo/out/linux-qualification-2026-11-01/upstream-orphan-cleanup/rmshm-7284829172597860390.raw",
+        "bytes": 8294464,
+        "sha256": "bdb150d8b3656284e0dc42bd470387b532a939a893eb3e54de4e883a4de9ca12"
+      },
+      "finalOwnerProbe": {
+        "command": [
+          "/usr/bin/fuser",
+          "-v",
+          "/dev/shm/rmshm-7284829172597860390"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "",
+        "noVisibleOwners": true
+      },
+      "removed": true
+    }
+  ],
+  "remainingNamedPools": {}
+}

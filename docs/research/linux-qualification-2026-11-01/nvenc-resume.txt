@@ -1,0 +1,11 @@
+  resume: 45 captured, 30 reused
+  corrupt chunk: 75 captured, 0 reused
+  missing chunk: 75 captured, 0 reused
+  changed artwork: 75 captured, 0 reused
+  changed audio: 75 captured, 0 reused
+  changed configuration: 75 captured, 0 reused
+  changed encoder settings: 75 captured, 0 reused
+  changed encoder backend: 75 captured, 0 reused
+  relative asset paths: 75 captured, 0 reused
+  all chunks complete: 0 captured, 75 reused
+Resume: PASS (cancellation, checksums, asset/configuration changes, complete checkpoints and untracked resources)

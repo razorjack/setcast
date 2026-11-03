@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+root=/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01
+cd /tmp/setcast-linux-browser-first
+run() { bash "$root/candidate-run.sh" "$@"; }
+run final-candidate-ready ./node_modules/.bin/vp run ready
+run final-candidate-browser-acceptance ./node_modules/.bin/vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/final-candidate-browser-acceptance"
+run final-candidate-remotion-acceptance ./node_modules/.bin/vp run export-acceptance --gl swangle --out "$root/final-candidate-remotion-acceptance"
+run final-installed-browser ./node_modules/.bin/vp run package-smoke --browser --report "$root/final-installed-browser.json"
+run final-installed-compatibility ./node_modules/.bin/vp run package-smoke --report "$root/final-installed-compatibility.json"

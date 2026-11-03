@@ -1,0 +1,66 @@
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/gpu-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/gpu-recovery-remotion",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/gpu-recovery-remotion"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/resume-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/resume-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/preview-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/preview-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/export-verification",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/export-verification"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/output-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/output-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/transport-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/transport-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/sequence-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/sequence-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/projection-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/projection-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/energy-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/energy-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/beat-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/beat-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/branding-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/branding-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/camera-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/camera-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/midi-check",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/midi-check"
+    },
+    {
+      "source": "/tmp/setcast-linux-browser-first/examples/demo/out/smoke.mp4",
+      "retained": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/pre-final-live-fixed-output-artifacts/candidate/smoke.mp4"
+    }
+  ]
+}
+Transport: PASS (current 0, former 8-packet queue 6144 dropped samples; 2 s stall survives with 71680 skipped samples; starvation fails). /tmp/setcast-linux-browser-first/examples/demo/out/transport-check
+Projection: PASS (geometry, artwork alignment, crop, masks, calibration, blackout, profiles, snapshots)
+Beats: PASS (live PCM, confidence loss, explicit adoption, journal, manual tempo and restart)
+Branding: PASS (logo, edits, toggles, MIDI, announcements, blackout, projection, scenes, journal replay with 1 announcement(s), portrait)
+Camera setup: PASS (patterns, motion, output protection, projection, presets, scenes, portrait). /tmp/setcast-linux-browser-first/examples/demo/out/camera-check
+Endurance: PASS (/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-gpu-recovery-isolated)

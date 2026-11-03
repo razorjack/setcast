@@ -1,0 +1,130 @@
+ASSET 200 http://127.0.0.1:41513/scene.json?preset=saved-scene-broken
+FAILURE STATE Scene a
+FAILURE STATE SETCAST
+LIVE INPUT
+Fake Default Audio Input · 0:59
+Stop input
+Settings
+Save scene
+Clean output
+H
+Fullscreen
+F
+Audio input
+Refresh devices
+Device
+System default input
+Fake Default Audio Input
+Fake Audio Input 1
+Fake Audio Input 2
+Left channel
+Input 1
+Input 2
+Right channel
+Input 1
+Input 2
+1
+2
+Sensitivity
+1.0×
+Visual delay
+0 ms
+Scene
+Theme
+theme
+Title
+Elapsed clock
+Background artwork
+2 exposed channel(s) · 48 kHz · Audio monitoring off
+OBS: capture the output window; add mixer audio separately.
+Intensity
+100%
+Brightness
+100%
+Blackout
+Scenes
+Fade through black
+Cut
+0.5 s
+1 s
+2 s
+Start on next bar
+Refresh scenes
+1
+Scene a
+2
+Scene b
+3
+Scene broken
+Automatic sequence · Held
+Run sequence
+Next scene
+Loop sequence
+Export sequence
+Selection
+Ordered
+Audio energy
+Scene broken
+Energy
+Any
+Low
+Medium
+High
+Dwell (s)
+↑
+Remove
+Scene a
+Energy
+Any
+Low
+Medium
+High
+Dwell (s)
+↑
+Remove
+Scene b
+Energy
+Any
+Low
+Medium
+High
+Dwell (s)
+↑
+Remove
+Add scene
+Choose saved scene
+Scene a
+Scene b
+Scene broken
+
+Dwell starts after fade-in. Input loss and blackout pause dwell. Manual scene recall holds the sequence. Export settings to reuse in live.yaml.
+
+MIDI controls
+Return controls to output
+Tempo (BPM)
+Tap tempo
+Downbeat now
+Beat tracking · Off
+Branding
+Session diagnostics · 30.0 / 30 FPS
+Output setup · Windowed
+Camera test patterns · Off
+Projector setup · Off
+Session journal · Recording events
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByText(/Cannot prepare this scene/) to be visible[22m
+
+    at checkFailure (/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/sequence-diagnostic.ts:104:57)
+    at async file:///home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/sequence-diagnostic.ts:66:3 {
+  log: [
+    '  - waiting for getByText(/Cannot prepare this scene/) to be visible'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

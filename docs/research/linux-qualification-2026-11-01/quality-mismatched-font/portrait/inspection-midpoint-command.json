@@ -1,0 +1,38 @@
+{
+  "command": [
+    "ffmpeg",
+    "-hide_banner",
+    "-v",
+    "error",
+    "-threads",
+    "2",
+    "-i",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-portrait/portrait/reference/reference.mkv",
+    "-threads",
+    "2",
+    "-i",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-portrait/portrait/comparison/0-browser.mp4",
+    "-threads",
+    "2",
+    "-i",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-portrait/portrait/comparison/0-remotion.mp4",
+    "-filter_complex_threads",
+    "2",
+    "-filter_complex",
+    "[0:v]select=eq(n\\,150),scale=360:-1[p0];[1:v]select=eq(n\\,150),scale=360:-1[p1];[2:v]select=eq(n\\,150),scale=360:-1[p2];[p0][p1][p2]hstack=inputs=3",
+    "-frames:v",
+    "1",
+    "-update",
+    "1",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-portrait/portrait/inspection-midpoint.png"
+  ],
+  "exitCode": 0,
+  "output": "",
+  "frameOffset": 150,
+  "order": [
+    "reference",
+    "browser",
+    "remotion"
+  ],
+  "scope": "Resized midpoint viewing aid, not a lossless reference or complete temporal inspection."
+}

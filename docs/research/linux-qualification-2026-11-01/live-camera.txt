@@ -1,0 +1,1 @@
+Camera setup: PASS (patterns, motion, output protection, projection, presets, scenes, portrait). /tmp/setcast-linux-browser-first/examples/demo/out/camera-check

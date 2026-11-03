@@ -1,0 +1,12 @@
+initial: 75 captured, 0 reused
+visible text edit: 30 captured, 45 reused
+visible edit fresh: 75 captured, 0 reused
+outside range text edit: 0 captured, 75 reused
+outside edit fresh: 75 captured, 0 reused
+changed metadata: 75 captured, 0 reused
+crossing text edit: 60 captured, 15 reused
+crossing edit fresh: 75 captured, 0 reused
+global CSS edit: 75 captured, 0 reused
+edited checkpoint invalidated: 75 captured, 0 reused
+checkpoint edit fresh: 75 captured, 0 reused
+Incremental announcement cache: PASS

@@ -49,6 +49,7 @@ export function PerformanceControls({ show, available, running }: Props) {
         bank={show.bank}
         available={available}
         active={show.activePreset}
+        transitioning={Boolean(performance.transition && performance.transition.phase !== 'queued')}
       />
       <MidiControls midi={show.midi} />
     </section>

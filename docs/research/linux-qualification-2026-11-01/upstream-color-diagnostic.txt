@@ -1,0 +1,30 @@
+[
+  {
+    "range": "tv",
+    "matrix": "bt601",
+    "psnr": 32.07564699454275,
+    "meanAbsolute": 1.7382735339506172,
+    "maxAbsolute": 221
+  },
+  {
+    "range": "tv",
+    "matrix": "bt709",
+    "psnr": 32.002772922977016,
+    "meanAbsolute": 1.8985707626028807,
+    "maxAbsolute": 221
+  },
+  {
+    "range": "pc",
+    "matrix": "bt601",
+    "psnr": 25.621314779829873,
+    "meanAbsolute": 12.200667759773662,
+    "maxAbsolute": 207
+  },
+  {
+    "range": "pc",
+    "matrix": "bt709",
+    "psnr": 25.699565839457073,
+    "meanAbsolute": 12.079406989454732,
+    "maxAbsolute": 207
+  }
+]

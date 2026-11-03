@@ -1,0 +1,1 @@
+Beats: PASS (live PCM, confidence loss, explicit adoption, journal, manual tempo and restart)

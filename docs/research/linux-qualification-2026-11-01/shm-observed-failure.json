@@ -1,0 +1,188 @@
+{
+  "scope": "Read-only /dev/shm/rmshm-* polling at 100 ms and output-line boundaries. No unrelated resources deleted. Unlinked mappings and short-lived pools between polls are not measured.",
+  "command": [
+    "node",
+    "packages/renderer-remotion/bench/encoder-failure.ts",
+    "--out",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/shm-failure-artifacts"
+  ],
+  "cwd": "/tmp/setcast-linux-current-upstream",
+  "exitCode": 0,
+  "capacityBytes": 33644695552,
+  "freeBytesAfter": 32867672064,
+  "before": {
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "observed": {
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-9725643007302094280": {
+      "inode": 5142,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-9857861067628414471": {
+      "inode": 5143,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-15179259240081087979": {
+      "inode": 5149,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-13983776585987463118": {
+      "inode": 5148,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "after": {
+    "rmshm-13983776585987463118": {
+      "inode": 5148,
+      "bytes": 8294464,
+      "uid": 1000
+    },
+    "rmshm-11411021668764671149": {
+      "inode": 4965,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "remainingNewPools": {
+    "rmshm-13983776585987463118": {
+      "inode": 5148,
+      "bytes": 8294464,
+      "uid": 1000
+    }
+  },
+  "snapshots": [
+    {
+      "seconds": 0.0016504690001966082,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 3.00984169000003,
+      "pools": {
+        "rmshm-9725643007302094280": {
+          "inode": 5142,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 3.110197492000225,
+      "pools": {
+        "rmshm-9857861067628414471": {
+          "inode": 5143,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-9725643007302094280": {
+          "inode": 5142,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 3.5116022550000707,
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 5.417208779999783,
+      "pools": {
+        "rmshm-15179259240081087979": {
+          "inode": 5149,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-13983776585987463118": {
+          "inode": 5148,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 5.818405134999921,
+      "pools": {
+        "rmshm-13983776585987463118": {
+          "inode": 5148,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    }
+  ],
+  "outputEvents": [
+    {
+      "seconds": 0.459150110000337,
+      "line": "Encoder failure artifacts: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/shm-failure-artifacts",
+      "pools": {
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    },
+    {
+      "seconds": 5.800356275000013,
+      "line": "Encoder failure: PASS (caught failure, intact destination, no temporary directories)",
+      "pools": {
+        "rmshm-13983776585987463118": {
+          "inode": 5148,
+          "bytes": 8294464,
+          "uid": 1000
+        },
+        "rmshm-11411021668764671149": {
+          "inode": 4965,
+          "bytes": 8294464,
+          "uid": 1000
+        }
+      }
+    }
+  ],
+  "status": "failed"
+}

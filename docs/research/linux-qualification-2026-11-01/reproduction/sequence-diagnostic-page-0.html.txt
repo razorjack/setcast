@@ -1,0 +1,606 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Setcast / Player</title><link rel="stylesheet" href="/player.css"></head><body><div id="player"><main class="sc-player sc-live" data-clean="true" data-frame="1769" data-capture="running" data-dropped="0" data-cached="329" data-pcm-capacity="528000" data-input-available="true" data-render-scale="1"><div class="sc-player-viewport"><div class="sc-player-canvas" style="width: 960px; height: 540px; transform: translate(-50%, -50%) scale(1.33333);"><div class="sc-live-scene" data-ready="true"><div class="sc-output" style="position: relative; isolation: isolate; width: 960px; height: 540px;"><div style="position: relative; z-index: 0;"><div class="setcast sc-stage theme-theme" data-current-plays="0" data-shared-drop="false" data-background="none" data-mode="live" data-presentation="playlist" style="width: 960px; height: 540px; --since-drop: 60; --until-drop: 60; --since-breakdown: 60; --until-breakdown: 60; --since-buildup: 60; --until-buildup: 60; --since-rewind: 60; --until-rewind: 60; --drop-intensity: 0; --drop-participants: 0; --section-time: 60; --set-progress: 0; --current-plays: 0; --beat: 0.933; --bar: 0.483; --performance-intensity: 1; --performance-brightness: 1;"><style>/* Structure only. Themes own appearance. Sizes use container units so any output size scales. */
+
+.sc-stage {
+  position: relative;
+  overflow: hidden;
+  container-type: size;
+  background: #000;
+  color: var(--fg, #fff);
+  font-family: var(--font-display, system-ui, sans-serif);
+  --margin: 3.4cqw;
+  /* the radial ring and the vectorscope nested in it, capped by the width so portrait fits them */
+  --radial-size: min(62cqh, 84cqw);
+  --vectorscope-size: min(34cqh, 46cqw);
+
+  /* a theme that names only its accents still gets a color for every deck */
+  --deck-a: var(--accent, #fff);
+  --deck-b: var(--accent-2, var(--deck-a));
+  --deck-c: var(--deck-a);
+  --deck-d: var(--deck-b);
+  --deck: var(--accent, #fff);
+
+  /* the event timeline shaped into 0..1 signals; a theme tunes the lengths in seconds */
+  --drop-flash: calc(
+    clamp(0, 1 - var(--since-drop, 60) / var(--drop-flash-seconds, 0.7), 1) *
+      var(--drop-intensity, 1)
+  );
+  --rewind-flash: clamp(0, 1 - var(--since-rewind, 60) / var(--rewind-flash-seconds, 0.6), 1);
+  --tension: clamp(0, 1 - var(--until-drop, 60) / var(--tension-seconds, 10), 1);
+  /* 1 on the beat, 0 just before the next; stays 0 when the project states no bpm */
+  --beat-pulse: calc(1 - var(--beat, 1));
+}
+
+/* Deck colors are optional panel associations. Unknown decks use the theme accent. */
+.sc-stage [data-deck='A'] {
+  --deck: var(--deck-a);
+}
+.sc-stage [data-deck='B'] {
+  --deck: var(--deck-b);
+}
+.sc-stage [data-deck='C'] {
+  --deck: var(--deck-c);
+}
+.sc-stage [data-deck='D'] {
+  --deck: var(--deck-d);
+}
+
+.sc-stage *,
+.sc-stage *::before,
+.sc-stage *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.sc-bg,
+.sc-bg-img,
+.sc-bg-vignette {
+  position: absolute;
+  inset: 0;
+}
+
+.sc-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(var(--bg-x, 0), var(--bg-y, 0))
+    scale(calc(var(--bg-drift, 1) * var(--mod-bg-zoom, 1)));
+  transform-origin: center;
+}
+
+/* the art at its own shape, for a theme that shows it as an object such as a print; hidden
+   unless a theme shows it */
+.sc-art {
+  display: none;
+  position: absolute;
+}
+
+/* a visualizer's shapes filled with the art: copies of the art the theme shows (.sc-bg-img, or
+   .sc-art), placed over it and clipped to the shapes every frame */
+.sc-spectrum-art,
+.sc-radial-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sc-bg-copy,
+.sc-art-copy,
+.sc-bloom-glow {
+  position: absolute;
+  max-width: none;
+}
+
+/* the art's lights, each layer screened over the art as bright as its band */
+.sc-bloom,
+.sc-bloom-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.sc-bloom-light {
+  mix-blend-mode: screen;
+  opacity: var(--level, 0);
+}
+
+.sc-spectrum {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--spectrum-height, 26cqh);
+  display: block;
+}
+
+/* the spectrum's viewBox stretches to the stage; keep its strokes as thick as the theme says */
+.sc-spectrum path {
+  vector-effect: non-scaling-stroke;
+}
+
+.sc-spectrum-line,
+.sc-radial-line {
+  fill: none;
+}
+
+.sc-radial {
+  position: absolute;
+  right: var(--margin);
+  top: 50%;
+  width: var(--radial-size);
+  height: var(--radial-size);
+  transform: translateY(-50%);
+  fill: none;
+}
+
+.sc-field,
+.sc-tunnel,
+.sc-constellation {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: var(--accent, #fff);
+  pointer-events: none;
+}
+
+.sc-spectrogram {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--spectrogram-height, 26cqh);
+  display: block;
+}
+
+.sc-ridgeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--ridgeline-height, 100cqh);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+}
+
+.sc-ridgeline path {
+  vector-effect: non-scaling-stroke;
+}
+
+.sc-oscilloscope {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--oscilloscope-bottom, 4cqh);
+  width: 100%;
+  height: var(--oscilloscope-height, 22cqh);
+  display: block;
+  fill: none;
+}
+
+.sc-oscilloscope path,
+.sc-oscilloscope line {
+  vector-effect: non-scaling-stroke;
+}
+
+/* centered where the radial ring is, so the two nest when a project uses both */
+.sc-vectorscope {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--margin) + (var(--radial-size) - var(--vectorscope-size)) / 2);
+  width: var(--vectorscope-size);
+  height: var(--vectorscope-size);
+  transform: translateY(-50%);
+  overflow: visible;
+  fill: none;
+}
+
+.sc-meters {
+  position: absolute;
+  left: var(--margin);
+  top: var(--meters-top, 22cqh);
+  height: var(--meters-height, 30cqh);
+  display: flex;
+  gap: var(--meters-gap, 1.4cqw);
+}
+
+.sc-meter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.sc-meter-bar {
+  position: relative;
+  flex: 1;
+  width: var(--meter-width, 1.5cqw);
+}
+
+.sc-meter-level {
+  position: absolute;
+  inset: auto 0 0;
+  height: calc(var(--level, 0) * 100%);
+}
+
+/* the held peak: a hairline at --peak, or the lit part of the cell --peak tops when segmented */
+.sc-meter-peak {
+  position: absolute;
+  inset: auto 0;
+  bottom: calc(var(--peak, 0) * 100% - 2%);
+  height: 2%;
+}
+
+.sc-meters[data-segmented='true'] .sc-meter-peak {
+  bottom: calc(var(--peak, 0) * 100% - 100% / var(--segments));
+  height: calc(70% / var(--segments));
+}
+
+/* segments: dark gaps cut the bar, lit and unlit, into cells counted from the bottom */
+.sc-meters[data-segmented='true'] .sc-meter-bar {
+  mask-image: repeating-linear-gradient(
+    to top,
+    #000 0 calc(70% / var(--segments)),
+    transparent 0 calc(100% / var(--segments))
+  );
+}
+
+.sc-overview {
+  position: absolute;
+  left: var(--margin);
+  top: var(--overview-top, calc(var(--margin) + 3.4cqh));
+  width: calc(100% - 2 * var(--margin));
+  height: var(--overview-height, 4.5cqh);
+  fill: none;
+}
+
+.sc-overview path,
+.sc-overview line {
+  vector-effect: non-scaling-stroke;
+}
+
+.sc-header {
+  position: absolute;
+  top: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.sc-panel {
+  position: absolute;
+  left: var(--margin);
+  bottom: var(--margin);
+  max-width: 60cqw;
+}
+
+.sc-panel-head {
+  display: flex;
+  align-items: center;
+}
+
+.sc-next {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--next-bottom, var(--margin));
+  max-width: 34cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  text-align: right;
+}
+
+/*
+ * The tracklist: listings around the current one. A row's height follows its --row-presence, so as
+ * the list moves on, the row leaving at the top closes while the one entering at the bottom opens,
+ * and the list scrolls without a jump. The leaving row keeps its bottom edge, as if scrolled out
+ * of the top. A row cannot shrink below its padding and border, so a theme scales those by
+ * --row-presence or spaces the row's children instead; Chrome ignores calc-size() heights on flex
+ * items, so the rows' container must not be a flex container. Chrome applies overflow-clip-margin
+ * only when both axes clip, so a theme keeps a row's glow inside the row.
+ */
+.sc-tracklist {
+  position: absolute;
+  top: var(--tracklist-top, calc(var(--margin) + 7cqh));
+  right: var(--margin);
+  width: var(--tracklist-width, 30cqw);
+}
+.sc-tracklist-rows {
+  padding: 0;
+  list-style: none;
+}
+.sc-tracklist-row {
+  height: calc-size(auto, size * var(--row-presence, 1));
+  overflow: visible clip;
+  align-content: if(style(--row-offset < 0): unsafe end; else: normal);
+}
+@container (aspect-ratio < 1) {
+  .sc-tracklist {
+    width: var(--tracklist-width, calc(100cqw - 2 * var(--margin)));
+  }
+}
+/* How a theme that never styles the tracklist shows it, in its own type and colors. The layer
+   makes any theme rule win over it, whatever its specificity. */
+@layer fallback {
+  .sc-tracklist {
+    font-family: var(--font-mono, monospace);
+    font-size: 1.05cqw;
+    color: var(--fg-dim, #aaa);
+  }
+  .sc-tracklist-heading {
+    margin-bottom: 0.6em;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .sc-tracklist-row {
+    display: flex;
+    align-items: if(style(--row-offset < 0): end; else: start);
+    column-gap: 0.8em;
+    line-height: 1.6;
+    opacity: var(--row-presence, 1);
+    white-space: nowrap;
+  }
+  .sc-tracklist-time,
+  .sc-tracklist-label {
+    display: none;
+  }
+  /* clip rather than hidden, so the margin keeps accents above capitals and glows */
+  .sc-tracklist-title {
+    overflow: clip;
+    overflow-clip-margin: 0.3em;
+    color: var(--fg, #fff);
+    text-overflow: ellipsis;
+  }
+  .sc-tracklist-row:not([data-state='current']) {
+    opacity: calc(var(--row-presence, 1) * 0.6);
+  }
+  .sc-tracklist-row[data-state='current'] .sc-tracklist-index {
+    color: var(--deck);
+  }
+  @container (aspect-ratio < 1) {
+    .sc-tracklist {
+      font-size: 2.2cqw;
+    }
+  }
+}
+
+/* Local signals are recomputed on each panel, never inherited from the mix section. */
+.sc-panel {
+  --drop-flash: calc(
+    clamp(0, 1 - var(--since-drop, 60) / var(--drop-flash-seconds, 0.7), 1) *
+      var(--drop-intensity, 1)
+  );
+  --rewind-flash: clamp(0, 1 - var(--since-rewind, 60) / var(--rewind-flash-seconds, 0.6), 1);
+  --tension: clamp(0, 1 - var(--until-drop, 60) / var(--tension-seconds, 10), 1);
+}
+.sc-credit-details,
+.sc-contributor-count,
+.sc-overflow {
+  font-family: var(--font-mono, monospace);
+  font-size: 1cqw;
+  color: var(--fg-dim, #aaa);
+}
+
+/*
+ * DJ presentation stacks one slot per current play, in play order, anchored at the bottom. A slot's
+ * height follows its --presence, so the stack opens as a panel rises into it and closes as one
+ * sinks out of it. The vertical clip keeps a moving panel off its neighbors. Chrome applies
+ * overflow-clip-margin only when both axes clip, so --slot-bleed does not reach past it: a theme
+ * keeps shadows and ornaments above or below a panel inside the panel's padding.
+ *
+ * The slot opens and closes in whole pixels from its full size, so its panel and those around it
+ * only ever move by whole pixels. Chrome does not repaint the contents of a composited panel (one
+ * with a backdrop-filter, say) that moves by a fraction of a pixel, so its text stays where it was
+ * last painted, and each render tab last painted it on a different frame of the entrance.
+ */
+/* the anchor lets a theme keep up next clear of the stack, however tall it is */
+.sc-stage[data-presentation='dj'] .sc-contributors {
+  position: absolute;
+  left: var(--margin);
+  bottom: var(--margin);
+  width: 44cqw;
+  anchor-name: --contributors;
+}
+/* block flow, not flex: Chrome ignores calc-size() heights on flex items */
+.sc-stage[data-presentation='dj'] .sc-slot {
+  --fit: clamp(0, var(--presence), 1);
+  --closed: calc(1 - var(--fit));
+  height: calc-size(auto, size - round(down, size * var(--closed), 1px));
+  margin-top: calc(
+    var(--stack-gap, 1cqw) - round(down, var(--stack-gap, 1cqw) * var(--closed), 1px)
+  );
+  overflow: visible clip;
+  overflow-clip-margin: var(--slot-bleed, 0px);
+}
+.sc-stage[data-presentation='dj'] .sc-panel {
+  position: relative;
+  inset: auto;
+  max-width: none;
+  translate: none;
+  transform: none;
+}
+/* the count only matters once some contributors are folded into the overflow line */
+.sc-stage[data-presentation='dj'] .sc-contributors:not(:has(.sc-overflow)) .sc-contributor-count {
+  display: none;
+}
+.sc-stage[data-presentation='dj'] .sc-overflow ul {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@container (aspect-ratio < 1) {
+  .sc-stage[data-presentation='dj'] .sc-contributors {
+    width: calc(100cqw - 2 * var(--margin));
+  }
+}
+
+/*
+ * Branding: the identity block (logo, name, event, episode) and the message line. Both sit above
+ * every theme layer in one of nine frame areas (data-position), inset from each edge by
+ * --brand-top, --brand-right, --brand-bottom and --brand-left. Top positions clear the header when
+ * there is one; a theme sets the insets to clear its own furniture. Sizes follow the short side
+ * (cqmin), so portrait keeps the proportions of landscape. The logo box at size 1 is
+ * LOGO_HEIGHT by LOGO_WIDTH of the short side (branding.ts). Messages only fade: a line moved by a
+ * fraction of a pixel can paint a pixel off in some render tabs.
+ */
+.sc-stage {
+  --brand-top: var(--margin);
+  --brand-right: var(--margin);
+  --brand-bottom: var(--margin);
+  --brand-left: var(--margin);
+}
+.sc-stage:has(> .sc-header) {
+  --brand-top: calc(var(--margin) + 5cqh);
+}
+.sc-brand-identity,
+.sc-brand-message {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  pointer-events: none;
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position$='left']) {
+  left: var(--brand-left);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position$='right']) {
+  right: var(--brand-right);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position^='top']) {
+  top: var(--brand-top);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position^='bottom']) {
+  bottom: var(--brand-bottom);
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position='top'], [data-position='bottom']) {
+  left: 50%;
+  translate: -50% 0;
+}
+:is(.sc-brand-identity, .sc-brand-message):is([data-position='left'], [data-position='right']) {
+  top: 50%;
+  translate: 0 -50%;
+}
+:is(.sc-brand-identity, .sc-brand-message)[data-position='center'] {
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+}
+
+.sc-brand-identity {
+  align-items: center;
+  gap: calc(var(--brand-size, 1) * 1.6cqmin);
+  opacity: var(--brand-opacity, 1);
+}
+.sc-brand-identity:is([data-position$='right']) {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.sc-brand-identity:is([data-position='top'], [data-position='bottom'], [data-position='center']) {
+  flex-direction: column;
+  text-align: center;
+}
+.sc-brand-logo {
+  display: block;
+  flex: none;
+  height: calc(var(--brand-size, 1) * 8cqmin);
+  width: auto;
+  max-width: calc(var(--brand-size, 1) * 24cqmin);
+  object-fit: contain;
+}
+.sc-brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.sc-brand-identity[data-position$='right'] .sc-brand-text {
+  align-items: end;
+}
+.sc-brand-identity:is([data-position='top'], [data-position='bottom'], [data-position='center'])
+  .sc-brand-text {
+  align-items: center;
+}
+
+.sc-brand-message {
+  max-width: calc(50cqw - var(--brand-left));
+  opacity: var(--message-presence, 1);
+}
+.sc-brand-message:is([data-position='top'], [data-position='bottom'], [data-position='center']) {
+  max-width: calc(100cqw - var(--brand-left) - var(--brand-right));
+  justify-content: center;
+  text-align: center;
+}
+.sc-brand-message[data-position$='right'] {
+  justify-content: end;
+  text-align: right;
+}
+
+/* How branding looks in a theme that never styles it: the theme's own type and colors, with a
+   halo that deepens over bright art behind it. A theme with dark type on a light ground sets
+   --brand-halo and --brand-plate (the announcement's ground) to its paper. */
+@layer fallback {
+  .sc-brand-identity,
+  .sc-brand-message {
+    --brand-glare: clamp(0, (var(--bg-luma-behind, 0) - 0.25) * 3, 1);
+    --brand-halo-strong: color-mix(
+      in srgb,
+      var(--brand-halo, #000) calc(35% + 45% * var(--brand-glare)),
+      transparent
+    );
+    --brand-halo-wide: color-mix(
+      in srgb,
+      var(--brand-halo, #000) calc(20% + 40% * var(--brand-glare)),
+      transparent
+    );
+    color: var(--fg, #fff);
+    text-shadow:
+      0 0 0.35em var(--brand-halo-strong),
+      0 0 1.2em var(--brand-halo-wide);
+  }
+  .sc-brand-logo {
+    filter: drop-shadow(0 0 0.6cqmin var(--brand-halo-strong));
+  }
+  .sc-brand-name {
+    font-family: var(--font-display, system-ui, sans-serif);
+    font-size: calc(var(--brand-size, 1) * 3cqmin);
+    line-height: 1.1;
+  }
+  .sc-brand-event {
+    margin-top: 0.4em;
+    font-family: var(--font-mono, monospace);
+    font-size: calc(var(--brand-size, 1) * 1.7cqmin);
+    line-height: 1.3;
+    color: var(--fg-dim, #aaa);
+  }
+  .sc-brand-episode {
+    margin-top: 0.6em;
+    font-family: var(--font-mono, monospace);
+    font-size: calc(var(--brand-size, 1) * 1.3cqmin);
+    line-height: 1.3;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent, #fff);
+  }
+  .sc-brand-message {
+    font-family: var(--font-mono, monospace);
+    font-size: calc(var(--message-size, 1) * 1.9cqmin);
+    line-height: 1.35;
+  }
+  .sc-brand-message[data-kind='announcement'] {
+    padding: 0.45em 0.9em;
+    border-radius: var(--radius, 0);
+    background: var(--brand-plate, rgb(0 0 0 / 0.55));
+    font-family: var(--font-display, system-ui, sans-serif);
+    font-size: calc(var(--message-size, 1) * 2.6cqmin);
+    line-height: 1.2;
+  }
+}
+
+.setcast { background: #173e42; color: white; }
+</style><div class="sc-bg" style="--bg-drift: 1.0509240589684947; --bg-x: 1.1347231843364969%; --bg-y: -0.018316292914730355%;"><div class="sc-bg-vignette"></div></div><svg class="sc-spectrum" data-style="bars" data-fill="theme" viewBox="0 0 1000 100" preserveAspectRatio="none"><g class="sc-spectrum-bars"><rect x="502.6041666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="492.1875" y="98" width="5.208333333333333" height="2"></rect><rect x="513.0208333333334" y="98" width="5.208333333333333" height="2"></rect><rect x="481.77083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="523.4375" y="98" width="5.208333333333333" height="2"></rect><rect x="471.3541666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="533.8541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="460.9375" y="98" width="5.208333333333333" height="2"></rect><rect x="544.2708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="450.52083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="554.6875" y="98" width="5.208333333333333" height="2"></rect><rect x="440.1041666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="565.1041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="429.68750000000006" y="98" width="5.208333333333333" height="2"></rect><rect x="575.5208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="419.27083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="585.9375" y="98" width="5.208333333333333" height="2"></rect><rect x="408.8541666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="596.3541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="398.43750000000006" y="98" width="5.208333333333333" height="2"></rect><rect x="606.7708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="388.02083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="617.1875" y="98" width="5.208333333333333" height="2"></rect><rect x="377.6041666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="627.6041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="367.18750000000006" y="98" width="5.208333333333333" height="2"></rect><rect x="638.0208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="356.77083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="648.4374999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="346.3541666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="658.8541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="335.93750000000006" y="98" width="5.208333333333333" height="2"></rect><rect x="669.2708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="325.52083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="679.6874999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="315.1041666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="690.1041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="304.68750000000006" y="98" width="5.208333333333333" height="2"></rect><rect x="700.5208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="294.27083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="710.9374999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="283.8541666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="721.3541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="273.43750000000006" y="98" width="5.208333333333333" height="2"></rect><rect x="731.7708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="263.02083333333337" y="98" width="5.208333333333333" height="2"></rect><rect x="742.1874999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="252.60416666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="752.6041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="242.18750000000003" y="98" width="5.208333333333333" height="2"></rect><rect x="763.0208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="231.77083333333334" y="98" width="5.208333333333333" height="2"></rect><rect x="773.4374999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="221.35416666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="783.8541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="210.93750000000003" y="98" width="5.208333333333333" height="2"></rect><rect x="794.2708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="200.52083333333334" y="98" width="5.208333333333333" height="2"></rect><rect x="804.6874999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="190.10416666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="815.1041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="179.68750000000003" y="98" width="5.208333333333333" height="2"></rect><rect x="825.5208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="169.27083333333334" y="98" width="5.208333333333333" height="2"></rect><rect x="835.9374999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="158.85416666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="846.3541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="148.43750000000003" y="98" width="5.208333333333333" height="2"></rect><rect x="856.7708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="138.02083333333334" y="98" width="5.208333333333333" height="2"></rect><rect x="867.1874999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="127.60416666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="877.6041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="117.18750000000004" y="98" width="5.208333333333333" height="2"></rect><rect x="888.0208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="106.77083333333336" y="98" width="5.208333333333333" height="2"></rect><rect x="898.4374999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="96.35416666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="908.8541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="85.93750000000004" y="98" width="5.208333333333333" height="2"></rect><rect x="919.2708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="75.52083333333336" y="98" width="5.208333333333333" height="2"></rect><rect x="929.6874999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="65.10416666666667" y="98" width="5.208333333333333" height="2"></rect><rect x="940.1041666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="54.687500000000036" y="98" width="5.208333333333333" height="2"></rect><rect x="950.5208333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="44.27083333333335" y="98" width="5.208333333333333" height="2"></rect><rect x="960.9374999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="33.854166666666664" y="98" width="5.208333333333333" height="2"></rect><rect x="971.3541666666666" y="98" width="5.208333333333333" height="2"></rect><rect x="23.43750000000004" y="98" width="5.208333333333333" height="2"></rect><rect x="981.7708333333333" y="98" width="5.208333333333333" height="2"></rect><rect x="13.020833333333352" y="98" width="5.208333333333333" height="2"></rect><rect x="992.1874999999999" y="98" width="5.208333333333333" height="2"></rect><rect x="2.6041666666666665" y="98" width="5.208333333333333" height="2"></rect></g></svg><header class="sc-header"><span class="sc-set-title">Scene a</span></header><div class="sc-contributors"></div></div></div></div></div></div></div></main></div><script type="module" src="/player.js"></script></body></html>

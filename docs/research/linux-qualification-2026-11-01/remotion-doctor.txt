@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "capabilities": {
+    "version": 1,
+    "renderer": "remotion",
+    "features": [
+      "still",
+      "webp",
+      "video",
+      "gpu",
+      "hardwareEncoding"
+    ],
+    "stillFormats": [
+      "png",
+      "jpeg",
+      "webp"
+    ],
+    "videoContainers": [
+      "mp4",
+      "mov",
+      "mkv"
+    ],
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "graphicsBackends": [
+      "auto",
+      "default",
+      "angle",
+      "egl",
+      "swiftshader",
+      "swangle",
+      "vulkan",
+      "angle-egl"
+    ],
+    "parallelEncoding": [
+      true,
+      false
+    ],
+    "concurrency": {
+      "default": "auto",
+      "min": 1,
+      "max": null
+    },
+    "runtime": {
+      "browser": "Remotion Chrome Headless Shell",
+      "ffmpeg": "packaged"
+    }
+  },
+  "environment": {
+    "platform": "linux",
+    "arch": "x64",
+    "node": "v26.7.0"
+  },
+  "graphicsBackend": "swangle",
+  "required": [
+    "still",
+    "video",
+    "gpu"
+  ],
+  "checks": [
+    {
+      "id": "local-server",
+      "features": [
+        "still",
+        "webp",
+        "video",
+        "gpu",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "Bound and fetched a temporary loopback HTTP endpoint."
+    },
+    {
+      "id": "browser.launch",
+      "features": [
+        "still",
+        "webp",
+        "video",
+        "gpu",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "Started the installed browser.",
+      "details": {
+        "executable": "/home/razorjack/Projects/opensource/setcast/packages/renderer-remotion/node_modules/.remotion/chrome-headless-shell/linux64/chrome-headless-shell-linux64/chrome-headless-shell"
+      }
+    },
+    {
+      "id": "browser.capture",
+      "features": [
+        "still",
+        "webp",
+        "video",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "PNG and JPEG screenshots preserve CSS and Canvas 2D pixels.",
+      "details": {
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "browser.webp",
+      "features": [
+        "webp"
+      ],
+      "status": "pass",
+      "message": "WebP screenshot preserves fixture pixels."
+    },
+    {
+      "id": "browser.webgl",
+      "features": [
+        "gpu"
+      ],
+      "status": "pass",
+      "message": "WebGL 2 compiled, drew and read back a fragment shader.",
+      "details": {
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "vendor": "Google Inc. (Google)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "id": "ffmpeg",
+      "features": [
+        "video",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "ffmpeg version n7.1 Copyright (c) 2000-2024 the FFmpeg developers"
+    },
+    {
+      "id": "ffprobe",
+      "features": [
+        "video",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "ffprobe version n7.1 Copyright (c) 2007-2024 the FFmpeg developers"
+    },
+    {
+      "id": "video.encode",
+      "features": [
+        "video"
+      ],
+      "status": "pass",
+      "message": "Encoded H.264 + AAC in MP4, MOV and MKV."
+    },
+    {
+      "id": "video.inspect",
+      "features": [
+        "video",
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "ffprobe verified fixture codecs, dimensions and frame count."
+    },
+    {
+      "id": "hardware.encode",
+      "features": [
+        "hardwareEncoding"
+      ],
+      "status": "pass",
+      "message": "Encoded a frame with h264_nvenc.",
+      "details": {
+        "encoder": "h264_nvenc"
+      }
+    }
+  ],
+  "features": {
+    "still": "ready",
+    "webp": "ready",
+    "video": "ready",
+    "resume": "unsupported",
+    "cache": "unsupported",
+    "gpu": "ready",
+    "hardwareEncoding": "ready",
+    "alpha": "unsupported",
+    "prores": "unsupported"
+  },
+  "ready": true,
+  "exitCode": 0
+}

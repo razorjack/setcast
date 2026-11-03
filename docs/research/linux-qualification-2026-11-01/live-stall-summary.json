@@ -1,0 +1,24 @@
+{
+  "scope": "Separate 180-second diagnostic with five-second scene changes, stopped by unchanged zero-drop assertion. Prototype timing wrappers and long-task observer add instrumentation overhead. This is not full-duration qualification and does not establish shader compilation as the cause.",
+  "observations": [
+    {
+      "kind": "longtask",
+      "start": 16644.39999999851,
+      "duration": 188,
+      "now": 16841.300000000745,
+      "frame": "484",
+      "dropped": "0"
+    },
+    {
+      "kind": "longtask",
+      "start": 21710.89999999851,
+      "duration": 97,
+      "now": 21821.89999999851,
+      "frame": "636",
+      "dropped": "0"
+    }
+  ],
+  "maxRecordedLongTaskMs": 188,
+  "slowWebGLCalls": [],
+  "failureDroppedSamples": 19456
+}

@@ -1,0 +1,46 @@
+{
+  "initial": {
+    "captured": 75,
+    "reused": 0
+  },
+  "visible text edit": {
+    "captured": 30,
+    "reused": 45
+  },
+  "visible edit fresh": {
+    "captured": 75,
+    "reused": 0
+  },
+  "outside range text edit": {
+    "captured": 0,
+    "reused": 75
+  },
+  "outside edit fresh": {
+    "captured": 75,
+    "reused": 0
+  },
+  "changed metadata": {
+    "captured": 75,
+    "reused": 0
+  },
+  "crossing text edit": {
+    "captured": 60,
+    "reused": 15
+  },
+  "crossing edit fresh": {
+    "captured": 75,
+    "reused": 0
+  },
+  "global CSS edit": {
+    "captured": 75,
+    "reused": 0
+  },
+  "edited checkpoint invalidated": {
+    "captured": 75,
+    "reused": 0
+  },
+  "checkpoint edit fresh": {
+    "captured": 75,
+    "reused": 0
+  }
+}

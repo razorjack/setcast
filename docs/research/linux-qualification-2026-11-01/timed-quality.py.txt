@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Verify every retained timed output; never run concurrently with timing."""
+import concurrent.futures,json,subprocess,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+REPO=Path('/home/razorjack/Projects/opensource/setcast')
+mode=sys.argv[1]
+assert mode in ('tune','timing')
+index=json.loads((ROOT/'quality-index.json').read_text())
+jobs=[]
+for comparison in sorted(ROOT.glob(mode+'-*/report.json')):
+    report=json.loads(comparison.read_text())
+    name=Path(report['config']['project']).name
+    reference=Path(index[name])/'reference/reference.json'
+    for run in report['runs']:
+        label=comparison.parent.name+f"-quality-{run['index']}-{run['renderer']}"
+        jobs.append((label,reference,comparison,run['result']['file']))
+def verify(job):
+    label,reference,comparison,video=job
+    result=subprocess.run(['bash',str(ROOT/'run.sh'),label,'node','scripts/render-quality.ts','--reference',str(reference),'--video',video,'--comparison',str(comparison),'--out',str(ROOT/label)],cwd=REPO)
+    return {'label':label,'exitCode':result.returncode}
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+    results=list(pool.map(verify,jobs))
+(ROOT/(mode+'-quality-results.json')).write_text(json.dumps(results,indent=2)+'\n')
+assert all(r['exitCode']==0 for r in results),results

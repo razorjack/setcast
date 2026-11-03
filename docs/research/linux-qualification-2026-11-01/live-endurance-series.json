@@ -1,0 +1,18 @@
+{
+  "scope": "Unchanged full presets on final candidate. Both live workloads run concurrently as loaded reliability checks, after all quiet performance measurements. Synthetic input, independent ephemeral ports and browsers. Elapsed times are not comparative throughput. User desktop activity remains allowed.",
+  "startedAt": "2026-11-02T01:57:00.602643+00:00",
+  "status": "failed",
+  "results": [
+    {
+      "preset": "software",
+      "exitCode": 1,
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-software/report.json"
+    },
+    {
+      "preset": "gpu-recovery",
+      "exitCode": 130,
+      "report": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/final-live-gpu-recovery/report.json"
+    }
+  ],
+  "endedAt": "2026-11-02T01:58:27.667120+00:00"
+}

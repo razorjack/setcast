@@ -1,0 +1,38 @@
+{
+  "resume": {
+    "captured": 45,
+    "reused": 30
+  },
+  "corrupt chunk": {
+    "captured": 75,
+    "reused": 0
+  },
+  "missing chunk": {
+    "captured": 75,
+    "reused": 0
+  },
+  "changed artwork": {
+    "captured": 75,
+    "reused": 0
+  },
+  "changed audio": {
+    "captured": 75,
+    "reused": 0
+  },
+  "changed configuration": {
+    "captured": 75,
+    "reused": 0
+  },
+  "changed encoder settings": {
+    "captured": 75,
+    "reused": 0
+  },
+  "relative asset paths": {
+    "captured": 75,
+    "reused": 0
+  },
+  "all chunks complete": {
+    "captured": 0,
+    "reused": 75
+  }
+}

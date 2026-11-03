@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 102.742325922,
+    "minSeconds": 102.742325922,
+    "maxSeconds": 102.742325922
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 63.96937677299999,
+    "minSeconds": 63.96937677299999,
+    "maxSeconds": 63.96937677299999
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/quality-case-looping-video/looping-video/comparison/report.json

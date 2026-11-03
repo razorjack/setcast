@@ -1,0 +1,17 @@
+Pair 1/1: browser
+Pair 1/1: remotion
+{
+  "browser": {
+    "runs": 1,
+    "medianSeconds": 38.733052378000004,
+    "minSeconds": 38.733052378000004,
+    "maxSeconds": 38.733052378000004
+  },
+  "remotion": {
+    "runs": 1,
+    "medianSeconds": 42.51378159900001,
+    "minSeconds": 42.51378159900001,
+    "maxSeconds": 42.51378159900001
+  }
+}
+Report: /home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01/font-quality-case-dj-art-branding/dj-art-branding/comparison/report.json

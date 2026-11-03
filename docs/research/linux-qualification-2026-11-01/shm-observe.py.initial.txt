@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+"""Observe named Remotion POSIX pools around an isolated qualification command."""
+import json, os, subprocess, sys, threading, time
+from pathlib import Path
+out=Path(sys.argv[1]); command=sys.argv[2:]
+out.mkdir()
+started=time.monotonic()
+def pools():
+    result={}
+    for p in Path('/dev/shm').glob('rmshm-*'):
+        try:
+            s=p.stat();result[p.name]={'inode':s.st_ino,'bytes':s.st_size,'uid':s.st_uid}
+        except FileNotFoundError: pass
+    return result
+before=pools(); seen={}; snapshots=[]; lines=[]
+proc=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
+def output():
+    with (out/'command.txt').open('w') as log:
+        for line in proc.stdout:
+            log.write(line);log.flush();print(line,end='',flush=True)
+            lines.append({'seconds':time.monotonic()-started,'line':line.rstrip(),'pools':pools()})
+pump=threading.Thread(target=output);pump.start()
+previous=None
+while True:
+    current=pools()
+    seen.update(current)
+    if current!=previous:
+        snapshots.append({'seconds':time.monotonic()-started,'pools':current});previous=current
+    if proc.poll() is not None:break
+    time.sleep(.1)
+pump.join(); after=pools(); remaining={k:v for k,v in after.items() if k not in before}
+st=os.statvfs('/dev/shm')
+report={'scope':'Read-only /dev/shm/rmshm-* polling at 100 ms and output-line boundaries. No unrelated resources deleted. Unlinked mappings and short-lived pools between polls are not measured.', 'command':command,'cwd':os.getcwd(),'exitCode':proc.returncode,'capacityBytes':st.f_blocks*st.f_frsize,'freeBytesAfter':st.f_bavail*st.f_frsize,'before':before,'observed':seen,'after':after,'remainingNewPools':remaining,'snapshots':snapshots,'outputEvents':lines,'status':'passed' if proc.returncode==0 and not remaining else 'failed'}
+(out/'report.json').write_text(json.dumps(report,indent=2)+'
+')
+assert proc.returncode==0,proc.returncode
+assert not remaining,remaining
+print('Shared-memory observation: PASS; observed',len(seen),'pools, no new named pools remain.')

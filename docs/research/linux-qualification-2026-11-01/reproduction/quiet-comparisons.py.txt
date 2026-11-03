@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""Quiet screening/final comparison; failed attempts remain and retries use new paths."""
+import json,subprocess,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent
+CHECKOUT=Path('/tmp/setcast-linux-current-upstream')
+CASES=json.loads((ROOT/'software-corpus/manifest.json').read_text())['cases']
+mode=sys.argv[1]
+assert mode in ('tune','timing')
+indexPath=ROOT/'comparison-index.json'
+index=json.loads(indexPath.read_text()) if indexPath.exists() else {}
+qualified={row['report']:row['qualityPassed'] for row in json.loads((ROOT/'tune-summary.json').read_text())['results']} if mode=='timing' else {}
+def passed(base):
+    for directory in reversed(index.get(base,[])):
+        p=Path(directory)/'report.json'
+        if p.exists():
+            report=json.loads(p.read_text())
+            observation=ROOT/(Path(directory).name+'-shm.json')
+            if report['status']=='passed' and observation.exists():
+                shm=json.loads(observation.read_text())
+                if shm['exitCode']==0 and not shm['remainingNewPools']:return report
+    return None
+for case in CASES:
+    choices=[(choice,choice) for choice in ('1','2','4','8','auto')] if mode=='tune' else [(None,None)]
+    for browser,remotion in choices:
+        base=f"{mode}-{case['name']}"+(f'-{browser}' if mode=='tune' else '')
+        if passed(base):continue
+        if mode=='timing':
+            arms={name:[] for name in ('browser','remotion')}
+            for choice in ('1','2','4','8','auto'):
+                report=passed(f"tune-{case['name']}-{choice}")
+                assert report is not None, f"Missing completed worker screening for {case['name']} {choice}"
+                assert qualified.get(str(Path(report['config']['out'])/'report.json')), f"Unqualified screening output for {case['name']} {choice}"
+                for run in report['runs']:
+                    arms[run['renderer']].append({'wallSeconds':run['wallSeconds'],'choice':choice,'report':str(Path(run['result']['file']).parent/'report.json')})
+            browser=min(arms['browser'],key=lambda x:x['wallSeconds'])['choice']
+            remotion=min(arms['remotion'],key=lambda x:x['wallSeconds'])['choice']
+            selection={'scope':'One quiet screening pair per worker setting, followed by three independent alternating pairs. Screening variance is not characterized.', 'case':case['name'],'candidates':arms,'browser':browser,'remotion':remotion}
+            (ROOT/f"selection-{case['name']}.json").write_text(json.dumps(selection,indent=2)+'\n')
+        attempt=len(index.get(base,[]))
+        label=base+(f'-retry-{attempt}' if attempt else '')
+        output=ROOT/label
+        assert not output.exists(),output
+        index.setdefault(base,[]).append(str(output))
+        indexPath.write_text(json.dumps(index,indent=2)+'\n')
+        command=['bash',str(ROOT/'upstream-run.sh'),label,'node','scripts/render-compare.ts',case['directory'],'--at',str(case['at']),'--seconds',str(case['seconds']),'--repeat','1' if mode=='tune' else '3','--browser-concurrency',browser,'--remotion-concurrency',remotion,'--browser-crf','16','--browser-jpeg-quality','100','--remotion-crf','18','--idle-busy','.15','--out',str(output)]
+        def pools():
+            observed={}
+            for path in Path('/dev/shm').glob('rmshm-*'):
+                try:
+                    stat=path.stat();observed[path.name]={'inode':stat.st_ino,'bytes':stat.st_size,'uid':stat.st_uid}
+                except FileNotFoundError:pass
+            return observed
+        before=pools()
+        result=subprocess.run(command,cwd=CHECKOUT)
+        after=pools()
+        remaining={name:entry for name,entry in after.items() if name not in before}
+        (ROOT/(label+'-shm.json')).write_text(json.dumps({'scope':'Host named Remotion pools immediately before and after the complete comparison command; no resources deleted.', 'before':before,'after':after,'remainingNewPools':remaining,'exitCode':result.returncode},indent=2)+'\n')
+        assert result.returncode==0,result.returncode
+        assert not remaining,remaining

@@ -1,0 +1,43 @@
+import {createRequire} from 'node:module';
+import {pathToFileURL} from 'node:url';
+import {appendFile} from 'node:fs/promises';
+const root='/home/razorjack/Projects/opensource/setcast/examples/demo/out/linux-qualification-2026-11-01';
+const checkout='/tmp/setcast-linux-browser-first';
+process.chdir(checkout);
+const require=createRequire(checkout+'/packages/renderer-browser/bench/endurance.ts');
+const {chromium}=require('playwright');
+const launch=chromium.launch.bind(chromium);
+chromium.launch=async (...args)=>{
+ const browser=await launch(...args);const newPage=browser.newPage.bind(browser);
+ browser.newPage=async (...args)=>{
+  const page=await newPage(...args);
+  await page.route('**/capture-worklet.js',async route=>{
+   const response=await route.fetch();const original=await response.text();
+   if(!original.includes('dropped: this.dropped,'))throw new Error('Unexpected worklet source');
+   await route.fulfill({response,body:original.replace('dropped: this.dropped,','dropped: this.dropped, pending: this.pending, workletFrame: currentFrame,')});
+  });
+  await page.addInitScript(()=>{
+   const records=[];let discarded=0;
+   const push=record=>{if(records.length>=256){records.shift();discarded++;}records.push(record);};
+   window.takePacketRecords=()=>({records:records.splice(0),discarded});
+   new PerformanceObserver(list=>{for(const e of list.getEntries())push({kind:'longtask',now:performance.now(),start:e.startTime,duration:e.duration});}).observe({type:'longtask',buffered:true});
+   const Original=window.AudioWorkletNode;
+   window.AudioWorkletNode=class extends Original{
+    constructor(...args){super(...args);let previous=null;const history=[];
+     this.port.addEventListener('message',({data})=>{
+      if(typeof data.start!=='number')return;
+      const observation={now:performance.now(),audioTime:this.context.currentTime,sampleRate:this.context.sampleRate,start:data.start,dropped:data.dropped,pending:data.pending,workletFrame:data.workletFrame};
+      if(previous){observation.gapMs=observation.now-previous.now;observation.startGap=data.start-previous.start;}
+      if(!previous||observation.gapMs>100||observation.startGap!==1024||data.dropped!==previous.dropped)push({kind:'packet-gap',...observation,previous:[...history]});
+      previous=observation;history.push(observation);if(history.length>32)history.shift();
+     });
+    }
+   };
+  });
+  let pending=false;
+  const timer=setInterval(async()=>{if(pending||page.isClosed())return;pending=true;try{const result=await page.evaluate(()=>window.takePacketRecords?.());if(result?.records.length)await appendFile(root+'/live-packet-observations.jsonl',JSON.stringify(result)+'\n');}catch{}finally{pending=false;}},500);
+  page.on('close',()=>clearInterval(timer));return page;
+ };return browser;
+};
+process.argv=['node',checkout+'/packages/renderer-browser/bench/endurance.ts','--config',root+'/live-stall-diagnostic.json','--out',root+'/final-live-packet-diagnostic'];
+await import(pathToFileURL(checkout+'/packages/renderer-browser/bench/endurance.ts').href);

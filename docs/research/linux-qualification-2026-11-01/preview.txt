@@ -1,0 +1,1 @@
+Browser preview: PASS (frame parity, audio clock with slow frames, exact pause/seek, silent playback, audio cleanup/failure, reference, reload, video, read-only server, CLI watch without Remotion)

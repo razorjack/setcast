@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/linux-qualification-2026-11-01"
+run() { bash "$root/run.sh" "$@"; }
+run nvenc-doctor node packages/cli/bin/setcast.js doctor --renderer browser --require hardwareEncoding --json
+run nvenc-acceptance node packages/renderer-browser/bench/hardware.ts --out "$root/nvenc-acceptance"
+run nvenc-color node packages/renderer-browser/bench/color.ts --hardware --out "$root/nvenc-color"
+run nvenc-resume node packages/renderer-browser/bench/resume.ts --hardware
