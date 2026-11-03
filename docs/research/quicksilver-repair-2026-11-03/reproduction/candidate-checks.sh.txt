@@ -1,0 +1,20 @@
+#!/bin/bash
+set -u
+export PATH="$PWD/node_modules/.bin:$PATH"
+root=examples/demo/out/quicksilver-repair-2026-11-03/candidate
+run_check() {
+  local name="$1"
+  shift
+  "$@" > "$root/$name.txt" 2>&1
+  local code=$?
+  printf '%s\n' "$code" > "$root/$name.exit.txt"
+  printf '%s: %s\n' "$name" "$code"
+}
+run_check ready vp run ready
+run_check compact node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --out "$root/compact"
+run_check hd node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --out "$root/hd"
+run_check static node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 3 --out "$root/static"
+run_check video-frames node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/video-frames"
+run_check browser-acceptance vp run export-acceptance --adapter ./packages/renderer-browser/src/export/index.ts --out "$root/browser-acceptance"
+run_check remotion-acceptance vp run export-acceptance --out "$root/remotion-acceptance"
+run_check demo-still node packages/cli/bin/setcast.js still examples/demo --renderer browser --theme quicksilver --at 110.4 --out "$PWD/$root/demo.png"

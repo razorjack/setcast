@@ -1,0 +1,9 @@
+┌   setcast  still
+[?25l│
+◒  Bundling composition 0%[1G[J◐  Preparing browser 0%[1G[J◓  Preparing browser 0%[1G[J◑  Preparing browser 0%[1G[J◒  Browser ready[1G[J◐  Browser ready[1G[J◓  Browser ready[1G[J◑  Browser ready[1G[J◒  Browser ready.[1G[J◐  Browser ready.[1G[J◓  Browser ready.[1G[J◑  Browser ready.[1G[J◇  Composition bundled
+[?25h
+│  frames   ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ 100%  1/1
+◇  Grabbed 1:50 of the set
+│
+└  Done  →  examples/demo/out/quicksilver-repair-2026-11-03/candidate/demo.png
+

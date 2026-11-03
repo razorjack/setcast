@@ -1,0 +1,8 @@
+{
+  mode: 'control',
+  qualified: false,
+  comparisons: 135,
+  failed: 63,
+  maximum: 1,
+  maxChangedPixels: 1504
+}

@@ -1,0 +1,24 @@
+{
+  mode: 'parent',
+  qualified: true,
+  comparisons: 135,
+  failed: 0,
+  maximum: 0,
+  maxChangedPixels: 0
+}
+{
+  mode: 'clipped',
+  qualified: true,
+  comparisons: 135,
+  failed: 0,
+  maximum: 0,
+  maxChangedPixels: 0
+}
+{
+  mode: 'isolation',
+  qualified: true,
+  comparisons: 135,
+  failed: 0,
+  maximum: 0,
+  maxChangedPixels: 0
+}

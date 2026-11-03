@@ -1,0 +1,30 @@
+import { resolve, join } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+import { withRenderSession } from '../../../../packages/renderer-browser/src/export/index.ts';
+import { qualifySourcePixels } from '../../../../packages/renderer-browser/bench/worker-pixels.ts';
+const fixture = resolve('examples/demo/out/macos-followup-2026-11-03/video-workers');
+const loaded = await fixtureProject(fixture, 'quicksilver');
+const overrides = {
+  control: '',
+  parent: 'will-change:auto} .theme-quicksilver .sc-bg {will-change:transform',
+  clipped: 'will-change:clip-path',
+  isolation: 'will-change:auto;isolation:isolate',
+  none: 'will-change:auto',
+  rounded: 'width:round(var(--art-size),1px);height:round(var(--art-size),1px)',
+  backface: 'backface-visibility:hidden',
+  paint: 'contain:paint',
+  nofilter: 'filter:none',
+  integer: 'width:round(var(--art-size),2px);height:round(var(--art-size),2px);left:round(50% + var(--shift-x),1px);top:round(50% + var(--shift-y),1px)',
+};
+const modes = process.argv.slice(2);
+for (const mode of modes) {
+  if (!(mode in overrides)) throw new Error(`Unknown experiment ${mode}`);
+  const out = resolve('examples/demo/out/quicksilver-repair-2026-11-03', process.env.SETCAST_EXPERIMENT ?? 'matrix', mode);
+  await mkdir(out, {recursive:true});
+  const project = {...loaded, background:'motion.mp4', width:360, height:640, css:loaded.css+`\n.theme-quicksilver .sc-bg-img {${overrides[mode]}}`};
+  const result = await withRenderSession(() => qualifySourcePixels(project, fixture, out, {workers:[1,2,4],gl:'auto'}));
+  const summary = {mode, qualified:result.qualified, comparisons:result.reports.length, failed:result.reports.filter(x=>!x.qualified).length, maximum:Math.max(...result.reports.map(x=>x.maximum)), maxChangedPixels:Math.max(...result.reports.map(x=>x.changedPixels))};
+  await writeFile(join(out,'summary.json'),JSON.stringify(summary,null,2)+'\n');
+  console.log(summary);
+}

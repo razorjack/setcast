@@ -1,0 +1,23 @@
+import { writeFile } from 'node:fs/promises';
+import { chromium } from '../../../../packages/renderer-browser/node_modules/playwright/index.mjs';
+import { captureBrowserArgs } from '../../../../packages/renderer-browser/src/export/graphics.ts';
+const launch = chromium.launch.bind(chromium);
+const baseline = await launch({args:[...captureBrowserArgs(),'--enable-automation']});
+const cdp = await baseline.newBrowserCDPSession();
+const {arguments:args} = await cdp.send('Browser.getBrowserCommandLine');
+const before = await cdp.send('SystemInfo.getInfo');
+const disabled = args.filter(arg=>arg.startsWith('--disable-features=')).map(arg=>arg.slice('--disable-features='.length)).join(',');
+await baseline.close();
+const records = [{mode:'baseline',featureStatus:before.gpu.featureStatus,args:args.filter(arg=>/features=/.test(arg))}];
+chromium.launch = async (options={}) => {
+  const browser = await launch({...options,args:[...(options.args??[]),'--enable-automation','--disable-features='+disabled+',SkiaGraphite']});
+  const session = await browser.newBrowserCDPSession();
+  const actual = await session.send('SystemInfo.getInfo');
+  const command = await session.send('Browser.getBrowserCommandLine');
+  records.push({mode:'graphite-disabled',featureStatus:actual.gpu.featureStatus,args:command.arguments.filter(arg=>/features=/.test(arg))});
+  await writeFile('examples/demo/out/quicksilver-repair-2026-11-03/'+process.env.SETCAST_EXPERIMENT+'-runtime.json',JSON.stringify(records,null,2));
+  await session.detach();
+  return browser;
+};
+const target = process.argv.splice(2,1)[0];
+await import('./'+target+'.mjs');

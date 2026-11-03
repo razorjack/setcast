@@ -167,8 +167,8 @@
 .theme-quicksilver[data-background='image'] .sc-bg-img {
   display: none;
 }
-.theme-quicksilver .sc-bg-img {
-  /* Keep Chromium's circular video clip on a stable compositor layer across seeks. */
+.theme-quicksilver[data-background='video'] .sc-bg {
+  /* Keep the clip's parent composited without promoting each newly decoded video image. */
   will-change: transform;
 }
 .theme-quicksilver :is(.sc-art, .sc-bg-img) {

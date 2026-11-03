@@ -1868,3 +1868,28 @@ fails with retained lossless diagnostics. Final harness baseline passes all 688 
 The Linux runbook now requests compact and full-resolution repeated video matrices. This closes
 the tooling gap without describing the production regression as repaired. Evidence is retained
 under `docs/research/quicksilver-repair-2026-11-03`.
+
+The parent-layer, clip-path-hint and isolation overrides each pass six compact encoded cases
+(three rounds, two orientations, 1/2/4 workers), including equality against the first round.
+The parent-layer override additionally passes six full-resolution video and six full-resolution
+static-art cases. The actual repair is isolated on `renderer/quicksilver-layer-candidate`:
+move `will-change: transform` from each decoded image to `.sc-bg` only for video backgrounds.
+Static art retains its existing layer policy. Maintained compact and full-resolution video
+qualification both pass on this scoped patch; broader acceptance is running. Linux verification
+remains required before integrating this shared theme change on main.
+
+The isolated Graphite flag retains Playwright's disabled-feature list and records Chromium
+SystemInfo. Baseline reports Graphite and GPU rasterization enabled. With Graphite disabled,
+rasterization, compositing, video decode and WebGL report software/unavailable-software states.
+Its exact source pixels therefore do not establish a fast hardware alternative. Partial raster,
+zero-copy and the legacy screenshot path still fail the source precision allowance. The first
+instrumented query lacked `--enable-automation` and failed before capture; the corrected query
+adds it only for diagnosis. None of these flags changes production launch policy.
+
+All maintained candidate checks pass: compact/HD video, static workers, 64 theme/shape/fit video
+cases, both exporter acceptance suites, baseline and inspected demo still. The additional
+video/image/video transition matrix passes all six cases with exact cross-round worker hashes.
+Two isolated layer-cost attempts stop before rendering because CPU stays above 15%; no throughput
+claim is inferred. The candidate remains separate from main while Linux confirmation is unavailable.
+A bounded direct-decoder-canvas readback probe matches copied-canvas RGBA on 180 shuffled samples;
+that is an initial correctness observation, not export or performance qualification.

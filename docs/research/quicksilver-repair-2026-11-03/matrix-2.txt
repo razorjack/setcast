@@ -1,0 +1,56 @@
+{
+  mode: 'control',
+  qualified: false,
+  comparisons: 135,
+  failed: 62,
+  maximum: 1,
+  maxChangedPixels: 1514
+}
+{
+  mode: 'rounded',
+  qualified: false,
+  comparisons: 135,
+  failed: 57,
+  maximum: 1,
+  maxChangedPixels: 1320
+}
+{
+  mode: 'nofilter',
+  qualified: false,
+  comparisons: 135,
+  failed: 54,
+  maximum: 2,
+  maxChangedPixels: 1318
+}
+{
+  mode: 'paint',
+  qualified: false,
+  comparisons: 135,
+  failed: 61,
+  maximum: 1,
+  maxChangedPixels: 1311
+}
+{
+  mode: 'backface',
+  qualified: false,
+  comparisons: 135,
+  failed: 61,
+  maximum: 1,
+  maxChangedPixels: 1500
+}
+{
+  mode: 'integer',
+  qualified: false,
+  comparisons: 135,
+  failed: 67,
+  maximum: 2,
+  maxChangedPixels: 1329
+}
+{
+  mode: 'none',
+  qualified: true,
+  comparisons: 135,
+  failed: 0,
+  maximum: 0,
+  maxChangedPixels: 0
+}

@@ -1,0 +1,6 @@
+round 0, 1920x1080: exact
+round 0, 1080x1920: exact
+round 1, 1920x1080: exact
+round 1, 1080x1920: exact
+round 2, 1920x1080: exact
+round 2, 1080x1920: exact

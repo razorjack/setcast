@@ -1,0 +1,25 @@
+Starting 0-quicksilver 640x360, 1 workers
+Starting 0-quicksilver 640x360, 2 workers
+Starting 0-quicksilver 640x360, 4 workers
+quicksilver 640x360: identical
+Starting 0-quicksilver 360x640, 1 workers
+Starting 0-quicksilver 360x640, 2 workers
+Starting 0-quicksilver 360x640, 4 workers
+quicksilver 360x640: identical
+Starting 1-quicksilver 640x360, 1 workers
+Starting 1-quicksilver 640x360, 2 workers
+Starting 1-quicksilver 640x360, 4 workers
+quicksilver 640x360: identical
+Starting 1-quicksilver 360x640, 1 workers
+Starting 1-quicksilver 360x640, 2 workers
+Starting 1-quicksilver 360x640, 4 workers
+quicksilver 360x640: identical
+Starting 2-quicksilver 640x360, 1 workers
+Starting 2-quicksilver 640x360, 2 workers
+Starting 2-quicksilver 640x360, 4 workers
+quicksilver 640x360: identical
+Starting 2-quicksilver 360x640, 1 workers
+Starting 2-quicksilver 360x640, 2 workers
+Starting 2-quicksilver 360x640, 4 workers
+quicksilver 360x640: identical
+Worker frames: PASS (6 cases, workers 1,2,4, all 45 frames per export)

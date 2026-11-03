@@ -110,6 +110,11 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Quicksilver has a macOS-qualified parent-layer repair on `renderer/quicksilver-layer-candidate`.
+  It moves the compositor hint to `.sc-bg` for video backgrounds. Compact/HD repeated video,
+  static art, source switches, all-theme seeks and both exporter suites pass. Linux repetition
+  is still required before promotion. See `docs/research/quicksilver-repair-2026-11-03/candidate.md`.
+
 - Quicksilver's Linux compositor hint needs further macOS work. Repeated looping-video exports
   differ across workers on M1 Pro Metal, including portrait output; prepared BMP hashes match
   while source PNG differences exceed the precision budget. Opacity/filter hints are unqualified.

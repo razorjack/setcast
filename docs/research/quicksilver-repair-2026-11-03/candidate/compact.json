@@ -1,0 +1,128 @@
+[
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 0,
+    "width": 640,
+    "height": 360,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4",
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4",
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4"
+    ],
+    "equal": true,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": true
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 0,
+    "width": 360,
+    "height": 640,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431",
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431",
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431"
+    ],
+    "equal": true,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": true
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 1,
+    "width": 640,
+    "height": 360,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4",
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4",
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4"
+    ],
+    "equal": true,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": true
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 1,
+    "width": 360,
+    "height": 640,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431",
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431",
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431"
+    ],
+    "equal": true,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": true
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 2,
+    "width": 640,
+    "height": 360,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4",
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4",
+      "SHA256=11712f8f2e07102ca05f28d4793c68a8fbb3e7f77277f382ba68c4bc4cd0a7f4"
+    ],
+    "equal": true,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": true
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 2,
+    "width": 360,
+    "height": 640,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431",
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431",
+      "SHA256=161871d90c94920a94ef51b7f802d606050fdaf16c9fa27828196b634a28d431"
+    ],
+    "equal": true,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": true
+  }
+]

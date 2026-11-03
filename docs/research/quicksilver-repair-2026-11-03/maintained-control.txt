@@ -1,0 +1,23 @@
+Starting 0-quicksilver 640x360, 1 workers
+Starting 0-quicksilver 640x360, 2 workers
+Starting 0-quicksilver 640x360, 4 workers
+quicksilver 640x360: identical
+Starting 0-quicksilver 360x640, 1 workers
+Starting 0-quicksilver 360x640, 2 workers
+Starting 0-quicksilver 360x640, 4 workers
+quicksilver 360x640: DIFFERENT
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Worker or repeated-export pixels failed qualification; inspect retained outputs and source comparisons.
+    at file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/worker-frames.ts:104:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

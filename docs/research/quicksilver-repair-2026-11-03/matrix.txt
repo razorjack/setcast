@@ -1,0 +1,14 @@
+node:internal/fs/promises:1605
+  return await PromisePrototypeThen(
+         ^
+
+Error: EEXIST: file already exists, mkdir '/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/control'
+    at async mkdir (node:internal/fs/promises:1605:10)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/source.mjs:21:3 {
+  errno: -17,
+  code: 'EEXIST',
+  syscall: 'mkdir',
+  path: '/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/control'
+}
+
+Node.js v26.7.0

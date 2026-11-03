@@ -1,0 +1,11 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+cdpSession.send: Protocol error (Browser.getBrowserCommandLine): Command line not returned because --enable-automation not set.
+    at /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/graphite.mjs:7:36 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.7.0

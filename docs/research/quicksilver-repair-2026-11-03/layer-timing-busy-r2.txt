@@ -1,0 +1,21 @@
+Pre-run system CPU busy: 40.8%
+Pre-run system CPU busy: 43.1%
+Pre-run system CPU busy: 85.4%
+Pre-run system CPU busy: 36.1%
+Pre-run system CPU busy: 30.2%
+Pre-run system CPU busy: 33.1%
+Pre-run system CPU busy: 35.5%
+Pre-run system CPU busy: 38.0%
+Pre-run system CPU busy: 39.2%
+Pre-run system CPU busy: 39.0%
+Pre-run system CPU busy: 39.9%
+Pre-run system CPU busy: 34.4%
+file:///Users/razorjack/Projects/OpenSource/setcast/scripts/render-compare/idle.ts:17
+  throw new Error(
+        ^
+
+Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory.
+    at waitForIdle (file:///Users/razorjack/Projects/OpenSource/setcast/scripts/render-compare/idle.ts:17:9)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/layer-timing.mjs:29:5
+
+Node.js v26.7.0

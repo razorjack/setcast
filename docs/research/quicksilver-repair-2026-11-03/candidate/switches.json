@@ -1,0 +1,1076 @@
+{
+  "revision": "5617248e9b028154a81384da7874cf3736bc4d16",
+  "dirty": true,
+  "scope": "Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.",
+  "status": "passed",
+  "results": [
+    {
+      "round": 0,
+      "width": 640,
+      "height": 360,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/0-640-1.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/0-640-2.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/0-640-4.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 0,
+      "width": 360,
+      "height": 640,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/0-360-1.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/0-360-2.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/0-360-4.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "width": 640,
+      "height": 360,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/1-640-1.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/1-640-2.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/1-640-4.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "width": 360,
+      "height": 640,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/1-360-1.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/1-360-2.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/1-360-4.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "width": 640,
+      "height": 360,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/2-640-1.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/2-640-2.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/2-640-4.mp4",
+          "hash": "SHA256=4fcdd632dd6f4a94971816119ac6cc7420d072fd8286400214f4f44f3ea7ca96",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "width": 360,
+      "height": 640,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/2-360-1.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/2-360-2.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/candidate/switches/2-360-4.mp4",
+          "hash": "SHA256=2962daeddfd3df0a00eba493fd531626a23728b9100b32f62b7df26cdef65c1b",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

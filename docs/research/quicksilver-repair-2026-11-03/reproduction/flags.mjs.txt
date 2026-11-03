@@ -1,0 +1,6 @@
+import { chromium } from '../../../../packages/renderer-browser/node_modules/playwright/index.mjs';
+const flag = process.argv[2];
+const launch = chromium.launch.bind(chromium);
+chromium.launch = (options = {}) => launch({...options,args:[...(options.args ?? []),flag]});
+process.argv.splice(2,1);
+await import('./source.mjs');

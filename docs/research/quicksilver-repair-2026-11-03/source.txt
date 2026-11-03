@@ -1,0 +1,28 @@
+file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/server.ts:93
+    throw new SetcastError(
+          ^
+
+SetcastError: Cannot start the player on localhost:0
+    at file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/server.ts:93:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async listen (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/server.ts:89:3)
+    at async openCapture (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:82:18)
+    at async withCapturePages (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:138:29)
+    at async qualifySourcePixels (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/bench/worker-pixels.ts:51:5)
+    at async withRenderSession (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:65:12)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/source.mjs:23:18 {
+  hint: 'Choose another --port or allow localhost access, then retry.',
+  exitCode: 1,
+  [cause]: Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2302:21)
+      at listenInCluster (node:net:2433:12)
+      at node:net:2662:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+}
+
+Node.js v26.7.0

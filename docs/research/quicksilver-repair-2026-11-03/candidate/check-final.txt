@@ -1,0 +1,2 @@
+[1m[94mpass:[39m[0m All 593 files are correctly formatted [2m(193ms, 10 threads)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 532 files [2m(2.3s, 10 threads)[0m

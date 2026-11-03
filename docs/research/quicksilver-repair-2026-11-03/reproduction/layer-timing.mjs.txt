@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { loadProject, probeAudio, WholeSetReader } from '../../../../packages/core/src/node/index.ts';
+import { exportSettings } from '../../../../packages/core/src/index.ts';
+import { themes } from '../../../../packages/themes/src/index.ts';
+import { render } from '../../../../packages/renderer-browser/src/export/index.ts';
+import { waitForIdle } from '../../../../scripts/render-compare/idle.ts';
+import { measureLoad, verifyVideo } from '../../../../scripts/render-compare/measure.ts';
+import { measureProcesses } from '../../../../scripts/render-compare/process-monitor.ts';
+import { projectContent } from '../../../../scripts/render-compare/content.ts';
+const out = resolve(process.argv[2]); await mkdir(out);
+const projectDir = resolve('examples/demo/out/replacement-corpus-v1/looping-video');
+const loaded = await loadProject(projectDir,{themes,theme:'quicksilver',probeDuration:(audio,dir)=>probeAudio({audio},dir)});
+const project = await new WholeSetReader().read(loaded.project,projectDir);
+const scenes = {
+  parent: project,
+  image: {...project,css:project.css+'\n.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {will-change:transform}'},
+};
+const control = new AbortController();
+for(const signal of ['SIGINT','SIGTERM']) process.once(signal,()=>control.abort(new Error(signal)));
+const identities = Object.fromEntries(await Promise.all(Object.entries(scenes).map(async([name,scene])=>[name,await projectContent(scene,projectDir,control.signal)])));
+const report = {revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),scope:'Quicksilver video layer policy diagnostic. Fresh render call through cleanup; preparation/verification excluded. Three alternating pairs, 1080p30 frames2700-2999, four workers. Same settings, not matched-quality or Remotion replacement evidence.',identities,runs:[],status:'running'};
+const save = ()=>writeFile(join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
+try {
+  for(let round=0;round<3;round++) for(const mode of round%2?['parent','image']:['image','parent']) {
+    const scene=scenes[mode];
+    await waitForIdle(.15,control.signal);
+    const identity=await projectContent(scene,projectDir,control.signal);
+    assert.equal(identity.projectDigest,identities[mode].projectDigest);assert.equal(identity.assetsDigest,identities[mode].assetsDigest);
+    const file=join(out,round+'-'+mode+'.mp4'),runtime=[];
+    const monitor=await measureProcesses(),load=measureLoad();const start=performance.now();
+    let wallSeconds,activity,resources;
+    try {
+      await render(scene,{...exportSettings(loaded.config.output),projectDir,out:file,range:[90,100],concurrency:4,signal:control.signal,onRuntime:event=>runtime.push(event)});
+      wallSeconds=(performance.now()-start)/1000;
+    } finally {activity=load.stop();resources=await monitor.stop();}
+    const verification=await verifyVideo(file,{...scene,frames:300},control.signal);
+    report.runs.push({round,mode,wallSeconds,identity,verification,runtime,activity,resources});await save();
+    console.log(round,mode,wallSeconds);
+  }
+  report.status='passed';
+} catch(error) {report.status='failed';report.error=String(error);throw error;} finally {await save();}

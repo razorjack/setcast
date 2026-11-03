@@ -1,0 +1,17 @@
+{
+  "revision": "5617248e9b028154a81384da7874cf3736bc4d16",
+  "scope": "Quicksilver video layer policy diagnostic. Fresh render call through cleanup; preparation/verification excluded. Three alternating pairs, 1080p30 frames2700-2999, four workers. Same settings, not matched-quality or Remotion replacement evidence.",
+  "identities": {
+    "parent": {
+      "projectDigest": "b12faa740b84ada69b81417faeb2c55bde620007167c976fc98783d6538ce38e",
+      "assetsDigest": "ced75fa6b4605d7ba983d0eef3e8428d04ebcafbfa750d86a2e59ecd56243bc9"
+    },
+    "image": {
+      "projectDigest": "0b73e36fd38df857e7414df116fdd554bd1482a2728c123bf076aeb1a9fb317f",
+      "assetsDigest": "ced75fa6b4605d7ba983d0eef3e8428d04ebcafbfa750d86a2e59ecd56243bc9"
+    }
+  },
+  "runs": [],
+  "status": "failed",
+  "error": "Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory."
+}

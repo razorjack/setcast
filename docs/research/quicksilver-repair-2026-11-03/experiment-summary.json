@@ -1,0 +1,137 @@
+[
+  {
+    "mode": "paint",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 61,
+    "maximum": 1,
+    "maxChangedPixels": 1311,
+    "group": "matrix"
+  },
+  {
+    "mode": "rounded",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 57,
+    "maximum": 1,
+    "maxChangedPixels": 1320,
+    "group": "matrix"
+  },
+  {
+    "mode": "backface",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 61,
+    "maximum": 1,
+    "maxChangedPixels": 1500,
+    "group": "matrix"
+  },
+  {
+    "mode": "isolation",
+    "qualified": true,
+    "comparisons": 135,
+    "failed": 0,
+    "maximum": 0,
+    "maxChangedPixels": 0,
+    "group": "matrix"
+  },
+  {
+    "mode": "parent",
+    "qualified": true,
+    "comparisons": 135,
+    "failed": 0,
+    "maximum": 0,
+    "maxChangedPixels": 0,
+    "group": "matrix"
+  },
+  {
+    "mode": "clipped",
+    "qualified": true,
+    "comparisons": 135,
+    "failed": 0,
+    "maximum": 0,
+    "maxChangedPixels": 0,
+    "group": "matrix"
+  },
+  {
+    "mode": "integer",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 67,
+    "maximum": 2,
+    "maxChangedPixels": 1329,
+    "group": "matrix"
+  },
+  {
+    "mode": "none",
+    "qualified": true,
+    "comparisons": 135,
+    "failed": 0,
+    "maximum": 0,
+    "maxChangedPixels": 0,
+    "group": "matrix"
+  },
+  {
+    "mode": "nofilter",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 54,
+    "maximum": 2,
+    "maxChangedPixels": 1318,
+    "group": "matrix"
+  },
+  {
+    "mode": "control",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 62,
+    "maximum": 1,
+    "maxChangedPixels": 1514,
+    "group": "matrix"
+  },
+  {
+    "mode": "control",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 63,
+    "maximum": 1,
+    "maxChangedPixels": 1504,
+    "group": "partial-raster"
+  },
+  {
+    "mode": "control",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 42,
+    "maximum": 1,
+    "maxChangedPixels": 1504,
+    "group": "zero-copy"
+  },
+  {
+    "mode": "control",
+    "qualified": true,
+    "comparisons": 135,
+    "failed": 0,
+    "maximum": 0,
+    "maxChangedPixels": 0,
+    "group": "graphite"
+  },
+  {
+    "mode": "control",
+    "qualified": true,
+    "comparisons": 135,
+    "failed": 0,
+    "maximum": 0,
+    "maxChangedPixels": 0,
+    "group": "graphite-isolated-r2"
+  },
+  {
+    "mode": "control",
+    "qualified": false,
+    "comparisons": 135,
+    "failed": 72,
+    "maximum": 1,
+    "maxChangedPixels": 1516,
+    "group": "legacy-screenshot"
+  }
+]
