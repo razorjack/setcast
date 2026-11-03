@@ -1799,3 +1799,30 @@ the qualified Linux fix. A filter hint also fails; an opacity hint passes one so
 and four encoded shape/round cases, then fails its third landscape round. Neither alternative
 is promoted, and no assertion is relaxed. Further macOS checks and candidate integration are
 recorded under `examples/demo/out/macos-followup-2026-11-03` while they run.
+
+The full 1080×1920 video check also fails exact worker equality. A diagnostic disabling GPU
+rasterization makes all prepared-image/PNG groups exact and passes six repeated encoded cases
+plus the full portrait case, with WebGL still identifying ANGLE Metal. Its three quiet alternating
+pairs per standard/Tunnel/video fixture increase observed median export time and change decoded
+pixels relative to the existing policy. No matched-quality calibration of this global flag was
+completed, so it remains experimental and is not adopted. The complete 18-output series and
+failed alternatives are retained in [the macOS report](research/macos-followup-2026-11-03/README.md).
+
+The local browser-first integration is committed as `4fadfd0` after baseline validation. Its
+renderer/theme sources match main's Linux integration; it preserves browser defaults only on
+the candidate branch. Both installation paths and final acceptance are being checked on that
+committed revision. Main's default and production rasterization policy remain unchanged.
+
+Final candidate `4fadfd0` passes both exporter acceptance suites and both independent fresh
+installations. The browser-only inventory contains no Remotion packages; optional compatibility
+validates and renders six decoded frames. Cache/resume, preview, default clip/bundle and ProRes
+checks pass. The macOS follow-up is executed with a retained Quicksilver video failure, not an
+all-green platform qualification. The 18-arm diagnostic finishes with unchanged input identities;
+its decoded pixels differ between policies and no global rasterization change is promoted.
+The live control fix is qualified by the affected macOS checks; Linux software-live drops,
+Windows, Linux real-master resources, the original speed target and upstream cleanup remain open.
+
+Final macOS baseline passes all 688 tests, formatting, lint/types, dependency isolation and decoded
+smoke. Compact reports and reproductions are committed under `docs/research/macos-followup-2026-11-03`;
+the artifact manifest identifies the retained raw outputs, including failed checks. No production
+source, graphics flag, precision threshold or default renderer was changed by this follow-up.

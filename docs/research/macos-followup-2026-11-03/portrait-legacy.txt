@@ -1,0 +1,8 @@
+{
+  "legacy": true,
+  "qualified": true,
+  "comparisons": 135,
+  "changedFrames": [],
+  "maximum": 0,
+  "maxChangedPixels": 0
+}

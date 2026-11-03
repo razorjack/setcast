@@ -3,6 +3,12 @@
 Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
+The [3 November macOS follow-up](research/macos-followup-2026-11-03/README.md) repeats the shared
+Linux changes. Live sequence/output/energy/MIDI checks pass. Quicksilver looping-video exports
+fail worker parity on M1 Pro Metal, with prepared bitmap identities matching and source PNG
+differences beyond the existing precision budget. No tested alternative is promoted. This
+specific macOS correctness issue remains a release blocker despite broader passing checks.
+
 Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
 Linux execution is complete for the available fixtures; release requirements remain unmet. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
 records graphics-default, font-hinting and Quicksilver clip fixes, production correctness, fresh installations,
@@ -637,6 +643,9 @@ broader live hardware support can ship independently after the core replacement 
    qualified Chromium default (observed SwiftShader); explicit NVIDIA ANGLE failed pixel/stall
    checks. Full real-master Linux assets are still missing. Continue with the
    [Linux runbook](linux-renderer-qualification.md).
+   The affected macOS repetition has now exposed a Quicksilver video painting failure; repair
+   and requalify it using the [retained reproducer](research/macos-followup-2026-11-03/README.md).
+   The shared live sequence-control fix passes its macOS repetitions.
    Windows access is unavailable for now and its qualification remains pending. Do not count prepared
    CI jobs as successful runs or advertise an untested hardware backend as qualified.
 3. After those requirements pass, promote `renderer/browser-first-candidate`, recheck migration

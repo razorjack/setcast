@@ -1,0 +1,20 @@
+node:internal/modules/cjs/loader:1569
+  const err = new Error(message);
+              ^
+
+Error: Cannot find module '@setcast/themes'
+Require stack:
+- /Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/package.json
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1569:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1123:27)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1174:12)
+    at require.resolve (node:internal/modules/helpers:214:31)
+    at file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/raster-timing.mjs:13:37
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/package.json'
+  ]
+}
+
+Node.js v26.7.0

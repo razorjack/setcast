@@ -1,0 +1,36 @@
+Pre-run system CPU busy: 7.5%
+standard 0 control 7.374645333 decodedEqual true
+Pre-run system CPU busy: 6.1%
+standard 0 cpu 10.055378542000001 decodedEqual false
+Pre-run system CPU busy: 5.2%
+standard 1 cpu 9.917925500000004 decodedEqual false
+Pre-run system CPU busy: 9.0%
+standard 1 control 7.341305959000005 decodedEqual true
+Pre-run system CPU busy: 11.9%
+standard 2 control 7.782240875000003 decodedEqual true
+Pre-run system CPU busy: 12.5%
+standard 2 cpu 10.307615458 decodedEqual false
+Pre-run system CPU busy: 14.1%
+tunnel 0 control 7.761529957999999 decodedEqual true
+Pre-run system CPU busy: 3.7%
+tunnel 0 cpu 10.854943874999996 decodedEqual false
+Pre-run system CPU busy: 5.4%
+tunnel 1 cpu 10.255726666999982 decodedEqual false
+Pre-run system CPU busy: 7.0%
+tunnel 1 control 7.781141292000015 decodedEqual true
+Pre-run system CPU busy: 12.0%
+tunnel 2 control 8.164116375000013 decodedEqual true
+Pre-run system CPU busy: 12.1%
+tunnel 2 cpu 10.974094666999997 decodedEqual false
+Pre-run system CPU busy: 12.4%
+looping-video 0 control 15.179959292000014 decodedEqual true
+Pre-run system CPU busy: 11.7%
+looping-video 0 cpu 21.471768125000004 decodedEqual false
+Pre-run system CPU busy: 13.5%
+looping-video 1 cpu 21.686460542000017 decodedEqual false
+Pre-run system CPU busy: 11.3%
+looping-video 1 control 14.922842458 decodedEqual true
+Pre-run system CPU busy: 12.0%
+looping-video 2 control 14.482474832999985 decodedEqual true
+Pre-run system CPU busy: 11.5%
+looping-video 2 cpu 21.685936457999983 decodedEqual false

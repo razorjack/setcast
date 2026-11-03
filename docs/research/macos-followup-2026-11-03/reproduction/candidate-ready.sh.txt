@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euo pipefail
+export PATH="$PWD/node_modules/.bin:$PATH"
+root="/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03"
+bash "$root/run.sh" candidate-ready vp run ready

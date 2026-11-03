@@ -1,0 +1,1 @@
+node examples/demo/out/macos-followup-2026-11-03/portrait-source.mjs examples/demo/out/macos-followup-2026-11-03/portrait-legacy legacy 

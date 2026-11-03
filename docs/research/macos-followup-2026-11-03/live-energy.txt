@@ -1,0 +1,1 @@
+Energy: PASS (synthetic input, transient rejection, sustained selection, hold, export and journal)

@@ -1,0 +1,1 @@
+vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/browser-acceptance 

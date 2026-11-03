@@ -1,0 +1,22 @@
+$ node scripts/export-acceptance.ts --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/remotion-acceptance ⊘ cache disabled
+export-acceptance: /Users/razorjack/Projects/OpenSource/setcast/packages/renderer-remotion/src/index.ts
+  A/V pulses aligned within 5 ms: 0.433, 1.433 s
+  fractional range and partial final frame: chunkSeconds=0
+  A/V pulses aligned within 5 ms: 0.433, 1.433 s
+  fractional range and partial final frame: chunkSeconds=1
+  delayed font and logo match loaded ones; image, font and logo differ from missing-asset controls
+  art change: every decoded frame contains the expected prepared background
+  video background seeks and loops at the requested frame
+  performance automation: blackout, mid-ramp brightness and backward seeks
+  sterile-tech: repeatable pixels
+  darkroom: repeatable pixels
+  relief: repeatable pixels
+  field: repeatable stills and identical decoded frames across workers/chunks
+  tunnel: repeatable stills and identical decoded frames across workers/chunks
+  constellation: repeatable stills and identical decoded frames across workers/chunks
+[http://localhost:3000/public/missing-image.png] Failed to load resource: the server responded with a status of 404 (Not Found)
+[http://localhost:3000/public/missing-image.png] Failed to load resource: the server responded with a status of 404 (Not Found)
+  failed chunked export preserves destination, cleans up, and permits another job
+  cancellation preserves destination, cleans up, and permits another job
+export-acceptance: PASS (artifacts: /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/remotion-acceptance)
+

@@ -10,6 +10,11 @@ locally executed Linux CI commands; full live endurance remains separately recor
 [Linux evidence](research/linux-qualification-2026-11-01/README.md) for exact runtime scope.
 The hosted CI matrix has not run; Windows and matched-quality performance qualification remain open.
 
+The [macOS follow-up](research/macos-followup-2026-11-03/README.md) integrates the Linux fixes into
+local candidate `4fadfd0`. The shared live-control checks pass, but repeated Quicksilver video
+exports fail worker parity on M1 Pro Metal. This specific failure remains unresolved; broad
+acceptance or installation passes do not qualify it. No new graphics flags were adopted.
+
 Main still defaults to Remotion. The commands and default behavior below describe the candidate;
 on main, select the browser renderer explicitly.
 

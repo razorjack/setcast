@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/macos-followup-2026-11-03"
+run() { bash "$root/run.sh" "$@"; }
+run cpu-encoded node "$root/cpu-raster-check.mjs" "$root/cpu-encoded" quicksilver-video-workers.mjs
+run cpu-encoded-hd node "$root/cpu-raster-check.mjs" "$root/cpu-encoded-hd" quicksilver-video-workers-hd.mjs

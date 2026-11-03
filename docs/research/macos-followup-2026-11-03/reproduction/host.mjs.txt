@@ -1,0 +1,3 @@
+import os from 'node:os';
+import {execFileSync} from 'node:child_process';
+console.log(JSON.stringify({revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),platform:os.platform(),release:os.release(),arch:os.arch(),node:process.version,cpu:os.cpus()[0]?.model,logicalCpus:os.cpus().length,totalMemoryBytes:os.totalmem(),ffmpeg:execFileSync('ffmpeg',['-version'],{encoding:'utf8'}).split('\n')[0],scope:'Affected macOS correctness and installed-package repetition after Linux fixes. No throughput comparison.'},null,2));

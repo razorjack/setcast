@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/macos-followup-2026-11-03"
+run() { bash "$root/run.sh" "$@"; }
+run opacity-encoded node "$root/quicksilver-video-workers-opacity.mjs" "$root/opacity-encoded"
+run opacity-encoded-hd node "$root/quicksilver-video-workers-opacity-hd.mjs" "$root/opacity-encoded-hd"

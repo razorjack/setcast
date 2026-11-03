@@ -1,0 +1,1 @@
+node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-raster-check.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-encoded quicksilver-video-workers.mjs 

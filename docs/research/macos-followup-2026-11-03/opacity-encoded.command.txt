@@ -1,0 +1,1 @@
+node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers-opacity.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/opacity-encoded 
