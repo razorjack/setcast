@@ -1,0 +1,1 @@
+node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 4 --workers 1\,2\,4 --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/workers 

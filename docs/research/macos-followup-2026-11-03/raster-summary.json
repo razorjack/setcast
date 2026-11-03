@@ -1,0 +1,71 @@
+{
+  "scope": "Same authored settings; each mode repeats exactly within this series, but decoded output differs between modes. Not matched-quality or Remotion throughput evidence. Global macOS flag not promoted.",
+  "results": [
+    {
+      "case": "standard",
+      "control": {
+        "runs": 3,
+        "medianSeconds": 7.374645333,
+        "minSeconds": 7.341305959000005,
+        "maxSeconds": 7.782240875000003,
+        "decodedVideoHashes": [
+          "SHA256=cf908f8c63fbaf8de80994895c6c5298f407d6e69eb80ff5bc280206863a6906"
+        ]
+      },
+      "cpu": {
+        "runs": 3,
+        "medianSeconds": 10.055378542000001,
+        "minSeconds": 9.917925500000004,
+        "maxSeconds": 10.307615458,
+        "decodedVideoHashes": [
+          "SHA256=702b0e395d23c882a77b8601fac739d8bf32e70840839cbbb89327d2b51febfe"
+        ]
+      },
+      "cpuTimeChangePercent": 36.35067298767956
+    },
+    {
+      "case": "tunnel",
+      "control": {
+        "runs": 3,
+        "medianSeconds": 7.781141292000015,
+        "minSeconds": 7.761529957999999,
+        "maxSeconds": 8.164116375000013,
+        "decodedVideoHashes": [
+          "SHA256=265b7b5987406d9b83527aaed9e330bbde781ff43e77d73e20b7604041d2853e"
+        ]
+      },
+      "cpu": {
+        "runs": 3,
+        "medianSeconds": 10.854943874999996,
+        "minSeconds": 10.255726666999982,
+        "maxSeconds": 10.974094666999997,
+        "decodedVideoHashes": [
+          "SHA256=921b0f0ea70dba9495fce668a9930ec722f5627ad5e7031fe54f0059f6fc9275"
+        ]
+      },
+      "cpuTimeChangePercent": 39.503235677782044
+    },
+    {
+      "case": "looping-video",
+      "control": {
+        "runs": 3,
+        "medianSeconds": 14.922842458,
+        "minSeconds": 14.482474832999985,
+        "maxSeconds": 15.179959292000014,
+        "decodedVideoHashes": [
+          "SHA256=9240629e36aead0141f1cf62d60dbb16234b88c9fd96ad6aafc18188073b6a73"
+        ]
+      },
+      "cpu": {
+        "runs": 3,
+        "medianSeconds": 21.685936457999983,
+        "minSeconds": 21.471768125000004,
+        "maxSeconds": 21.686460542000017,
+        "decodedVideoHashes": [
+          "SHA256=c78f4a35d9710f22c16496820fecf9029e690ca45f2316e381066dcc1ce1af33"
+        ]
+      },
+      "cpuTimeChangePercent": 45.320414117046106
+    }
+  ]
+}

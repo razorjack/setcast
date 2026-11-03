@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+root="$PWD/examples/demo/out/macos-followup-2026-11-03"
+run() { bash "$root/run.sh" "$@"; }
+status=0
+run video-workers-hd node "$root/quicksilver-video-workers-hd.mjs" "$root/video-workers-hd" || status=$?
+printf '%s\n' "$status" > "$root/video-workers-hd-observed-exit.txt"
+run cpu-raster node "$root/cpu-raster.mjs" "$root/cpu-raster"

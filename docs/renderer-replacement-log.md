@@ -1778,3 +1778,51 @@ The unchanged full recovery preset passes on final candidate `166e51d`: 3,600.10
 The separate packet diagnostic fails after 23 s/four accelerated changes with 17,408 dropped samples. It records an 874.8 ms gap in main-thread packet receipt, exceeding the 512 ms queue budget by approximately that sample count; the largest long task is 151 ms. Extra producer metadata was not observed, so the browser operation causing the delivery gap remains unresolved. The full software preset remains failed/unqualified. No queue limit or assertion was relaxed, and no speculative source change was promoted.
 
 Final baseline passes formatting, lint/types, all 688 tests, dependency isolation and decoded smoke. Final artifact archival copies temporary-worktree outputs onto the repository filesystem. The hash audit covers 7,555 files / 16,384,724,426 bytes and confirms all 220 comparison outputs still match their recorded digests. All available Linux runbook checks have outcomes; performance, explicit NVIDIA ANGLE, current-upstream failure cleanup and the software live preset remain failed/unqualified. Missing real-master assets, Windows and affected macOS repetition remain outstanding. Main still defaults to Remotion; nothing was pushed or published.
+
+## macOS follow-up, 3 November 2026
+
+Reviewed the Linux commits through `ec1d84d`. The shared changes requiring macOS repetition are
+Quicksilver's compositor hint and the sequence controls' manual-transition restriction. Linux
+font hinting and automatic graphics selection are platform-scoped; the macOS doctor still observes
+Chromium 156 with ANGLE Metal on Apple M1 Pro. Initial baseline (688 tests), both exporter
+acceptance suites, all 64 shuffled-seek video cases and eight repeated Quicksilver static worker
+cases pass. The demo still was inspected. The unchanged live sequence harness passes three times;
+output, energy and MIDI checks also pass.
+
+The stricter looping-video worker fixture exposes a macOS failure: landscape decoded hashes
+match across 1/2/4 workers, but the first portrait round differs. Lossless portrait comparisons
+exceed the existing source precision budget, reaching two channel levels on up to 1,500 pixels.
+The prepared BMP hashes match across every worker/frame in a separate diagnostic while PNG
+captures differ, isolating variability after media preparation. Original failures are retained.
+Removing the compositor hint in the fixture gives exact source comparisons, but would discard
+the qualified Linux fix. A filter hint also fails; an opacity hint passes one source matrix
+and four encoded shape/round cases, then fails its third landscape round. Neither alternative
+is promoted, and no assertion is relaxed. Further macOS checks and candidate integration are
+recorded under `examples/demo/out/macos-followup-2026-11-03` while they run.
+
+The full 1080×1920 video check also fails exact worker equality. A diagnostic disabling GPU
+rasterization makes all prepared-image/PNG groups exact and passes six repeated encoded cases
+plus the full portrait case, with WebGL still identifying ANGLE Metal. Its three quiet alternating
+pairs per standard/Tunnel/video fixture increase observed median export time and change decoded
+pixels relative to the existing policy. No matched-quality calibration of this global flag was
+completed, so it remains experimental and is not adopted. The complete 18-output series and
+failed alternatives are retained in [the macOS report](research/macos-followup-2026-11-03/README.md).
+
+The local browser-first integration is committed as `4fadfd0` after baseline validation. Its
+renderer/theme sources match main's Linux integration; it preserves browser defaults only on
+the candidate branch. Both installation paths and final acceptance are being checked on that
+committed revision. Main's default and production rasterization policy remain unchanged.
+
+Final candidate `4fadfd0` passes both exporter acceptance suites and both independent fresh
+installations. The browser-only inventory contains no Remotion packages; optional compatibility
+validates and renders six decoded frames. Cache/resume, preview, default clip/bundle and ProRes
+checks pass. The macOS follow-up is executed with a retained Quicksilver video failure, not an
+all-green platform qualification. The 18-arm diagnostic finishes with unchanged input identities;
+its decoded pixels differ between policies and no global rasterization change is promoted.
+The live control fix is qualified by the affected macOS checks; Linux software-live drops,
+Windows, Linux real-master resources, the original speed target and upstream cleanup remain open.
+
+Final macOS baseline passes all 688 tests, formatting, lint/types, dependency isolation and decoded
+smoke. Compact reports and reproductions are committed under `docs/research/macos-followup-2026-11-03`;
+the artifact manifest identifies the retained raw outputs, including failed checks. No production
+source, graphics flag, precision threshold or default renderer was changed by this follow-up.

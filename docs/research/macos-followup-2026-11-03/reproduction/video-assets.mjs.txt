@@ -1,0 +1,20 @@
+import {resolve,join} from 'node:path';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {fixtureProject} from '../../../../scripts/export-acceptance/fixture.ts';
+import {withRenderSession} from '../../../../packages/renderer-browser/src/export/index.ts';
+import {withCapturePages,prepareFrame} from '../../../../packages/renderer-browser/src/export/session.ts';
+import {pipeline} from '../../../../packages/renderer-browser/src/export/pipeline.ts';
+const fixture=resolve('examples/demo/out/macos-followup-2026-11-03/video-workers');
+const loaded=await fixtureProject(fixture,'quicksilver');
+const project={...loaded,background:'motion.mp4',width:360,height:640};
+const out=resolve(process.argv[2]);await mkdir(out);
+const report=[];
+await withRenderSession(async()=>{for(const [name,workers] of [['one-a',1],['one-b',1],['two',2],['four',4]]){
+const directory=join(out,name);await mkdir(directory);const frames=[];
+await withCapturePages(project,{projectDir:fixture},workers,pages=>pipeline({range:[30,74],workers,
+capture:async(worker,frame)=>{const page=pages[worker];await prepareFrame(page,frame);const png=await page.screenshot({type:'png'});const asset=await page.evaluate(async()=>{const img=document.querySelector('.sc-bg-img');const bytes=await (await fetch(img.src)).arrayBuffer();const digest=await crypto.subtle.digest('SHA-256',bytes);return{digest:Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join(''),width:img.naturalWidth,height:img.naturalHeight};});frames.push({frame,...asset,pngSha256:createHash('sha256').update(png).digest('hex')});return png;},
+write:(png,frame)=>writeFile(join(directory,frame+'.png'),png),cancel:()=>Promise.allSettled(pages.map(p=>p.close()))}));
+report.push({name,frames:frames.sort((a,b)=>a.frame-b.frame)});await writeFile(join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
+}});
+const summary=report.slice(1).map(group=>({name:group.name,assetDifferences:group.frames.filter((x,i)=>x.digest!==report[0].frames[i].digest).map(x=>x.frame),pngDifferences:group.frames.filter((x,i)=>x.pngSha256!==report[0].frames[i].pngSha256).map(x=>x.frame)}));await writeFile(join(out,'summary.json'),JSON.stringify(summary,null,2)+'\n');console.log(summary);

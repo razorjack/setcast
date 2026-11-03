@@ -1,0 +1,17 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Worker pixels differ: round 0, 1080x1920
+    at file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers-hd.mjs:28:7
+    at async withRenderSession (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:65:12)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers-hd.mjs:14:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

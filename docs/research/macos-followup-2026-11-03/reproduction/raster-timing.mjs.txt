@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {createRequire} from 'node:module';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+import {waitForIdle} from '../../../../scripts/render-compare/idle.ts';
+import {measureLoad,verifyVideo} from '../../../../scripts/render-compare/measure.ts';
+import {measureProcesses} from '../../../../scripts/render-compare/process-monitor.ts';
+import {projectContent} from '../../../../scripts/render-compare/content.ts';
+const require=createRequire(new URL('../../../../packages/renderer-browser/package.json',import.meta.url));
+const {loadProject,probeAudio,WholeSetReader}=await import(require.resolve('@setcast/core/node'));
+const {exportSettings}=await import(require.resolve('@setcast/core'));
+const {themes}=await import('../../../../packages/themes/src/index.ts');
+const {render}=await import(require.resolve('@setcast/renderer-browser/export'));
+const {chromium}=require('playwright');const launch=chromium.launch.bind(chromium);
+let mode='control';chromium.launch=options=>launch({...options,args:[...(options.args??[]),...(mode==='cpu'?['--disable-gpu-rasterization']:[])]});
+const out=resolve(process.argv[2]);await mkdir(out);
+const control=new AbortController();for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>control.abort(new Error(signal)));
+const report={version:1,revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),scope:'Diagnostic macOS raster policy comparison, three alternating pairs per case. Render call through cleanup; preparation, identity hashing and decoded verification excluded. Software H264, explicit four workers. No Remotion or replacement-target claim.',status:'running',results:[]};
+const save=()=>writeFile(join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
+try{for(const name of ['standard','tunnel','looping-video']){
+const projectDir=resolve('examples/demo/out/replacement-corpus-v1',name);const loaded=await loadProject(projectDir,{themes,probeDuration:(audio,dir)=>probeAudio({audio},dir)});const project=await new WholeSetReader().read(loaded.project,projectDir);const identity=await projectContent(project,projectDir,control.signal);let reference;
+for(let round=0;round<3;round++)for(const next of round%2?['cpu','control']:['control','cpu']){
+mode=next;await waitForIdle(.15,control.signal);const observed=await projectContent(project,projectDir,control.signal);assert.equal(observed.projectDigest,identity.projectDigest);assert.equal(observed.assetsDigest,identity.assetsDigest);
+const file=join(out,name+'-'+round+'-'+mode+'.mp4');const runtime=[];const processes=await measureProcesses(),load=measureLoad();const start=performance.now();let wallSeconds,resources,activity;
+try{await render(project,{...exportSettings(loaded.config.output),projectDir,out:file,range:[90,100],concurrency:4,hardwareAcceleration:'disable',signal:control.signal,onRuntime:event=>runtime.push(event)});wallSeconds=(performance.now()-start)/1000;}finally{activity=load.stop();resources=await processes.stop();}
+const video=await verifyVideo(file,{...project,frames:300},control.signal);const decoded=execFileSync('ffmpeg',['-v','error','-xerror','-i',file,'-map','0:v','-map','0:a','-f','framemd5','-'],{encoding:'utf8',maxBuffer:10*1024*1024});reference??=decoded;
+report.results.push({name,round,mode,file,identity,wallSeconds,decodedEqual:decoded===reference,video,runtime,load:activity,processes:resources});await save();console.log(name,round,mode,wallSeconds,'decodedEqual',decoded===reference);
+}
+}report.status='passed';}catch(error){report.status='failed';report.error=String(error);throw error;}finally{await save();}

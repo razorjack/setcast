@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+export PATH="$PWD/node_modules/.bin:$PATH"
+root="$PWD/examples/demo/out/macos-followup-2026-11-03"
+run() { bash "$root/run.sh" "$@"; }
+run portrait-opacity node "$root/portrait-source.mjs" "$root/portrait-opacity" opacity
+for repeat in 1 2 3; do
+  run "sequence-$repeat" node packages/renderer-browser/bench/sequence.ts
+  cp -R examples/demo/out/sequence-check "$root/sequence-$repeat-artifacts"
+done
+run live-output node packages/renderer-browser/bench/output.ts
+cp -R examples/demo/out/output-check "$root/output-artifacts"
+run live-energy node packages/renderer-browser/bench/energy.ts
+cp -R examples/demo/out/energy-check "$root/energy-artifacts"
+run live-midi node packages/renderer-browser/bench/midi.ts
+cp -R examples/demo/out/midi-check "$root/midi-artifacts"

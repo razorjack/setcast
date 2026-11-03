@@ -1,0 +1,1 @@
+node packages/renderer-browser/bench/video-frames.ts --image-only --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video 

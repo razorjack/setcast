@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+export PATH="$PWD/node_modules/.bin:$PATH"
+root="/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03"
+run() { bash "$root/run.sh" "$@"; }
+run candidate-browser-acceptance vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/candidate-browser-acceptance"
+run candidate-remotion-acceptance vp run export-acceptance --out "$root/candidate-remotion-acceptance"
+run candidate-installed-browser vp run package-smoke --browser --report "$root/candidate-installed-browser.json"
+run candidate-installed-compatibility vp run package-smoke --report "$root/candidate-installed-compatibility.json"

@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+export PATH="$PWD/node_modules/.bin:$PATH"
+root="$PWD/examples/demo/out/macos-followup-2026-11-03"
+run() { bash "$root/run.sh" "$@"; }
+run ready vp run ready
+run doctor node packages/cli/bin/setcast.js doctor --renderer browser --require still,video,gpu --json
+run browser-acceptance vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/browser-acceptance"
+run remotion-acceptance vp run export-acceptance --out "$root/remotion-acceptance"
+run video node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/video"
+run workers node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 4 --workers 1,2,4 --out "$root/workers"
+run still vp run theme-stills --at 1:50.4 --theme quicksilver

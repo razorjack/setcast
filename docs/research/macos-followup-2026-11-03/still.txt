@@ -1,0 +1,3 @@
+$ node scripts/theme-stills.ts --at '1:50.4' --theme quicksilver ⊘ cache disabled
+theme-stills: quicksilver → examples/demo/out/themes/quicksilver-1-50.4.jpg
+

@@ -1,0 +1,7 @@
+{
+  "main": "ec1d84d3503950f7c8cf6cdc9d10ed65aae0c12e",
+  "candidate": "4fadfd0ae1d5e4643aef79562975aed0a52adec5",
+  "candidateRendererAndThemesMatchMain": true,
+  "productionRuntimeChangesInThisSession": false,
+  "scope": "Candidate CLI/core selection and packaging differ intentionally. Main renderer/theme source and dependencies are unchanged; local diagnostic scripts and documentation are retained separately."
+}

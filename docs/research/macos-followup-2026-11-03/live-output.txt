@@ -1,0 +1,1 @@
+output: PASS (artifacts: /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/output-check)

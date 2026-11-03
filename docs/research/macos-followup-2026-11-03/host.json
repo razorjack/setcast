@@ -1,0 +1,12 @@
+{
+  "revision": "ec1d84d3503950f7c8cf6cdc9d10ed65aae0c12e",
+  "platform": "darwin",
+  "release": "27.0.0",
+  "arch": "arm64",
+  "node": "v26.7.0",
+  "cpu": "Apple M1 Pro",
+  "logicalCpus": 10,
+  "totalMemoryBytes": 34359738368,
+  "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "scope": "Affected macOS correctness and installed-package repetition after Linux fixes. No throughput comparison."
+}

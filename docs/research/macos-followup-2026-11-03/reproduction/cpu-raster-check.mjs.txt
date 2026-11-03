@@ -1,0 +1,7 @@
+import {createRequire} from 'node:module';
+import {writeFileSync} from 'node:fs';
+const require=createRequire(new URL('../../../../packages/renderer-browser/package.json',import.meta.url));
+const {chromium}=require('playwright');
+const launch=chromium.launch.bind(chromium);
+chromium.launch=options=>{const requested={...options,args:[...(options?.args??[]),'--disable-gpu-rasterization']};writeFileSync(process.argv[2]+'-launch.json',JSON.stringify(requested,null,2)+'\n');return launch(requested);};
+await import('./'+process.argv[3]);

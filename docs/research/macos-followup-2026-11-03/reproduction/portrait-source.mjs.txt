@@ -1,0 +1,17 @@
+import {resolve,join} from 'node:path';
+import {writeFile} from 'node:fs/promises';
+import {fixtureProject} from '../../../../scripts/export-acceptance/fixture.ts';
+import {withRenderSession} from '../../../../packages/renderer-browser/src/export/index.ts';
+import {qualifySourcePixels} from '../../../../packages/renderer-browser/bench/worker-pixels.ts';
+const fixture=resolve('examples/demo/out/macos-followup-2026-11-03/video-workers');
+const loaded=await fixtureProject(fixture,'quicksilver');
+const mode=process.argv[3]??'control';
+const legacy=mode==='legacy';
+const hints={legacy:'auto',filter:'filter',opacity:'opacity',combined:'transform, filter'};
+const hint=hints[mode];
+const project={...loaded,background:'motion.mp4',width:360,height:640,css:loaded.css+(hint?'\n.theme-quicksilver .sc-bg-img {will-change:'+hint+' !important;}':'')};
+const out=resolve(process.argv[2]);
+const result=await withRenderSession(()=>qualifySourcePixels(project,fixture,out,{workers:[1,2,4],gl:'auto'}));
+const summary={mode,legacy,qualified:result.qualified,comparisons:result.reports.length,changedFrames:result.reports.filter(x=>x.maximum>0),maximum:Math.max(...result.reports.map(x=>x.maximum)),maxChangedPixels:Math.max(...result.reports.map(x=>x.changedPixels))};
+await writeFile(join(out,'summary.json'),JSON.stringify(summary,null,2)+'\n');
+console.log(JSON.stringify(summary,null,2));

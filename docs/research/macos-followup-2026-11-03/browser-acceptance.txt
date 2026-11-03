@@ -1,0 +1,20 @@
+$ node scripts/export-acceptance.ts --adapter packages/renderer-browser/src/export/index.ts --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/browser-acceptance ⊘ cache disabled
+export-acceptance: packages/renderer-browser/src/export/index.ts
+  A/V pulses aligned within 5 ms: 0.433, 1.433 s
+  fractional range and partial final frame: chunkSeconds=0
+  A/V pulses aligned within 5 ms: 0.433, 1.433 s
+  fractional range and partial final frame: chunkSeconds=1
+  delayed font and logo match loaded ones; image, font and logo differ from missing-asset controls
+  art change: every decoded frame contains the expected prepared background
+  video background seeks and loops at the requested frame
+  performance automation: blackout, mid-ramp brightness and backward seeks
+  sterile-tech: repeatable pixels
+  darkroom: repeatable pixels
+  relief: repeatable pixels
+  field: repeatable stills and identical decoded frames across workers/chunks
+  tunnel: repeatable stills and identical decoded frames across workers/chunks
+  constellation: repeatable stills and identical decoded frames across workers/chunks
+  failed chunked export preserves destination, cleans up, and permits another job
+  cancellation preserves destination, cleans up, and permits another job
+export-acceptance: PASS (artifacts: /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/browser-acceptance)
+

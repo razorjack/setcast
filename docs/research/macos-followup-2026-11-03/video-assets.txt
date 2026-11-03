@@ -1,0 +1,20 @@
+[
+  {
+    name: 'one-b',
+    assetDifferences: [],
+    pngDifferences: [ 33, 66, 67, 68, 71 ]
+  },
+  {
+    name: 'two',
+    assetDifferences: [],
+    pngDifferences: [ 33, 34, 42, 46, 64, 67 ]
+  },
+  {
+    name: 'four',
+    assetDifferences: [],
+    pngDifferences: [
+      33, 35, 63, 64,
+      67, 68, 70, 71
+    ]
+  }
+]

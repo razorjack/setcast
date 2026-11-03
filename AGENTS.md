@@ -110,6 +110,12 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
+- Quicksilver's Linux compositor hint needs further macOS work. Repeated looping-video exports
+  differ across workers on M1 Pro Metal, including portrait output; prepared BMP hashes match
+  while source PNG differences exceed the precision budget. Opacity/filter hints are unqualified.
+  Disabling GPU rasterization fixes the retained reproducer but changes other pixels and export
+  cost, so no production flag changed. See `docs/research/macos-followup-2026-11-03/README.md`.
+
 - Fedora SwiftShader live qualification passes the one-hour recovery preset, but the separate-operator
   software preset drops analysis samples near scene changes, including in isolation. A diagnostic
   observes an 875 ms packet-delivery gap beyond the 512 ms queue budget; its browser cause remains

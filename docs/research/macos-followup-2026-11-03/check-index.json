@@ -1,0 +1,197 @@
+{
+  "scope": "Process exit statuses. Source diagnostics may exit zero while qualified:false; read the linked source and experiment reports.",
+  "checks": [
+    {
+      "label": "browser-acceptance",
+      "exitCode": 0,
+      "command": "vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/browser-acceptance",
+      "startedUtc": "2026-11-03T11:43:45Z"
+    },
+    {
+      "label": "candidate-browser-acceptance",
+      "exitCode": 0,
+      "command": "vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/candidate-browser-acceptance",
+      "startedUtc": "2026-11-03T12:09:41Z"
+    },
+    {
+      "label": "candidate-installed-browser",
+      "exitCode": 0,
+      "command": "vp run package-smoke --browser --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/candidate-installed-browser.json",
+      "startedUtc": "2026-11-03T12:10:40Z"
+    },
+    {
+      "label": "candidate-installed-compatibility",
+      "exitCode": 0,
+      "command": "vp run package-smoke --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/candidate-installed-compatibility.json",
+      "startedUtc": "2026-11-03T12:11:11Z"
+    },
+    {
+      "label": "candidate-ready",
+      "exitCode": 0,
+      "command": "vp run ready",
+      "startedUtc": "2026-11-03T12:07:58Z"
+    },
+    {
+      "label": "candidate-remotion-acceptance",
+      "exitCode": 0,
+      "command": "vp run export-acceptance --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/candidate-remotion-acceptance",
+      "startedUtc": "2026-11-03T12:10:06Z"
+    },
+    {
+      "label": "cpu-encoded-hd",
+      "exitCode": 0,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-raster-check.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-encoded-hd quicksilver-video-workers-hd.mjs",
+      "startedUtc": "2026-11-03T11:58:58Z"
+    },
+    {
+      "label": "cpu-encoded",
+      "exitCode": 0,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-raster-check.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-encoded quicksilver-video-workers.mjs",
+      "startedUtc": "2026-11-03T11:58:27Z"
+    },
+    {
+      "label": "cpu-raster",
+      "exitCode": 0,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-raster.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/cpu-raster",
+      "startedUtc": "2026-11-03T11:57:14Z"
+    },
+    {
+      "label": "doctor",
+      "exitCode": 0,
+      "command": "node packages/cli/bin/setcast.js doctor --renderer browser --require still\\,video\\,gpu --json",
+      "startedUtc": "2026-11-03T11:43:44Z"
+    },
+    {
+      "label": "final-ready",
+      "exitCode": 0,
+      "command": "./node_modules/.bin/vp run ready",
+      "startedUtc": "2026-11-03T12:15:36Z"
+    },
+    {
+      "label": "live-energy",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/energy.ts",
+      "startedUtc": "2026-11-03T11:53:27Z"
+    },
+    {
+      "label": "live-midi",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/midi.ts",
+      "startedUtc": "2026-11-03T11:53:51Z"
+    },
+    {
+      "label": "live-output",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/output.ts",
+      "startedUtc": "2026-11-03T11:53:17Z"
+    },
+    {
+      "label": "opacity-encoded",
+      "exitCode": 1,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers-opacity.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/opacity-encoded",
+      "startedUtc": "2026-11-03T11:54:10Z"
+    },
+    {
+      "label": "portrait-filter",
+      "exitCode": 0,
+      "command": "node examples/demo/out/macos-followup-2026-11-03/portrait-source.mjs examples/demo/out/macos-followup-2026-11-03/portrait-filter filter",
+      "startedUtc": "2026-11-03T11:50:14Z"
+    },
+    {
+      "label": "portrait-legacy",
+      "exitCode": 0,
+      "command": "node examples/demo/out/macos-followup-2026-11-03/portrait-source.mjs examples/demo/out/macos-followup-2026-11-03/portrait-legacy legacy",
+      "startedUtc": "2026-11-03T11:48:47Z"
+    },
+    {
+      "label": "portrait-opacity",
+      "exitCode": 0,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/portrait-source.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/portrait-opacity opacity",
+      "startedUtc": "2026-11-03T11:51:25Z"
+    },
+    {
+      "label": "portrait-source",
+      "exitCode": 0,
+      "command": "node examples/demo/out/macos-followup-2026-11-03/portrait-source.mjs examples/demo/out/macos-followup-2026-11-03/portrait-source",
+      "startedUtc": "2026-11-03T11:48:07Z"
+    },
+    {
+      "label": "raster-timing-2",
+      "exitCode": 0,
+      "command": "node examples/demo/out/macos-followup-2026-11-03/raster-timing.mjs examples/demo/out/macos-followup-2026-11-03/raster-timing-2",
+      "startedUtc": "2026-11-03T12:00:55Z"
+    },
+    {
+      "label": "raster-timing",
+      "exitCode": 1,
+      "command": "node examples/demo/out/macos-followup-2026-11-03/raster-timing.mjs examples/demo/out/macos-followup-2026-11-03/raster-timing",
+      "startedUtc": "2026-11-03T12:00:35Z"
+    },
+    {
+      "label": "ready",
+      "exitCode": 0,
+      "command": "vp run ready",
+      "startedUtc": "2026-11-03T11:43:25Z"
+    },
+    {
+      "label": "remotion-acceptance",
+      "exitCode": 0,
+      "command": "vp run export-acceptance --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/remotion-acceptance",
+      "startedUtc": "2026-11-03T11:44:10Z"
+    },
+    {
+      "label": "sequence-1",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/sequence.ts",
+      "startedUtc": "2026-11-03T11:51:39Z"
+    },
+    {
+      "label": "sequence-2",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/sequence.ts",
+      "startedUtc": "2026-11-03T11:52:12Z"
+    },
+    {
+      "label": "sequence-3",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/sequence.ts",
+      "startedUtc": "2026-11-03T11:52:44Z"
+    },
+    {
+      "label": "still",
+      "exitCode": 0,
+      "command": "vp run theme-stills --at 1:50.4 --theme quicksilver",
+      "startedUtc": "2026-11-03T11:46:58Z"
+    },
+    {
+      "label": "video-assets",
+      "exitCode": 0,
+      "command": "node examples/demo/out/macos-followup-2026-11-03/video-assets.mjs examples/demo/out/macos-followup-2026-11-03/video-assets",
+      "startedUtc": "2026-11-03T11:55:53Z"
+    },
+    {
+      "label": "video-workers-hd",
+      "exitCode": 1,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers-hd.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers-hd",
+      "startedUtc": "2026-11-03T11:57:04Z"
+    },
+    {
+      "label": "video-workers",
+      "exitCode": 1,
+      "command": "node /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers.mjs /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers",
+      "startedUtc": "2026-11-03T11:47:09Z"
+    },
+    {
+      "label": "video",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/video-frames.ts --image-only --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video",
+      "startedUtc": "2026-11-03T11:44:43Z"
+    },
+    {
+      "label": "workers",
+      "exitCode": 0,
+      "command": "node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 4 --workers 1\\,2\\,4 --out /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/workers",
+      "startedUtc": "2026-11-03T11:46:10Z"
+    }
+  ]
+}

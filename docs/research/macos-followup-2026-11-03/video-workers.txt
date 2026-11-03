@@ -1,0 +1,18 @@
+round 0, 640x360: exact
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Worker pixels differ: round 0, 360x640
+    at file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers.mjs:28:7
+    at async withRenderSession (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:65:12)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/quicksilver-video-workers.mjs:14:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

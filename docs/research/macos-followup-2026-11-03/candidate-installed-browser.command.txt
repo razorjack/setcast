@@ -1,0 +1,1 @@
+vp run package-smoke --browser --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/candidate-installed-browser.json 

@@ -1,0 +1,365 @@
+{
+  "revision": "ec1d84d3503950f7c8cf6cdc9d10ed65aae0c12e",
+  "dirty": false,
+  "scope": "Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.",
+  "status": "failed",
+  "results": [
+    {
+      "round": 0,
+      "width": 640,
+      "height": 360,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers/0-640-1.mp4",
+          "hash": "SHA256=db85cab1dbf2ae3d6575395d0d590015740e2182783353f71dfe43fba72d0b75",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers/0-640-2.mp4",
+          "hash": "SHA256=db85cab1dbf2ae3d6575395d0d590015740e2182783353f71dfe43fba72d0b75",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers/0-640-4.mp4",
+          "hash": "SHA256=db85cab1dbf2ae3d6575395d0d590015740e2182783353f71dfe43fba72d0b75",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 0,
+      "width": 360,
+      "height": 640,
+      "equal": false,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers/0-360-1.mp4",
+          "hash": "SHA256=6d3d70b43a781a18a7cf019efdbff07297531639ed9e6ea4500ac750b2007bbf",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 1,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1084801024
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers/0-360-2.mp4",
+          "hash": "SHA256=8a70a766d5651cc6e12d5bf359829237ab5fa44482de87c35e693cbd89f6fdf0",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 2,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 1632731136
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/macos-followup-2026-11-03/video-workers/0-360-4.mp4",
+          "hash": "SHA256=0580a9e8f606cb25e35004a2a666a13d7de62885aeb43ea0c35a0336b58b26f1",
+          "runtime": [
+            {
+              "kind": "scheduling",
+              "workers": 4,
+              "reason": "explicit",
+              "cpuCount": 10,
+              "memoryBudgetBytes": 8589934592,
+              "estimatedMemoryBytes": 2728591360
+            },
+            {
+              "kind": "encoding-selection",
+              "encoder": "libx264",
+              "fallback": null
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+              "capture": "jpeg-screenshot",
+              "graphics": {
+                "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+                "vendor": "Google Inc. (Apple)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Worker pixels differ: round 0, 360x640"
+}
