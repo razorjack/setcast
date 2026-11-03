@@ -267,14 +267,12 @@ projector alignment and sustained performance remain unqualified.
 
 The configuration, rendering and host APIs are mapped in [platform.md](platform.md). These
 candidates remain useful beyond the active [renderer replacement sequence](renderer-replacement-plan.md#delivery-sequence).
-The list is not the current renderer delivery order. Keep Remotion as the default while meeting
-the replacement plan's correctness, performance, workflow and installation criteria.
+Browser-first promotion is complete. Platform qualification and throughput objectives remain
+follow-up work under the 3 November pre-release decision.
 
-1. **Explicit plugin loading in the stock CLI.** Load a configured visualizer package's schema
-   before project validation and its component in each selected renderer bundle. Define package
-   entry points, compatibility and asset handling, including scene copies and resume fingerprints;
-   verify an installed package through both exporters, preview and live output. The registries already exist, but automatic discovery and
-   runtime loading do not. Start with one external visualizer fixture, not a general plugin host.
+1. **Explicit plugin loading in the stock CLI.** Implemented through configured package schema
+   and browser entries, with declared assets, scene persistence and content identity. Installed
+   workflow verification is tracked in [the plugin plan](visualizer-plugins-plan.md).
 2. **Portable scene collections.** Package scenes, artwork/fonts and a versioned manifest with
    display names, previews and energy tags. Validate paths and dependencies before import. Keep
    venue geometry, device routing, MIDI and active performance state outside scene recall. Saved

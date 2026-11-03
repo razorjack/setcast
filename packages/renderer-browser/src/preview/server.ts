@@ -1,3 +1,4 @@
+import { projectPlugins, assertPluginSet } from '@setcast/core/node';
 import type { ExportSettings, ResolvedProject } from '@setcast/core';
 import { bundlePlayer } from '../bundle.ts';
 import { serveCapture } from '../server.ts';
@@ -16,9 +17,10 @@ export async function preview(
   project: ResolvedProject,
   options: { projectDir: string; port?: number; exports?: PreviewExportOptions },
 ) {
+  const plugins = projectPlugins(project);
   const [controls, capture] = await Promise.all([
     bundlePlayer('preview.tsx'),
-    bundlePlayer('export.tsx'),
+    bundlePlayer('export.tsx', options.projectDir, plugins),
   ]);
   for (const [path, bytes] of capture) controls.set(`/frame${path}`, bytes);
   controls.set(
@@ -47,6 +49,7 @@ export async function preview(
       }
     },
     update(next: ResolvedProject, settings?: ExportSettings) {
+      assertPluginSet(plugins, projectPlugins(next));
       jobs?.invalidate('The project changed. Create a new export from the current preview.');
       if (settings) jobs?.updateSettings(settings);
       state.project = next;

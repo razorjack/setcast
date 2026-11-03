@@ -369,8 +369,8 @@ canvas. Extend `GpuCanvasConfigSchema` from `@setcast/core` for resolution and b
 recovery, then supply parsed config and a stable shader descriptor. Shaders consume explicit
 `RenderFrame` inputs and write the complete drawing buffer. The canvas owns context resources,
 CSS color, adaptive scale, readiness and restoration. See [gpu-visualizer.md](gpu-visualizer.md#shared-canvas-for-visualizer-authors)
-for the authoring contract, premultiplied output and a complete example. This API does not imply
-runtime plugin package discovery.
+for the authoring contract, premultiplied output and a complete example. To load a visualizer in
+the stock CLI, use the explicit [visualizer package contract](visualizer-plugins.md).
 
 `RendererBindings.diagnostic` is an optional host callback for operational information and
 warnings (`level`, `source`, `code`, `message`). Keep these messages off the scene and separate

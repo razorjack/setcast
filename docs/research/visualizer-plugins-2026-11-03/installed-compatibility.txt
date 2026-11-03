@@ -1,0 +1,76 @@
+$ node scripts/package-smoke.ts --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/visualizer-plugins-2026-11-03/installed-compatibility.json ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+  installed optional Remotion adapter: validation and six decoded export frames
+ /private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:170
+        throw new Error([
+              ^
+
+Error: You passed /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-plugins-bfFmje/entry.mjs as your entry point, but this file does not contain "registerRoot". You should use the file that calls registerRoot() as the entry point. To ignore this error, pass "ignoreRegisterRootWarning" to bundle(). This error cannot be ignored on the CLI.
+    at validateEntryPoint (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:170:15)
+    at async internalBundle (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:184:9)
+    at async bundle (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:354:20)
+    at async RenderSession.start (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:591:20)
+    at async RenderSession.prepare (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:567:21)
+    at async renderIn (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:693:55)
+    at async run (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:30:11)
+    at async withRenderSession (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:536:10)
+    at async file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_a047c854a34108364c53483fb082c438/node_modules/@setcast/cli/plugin-smoke.mjs:113:3
+
+Node.js v26.7.0
+
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/@setcast/cli/plugin-smoke.mjs /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/project /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/@setcast/cli/dist/main.mjs true
+/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:170
+        throw new Error([
+              ^
+
+Error: You passed /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-plugins-bfFmje/entry.mjs as your entry point, but this file does not contain "registerRoot". You should use the file that calls registerRoot() as the entry point. To ignore this error, pass "ignoreRegisterRootWarning" to bundle(). This error cannot be ignored on the CLI.
+    at validateEntryPoint (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:170:15)
+    at async internalBundle (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:184:9)
+    at async bundle (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:354:20)
+    at async RenderSession.start (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:591:20)
+    at async RenderSession.prepare (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:567:21)
+    at async renderIn (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:693:55)
+    at async run (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:30:11)
+    at async withRenderSession (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:536:10)
+    at async file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_a047c854a34108364c53483fb082c438/node_modules/@setcast/cli/plugin-smoke.mjs:113:3
+
+Node.js v26.7.0
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:20)
+    at maybeClose (node:internal/child_process:1125:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: '/Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/@setcast/cli/plugin-smoke.mjs /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/project /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/@setcast/cli/dist/main.mjs true',
+  stdout: '',
+  stderr: '/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:170\n' +
+    '        throw new Error([\n' +
+    '              ^\n' +
+    '\n' +
+    'Error: You passed /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-plugins-bfFmje/entry.mjs as your entry point, but this file does not contain "registerRoot". You should use the file that calls registerRoot() as the entry point. To ignore this error, pass "ignoreRegisterRootWarning" to bundle(). This error cannot be ignored on the CLI.\n' +
+    '    at validateEntryPoint (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:170:15)\n' +
+    '    at async internalBundle (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:184:9)\n' +
+    '    at async bundle (/private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@remotion+bundler@4.0.513_lightningcss@1.33.0_postcss@8.5.32_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/@remotion/bundler/dist/bundle.js:354:20)\n' +
+    '    at async RenderSession.start (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:591:20)\n' +
+    '    at async RenderSession.prepare (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:567:21)\n' +
+    '    at async renderIn (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:693:55)\n' +
+    '    at async run (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:30:11)\n' +
+    '    at async withRenderSession (file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+renderer-remotion@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw_95af647feb506debe14723f14fa1dc21/node_modules/@setcast/renderer-remotion/dist/index.mjs:536:10)\n' +
+    '    at async file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-spwVdD/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_a047c854a34108364c53483fb082c438/node_modules/@setcast/cli/plugin-smoke.mjs:113:3\n' +
+    '\n' +
+    'Node.js v26.7.0\n'
+}
+
+Node.js v26.7.0
+

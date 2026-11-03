@@ -1,4 +1,7 @@
-import { access, readFile } from 'node:fs/promises';
+import { loadPlugins, projectPlugins } from './plugins.ts';
+import { visualizerAssets } from '../plugins.ts';
+import { visualizers as defaultVisualizers } from '../visualizers.ts';
+import { access, readFile, realpath, stat } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml, YAMLParseError } from 'yaml';
@@ -58,6 +61,7 @@ export async function loadProject(
   const root = resolve(dir);
   dependencies.add(join(root, CONFIG_FILE));
   const { config, input } = await readProjectConfig(root);
+  const { catalog, plugins } = await loadPlugins(root, config.plugins, dependencies);
   const themeName = themeOverride ?? config.theme;
   trackDependencies(root, config, themeName, dependencies);
   const theme = await resolveTheme(themeName, root, themes);
@@ -67,17 +71,18 @@ export async function loadProject(
   requireAnnouncements(config.announcements, toSeconds(mix.duration));
   const userCssFile = config.css ? await requireFile(root, config.css, 'css') : null;
 
-  const project = resolveProject(
-    config,
-    theme,
-    mix,
-    await composeCss(theme, userCssFile, dependencies),
-  );
+  const project = resolveProject(config, theme, mix, {
+    css: await composeCss(theme, userCssFile, dependencies),
+    catalog,
+  });
+  if (plugins.length) project.plugins = plugins;
+  await requireVisualizerAssets(root, project, dependencies);
   if (config.scenes && themeOverride === undefined)
     project.scenes = await loadScenes(root, config, toSeconds(mix.duration), {
       themes,
       dependencies,
     });
+  projectPlugins(project);
   return {
     dir: root,
     config,
@@ -95,12 +100,12 @@ function resolveProject(
   config: ProjectConfig,
   theme: Theme,
   mix: ResolvedProject['mix'],
-  css: string,
+  { css, catalog }: { css: string; catalog: typeof defaultVisualizers },
 ): ResolvedProject {
   let presentation = config.presentation.mode;
   if (presentation === 'auto') presentation = new Timeline(mix).overlaps ? 'dj' : 'playlist';
   const project: ResolvedProject = {
-    ...resolveAppearance(config, theme, css, resolveVisualizers(config.visualizer, theme)),
+    ...resolveAppearance(config, theme, css, resolveVisualizers(config.visualizer, theme, catalog)),
     clockOffset: config.clockOffset,
     clockTotal: config.clockTotal ?? null,
     audio: config.audio,
@@ -392,10 +397,14 @@ export function themeRoutes({ name, modulation }: Theme): ModRoute[] {
 }
 
 /** The project's `visualizer:` when it has one, otherwise the theme's default, otherwise a spectrum. */
-export function resolveVisualizers(written: unknown, theme: Theme): VisualizerConfig[] {
-  if (written !== undefined) return resolveVisualizerConfigs(written);
+export function resolveVisualizers(
+  written: unknown,
+  theme: Theme,
+  catalog = defaultVisualizers,
+): VisualizerConfig[] {
+  if (written !== undefined) return resolveVisualizerConfigs(written, catalog);
   try {
-    return resolveVisualizerConfigs(theme.visualizer ?? {});
+    return resolveVisualizerConfigs(theme.visualizer ?? {}, catalog);
   } catch (error) {
     if (!(error instanceof ConfigError)) throw error;
     const issue = error.issues[0]!;
@@ -461,3 +470,30 @@ function escapesRoot(root: string, absolute: string): boolean {
 
 const isEnoent = (error: unknown): error is NodeJS.ErrnoException =>
   error instanceof Error && 'code' in error && error.code === 'ENOENT';
+
+export async function requireVisualizerAssets(
+  root: string,
+  project: Pick<ResolvedProject, 'plugins' | 'visualizers'>,
+  dependencies?: Set<string>,
+  file = CONFIG_FILE,
+) {
+  for (const asset of visualizerAssets(project)) {
+    if (asset.value === undefined || asset.value === null) continue;
+    if (typeof asset.value !== 'string' || !asset.value)
+      throw new ConfigError(file, [
+        {
+          path: asset.path,
+          message:
+            'Plugin media must be a nonempty project-relative file path. Remove the field or supply a local file.',
+        },
+      ]);
+    const absolute = await requireFile(root, asset.value, asset.path, file);
+    const actual = await realpath(absolute);
+    if (escapesRoot(await realpath(root), actual) || !(await stat(actual)).isFile())
+      throw new SetcastError(
+        `${asset.path} is not a file inside the project: ${asset.value}.`,
+        'Use a regular media file inside the project, without links to outside files.',
+      );
+    dependencies?.add(absolute);
+  }
+}

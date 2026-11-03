@@ -1,0 +1,15 @@
+{
+  "name": "setcast-viz-fixture",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./setcast": "./schema.mjs",
+    "./setcast/browser": "./browser.mjs"
+  },
+  "peerDependencies": {
+    "@setcast/core": "0.1.0",
+    "react": ">=19",
+    "zod": ">=4 <5"
+  }
+}

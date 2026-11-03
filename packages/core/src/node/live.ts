@@ -4,9 +4,11 @@ import { ConfigError, SetcastError, zodIssues } from '../errors.ts';
 import { LiveConfigSchema, type LiveConfig } from '../live/live-config.ts';
 import type { Theme } from '../theme.ts';
 import type { ResolvedLiveProject } from '../project.ts';
+import { loadPlugins } from './plugins.ts';
 import { visualizers } from '../visualizers.ts';
 import {
   brandingWarnings,
+  requireVisualizerAssets,
   composeCss,
   parseConfigYaml,
   requireFile,
@@ -27,11 +29,12 @@ export interface LoadedLiveProject {
 /** Missing live.yaml uses defaults; an existing file is always validated. No audio is probed. */
 export async function loadLiveProject(
   dir: string,
-  options: Pick<LoadOptions, 'themes' | 'theme'> = {},
+  options: Pick<LoadOptions, 'themes' | 'theme' | 'dependencies'> = {},
 ): Promise<LoadedLiveProject> {
   const root = resolve(dir);
   await requireDirectory(root);
   const config = await readLiveConfig(root);
+  const { catalog, plugins } = await loadPlugins(root, config.plugins, options.dependencies);
   for (const [index, scene] of (config.sequence?.scenes ?? []).entries())
     await requireFile(
       root,
@@ -49,15 +52,17 @@ export async function loadLiveProject(
   if (config.branding?.logo)
     await requireFile(root, config.branding.logo, 'branding.logo', LIVE_CONFIG);
   const css = config.css ? await requireFile(root, config.css, 'css', LIVE_CONFIG) : null;
-  const selected = resolveLiveVisualizers(config, theme);
+  const selected = resolveLiveVisualizers(config, theme, catalog);
   const warnings: string[] = [];
-  const available = selected.filter((entry) => !visualizers.get(entry.name).wholeSet);
+  const available = selected.filter((entry) => !catalog.get(entry.name).wholeSet);
   if (available.length !== selected.length) {
     warnings.push(
       'Whole-set visualizers are omitted live because the performance has no known endpoint.',
     );
   }
   const project = resolveLiveProject(config, theme, await composeCss(theme, css), available);
+  if (plugins.length) project.plugins = plugins;
+  await requireVisualizerAssets(root, project, options.dependencies, LIVE_CONFIG);
   warnings.push(...liveWarnings(project, config));
   warnings.push(...(await brandingWarnings(root, config.branding, config.output, LIVE_CONFIG)));
   return { dir: root, project, warnings };
@@ -94,9 +99,9 @@ function resolveLiveProject(
   };
 }
 
-function resolveLiveVisualizers(config: LiveConfig, theme: Theme) {
+function resolveLiveVisualizers(config: LiveConfig, theme: Theme, catalog: typeof visualizers) {
   try {
-    return resolveVisualizers(config.visualizer, theme);
+    return resolveVisualizers(config.visualizer, theme, catalog);
   } catch (error) {
     if (error instanceof ConfigError) throw new ConfigError(LIVE_CONFIG, error.issues);
     throw error;

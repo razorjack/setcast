@@ -265,29 +265,41 @@ visualizers.add({ name: 'constellation', schema: ConstellationConfigSchema });
 
 /** Whether a visualizer of `project` needs `project.envelope`. */
 export const drawsWholeSet = (project: ResolvedProject): boolean =>
-  project.visualizers.some((config) => visualizers.get(config.name).wholeSet === true);
+  project.visualizers.some((config) => {
+    const plugin = project.plugins?.find((entry) => entry.name === config.name);
+    return plugin ? plugin.wholeSet : visualizers.get(config.name).wholeSet === true;
+  });
 
 /**
  * The `visualizer:` key as written: one block, or a list of blocks drawn in order (`[]` draws none).
  * Each entry is checked against its own visualizer's schema, so an error points at the entry.
  */
-export function resolveVisualizerConfigs(written: unknown): VisualizerConfig[] {
-  if (!Array.isArray(written)) return [resolveVisualizerConfig(written)];
-  return written.map((entry, index) => resolveVisualizerConfig(entry, `visualizer[${index}]`));
+export function resolveVisualizerConfigs(
+  written: unknown,
+  catalog = visualizers,
+): VisualizerConfig[] {
+  if (!Array.isArray(written)) return [resolveVisualizerConfig(written, 'visualizer', catalog)];
+  return written.map((entry, index) =>
+    resolveVisualizerConfig(entry, `visualizer[${index}]`, catalog),
+  );
 }
 
 /** Applies the named visualizer's own schema, filling in its defaults. `path` locates the block. */
-export function resolveVisualizerConfig(written: unknown, path = 'visualizer'): VisualizerConfig {
+export function resolveVisualizerConfig(
+  written: unknown,
+  path = 'visualizer',
+  catalog = visualizers,
+): VisualizerConfig {
   const entry = parseEntry(VisualizerEntrySchema, written, path);
-  if (!visualizers.has(entry.name)) {
+  if (!catalog.has(entry.name)) {
     throw new ConfigError('setcast.yaml', [
       {
         path: `${path}.name`,
-        message: `Unknown visualizer "${entry.name}". Available: ${visualizers.names().join(', ')}.`,
+        message: `Unknown visualizer "${entry.name}". Available: ${catalog.names().join(', ')}.`,
       },
     ]);
   }
-  return parseEntry(visualizers.get(entry.name).schema, entry, path) as VisualizerConfig;
+  return parseEntry(catalog.get(entry.name).schema, entry, path) as VisualizerConfig;
 }
 
 function parseEntry<T>(schema: z.ZodType<T>, written: unknown, path: string): T {

@@ -1,5 +1,8 @@
+import { pluginCompositionEntry } from './plugin-entry.ts';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { rm } from 'node:fs/promises';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { bundle } from '@remotion/bundler';
 import { ensureBrowser, openBrowser, selectComposition } from '@remotion/renderer';
 import {
@@ -9,7 +12,7 @@ import {
   type ResolvedProject,
   type RuntimeReport,
 } from '@setcast/core';
-import { observeRenderBrowser } from '@setcast/core/node';
+import { observeRenderBrowser, projectPlugins } from '@setcast/core/node';
 import type { RenderProgress } from './index.ts';
 import { checkLocalServer } from './local-server.ts';
 import { ENTRY, PACKAGE_ROOT } from './paths.ts';
@@ -47,7 +50,7 @@ class RenderSession {
   private readonly bundles = new Set<string>();
 
   async prepare(project: ResolvedProject, options: Options, report: Report) {
-    const key = JSON.stringify([options.projectDir, options.gl]);
+    const key = JSON.stringify([options.projectDir, options.gl, projectPlugins(project)]);
     let compositions = this.compositions.get(project);
     if (!compositions) {
       compositions = new Map();
@@ -57,7 +60,7 @@ class RenderSession {
       readMixDocument(project.mix);
       await probeAudio(project, options.projectDir);
     }
-    if (!this.resources.has(key)) this.resources.set(key, this.start(options, report));
+    if (!this.resources.has(key)) this.resources.set(key, this.start(project, options, report));
     const resources = await this.resources.get(key)!;
     if (options.onRuntime) await observeBrowser(resources.puppeteerInstance, options.onRuntime);
     if (!compositions.has(key))
@@ -73,11 +76,22 @@ class RenderSession {
     return { ...resources, composition: await compositions.get(key)! };
   }
 
-  private async start(options: Options, report: Report): Promise<Resources> {
+  private async start(
+    project: ResolvedProject,
+    options: Options,
+    report: Report,
+  ): Promise<Resources> {
     await checkLocalServer();
     await browserAvailable(report);
+    let entryPoint = ENTRY;
+    const plugins = projectPlugins(project);
+    if (plugins.length) {
+      const directory = await mkdtemp(join(tmpdir(), 'setcast-plugins-'));
+      this.bundles.add(directory);
+      entryPoint = await pluginCompositionEntry(options.projectDir, plugins, directory);
+    }
     const serveUrl = await bundle({
-      entryPoint: ENTRY,
+      entryPoint,
       rootDir: PACKAGE_ROOT,
       publicDir: options.projectDir,
       symlinkPublicDir: true,

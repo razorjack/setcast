@@ -36,7 +36,7 @@ after upgrading Setcast; these are local artifacts, not URLs for a hosted schema
 | `setcast schema midi` | Version 1 portable MIDI mapping profile |
 
 Output is one draft-2020-12 JSON document on stdout. Errors use stderr and exit code 2. The command
-does not read a project, so it works in an empty directory. Redirection is explicit; Setcast does
+does not read a project unless `--project` is supplied, so plain schema generation works in an empty directory. Redirection is explicit; Setcast does
 not create editor settings or rewrite authored files. Schema defaults describe runtime defaults;
 external tools should not insert them automatically because omitted values can inherit theme
 choices or select an encoding profile.
@@ -44,8 +44,9 @@ choices or select an encoding profile.
 Visualizer alternatives come from the core registry, including per-visualizer bounds and strict
 keys. Omitted `name` means spectrum, exactly as runtime dispatch does. An omitted `visualizer`
 uses the theme default; an empty list disables visualizers. The CLI includes the visualizers in
-its installed build. The schema API includes additional schemas already registered by an embedding
-host; this does not add plugin package discovery or execute modules named by YAML.
+its installed build. `setcast schema visualizer --project <dir>` additionally loads the recorded
+project's explicitly configured plugin schemas. The schema API also accepts an explicit visualizer
+catalog or uses schemas registered by an embedding host. See [visualizer packages](visualizer-plugins.md).
 
 ## Programmatic API
 

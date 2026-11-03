@@ -20,8 +20,8 @@ export const CONFIGURATION_SCHEMA_KINDS = [
 export type ConfigurationSchemaKind = (typeof CONFIGURATION_SCHEMA_KINDS)[number];
 
 /** Authoring schemas describe inputs; runtime loaders still check assets and semantic constraints. */
-export function configurationSchema(kind: ConfigurationSchemaKind) {
-  const visualizer = visualizerSchema();
+export function configurationSchema(kind: ConfigurationSchemaKind, catalog = visualizers) {
+  const visualizer = visualizerSchema(catalog);
   const schemas = {
     project: ProjectConfigSchema.extend({ visualizer: visualizer.optional() }),
     live: LiveConfigSchema.extend({ visualizer: visualizer.optional() }),
@@ -48,9 +48,9 @@ export function configurationSchema(kind: ConfigurationSchemaKind) {
   };
 }
 
-function visualizerSchema() {
-  const entries = visualizers.names().map((name) => {
-    const schema = visualizers.get(name).schema;
+function visualizerSchema(catalog: typeof visualizers) {
+  const entries = catalog.names().map((name) => {
+    const schema = catalog.get(name).schema;
     // Dispatch selects spectrum when name is omitted, regardless of other schemas' defaults.
     return name === 'spectrum'
       ? schema
@@ -95,6 +95,8 @@ function descriptions(visualizer: z.ZodType) {
 
 const PROJECT_DESCRIPTIONS = {
   title: 'Session title shown by themes.',
+  plugins:
+    'Explicit installed visualizer packages. Loading executes their schema and browser code; Setcast does not install them.',
   audio: 'Recorded master audio file inside the project directory.',
   background: 'Image or looping video inside the project directory.',
   backgroundFit:

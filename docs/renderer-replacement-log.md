@@ -1932,3 +1932,13 @@ The next authorized milestone is explicit external visualizer loading, tracked i
 [visualizer-plugins-plan.md](visualizer-plugins-plan.md). It includes scoped schema validation,
 generated browser entries, declared asset copying/rebasing, content identity and installed workflow
 checks. The implementation must cover browser/Remotion exports, independent preview and live.
+
+## 3 November: explicit visualizer packages implemented
+
+The configured-package milestone now passes fresh browser-only and optional-Remotion installations,
+including decoded component/asset pixels, worker equality, portrait output, cache/resume, preview
+seeks, synthetic live capture and saved scenes. Both exporter acceptance suites pass. Core owns
+scoped schemas and asset metadata; adapters own their startup entry. Remotion requires its generated
+entry to call registerRoot explicitly. Initial Vite-entry and harness import failures are retained.
+See the [qualification report](research/visualizer-plugins-2026-11-03/README.md) and
+[package contract](visualizer-plugins.md). Final baseline validation passes all 694 tests, formatting, lint/types, dependency isolation and decoded smoke.

@@ -698,9 +698,19 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 - Live hardware adapters, physical latency/OBS qualification, drift correction and live cue
   presentation. Manual journal → finite replay and live audio visualization are implemented.
 - Everything in the plugin registry list above.
-- Generated per-project bundle entry so `plugins:` in `setcast.yaml` can pull npm plugins in.
+- Explicit visualizer packages use generated per-project bundle entries; see `docs/visualizer-plugins.md`.
 
 ## Decisions
+
+- `plugins:` explicitly loads installed visualizer packages with API version 1. Each supplies
+  an isomorphic `/setcast` schema definition and `/setcast/browser` default component. Node uses
+  a per-project catalog; packages must not register themselves globally. Generated browser entries
+  register components before starting the existing entry. Declared top-level media fields are
+  validated, copied, rebased and fingerprinted. Package content changes require restarting preview
+  or live; scene recalls must fit the running bundle. Keep the installed fixture in package-smoke
+  and disable announcement-only local cache reuse for external visualizers. See
+  `docs/visualizer-plugins.md` and `docs/visualizer-plugins-plan.md`.
+
 
 - Browser H.264 capture is sRGB. Declare full-range BT.601/JPEG matrix separately from BT.709/sRGB
   primaries and sRGB transfer with the adapter's SCREENSHOT_COLOR_FILTER before encoding. Matrix
@@ -720,8 +730,8 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   `--cache-size` in MiB), separate from `--resume`. Cache identity includes
   project/settings/runtime/host and all tracked assets. Built-in visualizers permit announcement
   text edits to reuse chunks outside the announcement interval; metadata and all other project
-  fields remain global. Unknown root/scene visualizers disable local reuse. Future plugin loading
-  must disable this optimization until arbitrary project reads have a dependency contract. Resume
+  fields remain global. External root/scene visualizers disable local reuse until arbitrary
+  project reads have a dependency contract. Resume
   checkpoints retain complete project identity. Store validated encoded
   video chunks, verify copied hashes, keep one writer lock, bound video bytes/entry count, and use
   `cache inspect`/`cache clear` for management. Never recursively clear unrecognized directories.
@@ -1546,7 +1556,7 @@ Versions verified 2026-08-19 (do not re-litigate; bump deliberately):
   it at render time instead of storing it.
 - Native multichannel capture and OBS browser-source integration beyond the current browser-window
   capture workflow. Live audio already drives the shared Stage; hardware event timing remains undecided.
-- Plugin loading for npm plugins (generated bundle entry vs. config-time import map).
+- Broader plugin kinds beyond the explicit visualizer package contract.
 
 ## Code values (binding)
 

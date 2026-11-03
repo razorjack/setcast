@@ -1,3 +1,4 @@
+import { PluginsSchema } from './plugins.ts';
 import { z } from 'zod';
 import { AnnouncementsSchema, BrandingSchema } from './branding.ts';
 import { PerformanceSchema, AutomationSchema } from './live/performance.ts';
@@ -305,6 +306,7 @@ export const ProjectConfigSchema = z
         })
         .prefault({}),
       modulation: z.array(ModRouteSchema, { error: 'modulation must be a YAML list.' }).default([]),
+      plugins: PluginsSchema.optional(),
       /**
        * One block or a list; `resolveVisualizerConfigs` checks each against its own schema.
        * Absent means the theme's default.

@@ -1,3 +1,4 @@
+import { assertPluginSet, projectPlugins } from '@setcast/core/node';
 import { SetcastError, type SceneProject } from '@setcast/core';
 
 export interface ThemeChoice {
@@ -46,7 +47,10 @@ export function projectCatalog(project: SceneProject, catalog?: ThemeCatalog): P
         `Choose one of: ${listings.map((listing) => listing.name).join(', ')}.`,
       );
     }
-    const loading = catalog.load(theme).then(serialize);
+    const loading = catalog.load(theme).then((next) => {
+      assertPluginSet(projectPlugins(project), projectPlugins(next));
+      return serialize(next);
+    });
     projects.set(theme, loading);
     loading.catch(() => projects.delete(theme));
     return loading;

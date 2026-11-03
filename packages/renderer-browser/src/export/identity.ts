@@ -4,7 +4,12 @@ import { open, readFile, readdir, realpath, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hostname, release } from 'node:os';
-import { SetcastError, type ResolvedProject, type RenderOptions } from '@setcast/core';
+import {
+  SetcastError,
+  visualizerAssets,
+  type ResolvedProject,
+  type RenderOptions,
+} from '@setcast/core';
 import { projectAsset } from '../assets.ts';
 import { exportEncoding } from './encoding.ts';
 import { exportRuntime } from './session.ts';
@@ -57,7 +62,11 @@ export function projectAssets(project: ResolvedProject): string[] {
   const scenes = [project, ...(project.scenes ?? []).map(({ scene }) => scene)];
   for (const scene of scenes) validateCss(scene.css);
   const backgrounds = project.mix.plays.map((play) => play.background);
-  const sceneAssets = scenes.flatMap((scene) => [scene.background, scene.branding?.logo]);
+  const sceneAssets = scenes.flatMap((scene) => [
+    scene.background,
+    scene.branding?.logo,
+    ...visualizerAssets(scene).map((asset) => asset.value as string | undefined),
+  ]);
   return [...new Set([project.audio, ...backgrounds, ...sceneAssets])]
     .filter((path): path is string => Boolean(path))
     .sort();
@@ -109,7 +118,7 @@ export async function computeExportIdentity(
     encoding: exportEncoding(options),
     concurrency: options.concurrency ?? 1,
     gl: options.gl ?? 'auto',
-    runtime: await exportRuntime(options),
+    runtime: await exportRuntime(project, options),
     platform: process.platform,
     arch: process.arch,
     os: release(),

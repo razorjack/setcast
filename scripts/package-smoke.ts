@@ -193,6 +193,11 @@ async function command(file: string, args: string[], cwd = root) {
 }
 
 async function buildAndPack(): Promise<void> {
+  await command(
+    process.execPath,
+    [pnpmBin, 'pack', '--pack-destination', temporary],
+    join(root, 'scripts/fixtures/setcast-viz-fixture'),
+  );
   await Promise.all(
     names.map((name) => command(process.execPath, [vpBin, 'pack'], join(root, 'packages', name))),
   );
@@ -221,6 +226,7 @@ async function installPackages(): Promise<void> {
   const overrides = await packageOverrides();
   const dependencies = {
     '@setcast/cli': overrides['@setcast/cli'],
+    'setcast-viz-fixture': pathToFileURL(join(temporary, 'setcast-viz-fixture-1.0.0.tgz')).href,
     ...(!values.browser
       ? { '@setcast/renderer-remotion': overrides['@setcast/renderer-remotion'] }
       : {}),
@@ -356,6 +362,7 @@ async function exerciseCli(): Promise<void> {
   await exerciseDefaultCommands(run, cli);
   report.completed.push('default preview, clip and bundled export');
   if (!values.browser) await exerciseCompatibility(run, project);
+  await exercisePlugin(cli, project);
 }
 
 async function exerciseTooling(run: (...args: string[]) => Promise<{ stdout: string }>) {
@@ -695,4 +702,16 @@ async function assertVideoFrames(file: string, expected: number) {
     decoded.split('\n').filter((line) => line && !line.startsWith('#')).length,
     expected,
   );
+}
+
+async function exercisePlugin(cli: string, project: string) {
+  const pluginScript = join(dirname(cli), '../plugin-smoke.mjs');
+  await writeFile(pluginScript, await readFile(join(root, 'scripts/package-smoke-plugin.mjs')));
+  const plugin = await command(
+    process.execPath,
+    [pluginScript, project, cli, String(!values.browser)],
+    temporary,
+  );
+  console.log(plugin.stdout.trim());
+  report.completed.push('installed external visualizer workflows');
 }

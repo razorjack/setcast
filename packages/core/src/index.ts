@@ -402,3 +402,10 @@ export {
   type RendererCompatibilityOptions,
   type RendererCompatibilityIssue,
 } from './diagnostics/renderer-compatibility.ts';
+
+export {
+  PluginsSchema,
+  visualizerAssets,
+  type VisualizerPlugin,
+  type ResolvedPlugin,
+} from './plugins.ts';

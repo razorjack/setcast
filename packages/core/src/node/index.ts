@@ -42,3 +42,5 @@ export { diagnoseBrowserRuntime, type DiagnosticBrowser } from './diagnostic-bro
 export { observeRenderBrowser } from './render-browser.ts';
 
 export { diagnoseLocalServer } from './diagnostic-server.ts';
+
+export { loadPlugins, projectPlugins, pluginRegistration, assertPluginSet } from './plugins.ts';

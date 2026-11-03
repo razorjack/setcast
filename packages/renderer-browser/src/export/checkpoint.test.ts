@@ -83,6 +83,23 @@ test('manifest validation and dependency collection reject untracked input', () 
     'saved/movie.mp4',
     'track.jpg',
   ]);
+  const plugin = {
+    package: 'setcast-viz-fixture',
+    version: '1',
+    digest: 'hash',
+    resolveFrom: '.',
+    name: 'fixture',
+    assets: ['image'],
+    wholeSet: false,
+    audio: false,
+  };
+  expect(
+    projectAssets({
+      ...project,
+      plugins: [plugin],
+      visualizers: [{ name: 'fixture', image: 'custom.png' }],
+    }),
+  ).toContain('custom.png');
   expect(() =>
     projectAssets({ ...project, css: 'a { background: url(https://example.com/a.png); }' }),
   ).toThrow('self-contained');

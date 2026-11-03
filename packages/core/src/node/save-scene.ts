@@ -1,3 +1,5 @@
+import { projectPlugins } from './plugins.ts';
+import { visualizerAssets } from '../plugins.ts';
 import { copySceneDirectory, sceneDirectory } from './copy-scenes.ts';
 import { constants } from 'node:fs';
 import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
@@ -27,9 +29,20 @@ export async function saveScene(
   try {
     const selected = selectedConfig(config, project, selection);
     await copyMedia(root, output, selected);
+    await copyVisualizerMedia(root, output, selected, project);
     await copyScenes(root, output, selected, selection);
     await writeFile(join(output, `${project.theme}.css`), project.css);
     await writeFile(join(output, configName), stringify(selected));
+    const plugins = projectPlugins(project);
+    if (plugins.length) {
+      const dependencies = Object.fromEntries(
+        plugins.map((plugin) => [plugin.package, plugin.version]),
+      );
+      await writeFile(
+        join(output, 'package.json'),
+        JSON.stringify({ private: true, dependencies }, null, 2) + '\n',
+      );
+    }
     return { directory: basename(output), config: configName };
   } catch (error) {
     await rm(output, { recursive: true, force: true });
@@ -85,7 +98,8 @@ export function appearanceConfig(appearance: SceneAppearance): YamlConfig {
     branding: appearance.branding ?? undefined,
     bpm: appearance.bpm ?? undefined,
     beatOffset: appearance.beatOffset,
-    visualizer: appearance.visualizers,
+    visualizer: structuredClone(appearance.visualizers),
+    plugins: appearance.plugins?.map((plugin) => plugin.package),
     modulation: appearance.modulation,
   };
 }
@@ -186,4 +200,23 @@ async function copyScenes(
     scenes.push({ ...entry, preset });
   }
   config.scenes = scenes;
+}
+
+async function copyVisualizerMedia(
+  root: string,
+  output: string,
+  config: YamlConfig,
+  project: SceneProject,
+) {
+  const scene = {
+    plugins: project.plugins,
+    visualizers: config.visualizer as SceneProject['visualizers'],
+  };
+  for (const asset of visualizerAssets(scene)) {
+    if (typeof asset.value !== 'string') continue;
+    const media = { background: asset.value };
+    const directory = `plugin-assets/${scene.visualizers.indexOf(asset.config)}-${asset.field}`;
+    await copyMedia(root, join(output, directory), media);
+    asset.config[asset.field] = `${directory}/${media.background}`;
+  }
 }

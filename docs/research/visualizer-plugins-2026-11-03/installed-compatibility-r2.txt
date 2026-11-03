@@ -1,0 +1,10 @@
+$ node scripts/package-smoke.ts --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/visualizer-plugins-2026-11-03/installed-compatibility-r2.json ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+  installed optional Remotion adapter: validation and six decoded export frames
+installed plugin: optional Remotion export pixels pass
+  installed plugin: schema, validation, browser export, cache/resume, mixed session bundles, preview, recorded/live player, saved scenes pass
+package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)
+

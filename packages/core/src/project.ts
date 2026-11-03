@@ -1,3 +1,4 @@
+import type { ResolvedPlugin } from './plugins.ts';
 import type { PerformanceState, PerformanceEvent } from './live/performance.ts';
 import type { SetEnvelope, SetTravel } from './audio/analysis.ts';
 import type { BackgroundFit } from './background.ts';
@@ -35,6 +36,7 @@ export type ResolvedProject = {
   modulation: ModRoute[];
   /** The `visualizer:` entries in drawing order, each after its own schema filled in the defaults. */
   visualizers: VisualizerConfig[];
+  plugins?: ResolvedPlugin[];
   /**
    * The whole set's energy, when a visualizer draws it (`drawsWholeSet`). Loading a project leaves
    * it null; commands that render read the audio and fill it in.
@@ -102,6 +104,7 @@ export type SceneAppearance = Pick<
   | 'theme'
   | 'css'
   | 'visualizers'
+  | 'plugins'
   | 'modulation'
   | 'bpm'
   | 'beatOffset'
@@ -116,6 +119,7 @@ export function sceneAppearance(scene: SceneProject): SceneAppearance {
     theme: scene.theme,
     css: scene.css,
     visualizers: scene.visualizers,
+    ...(scene.plugins ? { plugins: scene.plugins } : {}),
     modulation: scene.modulation,
     bpm: scene.bpm,
     beatOffset: scene.beatOffset,

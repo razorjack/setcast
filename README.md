@@ -123,7 +123,8 @@ for live projects or `--json` for a structured report.
 [Renderer diagnostics](docs/renderer-diagnostics.md) separate declared support (`setcast capabilities`)
 from machine checks (`setcast doctor --renderer browser --json`).
 The [platform guide](docs/platform.md) maps configuration, portable setup, renderer contracts and
-visualizer authoring, including the current boundaries of JavaScript plugin support.
+visualizer authoring. [External visualizer packages](docs/visualizer-plugins.md) can be listed in
+`plugins:` for validation, preview, live output and both exporters.
 
 A project is a directory:
 

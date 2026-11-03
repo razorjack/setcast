@@ -1,3 +1,5 @@
+import { projectPlugins, assertPluginSet } from '@setcast/core/node';
+import type { ResolvedPlugin } from '@setcast/core';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { realpath, readFile } from 'node:fs/promises';
 import { errorMessage, SetcastError, type SceneProject } from '@setcast/core';
@@ -42,7 +44,12 @@ export async function play(project: SceneProject, options: PlayerOptions): Promi
       'Use an integer from 1 to 65535, or 0 for an available port.',
     );
   }
-  const site = await siteFor(project, options.projectDir, await bundlePlayer(), options.themes);
+  const site = await siteFor(
+    project,
+    options.projectDir,
+    await bundlePlayer('index.tsx', options.projectDir, projectPlugins(project)),
+    options.themes,
+  );
   return listen({ ...site, writable: true }, port);
 }
 
@@ -59,6 +66,7 @@ export async function serveCapture(
 }
 
 interface Site {
+  plugins: ResolvedPlugin[];
   root: string;
   files: Map<string, Buffer>;
   catalog: ProjectCatalog;
@@ -79,7 +87,12 @@ async function siteFor(
     '/capture-worklet.js',
     await readFile(new URL('../entry/capture-worklet.js', import.meta.url)),
   );
-  return { root: await realpath(projectDir), files, catalog: projectCatalog(project, themes) };
+  return {
+    root: await realpath(projectDir),
+    files,
+    catalog: projectCatalog(project, themes),
+    plugins: projectPlugins(project),
+  };
 }
 
 async function listen(site: Site, port: number): Promise<PlayerServer> {
@@ -183,7 +196,11 @@ const READ_ROUTES: Record<string, ReadRoute> = {
     sendScenes(() => savedScenes(site.root), request, response),
   '/scene.json': (site, url, request, response) =>
     sendScenes(
-      () => savedScene(site.root, url.searchParams.get('preset') ?? ''),
+      async () => {
+        const scene = await savedScene(site.root, url.searchParams.get('preset') ?? '');
+        assertPluginSet(site.plugins, projectPlugins(scene));
+        return scene;
+      },
       request,
       response,
     ),

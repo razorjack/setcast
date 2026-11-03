@@ -8,7 +8,7 @@ import {
   type StillOptions,
   type RuntimeReport,
 } from '@setcast/core';
-import { observeRenderBrowser } from '@setcast/core/node';
+import { observeRenderBrowser, projectPlugins } from '@setcast/core/node';
 import { bundlePlayer } from '../bundle.ts';
 import { captureBrowserArgs } from './graphics.ts';
 import { serveCapture } from '../server.ts';
@@ -17,7 +17,7 @@ import type {} from './scene.tsx';
 
 interface Session {
   browsers: Map<string, Promise<Browser>>;
-  files: Promise<Map<string, Buffer>> | null;
+  files: Map<string, Promise<Map<string, Buffer>>>;
 }
 const sessions = new AsyncLocalStorage<Session>();
 
@@ -27,11 +27,14 @@ type CaptureOptions = Pick<StillOptions, 'projectDir' | 'gl' | 'signal' | 'onPro
   onRuntime?: RuntimeReport;
 };
 
-async function captureBundle(options: CaptureOptions) {
+async function captureBundle(project: ResolvedProject, options: CaptureOptions) {
   const session = sessions.getStore()!;
   options.onProgress?.({ stage: 'bundle', progress: 0 });
-  session.files ??= bundlePlayer('export.tsx');
-  const files = await session.files;
+  const plugins = projectPlugins(project);
+  const key = JSON.stringify([options.projectDir, plugins]);
+  if (!session.files.has(key))
+    session.files.set(key, bundlePlayer('export.tsx', options.projectDir, plugins));
+  const files = await session.files.get(key)!;
   options.onProgress?.({ stage: 'bundle', progress: 1 });
   return files;
 }
@@ -47,8 +50,8 @@ async function captureBrowser(options: CaptureOptions) {
   return browser;
 }
 
-export async function exportRuntime(options: CaptureOptions) {
-  const files = await captureBundle(options);
+export async function exportRuntime(project: ResolvedProject, options: CaptureOptions) {
+  const files = await captureBundle(project, options);
   const hash = createHash('sha256');
   for (const [path, bytes] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
     hash.update(path);
@@ -60,14 +63,14 @@ export async function exportRuntime(options: CaptureOptions) {
 
 export async function withRenderSession<T>(task: () => Promise<T>): Promise<T> {
   if (sessions.getStore()) return task();
-  const session: Session = { browsers: new Map(), files: null };
+  const session: Session = { browsers: new Map(), files: new Map() };
   try {
     return await sessions.run(session, task);
   } finally {
     await Promise.allSettled(
       [...session.browsers.values()].map(async (browser) => (await browser).close()),
     );
-    await session.files?.catch(() => {});
+    await Promise.allSettled(session.files.values());
   }
 }
 
@@ -78,7 +81,7 @@ interface Capture extends AsyncDisposable {
 
 async function openCapture(project: ResolvedProject, options: CaptureOptions): Promise<Capture> {
   options.signal?.throwIfAborted();
-  const files = await captureBundle(options);
+  const files = await captureBundle(project, options);
   const server = await serveCapture(project, { projectDir: options.projectDir, files });
   let page: Page | undefined;
   const abort = () => {

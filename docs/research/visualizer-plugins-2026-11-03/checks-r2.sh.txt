@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eu
+export PATH="$PWD/node_modules/.bin:$PATH"
+export PLAYWRIGHT_BROWSERS_PATH="$PWD/examples/demo/out/playwright"
+root=examples/demo/out/visualizer-plugins-2026-11-03
+run_check() {
+  local name="$1"
+  shift
+  local status=0
+  "$@" > "$root/$name.txt" 2>&1 || status=$?
+  printf '%s\n' "$status" > "$root/$name.exit.txt"
+  printf '%s: %s\n' "$name" "$status"
+  return "$status"
+}
+run_check installed-compatibility-r2 vp run package-smoke --report "$PWD/$root/installed-compatibility-r2.json"
+run_check browser-acceptance vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$PWD/$root/browser-acceptance"
+run_check remotion-acceptance vp run export-acceptance --gl swangle --out "$PWD/$root/remotion-acceptance"

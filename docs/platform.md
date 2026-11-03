@@ -5,8 +5,9 @@ exporters. Start with YAML and CSS when customizing a show. Use the core APIs wh
 Setcast or building a visualizer into a host. Browser is the default exporter;
 `renderer: remotion` selects the optional compatibility adapter.
 
-This guide maps the implemented contracts. It does not imply automatic discovery of installed
-JavaScript plugins or a hosted configuration service.
+This guide maps the implemented contracts. Explicit visualizer packages are supported through
+`plugins:`; see [visualizer packages](visualizer-plugins.md). Setcast does not discover packages
+automatically or provide a hosted configuration service.
 
 ## Configuration before code
 
@@ -141,7 +142,8 @@ complete registrations fail. Keep the schema module single-instanced within each
 Keep parsed visualizer configuration JSON-compatible: loaders pass resolved project data across
 process and browser boundaries. Media readiness is separate from asset discovery. The built-in
 loader, scene saver and resume fingerprint know core asset fields; they do not scan arbitrary
-plugin configuration keys for file paths. A host adding plugin files must integrate validation,
+plugin configuration keys for file paths. Configured packages declare supported fields through
+`assets`; an embedding host adding other file shapes must integrate validation,
 serving, copying/rebasing and content fingerprints, or leave unsupported persistence/resume paths
 disabled. Calling `useAsset` only provides readiness, not those asset-lifecycle guarantees.
 
@@ -150,11 +152,10 @@ For GPU effects, use the public `ShaderCanvas`, `Shader<C>` and `GpuCanvasConfig
 buffers, premultiplied output, absolute-time uniforms, context recovery and a complete shader
 example. A registered visualizer's schema also needs its literal `name` field.
 
-The stock CLI does not yet load arbitrary `setcast-viz-*` packages or extra entry modules from
-YAML. Today custom JavaScript requires an embedding host or a source build that includes both
-registrations. CSS-path themes work with the stock CLI. A future plugin loader needs explicit
-package/version resolution, both runtime registrations, packaging checks and compatibility rules;
-naming a package alone is not that capability.
+The stock CLI loads explicitly configured visualizer packages through `plugins:`. Its separate
+schema/component exports, project-specific catalogs, asset declarations and lifecycle rules are
+specified in [visualizer packages](visualizer-plugins.md). Embedding hosts can still register
+visualizers directly using the example above.
 
 ## Verify a platform extension
 

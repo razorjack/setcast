@@ -1,3 +1,4 @@
+import { visualizerAssets } from '../plugins.ts';
 import { join, sep } from 'node:path';
 import { sceneDirectory } from './copy-scenes.ts';
 import type { ProjectConfig } from '../config.ts';
@@ -23,7 +24,10 @@ export async function loadScenes(
     const dir = await sceneDirectory(root, entry.preset);
     options.dependencies?.add(join(dir, 'live.yaml'));
     try {
-      const { project } = await loadLiveProject(dir, { themes: options.themes });
+      const { project } = await loadLiveProject(dir, {
+        themes: options.themes,
+        dependencies: options.dependencies,
+      });
       scenes.push({ at: entry.at, scene: rebaseScene(project, entry.preset) });
     } catch (error) {
       if (error instanceof ConfigError)
@@ -41,5 +45,13 @@ export function rebaseScene(scene: ResolvedLiveProject, preset: string): Resolve
   const logo = scene.branding?.logo;
   const branding =
     scene.branding && logo ? { ...scene.branding, logo: rebase(logo) } : scene.branding;
-  return { ...scene, background, branding };
+  const visualizers = structuredClone(scene.visualizers);
+  for (const asset of visualizerAssets({ ...scene, visualizers })) {
+    if (typeof asset.value === 'string') asset.config[asset.field] = rebase(asset.value);
+  }
+  const plugins = scene.plugins?.map((plugin) => ({
+    ...plugin,
+    resolveFrom: rebase(plugin.resolveFrom),
+  }));
+  return { ...scene, background, branding, visualizers, ...(plugins ? { plugins } : {}) };
 }

@@ -1,0 +1,52 @@
+$ node scripts/package-smoke.ts --browser --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/readback-followup-2026-11-03/installed-browser-r2.json ⊘ cache disabled
+  fresh tarball installation: no Remotion packages
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+ file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_c428fd97339288ed338f2989553f13df/node_modules/@setcast/cli/plugin-smoke.mjs:72
+const browser = await chromium.launch();
+                               ^
+
+TypeError: Cannot read properties of undefined (reading 'launch')
+    at file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_c428fd97339288ed338f2989553f13df/node_modules/@setcast/cli/plugin-smoke.mjs:72:32
+
+Node.js v26.7.0
+
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/@setcast/cli/plugin-smoke.mjs /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/project /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/@setcast/cli/dist/main.mjs false
+file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_c428fd97339288ed338f2989553f13df/node_modules/@setcast/cli/plugin-smoke.mjs:72
+const browser = await chromium.launch();
+                               ^
+
+TypeError: Cannot read properties of undefined (reading 'launch')
+    at file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_c428fd97339288ed338f2989553f13df/node_modules/@setcast/cli/plugin-smoke.mjs:72:32
+
+Node.js v26.7.0
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:20)
+    at maybeClose (node:internal/child_process:1125:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: '/Users/razorjack/.local/share/mise/installs/node/26.7.0/bin/node /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/@setcast/cli/plugin-smoke.mjs /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/project /var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/@setcast/cli/dist/main.mjs false',
+  stdout: '',
+  stderr: 'file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_c428fd97339288ed338f2989553f13df/node_modules/@setcast/cli/plugin-smoke.mjs:72\n' +
+    'const browser = await chromium.launch();\n' +
+    '                               ^\n' +
+    '\n' +
+    "TypeError: Cannot read properties of undefined (reading 'launch')\n" +
+    '    at file:///private/var/folders/sh/j9z87ytn4rs243p3yrw5nc0r0000gn/T/setcast-packages-tMGm5o/node_modules/.pnpm/@setcast+cli@file+..+..+..+..+..+..+..+var+folders+sh+j9z87ytn4rs243p3yrw5nc0r0000gn+T+_c428fd97339288ed338f2989553f13df/node_modules/@setcast/cli/plugin-smoke.mjs:72:32\n' +
+    '\n' +
+    'Node.js v26.7.0\n'
+}
+
+Node.js v26.7.0
+

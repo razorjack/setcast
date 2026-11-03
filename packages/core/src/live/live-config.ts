@@ -20,6 +20,7 @@ export const LiveConfigSchema = ProjectConfigSchema.pick({
   css: true,
   modulation: true,
   visualizer: true,
+  plugins: true,
   bpm: true,
   beatOffset: true,
   performance: true,

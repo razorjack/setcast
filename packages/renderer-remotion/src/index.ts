@@ -1,3 +1,5 @@
+import { pluginCompositionEntry } from './plugin-entry.ts';
+import { projectPlugins, assertPluginSet } from '@setcast/core/node';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -231,24 +233,27 @@ export async function preview(project: ResolvedProject, options: PreviewOptions)
   const dir = await mkdtemp(join(tmpdir(), 'setcast-'));
   let stop: (() => Promise<void>) | undefined;
   try {
+    const plugins = projectPlugins(project);
+    const entry = await pluginCompositionEntry(options.projectDir, plugins, dir);
     const propsFile = join(dir, 'props.json');
     await writeFile(propsFile, JSON.stringify(project));
     let revision = 0;
     stop = options.watch?.(async (next) => {
+      assertPluginSet(plugins, projectPlugins(next));
       requireSupportedOutput(next, options.codec);
       readMixDocument(next.mix);
       await writeFile(`${propsFile}.tmp`, JSON.stringify({ ...next, previewRevision: ++revision }));
       await rename(`${propsFile}.tmp`, propsFile);
     });
-    await runStudio(studioArgs(propsFile, { ...options, hardwareAcceleration }));
+    await runStudio(studioArgs(propsFile, { ...options, hardwareAcceleration }, entry));
   } finally {
     await stop?.();
     await rm(dir, { recursive: true, force: true });
   }
 }
 
-function studioArgs(propsFile: string, options: PreviewOptions): string[] {
-  const args = ['studio', ENTRY, '--props', propsFile, '--public-dir', options.projectDir];
+function studioArgs(propsFile: string, options: PreviewOptions, entry = ENTRY): string[] {
+  const args = ['studio', entry, '--props', propsFile, '--public-dir', options.projectDir];
   args.push(...studioEncodingArgs(options));
   if (options.port) args.push('--port', String(options.port));
   const { gl } = graphicsOptions(options.gl);

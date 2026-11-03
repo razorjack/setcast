@@ -1,18 +1,38 @@
+import { pluginRegistration } from '@setcast/core/node';
+import type { ResolvedPlugin } from '@setcast/core';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 
-export async function bundlePlayer(entry = 'index.tsx'): Promise<Map<string, Buffer>> {
+export async function bundlePlayer(
+  entry = 'index.tsx',
+  projectDir = '.',
+  plugins: ResolvedPlugin[] = [],
+): Promise<Map<string, Buffer>> {
+  const original = fileURLToPath(new URL(`../entry/${entry}`, import.meta.url));
+  const source = plugins.length
+    ? `${await pluginRegistration(projectDir, plugins)}\nvoid import(${JSON.stringify(original)});`
+    : null;
+  const id = fileURLToPath(new URL('../entry/plugins.generated.ts', import.meta.url));
   const built = await build({
+    plugins: source
+      ? [
+          {
+            name: 'setcast-plugins',
+            resolveId: (name) => (name === id ? id : null),
+            load: (name) => (name === id ? source : null),
+          },
+        ]
+      : [],
     configFile: false,
     root: fileURLToPath(new URL('..', import.meta.url)),
     publicDir: false,
     logLevel: 'warn',
-    resolve: { dedupe: ['react', 'react-dom'] },
+    resolve: { dedupe: ['react', 'react-dom', '@setcast/core', 'zod'] },
     define: { 'process.env.NODE_ENV': JSON.stringify('production') },
     build: {
       write: false,
       lib: {
-        entry: fileURLToPath(new URL(`../entry/${entry}`, import.meta.url)),
+        entry: source ? id : original,
         formats: ['es'],
         fileName: () => 'player.js',
         cssFileName: 'player',

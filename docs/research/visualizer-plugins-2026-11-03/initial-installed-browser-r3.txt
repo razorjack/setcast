@@ -1,0 +1,9 @@
+$ node scripts/package-smoke.ts --browser --report /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/readback-followup-2026-11-03/installed-browser-r3.json ⊘ cache disabled
+  fresh tarball installation: no Remotion packages
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed ProRes: transparent PNG, MOV, clip, bundle and diagnostics
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+installed plugin: schema, validation, browser export, cache/resume, mixed session bundles, preview, recorded/live player, saved scenes and optional Remotion pass
+package-smoke: PASS (packed CLI, browser player, all themes, H.264 + AAC)
+

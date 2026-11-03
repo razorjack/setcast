@@ -1,6 +1,7 @@
 # Explicit visualizer packages
 
-Work started on 3 November 2026 after browser-first promotion. The user authorized completion
+Implementation is complete on macOS, 3 November 2026. Final acceptance evidence is recorded below.
+Work started after browser-first promotion. The user authorized completion
 of the direct readback experiment, followed by external visualizer loading. Findings and
 validation are recorded here as they occur.
 
@@ -48,3 +49,45 @@ is part of this work.
   [follow-up report](research/readback-followup-2026-11-03/README.md).
 - Initial plugin loader tests pass for project isolation, missing/incompatible packages, duplicate
   names, saved/rebased media and running-bundle compatibility. Full integration is still in progress.
+
+- The baseline now passes 693 tests, dependency isolation and decoded smoke. The first fresh
+  browser-only installation reaches the plugin check after passing existing workflows, then
+  rejects Vite's relative virtual entry identifier. Vite resolves library entry paths against its
+  package root; the generated entry now uses an absolute synthetic path intercepted by the loader.
+  The failed installation report is retained. Full installed qualification is still in progress.
+
+- After the entry fix, the installed browser plugin passes decoded marker/asset checks, identical
+  cache reuse, resume mode and mixed plugin/no-plugin session bundles. The harness then finds a
+  CommonJS Playwright import mismatch before preview checks. The harness now loads Playwright
+  through the installed renderer's require context. No product workaround is needed.
+- Saved scenes now include a package manifest with exact plugin versions alongside copied media.
+  Dependencies are not installed or copied automatically.
+
+- Final browser-only installation passes, including portrait output, exact one/two-worker video,
+  preview seek order and a live capture clock driven by synthetic audio. The first compatibility
+  installation then rejects a generated entry without an explicit Remotion `registerRoot` call.
+  Remotion checks the entry text before bundling, and Studio does not allow ignoring that check.
+  The adapter now owns a generated composition entry that registers plugins and calls registerRoot;
+  core only generates renderer-neutral plugin registrations. No validation check is bypassed.
+
+## Completed implementation
+
+- Explicit installed package loading works for recorded and live projects, with API-version and
+  schema checks, isolated Node catalogs and generated renderer registrations.
+- Declared media is checked before rendering, copied and rebased with saved scenes, and included
+  in cache/resume identity. Saved scenes record exact plugin dependency versions in package.json.
+- Bundles are scoped to the package set and content identity. Preview/live reject scenes requiring
+  a different package set instead of using stale component code. Plugin code changes require restart.
+- Authoring documentation and `schema --project` explain the contract. Existing embedding hosts
+  can still register visualizers directly. One visualizer per package and top-level media fields
+  are deliberate initial limits; automatic discovery and installation are not implemented.
+- The baseline passes 694 tests, lint/types, dependency isolation and decoded smoke. Final installed
+  browser-only and optional-Remotion checks pass. The installed fixture verifies decoded marker
+  and asset pixels, exact worker equality, portrait output, repeat cache reuse, resume mode,
+  mixed render-session bundles, preview seeks, recorded playback, synthetic live capture and
+  saved/recorded scenes. Browser-only installation contains no Remotion packages.
+- Both exporter acceptance suites pass. The retained [qualification report](research/visualizer-plugins-2026-11-03/README.md) includes successful checks and corrected failures. This is macOS software qualification;
+  it does not qualify physical audio devices, other platforms or arbitrary third-party packages.
+
+The readback investigation was committed separately as `aeba45e`. This feature is a product
+extension, not evidence that the first-export speed target has been achieved.
