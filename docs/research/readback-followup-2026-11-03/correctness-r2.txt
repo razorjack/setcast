@@ -1,0 +1,2 @@
+0 copy 8.995622959 equal true
+0 direct 4.368115542 equal true

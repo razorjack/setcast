@@ -1,0 +1,12 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Error: Alpha fixture decoded without partial alpha
+    at window.readbackProbe (http://127.0.0.1:55241/player.js:12069:17)
+    at async <anonymous>:396:30
+    at /Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/readback-followup-2026-11-03/alpha.mjs:19:27 {
+  log: []
+}
+
+Node.js v26.7.0

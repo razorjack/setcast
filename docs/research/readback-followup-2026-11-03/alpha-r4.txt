@@ -1,0 +1,16 @@
+{
+  qualified: false,
+  partialAlpha: 12032,
+  results: [
+    { iteration: 0, frame: 0, maximum: 0, changed: 0 },
+    { iteration: 1, frame: 29, maximum: 1, changed: 249 }
+  ]
+}
+file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/readback-followup-2026-11-03/alpha.mjs:20
+  await writeFile(out+'/report.json',JSON.stringify({chromium:browser.version(),...report},null,2));console.log(report);if(!report.qualified) throw new Error("Direct readback changes transparent decoded pixels");
+                                                                                                                                                    ^
+
+Error: Direct readback changes transparent decoded pixels
+    at file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/readback-followup-2026-11-03/alpha.mjs:20:149
+
+Node.js v26.7.0

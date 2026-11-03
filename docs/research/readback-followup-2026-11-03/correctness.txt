@@ -1,0 +1,42 @@
+file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:162
+    throw new SetcastError(
+          ^
+
+SetcastError: Cannot start the browser exporter Chromium runtime.
+    at launch (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:162:11)
+    at async captureBrowser (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:45:19)
+    at async openCapture (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:96:21)
+    at async withCapturePages (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:138:29)
+    at async renderChunks (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:207:3)
+    at async Promise.all (index 0)
+    at async renderTracks (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/tracks.ts:15:5)
+    at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:176:5
+    at async atomicOutput (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/output.ts:15:20)
+    at async withRenderSession (file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:65:12) {
+  hint: 'Run `pnpm --filter @setcast/renderer-browser exec playwright install chromium` in a checkout, or `setcast browser-install` after installation.',
+  exitCode: 1,
+  [cause]: browserType.launch: Executable doesn't exist at /Users/razorjack/Library/Caches/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-mac-arm64/chrome-headless-shell
+  ╔════════════════════════════════════════════════════════════╗
+  ║ Looks like Playwright was just installed or updated.       ║
+  ║ Please run the following command to download new browsers: ║
+  ║                                                            ║
+  ║     npx playwright install                                 ║
+  ║                                                            ║
+  ║ <3 Playwright Team                                         ║
+  ╚════════════════════════════════════════════════════════════╝
+      at launch (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:160:27)
+      at captureBrowser (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:43:69)
+      at openCapture (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:96:27)
+      at async withCapturePages (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:138:29)
+      at async renderChunks (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:207:3)
+      at async renderTracks (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/tracks.ts:15:5)
+      at async file:///Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/render.ts:176:5
+      at async atomicOutput (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/output.ts:15:20)
+      at async withRenderSession (/Users/razorjack/Projects/OpenSource/setcast/packages/renderer-browser/src/export/session.ts:65:12)
+      at async file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/readback-followup-2026-11-03/correctness.mjs:43:7 {
+    log: [],
+    name: 'Error'
+  }
+}
+
+Node.js v26.7.0

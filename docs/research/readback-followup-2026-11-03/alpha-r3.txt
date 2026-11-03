@@ -1,0 +1,8 @@
+{
+  qualified: false,
+  partialAlpha: 12032,
+  results: [
+    { iteration: 0, frame: 0, maximum: 0, changed: 0 },
+    { iteration: 1, frame: 29, maximum: 1, changed: 249 }
+  ]
+}

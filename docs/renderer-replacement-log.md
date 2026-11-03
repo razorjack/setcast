@@ -1919,3 +1919,16 @@ Remotion packages; optional compatibility validates and exports six decoded fram
 roadmap, guides and agent map now describe browser defaults and the user's revised promotion
 policy. Older research remains unchanged. The final integration report and source hashes are in
 `docs/research/browser-first-promotion-2026-11-03`.
+
+## 3 November: direct readback decision and explicit visualizer packages
+
+The direct decoder readback candidate passes a short opaque complete-export comparison. A stricter
+partial-alpha fixture fails exact RGBA equality, after correcting an initially opaque CanvasSink
+probe. Two further quiet timing attempts cannot start under concurrent host load. Keep the copied
+canvas path; no speed claim or production media change follows. The retained report is
+[readback-followup-2026-11-03](research/readback-followup-2026-11-03/README.md).
+
+The next authorized milestone is explicit external visualizer loading, tracked in
+[visualizer-plugins-plan.md](visualizer-plugins-plan.md). It includes scoped schema validation,
+generated browser entries, declared asset copying/rebasing, content identity and installed workflow
+checks. The implementation must cover browser/Remotion exports, independent preview and live.
