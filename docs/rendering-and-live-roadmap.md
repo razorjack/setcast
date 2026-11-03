@@ -1,11 +1,11 @@
 # Rendering and live performance roadmap
 
-Setcast will support both a filmed DJ backdrop and direct projection from mixer audio. Keep
-Remotion as the default exporter while the independent renderer gains coverage and performance.
+Setcast will support both a filmed DJ backdrop and direct projection from mixer audio. Browser
+is the default exporter; Remotion remains available as an optional compatibility adapter.
 Live and offline output share scene components, audio features and explicit time. Operator actions
 must survive in the session journal so a recorded master can reproduce the performance.
 
-## Current renderer priority, 2026-10-29
+## Current renderer priority, 2026-11-03
 
 The [independent renderer replacement plan](renderer-replacement-plan.md) defines the next
 renderer work: a current comparative benchmark, direct decoded video frames, capture without
@@ -14,7 +14,7 @@ reuse, unified musical preview/export, output fidelity and a Remotion-free distr
 Packaging and cross-platform qualification run throughout. This sequence takes priority over
 broad plugin infrastructure, additional effects and scene collections for the replacement effort.
 
-Keep Remotion as the production default until the plan's release criteria are met. The initial
+The user authorized browser-first promotion before full platform qualification. The initial
 performance target is 30% lower wall time than tuned current Remotion on a predefined workload
 suite at matched quality; it is not an achieved result or a speedup forecast. Existing resume,
 independent preview, bounded pipelines and diagnostics are foundations already delivered.
@@ -342,7 +342,7 @@ were inspected. Physical display/camera flicker, exposure and moiré remain unqu
 ## Implementation record: sequence and one-projector setup
 
 Delivered automatic scene progression, then projector geometry, with separate validation and
-commits. Remotion remains the default exporter.
+commits. Browser is now the default exporter; Remotion remains optional.
 
 - Sequence: an explicitly started, ordered list of saved scenes with per-scene minimum dwell,
   looping, hold/resume and skip. Dwell uses available capture time and starts after a transition
@@ -372,7 +372,7 @@ commits. Remotion remains the default exporter.
 of Remotion Studio. It shares the browser export driver, with exact seeking, silent sequential
 playback, rendered audio/timeline inspection, readiness diagnostics and local reference-image
 comparison. Resolved project inputs reload automatically; invalid edits retain the last valid
-project. Remotion remains the default. See [independent preview](independent-preview.md).
+project. Browser is now the default; Remotion remains optional. See [independent preview](independent-preview.md).
 
 The browser bench covers export-frame agreement, backward seeks, video loops, reference import,
 reload and recovery. The CLI is exercised with Remotion imports forbidden. Wider platform and
@@ -411,7 +411,7 @@ configuration and CSS color. No visualizer keeps simulation state between frames
 
 `tunnel` and `constellation` are implemented as planned above, on a `ShaderCanvas` shared with
 `field`. Live presets: `examples/live-tunnel` (projection) and `examples/live-constellation`
-(filmed backdrop with a CSS-masked quiet region). Remotion remains the default exporter, and no
+(filmed backdrop with a CSS-masked quiet region). Browser is now the default exporter, and no
 theme default changed. The tunnel's twist turns the whole wall about the center, rather than only
 the spokes, because spiralling spokes alone read as unrelated straight lines. Constellation
 links are drawn from the twelve neighbor pairs that can cross a pixel; that cut its historical

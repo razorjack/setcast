@@ -3,50 +3,44 @@
 Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
-The [3 November macOS follow-up](research/macos-followup-2026-11-03/README.md) repeats the shared
-Linux changes. Live sequence/output/energy/MIDI checks pass. Quicksilver looping-video exports
-fail worker parity on M1 Pro Metal, with prepared bitmap identities matching and source PNG
-differences beyond the existing precision budget. No tested alternative is promoted. This
-specific macOS correctness issue remains a release blocker despite broader passing checks.
+Status, 3 November 2026: the browser-first migration and Quicksilver parent-layer repair are
+integrated and pass local validation. Browser is the default; the CLI no longer
+requires Remotion. The optional adapter remains available for explicit compatibility use and
+comparisons. See [migration and rollback](browser-first-migration.md) and the
+[final integration checks](research/browser-first-promotion-2026-11-03/README.md).
 
-Linux continuation: [setup, branch transfer and qualification runbook](linux-renderer-qualification.md).
-Linux execution is complete for the available fixtures; release requirements remain unmet. [Retained evidence](research/linux-qualification-2026-11-01/README.md)
-records graphics-default, font-hinting and Quicksilver clip fixes, production correctness, fresh installations,
-short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE remains unqualified.
-Current upstream has a separate named shared-memory leak after injected encoder failure;
-all eleven successful-export calibration cases pass. All 55 quiet worker-screening pairs
-meet the required quality comparisons, with every one of their 110 outputs measured and
-checked for black frames. All 33 final pairs also meet every quality requirement, but none of
-the eleven workloads meets the unchanged 30% speed target. Browser median time ranges from
-5.4% lower to 55.9% higher than tuned Remotion. See [final timings and spread](research/linux-qualification-2026-11-01/performance-table.md). Additional local Linux CI passes after a live sequence-control fix; the full software live preset fails with dropped samples, while the one-hour recovery preset
-passes. See the [live qualification scope](research/linux-qualification-2026-11-01/live-qualification.md).
-The user has Linux access but no easy Windows access. Windows remains unqualified; this does not
-change the release criteria or authorize default promotion.
+The user explicitly changed the promotion policy: Setcast has no users yet, Remotion was for the
+prototype, and unavailable Linux access must not hold back the validated repair. Cross-platform
+qualification and the first-export performance objective remain follow-up work, not prerequisites
+for this pre-release migration. This decision does not turn an unexecuted check into a pass or
+establish that the browser renderer is faster than Remotion.
 
-Research and planning date: 2026-10-29. Repository baseline: `5c4eee5`.
-Status: implementation and qualification in progress. The browser-first distribution is committed
-on `renderer/browser-first-candidate` (qualified code revision e28d2bd), with local clean-install coverage through bitmap, cache and ProRes integration but no default
-promotion. See the [updated installation evidence](research/browser-first-final-2026-11-01/README.md). Bitmap video preparation is now integrated on main after exact-frame/encoded parity, a complete
-56-minute master resource run and quiet timing with one and automatic workers. The automatic
-series reduces median wall time by 32.7% against Setcast's PNG preparation on the frozen video
-fixture; this does not establish the separate current-Remotion target. See the
-[qualification](research/bitmap-auto-timing-2026-11-01/README.md).
-The [frozen corpus quality results](research/corpus-quality-2026-11-01/README.md) cover all eleven measured
-cases, including corrected portrait and long comparisons with no black transition frames.
-The original black frames and storage interruption remain preserved.
-The shared [commit-readiness fix](research/art-readiness-2026-11-01/README.md), committed as 53551f0,
-removes that repeatable black transition frame. Completed pieces and validation are tracked in the log.
-Scoped audio-preparation reuse and pinned-runtime preview references with local numeric differences
-are committed on main. Native capture was qualified and rejected for CSS pixel differences.
-The [quiet current-upstream comparison](research/current-upstream-2026-11-01/README.md) misses
-the 30% speed target in all three measured workloads. Automatic Remotion output quality requires
-separate requalification because its decoded hashes differ from the one-worker quality arms.
-Remotion remains the default until the release criteria below are met.
+The [macOS repair](research/quicksilver-repair-2026-11-03/candidate.md), implemented in `97d271a`,
+moves Quicksilver's video compositor hint to the background parent. It passes compact and HD
+repeated video, static art, source switches, all-theme seeks, both exporter suites and baseline
+checks. The [original failure](research/macos-followup-2026-11-03/README.md) remains preserved.
+Linux must repeat the repair checks using the [updated handoff](linux-renderer-qualification.md).
 
-Setcast should replace Remotion with a renderer that preserves the existing CSS and timeline
-contracts, finishes first exports faster, reuses work across revisions, and connects musical
-preview with export. Independence is already implemented in the browser execution path. The
-remaining work is to establish a better product and remove the installation dependency.
+[Linux evidence](research/linux-qualification-2026-11-01/README.md) already covers software exports,
+fresh installations, short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE,
+Windows and full real-master Linux resources remain unqualified. The Linux software live preset
+still drops analysis samples; its one-hour recovery preset passes. Live reliability remains
+separate from offline support. Remotion 4.0.539's named shared-memory cleanup failure remains
+relevant to future comparison upgrades; the optional production adapter stays pinned to 4.0.513.
+
+The eleven-case Linux matched-quality study misses the 30% first-export speed objective in every
+workload. The [macOS comparison](research/current-upstream-2026-11-01/README.md) also misses it.
+The separate [bitmap preparation improvement](research/bitmap-auto-timing-2026-11-01/README.md)
+is against Setcast's old PNG preparation, not Remotion. Persistent reuse, preview, hardware
+encoding and compositing are implemented; their benefits must retain their measured scope.
+
+Research began on 29 October 2026 at `5c4eee5`. The historical experiments and failures below
+remain evidence for subsequent optimization. No rejected capture route is enabled by migration.
+
+The replacement preserves the existing CSS and timeline contracts, reuses work across revisions,
+and connects musical preview with export. Faster first exports remain an optimization objective.
+Independence is implemented in the browser execution path. Installation independence is now implemented; first-export performance and broader platform
+qualification remain work for subsequent releases.
 
 This plan consolidates source inspection, local measurements and upstream documentation.
 Its initial assessment predates the linked qualification runs. Measured results, source-level findings, experiments and
@@ -101,8 +95,9 @@ for audible exports. Browser capture overlaps ordered encoder writes with bounde
 must extend that implementation rather than add another session abstraction.
 
 The browser package has no Remotion dependency. The
-[CLI package](../packages/cli/package.json) still directly depends on the Remotion adapter.
-Import-free browser execution therefore does not establish a Remotion-free installation.
+[CLI package](../packages/cli/package.json) treats the Remotion adapter as an optional peer.
+The fresh tarball smoke checks physical dependency absence as well as default workflows.
+The workspace retains it for optional compatibility development and comparisons.
 
 ### Upstream comparison, checked 2026-10-29
 
@@ -265,11 +260,11 @@ phase 0; the additional output formats arrive later.
 | 4 | Persistent reuse | Complete locally: identical chunks, proven local edits and persistent overview/travel preparation; exact output and quiet preparation timing pass. |
 | 5 | Preview and export | Complete locally: audible playback, exact references, ranges, export queue, cancellation and recovery. |
 | 6 | Fidelity and compositing | Complete locally for the implemented H.264/ProRes/PNG contracts. Specific editors, OBS and broader platform support remain unqualified. |
-| 7 | Browser-first distribution | Implementation and local clean installs complete at e28d2bd. Production promotion remains blocked by the release requirements below. |
+| 7 | Browser-first distribution | Integrated: browser defaults, optional Remotion, scaffolds, diagnostics, fresh-install checks and CI matrix. Additional platform qualification follows promotion under the 3 November decision. |
 
 Implementation and experiment decisions are recorded for every phase. A local completion above
 is not supported-platform release qualification. The [candidate migration and rollback guide](browser-first-migration.md)
-describes the prepared dependency/default change without applying it to main.
+describes the dependency/default change and the explicit compatibility path.
 
 ### Phase 0: establish a fair benchmark
 
@@ -554,11 +549,11 @@ device/encoder failures, disk exhaustion, cancellation, corrupt checkpoints and 
 Unsupported historical Remotion-only settings must be supported or receive a documented migration
 diagnostic before the default changes; they must never be silently ignored.
 
-Keep Remotion as a comparison/compatibility option during qualification. Then change the default
-and remove it from required installation. Retain an optional adapter only if there is a concrete
+Remotion remains an optional comparison/compatibility adapter; browser is the default and
+Remotion is removed from required CLI installation. Retain an optional adapter only if there is a concrete
 compatibility need; deleting its code can follow independently. Update scaffolds, README, help,
-CI and package tests in the same migration. This planning document changes no production defaults
-or dependencies.
+CI and package tests in the same migration. These changes are integrated; supported-platform
+qualification continues after pre-release promotion.
 
 ## Live reliability remains a separate qualification
 
@@ -595,13 +590,16 @@ These do not block a narrowly qualified offline release, but must block unsuppor
   do not establish renderer replacement. Preserve future plugin compatibility without designing
   speculative renderer frameworks.
 
-## Release criteria
+## Qualification and performance objectives
 
+The following checklist retains the original evidence requirements. The 3 November pre-release
+promotion decision permits outstanding platform and throughput objectives to continue afterward.
 Replacement requires correctness, installation independence and supported workflow coverage.
 Claiming that the renderer is better and faster additionally requires measured throughput and
 iteration benefits. Track each requirement with the producing revision and retained reports.
 
-- [ ] Existing Setcast render/still/clip/preview/bundle workflows work without Remotion installed.
+- [x] Existing Setcast render/still/clip/preview/bundle workflows work without Remotion installed
+  in the local macOS candidate tarball check. Other platforms remain under the installed-package criterion.
 - [ ] Required theme/CSS, frame, audio, video-loop and readiness checks pass on supported runtimes.
 - [x] Local capture/encoder failure, cancellation, resume and corrupt/stale-cache fixtures preserve
   existing output and clean up active resources. Supported-platform repetition remains required below.
@@ -623,7 +621,7 @@ The 30% target can be revised through an explicit roadmap decision if measuremen
 different objective. It must not be described as achieved without evidence. Extra codecs and
 broader live hardware support can ship independently after the core replacement criteria.
 
-## Work required before removing the default dependency
+## Follow-up after browser-first promotion
 
 1. Establish the first-export performance result at matched quality. The last current-upstream
    comparison misses the 30% target; bitmap's 32.7% improvement is against Setcast's PNG video
@@ -639,15 +637,14 @@ broader live hardware support can ship independently after the core replacement 
    qualified Chromium default (observed SwiftShader); explicit NVIDIA ANGLE failed pixel/stall
    checks. Full real-master Linux assets are still missing. Continue with the
    [Linux runbook](linux-renderer-qualification.md).
-   The affected macOS repetition has now exposed a Quicksilver video painting failure; repair
-   and requalify it using the [retained reproducer](research/macos-followup-2026-11-03/README.md).
+   The Quicksilver parent-layer repair now passes macOS; repeat its maintained compact/HD video
+   matrices and the earlier shuffled-seek checks on Linux. Preserve the original failure evidence.
    The shared live sequence-control fix passes its macOS repetitions.
    Windows access is unavailable for now and its qualification remains pending. Do not count prepared
    CI jobs as successful runs or advertise an untested hardware backend as qualified.
-3. After those requirements pass, promote `renderer/browser-first-candidate`, recheck migration
-   diagnostics and optional compatibility installation, and remove Remotion from the required
-   CLI dependency graph. The candidate already contains defaults, scaffolds, documentation,
-   package tests and the CI matrix. No external publication or CI run was initiated here.
+3. Keep the migrated default, scaffolds, diagnostics, documentation and independent installation
+   checks aligned. Retain explicit optional Remotion use until there is a separate decision to
+   remove compatibility code. No external publication or hosted CI was initiated by this migration.
 
 Specific editor/OBS interoperability, long ProRes exports, VP9 alpha, cross-machine caches and
 long-master contiguous chunk scheduling remain separately scoped follow-up work. They do not

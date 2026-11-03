@@ -1,6 +1,8 @@
 # Independent renderer prototype plan
 
-Status: implemented and validation complete, 2026-10-22. Work stays on master.
+Status: prototype implemented and validated, 2026-10-22. The historical contract below
+retains the original Remotion default. The 3 November browser-first migration supersedes that
+selection; see [current migration and rollback](browser-first-migration.md).
 
 ## Product contract
 

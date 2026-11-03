@@ -1,8 +1,8 @@
 # Independent renderer preview
 
-`setcast preview --renderer browser` opens audible playback and an exact-frame inspector using
-the browser export renderer. Remotion Studio remains the default. A project with `renderer: browser` selects the
-independent preview without a command-line override.
+`setcast preview` opens audible playback and an exact-frame inspector using
+the browser export renderer. Browser preview is the default. Explicit `renderer: remotion` or
+`--renderer remotion` selects Studio when the optional compatibility adapter is installed.
 
 ```sh
 setcast preview path/to/project --renderer browser

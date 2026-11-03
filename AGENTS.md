@@ -1,5 +1,9 @@
 # Setcast – agent guide
 
+Browser is the default exporter; Remotion is an optional compatibility adapter. The user
+authorized pre-release promotion on 3 November before all platform and throughput objectives
+pass. Keep outstanding Linux/Windows checks explicit; see `docs/linux-renderer-qualification.md`.
+
 Setcast is an event-driven visual engine for DJ sets. It turns a recorded set (audio file +
 tracklist + background art) into a broadcast-quality MP4 for YouTube: a themeable, CSS-styled UI
 with a frosted-glass "now playing" panel, deck indicators, and audio-reactive spectral
@@ -19,7 +23,7 @@ packages/core               @setcast/core – event timeline, schemas, RenderFra
                             hooks, interpolate/spring, media wrappers, modulation, analysis,
                             registry, importers, project loading (node entry), built-in components
 packages/renderer-remotion  @setcast/renderer-remotion – the ONLY package that imports Remotion
-packages/renderer-browser   @setcast/renderer-browser – recorded/live players and opt-in offline export
+packages/renderer-browser   @setcast/renderer-browser – recorded/live players, default preview and offline export
 packages/cli                @setcast/cli – the `setcast` binary; thin; owns terminal UX
 packages/themes             @setcast/themes – built-in themes, their shared fonts/ and textures/
 examples/demo               runnable demo project (setcast.yaml, generated audio, background)
@@ -70,7 +74,7 @@ One term per concept, in code, docs and messages. Do not reintroduce the retired
 ## Workflow
 
 Prerequisites: the standalone `vp` binary (see Gotchas below), Node 26.7.0
-(`.node-version`; `mise` and `vp env` both honor it), ffmpeg optional (smoke frame check).
+(`.node-version`; `mise` and `vp env` both honor it), FFmpeg required for video export. Install pinned Chromium with `setcast browser-install`.
 
 ```
 vp install                 # install workspace (pnpm under the hood)
@@ -87,7 +91,7 @@ vp run branding-stills [--theme name]   # each theme's branding: corners, backdr
 vp run render-bench [dir] [--help]     # compare render settings; timings and MP4s in out/bench
 vp run ready               # check + test + ban-check + smoke (baseline CI checks)
 cd examples/demo && vp run render [--range 1:00-1:10]      # full render / slice
-cd examples/demo && vp run preview                          # Remotion Studio
+cd examples/demo && vp run preview                          # independent browser inspector
 node packages/cli/bin/setcast.js play examples/demo          # browser playback prototype
 node packages/cli/bin/setcast.js live examples/live          # live audio visualization
 ```
@@ -110,19 +114,14 @@ catch a failure: nobody noticed CI failing on every push for a month.
 
 Gotchas:
 
-- Quicksilver has a macOS-qualified parent-layer repair on `renderer/quicksilver-layer-candidate`.
-  It moves the compositor hint to `.sc-bg` for video backgrounds. Compact/HD repeated video,
-  static art, source switches, all-theme seeks and both exporter suites pass. Linux repetition
-  is still required before promotion. See `docs/research/quicksilver-repair-2026-11-03/candidate.md`.
-
-- Quicksilver's Linux compositor hint needs further macOS work. Repeated looping-video exports
-  differ across workers on M1 Pro Metal, including portrait output; prepared BMP hashes match
-  while source PNG differences exceed the precision budget. Opacity/filter hints are unqualified.
-  Disabling GPU rasterization fixes the retained reproducer but changes other pixels and export
-  cost, so no production flag changed. See `docs/research/macos-followup-2026-11-03/README.md`.
-  The maintained reproducer is `bench/worker-frames.ts --video --theme quicksilver --repeat 3`
-  in renderer-browser; add `--size 640x360` for the compact run. It checks both orientations and
-  cross-round equality, keeps exact video failures, and records source diagnostics separately.
+- Quicksilver's video compositor hint now belongs to `.sc-bg`, not each decoded `.sc-bg-img`.
+  The parent-layer repair (`97d271a`) passes macOS compact/HD repeated video, source switches,
+  static art, all-theme seeks and both exporter suites. The user authorized promotion before
+  Linux repetition because Setcast is pre-release. Run the follow-up in
+  `docs/linux-renderer-qualification.md`; do not mistake promotion for Linux qualification.
+  The maintained reproducer is `packages/renderer-browser/bench/worker-frames.ts --video
+  --theme quicksilver --repeat 3`; add `--size 640x360` for the compact run. Video mismatches
+  remain failures even when a later source diagnostic passes.
 
 - Fedora SwiftShader live qualification passes the one-hour recovery preset, but the separate-operator
   software preset drops analysis samples near scene changes, including in isolation. A diagnostic
@@ -134,8 +133,8 @@ Gotchas:
   its assets. Keep the unchanged sequence failure/journal reproducer in Linux qualification.
 
 - Linux renderer qualification has a dedicated handoff in `docs/linux-renderer-qualification.md`.
-  Transfer the local browser-first candidate before testing independent installation; main's
-  package-smoke lacks the candidate's `--report` and fresh dependency installation behavior.
+  Use current main for independent installation; its package-smoke supports `--report` and
+  installs fresh dependencies. Include the promoted Quicksilver parent-layer repair.
   The old upstream comparison branch predates promoted bitmap code. Windows remains unqualified.
 
 - Linux shared-memory qualification needs the host's `/dev/shm`, not a sandbox's private mount.
@@ -155,10 +154,9 @@ Gotchas:
   Pirate/Afterhours source precision and Masthead capture reliability. Explicit `angle` remains
   opt-in and unqualified on that driver. This does not change Remotion's graphics policy or NVENC.
 
-- Quicksilver's circular video clip needs `will-change: transform` on `.sc-bg-img`.
-  Without a stable compositor layer, Linux Chromium changes clip-edge antialiasing between
-  shuffled seeks (up to 84 levels), even with SwiftShader. Keep the video-frame comparison
-  and its per-seek artifacts; disabling font hinting or GPU rasterization does not fix it.
+- The earlier Linux Quicksilver clip fix used `will-change: transform` on `.sc-bg-img` to stop
+  shuffled-seek clip differences of up to 84 levels. It caused a separate macOS video regression.
+  Keep both reproducers when qualifying the new parent-layer policy on Linux.
 
 - Offline video preparation uses BMP V4 blob URLs.
   Decoder ownership must revoke each replaced URL and dispose pending opens on unmount.
@@ -272,9 +270,10 @@ Gotchas:
   user-facing correction. Re-calibrate with a script like the bootstrap session's `calib.ts`
   (read the WAV, call Remotion's `getVisualization`, print band energies).
 
-The browser exporter prototype now implements the planned alternative below. `renderer: browser`
-and offline-command `--renderer browser` opt in; Remotion remains the default. The historical
-v1-only selection wording below is superseded by this explicit choice. See `docs/browser-renderer.md`.
+The browser exporter is the default. Remotion is an optional
+CLI peer; the workspace retains it for development and compatibility checks. The historical
+v1-only selection wording below is superseded by this choice. Main remains unchanged until
+qualification is complete. See `docs/browser-first-migration.md` and `docs/browser-renderer.md`.
 
 ## Renderer independence (in force, verbatim)
 
@@ -690,9 +689,10 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
 
 - The active renderer replacement sequence is `docs/renderer-replacement-plan.md`: comparative
   benchmarks, direct video frames, capture without image compression, scheduling/hardware encoding,
-  persistent reuse, unified preview/export, fidelity and independent distribution. This is planned
-  work, not implemented support. Keep Remotion default until the documented release criteria pass.
-- Qualify and optimize the opt-in browser exporter across platforms and real projects. It uses
+  persistent reuse, unified preview/export, fidelity and independent distribution. Implemented
+  features and rejected experiments are recorded there. Browser-first promotion follows the
+  3 November pre-release decision; platform qualification and throughput remain follow-up work.
+- Qualify and optimize the browser exporter across platforms and real projects. It uses
   bounded PCM windows; a full AudioFeatures sidecar is not a prerequisite.
 - Optional AudioFeatures sidecar/cache, justified by measured decode cost and reuse.
 - Live hardware adapters, physical latency/OBS qualification, drift correction and live cue
@@ -914,7 +914,7 @@ with `.setcast { --bg-correction: 0; }`, because users can turn the correction o
   improvement is 22–33% with identical decoded frames; two-worker improvement was small. See
   docs/renderer-scheduling.md for workloads, raw measurements and qualification limits.
 
-- Offline selection is `renderer: remotion | browser`, defaulting to Remotion, with `--renderer`
+- Offline selection is `renderer: remotion | browser`, defaulting to browser in this candidate, with `--renderer`
   overrides on render/still/clip/preview. The CLI imports only the chosen adapter at runtime and scopes
   jobs to its session. Studio stays Remotion-specific. No silent exporter fallback occurs.
 - Independent preview is `setcast preview --renderer browser` (or `renderer: browser`). It uses

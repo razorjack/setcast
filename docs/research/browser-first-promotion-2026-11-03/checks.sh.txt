@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eu
+export PATH="$PWD/node_modules/.bin:$PATH"
+root=examples/demo/out/browser-first-promotion-2026-11-03
+run_check() {
+  local name="$1"
+  shift
+  local code=0
+  "$@" > "$root/$name.txt" 2>&1 || code=$?
+  printf '%s\n' "$code" > "$root/$name.exit.txt"
+  printf '%s: %s\n' "$name" "$code"
+  return "$code"
+}
+run_check install vp install --frozen-lockfile
+run_check ready vp run ready
+run_check installed-browser vp run package-smoke --browser --report "$PWD/$root/installed-browser.json"
+run_check installed-compatibility vp run package-smoke --report "$PWD/$root/installed-compatibility.json"

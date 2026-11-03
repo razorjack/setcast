@@ -67,7 +67,7 @@ these settings as `{ "version": 1, "name": "Warehouse", "projection": { ... } }`
 
 Scene recalls and automatic sequences preserve venue geometry. Saved scenes and journal
 snapshots omit `projection`, so replay exports show the original composition. Both exporters
-keep their existing behavior; Remotion remains the default. The calibration pattern and geometry
+keep their existing behavior; browser is the default. The calibration pattern and geometry
 adjustments are not journal events. Avoid showing the pattern during a performance you intend
 to reconstruct from the journal.
 

@@ -164,4 +164,4 @@ separate work.
 Saved scenes, live operator controls, diagnostics, manual tempo and journal replay are tracked
 in [player-development-plan.md](player-development-plan.md). The selectable offline exporter
 has its own [guide](browser-renderer.md) and [implementation plan](independent-renderer-plan.md).
-Remotion remains the default for offline output.
+Browser is now the default for offline output; Remotion remains an optional compatibility adapter.

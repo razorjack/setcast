@@ -1,0 +1,11 @@
+{
+  "revision": "97d271a7f62ec860632222a0d39526e9f4e74d28",
+  "identity": {
+    "projectDigest": "6624d5304e7f46ad903904e76687edb750c4e8a856ea98316280ae92a9f00488",
+    "assetsDigest": "ced75fa6b4605d7ba983d0eef3e8428d04ebcafbfa750d86a2e59ecd56243bc9"
+  },
+  "scope": "Isolated video readback experiment. Each mode gets a fresh render session and exact source-file content recorded by SHA256. Original source restored in finally. Three alternating pairs of 1080p30 frames2700-2999, four workers. Rendering through cleanup; excludes project preparation and verification. Exact decoded video equality required; no Remotion claim.",
+  "status": "failed",
+  "runs": [],
+  "error": "Error: System remained busy for 60 seconds. Retain this report and retry later in a new directory."
+}

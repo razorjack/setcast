@@ -1,0 +1,26 @@
+import { CanvasSink, Input, UrlSource, ALL_FORMATS } from '../../../../packages/renderer-browser/node_modules/mediabunny';
+
+window.readbackProbe = async () => {
+  const inputs = [0, 1].map(() => new Input({formats:ALL_FORMATS, source:new UrlSource('/assets/motion.mp4')}));
+  try {
+    const sinks = await Promise.all(inputs.map(async input => new CanvasSink((await input.getPrimaryVideoTrack())!, {poolSize:1})));
+    const results=[];
+    for(let iteration=0;iteration<180;iteration++) {
+      const frame=[0,29,7,15,28,1,14,3,25][iteration%9]!;
+      const a=await sinks[0]!.getCanvas(frame/25), b=await sinks[1]!.getCanvas(frame/25);
+      if(!a||!b) throw new Error('Missing fixture frame');
+      // Production uses a fresh copy for each frame; retain that policy in the control.
+      const copy=document.createElement('canvas');copy.width=a.canvas.width;copy.height=a.canvas.height;
+      const target=copy.getContext('2d')!;target.drawImage(a.canvas,0,0);
+      const reference=target.getImageData(0,0,copy.width,copy.height).data;
+      const direct=b.canvas.getContext('2d')!.getImageData(0,0,b.canvas.width,b.canvas.height).data;
+      let maximum=0,changed=0;
+      for(let index=0;index<reference.length;index++) {
+        const delta=Math.abs(reference[index]!-direct[index]!); maximum=Math.max(maximum,delta);changed+=Number(delta>0);
+      }
+      results.push({iteration,frame,maximum,changed});
+      if(maximum) break;
+    }
+    return {qualified:results.every(row=>row.maximum===0),results};
+  } finally {for(const input of inputs) input.dispose();}
+};

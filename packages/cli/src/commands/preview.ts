@@ -14,7 +14,7 @@ import { WholeSetReader } from '@setcast/core/node';
 
 export const help = `setcast preview [dir] [--port N] [--theme name] [--renderer remotion|browser]
 
-Preview with the configured renderer (default: Remotion Studio).
+Preview with the configured renderer (default: browser inspector with audible playback).
   --renderer  remotion or browser; overrides setcast.yaml
   --port   localhost port (browser default 3210)
   --theme  a built-in theme or a .css file to use instead of setcast.yaml's theme:`;
@@ -37,7 +37,7 @@ export async function run(argv: string[]): Promise<void> {
     await browserPreview(initial, dependencies, options);
     return;
   }
-  const loaded = await withHardwareEncoding(initial);
+  const loaded = await withHardwareEncoding(initial, 'remotion');
   const { dir } = loaded;
   const reader = new WholeSetReader();
   const project = await withWholeSet(loaded, reader);

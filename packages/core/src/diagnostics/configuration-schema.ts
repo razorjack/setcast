@@ -102,7 +102,7 @@ const PROJECT_DESCRIPTIONS = {
   theme: 'Built-in theme name or a CSS file inside the project directory.',
   css: 'Additional CSS file inside the project directory, appended after the theme.',
   renderer:
-    'Offline renderer selection. Remotion remains the default; browser opts into the independent exporter.',
+    'Offline renderer selection. Browser is the default; remotion requires the optional compatibility adapter.',
   output: 'Composition dimensions, frame rate and offline encoding settings.',
   clockOffset:
     'Displayed clock offset only. Audio, annotations and render ranges stay clip-relative.',

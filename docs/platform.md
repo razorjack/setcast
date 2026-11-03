@@ -2,8 +2,8 @@
 
 Setcast shares a scene model across recorded projects, live input, browser playback and two
 exporters. Start with YAML and CSS when customizing a show. Use the core APIs when embedding
-Setcast or building a visualizer into a host. Remotion remains the default exporter;
-`renderer: browser` opts into the independent exporter.
+Setcast or building a visualizer into a host. Browser is the default exporter;
+`renderer: remotion` selects the optional compatibility adapter.
 
 This guide maps the implemented contracts. It does not imply automatic discovery of installed
 JavaScript plugins or a hosted configuration service.

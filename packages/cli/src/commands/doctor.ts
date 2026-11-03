@@ -10,7 +10,7 @@ import { diagnoseRenderer, rendererCapabilities, parseRendererFlag } from '../re
 
 export const help = `setcast doctor [--renderer remotion|browser] [--require video,gpu] [--gl auto] [--json]
 
-Check this machine with the selected renderer. Defaults to Remotion; does not read a project.
+Check this machine with the selected renderer. Defaults to browser; does not read a project.
 Runs small browser, screenshot, WebGL and codec probes. No downloads or configuration changes.
   --require  comma-separated features that must work (default video):
              still, webp, video, resume, cache, gpu, hardwareEncoding, alpha, prores
@@ -35,7 +35,7 @@ async function argumentsFor(argv: string[]) {
     help,
   );
   if (positionals.length) throw new SetcastError('doctor takes no project directory.', help);
-  const name = parseRendererFlag(values.renderer) ?? 'remotion';
+  const name = parseRendererFlag(values.renderer) ?? 'browser';
   const capabilities = await rendererCapabilities(name);
   const required = (values.require ?? 'video').split(',').map((value) => value.trim());
   if (required.some((feature) => !RENDERER_FEATURES.includes(feature as RendererFeature)))

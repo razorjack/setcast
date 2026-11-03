@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import type { RenderOptions, ResolvedProject } from '@setcast/core';
+import type { RenderOptions, ResolvedProject, RendererName } from '@setcast/core';
 import {
   loadProject,
   probeAudio,
@@ -40,7 +40,10 @@ export async function load(
  * The project with hardware encoding settled: `if-possible` becomes `disable` where the encoder
  * cannot start. Commands call this before their progress UI, so the warning prints on its own line.
  */
-export async function withHardwareEncoding(loaded: LoadedProject): Promise<LoadedProject> {
+export async function withHardwareEncoding(
+  loaded: LoadedProject,
+  renderer?: RendererName,
+): Promise<LoadedProject> {
   const { resolveHardwareEncoding } = await import('./renderer.ts');
   const { output } = loaded.config;
   const { hardwareAcceleration, fallback } = await resolveHardwareEncoding(
@@ -51,6 +54,7 @@ export async function withHardwareEncoding(loaded: LoadedProject): Promise<Loade
       fps: loaded.project.fps,
       videoBitrate: output.videoBitrate,
     },
+    renderer,
   );
   if (fallback) warn(fallback);
   return { ...loaded, config: { ...loaded.config, output: { ...output, hardwareAcceleration } } };

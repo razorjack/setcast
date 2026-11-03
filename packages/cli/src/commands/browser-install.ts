@@ -3,7 +3,7 @@ import { parseCommandArgs } from '../args.ts';
 
 export const help = `setcast browser-install
 
-Download the pinned Chromium runtime for the experimental browser exporter.
+Download the pinned Chromium runtime for the browser exporter.
 System FFmpeg must also be available on PATH for video export.`;
 
 export async function run(argv: string[]) {

@@ -1,22 +1,16 @@
-# Browser-first migration candidate
+# Browser-first migration
 
-The `renderer/browser-first-candidate` branch makes the browser renderer the default and removes the Remotion adapter
-from the CLI's required dependencies. The candidate is isolated from main until the remaining
-release criteria in [the replacement plan](renderer-replacement-plan.md) are satisfied. Local
-macOS validation is evidence for that machine only. The Linux follow-up has passed fresh
-browser-only and optional-Remotion installations on Fedora x64, with the Linux graphics, font, Quicksilver and live sequence-control fixes
-merged into `renderer/linux-browser-first` at `166e51d`. The final candidate also passes the
-locally executed Linux CI commands; full live endurance remains separately recorded. See the
-[Linux evidence](research/linux-qualification-2026-11-01/README.md) for exact runtime scope.
-The hosted CI matrix has not run; Windows and matched-quality performance qualification remain open.
+Browser is now the default renderer. The CLI's required dependencies contain no Remotion;
+explicit `renderer: remotion` and `--renderer remotion` use the optional compatibility adapter.
+The migration includes scaffolds, help, diagnostics, independent installation checks and a
+prepared Linux/macOS/Windows CI matrix. Nothing was published or pushed by this work.
 
-The [macOS follow-up](research/macos-followup-2026-11-03/README.md) integrates the Linux fixes into
-local candidate `4fadfd0`. The shared live-control checks pass, but repeated Quicksilver video
-exports fail worker parity on M1 Pro Metal. This specific failure remains unresolved; broad
-acceptance or installation passes do not qualify it. No new graphics flags were adopted.
-
-Main still defaults to Remotion. The commands and default behavior below describe the candidate;
-on main, select the browser renderer explicitly.
+On 3 November, the user authorized pre-release promotion without waiting for unavailable Linux
+and Windows machines. The Quicksilver parent-layer repair (`97d271a`) passes macOS correctness;
+[Linux repetition remains documented follow-up](linux-renderer-qualification.md). Earlier Linux
+fresh installations pass on Fedora x64. Hosted CI and Windows checks have not run. The existing
+first-export comparisons do not achieve the roadmap's speed objective; this migration makes no
+claim that the browser renderer is universally faster than Remotion.
 
 ## Set up the browser renderer
 
@@ -79,8 +73,8 @@ alpha channel is needed. See [compositing output](compositing-output.md) for the
 ## Verification and release boundaries
 
 For a Linux session, follow the [qualification handoff](linux-renderer-qualification.md), including
-transfer of the local candidate branch and fresh Linux dependencies. Windows qualification remains
-pending; passing Linux checks alone does not authorize promotion.
+transfer of the latest main branch and fresh Linux dependencies. Windows qualification remains
+pending. The Quicksilver parent-layer repair must be included in the next Linux repetition.
 
 `vp run package-smoke --browser --report out/installed-browser.json` builds tarballs and installs
 only the CLI into a fresh dependency tree. Local overrides resolve unpublished Setcast packages;
@@ -97,6 +91,5 @@ browser before the default smoke, and adds independent fresh-install jobs on Lin
 Windows with uploaded reports. These jobs test software export; they do not qualify every GPU,
 hardware encoder, distribution or user browser.
 
-Promotion requires the outstanding plan criteria, including representative matched-quality
-timings against current Remotion under quiet load and successful supported-platform evidence.
-The candidate's dependency removal and local correctness checks do not establish a speed claim.
+Outstanding platform and matched-quality throughput objectives continue after this pre-release
+promotion. Dependency removal and local correctness checks do not establish a speed claim.

@@ -1,0 +1,55 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { resolve,join } from 'node:path';
+import { loadProject,probeAudio,WholeSetReader } from '../../../../packages/core/src/node/index.ts';
+import { exportSettings } from '../../../../packages/core/src/index.ts';
+import { themes } from '../../../../packages/themes/src/index.ts';
+import { render } from '../../../../packages/renderer-browser/src/export/index.ts';
+import { waitForIdle } from '../../../../scripts/render-compare/idle.ts';
+import { measureLoad,verifyVideo } from '../../../../scripts/render-compare/measure.ts';
+import { measureProcesses } from '../../../../scripts/render-compare/process-monitor.ts';
+import { projectContent } from '../../../../scripts/render-compare/content.ts';
+const out=resolve(process.argv[2]);await mkdir(out);
+const source=resolve('packages/renderer-browser/src/export/video.tsx');
+const original=await readFile(source,'utf8');
+const before=`  const canvas = document.createElement('canvas');
+  canvas.width = decoded.canvas.width;
+  canvas.height = decoded.canvas.height;
+  const context = canvas.getContext('2d')!;
+  context.drawImage(decoded.canvas, 0, 0);`;
+const after=`  const canvas = decoded.canvas;
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;`;
+assert.equal(original.split(before).length,2,'Unexpected video preparation source');
+const sources={copy:original,direct:original.replace(before,after)};
+const projectDir=resolve('examples/demo/out/replacement-corpus-v1/looping-video');
+const loaded=await loadProject(projectDir,{themes,probeDuration:(audio,dir)=>probeAudio({audio},dir)});
+const project=await new WholeSetReader().read(loaded.project,projectDir);
+const control=new AbortController();for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>control.abort(new Error(signal)));
+const identity=await projectContent(project,projectDir,control.signal);
+const report={revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),identity,scope:'Isolated video readback experiment. Each mode gets a fresh render session and exact source-file content recorded by SHA256. Original source restored in finally. Three alternating pairs of 1080p30 frames2700-2999, four workers. Rendering through cleanup; excludes project preparation and verification. Exact decoded video equality required; no Remotion claim.',status:'running',runs:[]};
+const save=()=>writeFile(join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
+let reference;
+try {
+  for(let round=0;round<3;round++) for(const mode of round%2?['direct','copy']:['copy','direct']) {
+    await waitForIdle(.15,control.signal);
+    const observed=await projectContent(project,projectDir,control.signal);
+    assert.equal(observed.projectDigest,identity.projectDigest);assert.equal(observed.assetsDigest,identity.assetsDigest);
+    await writeFile(source,sources[mode]);
+    const runtime=[],file=join(out,round+'-'+mode+'.mp4');
+    const monitor=await measureProcesses(),load=measureLoad();let wallSeconds,activity,resources;const start=performance.now();
+    try {
+      await render(project,{...exportSettings(loaded.config.output),projectDir,out:file,range:[90,100],concurrency:4,signal:control.signal,onRuntime:event=>runtime.push(event)});
+      wallSeconds=(performance.now()-start)/1000;
+    } finally {activity=load.stop();resources=await monitor.stop();}
+    const verification=await verifyVideo(file,{...project,frames:300},control.signal);
+    reference??=verification.decodedVideoHash;
+    const equal=verification.decodedVideoHash===reference;
+    report.runs.push({round,mode,wallSeconds,equal,sourceHash:createHash('sha256').update(sources[mode]).digest('hex'),verification,runtime,activity,resources});await save();
+    console.log(round,mode,wallSeconds,'equal',equal);
+    assert(equal,'Direct decoder readback changed decoded output; reject without a speed claim.');
+  }
+  report.status='passed';
+} catch(error) {report.status='failed';report.error=String(error);throw error;}
+finally {await writeFile(source,original);await save();}

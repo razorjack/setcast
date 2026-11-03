@@ -58,7 +58,7 @@ test('validation CLI checks configured and overridden renderers without importin
     );
     await writeFile(
       join(root, 'setcast.yaml'),
-      'audio: tone.mp3\noutput: {parallelEncoding: false}',
+      'audio: tone.mp3\nrenderer: remotion\noutput: {parallelEncoding: false}',
     );
     const source = `
       import { registerHooks } from 'node:module';

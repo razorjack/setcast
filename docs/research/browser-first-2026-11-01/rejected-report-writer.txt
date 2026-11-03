@@ -1,0 +1,16 @@
+$ node scripts/package-smoke.ts --report docs/research/browser-first-2026-11-01/installed-compatibility-macos.json ⊘ cache disabled
+  installed cache: repeat skips capture, decoded frames match, inspect/clear work
+  installed browser exporter: PNG, lossless WebP and H.264 + AAC
+  installed defaults: CLI preview, clip and bundled video, thumbnail and description
+file:///private/tmp/setcast-browser-first-candidate/scripts/package-smoke.ts:515
+  report.completed.push('optional Remotion validation and decoded export');
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'push')
+    at exerciseCompatibility (file:///private/tmp/setcast-browser-first-candidate/scripts/package-smoke.ts:515:20)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async exerciseCli (file:///private/tmp/setcast-browser-first-candidate/scripts/package-smoke.ts:339:24)
+    at async file:///private/tmp/setcast-browser-first-candidate/scripts/package-smoke.ts:153:3
+
+Node.js v26.7.0
+

@@ -1,24 +1,57 @@
 # Linux renderer qualification handoff
 
 This runbook continues the [renderer replacement plan](renderer-replacement-plan.md) on Linux.
-As of 1 November 2026, the user has a Linux machine and no easy access to Windows. Linux execution
-has not happened in the macOS session that prepared this document. Windows remains unqualified;
-its absence does not waive a release requirement or authorize changing the default renderer.
+The 1 November [Fedora qualification](research/linux-qualification-2026-11-01/README.md) is complete
+for its available fixtures. The 3 November macOS session promotes browser-first distribution
+and the Quicksilver parent-layer repair under the user's pre-release policy: unavailable Linux
+and Windows machines no longer block promotion. Unexecuted checks remain unqualified.
 
-The Linux session should complete the work that its machine supports, fix reproducible defects,
-record observations as they occur, and commit each coherent change. Do not publish, push, start
-external CI or change the default on main. Ordinary local fixes and qualification are authorized.
-Do not restart rejected capture experiments unless Linux supplies new evidence relevant to them.
+## Required follow-up for the promoted Quicksilver repair
 
-Execution results are retained in the [Fedora x64 qualification report](research/linux-qualification-2026-11-01/README.md).
-The Linux session fixes four reproducible issues and executes the available checks. It does not
-meet the performance target or qualify Windows, a missing real master, explicit NVIDIA ANGLE,
-upstream encoder-failure cleanup or the separate-operator software live endurance preset.
+Use the latest main branch, including repair `97d271a` and the browser-first integration.
+Transfer committed source with a fresh Git bundle if needed; the old bundle and candidate refs
+in the historical transfer section below do not contain this repair. Do not copy macOS
+`node_modules` or browser binaries. Install fresh Linux dependencies and record the actual host,
+Chromium graphics backend, FFmpeg, revision and dirty state.
+
+The repair moves `will-change: transform` from `.sc-bg-img` to `.sc-bg` for video backgrounds.
+It fixes repeated macOS exports, but Linux must confirm that the earlier circular-clip defect
+does not return. The [macOS evidence](research/quicksilver-repair-2026-11-03/candidate.md) records
+compact/HD video, static art, source transitions and both exporter suites. The candidate report
+predates the user's promotion decision; its original pending language is historical evidence.
+
+After the setup below, run these with new output directories and retained exit statuses:
+
+```sh
+vp run ready
+node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1,2,4 --out NEW_COMPACT_DIRECTORY
+node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1,2,4 --out NEW_HD_DIRECTORY
+node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 3 --workers 1,2,4 --out NEW_STATIC_DIRECTORY
+node packages/renderer-browser/bench/video-frames.ts --image-only --out NEW_SEEK_DIRECTORY
+vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out NEW_BROWSER_ACCEPTANCE_DIRECTORY
+vp run export-acceptance --gl swangle --out NEW_REMOTION_ACCEPTANCE_DIRECTORY
+vp run package-smoke --browser --report NEW_INSTALLED_BROWSER_REPORT.json
+vp run package-smoke --report NEW_COMPATIBILITY_REPORT.json
+```
+
+Also copy `docs/research/quicksilver-repair-2026-11-03/reproduction/switches.mjs.txt` to
+`examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs` and execute
+`node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs NEW_SWITCH_DIRECTORY control`.
+It generates a video → image → video project and checks exact decoded equality across workers
+and fresh-page repetitions. `SETCAST_HD=1` selects full resolution. Keep failures; do not relax
+the source budget or exact video assertions. If the old clip defect returns, repair it and rerun
+the macOS reproducer before declaring a cross-platform fix.
+
+The next Linux session should then complete any available real-master resource check and revisit
+the separate software-live dropped-sample reproducer. Windows, explicit NVIDIA ANGLE and the
+first-export speed objective remain open. Do not conflate those tasks with this repair check.
+Record findings as they occur and commit coherent fixes and evidence. No push, publication or
+hosted CI is authorized by this runbook.
 
 ## Source and evidence to bring
 
 Read root `AGENTS.md`, this runbook, the replacement plan and the latest entries in
-[renderer-replacement-log.md](renderer-replacement-log.md). The important refs at handoff are:
+[renderer-replacement-log.md](renderer-replacement-log.md). The original 1 November refs are listed for provenance only. New sessions must use current main:
 
 | Ref | Revision before this handoff | Purpose |
 | --- | --- | --- |
@@ -26,7 +59,7 @@ Read root `AGENTS.md`, this runbook, the replacement plan and the latest entries
 | `renderer/browser-first-candidate` | `4c6f21c` | Browser default and genuinely Remotion-free installed CLI. Qualified code is `e28d2bd`; subsequent merge is documentation only. |
 | `renderer/upstream-539-comparison` | `6c373c0` | Historical Remotion 4.0.539 / Chromium 157 comparison configuration. Its browser code is older than the promoted bitmap path. |
 
-These are local branches, not a promise that the remote has them. Transfer the committed refs
+These historical refs are local branches, not a promise that the remote has them. Transfer the latest committed refs
 before starting. A Git bundle avoids publishing anything. On the source machine, after committing
 this handoff, create and verify a bundle outside the repository:
 
@@ -358,6 +391,6 @@ must not imply unexecuted checks passed.
 
 The final report must distinguish software Linux installation/export qualification, the exact
 graphics backend, optional NVENC qualification, full-master resources and matched-quality speed.
-Windows stays untested. Changing the supported-platform scope or revising the speed target needs
-an explicit roadmap decision from the user; this handoff does neither. Keep browser-first promotion
-pending until the existing release requirements pass or the user explicitly changes them.
+Windows stays untested. The 3 November user decision permits pre-release promotion before all
+platform checks and throughput objectives pass. Record their actual status and retain the
+existing speed objective without claiming that migration achieves it.

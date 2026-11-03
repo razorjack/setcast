@@ -17,7 +17,7 @@ test('missing runtime tools yield one actionable JSON report without downloading
           throw new Error('The browser doctor must not import Remotion');
         return next(specifier, context);
       }});
-      process.argv = [process.execPath, ${JSON.stringify(cli)}, 'doctor', '--renderer', 'browser', '--json'];
+      process.argv = [process.execPath, ${JSON.stringify(cli)}, 'doctor', '--json'];
       await import(${JSON.stringify(cli)});
     `;
     const result = spawnSync(process.execPath, ['--input-type=module', '-e', source], {

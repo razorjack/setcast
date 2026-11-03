@@ -1,0 +1,8 @@
+file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/readback.mjs:13
+const files=new Map(built.output.map(file=>['/'+file.fileName,Buffer.from(file.type==='chunk'?file.code:file.source)]));
+                                 ^
+
+TypeError: Cannot read properties of undefined (reading 'map')
+    at file:///Users/razorjack/Projects/OpenSource/setcast/examples/demo/out/quicksilver-repair-2026-11-03/readback.mjs:13:34
+
+Node.js v26.7.0

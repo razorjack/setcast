@@ -1,0 +1,21 @@
+import { writeFile, mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+const require=createRequire(new URL('../../../../packages/renderer-browser/package.json',import.meta.url));
+const {build}=await import(require.resolve('vite'));
+import { chromium } from '../../../../packages/renderer-browser/node_modules/playwright/index.mjs';
+import { serveCapture } from '../../../../packages/renderer-browser/src/server.ts';
+import { captureBrowserArgs } from '../../../../packages/renderer-browser/src/export/graphics.ts';
+import { fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+const out=resolve(process.argv[2]);await mkdir(out);
+const fixture=resolve('examples/demo/out/macos-followup-2026-11-03/video-workers');
+const built=await build({configFile:false,publicDir:false,logLevel:'warn',build:{write:false,lib:{entry:resolve('examples/demo/out/quicksilver-repair-2026-11-03/readback-entry.ts'),formats:['es'],fileName:()=> 'player.js'}}});
+const files=new Map((Array.isArray(built)?built:[built]).flatMap(bundle=>bundle.output).map(file=>['/'+file.fileName,Buffer.from(file.type==='chunk'?file.code:file.source)]));
+const server=await serveCapture(await fixtureProject(fixture,'quicksilver'),{projectDir:fixture,files});
+let browser;
+try {
+  browser=await chromium.launch({args:captureBrowserArgs()});
+  const page=await browser.newPage();await page.goto(server.url);await page.waitForFunction(()=>Boolean(window.readbackProbe));
+  const report=await page.evaluate(()=>window.readbackProbe());
+  await writeFile(out+'/report.json',JSON.stringify({chromium:browser.version(),...report},null,2));console.log(report);
+} finally {await browser?.close();await server.close();}

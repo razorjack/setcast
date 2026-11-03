@@ -24,15 +24,23 @@
     "@clack/prompts": "catalog:",
     "@setcast/core": "workspace:*",
     "@setcast/renderer-browser": "workspace:*",
-    "@setcast/renderer-remotion": "workspace:*",
     "@setcast/themes": "workspace:*",
     "picocolors": "catalog:",
     "yaml": "catalog:"
   },
   "devDependencies": {
+    "@setcast/renderer-remotion": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@setcast/renderer-remotion": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@setcast/renderer-remotion": {
+      "optional": true
+    }
   }
 }

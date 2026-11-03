@@ -66,7 +66,7 @@ export async function diagnoseRenderer(name: Renderer, options: RendererDiagnost
   return adapter.diagnose(options);
 }
 
-export async function withRenderSession<T>(task: () => Promise<T>, name: Renderer = 'remotion') {
+export async function withRenderSession<T>(task: () => Promise<T>, name: Renderer = 'browser') {
   const exporter =
     name === 'browser'
       ? await import('@setcast/renderer-browser/export')
@@ -106,8 +106,9 @@ function current() {
 export async function resolveHardwareEncoding(
   setting: HardwareAcceleration,
   options?: HardwareProbe,
+  name: Renderer = selected.getStore()?.name ?? 'browser',
 ) {
-  if (selected.getStore()?.name !== 'browser')
+  if (name === 'remotion')
     return (await loadRemotion(() => import('@setcast/renderer-remotion'))).resolveHardwareEncoding(
       setting,
     );

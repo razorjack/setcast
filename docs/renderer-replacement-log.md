@@ -6,7 +6,7 @@ supported feature or completed milestone unless explicitly marked as such. Retai
 limitations when adding results. Update this file before context handoffs and include it in each
 relevant implementation commit.
 
-## Current state, 2026-11-01
+## Historical checkpoint, 2026-11-01
 
 The user authorized autonomous implementation through renderer replacement, with a commit for each
 coherent validated change. No push or publication is authorized. Another project can run tests on
@@ -1893,3 +1893,29 @@ Two isolated layer-cost attempts stop before rendering because CPU stays above 1
 claim is inferred. The candidate remains separate from main while Linux confirmation is unavailable.
 A bounded direct-decoder-canvas readback probe matches copied-canvas RGBA on 180 shuffled samples;
 that is an initial correctness observation, not export or performance qualification.
+
+
+## Pre-release promotion decision, 3 November 2026
+
+The user confirmed that Linux is unreachable and explicitly asked not to hold promotion to the
+previous cross-platform policy: Setcast has no users yet, and Remotion was a prototype dependency.
+Proceed with the macOS-qualified Quicksilver repair (`97d271a`) and the prepared browser-first
+migration. Keep Linux verification instructions in the active handoff. Windows and the unmet
+first-export target remain documented follow-up work; they are not claimed as passed or achieved.
+The optional Remotion adapter remains for explicit compatibility and comparison.
+
+The integrated tree combines `97d271a` with `renderer/browser-first-candidate` (`4a5af1b`).
+Frozen-lockfile installation, baseline and both fresh tarball installation modes are being
+verified before the merge commit. Source media and capture policy remain unchanged apart from
+the qualified theme repair. The direct-readback optimization is not promoted: its initial 180
+RGBA comparisons pass, but complete-export timing cannot start while the host remains above the
+15% idle threshold. Both layer-cost attempts and the readback attempt preserve their failed
+load checks. No other project's processes were stopped.
+
+
+Final integrated validation passes frozen installation, all 688 baseline tests and decoded smoke,
+plus both fresh tarball installation paths. The browser-only package inventory contains no
+Remotion packages; optional compatibility validates and exports six decoded frames. The active
+roadmap, guides and agent map now describe browser defaults and the user's revised promotion
+policy. Older research remains unchanged. The final integration report and source hashes are in
+`docs/research/browser-first-promotion-2026-11-03`.

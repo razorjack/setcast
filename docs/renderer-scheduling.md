@@ -2,7 +2,8 @@
 
 Removing display refresh pacing from offline Chromium reduced the measured one-worker export
 wall times by 22–33%, with all 3,600 compared decoded frames identical. Baseline revision:
-5b24d4c, after branding and overlays. Remotion remains the default renderer.
+5b24d4c, after branding and overlays. This measurement predates the
+[browser-first migration](browser-first-migration.md); browser is now the default renderer.
 
 ## Change and measurements
 

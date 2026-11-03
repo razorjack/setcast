@@ -1,0 +1,2 @@
+[1m[94mpass:[39m[0m Formatting completed for checked files [2m(5.3s)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 533 files [2m(4.2s, 10 threads)[0m

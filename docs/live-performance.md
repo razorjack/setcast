@@ -2,7 +2,7 @@
 
 `setcast live` has visual intensity, brightness, immediate blackout, saved scene recall and MIDI
 controls. The output window owns audio capture, MIDI and the journal. Moving controls to the
-operator window keeps those connections running. Remotion remains the default offline exporter.
+operator window keeps those connections running. Browser is the default offline exporter.
 
 Two starting compositions are included:
 
