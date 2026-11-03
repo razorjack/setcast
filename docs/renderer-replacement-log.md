@@ -1826,3 +1826,45 @@ Final macOS baseline passes all 688 tests, formatting, lint/types, dependency is
 smoke. Compact reports and reproductions are committed under `docs/research/macos-followup-2026-11-03`;
 the artifact manifest identifies the retained raw outputs, including failed checks. No production
 source, graphics flag, precision threshold or default renderer was changed by this follow-up.
+
+## Replacement completion audit, 3 November 2026
+
+Starting from `380b17b`, the remaining release work is Quicksilver macOS correctness,
+first-export throughput, supported-platform resource/installation evidence, and eventual
+candidate promotion. The eight implementation phases already have implementations or retained
+rejection decisions. Further work will preserve the release criteria and archived failures.
+No linked-machine discovery tool is available in this session (the named environment-links
+call is unavailable), so Linux/Windows execution cannot currently be assumed. Local disk has
+approximately 14 GiB free; use bounded reproductions and retain compact evidence rather than
+starting a large master export without checking capacity.
+
+The next Quicksilver experiments isolate fractional image geometry, filtering and compositor
+ownership. The previous prepared-BMP equality excludes decoder changes as the initial repair.
+All experimental CSS stays in the fixture until repeated source and encoded checks qualify it.
+
+The maintained `worker-frames.ts` harness now has a self-contained `--video` fixture, selectable
+paired orientation dimensions and cross-round hash comparisons. Video qualification retains
+exact decoded equality; a later source rerun cannot convert an earlier video mismatch into a
+pass. It saves revision/options and each export's actual runtime. Static qualification retains
+its documented source-rounding allowance. Baseline inside the sandbox passes formatting/types
+but five server tests fail on denied localhost binds; the host-enabled rerun is required.
+
+The first approval attempt failed from review-model capacity; a retry was approved. Its launcher
+then found an existing output directory from the sandbox attempt, before any browser started.
+Both failures remain in local logs. The corrected fresh matrix reproduces the source failure;
+rounding image dimensions and removing its CSS filter do not resolve it. Remaining local layer
+experiments are running with no production CSS changes.
+
+Three fixture-only alternatives pass the 135 lossless comparisons: move the transform hint to
+`.sc-bg`, use a clip-path hint on the image, and use image isolation without a transform hint.
+Repeated encoded checks are in progress. Partial-raster and zero-copy flags still fail. A raw
+`--disable-features=SkiaGraphite` experiment passes, but it may replace Playwright's other disabled
+features. A narrower diagnostic will preserve the observed existing feature list and record
+Chromium's `SystemInfo` feature status before attributing the change to Graphite. No graphics
+policy is promoted on the raw flag result. Host-enabled `ready` passes all 688 tests and smoke.
+
+The maintained compact negative control exits 1: landscape equality passes and portrait equality
+fails with retained lossless diagnostics. Final harness baseline passes all 688 tests and smoke.
+The Linux runbook now requests compact and full-resolution repeated video matrices. This closes
+the tooling gap without describing the production regression as repaired. Evidence is retained
+under `docs/research/quicksilver-repair-2026-11-03`.

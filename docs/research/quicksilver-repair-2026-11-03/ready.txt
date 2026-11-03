@@ -1,0 +1,112 @@
+$ vp check ⊘ cache disabled
+[1m[94mpass:[39m[0m All 593 files are correctly formatted [2m(156ms, 10 threads)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 532 files [2m(2.2s, 10 threads)[0m
+
+$ vp test ⊘ cache disabled
+
+ RUN  v4.1.10 /Users/razorjack/Projects/OpenSource/setcast
+
+ ❯ packages/renderer-browser/src/server.test.ts (6 tests | 5 failed) 278ms
+   × player serves project, bundles and seekable assets, then releases its port 12ms
+   × player resolves each offered theme once, lists the project theme first and reports failures 10ms
+   × scene writes require an exact origin and header, validate paths, and leave source config intact 6ms
+   × export asset servers reject all player writes 1ms
+   × preview revisions publish valid projects and retain them after an invalid edit 247ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/renderer-browser/src/server.test.ts > player serves project, bundles and seekable assets, then releases its port
+SetcastError: Cannot start the player on localhost:0
+ ❯ packages/renderer-browser/src/server.ts:93:11
+     91|     server.listen(port, '127.0.0.1', resolve);
+     92|   }).catch((cause: unknown) => {
+     93|     throw new SetcastError(
+       |           ^
+     94|       `Cannot start the player on localhost:${port}`,
+     95|       'Choose another --port or allow localhost access, then retry.',
+ ❯ listen packages/renderer-browser/src/server.ts:89:3
+ ❯ packages/renderer-browser/src/server.test.ts:40:18
+
+Caused by: Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  packages/renderer-browser/src/server.test.ts > player resolves each offered theme once, lists the project theme first and reports failures
+SetcastError: Cannot start the player on localhost:0
+ ❯ packages/renderer-browser/src/server.ts:93:11
+     91|     server.listen(port, '127.0.0.1', resolve);
+     92|   }).catch((cause: unknown) => {
+     93|     throw new SetcastError(
+       |           ^
+     94|       `Cannot start the player on localhost:${port}`,
+     95|       'Choose another --port or allow localhost access, then retry.',
+ ❯ listen packages/renderer-browser/src/server.ts:89:3
+ ❯ packages/renderer-browser/src/server.test.ts:75:18
+
+Caused by: Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  packages/renderer-browser/src/server.test.ts > scene writes require an exact origin and header, validate paths, and leave source config intact
+SetcastError: Cannot start the player on localhost:0
+ ❯ packages/renderer-browser/src/server.ts:93:11
+     91|     server.listen(port, '127.0.0.1', resolve);
+     92|   }).catch((cause: unknown) => {
+     93|     throw new SetcastError(
+       |           ^
+     94|       `Cannot start the player on localhost:${port}`,
+     95|       'Choose another --port or allow localhost access, then retry.',
+ ❯ listen packages/renderer-browser/src/server.ts:89:3
+ ❯ packages/renderer-browser/src/server.test.ts:120:18
+
+Caused by: Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  packages/renderer-browser/src/server.test.ts > export asset servers reject all player writes
+SetcastError: Cannot start the player on localhost:0
+ ❯ packages/renderer-browser/src/server.ts:93:11
+     91|     server.listen(port, '127.0.0.1', resolve);
+     92|   }).catch((cause: unknown) => {
+     93|     throw new SetcastError(
+       |           ^
+     94|       `Cannot start the player on localhost:${port}`,
+     95|       'Choose another --port or allow localhost access, then retry.',
+ ❯ listen packages/renderer-browser/src/server.ts:89:3
+ ❯ packages/renderer-browser/src/server.test.ts:159:18
+
+Caused by: Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  packages/renderer-browser/src/server.test.ts > preview revisions publish valid projects and retain them after an invalid edit
+SetcastError: Cannot start the player on localhost:0
+ ❯ packages/renderer-browser/src/server.ts:93:11
+     91|     server.listen(port, '127.0.0.1', resolve);
+     92|   }).catch((cause: unknown) => {
+     93|     throw new SetcastError(
+       |           ^
+     94|       `Cannot start the player on localhost:${port}`,
+     95|       'Choose another --port or allow localhost access, then retry.',
+ ❯ listen packages/renderer-browser/src/server.ts:89:3
+ ❯ preview packages/renderer-browser/src/preview/server.ts:34:18
+ ❯ packages/renderer-browser/src/server.test.ts:174:18
+
+Caused by: Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'EPERM', errno: -1, syscall: 'listen', address: '127.0.0.1' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed | 114 passed (115)
+      Tests  5 failed | 683 passed (688)
+   Start at  15:16:32
+   Duration  7.68s (transform 5.84s, setup 0ms, import 20.06s, tests 34.17s, environment 8ms)
+
+
+---
+vp run: 0/2 cache hit (0%), 1 failed. (Run `vp run --last-details` for full details)

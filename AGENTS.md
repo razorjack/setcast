@@ -115,6 +115,9 @@ Gotchas:
   while source PNG differences exceed the precision budget. Opacity/filter hints are unqualified.
   Disabling GPU rasterization fixes the retained reproducer but changes other pixels and export
   cost, so no production flag changed. See `docs/research/macos-followup-2026-11-03/README.md`.
+  The maintained reproducer is `bench/worker-frames.ts --video --theme quicksilver --repeat 3`
+  in renderer-browser; add `--size 640x360` for the compact run. It checks both orientations and
+  cross-round equality, keeps exact video failures, and records source diagnostics separately.
 
 - Fedora SwiftShader live qualification passes the one-hour recovery preset, but the separate-operator
   software preset drops analysis samples near scene changes, including in isolation. A diagnostic

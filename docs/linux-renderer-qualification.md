@@ -136,6 +136,8 @@ run_check browser-acceptance vp run export-acceptance --adapter packages/rendere
 run_check remotion-acceptance vp run export-acceptance --gl swangle --out "$linux_run/remotion-acceptance"
 run_check frames node packages/renderer-browser/bench/frames.ts
 run_check workers node packages/renderer-browser/bench/worker-frames.ts --workers 1,2,4 --out "$linux_run/workers"
+run_check video-workers node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1,2,4 --out "$linux_run/video-workers"
+run_check video-workers-hd node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1,2,4 --out "$linux_run/video-workers-hd"
 run_check bitmap node packages/renderer-browser/bench/bitmap.ts --out "$linux_run/bitmap"
 run_check video-frames node packages/renderer-browser/bench/video-frames.ts --image-only --out "$linux_run/video-frames"
 run_check color node packages/renderer-browser/bench/color.ts --out "$linux_run/color"
@@ -157,6 +159,12 @@ have no `--out` flag. Preserve those outputs before rerunning them; the console 
 images and reports. `preview.ts` already invokes the CLI preview checks; `preview-cli.ts` is an
 imported helper, not a standalone test. Do not pass `--avfoundation` to ProRes on Linux. Its Linux
 pass qualifies FFmpeg decoding/compositing, not AVFoundation, OBS or an editor.
+
+The video worker checks generate their own 25 fps looping input and render it at 30 fps in both
+orientations. They require exact decoded equality across worker counts and repeated exports.
+On a mismatch, retained lossless source comparisons diagnose the error but cannot override the
+failed video assertion. This covers the Quicksilver regression that static worker and sparse-seek
+checks missed on macOS. `identity.json` records source/options; each export retains runtime details.
 
 Headless graphics need explicit interpretation. Remotion acceptance uses `--gl swangle` because
 automatic ANGLE can render CSS while failing WebGL 2 without a hardware backend. Browser export
