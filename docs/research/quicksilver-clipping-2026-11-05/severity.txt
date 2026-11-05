@@ -1,0 +1,3 @@
+compact worst mean frame {'frame': 73, 'maximum': 41, 'mean': 0.20288773148148148, 'changed': 21238, 'over8': 1034, 'over32': 1} pixel count 230400
+portrait worst mean frame {'frame': 33, 'maximum': 39, 'mean': 0.0029007523148148148, 'changed': 390, 'over8': 12, 'over32': 1} pixel count 230400
+hd worst mean frame {'frame': 71, 'maximum': 54, 'mean': 0.1289700681584362, 'changed': 125348, 'over8': 10654, 'over32': 20} pixel count 2073600

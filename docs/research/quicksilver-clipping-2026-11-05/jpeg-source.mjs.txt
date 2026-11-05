@@ -1,0 +1,32 @@
+import { resolve, join } from 'node:path';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+import { withRenderSession, withCapturePages, prepareFrame } from '../../../../packages/renderer-browser/src/export/session.ts';
+import { pipeline } from '../../../../packages/renderer-browser/src/export/pipeline.ts';
+import { pixelDifference } from '../../../../packages/renderer-browser/bench/worker-pixels.ts';
+const projectDir=resolve('examples/demo/out/quicksilver-linux-2026-11-05/compact');
+const loaded=await fixtureProject(projectDir,'quicksilver');
+for(const mode of process.argv.slice(2)) {
+ const out=resolve('examples/demo/out/quicksilver-clipping-2026-11-05',`jpeg-${mode}`);
+ await mkdir(out);
+ const override=mode==='control'?'':JSON.parse(await readFile(resolve('examples/demo/out/quicksilver-clipping-2026-11-05',mode,'summary.json'),'utf8')).override;
+ const project={...loaded,background:'motion.mp4',width:640,height:360,css:loaded.css+'\n'+override};
+ const runtime=[];
+ await withRenderSession(async()=>{
+  for(const [name,workers] of [['one-a',1],['one-b',1],['two',2],['four',4]]) {
+   await mkdir(join(out,name));
+   await withCapturePages(project,{projectDir,onRuntime:r=>runtime.push({name,...r})},workers,pages=>pipeline({range:[30,74],workers,capture:async(worker,frame)=>{await prepareFrame(pages[worker],frame);return pages[worker].screenshot({type:'jpeg',quality:95});},write:(bytes,frame)=>writeFile(join(out,name,`${frame}.jpg`),bytes),cancel:()=>Promise.allSettled(pages.map(p=>p.close()))}));
+  }
+ });
+ const reports=[];
+ const decode=file=>execFileSync('ffmpeg',['-v','error','-i',file,'-f','rawvideo','-pix_fmt','rgb24','-']);
+ for(const name of ['one-b','two','four']) for(let frame=30;frame<=74;frame++) {
+  const a=join(out,'one-a',`${frame}.jpg`),b=join(out,name,`${frame}.jpg`);
+  const bytesEqual=(await readFile(a)).equals(await readFile(b));
+  const difference=bytesEqual?{maximum:0,rms:0,changedPixels:0,pixels:640*360,qualified:true}:pixelDifference(decode(a),decode(b));
+  reports.push({name,frame,bytesEqual,...difference});
+ }
+ await writeFile(join(out,'report.json'),JSON.stringify({mode,override,runtime,reports},null,2)+'\n');
+ console.log({mode,comparisons:reports.length,decodedDifferences:reports.filter(r=>r.maximum>0).length,maximum:Math.max(...reports.map(r=>r.maximum)),changedPixels:Math.max(...reports.map(r=>r.changedPixels))});
+}

@@ -1,0 +1,23 @@
+diff --git a/packages/renderer-browser/src/export/video.tsx b/packages/renderer-browser/src/export/video.tsx
+index abe6d87..8f3e57f 100644
+--- a/packages/renderer-browser/src/export/video.tsx
++++ b/packages/renderer-browser/src/export/video.tsx
+@@ -17,7 +17,7 @@ export function ExportVideo({ src, style, className, fit, loop }: VideoProps) {
+       if (owner.current === current) owner.current = null;
+     };
+   }, [src]);
+-  const ready = useHoldUntil(`video:${src}:${frame}`, async () => {
++  useHoldUntil(`video:${src}:${frame}`, async () => {
+     const current = owner.current;
+     if (!current || current.disposed) return;
+     const decoder = await current.decoder;
+@@ -25,7 +25,8 @@ export function ExportVideo({ src, style, className, fit, loop }: VideoProps) {
+     const decoded = await decodeFrame(decoder, src, { frame, fps, loop });
+     if (!current.disposed) setImage(decoded);
+   });
+-  if (!ready || !image) return null;
++  // Keep compositor layers stable while the hold prevents capture of the previous frame.
++  if (!image) return null;
+   const objectFit = fit ? resolveFit(fit, image, composition) : undefined;
+   return (
+     <>

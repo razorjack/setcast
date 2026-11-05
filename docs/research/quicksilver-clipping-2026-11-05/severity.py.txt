@@ -1,0 +1,34 @@
+from pathlib import Path
+from PIL import Image, ImageChops, ImageEnhance
+import subprocess, json
+root=Path('examples/demo/out/quicksilver-clipping-2026-11-05')
+previous=Path('examples/demo/out/quicksilver-linux-2026-11-05')
+results=[]
+for label,width,height,round,other in [('compact',640,360,0,4),('portrait',360,640,0,4),('hd',1080,1920,2,2)]:
+    folder=previous/('compact' if label=='portrait' else label)
+    paths=[folder/f'{round}-quicksilver-{width}-{worker}.mp4' for worker in [1,other]]
+    processes=[subprocess.Popen(['ffmpeg','-v','error','-xerror','-i',str(p),'-map','0:v','-f','rawvideo','-pix_fmt','rgb24','-'],stdout=subprocess.PIPE) for p in paths]
+    rows=[]
+    for frame in range(45):
+        images=[]
+        for process in processes:
+            raw=process.stdout.read(width*height*3)
+            assert len(raw)==width*height*3
+            images.append(Image.frombytes('RGB',(width,height),raw))
+        difference=ImageChops.difference(*images)
+        histogram=difference.histogram()
+        r,g,b=difference.split()
+        pixelhist=ImageChops.lighter(ImageChops.lighter(r,g),b).histogram()
+        rows.append(dict(frame=frame+30,maximum=max(i%256 for i,n in enumerate(histogram) if n),mean=sum((i%256)*n for i,n in enumerate(histogram))/(width*height*3),changed=sum(pixelhist[1:]),over8=sum(pixelhist[9:]),over32=sum(pixelhist[33:])))
+        if frame in [15,20]:
+            for index,image in enumerate(images): image.save(root/f'{label}-{frame+30}-worker-{[1,other][index]}.png')
+            ImageEnhance.Brightness(difference).enhance(4).save(root/f'{label}-{frame+30}-difference-x4.png')
+    for process in processes:
+        assert not process.stdout.read(1)
+        assert process.wait()==0
+    results.append(dict(label=label,width=width,height=height,workers=[1,other],paths=[str(p) for p in paths],frames=rows))
+    subprocess.run(['ffmpeg','-v','error','-i',str(paths[0]),'-i',str(paths[1]),'-filter_complex','[0:v][1:v]hstack=inputs=2[v]','-map','[v]','-c:v','libx264','-crf','0','-preset','veryfast',str(root/f'{label}-paired.mp4')],check=True)
+(root/'severity.json').write_text(json.dumps(results,indent=2)+'\n')
+for r in results:
+    worst=max(r['frames'],key=lambda x:x['mean'])
+    print(r['label'],'worst mean frame',worst,'pixel count',r['width']*r['height'])

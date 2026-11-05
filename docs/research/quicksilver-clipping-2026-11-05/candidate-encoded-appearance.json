@@ -1,0 +1,30 @@
+[
+  {
+    "label": "landscape",
+    "frame": 45,
+    "paths": [
+      "examples/demo/out/quicksilver-linux-2026-11-05/compact/0-quicksilver-640-1.mp4",
+      "examples/demo/out/quicksilver-clipping-2026-11-05/candidate-compact/0-quicksilver-640-1.mp4"
+    ],
+    "maximum": 55,
+    "mean": 0.3459201388888889,
+    "changed": 32753,
+    "over8": 3046,
+    "over32": 45,
+    "pixels": 230400
+  },
+  {
+    "label": "portrait",
+    "frame": 45,
+    "paths": [
+      "examples/demo/out/quicksilver-linux-2026-11-05/compact/0-quicksilver-360-1.mp4",
+      "examples/demo/out/quicksilver-clipping-2026-11-05/candidate-compact/0-quicksilver-360-1.mp4"
+    ],
+    "maximum": 255,
+    "mean": 3.1775477430555554,
+    "changed": 65738,
+    "over8": 11824,
+    "over32": 7221,
+    "pixels": 230400
+  }
+]

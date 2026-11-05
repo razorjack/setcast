@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -u
+export PATH="$PWD/node_modules/.bin:/home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/bin:$PATH"
+qrun="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+label="$1"
+shift
+test ! -e "$qrun/$label.command.txt" || exit 99
+printf '%q ' "$@" > "$qrun/$label.command.txt"
+printf '\n' >> "$qrun/$label.command.txt"
+date -u +%FT%TZ > "$qrun/$label.start.txt"
+"$@" > "$qrun/$label.txt" 2>&1
+result=$?
+printf '%s\n' "$result" > "$qrun/$label.exit.txt"
+date -u +%FT%TZ > "$qrun/$label.end.txt"
+tail -35 "$qrun/$label.txt"
+exit "$result"

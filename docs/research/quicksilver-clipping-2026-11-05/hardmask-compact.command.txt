@@ -1,0 +1,1 @@
+node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/hardmask-compact hardmask 

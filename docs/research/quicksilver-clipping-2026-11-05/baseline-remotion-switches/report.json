@@ -1,0 +1,199 @@
+{
+  "revision": "ba640f03559d9b43d10d0a899f4f8df91c114aa9",
+  "dirty": true,
+  "scope": "Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.",
+  "status": "failed",
+  "results": [
+    {
+      "round": 0,
+      "width": 640,
+      "height": 360,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches/0-640-1.mp4",
+          "hash": "SHA256=0971e28a80483c7b4336030db0e049d9c4f42404bf42476eb44dca36225fba5b",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches/0-640-2.mp4",
+          "hash": "SHA256=0971e28a80483c7b4336030db0e049d9c4f42404bf42476eb44dca36225fba5b",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches/0-640-4.mp4",
+          "hash": "SHA256=0971e28a80483c7b4336030db0e049d9c4f42404bf42476eb44dca36225fba5b",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 0,
+      "width": 360,
+      "height": 640,
+      "equal": false,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches/0-360-1.mp4",
+          "hash": "SHA256=e97160a7ac46275fae62dc777a3c824db0c0cca5eb87a7a7b7272295cada2159",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches/0-360-2.mp4",
+          "hash": "SHA256=477b47352ee82aedc312c53367b51c7007c83f02a3d88858911b949efe792589",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches/0-360-4.mp4",
+          "hash": "SHA256=0ca6747fa7b5adea2c540faac7c6179921b4aceff16a7b19106706e98582f85d",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Worker pixels differ: round 0, 360x640"
+}

@@ -1,0 +1,23 @@
+{
+  "label": "candidate-remotion-compact",
+  "width": 360,
+  "height": 640,
+  "workers": [
+    1,
+    2
+  ],
+  "files": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-compact/0-360-1.mp4",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-compact/0-360-2.mp4"
+  ],
+  "frames": 45,
+  "worstMean": {
+    "outputFrame": 42,
+    "maximum": 32,
+    "mean": 0.3884505208333333,
+    "changed": 42685,
+    "over8": 2227,
+    "over32": 0
+  },
+  "nonidenticalFrames": 40
+}

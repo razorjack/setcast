@@ -1,0 +1,9 @@
+import json, platform, subprocess
+from pathlib import Path
+commands=[['git','rev-parse','HEAD'],['git','branch','--show-current'],['git','status','--short'],['node','--version'],['vp','--version'],['pnpm','--version'],['ffmpeg','-version'],['uname','-srmo']]
+result={'platform':platform.platform(),'commands':[]}
+for command in commands:
+ p=subprocess.run(command,text=True,capture_output=True)
+ result['commands'].append({'command':command,'exit':p.returncode,'stdout':p.stdout,'stderr':p.stderr})
+result['osRelease']=Path('/etc/os-release').read_text()
+print(json.dumps(result,indent=2))

@@ -1,0 +1,1 @@
+env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-hd control 

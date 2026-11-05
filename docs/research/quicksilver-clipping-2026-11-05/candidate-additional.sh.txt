@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check candidate-source-portrait env SETCAST_PROBE_PREFIX=candidate-source-portrait- node "$root/masks.mjs" control
+check candidate-source-landscape env SETCAST_PROBE_PREFIX=candidate-source-landscape- SETCAST_PROBE_WIDTH=640 SETCAST_PROBE_HEIGHT=360 node "$root/masks.mjs" control
+check candidate-remotion-compact node "$root/remotion-encoded.mjs" "$root/candidate-remotion-compact" control
+check candidate-remotion-hd env SETCAST_HD=1 node "$root/remotion-encoded.mjs" "$root/candidate-remotion-hd" control
+check candidate-remotion-switches node "$root/remotion-switches.mjs" "$root/candidate-remotion-switches" control
+check candidate-remotion-switches-hd env SETCAST_HD=1 node "$root/remotion-switches.mjs" "$root/candidate-remotion-switches-hd" control

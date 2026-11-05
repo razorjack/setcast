@@ -127,6 +127,14 @@ Gotchas:
   --theme quicksilver --repeat 3`; add `--size 640x360` for the compact run. Video mismatches
   remain failures even when a later source diagnostic passes.
 
+- The isolated Quicksilver clipping-container candidate is `94c2c40` on
+  `renderer/quicksilver-clip-container-candidate`. Browser compact/HD repetitions, source switches,
+  all-theme seeks, acceptance and fresh installations pass on Fedora SwiftShader. It visibly
+  removes the portrait contain-mode colored rim and changes direct-child CSS matching. Keep it
+  isolated pending appearance/CSS review and macOS repetition. Focused Remotion worker checks fail
+  on both unchanged and candidate source despite general acceptance passing. See
+  `docs/research/quicksilver-clipping-2026-11-05/README.md` for exact evidence and reproducers.
+
 - Fedora SwiftShader live qualification passes the one-hour recovery preset, but the separate-operator
   software preset drops analysis samples near scene changes, including in isolation. A diagnostic
   observes an 875 ms packet-delivery gap beyond the 512 ms queue budget; its browser cause remains

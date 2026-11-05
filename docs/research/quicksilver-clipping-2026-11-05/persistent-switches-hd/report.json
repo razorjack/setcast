@@ -1,0 +1,8 @@
+{
+  "revision": "ba640f03559d9b43d10d0a899f4f8df91c114aa9",
+  "dirty": true,
+  "scope": "Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.",
+  "status": "failed",
+  "results": [],
+  "error": "Error: page.evaluate: EncodingError: The source image cannot be decoded."
+}

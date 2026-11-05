@@ -1,0 +1,45 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
+import { createFixture, fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+import { render, withRenderSession } from '../../../../packages/renderer-browser/src/export/index.ts';
+const out = resolve(process.argv[2]);
+await mkdir(out);
+await createFixture(out);
+let yaml = await readFile(join(out, 'setcast.yaml'), 'utf8');
+yaml = yaml.replace('title: First, artist: Fixture', 'title: First, artist: Fixture, background: motion.mp4');
+yaml = yaml.replace('title: Second, artist: Fixture', 'title: Second, artist: Fixture, background: art.svg');
+yaml = yaml.replace('annotations:', '  - { at: 2.5, title: Third, background: motion.mp4 }\nannotations:');
+await writeFile(join(out, 'setcast.yaml'), yaml);
+execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'testsrc2=s=960x540:r=25:d=1.2', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', join(out, 'motion.mp4')]);
+const loaded = await fixtureProject(out, 'quicksilver');
+const mode = process.argv[3] ?? 'control';
+const overrides = {control: ''};
+for (const name of ['hardmask','mask','fixedmask','wrapper']) overrides[name] = JSON.parse(await readFile(resolve('examples/demo/out/quicksilver-clipping-2026-11-05', name, 'summary.json'), 'utf8')).override;
+if (!(mode in overrides)) throw new Error('Unknown mode '+mode);
+const project = {...loaded, background:process.env.SETCAST_MEDIA === 'image' ? 'art.svg' : 'motion.mp4', css:loaded.css+'\n'+overrides[mode]};
+const report = { revision: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), dirty: Boolean(execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim()), scope: 'Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.', status: 'running', results: [] };
+try {
+  await withRenderSession(async () => {
+    for (let round = 0; round < 3; round++) for (const [width, height] of (process.env.SETCAST_HD ? [[1920,1080],[1080,1920]] : [[640,360],[360,640]])) {
+      const observations = [];
+      for (const concurrency of [1, 2, 4]) {
+        const file = join(out, `${round}-${width}-${concurrency}.mp4`);
+        const runtime = [];
+        const result = await render({ ...project, width, height }, { projectDir: out, out: file, range: [0, 3], concurrency, onRuntime: event => runtime.push(event) });
+        assert.equal(result.frames, 90);
+        const hash = execFileSync('ffmpeg', ['-v', 'error', '-xerror', '-i', file, '-map', '0:v', '-f', 'hash', '-hash', 'sha256', '-'], { encoding: 'utf8' }).trim();
+        observations.push({ concurrency, file, hash, runtime });
+      }
+      const previous = report.results.find(item => item.width === width && item.height === height);
+      const equal = observations.every(item => item.hash === observations[0].hash && (!previous || item.hash === previous.observations[0].hash));
+      report.results.push({ round, width, height, equal, observations });
+      await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');
+      assert(equal, `Worker pixels differ: round ${round}, ${width}x${height}`);
+      console.log(`round ${round}, ${width}x${height}: exact`);
+    }
+  });
+  report.status = 'passed';
+} catch (error) { report.status = 'failed'; report.error = String(error); throw error; }
+finally { await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n'); }

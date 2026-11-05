@@ -1,0 +1,21 @@
+{
+  mode: 'control',
+  comparisons: 135,
+  decodedDifferences: 15,
+  maximum: 34,
+  changedPixels: 1791
+}
+{
+  mode: 'hardmask',
+  comparisons: 135,
+  decodedDifferences: 7,
+  maximum: 42,
+  changedPixels: 3022
+}
+{
+  mode: 'fixedmask',
+  comparisons: 135,
+  decodedDifferences: 8,
+  maximum: 42,
+  changedPixels: 3177
+}

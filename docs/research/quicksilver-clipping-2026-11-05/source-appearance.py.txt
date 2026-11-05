@@ -1,0 +1,14 @@
+from pathlib import Path
+from PIL import Image, ImageChops, ImageEnhance
+import json, shutil
+r=Path('examples/demo/out/quicksilver-clipping-2026-11-05')
+results=[]
+for label,baseline in [('portrait','control'),('landscape','landscape-control')]:
+ old=r/baseline/'one-a/45.png';new=r/f'candidate-source-{label}-control/one-a/45.png'
+ a=Image.open(old).convert('RGB');b=Image.open(new).convert('RGB')
+ difference=ImageChops.difference(a,b); hist=difference.histogram();rgb=difference.split();pixels=ImageChops.lighter(ImageChops.lighter(*rgb[:2]),rgb[2]).histogram();size=a.width*a.height
+ results.append(dict(label=label,baseline=str(old),candidate=str(new),maximum=max(i%256 for i,n in enumerate(hist) if n),mean=sum(i%256*n for i,n in enumerate(hist))/(size*3),changed=sum(pixels[1:]),over8=sum(pixels[9:]),over32=sum(pixels[33:]),pixels=size))
+ shutil.copy2(new,r/f'candidate-{label}.png')
+ if label=='portrait': ImageEnhance.Brightness(difference).enhance(4).save(r/'candidate-appearance-difference-x4.png')
+(r/'candidate-source-appearance.json').write_text(json.dumps(results,indent=2)+'\n')
+print(json.dumps(results,indent=2))

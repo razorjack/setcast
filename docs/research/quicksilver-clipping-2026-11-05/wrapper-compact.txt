@@ -1,0 +1,6 @@
+round 0, 640x360: exact
+round 0, 360x640: exact
+round 1, 640x360: exact
+round 1, 360x640: exact
+round 2, 640x360: exact
+round 2, 360x640: exact

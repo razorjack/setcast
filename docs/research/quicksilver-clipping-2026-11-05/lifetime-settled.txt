@@ -1,0 +1,92 @@
+[
+  {
+    frame: 30,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 31,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 32,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 33,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 34,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 35,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 36,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 37,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 38,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  },
+  {
+    frame: 39,
+    id: 1,
+    added: 2,
+    removed: 0,
+    clip: 'circle(108px at 50% calc(50% - 21.6px))',
+    mask: 'none',
+    box: { x: 31.5, y: 193.09375, width: 297, height: 297 }
+  }
+]

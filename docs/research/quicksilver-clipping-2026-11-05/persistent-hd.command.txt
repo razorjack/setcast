@@ -1,0 +1,1 @@
+node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1\,2\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/persistent-hd 

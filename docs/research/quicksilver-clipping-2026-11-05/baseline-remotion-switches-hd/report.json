@@ -1,0 +1,104 @@
+{
+  "revision": "ba640f03559d9b43d10d0a899f4f8df91c114aa9",
+  "dirty": true,
+  "scope": "Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.",
+  "status": "failed",
+  "results": [
+    {
+      "round": 0,
+      "width": 1920,
+      "height": 1080,
+      "equal": false,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches-hd/0-1920-1.mp4",
+          "hash": "SHA256=084309154ca01622bfb8474885cc79ab8b369c1554cf0c42119edec836538ea9",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches-hd/0-1920-2.mp4",
+          "hash": "SHA256=40aa14f1960de8d52fdc12f0a0aabec613909522e36a24074bef46cd09b2c0aa",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches-hd/0-1920-4.mp4",
+          "hash": "SHA256=cfad5162da696a16559880d15d8fde7baf3737dce19ef0721997f1f100106ca3",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Worker pixels differ: round 0, 1920x1080"
+}

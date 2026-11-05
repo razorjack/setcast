@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check hardmask-compact node "$root/mask-encoded.mjs" "$root/hardmask-compact" hardmask
+check hardmask-hd env SETCAST_HD=1 node "$root/mask-encoded.mjs" "$root/hardmask-hd" hardmask
+check hardmask-switches node "$root/mask-switches.mjs" "$root/hardmask-switches" hardmask
+check hardmask-switches-hd env SETCAST_HD=1 node "$root/mask-switches.mjs" "$root/hardmask-switches-hd" hardmask

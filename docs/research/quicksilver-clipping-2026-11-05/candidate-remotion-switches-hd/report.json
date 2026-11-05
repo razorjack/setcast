@@ -1,0 +1,199 @@
+{
+  "revision": "ba640f03559d9b43d10d0a899f4f8df91c114aa9",
+  "dirty": true,
+  "scope": "Exact decoded equality for a looping 25 fps video across workers and repeated fresh pages. No tolerance.",
+  "status": "failed",
+  "results": [
+    {
+      "round": 0,
+      "width": 1920,
+      "height": 1080,
+      "equal": true,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd/0-1920-1.mp4",
+          "hash": "SHA256=e917a11e9224186f5accae368966bf2df1284af2c16c212ca6d727d052ec8577",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd/0-1920-2.mp4",
+          "hash": "SHA256=e917a11e9224186f5accae368966bf2df1284af2c16c212ca6d727d052ec8577",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd/0-1920-4.mp4",
+          "hash": "SHA256=e917a11e9224186f5accae368966bf2df1284af2c16c212ca6d727d052ec8577",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 0,
+      "width": 1080,
+      "height": 1920,
+      "equal": false,
+      "observations": [
+        {
+          "concurrency": 1,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd/0-1080-1.mp4",
+          "hash": "SHA256=553749c6295623d751d0cf5bd5fed3fda1e5b96b2ed6da28c86a9353ec074dd1",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 1,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 2,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd/0-1080-2.mp4",
+          "hash": "SHA256=553749c6295623d751d0cf5bd5fed3fda1e5b96b2ed6da28c86a9353ec074dd1",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 2,
+              "parallelEncoding": true
+            }
+          ]
+        },
+        {
+          "concurrency": 4,
+          "file": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd/0-1080-4.mp4",
+          "hash": "SHA256=601673cdc5b417b6e83d9f0a72933d89f845eab816a76443793fdb74e0728e15",
+          "runtime": [
+            {
+              "kind": "browser",
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7790.0 Safari/537.36",
+              "capture": "not-observed",
+              "graphics": {
+                "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                "vendor": "Google Inc. (Google)",
+                "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+              },
+              "graphicsError": null
+            },
+            {
+              "kind": "encoder",
+              "encoder": "libx264",
+              "inputFormat": "image2pipe",
+              "pipeline": "stream"
+            },
+            {
+              "kind": "capture",
+              "workers": 4,
+              "parallelEncoding": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Worker pixels differ: round 0, 1080x1920"
+}

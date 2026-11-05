@@ -26,7 +26,10 @@ repeated video, static art, source switches, all-theme seeks, both exporter suit
 checks. The [original failure](research/macos-followup-2026-11-03/README.md) remains preserved.
 The [Linux repetition](research/quicksilver-linux-2026-11-05/README.md) fails compact and HD repeated-video
 equality. A further repair must retain both platform reproducers in the
-[updated handoff](linux-renderer-qualification.md).
+[updated handoff](linux-renderer-qualification.md). A subsequent
+[clipping-container investigation](research/quicksilver-clipping-2026-11-05/README.md) retains
+an isolated candidate on `renderer/quicksilver-clip-container-candidate`. Its Linux results do
+not qualify macOS or custom direct-child CSS selectors; master remains unchanged.
 
 [Linux evidence](research/linux-qualification-2026-11-01/README.md) already covers software exports,
 fresh installations, short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE,
@@ -643,8 +646,8 @@ broader live hardware support can ship independently after the core replacement 
    qualified Chromium default (observed SwiftShader); explicit NVIDIA ANGLE failed pixel/stall
    checks. Full real-master Linux assets are still missing. Continue with the
    [Linux runbook](linux-renderer-qualification.md).
-   The Quicksilver parent-layer repair now passes macOS; repeat its maintained compact/HD video
-   matrices and the earlier shuffled-seek checks on Linux. Preserve the original failure evidence.
+   The Quicksilver parent-layer repair passes macOS but fails Linux repeated video. Qualify the
+   isolated clipping-container candidate on both platforms and preserve the original failures.
    The shared live sequence-control fix passes its macOS repetitions.
    Windows access is unavailable for now and its qualification remains pending. Do not count prepared
    CI jobs as successful runs or advertise an untested hardware backend as qualified.

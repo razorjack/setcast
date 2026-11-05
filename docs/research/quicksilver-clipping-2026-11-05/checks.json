@@ -1,0 +1,443 @@
+[
+  {
+    "label": "baseline-geometry-probes",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs fixedmask roundedclip notranslate",
+    "start": "2026-11-05T20:13:25Z",
+    "end": "2026-11-05T20:14:13Z"
+  },
+  {
+    "label": "baseline-remotion-compact",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-compact control",
+    "start": "2026-11-05T20:42:24Z",
+    "end": "2026-11-05T20:42:48Z"
+  },
+  {
+    "label": "baseline-remotion-difference",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-clipping-2026-11-05/remotion-difference.py baseline-remotion-compact",
+    "start": "2026-11-05T20:44:18Z",
+    "end": "2026-11-05T20:44:19Z"
+  },
+  {
+    "label": "baseline-remotion-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-hd control",
+    "start": "2026-11-05T20:42:48Z",
+    "end": "2026-11-05T20:43:10Z"
+  },
+  {
+    "label": "baseline-remotion-switches-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches-hd control",
+    "start": "2026-11-05T20:43:50Z",
+    "end": "2026-11-05T20:44:30Z"
+  },
+  {
+    "label": "baseline-remotion-switches",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-switches control",
+    "start": "2026-11-05T20:43:10Z",
+    "end": "2026-11-05T20:43:50Z"
+  },
+  {
+    "label": "baseline-source-restored",
+    "exit": 0,
+    "command": "git diff --exit-code -- packages scripts pnpm-lock.yaml pnpm-workspace.yaml package.json vite.config.ts",
+    "start": "2026-11-05T20:42:19Z",
+    "end": "2026-11-05T20:42:19Z"
+  },
+  {
+    "label": "candidate-appearance",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-clipping-2026-11-05/candidate-appearance.py",
+    "start": "2026-11-05T20:33:34Z",
+    "end": "2026-11-05T20:33:35Z"
+  },
+  {
+    "label": "candidate-browser-acceptance",
+    "exit": 0,
+    "command": "vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-browser-acceptance",
+    "start": "2026-11-05T20:34:52Z",
+    "end": "2026-11-05T20:35:22Z"
+  },
+  {
+    "label": "candidate-compact",
+    "exit": 0,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-compact",
+    "start": "2026-11-05T20:27:46Z",
+    "end": "2026-11-05T20:28:22Z"
+  },
+  {
+    "label": "candidate-environment",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-clipping-2026-11-05/environment.py",
+    "start": "2026-11-05T20:30:50Z",
+    "end": "2026-11-05T20:30:50Z"
+  },
+  {
+    "label": "candidate-final-check",
+    "exit": 0,
+    "command": "vp check",
+    "start": "2026-11-05T20:46:16Z",
+    "end": "2026-11-05T20:46:19Z"
+  },
+  {
+    "label": "candidate-hd",
+    "exit": 0,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-hd",
+    "start": "2026-11-05T20:28:22Z",
+    "end": "2026-11-05T20:29:26Z"
+  },
+  {
+    "label": "candidate-installed-browser",
+    "exit": 0,
+    "command": "vp run package-smoke --browser --report /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-installed-browser.json",
+    "start": "2026-11-05T20:36:18Z",
+    "end": "2026-11-05T20:37:04Z"
+  },
+  {
+    "label": "candidate-installed-remotion",
+    "exit": 0,
+    "command": "vp run package-smoke --report /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-installed-remotion.json",
+    "start": "2026-11-05T20:37:04Z",
+    "end": "2026-11-05T20:38:03Z"
+  },
+  {
+    "label": "candidate-ready",
+    "exit": 0,
+    "command": "vp run ready",
+    "start": "2026-11-05T20:45:10Z",
+    "end": "2026-11-05T20:45:30Z"
+  },
+  {
+    "label": "candidate-remotion-acceptance",
+    "exit": 0,
+    "command": "vp run export-acceptance --gl swangle --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-acceptance",
+    "start": "2026-11-05T20:35:22Z",
+    "end": "2026-11-05T20:36:18Z"
+  },
+  {
+    "label": "candidate-remotion-compact",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-compact control",
+    "start": "2026-11-05T20:38:48Z",
+    "end": "2026-11-05T20:39:11Z"
+  },
+  {
+    "label": "candidate-remotion-difference",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-clipping-2026-11-05/remotion-difference.py candidate-remotion-compact",
+    "start": "2026-11-05T20:42:25Z",
+    "end": "2026-11-05T20:42:27Z"
+  },
+  {
+    "label": "candidate-remotion-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-hd control",
+    "start": "2026-11-05T20:39:11Z",
+    "end": "2026-11-05T20:39:57Z"
+  },
+  {
+    "label": "candidate-remotion-switches-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches-hd control",
+    "start": "2026-11-05T20:40:36Z",
+    "end": "2026-11-05T20:42:02Z"
+  },
+  {
+    "label": "candidate-remotion-switches",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/remotion-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-switches control",
+    "start": "2026-11-05T20:39:57Z",
+    "end": "2026-11-05T20:40:36Z"
+  },
+  {
+    "label": "candidate-restored",
+    "exit": 0,
+    "command": "bash -c git\\ diff\\ --\\ packages/core/css/base.css\\ packages/core/src/react/components/Background.tsx\\ packages/themes/quicksilver/theme.css\\ \\|\\ cmp\\ -\\ examples/demo/out/quicksilver-clipping-2026-11-05/candidate-source.patch",
+    "start": "2026-11-05T20:45:07Z",
+    "end": "2026-11-05T20:45:07Z"
+  },
+  {
+    "label": "candidate-seeks",
+    "exit": 0,
+    "command": "node packages/renderer-browser/bench/video-frames.ts --image-only --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-seeks",
+    "start": "2026-11-05T20:30:14Z",
+    "end": "2026-11-05T20:32:24Z"
+  },
+  {
+    "label": "candidate-source-appearance",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-clipping-2026-11-05/source-appearance.py",
+    "start": "2026-11-05T20:40:50Z",
+    "end": "2026-11-05T20:40:50Z"
+  },
+  {
+    "label": "candidate-source-landscape",
+    "exit": 0,
+    "command": "env SETCAST_PROBE_PREFIX=candidate-source-landscape- SETCAST_PROBE_WIDTH=640 SETCAST_PROBE_HEIGHT=360 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs control",
+    "start": "2026-11-05T20:38:34Z",
+    "end": "2026-11-05T20:38:48Z"
+  },
+  {
+    "label": "candidate-source-portrait",
+    "exit": 0,
+    "command": "env SETCAST_PROBE_PREFIX=candidate-source-portrait- node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs control",
+    "start": "2026-11-05T20:38:18Z",
+    "end": "2026-11-05T20:38:34Z"
+  },
+  {
+    "label": "candidate-static",
+    "exit": 0,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-static",
+    "start": "2026-11-05T20:29:26Z",
+    "end": "2026-11-05T20:30:14Z"
+  },
+  {
+    "label": "candidate-switches-hd",
+    "exit": 0,
+    "command": "env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-switches-hd control",
+    "start": "2026-11-05T20:33:12Z",
+    "end": "2026-11-05T20:34:52Z"
+  },
+  {
+    "label": "candidate-switches",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-switches control",
+    "start": "2026-11-05T20:32:24Z",
+    "end": "2026-11-05T20:33:12Z"
+  },
+  {
+    "label": "fixedmask-compact",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/fixedmask-compact fixedmask",
+    "start": "2026-11-05T20:14:53Z",
+    "end": "2026-11-05T20:15:00Z"
+  },
+  {
+    "label": "fixedmask-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/fixedmask-hd fixedmask",
+    "start": "2026-11-05T20:15:00Z",
+    "end": "2026-11-05T20:15:12Z"
+  },
+  {
+    "label": "fixedmask-switches-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/fixedmask-switches-hd fixedmask",
+    "start": "2026-11-05T20:15:20Z",
+    "end": "2026-11-05T20:15:37Z"
+  },
+  {
+    "label": "fixedmask-switches",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/fixedmask-switches fixedmask",
+    "start": "2026-11-05T20:15:12Z",
+    "end": "2026-11-05T20:15:20Z"
+  },
+  {
+    "label": "hardmask-compact",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/hardmask-compact hardmask",
+    "start": "2026-11-05T20:14:03Z",
+    "end": "2026-11-05T20:14:10Z"
+  },
+  {
+    "label": "hardmask-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/hardmask-hd hardmask",
+    "start": "2026-11-05T20:14:10Z",
+    "end": "2026-11-05T20:14:21Z"
+  },
+  {
+    "label": "hardmask-switches-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/hardmask-switches-hd hardmask",
+    "start": "2026-11-05T20:14:30Z",
+    "end": "2026-11-05T20:14:46Z"
+  },
+  {
+    "label": "hardmask-switches",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/hardmask-switches hardmask",
+    "start": "2026-11-05T20:14:21Z",
+    "end": "2026-11-05T20:14:30Z"
+  },
+  {
+    "label": "jpeg-source",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-clipping-2026-11-05/jpeg-source.mjs control hardmask fixedmask",
+    "start": "2026-11-05T20:16:21Z",
+    "end": "2026-11-05T20:16:48Z"
+  },
+  {
+    "label": "landscape-source",
+    "exit": 0,
+    "command": "env SETCAST_PROBE_PREFIX=landscape- SETCAST_PROBE_WIDTH=640 SETCAST_PROBE_HEIGHT=360 node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs control hardmask fixedmask",
+    "start": "2026-11-05T20:17:17Z",
+    "end": "2026-11-05T20:18:06Z"
+  },
+  {
+    "label": "layout-probe-with-persistence",
+    "exit": 0,
+    "command": "env SETCAST_PROBE_PREFIX=persistent- node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs notranslate",
+    "start": "2026-11-05T20:09:39Z",
+    "end": "2026-11-05T20:10:02Z"
+  },
+  {
+    "label": "lifetime-control",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-clipping-2026-11-05/image-lifetime.mjs examples/demo/out/quicksilver-clipping-2026-11-05/lifetime-control.json",
+    "start": "2026-11-05T19:59:20Z",
+    "end": "2026-11-05T19:59:22Z"
+  },
+  {
+    "label": "lifetime-persistent",
+    "exit": 1,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/image-lifetime.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/lifetime-persistent.json",
+    "start": "2026-11-05T20:00:31Z",
+    "end": "2026-11-05T20:00:32Z"
+  },
+  {
+    "label": "lifetime-settled",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-clipping-2026-11-05/image-lifetime.mjs examples/demo/out/quicksilver-clipping-2026-11-05/lifetime-settled.json",
+    "start": "2026-11-05T20:02:43Z",
+    "end": "2026-11-05T20:02:45Z"
+  },
+  {
+    "label": "mask-probes",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs control mask hardmask",
+    "start": "2026-11-05T19:58:16Z",
+    "end": "2026-11-05T19:59:09Z"
+  },
+  {
+    "label": "master-final-check",
+    "exit": 0,
+    "command": "vp check",
+    "start": "2026-11-05T20:48:59Z",
+    "end": "2026-11-05T20:49:02Z"
+  },
+  {
+    "label": "master-production-unchanged",
+    "exit": 0,
+    "command": "git diff --exit-code ba640f0 -- packages scripts pnpm-lock.yaml pnpm-workspace.yaml package.json vite.config.ts",
+    "start": "2026-11-05T20:48:01Z",
+    "end": "2026-11-05T20:48:01Z"
+  },
+  {
+    "label": "master-ready",
+    "exit": 0,
+    "command": "vp run ready",
+    "start": "2026-11-05T20:48:03Z",
+    "end": "2026-11-05T20:48:23Z"
+  },
+  {
+    "label": "next-mask-probes-with-persistence",
+    "exit": 0,
+    "command": "env SETCAST_PROBE_PREFIX=persistent- node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs fixedmask roundedclip",
+    "start": "2026-11-05T20:07:10Z",
+    "end": "2026-11-05T20:07:51Z"
+  },
+  {
+    "label": "persistent-compact",
+    "exit": 1,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/persistent-compact",
+    "start": "2026-11-05T20:00:32Z",
+    "end": "2026-11-05T20:00:36Z"
+  },
+  {
+    "label": "persistent-hd",
+    "exit": 1,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/persistent-hd",
+    "start": "2026-11-05T20:00:36Z",
+    "end": "2026-11-05T20:00:39Z"
+  },
+  {
+    "label": "persistent-switches-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/persistent-switches-hd control",
+    "start": "2026-11-05T20:00:43Z",
+    "end": "2026-11-05T20:00:47Z"
+  },
+  {
+    "label": "persistent-switches",
+    "exit": 1,
+    "command": "node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/persistent-switches control",
+    "start": "2026-11-05T20:00:39Z",
+    "end": "2026-11-05T20:00:43Z"
+  },
+  {
+    "label": "settled-compact",
+    "exit": 1,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/settled-compact",
+    "start": "2026-11-05T20:02:06Z",
+    "end": "2026-11-05T20:04:57Z"
+  },
+  {
+    "label": "settled-hd",
+    "exit": 1,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/settled-hd",
+    "start": "2026-11-05T20:04:57Z",
+    "end": "2026-11-05T20:12:36Z"
+  },
+  {
+    "label": "settled-switches-hd",
+    "exit": 1,
+    "command": "env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/settled-switches-hd control",
+    "start": "2026-11-05T20:12:45Z",
+    "end": "2026-11-05T20:13:01Z"
+  },
+  {
+    "label": "settled-switches",
+    "exit": 1,
+    "command": "node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/settled-switches control",
+    "start": "2026-11-05T20:12:36Z",
+    "end": "2026-11-05T20:12:45Z"
+  },
+  {
+    "label": "severity",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-clipping-2026-11-05/severity.py",
+    "start": "2026-11-05T20:01:13Z",
+    "end": "2026-11-05T20:01:16Z"
+  },
+  {
+    "label": "source-restored",
+    "exit": 0,
+    "command": "git diff --exit-code HEAD -- packages scripts pnpm-lock.yaml",
+    "start": "2026-11-05T20:13:25Z",
+    "end": "2026-11-05T20:13:25Z"
+  },
+  {
+    "label": "wrapper-compact",
+    "exit": 0,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/wrapper-compact wrapper",
+    "start": "2026-11-05T20:20:19Z",
+    "end": "2026-11-05T20:20:56Z"
+  },
+  {
+    "label": "wrapper-hd",
+    "exit": 0,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-encoded.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/wrapper-hd wrapper",
+    "start": "2026-11-05T20:20:56Z",
+    "end": "2026-11-05T20:21:59Z"
+  },
+  {
+    "label": "wrapper-switches-hd",
+    "exit": 0,
+    "command": "env SETCAST_HD=1 node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/wrapper-switches-hd wrapper",
+    "start": "2026-11-05T20:22:47Z",
+    "end": "2026-11-05T20:24:26Z"
+  },
+  {
+    "label": "wrapper-switches",
+    "exit": 0,
+    "command": "node /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/mask-switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/wrapper-switches wrapper",
+    "start": "2026-11-05T20:21:59Z",
+    "end": "2026-11-05T20:22:47Z"
+  }
+]

@@ -1,0 +1,1 @@
+bash -c git\ diff\ --\ packages/core/css/base.css\ packages/core/src/react/components/Background.tsx\ packages/themes/quicksilver/theme.css\ \|\ cmp\ -\ examples/demo/out/quicksilver-clipping-2026-11-05/candidate-source.patch 

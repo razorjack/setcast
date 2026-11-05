@@ -1,0 +1,9 @@
+{
+  mode: 'control',
+  override: '',
+  qualified: true,
+  comparisons: 135,
+  failed: 0,
+  maximum: 0,
+  maxChangedPixels: 0
+}

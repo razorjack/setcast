@@ -1,0 +1,1 @@
+vp run export-acceptance --gl swangle --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-remotion-acceptance 

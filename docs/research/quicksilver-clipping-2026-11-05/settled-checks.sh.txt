@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check lifetime-persistent node "$root/image-lifetime.mjs" "$root/lifetime-persistent.json"
+check settled-compact node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1,2,4 --out "$root/settled-compact"
+check settled-hd node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1,2,4 --out "$root/settled-hd"
+check settled-switches node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs "$root/settled-switches" control
+check settled-switches-hd env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs "$root/settled-switches-hd" control

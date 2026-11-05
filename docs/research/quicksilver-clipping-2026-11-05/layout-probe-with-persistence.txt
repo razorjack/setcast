@@ -1,0 +1,9 @@
+{
+  mode: 'notranslate',
+  override: '.theme-quicksilver[data-background="video"] .sc-bg-img {left:calc(50% + var(--shift-x) - var(--art-size) / 2);top:calc(50% + var(--shift-y) - var(--art-size) / 2);translate:none}',
+  qualified: false,
+  comparisons: 135,
+  failed: 35,
+  maximum: 58,
+  maxChangedPixels: 245
+}

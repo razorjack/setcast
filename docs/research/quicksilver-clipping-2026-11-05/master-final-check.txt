@@ -1,0 +1,2 @@
+[1m[94mpass:[39m[0m All 602 files are correctly formatted [2m(251ms, 32 threads)[0m
+[1m[94mpass:[39m[0m Found no warnings, lint errors, or type errors in 540 files [2m(2.3s, 32 threads)[0m

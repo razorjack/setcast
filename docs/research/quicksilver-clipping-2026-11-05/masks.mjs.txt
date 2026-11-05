@@ -1,0 +1,27 @@
+import { resolve, join } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+import { withRenderSession } from '../../../../packages/renderer-browser/src/export/index.ts';
+import { qualifySourcePixels } from '../../../../packages/renderer-browser/bench/worker-pixels.ts';
+const fixture = resolve('examples/demo/out/quicksilver-linux-2026-11-05/compact');
+const loaded = await fixtureProject(fixture, 'quicksilver');
+const position = 'circle var(--orb) at calc(50% - var(--shift-x)) calc(50% - var(--shift-y))';
+const overrides = {
+  control: '',
+  notranslate: `.theme-quicksilver[data-background="video"] .sc-bg-img {left:calc(50% + var(--shift-x) - var(--art-size) / 2);top:calc(50% + var(--shift-y) - var(--art-size) / 2);translate:none}`,
+
+  fixedmask: `.theme-quicksilver[data-background="video"] .sc-bg-img {clip-path:none;mask-image:radial-gradient(circle var(--orb),#000 calc(100% - 0.5px),transparent calc(100% + 0.5px));mask-size:calc(var(--orb) * 2 + 2px) calc(var(--orb) * 2 + 2px);mask-position:calc(50% - var(--shift-x)) calc(50% - var(--shift-y));mask-repeat:no-repeat}`,
+  roundedclip: `.theme-quicksilver[data-background="video"] .sc-bg-img {clip-path:inset(calc(50% - var(--orb) - var(--shift-y)) calc(50% - var(--orb) + var(--shift-x)) calc(50% - var(--orb) + var(--shift-y)) calc(50% - var(--orb) - var(--shift-x)) round var(--orb))}`,
+  mask: `.theme-quicksilver[data-background="video"] .sc-bg-img {clip-path:none;mask-image:radial-gradient(${position},#000 calc(100% - 0.5px),transparent calc(100% + 0.5px))}`,
+  hardmask: `.theme-quicksilver[data-background="video"] .sc-bg-img {clip-path:none;mask-image:radial-gradient(${position},#000 100%,transparent 100%)}`,
+};
+for (const mode of process.argv.slice(2)) {
+  if (!(mode in overrides)) throw new Error(`Unknown experiment ${mode}`);
+  const out = resolve('examples/demo/out/quicksilver-clipping-2026-11-05', (process.env.SETCAST_PROBE_PREFIX ?? '') + mode);
+  await mkdir(out);
+  const project = {...loaded, background:'motion.mp4', width:Number(process.env.SETCAST_PROBE_WIDTH ?? 360), height:Number(process.env.SETCAST_PROBE_HEIGHT ?? 640), css:loaded.css+'\n'+overrides[mode]};
+  const result = await withRenderSession(() => qualifySourcePixels(project, fixture, out, {workers:[1,2,4],gl:'auto'}));
+  const summary = {mode, override:overrides[mode], qualified:result.qualified, comparisons:result.reports.length, failed:result.reports.filter(x=>!x.qualified).length, maximum:Math.max(...result.reports.map(x=>x.maximum)), maxChangedPixels:Math.max(...result.reports.map(x=>x.changedPixels))};
+  await writeFile(join(out,'summary.json'),JSON.stringify(summary,null,2)+'\n');
+  console.log(summary);
+}

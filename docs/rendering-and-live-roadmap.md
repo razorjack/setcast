@@ -61,10 +61,15 @@ configuration. Follow the [benchmark contract](renderer-replacement-plan.md#phas
 Quicksilver repair fails Linux compact and HD repeated-video checks. Full Linux real-master
 resources remain unchecked, and Windows remains unqualified. Explicit NVIDIA ANGLE failed
 correctness/capture checks. Current Linux fresh browser-only and optional-Remotion installations
-pass, including installed external visualizers.
+pass, including installed external visualizers. Focused Quicksilver worker assertions also fail
+through pinned Remotion on the unchanged baseline and the clipping candidate; general exporter
+acceptance does not qualify those cases.
 
 **Next action:** repair the [Linux Quicksilver video regression](research/quicksilver-linux-2026-11-05/README.md)
-without restoring the known macOS image-layer defect. Repeat the
+without restoring the known macOS image-layer defect. The isolated
+[clipping-container candidate](research/quicksilver-clipping-2026-11-05/README.md) is promising;
+review its removed portrait color rim and direct-child CSS migration, and complete macOS
+repetition before promotion. Repeat the
 [focused handoff](linux-renderer-qualification.md#required-follow-up-for-the-promoted-quicksilver-repair)
 on both platforms after a shared layer change. Then complete available real-master resource checks
 and obtain a Windows host. Include installed plugin workflows in each new platform qualification.

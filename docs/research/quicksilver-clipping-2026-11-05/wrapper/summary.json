@@ -1,0 +1,4 @@
+{
+  "override": ".theme-quicksilver[data-background=\"video\"] .sc-bg {will-change:auto} .theme-quicksilver[data-background=\"video\"] .sc-bg-video {display:block!important;position:absolute;inset:0;clip-path:circle(var(--orb) at 50% 50%);will-change:transform} .theme-quicksilver[data-background=\"video\"] .sc-bg-img {clip-path:none}",
+  "scope": "Prototype CSS, not a source qualification result"
+}

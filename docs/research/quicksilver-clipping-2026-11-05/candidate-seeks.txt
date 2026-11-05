@@ -1,0 +1,17 @@
+  sterile-tech: canvas/image comparison complete in both shapes and fits
+  escapement: canvas/image comparison complete in both shapes and fits
+  long-exposure: canvas/image comparison complete in both shapes and fits
+  bristol: canvas/image comparison complete in both shapes and fits
+  patina: canvas/image comparison complete in both shapes and fits
+  quicksilver: canvas/image comparison complete in both shapes and fits
+  bunker: canvas/image comparison complete in both shapes and fits
+  vfd: canvas/image comparison complete in both shapes and fits
+  interference: canvas/image comparison complete in both shapes and fits
+  pirate: canvas/image comparison complete in both shapes and fits
+  afterhours: canvas/image comparison complete in both shapes and fits
+  passe-partout: canvas/image comparison complete in both shapes and fits
+  masthead: canvas/image comparison complete in both shapes and fits
+  anamorphic: canvas/image comparison complete in both shapes and fits
+  relief: canvas/image comparison complete in both shapes and fits
+  darkroom: canvas/image comparison complete in both shapes and fits
+Video frames: PASS (64 theme/shape/fit cases, shuffled seeks, 25-to-30/60 fps, selector fallback)

@@ -1,0 +1,9 @@
+{
+  "mode": "mask",
+  "override": ".theme-quicksilver[data-background=\"video\"] .sc-bg-img {clip-path:none;mask-image:radial-gradient(circle var(--orb) at calc(50% - var(--shift-x)) calc(50% - var(--shift-y)),#000 calc(100% - 0.5px),transparent calc(100% + 0.5px))}",
+  "qualified": false,
+  "comparisons": 135,
+  "failed": 1,
+  "maximum": 1,
+  "maxChangedPixels": 6
+}

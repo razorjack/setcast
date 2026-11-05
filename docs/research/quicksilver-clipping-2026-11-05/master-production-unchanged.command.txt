@@ -1,0 +1,1 @@
+git diff --exit-code ba640f0 -- packages scripts pnpm-lock.yaml pnpm-workspace.yaml package.json vite.config.ts 

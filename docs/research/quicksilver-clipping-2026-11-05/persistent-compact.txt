@@ -1,0 +1,15 @@
+Starting 0-quicksilver 640x360, 1 workers
+Failed 0-quicksilver 640x360, 1 workers; last captured frame 32
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.evaluate: EncodingError: The source image cannot be decoded.
+    at prepareFrame (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/session.ts:188:12)
+    at captureFrame (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/render.ts:264:25)
+    at capture (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/render.ts:248:16)
+    at /home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/pipeline.ts:15:51 {
+  log: []
+}
+
+Node.js v26.7.0

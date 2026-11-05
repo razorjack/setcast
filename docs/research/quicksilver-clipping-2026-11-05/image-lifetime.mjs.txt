@@ -1,0 +1,24 @@
+import { resolve } from 'node:path';
+import { writeFile } from 'node:fs/promises';
+import { fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+import { withCapture, withRenderSession, prepareFrame } from '../../../../packages/renderer-browser/src/export/session.ts';
+const projectDir=resolve('examples/demo/out/quicksilver-linux-2026-11-05/compact');
+const project={...await fixtureProject(projectDir,'quicksilver'),background:'motion.mp4',width:360,height:640};
+const result=await withRenderSession(()=>withCapture(project,{projectDir},async page=>{
+  await page.evaluate(()=>{
+    const ids=new WeakMap();let nextId=0;let added=0;let removed=0;
+    const images=node=>node.nodeType===1?Number(node.matches('img.sc-bg-img'))+node.querySelectorAll('img.sc-bg-img').length:0;
+    const observer=new MutationObserver(records=>{for(const r of records){for(const n of r.addedNodes)added+=images(n);for(const n of r.removedNodes)removed+=images(n);}});
+    observer.observe(document.body,{childList:true,subtree:true});
+    window.imageLifetime=()=>Array.from(document.querySelectorAll('img.sc-bg-img'),img=>{
+      if(!ids.has(img))ids.set(img,++nextId);
+      const css=getComputedStyle(img),box=img.getBoundingClientRect();
+      return {id:ids.get(img),added,removed,clip:css.clipPath,mask:css.maskImage,box:{x:box.x,y:box.y,width:box.width,height:box.height}};
+    });
+  });
+  const frames=[];
+  for(let frame=30;frame<40;frame++) {await prepareFrame(page,frame);frames.push({frame,images:await page.evaluate(()=>window.imageLifetime())});}
+  return frames;
+}));
+await writeFile(resolve(process.argv[2]),JSON.stringify(result,null,2)+'\n');
+console.log(result.map(x=>({frame:x.frame,...x.images[0]})));

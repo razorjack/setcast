@@ -1,0 +1,1 @@
+node examples/demo/out/quicksilver-clipping-2026-11-05/image-lifetime.mjs examples/demo/out/quicksilver-clipping-2026-11-05/lifetime-control.json 

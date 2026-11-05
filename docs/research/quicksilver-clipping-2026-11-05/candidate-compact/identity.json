@@ -1,0 +1,16 @@
+{
+  "revision": "ba640f03559d9b43d10d0a899f4f8df91c114aa9",
+  "dirty": true,
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v26.7.0",
+  "options": {
+    "video": true,
+    "theme": "quicksilver",
+    "size": "640x360",
+    "repeat": "3",
+    "workers": "1,2,4",
+    "out": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/candidate-compact",
+    "gl": "auto"
+  }
+}

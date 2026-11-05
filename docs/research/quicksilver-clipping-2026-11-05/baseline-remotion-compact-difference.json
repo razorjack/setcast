@@ -1,0 +1,383 @@
+{
+  "label": "baseline-remotion-compact",
+  "width": 360,
+  "height": 640,
+  "workers": [
+    1,
+    2
+  ],
+  "files": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-compact/0-360-1.mp4",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-compact/0-360-2.mp4"
+  ],
+  "frames": [
+    {
+      "outputFrame": 0,
+      "maximum": 50,
+      "mean": 0.117109375,
+      "changed": 21733,
+      "over8": 40,
+      "over32": 5
+    },
+    {
+      "outputFrame": 1,
+      "maximum": 40,
+      "mean": 0.12920283564814813,
+      "changed": 24314,
+      "over8": 48,
+      "over32": 2
+    },
+    {
+      "outputFrame": 2,
+      "maximum": 22,
+      "mean": 0.14572337962962964,
+      "changed": 24965,
+      "over8": 276,
+      "over32": 0
+    },
+    {
+      "outputFrame": 3,
+      "maximum": 36,
+      "mean": 0.17059172453703703,
+      "changed": 26242,
+      "over8": 679,
+      "over32": 3
+    },
+    {
+      "outputFrame": 4,
+      "maximum": 39,
+      "mean": 0.1487181712962963,
+      "changed": 24762,
+      "over8": 231,
+      "over32": 1
+    },
+    {
+      "outputFrame": 5,
+      "maximum": 43,
+      "mean": 0.18953703703703703,
+      "changed": 28136,
+      "over8": 722,
+      "over32": 2
+    },
+    {
+      "outputFrame": 6,
+      "maximum": 25,
+      "mean": 0.2079224537037037,
+      "changed": 30397,
+      "over8": 844,
+      "over32": 0
+    },
+    {
+      "outputFrame": 7,
+      "maximum": 30,
+      "mean": 0.2086501736111111,
+      "changed": 30336,
+      "over8": 843,
+      "over32": 0
+    },
+    {
+      "outputFrame": 8,
+      "maximum": 19,
+      "mean": 0.17630931712962963,
+      "changed": 28562,
+      "over8": 231,
+      "over32": 0
+    },
+    {
+      "outputFrame": 9,
+      "maximum": 43,
+      "mean": 0.2300144675925926,
+      "changed": 31288,
+      "over8": 1197,
+      "over32": 3
+    },
+    {
+      "outputFrame": 10,
+      "maximum": 22,
+      "mean": 0.20546006944444445,
+      "changed": 30627,
+      "over8": 523,
+      "over32": 0
+    },
+    {
+      "outputFrame": 11,
+      "maximum": 27,
+      "mean": 0.22919704861111112,
+      "changed": 32351,
+      "over8": 925,
+      "over32": 0
+    },
+    {
+      "outputFrame": 12,
+      "maximum": 25,
+      "mean": 0.22253616898148149,
+      "changed": 32243,
+      "over8": 708,
+      "over32": 0
+    },
+    {
+      "outputFrame": 13,
+      "maximum": 25,
+      "mean": 0.22147135416666666,
+      "changed": 32051,
+      "over8": 700,
+      "over32": 0
+    },
+    {
+      "outputFrame": 14,
+      "maximum": 33,
+      "mean": 0.2448365162037037,
+      "changed": 33666,
+      "over8": 1139,
+      "over32": 1
+    },
+    {
+      "outputFrame": 15,
+      "maximum": 45,
+      "mean": 0.3065350115740741,
+      "changed": 39391,
+      "over8": 1168,
+      "over32": 4
+    },
+    {
+      "outputFrame": 16,
+      "maximum": 33,
+      "mean": 0.3368822337962963,
+      "changed": 40932,
+      "over8": 1449,
+      "over32": 1
+    },
+    {
+      "outputFrame": 17,
+      "maximum": 33,
+      "mean": 0.35966724537037037,
+      "changed": 42411,
+      "over8": 1747,
+      "over32": 1
+    },
+    {
+      "outputFrame": 18,
+      "maximum": 42,
+      "mean": 0.3951388888888889,
+      "changed": 45408,
+      "over8": 2384,
+      "over32": 11
+    },
+    {
+      "outputFrame": 19,
+      "maximum": 36,
+      "mean": 0.3889916087962963,
+      "changed": 44429,
+      "over8": 2341,
+      "over32": 2
+    },
+    {
+      "outputFrame": 20,
+      "maximum": 45,
+      "mean": 0.4053443287037037,
+      "changed": 45534,
+      "over8": 2540,
+      "over32": 8
+    },
+    {
+      "outputFrame": 21,
+      "maximum": 34,
+      "mean": 0.3855049189814815,
+      "changed": 44297,
+      "over8": 2060,
+      "over32": 1
+    },
+    {
+      "outputFrame": 22,
+      "maximum": 33,
+      "mean": 0.39999565972222223,
+      "changed": 45317,
+      "over8": 2398,
+      "over32": 1
+    },
+    {
+      "outputFrame": 23,
+      "maximum": 53,
+      "mean": 0.41418113425925923,
+      "changed": 46409,
+      "over8": 2517,
+      "over32": 11
+    },
+    {
+      "outputFrame": 24,
+      "maximum": 39,
+      "mean": 0.3903587962962963,
+      "changed": 45149,
+      "over8": 1974,
+      "over32": 3
+    },
+    {
+      "outputFrame": 25,
+      "maximum": 30,
+      "mean": 0.400513599537037,
+      "changed": 46472,
+      "over8": 2032,
+      "over32": 0
+    },
+    {
+      "outputFrame": 26,
+      "maximum": 47,
+      "mean": 0.40370081018518517,
+      "changed": 47137,
+      "over8": 2231,
+      "over32": 13
+    },
+    {
+      "outputFrame": 27,
+      "maximum": 42,
+      "mean": 0.4175101273148148,
+      "changed": 47640,
+      "over8": 2289,
+      "over32": 5
+    },
+    {
+      "outputFrame": 28,
+      "maximum": 35,
+      "mean": 0.4228385416666667,
+      "changed": 48300,
+      "over8": 2401,
+      "over32": 2
+    },
+    {
+      "outputFrame": 29,
+      "maximum": 37,
+      "mean": 0.4248958333333333,
+      "changed": 48246,
+      "over8": 2306,
+      "over32": 2
+    },
+    {
+      "outputFrame": 30,
+      "maximum": 29,
+      "mean": 0.4287311921296296,
+      "changed": 48887,
+      "over8": 2259,
+      "over32": 0
+    },
+    {
+      "outputFrame": 31,
+      "maximum": 29,
+      "mean": 0.4345876736111111,
+      "changed": 49754,
+      "over8": 2237,
+      "over32": 0
+    },
+    {
+      "outputFrame": 32,
+      "maximum": 29,
+      "mean": 0.4399681712962963,
+      "changed": 50774,
+      "over8": 2281,
+      "over32": 0
+    },
+    {
+      "outputFrame": 33,
+      "maximum": 30,
+      "mean": 0.45457465277777775,
+      "changed": 51729,
+      "over8": 2537,
+      "over32": 0
+    },
+    {
+      "outputFrame": 34,
+      "maximum": 47,
+      "mean": 0.4540726273148148,
+      "changed": 51953,
+      "over8": 2343,
+      "over32": 1
+    },
+    {
+      "outputFrame": 35,
+      "maximum": 43,
+      "mean": 0.4531380208333333,
+      "changed": 51465,
+      "over8": 2350,
+      "over32": 3
+    },
+    {
+      "outputFrame": 36,
+      "maximum": 32,
+      "mean": 0.45609230324074074,
+      "changed": 51861,
+      "over8": 2373,
+      "over32": 0
+    },
+    {
+      "outputFrame": 37,
+      "maximum": 32,
+      "mean": 0.45666377314814816,
+      "changed": 52365,
+      "over8": 2343,
+      "over32": 0
+    },
+    {
+      "outputFrame": 38,
+      "maximum": 35,
+      "mean": 0.46079282407407407,
+      "changed": 52144,
+      "over8": 2529,
+      "over32": 2
+    },
+    {
+      "outputFrame": 39,
+      "maximum": 34,
+      "mean": 0.46628038194444443,
+      "changed": 52222,
+      "over8": 2650,
+      "over32": 2
+    },
+    {
+      "outputFrame": 40,
+      "maximum": 32,
+      "mean": 0.47052372685185184,
+      "changed": 51996,
+      "over8": 2779,
+      "over32": 0
+    },
+    {
+      "outputFrame": 41,
+      "maximum": 37,
+      "mean": 0.47172019675925925,
+      "changed": 51840,
+      "over8": 2776,
+      "over32": 5
+    },
+    {
+      "outputFrame": 42,
+      "maximum": 37,
+      "mean": 0.47773292824074076,
+      "changed": 52931,
+      "over8": 2830,
+      "over32": 3
+    },
+    {
+      "outputFrame": 43,
+      "maximum": 37,
+      "mean": 0.47625144675925923,
+      "changed": 52984,
+      "over8": 2807,
+      "over32": 3
+    },
+    {
+      "outputFrame": 44,
+      "maximum": 39,
+      "mean": 0.4744892939814815,
+      "changed": 51947,
+      "over8": 2830,
+      "over32": 6
+    }
+  ],
+  "worstMean": {
+    "outputFrame": 42,
+    "maximum": 37,
+    "mean": 0.47773292824074076,
+    "changed": 52931,
+    "over8": 2830,
+    "over32": 3
+  }
+}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check wrapper-compact node "$root/mask-encoded.mjs" "$root/wrapper-compact" wrapper
+check wrapper-hd env SETCAST_HD=1 node "$root/mask-encoded.mjs" "$root/wrapper-hd" wrapper
+check wrapper-switches node "$root/mask-switches.mjs" "$root/wrapper-switches" wrapper
+check wrapper-switches-hd env SETCAST_HD=1 node "$root/mask-switches.mjs" "$root/wrapper-switches-hd" wrapper

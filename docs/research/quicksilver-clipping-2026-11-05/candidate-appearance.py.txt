@@ -1,0 +1,20 @@
+from pathlib import Path
+import subprocess, json
+from PIL import Image, ImageChops, ImageEnhance
+r=Path('examples/demo/out/quicksilver-clipping-2026-11-05')
+old=Path('examples/demo/out/quicksilver-linux-2026-11-05')
+results=[]
+for label,width,height in [('landscape',640,360),('portrait',360,640)]:
+ name=f'0-quicksilver-{width}-1.mp4'
+ paths=[old/'compact'/name,r/'candidate-compact'/name]
+ images=[]
+ for i,p in enumerate(paths):
+  data=subprocess.check_output(['ffmpeg','-v','error','-xerror','-i',str(p),'-vf','select=eq(n\\,15)','-frames:v','1','-f','rawvideo','-pix_fmt','rgb24','-'])
+  im=Image.frombytes('RGB',(width,height),data); images.append(im)
+  im.save(r/f'candidate-{label}-{["baseline","new"][i]}-encoded.png')
+ diff=ImageChops.difference(*images)
+ ImageEnhance.Brightness(diff).enhance(4).save(r/f'candidate-{label}-encoded-difference-x4.png')
+ hist=diff.histogram(); rgb=diff.split(); pixels=ImageChops.lighter(ImageChops.lighter(*rgb[:2]),rgb[2]).histogram()
+ results.append(dict(label=label,frame=45,paths=[str(p) for p in paths],maximum=max(i%256 for i,n in enumerate(hist) if n),mean=sum((i%256)*n for i,n in enumerate(hist))/(width*height*3),changed=sum(pixels[1:]),over8=sum(pixels[9:]),over32=sum(pixels[33:]),pixels=width*height))
+(r/'candidate-encoded-appearance.json').write_text(json.dumps(results,indent=2)+'\n')
+print(json.dumps(results,indent=2))

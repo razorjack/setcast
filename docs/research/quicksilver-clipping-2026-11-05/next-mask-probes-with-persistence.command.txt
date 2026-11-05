@@ -1,0 +1,1 @@
+env SETCAST_PROBE_PREFIX=persistent- node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs fixedmask roundedclip 

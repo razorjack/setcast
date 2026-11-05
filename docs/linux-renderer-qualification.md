@@ -54,6 +54,26 @@ first-export speed objective remain open. Do not conflate those tasks with this 
 Record findings as they occur and commit coherent fixes and evidence. No push, publication or
 hosted CI is authorized by this runbook.
 
+## Isolated clipping-container follow-up
+
+The [clipping investigation](research/quicksilver-clipping-2026-11-05/README.md) retains a new
+candidate `94c2c40` on `renderer/quicksilver-clip-container-candidate`. It moves the video clip to a
+frame-sized `.sc-bg-video` wrapper. Master is unchanged. Use this candidate's source for its
+follow-up, not the old parent-layer repair. Run the same compact/HD repeated-video, static,
+all-theme seek, source-switch, exporter and installation commands above with new directories.
+
+The candidate also removes the portrait contain-mode color rim outside the orb. Review the
+retained before/after images and accept the appearance or preserve it with a revised layer design.
+macOS repetition is still required before calling the new structure cross-platform qualified.
+Also review custom styles that use `.sc-bg > .sc-bg-img` or another direct-child selector:
+video media now has an intervening wrapper. Built-in theme checks do not establish arbitrary
+custom-CSS compatibility. The candidate's theme contract and [investigation report](research/quicksilver-clipping-2026-11-05/README.md)
+document descendant selectors and the wrapper's default `display: contents` behavior. Do not restore the failed
+persistent-image/readiness or mask experiments preserved in the investigation. The investigation
+also preserves new focused Remotion failures on both unchanged and candidate source. Repeat its
+`remotion-encoded.mjs.txt` and `remotion-switches.mjs.txt` reproducers when repairing those cases;
+the general Remotion acceptance suite does not cover them.
+
 ## Source and evidence to bring
 
 Read root `AGENTS.md`, this runbook, the replacement plan and the latest entries in

@@ -1,0 +1,1 @@
+env SETCAST_PROBE_PREFIX=landscape- SETCAST_PROBE_WIDTH=640 SETCAST_PROBE_HEIGHT=360 node examples/demo/out/quicksilver-clipping-2026-11-05/masks.mjs control hardmask fixedmask 

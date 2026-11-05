@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check candidate-compact node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1,2,4 --out "$root/candidate-compact"
+check candidate-hd node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1,2,4 --out "$root/candidate-hd"
+check candidate-static node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 3 --workers 1,2,4 --out "$root/candidate-static"
+check candidate-seeks node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/candidate-seeks"
+check candidate-switches node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs "$root/candidate-switches" control
+check candidate-switches-hd env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs "$root/candidate-switches-hd" control
+check candidate-browser-acceptance vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/candidate-browser-acceptance"
+check candidate-remotion-acceptance vp run export-acceptance --gl swangle --out "$root/candidate-remotion-acceptance"
+check candidate-installed-browser vp run package-smoke --browser --report "$root/candidate-installed-browser.json"
+check candidate-installed-remotion vp run package-smoke --report "$root/candidate-installed-remotion.json"

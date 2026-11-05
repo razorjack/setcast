@@ -1,0 +1,24 @@
+[
+  {
+    "label": "portrait",
+    "baseline": "examples/demo/out/quicksilver-clipping-2026-11-05/control/one-a/45.png",
+    "candidate": "examples/demo/out/quicksilver-clipping-2026-11-05/candidate-source-portrait-control/one-a/45.png",
+    "maximum": 248,
+    "mean": 2.705247395833333,
+    "changed": 32123,
+    "over8": 7509,
+    "over32": 6991,
+    "pixels": 230400
+  },
+  {
+    "label": "landscape",
+    "baseline": "examples/demo/out/quicksilver-clipping-2026-11-05/landscape-control/one-a/45.png",
+    "candidate": "examples/demo/out/quicksilver-clipping-2026-11-05/candidate-source-landscape-control/one-a/45.png",
+    "maximum": 56,
+    "mean": 0.03378472222222222,
+    "changed": 10126,
+    "over8": 124,
+    "over32": 31,
+    "pixels": 230400
+  }
+]

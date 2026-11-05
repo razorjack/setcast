@@ -1,0 +1,23 @@
+{
+  "label": "baseline-remotion-compact",
+  "width": 360,
+  "height": 640,
+  "workers": [
+    1,
+    2
+  ],
+  "files": [
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-compact/0-360-1.mp4",
+    "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/baseline-remotion-compact/0-360-2.mp4"
+  ],
+  "frames": 45,
+  "worstMean": {
+    "outputFrame": 42,
+    "maximum": 37,
+    "mean": 0.47773292824074076,
+    "changed": 52931,
+    "over8": 2830,
+    "over32": 3
+  },
+  "nonidenticalFrames": 45
+}

@@ -1,0 +1,9 @@
+{
+  "mode": "roundedclip",
+  "override": ".theme-quicksilver[data-background=\"video\"] .sc-bg-img {clip-path:inset(calc(50% - var(--orb) - var(--shift-y)) calc(50% - var(--orb) + var(--shift-x)) calc(50% - var(--orb) + var(--shift-y)) calc(50% - var(--orb) - var(--shift-x)) round var(--orb))}",
+  "qualified": false,
+  "comparisons": 135,
+  "failed": 31,
+  "maximum": 58,
+  "maxChangedPixels": 255
+}

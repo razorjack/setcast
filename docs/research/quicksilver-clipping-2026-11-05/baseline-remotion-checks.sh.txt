@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-clipping-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check baseline-remotion-compact node "$root/remotion-encoded.mjs" "$root/baseline-remotion-compact" control
+check baseline-remotion-hd env SETCAST_HD=1 node "$root/remotion-encoded.mjs" "$root/baseline-remotion-hd" control
+check baseline-remotion-switches node "$root/remotion-switches.mjs" "$root/baseline-remotion-switches" control
+check baseline-remotion-switches-hd env SETCAST_HD=1 node "$root/remotion-switches.mjs" "$root/baseline-remotion-switches-hd" control

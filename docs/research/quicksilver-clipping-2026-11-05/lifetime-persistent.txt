@@ -1,0 +1,14 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.evaluate: EncodingError: The source image cannot be decoded.
+    at prepareFrame (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/session.ts:188:12)
+    at /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/image-lifetime.mjs:20:45
+    at async withCapturePages (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/session.ts:144:20)
+    at async withRenderSession (/home/razorjack/Projects/opensource/setcast/packages/renderer-browser/src/export/session.ts:68:12)
+    at async file:///home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-clipping-2026-11-05/image-lifetime.mjs:7:14 {
+  log: []
+}
+
+Node.js v26.7.0

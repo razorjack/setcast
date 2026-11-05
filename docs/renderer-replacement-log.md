@@ -1994,3 +1994,90 @@ The [complete report](research/quicksilver-linux-2026-11-05/README.md) retains r
 commands, exit statuses and artifact hashes. Final `vp run ready` passes all 694 tests,
 formatting, lint/types, dependency isolation and decoded smoke. Runtime source and lockfiles
 match `ed05b6d`; only documentation and qualification evidence are changed.
+
+
+## 5 November: investigate stable Quicksilver video clipping
+
+The user requested investigation after the failed Linux qualification. Start from `ba640f0`
+with unchanged exact assertions. Retain new experiments under
+`examples/demo/out/quicksilver-clipping-2026-11-05`. The first hypotheses are a CSS circular
+mask that avoids the clip-path rasterization and preserving the video image DOM element while
+the next frame prepares. `ExportVideo` currently returns null whenever its readiness result
+is false, so each frame can remove and recreate the image. This is a mechanism to investigate,
+not an established root cause. Any candidate must preserve the readiness hold and prove source,
+encoded, transition and resource behavior. No platform-specific graphics fallback is proposed.
+
+The mask probe reproduces a control failure. A one-pixel soft mask still fails the source
+budget (six pixels differ by one level); a hard radial mask passes 135 source comparisons.
+These are initial probes, not encoded qualification. Mutation observations confirm two video
+image nodes are removed and recreated per frame in the contain fixture. Simply retaining them
+fails with `EncodingError: The source image cannot be decoded`: readiness decodes DOM images
+while a pending video hold can replace their source. The failed patch and all failed commands
+are retained. The next experiment waits for declared frame holds before decoding DOM images,
+while retaining fatal decode errors and the existing two stable paint callbacks.
+
+The readiness-order experiment removes the decode rejection and preserves both video image
+nodes across ten frames (two additions, zero removals). The unchanged compact encoded check
+still fails, so stable DOM image lifetime is insufficient to repair Quicksilver. No such
+change is promoted on this result. The hard mask changes edge pixels against the current
+clip, including a local maximum of 159 levels; whole-frame averages would hide that tradeoff.
+A fixed-size soft mask will test whether the mask raster can remain independent of image sizing.
+
+Production media/readiness source is restored byte-for-byte. Repeating the CSS probes on that
+baseline matters: the fixed-size soft mask now passes all 135 source comparisons, while
+rounded clipping and layout without translation still fail. The hard mask already fails its
+first compact encoded worker comparison despite its source-only pass. Fixed-size soft-mask
+encoded qualification is next; the source check alone establishes no repair.
+
+Both mask candidates fail compact/HD encoded repetitions and source switches. Matching-size
+landscape PNG and direct production JPEG diagnostics both reproduce source differences, so
+final H.264 encoding is not their sole cause. Rounded clipping and equivalent positioning
+also fail. The dedicated `.sc-bg-video` clipping-host prototype passes all six compact and
+six HD encoded groups exactly. It moves the circle to frame-relative parent coordinates and
+clips the composed video images together. Source-switch checks continue. This does not prove
+Chromium's internal cause. The candidate is isolated on
+`renderer/quicksilver-clip-container-candidate`; master is not promoted. A new wrapper changes
+direct-child selectors, so compatibility implications and macOS repetition remain explicit.
+
+The clipping-container prototype passes all compact and HD source-switch groups as well. The
+clean candidate puts `display: contents` in base CSS and gives Quicksilver's video wrapper the
+frame-sized clip and compositor hint. Images retain their geometry and filters; their own video
+clip is disabled. Static art is unchanged. The maintained compact worker suite passes all six
+cases on this implementation without fixture overrides. Full-resolution, installation and
+integration checks continue. The theme contract now names the wrapper and documents the
+necessary direct-child-selector migration; `display: contents` does not preserve selector matching.
+
+Native-size comparison finds a visible candidate tradeoff: portrait contain mode loses the
+colored rim outside the orb. The browser adapter enlarges the blurred underlay with inline
+`scale: 1.1`; clipping the combined layers at the orb boundary contains that underlay too.
+Landscape cover has no such second layer. The scene remains intact, but this candidate is not
+appearance-equivalent to the parent-layer implementation. Preserve decoded before/after frames
+and require an explicit appearance decision or a revised layer design before promotion. Passing
+worker equality alone is insufficient to approve this design change.
+
+The clean browser candidate passes all compact/HD repeated video and source switches, all six
+static repetitions, 64 all-theme seek cases, both exporter acceptance suites and both fresh
+installation modes. Portrait and landscape source diagnostics are exact across 270 comparisons.
+A new adapter-specific check finds Remotion portrait worker mismatches despite its passing general
+acceptance: compact/HD repeated video and compact switches fail their first portrait group after
+passing landscape. Remotion actually runs Chromium 149.0.7790.0 with SwiftShader, whereas browser
+runs Chromium 156.0.8078.4. The unchanged source baseline will run the same reproducer next; do
+not attribute the mismatch to the wrapper before that comparison.
+
+The unchanged baseline fails all four focused Remotion commands: compact repeats/switches fail
+first portrait, while HD repeats/switches fail first landscape. Candidate HD switches also fail
+first portrait. Later groups are unexecuted. The same assertions therefore expose an existing
+Remotion qualification gap, not evidence that the candidate alone caused the failure. Neither
+implementation is qualified for these Remotion cases. Source restoration was checked against
+`ba640f0`, then the exact candidate patch was reapplied and compared before final baseline CI.
+The investigation retains this adapter failure without changing its assertions or production pin.
+
+Candidate `vp run ready` passes all 694 tests, formatting, lint/types, dependency isolation and
+smoke. The final investigation report preserves exact commands, runtime reports, failed patches,
+source identities and representative before/after frames. Keep the candidate on its isolated
+branch; only research and roadmap changes will be recorded on master. No default renderer,
+performance objective, platform requirement or production Remotion pin changes.
+
+The candidate is committed as `94c2c40` on `renderer/quicksilver-clip-container-candidate`.
+The checkout is restored to master with only evidence and roadmap changes. Master production
+source matches `ba640f0`, and final `vp run ready` passes all 694 tests and baseline checks.

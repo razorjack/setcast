@@ -1,0 +1,26 @@
+import json, subprocess, sys
+from pathlib import Path
+from PIL import Image, ImageChops, ImageEnhance
+root=Path('examples/demo/out/quicksilver-clipping-2026-11-05')
+label=sys.argv[1];report=json.loads((root/label/'report.json').read_text())
+case=next(c for c in report['results'] if not c['equal'])
+a=case['observations'][0];b=next(o for o in case['observations'][1:] if o['hash']!=a['hash'])
+width,height=case['width'],case['height'];size=width*height
+processes=[subprocess.Popen(['ffmpeg','-v','error','-xerror','-i',o['file'],'-map','0:v','-f','rawvideo','-pix_fmt','rgb24','-'],stdout=subprocess.PIPE) for o in [a,b]]
+rows=[];worst=None
+while True:
+ data=[p.stdout.read(size*3) for p in processes]
+ if not any(data):break
+ assert all(len(d)==size*3 for d in data)
+ images=[Image.frombytes('RGB',(width,height),d) for d in data]
+ diff=ImageChops.difference(*images);hist=diff.histogram();rgb=diff.split();pixels=ImageChops.lighter(ImageChops.lighter(*rgb[:2]),rgb[2]).histogram()
+ row=dict(outputFrame=len(rows),maximum=max(i%256 for i,n in enumerate(hist) if n),mean=sum(i%256*n for i,n in enumerate(hist))/(size*3),changed=sum(pixels[1:]),over8=sum(pixels[9:]),over32=sum(pixels[33:]))
+ rows.append(row)
+ if worst is None or row['mean']>worst['mean']:
+  worst=row
+  for im,suffix in zip(images,['reference','other']): im.save(root/f'{label}-{suffix}.png')
+  ImageEnhance.Brightness(diff).enhance(4).save(root/f'{label}-difference-x4.png')
+for p in processes:assert p.wait()==0
+result=dict(label=label,width=width,height=height,workers=[a['concurrency'],b['concurrency']],files=[a['file'],b['file']],frames=rows,worstMean=worst)
+(root/f'{label}-difference.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({**result,'frames':len(rows),'nonidenticalFrames':sum(r['changed']>0 for r in rows)},indent=2))

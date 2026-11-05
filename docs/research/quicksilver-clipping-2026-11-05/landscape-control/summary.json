@@ -1,0 +1,9 @@
+{
+  "mode": "control",
+  "override": "",
+  "qualified": false,
+  "comparisons": 135,
+  "failed": 16,
+  "maximum": 37,
+  "maxChangedPixels": 39
+}
