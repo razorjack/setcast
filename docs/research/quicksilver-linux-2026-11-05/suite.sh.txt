@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -u
+root="$PWD/examples/demo/out/quicksilver-linux-2026-11-05"
+check() { bash "$root/run-check.sh" "$@"; }
+check revision git rev-parse HEAD
+check dirty git diff
+check os cat /etc/os-release
+check kernel uname -srmo
+check cpu lscpu
+check memory free -b
+check storage df -h . /tmp /dev/shm
+check node node --version
+check vp ./node_modules/.bin/vp --version
+check pnpm pnpm --version
+check ffmpeg ffmpeg -version
+check ffprobe ffprobe -version
+check browser-doctor node packages/cli/bin/setcast.js doctor --renderer browser --require still,video,gpu --json
+check demo-assets ./node_modules/.bin/vp run demo-assets
+check ready ./node_modules/.bin/vp run ready
+check compact node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1,2,4 --out "$root/compact"
+check hd node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1,2,4 --out "$root/hd"
+check static node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 3 --workers 1,2,4 --out "$root/static"
+check seeks node packages/renderer-browser/bench/video-frames.ts --image-only --out "$root/seeks"
+check switches node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs "$root/switches" control
+check switches-hd env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs "$root/switches-hd" control
+check browser-acceptance ./node_modules/.bin/vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out "$root/browser-acceptance"
+check remotion-acceptance ./node_modules/.bin/vp run export-acceptance --gl swangle --out "$root/remotion-acceptance"
+check installed-browser ./node_modules/.bin/vp run package-smoke --browser --report "$root/installed-browser.json"
+check installed-compatibility ./node_modules/.bin/vp run package-smoke --report "$root/installed-compatibility.json"

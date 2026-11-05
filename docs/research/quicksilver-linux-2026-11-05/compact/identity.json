@@ -1,0 +1,16 @@
+{
+  "revision": "ed05b6deb217cd43ccedfe96b54d468877d56831",
+  "dirty": true,
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v26.7.0",
+  "options": {
+    "video": true,
+    "theme": "quicksilver",
+    "size": "640x360",
+    "repeat": "3",
+    "workers": "1,2,4",
+    "out": "/home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/compact",
+    "gl": "auto"
+  }
+}

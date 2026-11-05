@@ -1,0 +1,38 @@
+from pathlib import Path
+import hashlib, json, shutil, subprocess
+root=Path('examples/demo/out/quicksilver-linux-2026-11-05')
+dest=Path('docs/research/quicksilver-linux-2026-11-05')
+for f in root.glob('*.txt'):
+    shutil.copy2(f,dest/f.name)
+for f in root.glob('*.json'):
+    shutil.copy2(f,dest/f.name)
+for name in ['run-check.sh','suite.sh','layers.mjs','collect.py','decoded-frame-hashes.py']:
+    shutil.copy2(root/name,dest/(name+'.txt'))
+for name in ['compact','hd','static','seeks','switches','switches-hd']:
+    folder=root/name
+    if not folder.exists(): continue
+    for f in folder.glob('*.json'):
+        target=dest/name/f.name
+        target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(f,target)
+for f in (root/'layers').glob('*/*.json'):
+    target=dest/f.relative_to(root)
+    target.parent.mkdir(parents=True,exist_ok=True)
+    shutil.copy2(f,target)
+checks=[]
+for f in sorted(root.glob('*.exit.txt')):
+    label=f.name.removesuffix('.exit.txt')
+    checks.append(dict(label=label,exit=int(f.read_text()),command=(root/(label+'.command.txt')).read_text().strip(),start=(root/(label+'.start.txt')).read_text().strip(),end=(root/(label+'.end.txt')).read_text().strip()))
+(dest/'checks.json').write_text(json.dumps(checks,indent=2)+'\n')
+files=[]
+for f in sorted(root.rglob('*')):
+    if not f.is_file():continue
+    h=hashlib.sha256()
+    with f.open('rb') as stream:
+        for chunk in iter(lambda:stream.read(1024*1024),b''): h.update(chunk)
+    files.append(dict(path=str(f.relative_to(root)),bytes=f.stat().st_size,sha256=h.hexdigest()))
+(dest/'artifacts.json').write_text(json.dumps(dict(root=str(root),files=files),indent=2)+'\n')
+tracked=subprocess.check_output(['git','ls-files','packages','scripts','pnpm-lock.yaml','pnpm-workspace.yaml','package.json','vite.config.ts'],text=True).splitlines()
+identity=[dict(path=name,sha256=hashlib.sha256(Path(name).read_bytes()).hexdigest()) for name in tracked if Path(name).is_file()]
+(dest/'source-identity.json').write_text(json.dumps(identity,indent=2)+'\n')
+print('Retained',len(checks),'command statuses and',len(files),'artifacts,',sum(x['bytes'] for x in files),'bytes')

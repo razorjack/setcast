@@ -1,0 +1,24 @@
+Scope: all 7 workspace projects
+[ERR_SQLITE_ERROR] unable to open database file
+
+pnpm: unable to open database file
+    at file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:102448:19
+    at sqliteRetry (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:102358:14)
+    at StoreIndex.openDatabase (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:102447:9)
+    at new StoreIndex (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:102432:14)
+    at createNewStoreController (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:182737:83)
+    at async installDeps (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:219786:17)
+    at async Object.handler5 (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:220893:3)
+    at async file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:322592:19
+    at async main4 (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:322560:30)
+    at async runPnpm (file:///home/razorjack/.vite-plus/package_manager/pnpm/11.22.0/pnpm/dist/pnpm.mjs:322856:5)
+[ERR_PNPM_META_FETCH_FAIL] GET https://registry.npmjs.org/pnpm: fetch failed
+
+   ╭──────────────────────────────────────────╮
+   │                                          │
+   │   Update available! 11.22.0 → 12.16.1.   │
+   │   Changelog: https://pnpm.io/v/12.16.1   │
+   │     To update, run: pnpm add -g pnpm     │
+   │                                          │
+   ╰──────────────────────────────────────────╯
+

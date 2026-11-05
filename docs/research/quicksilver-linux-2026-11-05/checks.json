@@ -1,0 +1,219 @@
+[
+  {
+    "label": "browser-acceptance",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run export-acceptance --adapter packages/renderer-browser/src/export/index.ts --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/browser-acceptance",
+    "start": "2026-11-05T19:43:28Z",
+    "end": "2026-11-05T19:43:56Z"
+  },
+  {
+    "label": "browser-doctor",
+    "exit": 0,
+    "command": "node packages/cli/bin/setcast.js doctor --renderer browser --require still\\,video\\,gpu --json",
+    "start": "2026-11-05T19:33:49Z",
+    "end": "2026-11-05T19:33:51Z"
+  },
+  {
+    "label": "compact",
+    "exit": 1,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --size 640x360 --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/compact",
+    "start": "2026-11-05T19:34:14Z",
+    "end": "2026-11-05T19:36:25Z"
+  },
+  {
+    "label": "cpu",
+    "exit": 0,
+    "command": "lscpu",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "decoded-frame-hashes",
+    "exit": 0,
+    "command": "python3 examples/demo/out/quicksilver-linux-2026-11-05/decoded-frame-hashes.py",
+    "start": "2026-11-05T19:48:28Z",
+    "end": "2026-11-05T19:48:31Z"
+  },
+  {
+    "label": "demo-assets",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run demo-assets",
+    "start": "2026-11-05T19:33:51Z",
+    "end": "2026-11-05T19:33:53Z"
+  },
+  {
+    "label": "dirty",
+    "exit": 0,
+    "command": "git diff",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "ffmpeg",
+    "exit": 0,
+    "command": "ffmpeg -version",
+    "start": "2026-11-05T19:33:49Z",
+    "end": "2026-11-05T19:33:49Z"
+  },
+  {
+    "label": "ffprobe",
+    "exit": 0,
+    "command": "ffprobe -version",
+    "start": "2026-11-05T19:33:49Z",
+    "end": "2026-11-05T19:33:49Z"
+  },
+  {
+    "label": "final-ready",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run ready",
+    "start": "2026-11-05T19:47:30Z",
+    "end": "2026-11-05T19:47:50Z"
+  },
+  {
+    "label": "hd",
+    "exit": 1,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --video --theme quicksilver --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/hd",
+    "start": "2026-11-05T19:36:25Z",
+    "end": "2026-11-05T19:38:38Z"
+  },
+  {
+    "label": "install-host",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp install --frozen-lockfile",
+    "start": "2026-11-05T19:33:14Z",
+    "end": "2026-11-05T19:33:15Z"
+  },
+  {
+    "label": "install",
+    "exit": 1,
+    "command": "./node_modules/.bin/vp install --frozen-lockfile",
+    "start": "2026-11-05T19:33:01Z",
+    "end": "2026-11-05T19:33:02Z"
+  },
+  {
+    "label": "installed-browser",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run package-smoke --browser --report /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/installed-browser.json",
+    "start": "2026-11-05T19:44:52Z",
+    "end": "2026-11-05T19:45:40Z"
+  },
+  {
+    "label": "installed-compatibility",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run package-smoke --report /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/installed-compatibility.json",
+    "start": "2026-11-05T19:45:40Z",
+    "end": "2026-11-05T19:46:40Z"
+  },
+  {
+    "label": "kernel",
+    "exit": 0,
+    "command": "uname -srmo",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "layer-probes",
+    "exit": 0,
+    "command": "node examples/demo/out/quicksilver-linux-2026-11-05/layers.mjs clipped isolation both old",
+    "start": "2026-11-05T19:35:27Z",
+    "end": "2026-11-05T19:36:41Z"
+  },
+  {
+    "label": "memory",
+    "exit": 0,
+    "command": "free -b",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "node",
+    "exit": 0,
+    "command": "node --version",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "os",
+    "exit": 0,
+    "command": "cat /etc/os-release",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "pnpm",
+    "exit": 0,
+    "command": "pnpm --version",
+    "start": "2026-11-05T19:33:49Z",
+    "end": "2026-11-05T19:33:49Z"
+  },
+  {
+    "label": "ready",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run ready",
+    "start": "2026-11-05T19:33:53Z",
+    "end": "2026-11-05T19:34:14Z"
+  },
+  {
+    "label": "remotion-acceptance",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp run export-acceptance --gl swangle --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/remotion-acceptance",
+    "start": "2026-11-05T19:43:56Z",
+    "end": "2026-11-05T19:44:52Z"
+  },
+  {
+    "label": "revision",
+    "exit": 0,
+    "command": "git rev-parse HEAD",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "runtime-source-unchanged",
+    "exit": 0,
+    "command": "git diff --exit-code HEAD -- packages scripts package.json pnpm-lock.yaml pnpm-workspace.yaml vite.config.ts",
+    "start": "2026-11-05T19:47:30Z",
+    "end": "2026-11-05T19:47:30Z"
+  },
+  {
+    "label": "seeks",
+    "exit": 0,
+    "command": "node packages/renderer-browser/bench/video-frames.ts --image-only --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/seeks",
+    "start": "2026-11-05T19:39:27Z",
+    "end": "2026-11-05T19:41:38Z"
+  },
+  {
+    "label": "static",
+    "exit": 0,
+    "command": "node packages/renderer-browser/bench/worker-frames.ts --theme quicksilver --repeat 3 --workers 1\\,2\\,4 --out /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/static",
+    "start": "2026-11-05T19:38:38Z",
+    "end": "2026-11-05T19:39:26Z"
+  },
+  {
+    "label": "storage",
+    "exit": 0,
+    "command": "df -h . /tmp /dev/shm",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:48Z"
+  },
+  {
+    "label": "switches-hd",
+    "exit": 0,
+    "command": "env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/switches-hd control",
+    "start": "2026-11-05T19:41:46Z",
+    "end": "2026-11-05T19:43:28Z"
+  },
+  {
+    "label": "switches",
+    "exit": 1,
+    "command": "node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/switches control",
+    "start": "2026-11-05T19:41:38Z",
+    "end": "2026-11-05T19:41:46Z"
+  },
+  {
+    "label": "vp",
+    "exit": 0,
+    "command": "./node_modules/.bin/vp --version",
+    "start": "2026-11-05T19:33:48Z",
+    "end": "2026-11-05T19:33:49Z"
+  }
+]

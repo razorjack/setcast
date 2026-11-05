@@ -1,0 +1,36 @@
+{
+  mode: 'clipped',
+  override: '.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {will-change:clip-path}',
+  qualified: false,
+  comparisons: 135,
+  failed: 24,
+  maximum: 64,
+  maxChangedPixels: 1290
+}
+{
+  mode: 'isolation',
+  override: '.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {isolation:isolate}',
+  qualified: false,
+  comparisons: 135,
+  failed: 17,
+  maximum: 64,
+  maxChangedPixels: 1290
+}
+{
+  mode: 'both',
+  override: '.theme-quicksilver .sc-bg-img {will-change:clip-path}',
+  qualified: false,
+  comparisons: 135,
+  failed: 2,
+  maximum: 57,
+  maxChangedPixels: 235
+}
+{
+  mode: 'old',
+  override: '.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {will-change:transform}',
+  qualified: true,
+  comparisons: 135,
+  failed: 0,
+  maximum: 0,
+  maxChangedPixels: 0
+}

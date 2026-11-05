@@ -1,0 +1,1 @@
+env SETCAST_HD=1 node examples/demo/out/quicksilver-repair-2026-11-03/switches.mjs /home/razorjack/Projects/opensource/setcast/examples/demo/out/quicksilver-linux-2026-11-05/switches-hd control 

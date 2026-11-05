@@ -1,0 +1,9 @@
+{
+  "mode": "both",
+  "override": ".theme-quicksilver .sc-bg-img {will-change:clip-path}",
+  "qualified": false,
+  "comparisons": 135,
+  "failed": 2,
+  "maximum": 57,
+  "maxChangedPixels": 235
+}

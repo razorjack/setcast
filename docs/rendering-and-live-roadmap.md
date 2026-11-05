@@ -58,13 +58,16 @@ configuration. Follow the [benchmark contract](renderer-replacement-plan.md#phas
 ### R2. Complete exporter qualification on supported platforms
 
 **Status:** local macOS workflows and substantial Fedora software/NVENC checks pass. The promoted
-Quicksilver repair still needs Linux repetition, full Linux real-master resources remain unchecked,
-and Windows remains unqualified. Explicit NVIDIA ANGLE failed correctness/capture checks.
+Quicksilver repair fails Linux compact and HD repeated-video checks. Full Linux real-master
+resources remain unchecked, and Windows remains unqualified. Explicit NVIDIA ANGLE failed
+correctness/capture checks. Current Linux fresh browser-only and optional-Remotion installations
+pass, including installed external visualizers.
 
-**Next action:** run the [Linux handoff](linux-renderer-qualification.md#required-follow-up-for-the-promoted-quicksilver-repair)
-on current source, including compact/HD video across workers, static art, shuffled seeks and source
-switches. Then complete available real-master resource checks and obtain a Windows host. Repeat
-installed plugin workflows on each platform included in the support claim.
+**Next action:** repair the [Linux Quicksilver video regression](research/quicksilver-linux-2026-11-05/README.md)
+without restoring the known macOS image-layer defect. Repeat the
+[focused handoff](linux-renderer-qualification.md#required-follow-up-for-the-promoted-quicksilver-repair)
+on both platforms after a shared layer change. Then complete available real-master resource checks
+and obtain a Windows host. Include installed plugin workflows in each new platform qualification.
 
 **Complete when:** each advertised OS/backend has revision-linked fresh browser-only installation,
 optional-Remotion compatibility, theme/CSS, audio/video/readiness, cancellation, failure cleanup,

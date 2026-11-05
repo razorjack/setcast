@@ -1944,3 +1944,53 @@ scoped schemas and asset metadata; adapters own their startup entry. Remotion re
 entry to call registerRoot explicitly. Initial Vite-entry and harness import failures are retained.
 See the [qualification report](research/visualizer-plugins-2026-11-03/README.md) and
 [package contract](visualizer-plugins.md). Final baseline validation passes all 694 tests, formatting, lint/types, dependency isolation and decoded smoke.
+
+
+## 5 November: Linux qualification of the promoted Quicksilver repair
+
+Qualification starts from clean `ed05b6d`, including parent-layer repair `97d271a`,
+browser-first promotion and installed visualizer support. The focused Linux handoff is being
+executed with fresh output under `examples/demo/out/quicksilver-linux-2026-11-05`.
+The first frozen installation failed because the sandbox cannot open the host pnpm store
+database or reach the package registry; its command, output and status are retained. A host-access
+retry uses the same frozen lockfile. No production implementation change is proposed.
+
+The initial compact video matrix fails decoded worker equality in both orientations. Landscape
+lossless diagnostics already exceed the source budget (maximum channel difference 25 on frame
+51; 38 changed pixels). This is a Linux failure of the promoted parent-layer policy, not a
+passing qualification. Remaining baseline checks continue; scoped layer alternatives will be
+tested as diagnostic CSS overrides before any production change.
+
+All six compact cases fail the unchanged encoded assertion. An inspected lossless difference
+bounds the changed pixels to the circular video clip. Scoped portrait source probes reject
+image `will-change: clip-path`, image isolation and parent-plus-clip-path hints. The old image
+transform hint passes all 135 source comparisons exactly, but its retained macOS regression
+prevents restoring it as a shared fix. These probes change only fixture CSS. HD checks are
+passing so far. The repair remains unqualified on Linux; no fallback or assertion is changed.
+
+The HD matrix also fails: five round/orientation cases pass, then the third portrait export
+group differs across workers and from earlier rounds. Its subsequent 135 lossless comparisons
+are exact. The unchanged video assertion correctly preserves the encoded failure despite that
+later diagnostic pass. This means the defect is not limited to compact resolution.
+
+Static artwork passes all six full-resolution worker/repetition cases exactly. The all-theme
+seek suite passes all 64 cases, including Quicksilver, so it does not replace repeated encoded
+qualification. The compact video/image/video switch reproducer fails its first landscape
+group; its remaining groups are not executed because the unchanged assertion stops the script.
+The HD source-switch run and integration checks are continuing.
+
+All six HD source-switch groups pass exact decoded equality. Both exporter acceptance suites
+pass audio timing, fractional ranges, assets/video, GPU determinism and failure/cancellation
+recovery. These general passing checks do not cover the failing Quicksilver repeated-video
+cases. Fresh browser-only and optional-Remotion installation checks are running on current main.
+
+Both fresh installation modes pass, including installed external visualizers, preview,
+cache/resume, ProRes and optional Remotion export. The browser-only inventory contains no
+Remotion packages. The focused qualification run is complete with three failing check commands:
+compact repeated video, HD repeated video and compact source switches. The sandbox installation
+failure is separately retained with its passing host retry. No production fix is promoted because
+the bounded alternatives fail Linux source precision or restore a known macOS regression.
+The [complete report](research/quicksilver-linux-2026-11-05/README.md) retains runtime identities,
+commands, exit statuses and artifact hashes. Final `vp run ready` passes all 694 tests,
+formatting, lint/types, dependency isolation and decoded smoke. Runtime source and lockfiles
+match `ed05b6d`; only documentation and qualification evidence are changed.

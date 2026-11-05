@@ -1,0 +1,9 @@
+{
+  "mode": "isolation",
+  "override": ".theme-quicksilver[data-background=\"video\"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {isolation:isolate}",
+  "qualified": false,
+  "comparisons": 135,
+  "failed": 17,
+  "maximum": 64,
+  "maxChangedPixels": 1290
+}

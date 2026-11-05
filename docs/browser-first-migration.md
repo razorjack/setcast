@@ -7,7 +7,7 @@ prepared Linux/macOS/Windows CI matrix. Nothing was published or pushed by this 
 
 On 3 November, the user authorized pre-release promotion without waiting for unavailable Linux
 and Windows machines. The Quicksilver parent-layer repair (`97d271a`) passes macOS correctness;
-[Linux repetition remains documented follow-up](linux-renderer-qualification.md). Earlier Linux
+[Linux repetition fails compact and HD repeated-video equality](research/quicksilver-linux-2026-11-05/README.md). Earlier Linux
 fresh installations pass on Fedora x64. Hosted CI and Windows checks have not run. The existing
 first-export comparisons do not achieve the roadmap's speed objective; this migration makes no
 claim that the browser renderer is universally faster than Remotion.
@@ -74,7 +74,8 @@ alpha channel is needed. See [compositing output](compositing-output.md) for the
 
 For a Linux session, follow the [qualification handoff](linux-renderer-qualification.md), including
 transfer of the latest main branch and fresh Linux dependencies. Windows qualification remains
-pending. The Quicksilver parent-layer repair must be included in the next Linux repetition.
+pending. The Quicksilver parent-layer repair fails compact and HD repeated-video equality on Linux;
+keep the focused repair suite in the handoff for subsequent fixes.
 
 `vp run package-smoke --browser --report out/installed-browser.json` builds tarballs and installs
 only the CLI into a fresh dependency tree. Local overrides resolve unpublished Setcast packages;

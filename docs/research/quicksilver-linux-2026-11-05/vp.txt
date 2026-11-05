@@ -1,0 +1,14 @@
+vp v0.2.9
+
+Local vite-plus:
+  vite-plus  v0.2.9
+
+Tools:
+  vite             v8.2.1
+  rolldown         v1.2.3
+  vitest           v4.1.10
+  oxfmt            v0.62.0
+  oxlint           v1.77.0
+  oxlint-tsgolint  v7.0.2001
+  tsdown           v0.22.14
+

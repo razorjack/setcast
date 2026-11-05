@@ -1,0 +1,15 @@
+import subprocess, json
+from pathlib import Path
+root = Path('examples/demo/out/quicksilver-linux-2026-11-05')
+summary = []
+for label, width, round in [('compact', 640, 0), ('compact', 360, 0), ('hd', 1080, 2)]:
+    hashes = []
+    for workers in [1, 2, 4]:
+        file = root / label / f'{round}-quicksilver-{width}-{workers}.mp4'
+        result = subprocess.check_output(['ffmpeg', '-v', 'error', '-xerror', '-i', str(file), '-map', '0:v', '-f', 'framehash', '-hash', 'sha256', '-'], text=True)
+        (root / f'{label}-{round}-{width}-{workers}.framehash.txt').write_text(result)
+        hashes.append([line.split(',')[-1].strip() for line in result.splitlines() if not line.startswith('#')])
+    assert all(len(group) == 45 for group in hashes)
+    summary.append(dict(label=label, width=width, round=round, frames=[len(group) for group in hashes], differentAbsoluteFrames={str(workers): [i+30 for i, (a, b) in enumerate(zip(hashes[0], hashes[index])) if a != b] for index, workers in enumerate([1, 2, 4]) if index}))
+(root / 'encoded-frame-differences.json').write_text(json.dumps(summary, indent=2) + '\n')
+print('Decoded frame hashes retained for nine failed-case outputs; this diagnoses differences, not a qualification pass.')

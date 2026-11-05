@@ -1,0 +1,1 @@
+Decoded frame hashes retained for nine failed-case outputs; this diagnoses differences, not a qualification pass.

@@ -119,8 +119,10 @@ Gotchas:
 - Quicksilver's video compositor hint now belongs to `.sc-bg`, not each decoded `.sc-bg-img`.
   The parent-layer repair (`97d271a`) passes macOS compact/HD repeated video, source switches,
   static art, all-theme seeks and both exporter suites. The user authorized promotion before
-  Linux repetition because Setcast is pre-release. Run the follow-up in
-  `docs/linux-renderer-qualification.md`; do not mistake promotion for Linux qualification.
+  Linux repetition because Setcast is pre-release. The 5 November Linux repetition fails compact
+  repeated-video equality in both orientations and an HD portrait repetition. The old image hint
+  still passes a source probe but retains its macOS regression. See `docs/research/quicksilver-linux-2026-11-05/README.md`
+  and the repair suite in `docs/linux-renderer-qualification.md`.
   The maintained reproducer is `packages/renderer-browser/bench/worker-frames.ts --video
   --theme quicksilver --repeat 3`; add `--size 640x360` for the compact run. Video mismatches
   remain failures even when a later source diagnostic passes.

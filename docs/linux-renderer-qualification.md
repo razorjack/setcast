@@ -8,6 +8,11 @@ and Windows machines no longer block promotion. Unexecuted checks remain unquali
 
 ## Required follow-up for the promoted Quicksilver repair
 
+The [5 November Linux repetition](research/quicksilver-linux-2026-11-05/README.md) finds a
+repeated-video regression with `97d271a`: compact worker equality fails in both orientations,
+and the third HD portrait repetition also fails. The commands below remain the repair acceptance
+suite. Passing source diagnostics do not override failed encoded-video assertions.
+
 Use the latest main branch, including repair `97d271a` and the browser-first integration.
 Transfer committed source with a fresh Git bundle if needed; the old bundle and candidate refs
 in the historical transfer section below do not contain this repair. Do not copy macOS
@@ -15,8 +20,9 @@ in the historical transfer section below do not contain this repair. Do not copy
 Chromium graphics backend, FFmpeg, revision and dirty state.
 
 The repair moves `will-change: transform` from `.sc-bg-img` to `.sc-bg` for video backgrounds.
-It fixes repeated macOS exports, but Linux must confirm that the earlier circular-clip defect
-does not return. The [macOS evidence](research/quicksilver-repair-2026-11-03/candidate.md) records
+It fixes repeated macOS exports, but the Linux repetition finds circular-clip pixel differences
+and failed repeated-video equality. A further repair must retain both platform reproducers.
+The [macOS evidence](research/quicksilver-repair-2026-11-03/candidate.md) records
 compact/HD video, static art, source transitions and both exporter suites. The candidate report
 predates the user's promotion decision; its original pending language is historical evidence.
 

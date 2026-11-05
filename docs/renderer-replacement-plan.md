@@ -24,7 +24,9 @@ The [macOS repair](research/quicksilver-repair-2026-11-03/candidate.md), impleme
 moves Quicksilver's video compositor hint to the background parent. It passes compact and HD
 repeated video, static art, source switches, all-theme seeks, both exporter suites and baseline
 checks. The [original failure](research/macos-followup-2026-11-03/README.md) remains preserved.
-Linux must repeat the repair checks using the [updated handoff](linux-renderer-qualification.md).
+The [Linux repetition](research/quicksilver-linux-2026-11-05/README.md) fails compact and HD repeated-video
+equality. A further repair must retain both platform reproducers in the
+[updated handoff](linux-renderer-qualification.md).
 
 [Linux evidence](research/linux-qualification-2026-11-01/README.md) already covers software exports,
 fresh installations, short NVENC endurance and bounded bitmap memory. Explicit NVIDIA ANGLE,

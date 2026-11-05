@@ -1,0 +1,7448 @@
+[
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 0,
+    "width": 640,
+    "height": 360,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=2d8d86d76571f552a4a61cdc60c1081cb8716ff4dd69a388dc8e431e164726fd",
+      "SHA256=725ebaed04ab47e4244e7ed24b1620d409bf0c2130fdb218d441540e430a5133",
+      "SHA256=2369036c0da11801888b83bd3cc4b5b106b8eef0cf8926ced3e78930653347bf"
+    ],
+    "equal": false,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": false,
+    "source": {
+      "qualified": false,
+      "reports": [
+        {
+          "name": "one-b",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 51,
+          "maximum": 25,
+          "rms": 0.09457966219013472,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "one-b",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 53,
+          "maximum": 23,
+          "rms": 0.08007519614110875,
+          "changedPixels": 37,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "one-b",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 43,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 51,
+          "maximum": 25,
+          "rms": 0.09457966219013472,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 53,
+          "maximum": 23,
+          "rms": 0.08007519614110875,
+          "changedPixels": 37,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 69,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 30,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 31,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 32,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 39,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 40,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 51,
+          "maximum": 25,
+          "rms": 0.09457966219013472,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 53,
+          "maximum": 23,
+          "rms": 0.08007519614110875,
+          "changedPixels": 37,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        }
+      ]
+    }
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 0,
+    "width": 360,
+    "height": 640,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=57fbf57c20c9163856d4436a1e2cd5e0dc6d290fd104d2fdb895b5c0ced1b88d",
+      "SHA256=740a1c1daf9c5dce46dbf5653d1fcf5159c3b8f557c0af240ad1d97c897f3958",
+      "SHA256=eb96be21bbf97096b71fd8d16e7596a5b1d77a7cc53827aa7fbae54040ac94b7"
+    ],
+    "equal": false,
+    "repeatEqual": true,
+    "video": true,
+    "qualified": false,
+    "source": {
+      "qualified": false,
+      "reports": [
+        {
+          "name": "one-b",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 45,
+          "maximum": 49,
+          "rms": 0.21949608218050862,
+          "changedPixels": 242,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        }
+      ]
+    }
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 1,
+    "width": 640,
+    "height": 360,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=c3493b55ad31867b36cd58475b0fa166d14fd5ec837a97b53e23e7bfeb4a279d",
+      "SHA256=3c197734cbbd53fdb238fa97a2b092bb1cddec114edeb4eb4d91818fde8c2a15",
+      "SHA256=3985b71fabac42d180b71a99e4bfba96cfae0b5f92606038e39513039365b414"
+    ],
+    "equal": false,
+    "repeatEqual": false,
+    "video": true,
+    "qualified": false,
+    "source": {
+      "qualified": false,
+      "reports": [
+        {
+          "name": "one-b",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 54,
+          "maximum": 21,
+          "rms": 0.07570081522629678,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "one-b",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 54,
+          "maximum": 21,
+          "rms": 0.07570081522629678,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 30,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 31,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 32,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 39,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 40,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 41,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 50,
+          "maximum": 28,
+          "rms": 0.0975169144872371,
+          "changedPixels": 39,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 54,
+          "maximum": 21,
+          "rms": 0.07570081522629678,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        }
+      ]
+    }
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 1,
+    "width": 360,
+    "height": 640,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=57fbf57c20c9163856d4436a1e2cd5e0dc6d290fd104d2fdb895b5c0ced1b88d",
+      "SHA256=57fbf57c20c9163856d4436a1e2cd5e0dc6d290fd104d2fdb895b5c0ced1b88d",
+      "SHA256=4e9925ab61ff676baf812cdc228fad3fbabba0717acb6db06a9d667bc6291414"
+    ],
+    "equal": false,
+    "repeatEqual": false,
+    "video": true,
+    "qualified": false,
+    "source": {
+      "qualified": false,
+      "reports": [
+        {
+          "name": "one-b",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 42,
+          "maximum": 42,
+          "rms": 0.15267199620731342,
+          "changedPixels": 235,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        }
+      ]
+    }
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 2,
+    "width": 640,
+    "height": 360,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=725ebaed04ab47e4244e7ed24b1620d409bf0c2130fdb218d441540e430a5133",
+      "SHA256=0b9a42b11a6a2ae373050e3709d142ba785c1f5a8b7a96f0bcfe71a8f27239a3",
+      "SHA256=7bc0650ed03f28c644c31f9dae6f7954a91d46f7d6a81982fead50d19f4879b7"
+    ],
+    "equal": false,
+    "repeatEqual": false,
+    "video": true,
+    "qualified": false,
+    "source": {
+      "qualified": false,
+      "reports": [
+        {
+          "name": "one-b",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 42,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 43,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "2-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 30,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 31,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 33,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 39,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 40,
+          "maximum": 37,
+          "rms": 0.12282246861342715,
+          "changedPixels": 33,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 45,
+          "maximum": 32,
+          "rms": 0.10765680854421575,
+          "changedPixels": 39,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 47,
+          "maximum": 30,
+          "rms": 0.09863067098656107,
+          "changedPixels": 38,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 48,
+          "maximum": 31,
+          "rms": 0.1000144665461878,
+          "changedPixels": 37,
+          "pixels": 230400,
+          "qualified": false
+        },
+        {
+          "name": "4-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        }
+      ]
+    }
+  },
+  {
+    "theme": "quicksilver",
+    "gl": "auto",
+    "round": 2,
+    "width": 360,
+    "height": 640,
+    "workers": [
+      1,
+      2,
+      4
+    ],
+    "hashes": [
+      "SHA256=57fbf57c20c9163856d4436a1e2cd5e0dc6d290fd104d2fdb895b5c0ced1b88d",
+      "SHA256=57fbf57c20c9163856d4436a1e2cd5e0dc6d290fd104d2fdb895b5c0ced1b88d",
+      "SHA256=94e2df665203572bf79b24085892555a7267b72d830aff487c584d066c3238c2"
+    ],
+    "equal": false,
+    "repeatEqual": false,
+    "video": true,
+    "qualified": false,
+    "source": {
+      "qualified": true,
+      "reports": [
+        {
+          "name": "one-b",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "one-b",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "2-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 30,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 31,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 32,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 33,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 34,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 35,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 36,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 37,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 38,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 39,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 40,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 41,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 42,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 43,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 44,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 45,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 46,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 47,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 48,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 49,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 50,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 51,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 52,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 53,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 54,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 55,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 56,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 57,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 58,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 59,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 60,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 61,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 62,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 63,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 64,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 65,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 66,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 67,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 68,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 69,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 70,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 71,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 72,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 73,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        },
+        {
+          "name": "4-workers",
+          "frame": 74,
+          "maximum": 0,
+          "rms": 0,
+          "changedPixels": 0,
+          "pixels": 230400,
+          "qualified": true
+        }
+      ]
+    }
+  }
+]

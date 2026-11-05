@@ -1,0 +1,23 @@
+import { resolve, join } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { fixtureProject } from '../../../../scripts/export-acceptance/fixture.ts';
+import { withRenderSession } from '../../../../packages/renderer-browser/src/export/index.ts';
+import { qualifySourcePixels } from '../../../../packages/renderer-browser/bench/worker-pixels.ts';
+const fixture = resolve('examples/demo/out/quicksilver-linux-2026-11-05/compact');
+const loaded = await fixtureProject(fixture, 'quicksilver');
+const overrides = {
+  clipped: '.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {will-change:clip-path}',
+  isolation: '.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {isolation:isolate}',
+  both: '.theme-quicksilver .sc-bg-img {will-change:clip-path}',
+  old: '.theme-quicksilver[data-background="video"] .sc-bg {will-change:auto} .theme-quicksilver .sc-bg-img {will-change:transform}',
+};
+for (const mode of process.argv.slice(2)) {
+  if (!(mode in overrides)) throw new Error(`Unknown mode ${mode}`);
+  const out = resolve('examples/demo/out/quicksilver-linux-2026-11-05/layers', mode);
+  await mkdir(out, {recursive:true});
+  const project = {...loaded, background:'motion.mp4', width:360, height:640, css:loaded.css+'\n'+overrides[mode]};
+  const result = await withRenderSession(() => qualifySourcePixels(project, fixture, out, {workers:[1,2,4],gl:'auto'}));
+  const summary = {mode, override:overrides[mode], qualified:result.qualified, comparisons:result.reports.length, failed:result.reports.filter(x=>!x.qualified).length, maximum:Math.max(...result.reports.map(x=>x.maximum)), maxChangedPixels:Math.max(...result.reports.map(x=>x.changedPixels))};
+  await writeFile(join(out,'summary.json'),JSON.stringify(summary,null,2)+'\n');
+  console.log(summary);
+}

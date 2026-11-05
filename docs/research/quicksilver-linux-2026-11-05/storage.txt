@@ -1,0 +1,4 @@
+Filesystem                                             Size  Used Avail Use% Mounted on
+/dev/mapper/luks-ec10637a-840d-47e5-bffe-26eb96af3e91  929G  211G  717G  23% /home
+tmpfs                                                   32G   92M   32G   1% /tmp
+tmpfs                                                   32G  141M   32G   1% /dev/shm

@@ -1,0 +1,18 @@
+diff --git a/docs/renderer-replacement-log.md b/docs/renderer-replacement-log.md
+index f84f1d1..8474adc 100644
+--- a/docs/renderer-replacement-log.md
++++ b/docs/renderer-replacement-log.md
+@@ -1944,3 +1944,13 @@ scoped schemas and asset metadata; adapters own their startup entry. Remotion re
+ entry to call registerRoot explicitly. Initial Vite-entry and harness import failures are retained.
+ See the [qualification report](research/visualizer-plugins-2026-11-03/README.md) and
+ [package contract](visualizer-plugins.md). Final baseline validation passes all 694 tests, formatting, lint/types, dependency isolation and decoded smoke.
++
++
++## 5 November: Linux qualification of the promoted Quicksilver repair
++
++Qualification starts from clean `ed05b6d`, including parent-layer repair `97d271a`,
++browser-first promotion and installed visualizer support. The focused Linux handoff is being
++executed with fresh output under `examples/demo/out/quicksilver-linux-2026-11-05`.
++The first frozen installation failed because the sandbox cannot open the host pnpm store
++database or reach the package registry; its command, output and status are retained. A host-access
++retry uses the same frozen lockfile. No production implementation change is proposed.
