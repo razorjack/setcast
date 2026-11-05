@@ -1,5 +1,10 @@
 # Independent renderer replacement plan
 
+Current priorities and remaining work are maintained in the
+[active roadmap](rendering-and-live-roadmap.md). This document retains the detailed renderer
+contracts, phase decisions and qualification evidence; its original delivery sequence is not
+a second prioritized backlog.
+
 Ongoing observations, failed experiments and validation results are recorded in
 [renderer-replacement-log.md](renderer-replacement-log.md).
 
@@ -55,10 +60,9 @@ readiness, independent preview, capture/encoding overlap, display-unpaced offlin
 resume, capabilities, setup diagnostics and decoded export verification. GPU visuals and journal
 replay already use Setcast-owned contracts. These are foundations to retain, not new milestones.
 
-The subsequent roadmap lists plugin loading, portable scenes, metadata adapters and beat-tracking
-evidence ahead of renderer qualification. For the replacement objective, give the sequence in this
-document priority over broad plugin infrastructure, additional effects and scene-collection work.
-Keep those product candidates in the roadmap. Continue necessary correctness and live reliability
+The active roadmap keeps renderer performance and platform qualification ahead of broader product
+candidates. Explicit visualizer loading is implemented. Portable scenes, metadata adapters and
+beat-tracking evidence remain candidates. Continue necessary correctness and live reliability
 fixes, and run packaging/platform qualification throughout renderer development.
 
 The useful distinction is between three outcomes:

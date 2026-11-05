@@ -1,8 +1,10 @@
 # Renderer replacement implementation log
 
-This log records observations as work proceeds. Architecture, priorities and release criteria
-are in [renderer-replacement-plan.md](renderer-replacement-plan.md). An experiment is not a
-supported feature or completed milestone unless explicitly marked as such. Retain failures and
+This log records observations as work proceeds. Current priorities and remaining work are in
+the [active roadmap](rendering-and-live-roadmap.md); detailed renderer contracts and qualification
+criteria are in [renderer-replacement-plan.md](renderer-replacement-plan.md). Historical work orders
+and checkpoints below are not new instructions. An experiment is not a supported feature or
+completed milestone unless explicitly marked as such. Retain failures and
 limitations when adding results. Update this file before context handoffs and include it in each
 relevant implementation commit.
 

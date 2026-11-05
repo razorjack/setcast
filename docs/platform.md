@@ -174,5 +174,5 @@ identity or sustained live behavior.
   for reproducible evidence. Synthetic audio and browser metrics do not qualify physical mixers,
   projector presentation or camera shutter behavior.
 
-The [roadmap](rendering-and-live-roadmap.md#next-milestones) separates implemented contracts from
-remaining platform and hardware work.
+The [active roadmap](rendering-and-live-roadmap.md) lists remaining work with next actions,
+acceptance criteria and evidence. Completed milestones are in its linked delivery history.

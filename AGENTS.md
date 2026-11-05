@@ -15,6 +15,8 @@ events from DJ hardware, recording an event log that regenerates the polished VO
 
 This project is engineered agentically. This file is the map. Read it fully before changing
 anything; update it when you make a non-obvious choice (Decisions) or discover a gotcha.
+Current priorities, acceptance criteria and evidence links belong in
+`docs/rendering-and-live-roadmap.md`; completed milestones belong in its linked delivery history.
 
 ## Quick orientation
 
@@ -685,20 +687,13 @@ project with the art, or `node demos/backgrounds/sheet.mjs` over the local test 
 `demos/backgrounds/` exists (gitignored; never commit those images). Check legibility once more
 with `.setcast { --bg-correction: 0; }`, because users can turn the correction off.
 
-## Roadmap (beyond v1)
+## Roadmap
 
-- The active renderer replacement sequence is `docs/renderer-replacement-plan.md`: comparative
-  benchmarks, direct video frames, capture without image compression, scheduling/hardware encoding,
-  persistent reuse, unified preview/export, fidelity and independent distribution. Implemented
-  features and rejected experiments are recorded there. Browser-first promotion follows the
-  3 November pre-release decision; platform qualification and throughput remain follow-up work.
-- Qualify and optimize the browser exporter across platforms and real projects. It uses
-  bounded PCM windows; a full AudioFeatures sidecar is not a prerequisite.
-- Optional AudioFeatures sidecar/cache, justified by measured decode cost and reuse.
-- Live hardware adapters, physical latency/OBS qualification, drift correction and live cue
-  presentation. Manual journal → finite replay and live audio visualization are implemented.
-- Everything in the plugin registry list above.
-- Explicit visualizer packages use generated per-project bundle entries; see `docs/visualizer-plugins.md`.
+Use [the active roadmap](docs/rendering-and-live-roadmap.md) for remaining work, current priorities,
+next actions, acceptance criteria and evidence. The renderer replacement plan supplies detailed
+benchmark and qualification contracts; it is not a second prioritized backlog. Preserve completed
+milestones in [the delivery history](docs/rendering-and-live-history.md), with historical status
+and session instructions clearly distinguished from current work. Do not duplicate the backlog here.
 
 ## Decisions
 
